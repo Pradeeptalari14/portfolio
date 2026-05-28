@@ -71,7 +71,7 @@
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <span class="stat-num" data-target="3" id="stat-exp">0</span>
+          <span class="stat-num" data-target="2" id="stat-exp">0</span>
           <span class="stat-label">Years Exp.</span>
         </div>
         <div class="stat-divider"></div>
@@ -138,21 +138,25 @@
           <div class="about-image-placeholder">
             <div class="avatar-glow"></div>
             <div class="avatar-core">
-              <svg viewBox="0 0 120 120" fill="none">
-                <circle cx="60" cy="44" r="26" fill="url(#avatarGrad)"/>
-                <path d="M14 106c0-25.4 20.6-46 46-46s46 20.6 46 46" fill="url(#avatarGrad2)" opacity="0.85"/>
-                <defs>
-                  <linearGradient id="avatarGrad" x1="0" y1="0" x2="120" y2="120">
-                    <stop stop-color="#6366f1"/>
-                    <stop offset="1" stop-color="#22d3ee"/>
-                  </linearGradient>
-                  <linearGradient id="avatarGrad2" x1="0" y1="0" x2="120" y2="120">
-                    <stop stop-color="#6366f1"/>
-                    <stop offset="1" stop-color="#22d3ee"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div class="avatar-initials">TP</div>
+              <!-- Smart Premium Photo Load: Place your 'profile.jpg' in the project directory! -->
+              <img src="profile.jpg" alt="Talari Pradeep" class="avatar-img" onerror="this.style.display='none'; document.getElementById('avatar-fallback-wrapper').style.display='flex';" />
+              <div class="avatar-fallback" id="avatar-fallback-wrapper">
+                <svg viewBox="0 0 120 120" fill="none">
+                  <circle cx="60" cy="44" r="26" fill="url(#avatarGrad)"/>
+                  <path d="M14 106c0-25.4 20.6-46 46-46s46 20.6 46 46" fill="url(#avatarGrad2)" opacity="0.85"/>
+                  <defs>
+                    <linearGradient id="avatarGrad" x1="0" y1="0" x2="120" y2="120">
+                      <stop stop-color="#6366f1"/>
+                      <stop offset="1" stop-color="#22d3ee"/>
+                    </linearGradient>
+                    <linearGradient id="avatarGrad2" x1="0" y1="0" x2="120" y2="120">
+                      <stop stop-color="#6366f1"/>
+                      <stop offset="1" stop-color="#22d3ee"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="avatar-initials">TP</div>
+              </div>
             </div>
           </div>
           <div class="about-info-chips">
@@ -383,7 +387,7 @@
                 <h3 class="exp-role">Cloud DevOps Engineer</h3>
                 <p class="exp-company">🏢 Tech Company · Full-time</p>
               </div>
-              <span class="exp-date">2023 – Present</span>
+              <span class="exp-date">2024 – Present</span>
             </div>
             <ul class="exp-bullets">
               <li>Architected multi-region AWS infrastructure serving 500K+ users with 99.95% uptime SLA</li>
@@ -406,10 +410,10 @@
           <div class="timeline-card">
             <div class="exp-header">
               <div>
-                <h3 class="exp-role">Junior DevOps Engineer</h3>
+                <h3 class="exp-role">Associate Cloud Engineer</h3>
                 <p class="exp-company">🏢 IT Services Firm · Full-time</p>
               </div>
-              <span class="exp-date">2022 – 2023</span>
+              <span class="exp-date">2023 – 2024</span>
             </div>
             <ul class="exp-bullets">
               <li>Built and maintained Jenkins CI/CD pipelines for 12+ microservice applications</li>
@@ -432,10 +436,10 @@
           <div class="timeline-card">
             <div class="exp-header">
               <div>
-                <h3 class="exp-role">Cloud Intern</h3>
+                <h3 class="exp-role">Cloud Support Intern</h3>
                 <p class="exp-company">🏢 Startup · Internship</p>
               </div>
-              <span class="exp-date">2021 – 2022</span>
+              <span class="exp-date">2023</span>
             </div>
             <ul class="exp-bullets">
               <li>Assisted in migrating on-premises workloads to AWS, handling S3, EC2, and RDS configurations</li>

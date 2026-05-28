@@ -167,7 +167,7 @@ function startCounters() {
   const rect = hero.getBoundingClientRect();
   if (rect.top < window.innerHeight * 0.9) {
     countersStarted = true;
-    animateCounter($('stat-exp'),      3);
+    animateCounter($('stat-exp'),      2, '+');
     animateCounter($('stat-projects'), 15, '+');
     animateCounter($('stat-certs'),    5);
     animateCounter($('stat-uptime'),   99, '%');
