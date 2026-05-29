@@ -3,206 +3,397 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ansible YAML Generator with Config Editor</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col lg:flex-row items-center justify-center p-6">
-
-
-    <!-- LEFT: Fixed Profile Card -->
-  <div class="w-full lg:w-80 bg-gray-50 p-6 shadow-inner lg:shadow-none lg:fixed lg:left-0 lg:top-0 lg:h-screen overflow-y-auto z-10 border-r border-gray-200">
-    <div class="text-center">
-      <h3 class="text-xl font-bold mb-4 text-indigo-600">Ansible Generator</h3>
-      <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-md border border-gray-300 object-cover" />
-      <h2 class="text-xl font-bold text-gray-900">Talari Pradeep</h2>
-      <p class="text-sm text-indigo-500 font-semibold mb-2">talaripradeep</p>
-      <p class="text-xs text-gray-600 mb-6">Cloud & DevOps Engineer specializing in AWS, Kubernetes, and infrastructure automation. Based in India.</p>
-
-      <ul class="text-left text-sm space-y-3 text-gray-700">
-        <li><strong>Status:</strong> <span class="text-green-600 font-semibold">Available for Work</span></li>
-        <li><strong>Location:</strong> India · Remote</li>
-        <li><strong>Email:</strong> <a href="mailto:talaripradeep45@gmail.com" class="text-blue-600 hover:underline">talaripradeep45@gmail.com</a></li>
-        <li><strong>Website:</strong> <a href="../../index.html" class="text-blue-600 hover:underline">talaripradeep.info</a></li>
-        <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/pradeep-talari" class="text-blue-600 hover:underline" target="_blank">pradeep-talari</a></li>
-        <li><strong>GitHub:</strong> <a href="https://github.com/Pradeeptalari14" class="text-blue-600 hover:underline" target="_blank">@Pradeeptalari14</a></li>
-      </ul>
-    </div>
-  </div>v>
-
-<div class="flex-0 p-1 overflow-y-auto lg:ml-80"></div>
-  <div class="max-w-4xl w-full bg-white rounded-xl shadow-md p-6">
-
-<div id="latestUpdate" class="mb-4 w-full max-w-full text-sm text-blue-800 bg-blue-100 p-3 rounded hidden">
-  <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full">
-    <img src="img/7.gif" alt="update" class="w-10 h-10 sm:w-7 sm:h-7 flex-shrink-0" />
-<span id="updateMessage" class="text-sm sm:text-base font-medium break-words whitespace-pre-wrap w-full">
-  <svg class="animate-spin inline-block w-5 h-5 text-blue-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-  </svg>
-  Fetching update...
-</span>
-  </div>
-</div>
-
-
-
-    <h1 class="text-2xl font-bold mb-6 text-center"> [ Ansible YAML Generator ]  </h1>
-    
-<span class="space-x-4">
-  <a href="../index.html" class="text-blue-600 underline font-semibold">← Tools Dashboard</a>
-  <a href="../../index.html#home" class="text-blue-600 underline">Home Portfolio</a>
-</span>
-
-
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      
-
-
-
-      <div>
-        <label for="os" class="font-semibold">Select OS:</label>
-        <select id="os" class="w-full mt-1 p-2 border rounded">
-          <option value="ubuntu">Ubuntu</option>
-          <option value="redhat">RedHat</option>
-          <option value="amazon">Amazon Linux</option>
-          <option value="alpine">Alpine</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="app" class="font-semibold">Select Application:</label>
-        <select id="app" class="w-full mt-1 p-2 border rounded">
-          <option value="nginx">Nginx</option>
-          <option value="httpd">HTTPD</option>
-          <option value="apache2">Apache2</option>
-          <option value="mysql">MySQL</option>
-          <option value="mariadb">MariaDB</option>
-          <option value="maven">Maven</option>
-          <option value="openjdk11">OpenJDK 11</option>
-          <option value="openjdk17">OpenJDK 17</option>
-          <option value="openjdk21">OpenJDK 21</option>
-          <option value="mongodb">MongoDB</option>
-          <option value="nodejs">Node.js</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <p class="font-semibold mb-1">Actions:</p>
-      <label class="inline-flex items-center mr-4">
-        <input type="checkbox" value="sys-update" class="action mr-2" /> System update
-      </label>
-      <label class="inline-flex items-center mr-4">
-        <input type="checkbox" value="install" class="action mr-2" /> Install
-      </label>
-      <label class="inline-flex items-center">
-        <input type="checkbox" value="reload" class="action mr-2" /> Reload
-      </label>
-      <label class="inline-flex items-center">
-        <input type="checkbox" value="remove" class="action mr-2" /> Remove
-      </label>
-    </div>
-
-    <div class="mt-4">
-      <p class="font-semibold mb-1">Optional Features:</p>
-      <label class="inline-flex items-center mr-4">
-        <input type="checkbox" id="configCheckbox" value="config" class="feature mr-2" /> Config
-      </label>
-      <label class="inline-flex items-center mr-4">
-        <input type="checkbox" id="createUser" value="user" class="feature mr-2" /> User Create
-      </label>
-
-
-     <div class="flex flex-col gap-1 mb-2">
-  <label class="inline-flex items-center">
-    <input type="checkbox" id="copyContentCheckbox" value="cp-content" class="feature mr-2" />
-    <span>Copy Content</span>
-  </label>
-
-  <select id="copyContentPathSelect" class="p-2 border rounded hidden w-full">
-    <input
-  type="text"
-  id="customCopyPath"
-  class="p-2 border rounded w-full mt-2 hidden"
-  placeholder="Enter custom destination path (e.g. /opt/myapp/index.html)"
-/>
-
-    <!-- Options will be added dynamically -->
-  </select>
+  <title>Ansible Playbook Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate high-end corporate Ansible playbooks and configs dynamically with an interactive control studio designed by Talari Pradeep." />
   
-</div>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* ── Design Tokens & Style Overwrites ── */
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --accent-green:   #059669;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #ffffff;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
 
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
 
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
 
-      <label class="inline-flex items-center mr-4">
-        <input type="checkbox" value="ssl" class="feature mr-2" /> SSL
-      </label>
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
 
-      <label class="inline-flex items-center">
-        <input type="checkbox" value="enableFirewall" class="feature mr-2" /> Firewall
-      </label>
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
 
-      <div id="firewallOptions" class="mt-2 ml-6 hidden">
-        <label class="block font-medium mb-1">Firewall Tool:</label>
-        <select id="firewallTool" class="w-full p-2 border rounded mb-2">
-          <option value="ufw">UFW (Ubuntu)</option>
-          <option value="firewalld">Firewalld (RedHat/CentOS)</option>
-          <option value="iptables">iptables (Alpine/Manual)</option>
-        </select>
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
 
- <label class="block font-medium mb-1">Allow Ports:</label>
-        <div class="grid grid-cols-2 gap-2 text-sm">
-          <label><input type="checkbox" value="80" class="fw-port mr-1"> HTTP (80)</label>
-          <label><input type="checkbox" value="443" class="fw-port mr-1"> HTTPS (443)</label>
-          <label><input type="checkbox" value="3306" class="fw-port mr-1"> MySQL (3306)</label>
-          <label><input type="checkbox" value="27017" class="fw-port mr-1"> MongoDB (27017)</label>
-          <label><input type="checkbox" value="8080" class="fw-port mr-1"> Tomcat (8080)</label>
-          <label><input type="checkbox" value="22" class="fw-port mr-1"> SSH (22)</label>
-        </div>
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.25);
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-title-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .ide-viewport {
+      background-color: #0f172a !important; /* Dark slate */
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.86rem !important;
+      line-height: 1.62 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 600px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <div class="flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../index.html" class="hover:text-indigo-600 transition">← Back to Tools</a>
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">Home Portfolio</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN CONTAINER ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-12">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Ansible Engine</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Ansible Playbook <span class="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-xl">Configure, design, and compile modular production-ready Ansible playbooks and inventories dynamically.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-</div>
+      <!-- LEFT: Controller Panel (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        
+        <!-- OS and Application Selector Card -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><span class="text-indigo-500">⚙️</span> Core Settings</h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="os" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Target OS</label>
+              <select id="os" class="form-select w-full p-2.5 border text-sm">
+                <option value="ubuntu">Ubuntu</option>
+                <option value="redhat">RedHat</option>
+                <option value="amazon">Amazon Linux</option>
+                <option value="alpine">Alpine</option>
+              </select>
+            </div>
 
-    <!-- Config Editor textarea -->
-    <div id="configEditorContainer" class="mt-4 hidden">
-      <label for="configEditor" class="font-semibold">Edit Configuration Template:</label>
-      <textarea
-        id="configEditor"
-        rows="12"
-        class="w-full mt-2 p-2 border rounded font-mono text-sm"
-      ></textarea>
+            <div>
+              <label for="app" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Application</label>
+              <select id="app" class="form-select w-full p-2.5 border text-sm">
+                <option value="nginx">Nginx</option>
+                <option value="httpd">HTTPD</option>
+                <option value="apache2">Apache2</option>
+                <option value="mysql">MySQL</option>
+                <option value="mariadb">MariaDB</option>
+                <option value="maven">Maven</option>
+                <option value="openjdk11">OpenJDK 11</option>
+                <option value="openjdk17">OpenJDK 17</option>
+                <option value="openjdk21">OpenJDK 21</option>
+                <option value="mongodb">MongoDB</option>
+                <option value="nodejs">Node.js</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions Checkbox Card -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><span class="text-indigo-500">⚡</span> Execution Actions</h3>
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" value="sys-update" class="action custom-checkbox" />
+              <span class="font-medium text-gray-700">System Update</span>
+            </label>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" value="install" class="action custom-checkbox" />
+              <span class="font-medium text-gray-700">Install App</span>
+            </label>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" value="reload" class="action custom-checkbox" />
+              <span class="font-medium text-gray-700">Reload Service</span>
+            </label>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" value="remove" class="action custom-checkbox" />
+              <span class="font-medium text-gray-700">Uninstall App</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional Features Checkbox Card -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><span class="text-indigo-500">🛠️</span> Advanced Configuration</h3>
+          
+          <div class="flex flex-col gap-4">
+            
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" id="configCheckbox" value="config" class="feature custom-checkbox" />
+                <span class="font-medium text-gray-700">Config Template</span>
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" id="createUser" value="user" class="feature custom-checkbox" />
+                <span class="font-medium text-gray-700">Create System User</span>
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" value="ssl" class="feature custom-checkbox" />
+                <span class="font-medium text-gray-700">Setup SSL</span>
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" id="firewallCheckbox" value="enableFirewall" class="feature custom-checkbox" />
+                <span class="font-medium text-gray-700">Enable Firewall</span>
+              </label>
+            </div>
+
+            <!-- Copy Content Dropdown/Input Section -->
+            <div class="border-t border-gray-100 pt-3">
+              <label class="flex items-center gap-2.5 cursor-pointer text-sm mb-2">
+                <input type="checkbox" id="copyContentCheckbox" value="cp-content" class="feature custom-checkbox" />
+                <span class="font-medium text-gray-700">Copy Site Content</span>
+              </label>
+              
+              <div class="flex flex-col gap-2 mt-2">
+                <select id="copyContentPathSelect" class="form-select w-full p-2.5 text-xs hidden">
+                  <!-- Injected dynamically -->
+                </select>
+                <input type="text" id="customCopyPath" class="form-input w-full p-2.5 text-xs mt-1 hidden" placeholder="Enter custom path (e.g. /opt/myapp/index.html)" />
+              </div>
+            </div>
+
+            <!-- Dynamic Firewall Box -->
+            <div id="firewallOptions" class="hidden border-t border-gray-100 pt-3 flex flex-col gap-3">
+              <div>
+                <label for="firewallTool" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Firewall Utility</label>
+                <select id="firewallTool" class="form-select w-full p-2 text-xs">
+                  <option value="ufw">UFW (Ubuntu)</option>
+                  <option value="firewalld">Firewalld (RedHat)</option>
+                  <option value="iptables">iptables (Alpine/Manual)</option>
+                </select>
+              </div>
+              <div>
+                <span class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Allow Service Ports</span>
+                <div class="grid grid-cols-2 gap-2 text-xs font-medium text-gray-700">
+                  <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" value="80" class="fw-port custom-checkbox" /> HTTP (80)</label>
+                  <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" value="443" class="fw-port custom-checkbox" /> HTTPS (443)</label>
+                  <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" value="3306" class="fw-port custom-checkbox" /> MySQL (3306)</label>
+                  <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" value="27017" class="fw-port custom-checkbox" /> MongoDB (27017)</label>
+                  <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" value="8080" class="fw-port custom-checkbox" /> Tomcat (8080)</label>
+                  <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" value="22" class="fw-port custom-checkbox" /> SSH (22)</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Config Editor Box -->
+            <div id="configEditorContainer" class="hidden border-t border-gray-100 pt-3">
+              <label for="configEditor" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Edit Configuration Template</label>
+              <textarea id="configEditor" rows="8" class="form-textarea w-full p-3 font-mono text-xs" style="line-height: 1.5;"></textarea>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Code Viewport & Action Panel (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- IDE Emulator -->
+        <div class="ide-container">
+          <div class="ide-header">
+            <div class="ide-dots">
+              <span class="ide-dot ide-dot-red"></span>
+              <span class="ide-dot ide-dot-yellow"></span>
+              <span class="ide-dot ide-dot-green"></span>
+            </div>
+            <span class="ide-title-text" id="terminalFileName">playbook.yml</span>
+            <span style="width: 42px;"></span> <!-- Spacer for alignment -->
+          </div>
+          
+          <!-- Viewport code output -->
+          <pre id="output" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Trigger Controls Card -->
+        <div class="studio-card">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            
+            <div class="flex flex-wrap gap-2.5">
+              <button onclick="generateYAML()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-lg transition shadow-md shadow-indigo-100">
+                ⚡ Compile YAML
+              </button>
+              <button onclick="copyYAML()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition border border-slate-200">
+                📋 Copy
+              </button>
+              <button onclick="downloadYAML()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-lg transition shadow-md shadow-emerald-100">
+                ⬇️ Download
+              </button>
+              <button onclick="clearYAML()" class="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium text-sm rounded-lg transition">
+                🗑️ Clear
+              </button>
+            </div>
+
+            <div class="flex items-center gap-2 font-semibold">
+              <label for="downloadName" class="text-xs text-gray-500 uppercase tracking-wider">File Name</label>
+              <input id="downloadName" type="text" class="form-input p-2 text-xs font-semibold" style="width: 130px;" value="playbook" />
+              <span class="text-xs text-gray-400 font-mono">.yml</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="mt-6 flex gap-4">
-      <button onclick="generateYAML()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        Generate YAML
-      </button>
-      <button onclick="copyYAML()" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-  Copy YAML
-</button>
+  </main>
 
-      <button onclick="downloadYAML()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-        Download YAML
-      </button>
-      <button onclick="clearYAML()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-  Clear Output
-</button>
-
+  <!-- ══ FOOTER ══ -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info · All rights reserved.</p>
     </div>
-
-    <div class="mt-6">
-      <label class="font-semibold">Generated YAML:</label>
-      <pre id="output" class="bg-gray-200 p-4 rounded whitespace-pre-wrap mt-2"></pre>
-    </div>
-  </div>
- 
-  </div>
+  </footer>
 
   <script>
-    // Default config templates for apps
+    // Utility functions
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    // Default configuration templates
     const defaultConfigs = {
       nginx: `
 user www-data;
@@ -254,7 +445,6 @@ log-error=/var/log/mariadb/error.log
 
       mongodb: `
 # mongod.conf
-
 storage:
   dbPath: /var/lib/mongodb
   journal:
@@ -269,7 +459,7 @@ security:
 `.trim(),
 
       nodejs: `
-# Example ecosystem.config.js for PM2
+// PM2 ecosystem config
 module.exports = {
   apps : [{
     name: "app",
@@ -281,14 +471,13 @@ module.exports = {
   }]
 };
 `.trim(),
-httpd: `
+
+      httpd: `
 ServerRoot "/etc/httpd"
 Listen 80
-
 Include conf.modules.d/*.conf
 User apache
 Group apache
-
 DocumentRoot "/var/www/html"
 <Directory "/var/www">
     AllowOverride None
@@ -296,393 +485,421 @@ DocumentRoot "/var/www/html"
 </Directory>
 `.trim(),
 
-  apache2: `
+      apache2: `
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
-
     ErrorLog \${APACHE_LOG_DIR}/error.log
     CustomLog \${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 `.trim(),
 
-  maven: `
+      maven: `
 <settings>
   <localRepository>/path/to/local/repo</localRepository>
   <interactiveMode>true</interactiveMode>
 </settings>
 `.trim(),
 
-  openjdk11: `
-# Java 11 environment configuration
+      openjdk11: `
+# Java 11 environment
 JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 PATH=$JAVA_HOME/bin:$PATH
-export JAVA_HOME
-export PATH
+export JAVA_HOME export PATH
 `.trim(),
 
-  openjdk17: `
-# Java 17 environment configuration
+      openjdk17: `
+# Java 17 environment
 JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 PATH=$JAVA_HOME/bin:$PATH
-export JAVA_HOME
-export PATH
+export JAVA_HOME export PATH
 `.trim(),
 
-  openjdk21: `
-# Java 21 environment configuration
+      openjdk21: `
+# Java 21 environment
 JAVA_HOME=/usr/lib/jvm/java-21-openjdk
 PATH=$JAVA_HOME/bin:$PATH
-export JAVA_HOME
-export PATH
-`.trim(),
-};
+export JAVA_HOME export PATH
+`.trim()
+    };
 
-    
+    // Paths mapping
+    const appToPaths = {
+      nginx: ["/var/www/html/index.html", "/etc/nginx/sites-available/default"],
+      httpd: ["/var/www/html/index.html", "/etc/httpd/conf/httpd.conf"],
+      apache2: ["/var/www/html/index.html", "/etc/apache2/sites-available/000-default.conf"],
+      mariadb: ["/etc/mysql/my.cnf", "/etc/mariadb/mariadb.conf.d/"],
+      maven: ["/etc/maven/settings.xml", "/home/user/.m2/settings.xml"],
+      openjdk11: ["/etc/environment", "/usr/lib/jvm/java-11-openjdk"],
+      openjdk17: ["/etc/environment", "/usr/lib/jvm/java-17-openjdk"],
+      openjdk21: ["/etc/environment", "/usr/lib/jvm/java-21-openjdk"],
+      mongodb: ["/etc/mongod.conf", "/var/lib/mongodb/index.html"]
+    };
 
-    // Show/hide config editor and load template when checkbox toggled
-    document.getElementById("configCheckbox").addEventListener("change", function () {
-      const container = document.getElementById("configEditorContainer");
-      const editor = document.getElementById("configEditor");
-      const app = document.getElementById("app").value;
+    // Interactive event listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // Config template checkbox toggle
+      $('configCheckbox').addEventListener('change', function() {
+        const container = $('configEditorContainer');
+        const editor = $('configEditor');
+        const app = $('app').value;
 
-      if (this.checked) {
-        container.classList.remove("hidden");
-        editor.value = defaultConfigs[app] || "# No template available for this app";
-      } else {
-        container.classList.add("hidden");
-        editor.value = "";
-      }
+        if (this.checked) {
+          container.classList.remove('hidden');
+          editor.value = defaultConfigs[app] || "# Custom configuration template";
+        } else {
+          container.classList.add('hidden');
+          editor.value = "";
+        }
+        generateYAML();
+      });
+
+      // App dropdown changes template
+      $('app').addEventListener('change', function() {
+        const checkbox = $('configCheckbox');
+        const editor = $('configEditor');
+        if (checkbox.checked) {
+          editor.value = defaultConfigs[this.value] || "# Custom configuration template";
+        }
+        if ($('copyContentCheckbox').checked) {
+          updateCopyPathDropdown(this.value);
+        }
+        generateYAML();
+      });
+
+      // Firewall toggle
+      $('firewallCheckbox').addEventListener('change', function() {
+        const options = $('firewallOptions');
+        if (this.checked) {
+          options.classList.remove('hidden');
+        } else {
+          options.classList.add('hidden');
+        }
+        generateYAML();
+      });
+
+      // Copy content path toggle
+      $('copyContentCheckbox').addEventListener('change', function() {
+        const select = $('copyContentPathSelect');
+        const customInput = $('customCopyPath');
+        if (this.checked) {
+          select.classList.remove('hidden');
+          updateCopyPathDropdown($('app').value);
+        } else {
+          select.classList.add('hidden');
+          customInput.classList.add('hidden');
+        }
+        generateYAML();
+      });
+
+      // Copy custom selector
+      $('copyContentPathSelect').addEventListener('change', function() {
+        const custom = $('customCopyPath');
+        if (this.value === 'custom') {
+          custom.classList.remove('hidden');
+        } else {
+          custom.classList.add('hidden');
+        }
+        generateYAML();
+      });
+
+      // Bind input changes to auto-generate
+      $$('input, select, textarea').forEach(el => {
+        el.addEventListener('change', generateYAML);
+      });
+
+      // Initial compilation
+      generateYAML();
     });
 
-    // Update config template when app changes and config checkbox is checked
-    document.getElementById("app").addEventListener("change", function () {
-      const configCheckbox = document.getElementById("configCheckbox");
-      const editor = document.getElementById("configEditor");
-      const app = this.value;
+    // Populate copy path dropdown
+    function updateCopyPathDropdown(app) {
+      const select = $('copyContentPathSelect');
+      const customInput = $('customCopyPath');
+      select.innerHTML = "";
+      customInput.classList.add("hidden");
 
-      if (configCheckbox.checked) {
-        editor.value = defaultConfigs[app] || "# No template available for this app";
-      }
-    });
+      const paths = appToPaths[app] || ["/var/www/html/index.html"];
+      paths.forEach(path => {
+        const option = document.createElement("option");
+        option.value = path;
+        option.textContent = path;
+        select.appendChild(option);
+      });
 
+      const customOption = document.createElement("option");
+      customOption.value = "custom";
+      customOption.textContent = "🔧 Enter custom path";
+      select.appendChild(customOption);
+    }
+
+    // Main YAML compiler engine
     function generateYAML() {
-      const os = document.getElementById("os").value;
-      const app = document.getElementById("app").value;
-      const actions = [...document.querySelectorAll(".action:checked")].map(el => el.value);
-      const features = [...document.querySelectorAll(".feature:checked")].map(el => el.value);
-      const configContent = document.getElementById("configEditor").value;
+      const os = $('os').value;
+      const app = $('app').value;
+      const actions = [...$$('.action:checked')].map(el => el.value);
+      const features = [...$$('.feature:checked')].map(el => el.value);
+      const configContent = $('configEditor').value;
 
-      let yaml = `- name: Manage ${app} on ${os}\n  hosts: all\n  become: true\n  tasks:\n`;
+      let yaml = `---
+# Compiled via Talari Pradeep's Ansible Studio
+- name: Automate and provision ${app} on ${os}
+  hosts: all
+  become: true
+  tasks:
+`;
 
       if (actions.includes("sys-update")) {
-  yaml += getUpdateTask(os);
-}
+        yaml += getUpdateTask(os);
+      }
 
-if (actions.includes("install")) {
-  yaml += getInstallTask(os, app);
-}
+      if (actions.includes("install")) {
+        yaml += getInstallTask(os, app);
+      }
 
-if (actions.includes("remove")) {
-  yaml += getRemoveTask(os, app);
-}
- if (actions.includes("reload")) {
-      yaml += getReloadTask(app);
+      if (actions.includes("remove")) {
+        yaml += getRemoveTask(os, app);
+      }
+
+      if (actions.includes("reload")) {
+        yaml += `  - name: Reload ${app} service configuration
+    service:
+      name: ${app}
+      state: reloaded
+
+`;
+      }
+
+      if (features.includes("user")) {
+        const users = {
+          nginx: { name: 'www-data', home: '/var/www', group: 'www-data' },
+          httpd: { name: 'apache', home: '/var/www', group: 'apache' },
+          apache2: { name: 'www-data', home: '/var/www', group: 'www-data' },
+          mysql: { name: 'mysql', home: '/var/lib/mysql', group: 'mysql' },
+          mariadb: { name: 'mariadb', home: '/var/lib/mariadb', group: 'mariadb' },
+          mongodb: { name: 'mongodb', home: '/var/lib/mongodb', group: 'mongodb' },
+          nodejs: { name: 'nodeapp', home: '/home/nodeapp', group: 'nodeapp' }
+        };
+        const u = users[app] || { name: 'webadmin', home: '/home/webadmin', group: 'webadmin' };
+        yaml += `  - name: Ensure secure system user exists for ${app}
+    user:
+      name: ${u.name}
+      group: ${u.group || u.name}
+      home: ${u.home}
+      state: present
+      create_home: yes
+
+`;
+      }
+
+      if (features.includes("config") && configContent) {
+        yaml += `  - name: Configure ${app} template parameters
+    copy:
+      content: |
+`;
+        const indented = configContent.split("\n").map(line => "        " + line).join("\n");
+        yaml += indented + "\n";
+        yaml += `      dest: /etc/${app}/${app}.conf
+      owner: root
+      group: root
+      mode: '0644'
+
+`;
+      }
+
+      if (features.includes("cp-content")) {
+        let path = $('copyContentPathSelect').value;
+        if (path === "custom") {
+          path = $('customCopyPath').value.trim() || "/var/www/html/index.html";
+        }
+        yaml += `  - name: Copy deployment assets to environment
+    copy:
+      src: files/index.html
+      dest: ${path}
+      owner: root
+      group: root
+      mode: '0644'
+
+`;
+      }
+
+      if (features.includes("ssl")) {
+        yaml += `  - name: Setup SSL certificates for ${app}
+    copy:
+      src: files/ssl-cert.crt
+      dest: /etc/ssl/certs/${app}.crt
+
+`;
+      }
+
+      if (features.includes("enableFirewall")) {
+        const fwTool = $('firewallTool').value;
+        const ports = [...$$('.fw-port:checked')].map(p => p.value);
+
+        ports.forEach(port => {
+          if (fwTool === "ufw") {
+            yaml += `  - name: Allow secure port ${port} via UFW
+    ufw:
+      rule: allow
+      port: ${port}
+
+`;
+          } else if (fwTool === "firewalld") {
+            yaml += `  - name: Allow secure port ${port} via Firewalld
+    firewalld:
+      port: ${port}/tcp
+      permanent: true
+      state: enabled
+      immediate: yes
+
+`;
+          } else if (fwTool === "iptables") {
+            yaml += `  - name: Allow secure port ${port} via iptables rules
+    command: iptables -A INPUT -p tcp --dport ${port} -j ACCEPT
+
+`;
+          }
+        });
+      }
+
+      $('output').textContent = yaml;
     }
-   if (features.includes("user")) {
-  yaml += getUserCreationTask(app);
-}
 
-
-
-
-      features.forEach(feature => {
-        if (feature === "config") {
-          yaml += `  - name: Configure ${app}\n    copy:\n      content: |\n`;
-          // Indent config lines with 6 spaces (2 for YAML indent + 4 for content block)
-          const indentedConfig = configContent.split("\n").map(line => "      " + line).join("\n");
-          yaml += indentedConfig + "\n\n";
-          yaml += `    dest: /etc/${app}/${app}.conf\n    owner: root\n    group: root\n    mode: '0644'\n\n`;
-        } else if (feature === "cp-content") {
-let path = document.getElementById("copyContentPathSelect")?.value;
-if (path === "custom") {
-  const customPath = document.getElementById("customCopyPath")?.value.trim();
-  path = customPath || "/var/www/html/index.html"; // fallback if empty
-}
-  yaml += `  - name: Copy index.html to ${path}\n    copy:\n      src: files/index.html\n      dest: ${path}\n      owner: root\n      group: root\n      mode: '0644'\n\n`;
-} else {
-  yaml += getFeatureTask(app, feature);
-}
-
-      });
-
-      document.getElementById("output").textContent = yaml;
-    }
-
+    // Helper functions for package structures
     function getUpdateTask(os) {
-  if (["ubuntu", "debian"].includes(os)) {
-    return `  - name: Update apt cache\n    apt:\n      update_cache: yes\n\n`;
-  } else if (os === "redhat") {
-    return `  - name: Update DNF packages\n    dnf:\n      name: "*"\n      state: latest\n\n`;
-  } else if (os === "amazon") {
-    return `  - name: Update YUM packages\n    yum:\n      name: "*"\n      state: latest\n\n`;
-  } else if (os === "alpine") {
-    return `  - name: Update APK packages\n    apk:\n      update_cache: yes\n\n`;
-  }
-  return "";
-}
+      if (["ubuntu", "debian"].includes(os)) {
+        return `  - name: Update APT index and cache resources
+    apt:
+      update_cache: yes
 
+`;
+      } else if (os === "redhat") {
+        return `  - name: Clean and update DNF repo keys
+    dnf:
+      name: "*"
+      state: latest
+
+`;
+      } else if (os === "amazon") {
+        return `  - name: Update YUM core environmental systems
+    yum:
+      name: "*"
+      state: latest
+
+`;
+      } else if (os === "alpine") {
+        return `  - name: Refresh APK local index files
+    apk:
+      update_cache: yes
+
+`;
+      }
+      return "";
+    }
 
     function getInstallTask(os, app) {
-  if (os === "ubuntu" || os === "debian") {
-    return `  - name: Install ${app}\n    apt:\n      name: ${app}\n      state: present\n      update_cache: yes\n\n`;
-  } else if (os === "redhat") {
-    return `  - name: Install ${app}\n    dnf:\n      name: ${app}\n      state: present\n\n`;
-  } else if (os === "amazon") {
-    return `  - name: Install ${app}\n    yum:\n      name: ${app}\n      state: present\n\n`;
-  } else if (os === "alpine") {
-    return `  - name: Install ${app}\n    apk:\n      name: ${app}\n      state: present\n\n`;
-  }
-  return "";
-}
+      if (["ubuntu", "debian"].includes(os)) {
+        return `  - name: Install latest release of ${app} via APT
+    apt:
+      name: ${app}
+      state: present
+      update_cache: yes
 
+`;
+      } else if (os === "redhat") {
+        return `  - name: Install latest release of ${app} via DNF
+    dnf:
+      name: ${app}
+      state: present
+
+`;
+      } else if (os === "amazon") {
+        return `  - name: Install latest release of ${app} via YUM
+    yum:
+      name: ${app}
+      state: present
+
+`;
+      } else if (os === "alpine") {
+        return `  - name: Install latest release of ${app} via APK
+    apk:
+      name: ${app}
+      state: present
+
+`;
+      }
+      return "";
+    }
 
     function getRemoveTask(os, app) {
-  if (os === "ubuntu" || os === "debian") {
-    return `  - name: Remove ${app}\n    apt:\n      name: ${app}\n      state: absent\n      purge: yes\n\n`;
-  } else if (os === "redhat") {
-    return `  - name: Remove ${app}\n    dnf:\n      name: ${app}\n      state: absent\n\n`;
-  } else if (os === "amazon") {
-    return `  - name: Remove ${app}\n    yum:\n      name: ${app}\n      state: absent\n\n`;
-  } else if (os === "alpine") {
-    return `  - name: Remove ${app}\n    apk:\n      name: ${app}\n      state: absent\n\n`;
-  }
-  return "";
-}
+      if (["ubuntu", "debian"].includes(os)) {
+        return `  - name: Purge and remove ${app} deployment files
+    apt:
+      name: ${app}
+      state: absent
+      purge: yes
 
-function getReloadTask(app) {
-    return `  - name: Reload ${app} service\n    service:\n      name: ${app}\n      state: reloaded\n\n`;
-  }
-    function getFeatureTask(app, feature) {
-  if (feature === "enableFirewall") {
+`;
+      } else if (os === "redhat") {
+        return `  - name: Uninstall and clean ${app} packages via DNF
+    dnf:
+      name: ${app}
+      state: absent
 
-    const fwTool = document.getElementById("firewallTool")?.value || "ufw";
-    const ports = [...document.querySelectorAll(".fw-port:checked")].map(p => p.value);
+`;
+      } else if (os === "amazon") {
+        return `  - name: Uninstall and clean ${app} packages via YUM
+    yum:
+      name: ${app}
+      state: absent
 
-    let rules = "";
+`;
+      } else if (os === "alpine") {
+        return `  - name: Uninstall and purge ${app} package files
+    apk:
+      name: ${app}
+      state: absent
 
-    ports.forEach(port => {
-      if (fwTool === "ufw") {
-        rules += `  - name: Allow port ${port} with UFW\n    ufw:\n      rule: allow\n      port: ${port}\n\n`;
-      } else if (fwTool === "firewalld") {
-        rules += `  - name: Allow port ${port} with firewalld\n    firewalld:\n      port: ${port}/tcp\n      permanent: true\n      state: enabled\n      immediate: yes\n\n`;
-      } else if (fwTool === "iptables") {
-        rules += `  - name: Allow port ${port} with iptables\n    command: iptables -A INPUT -p tcp --dport ${port} -j ACCEPT\n\n`;
+`;
       }
-    });
+      return "";
+    }
 
-    return rules;
-  }
+    // Trigger buttons
+    function downloadYAML() {
+      const yaml = $('output').textContent;
+      const name = $('downloadName').value.trim() || 'playbook';
+      const blob = new Blob([yaml], { type: "text/yaml" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${name}.yml`;
+      a.click();
+      showToast("⬇️ Playbook download started!");
+    }
 
-  if (feature === "ssl") {
-    return `  - name: Setup SSL for ${app}\n    copy:\n      src: files/ssl-cert.crt\n      dest: /etc/ssl/certs/${app}.crt\n\n`;
-  }
-
-  return "";
-}
-
-function getUserCreationTask(app) {
-  const users = {
-    nginx: { name: 'www-data', home: '/var/www', group: 'www-data' },
-    httpd: { name: 'apache', home: '/var/www', group: 'apache' },
-    apache2: { name: 'www-data', home: '/var/www', group: 'www-data' },
-    mysql: { name: 'mysql', home: '/var/lib/mysql', group: 'mysql' },
-    mariadb: { name: 'mariadb', home: '/var/lib/mariadb', group: 'mariadb' },
-    mongodb: { name: 'mongodb', home: '/var/lib/mongodb', group: 'mongodb' },
-    nodejs: { name: 'nodeapp', home: '/home/nodeapp', group: 'nodeapp' },
-    maven: { name: 'developer', home: '/home/developer', group: 'developer' },
-    openjdk11: { name: 'developer', home: '/home/developer', group: 'developer' },
-    openjdk17: { name: 'developer', home: '/home/developer', group: 'developer' },
-    openjdk21: { name: 'developer', home: '/home/developer', group: 'developer' }
-  };
-
-  const u = users[app] || { name: 'webadmin', home: '/home/webadmin', group: 'webadmin' };
-
-  return `  - name: Create ${u.name} user\n    user:\n      name: ${u.name}\n      group: ${u.group}\n      home: ${u.home}\n      state: present\n      create_home: yes\n\n`;
-}
-
-     document.addEventListener("DOMContentLoaded", function () {
-    const firewallCheckbox = document.querySelector('input[type="checkbox"][value="enableFirewall"]');
-    const firewallOptions = document.getElementById("firewallOptions");
-
-    if (firewallCheckbox && firewallOptions) {
-      firewallCheckbox.addEventListener("change", function () {
-        if (this.checked) {
-          firewallOptions.classList.remove("hidden");
-        } else {
-          firewallOptions.classList.add("hidden");
-        }
+    function copyYAML() {
+      const output = $('output').textContent;
+      navigator.clipboard.writeText(output).then(() => {
+        showToast("✅ YAML playbook copied!");
       });
     }
-  });
 
-  document.addEventListener("DOMContentLoaded", function () {
-  const copyCheckbox = document.getElementById("copyContentCheckbox");
-  
-});
+    function clearYAML() {
+      $('output').textContent = "";
+      showToast("🗑️ Viewport cleared");
+    }
 
-const appToPaths = {
-  nginx: ["/var/www/html/index.html", "/etc/nginx/sites-available/default"],
-  httpd: ["/var/www/html/index.html", "/etc/httpd/conf/httpd.conf"],
-  apache2: ["/var/www/html/index.html", "/etc/apache2/sites-available/000-default.conf"],
-  mariadb: ["/etc/mysql/my.cnf", "/etc/mariadb/mariadb.conf.d/"],
-  maven: ["/etc/maven/settings.xml", "/home/user/.m2/settings.xml"],
-  openjdk11: ["/etc/environment", "/usr/lib/jvm/java-11-openjdk"],
-  openjdk17: ["/etc/environment", "/usr/lib/jvm/java-17-openjdk"],
-  openjdk21: ["/etc/environment", "/usr/lib/jvm/java-21-openjdk"],
-  mongodb: ["/etc/mongod.conf", "/var/lib/mongodb/index.html"]
-};
-
-function updateCopyPathDropdown(app) {
-  const select = document.getElementById("copyContentPathSelect");
-  const customInput = document.getElementById("customCopyPath");
-  select.innerHTML = "";
-  customInput.classList.add("hidden");
-
-  const paths = appToPaths[app] || ["/var/www/html/index.html"];
-  paths.forEach(path => {
-    const option = document.createElement("option");
-    option.value = path;
-    option.textContent = path;
-    select.appendChild(option);
-  });
-
-  // Add "custom" option
-  const customOption = document.createElement("option");
-  customOption.value = "custom";
-  customOption.textContent = "🔧 Enter custom path";
-  select.appendChild(customOption);
-}
-
-
-// Show/hide and update on checkbox + app change
-document.getElementById("copyContentCheckbox").addEventListener("change", function () {
-  const select = document.getElementById("copyContentPathSelect");
-  select.classList.toggle("hidden", !this.checked);
-  if (this.checked) updateCopyPathDropdown(document.getElementById("app").value);
-});
-
-document.getElementById("app").addEventListener("change", function () {
-  const checkbox = document.getElementById("copyContentCheckbox");
-  if (checkbox.checked) updateCopyPathDropdown(this.value);
-});
-
-document.getElementById("copyContentPathSelect").addEventListener("change", function () {
-  const customInput = document.getElementById("customCopyPath");
-  if (this.value === "custom") {
-    customInput.classList.remove("hidden");
-  } else {
-    customInput.classList.add("hidden");
-  }
-});
-
-   function downloadYAML() {
-  const yaml = document.getElementById("output").textContent;
-  const blob = new Blob([yaml], { type: "text/yaml" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "playbook.yml";
-  a.click();
-
-  alert("Download started!");
-}
-
-
-
-async function fetchLatestUpdate() {
-  try {
-const url = "https://script.google.com/macros/s/AKfycbxZVmJjswUOGZLNm2zR9afxjzUeSHccbW_pSXwmeaPMFVa-oJSteKwJNFWS423h5FSj/exec"; // Your web app URL    const res = await fetch(url);
-    const data = await res.json();
-
-    const values = data;
-document.addEventListener("DOMContentLoaded", () => {
-  fetchLatestUpdate();
-  setInterval(fetchLatestUpdate, 5 * 60 * 1000); // Refresh every 5 minutes
-});
-
-    if (!values || values.length < 2) return;
-
-    const [timestamp, message] = values[values.length - 1]; // Get last row
-const updateBox = document.getElementById("latestUpdate");
-const updateMsg = document.getElementById("updateMessage");
-const dateObj = new Date(timestamp);
-const formatted = dateObj.toLocaleString("en-IN", {
-  dateStyle: "medium",
-  timeStyle: "short"
-});
-updateMsg.innerHTML = `🕒 ${formatted} — Latest Update: ${message}`;
-
-
-updateBox.classList.remove("hidden");
-
-  } catch (err) {
-    console.error("Failed to fetch update:", err);
-  }
-}
-
-function copyYAML() {
-  const output = document.getElementById("output");
-  if (output?.textContent) {
-    navigator.clipboard.writeText(output.textContent).then(() => {
-     showToast("✅ YAML copied!");
-
-    });
-  }
-}
-
-function showToast(message) {
-  const toast = document.createElement("div");
-  toast.textContent = message;
-  toast.className = "fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-md z-50";
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
-
-async function fetchLatestUpdate() {
-  try {
-    const url = "https://script.google.com/macros/s/AKfycbxZVmJjswUOGZLNm2zR9afxjzUeSHccbW_pSXwmeaPMFVa-oJSteKwJNFWS423h5FSj/exec";
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!Array.isArray(data) || data.length < 2) return;
-
-    const [timestamp, message] = data[data.length - 1]; // Last row
-    const updateBox = document.getElementById("latestUpdate");
-    const updateMsg = document.getElementById("updateMessage");
-
-    const dateObj = new Date(timestamp);
-    const formatted = dateObj.toLocaleString("en-IN", {
-      dateStyle: "medium",
-      timeStyle: "short"
-    });
-
-    updateMsg.textContent = `🕒 ${formatted} — Latest Update: ${message}`;
-    updateBox.classList.remove("hidden");
-
-  } catch (err) {
-    console.error("Failed to fetch update:", err);
-  }
-}
-
-
-document.addEventListener("DOMContentLoaded", fetchLatestUpdate);
-function clearYAML() {
-  const output = document.getElementById("output");
-  if (output) {
-    output.textContent = "";
-  }
-}
-
+    function showToast(message) {
+      const toast = document.createElement("div");
+      toast.textContent = message;
+      toast.className = "fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-2.5 rounded-lg shadow-lg z-50 border border-slate-800 transition";
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
   </script>
 </body>
 </html>
