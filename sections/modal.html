@@ -1,0 +1,68 @@
+<!-- Project Modal -->
+  <div class="project-modal" id="projectModal" role="dialog" aria-hidden="true">
+    <div class="pm-overlay" id="modalOverlay"></div>
+    <div class="pm-content">
+      <button class="pm-close" id="closeModal" aria-label="Close details">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="pm-body-grid">
+        <!-- Left Column: Quick Stats -->
+        <div class="pm-sidebar">
+          <div class="pm-icon-wrap" id="modalIcon">📊</div>
+          <h4 class="pm-side-title" id="modalSideTitle">Project Stats</h4>
+          <div class="pm-meta-box">
+            <div class="pm-meta-item">
+              <span class="pm-meta-label">Role</span>
+              <span class="pm-meta-val" id="modalRole">Lead Cloud Architect</span>
+            </div>
+            <div class="pm-meta-item">
+              <span class="pm-meta-label">Duration</span>
+              <span class="pm-meta-val" id="modalDuration">3 Months</span>
+            </div>
+            <div class="pm-meta-item">
+              <span class="pm-meta-label">Scale</span>
+              <span class="pm-meta-val" id="modalScale">Enterprise Mock Sandbox</span>
+            </div>
+          </div>
+          
+          <div class="pm-highlights-container">
+            <h5 class="pm-sub-label">Metrics & Highlights</h5>
+            <div class="pm-highlights-list" id="modalHighlights">
+              <!-- Dynamically populated metrics -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Rich Info -->
+        <div class="pm-main">
+          <h3 class="pm-title" id="modalTitle">AWS DevOps & SRE Control Center</h3>
+          
+          <div class="pm-section">
+            <h4 class="pm-sec-title">Overview & Context</h4>
+            <p class="pm-description" id="modalDescription">Detailed description of the project...</p>
+          </div>
+
+          <div class="pm-section">
+            <h4 class="pm-sec-title">Architectural Solution</h4>
+            <ul class="pm-bullet-list" id="modalArchitecture">
+              <!-- Dynamically populated architecture bullets -->
+            </ul>
+          </div>
+
+          <div class="pm-section">
+            <h4 class="pm-sec-title">Key Achievements & Impact</h4>
+            <ul class="pm-bullet-list pm-achievement-list" id="modalAchievements">
+              <!-- Dynamically populated achievements bullets -->
+            </ul>
+          </div>
+
+          <div class="pm-section pm-tech-section">
+            <h4 class="pm-sec-title">Technologies Used</h4>
+            <div class="pm-tech-tags" id="modalTechTags">
+              <!-- Tech tags -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

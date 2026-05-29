@@ -1,0 +1,68 @@
+<!-- ══ CONTACT ══ -->
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Contact</span>
+        <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
+        <p class="section-subtitle">Open to full-time roles, freelance contracts, and interesting collaborations. Drop me a message!</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-card" id="contact-email-card">
+            <div class="contact-icon-wrap">📧</div>
+            <div>
+              <h4>Email</h4>
+              <a href="mailto:talaripradeep45@gmail.com" id="email-link">talaripradeep45@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-card" id="contact-linkedin-card">
+            <div class="contact-icon-wrap">💼</div>
+            <div>
+              <h4>LinkedIn</h4>
+              <a href="https://linkedin.com/in/pradeep-talari" target="_blank" rel="noopener noreferrer" id="linkedin-contact-link">linkedin.com/in/pradeep-talari</a>
+            </div>
+          </div>
+          <div class="contact-card" id="contact-github-card">
+            <div class="contact-icon-wrap">🐙</div>
+            <div>
+              <h4>GitHub</h4>
+              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" id="github-contact-link">github.com/Pradeeptalari14</a>
+            </div>
+          </div>
+          <div class="contact-card" id="contact-location-card">
+            <div class="contact-icon-wrap">📍</div>
+            <div>
+              <h4>Location</h4>
+              <span>India · Open to Remote</span>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="contactName">Your Name</label>
+            <input type="text" id="contactName" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email Address</label>
+            <input type="email" id="contactEmail" placeholder="john@company.com" required />
+          </div>
+          <div class="form-group">
+            <label for="contactSubject">Subject</label>
+            <input type="text" id="contactSubject" placeholder="Job opportunity / Collaboration / Question" />
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">Message</label>
+            <textarea id="contactMessage" rows="5" placeholder="Tell me about your project, role, or how I can help..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary full-width" id="submit-form-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Message
+          </button>
+          <div class="form-success" id="formSuccess" style="display:none">
+            ✅ Message sent! I'll get back to you within 24 hours.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
