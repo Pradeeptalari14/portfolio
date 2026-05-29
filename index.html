@@ -14,7 +14,7 @@
   <link rel="canonical" href="https://talaripradeep.info" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="Favicon.png?v=3" />
 </head>
@@ -23,16 +23,17 @@
   <!-- ══ NAVBAR ══ -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="#home" class="nav-logo" id="nav-logo-link" style="display: flex; align-items: center;">
-        <img src="Photo.jpeg" alt="Talari Pradeep" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-cyan); display: inline-block; transition: var(--transition);" />
+      <a href="#home" class="nav-logo" id="nav-logo-link">
+        <img src="Photo.jpeg" alt="Talari Pradeep" class="nav-logo-img" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
       </a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#about" class="nav-link" id="nav-about">About</a></li>
-        <li><a href="#skills" class="nav-link" id="nav-skills">Skills</a></li>
-        <li><a href="#experience" class="nav-link" id="nav-experience">Experience</a></li>
-        <li><a href="#projects" class="nav-link" id="nav-projects">Projects</a></li>
-        <li><a href="#certifications" class="nav-link" id="nav-certifications">Certifications</a></li>
-        <li><a href="#contact" class="nav-link" id="nav-contact">Contact</a></li>
+        <li><a href="#about"          class="nav-link" id="nav-about">About</a></li>
+        <li><a href="#skills"         class="nav-link" id="nav-skills">Skills</a></li>
+        <li><a href="#experience"     class="nav-link" id="nav-experience">Experience</a></li>
+        <li><a href="#projects"       class="nav-link" id="nav-projects">Projects</a></li>
+        <li><a href="#certifications" class="nav-link" id="nav-certifications">Certs</a></li>
+        <li><a href="#contact"        class="nav-link" id="nav-contact">Contact</a></li>
       </ul>
       <a href="#contact" class="nav-cta" id="nav-cta-btn">Hire Me</a>
       <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
@@ -43,116 +44,148 @@
 
   <!-- ══ HERO ══ -->
   <section class="hero" id="home">
-    <div class="hero-bg">
-      <div class="hero-particles" id="heroParticles"></div>
-      <div class="hero-grid"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Available for opportunities
-      </div>
-      <h1 class="hero-name">
-        <span class="name-line">Talari</span>
-        <span class="name-line gradient-text">Pradeep</span>
-      </h1>
-      <div class="hero-roles" id="heroRoles">
-        <span class="role-text" id="roleText">DevOps Engineer</span>
-        <span class="role-cursor">|</span>
-      </div>
-      <p class="hero-bio">
-        I architect scalable cloud infrastructure and automate everything in between — from code commit to production deployment. Passionate about reliability, speed, and building systems that engineers love to work with.
-      </p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn-primary" id="hero-view-work">View My Work</a>
-        <a href="#contact" class="btn-outline" id="hero-contact-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Get In Touch
-        </a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-num" data-target="2" id="stat-exp">0</span>
-          <span class="stat-label">Years Exp.</span>
+    <div class="hero-inner container">
+
+      <!-- Left: Text -->
+      <div class="hero-content">
+        <h1 class="hero-name">
+          <span class="name-line">Talari</span>
+          <span class="name-line gradient-text">Pradeep</span>
+        </h1>
+
+        <div class="hero-roles" id="heroRoles">
+          <span class="role-text" id="roleText">DevOps Engineer</span>
+          <span class="role-cursor">|</span>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num" data-target="15" id="stat-projects">0</span>
-          <span class="stat-label">Projects</span>
+
+        <p class="hero-bio">
+          I architect scalable cloud infrastructure and automate everything in between — from code commit to production deployment. Passionate about reliability, speed, and building systems that engineers love to work with.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary" id="hero-view-work">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            View My Work
+          </a>
+          <a href="#contact" class="btn-outline" id="hero-contact-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Get In Touch
+          </a>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num" data-target="5" id="stat-certs">0</span>
-          <span class="stat-label">Certs</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num" data-target="99" id="stat-uptime">0</span>
-          <span class="stat-label">% Uptime</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <div class="term-dots">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num" data-target="2" id="stat-exp">0</span>
+            <span class="stat-label">Years Exp.</span>
           </div>
-          <span class="term-title">pradeep@aws-prod:~</span>
-        </div>
-        <div class="terminal-body" id="terminalBody">
-          <div class="term-line"><span class="prompt">$</span> kubectl get pods -n production</div>
-          <div class="term-line output success">NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;STATUS</div>
-          <div class="term-line output success">api-deployment-7d9f&nbsp;&nbsp;&nbsp;&nbsp;3/3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running</div>
-          <div class="term-line output success">redis-cluster-0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1/1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running</div>
-          <div class="term-line output success">postgres-statefulset-0&nbsp;&nbsp;1/1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running</div>
-          <div class="term-line"><span class="prompt">$</span> terraform apply --auto-approve</div>
-          <div class="term-line output">Plan: 3 to add, 1 to change...</div>
-          <div class="term-line output success">Apply complete! Resources: 3 added.</div>
-          <div class="term-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" data-target="15" id="stat-projects">0</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" data-target="5" id="stat-certs">0</span>
+            <span class="stat-label">Certs</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" data-target="99" id="stat-uptime">0</span>
+            <span class="stat-label">% Uptime</span>
+          </div>
         </div>
       </div>
-      <div class="floating-badges">
-        <div class="float-badge badge-aws">☁️ AWS</div>
-        <div class="float-badge badge-k8s">⚓ K8s</div>
-        <div class="float-badge badge-tf">🔧 Terraform</div>
-        <div class="float-badge badge-docker">🐳 Docker</div>
+
+      <!-- Right: Profile Info Card -->
+      <div class="hero-profile-card">
+
+        <!-- Info rows -->
+        <div class="hpc-rows">
+          <div class="hpc-row">
+            <span class="hpc-row-icon" style="display:flex;align-items:center;">
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: #a100ff; display: block;"><path d="m.66 16.95 13.242-4.926L.66 6.852V0l22.68 9.132v5.682L.66 24Z"/></svg>
+            </span>
+            <div>
+              <span class="hpc-row-label">Company</span>
+              <span class="hpc-row-val">Accenture</span>
+            </div>
+          </div>
+          <div class="hpc-row">
+            <span class="hpc-row-icon">📍</span>
+            <div>
+              <span class="hpc-row-label">Location</span>
+              <span class="hpc-row-val">India · Open to Remote</span>
+            </div>
+          </div>
+          <div class="hpc-row">
+            <span class="hpc-row-icon">💼</span>
+            <div>
+              <span class="hpc-row-label">Experience</span>
+              <span class="hpc-row-val">2+ Years in DevOps & Cloud</span>
+            </div>
+          </div>
+          <div class="hpc-row">
+            <span class="hpc-row-icon">⚡</span>
+            <div>
+              <span class="hpc-row-label">Core Stack</span>
+              <span class="hpc-row-val">AWS · Kubernetes · Terraform · Jenkins</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status badge -->
+        <div class="hpc-status">
+          <span class="hpc-dot"></span>
+          Available for new opportunities
+        </div>
+
+        <!-- Social links -->
+        <div class="hpc-links">
+          <a href="https://linkedin.com/in/pradeep-talari" target="_blank" class="hpc-link" id="hpc-linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/Pradeeptalari14" target="_blank" class="hpc-link" id="hpc-github">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+            GitHub
+          </a>
+          <a href="Talari_Pradeep.pdf" download class="hpc-link" id="hpc-resume">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Resume
+          </a>
+        </div>
+
       </div>
+
     </div>
-    <a href="#about" class="scroll-indicator" id="scroll-down-arrow">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </a>
   </section>
 
   <!-- ══ ABOUT ══ -->
   <section class="section" id="about">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">// About Me</span>
+        <span class="section-tag">About Me</span>
         <h2 class="section-title">The Engineer <span class="gradient-text">Behind the Stack</span></h2>
       </div>
       <div class="about-grid">
         <div class="about-image-wrap">
           <div class="about-image-placeholder">
+            <div class="avatar-ring">
+              <div class="avatar-ring-inner"></div>
+            </div>
             <div class="avatar-glow"></div>
             <div class="avatar-core">
-              <!-- Smart Premium Photo Load: Place your 'Photo.jpeg' in the project directory! -->
               <img src="Photo.jpeg" alt="Talari Pradeep" class="avatar-img" onerror="this.style.display='none'; document.getElementById('avatar-fallback-wrapper').style.display='flex';" />
-              <div class="avatar-fallback" id="avatar-fallback-wrapper">
+              <div class="avatar-fallback" id="avatar-fallback-wrapper" style="display:none;">
                 <svg viewBox="0 0 120 120" fill="none">
                   <circle cx="60" cy="44" r="26" fill="url(#avatarGrad)"/>
                   <path d="M14 106c0-25.4 20.6-46 46-46s46 20.6 46 46" fill="url(#avatarGrad2)" opacity="0.85"/>
                   <defs>
                     <linearGradient id="avatarGrad" x1="0" y1="0" x2="120" y2="120">
-                      <stop stop-color="#6366f1"/>
-                      <stop offset="1" stop-color="#22d3ee"/>
+                      <stop stop-color="#6366f1"/><stop offset="1" stop-color="#22d3ee"/>
                     </linearGradient>
                     <linearGradient id="avatarGrad2" x1="0" y1="0" x2="120" y2="120">
-                      <stop stop-color="#6366f1"/>
-                      <stop offset="1" stop-color="#22d3ee"/>
+                      <stop stop-color="#6366f1"/><stop offset="1" stop-color="#22d3ee"/>
                     </linearGradient>
                   </defs>
                 </svg>
@@ -171,6 +204,7 @@
             </div>
           </div>
         </div>
+
         <div class="about-text">
           <p class="about-lead">
             I'm a <strong>Cloud & DevOps Engineer</strong> with a passion for building robust, scalable infrastructure that powers great products.
@@ -179,8 +213,9 @@
             With hands-on expertise across <strong>AWS, Kubernetes, Docker, and Terraform</strong>, I specialize in designing CI/CD pipelines that cut deployment time, infrastructure automation that saves engineering hours, and observability stacks that catch problems before users do.
           </p>
           <p>
-            Working on the Sutter Health project at Accenture, I focus deeply on reliability, infrastructure security, and incident response. I specialize in helping engineering teams transition from manual server operations to fully automated, version-controlled cloud infrastructure.
+            Working on the Sutter Health project at Accenture, I focus deeply on reliability, infrastructure security, and incident response — helping teams transition from manual operations to fully automated, version-controlled cloud infrastructure.
           </p>
+
           <div class="about-highlights">
             <div class="highlight-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -192,13 +227,14 @@
             </div>
             <div class="highlight-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              Automated OS Patching & Configuration (Ansible)
+              Automated OS Patching via Ansible
             </div>
             <div class="highlight-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              Trivy Container & SonarQube Code Scanning
+              Trivy & SonarQube Security Scanning
             </div>
           </div>
+
           <div class="about-actions">
             <a href="Talari_Pradeep.pdf" class="btn-primary" id="download-resume-btn" download>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -218,7 +254,7 @@
   <section class="section section-alt" id="skills">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">// Tech Stack</span>
+        <span class="section-tag">Tech Stack</span>
         <h2 class="section-title">Tools & <span class="gradient-text">Technologies</span></h2>
       </div>
       <div class="skills-categories">
@@ -232,17 +268,17 @@
             <div class="skill-chip" id="skill-aws">
               <div class="skill-icon aws">☁️</div>
               <span>AWS</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 90%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:90%"></div></div>
             </div>
             <div class="skill-chip" id="skill-gcp">
               <div class="skill-icon gcp">🌐</div>
               <span>GCP</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 65%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:65%"></div></div>
             </div>
             <div class="skill-chip" id="skill-azure">
               <div class="skill-icon azure">🔷</div>
               <span>Azure</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 60%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:60%"></div></div>
             </div>
           </div>
         </div>
@@ -256,17 +292,17 @@
             <div class="skill-chip" id="skill-k8s">
               <div class="skill-icon k8s">⚓</div>
               <span>Kubernetes</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 85%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:85%"></div></div>
             </div>
             <div class="skill-chip" id="skill-docker">
               <div class="skill-icon docker">🐳</div>
               <span>Docker</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 92%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:92%"></div></div>
             </div>
             <div class="skill-chip" id="skill-helm">
               <div class="skill-icon helm">⛵</div>
               <span>Helm</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 78%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:78%"></div></div>
             </div>
           </div>
         </div>
@@ -280,17 +316,17 @@
             <div class="skill-chip" id="skill-terraform">
               <div class="skill-icon tf">🔧</div>
               <span>Terraform</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 88%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:88%"></div></div>
             </div>
             <div class="skill-chip" id="skill-ansible">
               <div class="skill-icon ansible">🤖</div>
               <span>Ansible</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 80%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:80%"></div></div>
             </div>
             <div class="skill-chip" id="skill-pulumi">
               <div class="skill-icon pulumi">🏗️</div>
               <span>Pulumi</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 60%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:60%"></div></div>
             </div>
           </div>
         </div>
@@ -304,17 +340,17 @@
             <div class="skill-chip" id="skill-prometheus">
               <div class="skill-icon prom">🔥</div>
               <span>Prometheus</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 83%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:83%"></div></div>
             </div>
             <div class="skill-chip" id="skill-grafana">
               <div class="skill-icon grafana">📊</div>
               <span>Grafana</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 85%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:85%"></div></div>
             </div>
             <div class="skill-chip" id="skill-elk">
               <div class="skill-icon elk">🔍</div>
               <span>ELK Stack</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 75%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:75%"></div></div>
             </div>
           </div>
         </div>
@@ -328,17 +364,17 @@
             <div class="skill-chip" id="skill-github-actions">
               <div class="skill-icon gh">⚡</div>
               <span>GitHub Actions</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 90%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:90%"></div></div>
             </div>
             <div class="skill-chip" id="skill-jenkins">
               <div class="skill-icon jenkins">🏭</div>
               <span>Jenkins</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 80%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:80%"></div></div>
             </div>
             <div class="skill-chip" id="skill-argocd">
               <div class="skill-icon argo">🚀</div>
               <span>ArgoCD</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 82%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:82%"></div></div>
             </div>
           </div>
         </div>
@@ -352,17 +388,17 @@
             <div class="skill-chip" id="skill-python">
               <div class="skill-icon py">🐍</div>
               <span>Python</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 85%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:85%"></div></div>
             </div>
             <div class="skill-chip" id="skill-bash">
               <div class="skill-icon bash">💲</div>
               <span>Bash/Shell</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 90%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:90%"></div></div>
             </div>
             <div class="skill-chip" id="skill-go">
               <div class="skill-icon go">🦫</div>
               <span>Go</span>
-              <div class="skill-bar"><div class="skill-fill" style="--pct: 60%"></div></div>
+              <div class="skill-bar"><div class="skill-fill" style="--pct:60%"></div></div>
             </div>
           </div>
         </div>
@@ -375,7 +411,7 @@
   <section class="section" id="experience">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">// Work History</span>
+        <span class="section-tag">Work History</span>
         <h2 class="section-title">Professional <span class="gradient-text">Experience</span></h2>
       </div>
       <div class="timeline">
@@ -386,28 +422,28 @@
             <div class="exp-header">
               <div>
                 <h3 class="exp-role">DevOps Engineer</h3>
-                <p class="exp-company">🏢 Accenture (Sutter Health Project) · Full-time</p>
+                <p class="exp-company">🏢 Accenture · Sutter Health Project · Full-time</p>
               </div>
               <span class="exp-date">March 2024 – Present</span>
             </div>
-            
-            <div class="exp-summary" style="margin-bottom: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
-              Leading the infrastructure automation and CI/CD operations for Sutter Health's enterprise healthcare applications. Designing resilient, secure, and highly scalable cloud architectures on AWS while promoting DevOps best practices across cross-functional engineering teams.
+
+            <div class="exp-summary">
+              Leading infrastructure automation and CI/CD operations for Sutter Health's enterprise healthcare applications. Designing resilient, secure, and highly scalable cloud architectures on AWS while promoting DevOps best practices across cross-functional engineering teams.
             </div>
 
-            <div class="exp-subheading" style="font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 0.75rem;">// Core Achievements:</div>
-            
+            <div class="exp-subheading">// Core Achievements</div>
+
             <ul class="exp-bullets">
-              <li><strong>CI/CD Pipelines:</strong> Architected and maintained end-to-end multi-branch Jenkins pipelines with shared libraries (Build → SonarQube/Trivy Scans → Docker Build → EKS Deployment), slashing release cycles by <strong>40%</strong>.</li>
+              <li><strong>CI/CD Pipelines:</strong> Architected end-to-end multi-branch Jenkins pipelines with shared libraries (Build → SonarQube/Trivy Scans → Docker Build → EKS Deployment), slashing release cycles by <strong>40%</strong>.</li>
               <li><strong>Infrastructure as Code:</strong> Provisioned scalable AWS environments (VPC, EC2, EKS, S3, IAM, Route53, Auto Scaling) using clean, modular Terraform with remote state management.</li>
-              <li><strong>Container Orchestration:</strong> Managed Kubernetes clusters (EKS) utilizing Helm charts for packaging, and configured HPA, PV/PVC, ConfigMaps, Ingress, and Secrets across staging & production namespaces.</li>
-              <li><strong>Security & Compliance:</strong> Integrated container vulnerability scanning (Trivy) and static analysis (SonarQube) as mandatory pipeline gates, ensuring zero critical CVEs reach production.</li>
-              <li><strong>Observability & Monitoring:</strong> Built Prometheus + Grafana monitoring stacks with custom dashboards and alerts, reducing production MTTR by <strong>30%</strong>.</li>
-              <li><strong>Configuration & Scripting:</strong> Wrote modular Ansible playbooks for configuration management and automated OS patching across 50+ Linux servers, eliminating <strong>70%</strong> of manual server operations.</li>
-              <li><strong>Incident Resolution:</strong> Led troubleshooting efforts for complex production incidents (OOMKilled, CrashLoopBackOff, CNI/Ingress/DNS failures) during on-call rotation.</li>
+              <li><strong>Container Orchestration:</strong> Managed Kubernetes clusters (EKS) utilizing Helm charts, and configured HPA, PV/PVC, ConfigMaps, Ingress, and Secrets across staging & production namespaces.</li>
+              <li><strong>Security & Compliance:</strong> Integrated container vulnerability scanning (Trivy) and static analysis (SonarQube) as mandatory pipeline gates — zero critical CVEs in production.</li>
+              <li><strong>Observability:</strong> Built Prometheus + Grafana monitoring stacks with custom dashboards and alerts, reducing production MTTR by <strong>30%</strong>.</li>
+              <li><strong>Configuration Management:</strong> Wrote modular Ansible playbooks for automated OS patching across 50+ Linux servers, eliminating <strong>70%</strong> of manual server operations.</li>
+              <li><strong>Incident Resolution:</strong> Led troubleshooting for complex production incidents (OOMKilled, CrashLoopBackOff, CNI/Ingress/DNS failures) during on-call rotation.</li>
             </ul>
-            
-            <div class="exp-tags" style="margin-top: 1.5rem;">
+
+            <div class="exp-tags">
               <span class="exp-tag">AWS EKS</span>
               <span class="exp-tag">Terraform</span>
               <span class="exp-tag">Jenkins</span>
@@ -415,6 +451,8 @@
               <span class="exp-tag">Prometheus & Grafana</span>
               <span class="exp-tag">Ansible</span>
               <span class="exp-tag">Linux</span>
+              <span class="exp-tag">SonarQube</span>
+              <span class="exp-tag">Trivy</span>
             </div>
           </div>
         </div>
@@ -427,7 +465,7 @@
   <section class="section section-alt" id="projects">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">// Portfolio</span>
+        <span class="section-tag">Portfolio</span>
         <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
       </div>
       <div class="projects-grid">
@@ -436,11 +474,8 @@
           <div class="project-card-top">
             <div class="project-icon">📊</div>
             <div class="project-links">
-              <a href="https://github.com/Pradeeptalari14/aws-devops-dashboard" target="_blank" rel="noopener noreferrer" class="project-link" id="proj1-github">
+              <a href="https://github.com/Pradeeptalari14/aws-devops-dashboard" target="_blank" rel="noopener noreferrer" class="project-link" id="proj1-github" title="GitHub">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-              </a>
-              <a href="#" class="project-link" id="proj1-live">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               </a>
             </div>
           </div>
@@ -456,7 +491,7 @@
           <div class="project-card-top">
             <div class="project-icon">⚓</div>
             <div class="project-links">
-              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj2-github">
+              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj2-github" title="GitHub">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
               </a>
             </div>
@@ -472,7 +507,7 @@
           <div class="project-card-top">
             <div class="project-icon">🚀</div>
             <div class="project-links">
-              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj3-github">
+              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj3-github" title="GitHub">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
               </a>
             </div>
@@ -488,7 +523,7 @@
           <div class="project-card-top">
             <div class="project-icon">🔭</div>
             <div class="project-links">
-              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj4-github">
+              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj4-github" title="GitHub">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
               </a>
             </div>
@@ -504,7 +539,7 @@
           <div class="project-card-top">
             <div class="project-icon">🏗️</div>
             <div class="project-links">
-              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj5-github">
+              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj5-github" title="GitHub">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
               </a>
             </div>
@@ -520,7 +555,7 @@
           <div class="project-card-top">
             <div class="project-icon">💰</div>
             <div class="project-links">
-              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj6-github">
+              <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="project-link" id="proj6-github" title="GitHub">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
               </a>
             </div>
@@ -540,13 +575,13 @@
   <section class="section" id="certifications">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">// Credentials</span>
+        <span class="section-tag">Credentials</span>
         <h2 class="section-title">Certifications & <span class="gradient-text">Achievements</span></h2>
       </div>
       <div class="certs-grid">
 
         <div class="cert-card" id="cert-aws-saa">
-          <div class="cert-badge">☁️</div>
+          <div class="cert-badge-wrap">☁️</div>
           <div class="cert-body">
             <h3>AWS Solutions Architect – Associate</h3>
             <p>Amazon Web Services</p>
@@ -556,7 +591,7 @@
         </div>
 
         <div class="cert-card" id="cert-cka">
-          <div class="cert-badge">⚓</div>
+          <div class="cert-badge-wrap">⚓</div>
           <div class="cert-body">
             <h3>Certified Kubernetes Administrator (CKA)</h3>
             <p>Cloud Native Computing Foundation</p>
@@ -566,7 +601,7 @@
         </div>
 
         <div class="cert-card" id="cert-terraform">
-          <div class="cert-badge">🔧</div>
+          <div class="cert-badge-wrap">🔧</div>
           <div class="cert-body">
             <h3>HashiCorp Terraform Associate</h3>
             <p>HashiCorp</p>
@@ -576,7 +611,7 @@
         </div>
 
         <div class="cert-card" id="cert-aws-devops">
-          <div class="cert-badge">🚀</div>
+          <div class="cert-badge-wrap">🚀</div>
           <div class="cert-body">
             <h3>AWS DevOps Engineer – Professional</h3>
             <p>Amazon Web Services</p>
@@ -586,7 +621,7 @@
         </div>
 
         <div class="cert-card" id="cert-linux">
-          <div class="cert-badge">🐧</div>
+          <div class="cert-badge-wrap">🐧</div>
           <div class="cert-body">
             <h3>Linux Foundation Certified SysAdmin</h3>
             <p>Linux Foundation</p>
@@ -603,41 +638,42 @@
   <section class="section section-alt" id="contact">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">// Contact</span>
+        <span class="section-tag">Contact</span>
         <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
         <p class="section-subtitle">Open to full-time roles, freelance contracts, and interesting collaborations. Drop me a message!</p>
       </div>
       <div class="contact-grid">
         <div class="contact-info">
           <div class="contact-card" id="contact-email-card">
-            <div class="contact-icon">📧</div>
+            <div class="contact-icon-wrap">📧</div>
             <div>
               <h4>Email</h4>
               <a href="mailto:talaripradeep45@gmail.com" id="email-link">talaripradeep45@gmail.com</a>
             </div>
           </div>
           <div class="contact-card" id="contact-linkedin-card">
-            <div class="contact-icon">💼</div>
+            <div class="contact-icon-wrap">💼</div>
             <div>
               <h4>LinkedIn</h4>
               <a href="https://linkedin.com/in/pradeep-talari" target="_blank" rel="noopener noreferrer" id="linkedin-contact-link">linkedin.com/in/pradeep-talari</a>
             </div>
           </div>
           <div class="contact-card" id="contact-github-card">
-            <div class="contact-icon">🐙</div>
+            <div class="contact-icon-wrap">🐙</div>
             <div>
               <h4>GitHub</h4>
               <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" id="github-contact-link">github.com/Pradeeptalari14</a>
             </div>
           </div>
           <div class="contact-card" id="contact-location-card">
-            <div class="contact-icon">📍</div>
+            <div class="contact-icon-wrap">📍</div>
             <div>
               <h4>Location</h4>
               <span>India · Open to Remote</span>
             </div>
           </div>
         </div>
+
         <form class="contact-form" id="contactForm" onsubmit="handleFormSubmit(event)">
           <div class="form-group">
             <label for="contactName">Your Name</label>
@@ -671,8 +707,9 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-top">
-        <a href="#home" class="footer-logo" style="display: flex; align-items: center;">
-          <img src="Photo.jpeg" alt="Talari Pradeep" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-cyan); display: inline-block;" />
+        <a href="#home" class="footer-logo">
+          <img src="Photo.jpeg" alt="Talari Pradeep" style="width:38px;height:38px;border-radius:50%;object-fit:cover;outline:2px solid rgba(99,102,241,0.4);outline-offset:2px;" />
+          <span>Talari <span class="gradient-text">Pradeep</span></span>
         </a>
         <p class="footer-tagline">Building reliable cloud infrastructure, one commit at a time.</p>
         <div class="footer-socials">
@@ -693,6 +730,75 @@
       </div>
     </div>
   </footer>
+
+  <!-- Project Modal -->
+  <div class="project-modal" id="projectModal" role="dialog" aria-hidden="true">
+    <div class="pm-overlay" id="modalOverlay"></div>
+    <div class="pm-content">
+      <button class="pm-close" id="closeModal" aria-label="Close details">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="pm-body-grid">
+        <!-- Left Column: Quick Stats -->
+        <div class="pm-sidebar">
+          <div class="pm-icon-wrap" id="modalIcon">📊</div>
+          <h4 class="pm-side-title" id="modalSideTitle">Project Stats</h4>
+          <div class="pm-meta-box">
+            <div class="pm-meta-item">
+              <span class="pm-meta-label">Role</span>
+              <span class="pm-meta-val" id="modalRole">Lead Cloud Architect</span>
+            </div>
+            <div class="pm-meta-item">
+              <span class="pm-meta-label">Duration</span>
+              <span class="pm-meta-val" id="modalDuration">3 Months</span>
+            </div>
+            <div class="pm-meta-item">
+              <span class="pm-meta-label">Scale</span>
+              <span class="pm-meta-val" id="modalScale">Enterprise Mock Sandbox</span>
+            </div>
+          </div>
+          
+          <div class="pm-highlights-container">
+            <h5 class="pm-sub-label">Metrics & Highlights</h5>
+            <div class="pm-highlights-list" id="modalHighlights">
+              <!-- Dynamically populated metrics -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Rich Info -->
+        <div class="pm-main">
+          <h3 class="pm-title" id="modalTitle">AWS DevOps & SRE Control Center</h3>
+          
+          <div class="pm-section">
+            <h4 class="pm-sec-title">Overview & Context</h4>
+            <p class="pm-description" id="modalDescription">Detailed description of the project...</p>
+          </div>
+
+          <div class="pm-section">
+            <h4 class="pm-sec-title">Architectural Solution</h4>
+            <ul class="pm-bullet-list" id="modalArchitecture">
+              <!-- Dynamically populated architecture bullets -->
+            </ul>
+          </div>
+
+          <div class="pm-section">
+            <h4 class="pm-sec-title">Key Achievements & Impact</h4>
+            <ul class="pm-bullet-list pm-achievement-list" id="modalAchievements">
+              <!-- Dynamically populated achievements bullets -->
+            </ul>
+          </div>
+
+          <div class="pm-section pm-tech-section">
+            <h4 class="pm-sec-title">Technologies Used</h4>
+            <div class="pm-tech-tags" id="modalTechTags">
+              <!-- Tech tags -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Back to top -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
