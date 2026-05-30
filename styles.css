@@ -1873,3 +1873,112 @@ body.modal-open {
   text-decoration: underline;
 }
 
+/* ══════════════════════════════
+   PRINT STYLESHEET (Ctrl + P)
+   ══════════════════════════════ */
+@media print {
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: none !important;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Hide interactive/screen-only components */
+  .navbar,
+  .back-to-top,
+  .scroll-indicator,
+  .hpc-status,
+  .hpc-links,
+  .hero-actions,
+  .footer-socials,
+  .sre-heartbeat-bar,
+  #legalReportBtn,
+  .legal-link,
+  .hamburger,
+  .project-modal,
+  .pm-close,
+  .pm-overlay,
+  .reveal::after,
+  button,
+  svg {
+    display: none !important;
+  }
+
+  /* Force elements to be visible */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Monograph layouts */
+  .container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 1.5cm !important;
+  }
+
+  .section {
+    padding: 1.5cm 0 !important;
+    page-break-inside: avoid;
+  }
+
+  /* Print resume grids */
+  .hero-inner {
+    display: block !important;
+    min-height: auto !important;
+    padding-top: 1cm !important;
+    padding-bottom: 1cm !important;
+  }
+
+  .hero-profile-card {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-top: 1cm !important;
+  }
+
+  .hpc-row {
+    border: none !important;
+    background: transparent !important;
+    padding: 0.2cm 0 !important;
+  }
+
+  .about-grid {
+    display: block !important;
+  }
+
+  .about-image-wrap {
+    display: none !important; /* Hide picture in printed resume for formal monograph layouts */
+  }
+
+  /* Avoid splitting blocks in middle of page */
+  .experience-card,
+  .project-card,
+  .cert-card {
+    page-break-inside: avoid !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 85%;
+    color: #475569;
+  }
+
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "" !important; /* Don't print anchor links */
+  }
+}
+
+

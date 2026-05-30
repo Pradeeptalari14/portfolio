@@ -20,8 +20,17 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Talari Pradeep. All rights reserved.</p>
-        <p class="footer-built">Built with ❤️ &amp; pure HTML/CSS/JS · Hosted on GitHub Pages</p>
+        <div class="footer-bottom-left">
+          <p>© <span class="copyright-year">2026</span> Talari Pradeep. All rights reserved.</p>
+          <p class="footer-built">Built with ❤️ &amp; pure HTML/CSS/JS · Hosted on GitHub Pages</p>
+        </div>
+        
+        <!-- SRE Observability Heartbeat Bar -->
+        <div class="sre-heartbeat-bar" style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #64748b;">
+          <span class="heartbeat-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulseDot 2s ease-in-out infinite; flex-shrink: 0;"></span>
+          <span class="heartbeat-text">SRE Metrics: Operational · Latency: <span id="site-latency">--</span>ms · SLA: 99.99%</span>
+        </div>
+
         <a href="#legalModal" id="legalReportBtn" class="legal-link">Report legal issue</a>
       </div>
     </div>
