@@ -535,9 +535,46 @@ function initProjectModal() {
   });
 }
 
+function initLegalModal() {
+  const modal = $('legalModal');
+  if (!modal) return;
+
+  const btn = $('legalReportBtn');
+  const closeBtn = $('closeLegalModal');
+  const closeBtn2 = $('closeLegalBtn');
+  const overlay = $('legalOverlay');
+
+  if (!btn) return;
+
+  function openModal(e) {
+    e.preventDefault();
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  btn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  closeBtn2.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
 /* ══════════════
    INITIAL CHECK
 ══════════════ */
 updateActiveNav();
 checkReveal();
 initProjectModal();
+initLegalModal();
