@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jenkins CI/CD Pipeline Studio | Talari Pradeep</title>
-  <meta name="description" content="Generate production-ready Declarative Jenkinsfiles, sonar-project.properties, and pipeline setup guides dynamically with SRE security parameters." />
+  <title>Jenkins DEVSECOPS Pipeline Generator | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Declarative DevSecOps Jenkinsfiles, SonarQube properties, and credentials mappings with advanced security scans." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -161,7 +161,7 @@
       overflow: auto;
       padding: 1.5rem !important;
       min-height: 480px;
-      max-height: 620px;
+      max-height: 640px;
       white-space: pre;
       word-break: break-all;
     }
@@ -223,156 +223,331 @@
     </div>
   </nav>
 
-  <!-- ══ MAIN STUDIO ══ -->
+  <!-- ══ MAIN DEVSECOPS STUDIO ══ -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
     
     <div class="mb-10 text-center lg:text-left">
-      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Jenkins Pipeline Core</span>
-      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Jenkins CI/CD <span class="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">Pipeline Studio</span></h1>
-      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Standardize continuous integration cycles. Write automated multi-branch declarative pipelines with SonarQube static scans and credentials mapping.</p>
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Enterprise DevSecOps</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">[ Jenkins DEVSECOPS Pipeline Generator ]</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Integrate secure checks seamlessly. Compile automated, declarative CI/CD pipelines with SonarQube quality gates, Snyk scanning, Trivy checks, OWASP ZAP baseline audits, and Yelp secrets protection.</p>
     </div>
 
     <!-- Layout Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- LEFT: Parameters Console (7 Columns) -->
+      <!-- LEFT: Configuration Panels (7 Columns) -->
       <div class="lg:col-span-7 flex flex-col gap-6">
         
-        <!-- SECTION 1: Pipeline Core Settings -->
+        <!-- SECTION 1: Select Agent -->
         <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><span class="text-indigo-500">⚙️</span> Pipeline Settings</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="agent_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Execution Agent</label>
-              <select id="agent_type" class="form-select w-full p-2.5 text-xs">
-                <option value="any">any (Default Jenkins node)</option>
-                <option value="docker_node">Docker: node:20-alpine (NodeJS)</option>
-                <option value="docker_python">Docker: python:3.11-slim (Python)</option>
-                <option value="docker_mvn">Docker: maven:3-openjdk-17 (Java Maven)</option>
-                <option value="label">Custom Agent Label (e.g. aws-sre-runner)</option>
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">🤖 Select Agent</h3>
+          <div class="flex items-center gap-6 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="agent_any" class="custom-checkbox" checked />
+              <span>any</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="agent_custom" class="custom-checkbox" />
+              <span>Custom Label</span>
+            </label>
+            
+            <div id="custom-agent-name-box" class="hidden flex-1 max-w-xs">
+              <input type="text" id="agent_label" class="form-input w-full p-2 text-xs" value="aws-sre-runner" placeholder="Enter Label" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Build Tools Selection -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🛠️ Build Tools</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+            
+            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tool_java" class="custom-checkbox" />
+                <span>Use Java</span>
+              </label>
+              <select id="tool_java_version" class="form-select p-1.5 text-xs w-28">
+                <option value="JDK">JDK</option>
+                <option value="JDK11">JDK 11</option>
+                <option value="JDK17">JDK 17</option>
+                <option value="JDK21">JDK 21</option>
               </select>
             </div>
 
-            <div id="custom-label-box" class="hidden">
-              <label for="agent_label" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Agent Label Name</label>
-              <input type="text" id="agent_label" class="form-input w-full p-2.5 text-xs" value="aws-sre-runner" />
+            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tool_maven" class="custom-checkbox" />
+                <span>Use Maven</span>
+              </label>
+              <select id="tool_maven_version" class="form-select p-1.5 text-xs w-28">
+                <option value="maven">maven</option>
+                <option value="maven-3.8">maven 3.8</option>
+                <option value="maven-3.9">maven 3.9</option>
+              </select>
             </div>
+
+            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tool_gradle" class="custom-checkbox" />
+                <span>Use Gradle</span>
+              </label>
+              <select id="tool_gradle_version" class="form-select p-1.5 text-xs w-28">
+                <option value="gradle">gradle</option>
+                <option value="gradle-7">gradle 7</option>
+                <option value="gradle-8">gradle 8</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tool_node" class="custom-checkbox" />
+                <span>Use Node.js</span>
+              </label>
+              <select id="tool_node_version" class="form-select p-1.5 text-xs w-28">
+                <option value="node">node</option>
+                <option value="node-18">node 18</option>
+                <option value="node-20">node 20</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tool_python" class="custom-checkbox" />
+                <span>Use Python</span>
+              </label>
+              <select id="tool_python_version" class="form-select p-1.5 text-xs w-28">
+                <option value="python3">python3</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tool_ant" class="custom-checkbox" />
+                <span>Use Ant</span>
+              </label>
+              <select id="tool_ant_version" class="form-select p-1.5 text-xs w-28">
+                <option value="ant">ant</option>
+              </select>
+            </div>
+
           </div>
         </div>
 
-        <!-- SECTION 2: Pipeline Stages Selection -->
-        <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2"><span class="text-indigo-500">⚡</span> Execution Stages Checklist</h3>
-          <p class="text-xs text-gray-500 mb-4">Standardize your pipelines by enabling corporate static scanner and compilation stages.</p>
-          
+        <!-- SECTION 3: Security Build Tools -->
+        <div class="studio-card bg-indigo-50/20">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🛡️ Security Build Tools</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
-              <input type="checkbox" id="stage_checkout" class="custom-checkbox" checked />
-              <span>1. Code Checkout (Git SCM)</span>
-            </label>
+            
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sectool_sonar" class="custom-checkbox" checked />
+                <span>SonarQube Scanner</span>
+              </label>
+              <select id="sectool_sonar_version" class="form-select p-1.5 text-xs w-32">
+                <option value="SonarScanner">SonarScanner</option>
+                <option value="SonarScanner4">SonarScanner 4</option>
+                <option value="SonarScanner5">SonarScanner 5</option>
+              </select>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
-              <input type="checkbox" id="stage_scan" class="custom-checkbox" checked />
-              <span>2. Code Quality Scan (SonarQube)</span>
-            </label>
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sectool_snyk" class="custom-checkbox" />
+                <span>Snyk CLI</span>
+              </label>
+              <select id="sectool_snyk_version" class="form-select p-1.5 text-xs w-32">
+                <option value="snyk">snyk</option>
+              </select>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
-              <input type="checkbox" id="stage_lint" class="custom-checkbox" checked />
-              <span>3. Security Lint Audit (Trivy Scan)</span>
-            </label>
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sectool_trivy" class="custom-checkbox" checked />
+                <span>Trivy Scanner</span>
+              </label>
+              <select id="sectool_trivy_version" class="form-select p-1.5 text-xs w-32">
+                <option value="trivy">trivy</option>
+              </select>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
-              <input type="checkbox" id="stage_build" class="custom-checkbox" checked />
-              <span>4. Application Build / Compile</span>
-            </label>
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sectool_zap" class="custom-checkbox" />
+                <span>OWASP ZAP</span>
+              </label>
+              <select id="sectool_zap_version" class="form-select p-1.5 text-xs w-32">
+                <option value="zap">zap</option>
+              </select>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
-              <input type="checkbox" id="stage_test" class="custom-checkbox" checked />
-              <span>5. Unit Testing execution</span>
-            </label>
-
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
-              <input type="checkbox" id="stage_docker" class="custom-checkbox" />
-              <span>6. Container Build & Push (Docker)</span>
-            </label>
-
-            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50 col-span-2">
-              <input type="checkbox" id="stage_deploy" class="custom-checkbox" />
-              <span>7. Secure SRE Production Deployment (Helm / Kubectl Apply)</span>
-            </label>
           </div>
         </div>
 
-        <!-- SECTION 3: SRE Pipeline Notifications (Fresher Friendly) -->
-        <div class="studio-card border-amber-200 bg-amber-50/20">
-          <h3 class="studio-title text-base font-bold text-amber-900 mb-2 flex items-center gap-2">⚠️ SRE Notifications & Post blocks</h3>
-          <p class="text-xs text-gray-500 mb-4">Determine pipeline behaviors during build successes or system failures.</p>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white border border-amber-200 rounded-xl p-4 flex flex-col justify-between">
-              <div>
-                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-900 mb-2">
-                  <input type="checkbox" id="post_slack" class="custom-checkbox" checked />
-                  <span>Slack SlackWebhook Alerts</span>
-                </label>
-                <p class="text-[10px] text-gray-500 leading-relaxed">
-                  Automatically fires detailed build status alerts directly into development chat spaces on pipeline successes or failures.
-                </p>
-              </div>
-            </div>
-
-            <div class="bg-white border border-rose-200 rounded-xl p-4 flex flex-col justify-between">
-              <div>
-                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-900 mb-2">
-                  <input type="checkbox" id="post_email" class="custom-checkbox" />
-                  <span>Email Fail Reports</span>
-                </label>
-                <p class="text-[10px] text-gray-500 leading-relaxed">
-                  Fires detailed trace diagnostics reports automatically to DevOps operational mailing networks if a stage collapses.
-                </p>
-              </div>
-            </div>
-
-            <div class="bg-white border border-indigo-200 rounded-xl p-4 flex flex-col justify-between">
-              <div>
-                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-indigo-900 mb-2">
-                  <input type="checkbox" id="post_artifacts" class="custom-checkbox" checked />
-                  <span>Archive Artifacts</span>
-                </label>
-                <p class="text-[10px] text-gray-500 leading-relaxed">
-                  Captures target build logs, static security sweeps, or test execution reports, preserving them within Jenkins history index layers.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 4: Credentials & Environment Grid -->
+        <!-- SECTION 4: Additional Stages -->
         <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2">🔑 Credentials & Env Variables Mapping</h3>
-          <p class="text-xs text-gray-500 mb-4 font-normal">Define environment properties and safely bind Jenkins credential vaults locally.</p>
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">➕ Additional Stages</h3>
+          <div class="flex items-center gap-6 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="stage_test_add" class="custom-checkbox" checked />
+              <span>Include Test Stage</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="stage_deploy_add" class="custom-checkbox" />
+              <span>Include Deploy Stage</span>
+            </label>
+          </div>
+        </div>
 
+        <!-- SECTION 5: Security Stages -->
+        <div class="studio-card border-rose-200 bg-rose-50/10">
+          <h3 class="studio-title text-base font-bold text-rose-900 mb-3 flex items-center gap-2">🚨 Security Stages</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+            
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_sonar_scan" class="custom-checkbox" checked />
+              <span>Include SonarQube Scan</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_snyk_scan" class="custom-checkbox" />
+              <span>Include Snyk Scan</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_trivy_scan" class="custom-checkbox" checked />
+              <span>Include Trivy Scan</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_zap_scan" class="custom-checkbox" />
+              <span>Include OWASP ZAP Scan</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_dep_track" class="custom-checkbox" />
+              <span>Upload to Dependency-Track</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_artifactory" class="custom-checkbox" />
+              <span>Upload to Artifactory</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_secrets_yelp" class="custom-checkbox" checked />
+              <span>Detect Secrets (Yelp detect-secrets)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
+              <input type="checkbox" id="sec_secrets_gitleaks" class="custom-checkbox" checked />
+              <span>Detect Secrets (Gitleaks)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg col-span-1 md:col-span-2">
+              <input type="checkbox" id="sec_secrets_truffle" class="custom-checkbox" />
+              <span>Detect Secrets (TruffleHog)</span>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- SECTION 6: Environment Variables Configuration -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">🔑 Environment Variables</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-semibold text-gray-700 mb-4 border-b border-gray-100 pb-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="env_image_name" class="custom-checkbox" checked />
+              <span>docker_image_name (IMAGE_NAME)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="env_container_name" class="custom-checkbox" checked />
+              <span>docker_container_name (CONTAINER_NAME)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="env_git_repo" class="custom-checkbox" checked />
+              <span>Git Repository URL (GIT_REPO)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="env_git_branch" class="custom-checkbox" checked />
+              <span>Git Branch (GIT_BRANCH)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="env_java_home" class="custom-checkbox" />
+              <span>JAVA_HOME</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="env_mvn_home" class="custom-checkbox" />
+              <span>MVN_HOME</span>
+            </label>
+          </div>
+
+          <!-- Dynamic custom environment list -->
           <div class="table-container mb-3">
-            <table class="custom-table" id="creds-table">
+            <table class="custom-table" id="custom-env-table">
               <thead>
                 <tr>
-                  <th>Variable Name</th>
-                  <th>Variable Type</th>
-                  <th>Jenkins Credentials ID Reference</th>
+                  <th>Custom Env Variable Name</th>
+                  <th>Value</th>
                   <th style="width:40px;"></th>
                 </tr>
               </thead>
-              <tbody id="creds-tbody">
+              <tbody id="custom-env-tbody">
                 <!-- Rendered dynamically -->
               </tbody>
             </table>
           </div>
 
-          <div class="flex items-center justify-between gap-4">
-            <button onclick="addCredsRow()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition">＋ Add Credential Mapping</button>
-            <button onclick="triggerCompileAll()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition">⚡ Compile Credentials</button>
+          <button onclick="addCustomEnvRow()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition">＋ Add Custom Env Variable</button>
+        </div>
+
+        <!-- SECTION 7: Pipeline Enhancements -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🚀 Pipeline Enhancements</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700 mb-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="enh_k8s" class="custom-checkbox" />
+              <span>Deploy to Kubernetes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="enh_tar" class="custom-checkbox" />
+              <span>Package Artifact (tar.gz)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="enh_sonar_gate" class="custom-checkbox" checked />
+              <span>Enforce SonarQube Quality Gate</span>
+            </label>
+            
+            <div class="flex items-center gap-2">
+              <label for="enh_upload" class="whitespace-nowrap">Artifact Upload Target:</label>
+              <select id="enh_upload" class="form-select p-1.5 text-xs flex-1">
+                <option value="none">-- None --</option>
+                <option value="artifactory">Artifactory</option>
+                <option value="nexus">Nexus</option>
+                <option value="s3">S3 Bucket</option>
+              </select>
+            </div>
+
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="enh_slack" class="custom-checkbox" checked />
+              <span>Send Notification (Slack)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="enh_email" class="custom-checkbox" />
+              <span>Send Notification (Email)</span>
+            </label>
           </div>
+        </div>
+
+        <!-- SECTION 8: Docker Section -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">🐳 Docker Section</h3>
+          <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+            <input type="checkbox" id="docker_cli" class="custom-checkbox" checked />
+            <span>Use Docker CLI</span>
+          </label>
         </div>
 
       </div>
@@ -398,7 +573,6 @@
             <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
               <button onclick="switchTab('jenkinsfile')" id="tab-jenkinsfile" class="tab-btn active">Jenkinsfile</button>
               <button onclick="switchTab('sonar')" id="tab-sonar" class="tab-btn">sonar-project.properties</button>
-              <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn">ci-pipeline-guide.md</button>
             </div>
           </div>
 
@@ -409,40 +583,28 @@
         <div class="studio-card">
           <div class="grid grid-cols-2 gap-2.5 mb-3">
             <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
-              <span>⚡ Generate Jenkins Configurations</span>
+              <span>⚡ Generate YAML</span>
             </button>
-            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
-              <span>📋 Copy Active Tab</span>
+            <button onclick="resetEnvVars()" class="py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🔄 Reset Env Vars</span>
             </button>
-            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>🗑️ Clear Output</span>
+            <button onclick="triggerCompileAll()" class="py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🔄 Re-Fresh Page</span>
+            </button>
+            <button onclick="exportEnvBlock()" class="py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>⬇️ Export Env Block</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>📋 Copy YAML</span>
+            </button>
+            <button onclick="downloadActiveFile()" class="py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>⬇️ Download File</span>
             </button>
           </div>
 
-          <button onclick="downloadJenkinsZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
-            <span>⬇️ Download Jenkins-Pipeline.Zip</span>
+          <button onclick="clearAllFields()" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+            <span>🗑️ Clear Output</span>
           </button>
-        </div>
-
-        <!-- SRE Cheat Sheet -->
-        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
-          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
-            <span class="text-indigo-400">⚡</span> SRE CI/CD Cheat Sheet
-          </h4>
-          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
-            <div>
-              <span class="text-slate-400"># Verify pipeline syntax locally:</span>
-              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">ssh -p 53801 jenkins-cli declarative-linter &lt; Jenkinsfile</pre>
-            </div>
-            <div>
-              <span class="text-slate-400"># Trigger pipeline execution via terminal curl:</span>
-              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">curl -X POST -u user:token jenkins.host/job/my-pipeline/build</pre>
-            </div>
-            <div>
-              <span class="text-slate-400"># Execute SonarQube locally:</span>
-              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">sonar-scanner -Dsonar.projectKey=my-app</pre>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -454,7 +616,7 @@
   <!-- ══ FOOTER ══ -->
   <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
     <div class="max-w-7xl mx-auto px-6">
-      <p>© 2026 Talari Pradeep · talaripradeep.info · Designed and provisioned as an open-source SRE tool.</p>
+      <p>© 2026 Talari Pradeep · talaripradeep.info · DevSecOps Automation Suite</p>
     </div>
   </footer>
 
@@ -465,34 +627,37 @@
 
     let activeTab = 'jenkinsfile';
 
-    // Pre-populated credentials
-    let credentials = [
-      { name: 'SONAR_TOKEN', type: 'String', ref: 'sonar-project-access-token' },
-      { name: 'AWS_ACCESS_KEY_ID', type: 'String', ref: 'aws-ops-access-key' },
-      { name: 'AWS_SECRET_ACCESS_KEY', type: 'String', ref: 'aws-ops-secret-key' },
-      { name: 'REGISTRY_CREDS', type: 'UsernamePassword', ref: 'dockerhub-credentials' }
+    let customEnvVars = [
+      { name: 'SONAR_URL', value: 'http://sonar-sre-prod:9000' }
     ];
 
     let compiledCode = {
       jenkinsfile: '',
-      sonar: '',
-      guide: ''
+      sonar: ''
     };
 
     window.addEventListener('DOMContentLoaded', () => {
-      renderCredsTable();
+      renderCustomEnvTable();
       setupInteractiveListeners();
       triggerCompileAll();
     });
 
     function setupInteractiveListeners() {
-      // Toggle custom label agent view
-      $('agent_type').addEventListener('change', function() {
-        const box = $('custom-label-box');
-        if (this.value === 'label') {
-          box.classList.remove('hidden');
+      // Toggle Agent labels
+      $('agent_any').addEventListener('change', function() {
+        if (this.checked) {
+          $('agent_custom').checked = false;
+          $('custom-agent-name-box').classList.add('hidden');
+        }
+        triggerCompileAll();
+      });
+
+      $('agent_custom').addEventListener('change', function() {
+        if (this.checked) {
+          $('agent_any').checked = false;
+          $('custom-agent-name-box').classList.remove('hidden');
         } else {
-          box.classList.add('hidden');
+          $('custom-agent-name-box').classList.add('hidden');
         }
         triggerCompileAll();
       });
@@ -505,120 +670,192 @@
       });
     }
 
-    // Render credentials grid
-    function renderCredsTable() {
-      const tbody = $('creds-tbody');
+    // Custom Env Variables Table
+    function renderCustomEnvTable() {
+      const tbody = $('custom-env-tbody');
       tbody.innerHTML = '';
 
-      credentials.forEach((item, index) => {
+      customEnvVars.forEach((item, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full font-semibold" value="${escapeHtml(item.name)}" onchange="updateCredsCell(${index}, 'name', this.value)" /></td>
+          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full font-semibold" value="${escapeHtml(item.name)}" onchange="updateCustomEnvCell(${index}, 'name', this.value)" /></td>
+          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full text-slate-500" value="${escapeHtml(item.value)}" onchange="updateCustomEnvCell(${index}, 'value', this.value)" /></td>
           <td>
-            <select class="bg-transparent focus:outline-none text-slate-700 font-semibold" onchange="updateCredsCell(${index}, 'type', this.value)">
-              <option value="String" ${item.type === 'String' ? 'selected' : ''}>String</option>
-              <option value="UsernamePassword" ${item.type === 'UsernamePassword' ? 'selected' : ''}>Username & Password</option>
-            </select>
-          </td>
-          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full text-slate-500" value="${escapeHtml(item.ref)}" onchange="updateCredsCell(${index}, 'ref', this.value)" /></td>
-          <td>
-            <button onclick="deleteCredsRow(${index})" class="text-rose-500 hover:text-rose-700 text-sm font-semibold p-1">✕</button>
+            <button onclick="deleteCustomEnvRow(${index})" class="text-rose-500 hover:text-rose-700 text-sm font-semibold p-1">✕</button>
           </td>
         `;
         tbody.appendChild(row);
       });
     }
 
-    function addCredsRow() {
-      credentials.push({ name: 'SLACK_WEBHOOK_URL', type: 'String', ref: 'slack-ops-channel-hook' });
-      renderCredsTable();
+    function addCustomEnvRow() {
+      customEnvVars.push({ name: 'NEW_VAR', value: 'value' });
+      renderCustomEnvTable();
       triggerCompileAll();
     }
 
-    function deleteCredsRow(index) {
-      credentials.splice(index, 1);
-      renderCredsTable();
+    function deleteCustomEnvRow(index) {
+      customEnvVars.splice(index, 1);
+      renderCustomEnvTable();
       triggerCompileAll();
     }
 
-    function updateCredsCell(index, key, val) {
-      credentials[index][key] = val;
+    function updateCustomEnvCell(index, key, val) {
+      customEnvVars[index][key] = val;
       triggerCompileAll();
     }
 
-    // Compile everything
     function triggerCompileAll() {
       compileJenkinsfile();
       compileSonar();
-      compileGuide();
       updateViewportContent();
     }
 
-    // Compile Declarative Jenkinsfile
+    // Compile DEVSECOPS Declarative Pipeline
     function compileJenkinsfile() {
-      const agent = $('agent_type').value;
-      const labelName = $('agent_label').value.trim() || 'aws-sre-runner';
+      const isAgentAny = $('agent_any').checked;
+      const isAgentCustom = $('agent_custom').checked;
+      const agentLabel = $('agent_label').value.trim() || 'aws-sre-runner';
 
-      const checkout = $('stage_checkout').checked;
-      const scan = $('stage_scan').checked;
-      const lint = $('stage_lint').checked;
-      const build = $('stage_build').checked;
-      const test = $('stage_test').checked;
-      const docker = $('stage_docker').checked;
-      const deploy = $('stage_deploy').checked;
+      // Tools checkbox mapping
+      const toolJava = $('tool_java').checked;
+      const toolJavaVer = $('tool_java_version').value;
+      const toolMvn = $('tool_maven').checked;
+      const toolMvnVer = $('tool_maven_version').value;
+      const toolGradle = $('tool_gradle').checked;
+      const toolGradleVer = $('tool_gradle_version').value;
+      const toolNode = $('tool_node').checked;
+      const toolNodeVer = $('tool_node_version').value;
+      const toolPython = $('tool_python').checked;
+      const toolPythonVer = $('tool_python_version').value;
+      const toolAnt = $('tool_ant').checked;
+      const toolAntVer = $('tool_ant_version').value;
 
-      const postSlack = $('post_slack').checked;
-      const postEmail = $('post_email').checked;
-      const postArchive = $('post_artifacts').checked;
+      // Security tools
+      const secSonar = $('sectool_sonar').checked;
+      const secSonarVer = $('sectool_sonar_version').value;
+      const secSnyk = $('sectool_snyk').checked;
+      const secSnykVer = $('sectool_snyk_version').value;
+      const secTrivy = $('sectool_trivy').checked;
+      const secTrivyVer = $('sectool_trivy_version').value;
+      const secZap = $('sectool_zap').checked;
+      const secZapVer = $('sectool_zap_version').value;
 
+      // Additional Stages
+      const addTest = $('stage_test_add').checked;
+      const addDeploy = $('stage_deploy_add').checked;
+
+      // Security Stages
+      const scanSonar = $('sec_sonar_scan').checked;
+      const scanSnyk = $('sec_snyk_scan').checked;
+      const scanTrivy = $('sec_trivy_scan').checked;
+      const scanZap = $('sec_zap_scan').checked;
+      const uploadDt = $('sec_dep_track').checked;
+      const uploadArt = $('sec_artifactory').checked;
+      const secYelp = $('sec_secrets_yelp').checked;
+      const secGitleaks = $('sec_secrets_gitleaks').checked;
+      const secTruffle = $('sec_secrets_truffle').checked;
+
+      // Environment Variables checkboxes
+      const envImgName = $('env_image_name').checked;
+      const envContName = $('env_container_name').checked;
+      const envGitRepo = $('env_git_repo').checked;
+      const envGitBranch = $('env_git_branch').checked;
+      const envJavaHome = $('env_java_home').checked;
+      const envMvnHome = $('env_mvn_home').checked;
+
+      // Pipeline Enhancements
+      const enhK8s = $('enh_k8s').checked;
+      const enhTar = $('enh_tar').checked;
+      const enhSonarGate = $('enh_sonar_gate').checked;
+      const enhUploadTarget = $('enh_upload').value;
+      const enhSlack = $('enh_slack').checked;
+      const enhEmail = $('enh_email').checked;
+
+      // Docker Section
+      const useDocker = $('docker_cli').checked;
+
+      // STARTING JENKINSFILE PARSE
       let code = `pipeline {\n`;
 
-      // Agent configuration
-      if (agent === 'any') {
-        code += `    agent any\n\n`;
-      } else if (agent === 'label') {
-        code += `    agent {\n        label '${labelName}'\n    }\n\n`;
+      if (isAgentCustom) {
+        code += `    agent {\n        label '${agentLabel}'\n    }\n\n`;
       } else {
-        let dockerImage = 'node:20-alpine';
-        if (agent === 'docker_python') dockerImage = 'python:3.11-slim';
-        if (agent === 'docker_mvn') dockerImage = 'maven:3-openjdk-17';
-        code += `    agent {\n        docker {\n            image '${dockerImage}'\n            args '-v /var/run/docker.sock:/var/run/docker.sock'\n        }\n    }\n\n`;
+        code += `    agent any\n\n`;
       }
 
-      // Credentials mapping environment
-      if (credentials.length > 0) {
-        code += `    environment {\n`;
-        credentials.forEach(item => {
-          if (item.type === 'String') {
-            code += `        ${item.name} = credentials('${item.ref}')\n`;
-          } else {
-            code += `        ${item.name} = credentials('${item.ref}')\n`;
-            code += `        ${item.name}_USR = credentials('${item.ref}-usr')\n`;
-            code += `        ${item.name}_PSW = credentials('${item.ref}-psw')\n`;
-          }
-        });
-        code += `    }\n\n`;
+      // 1. Build Tools Block
+      let toolsBlock = '';
+      if (toolJava) toolsBlock += `        jdk '${toolJavaVer}'\n`;
+      if (toolMvn) toolsBlock += `        maven '${toolMvnVer}'\n`;
+      if (toolGradle) toolsBlock += `        gradle '${toolGradleVer}'\n`;
+      if (toolNode) toolsBlock += `        nodejs '${toolNodeVer}'\n`;
+      if (toolPython) toolsBlock += `        python '${toolPythonVer}'\n`;
+      if (toolAnt) toolsBlock += `        ant '${toolAntVer}'\n`;
+
+      if (toolsBlock) {
+        code += `    tools {\n${toolsBlock}    }\n\n`;
+      }
+
+      // 2. Environment Block
+      let envBlock = '';
+      if (envImgName) envBlock += `        IMAGE_NAME = 'devops-app-image'\n`;
+      if (envContName) envBlock += `        CONTAINER_NAME = 'devops-app-container'\n`;
+      if (envGitRepo) envBlock += `        GIT_REPO = 'https://github.com/Pradeeptalari14/portfolio.git'\n`;
+      if (envGitBranch) envBlock += `        GIT_BRANCH = 'main'\n`;
+      if (envJavaHome) envBlock += `        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'\n`;
+      if (envMvnHome) envBlock += `        MVN_HOME = '/opt/maven'\n`;
+
+      // Custom variables
+      customEnvVars.forEach(item => {
+        if (item.name.trim()) {
+          envBlock += `        ${item.name.trim()} = '${item.value.trim()}'\n`;
+        }
+      });
+
+      if (envBlock) {
+        code += `    environment {\n${envBlock}    }\n\n`;
       }
 
       code += `    stages {\n`;
 
-      // 1. Checkout SCM
-      if (checkout) {
-        code += `        stage('Code Checkout') {\n`;
-        code += `            steps {\n`;
-        code += `                cleanWs()\n`;
+      // Stage: Clone Repository
+      code += `        stage('Clone Repository') {\n`;
+      code += `            steps {\n`;
+      if (envGitRepo) {
+        code += `                git url: env.GIT_REPO\n`;
+      } else {
         code += `                checkout scm\n`;
+      }
+      code += `            }\n`;
+      code += `        }\n\n`;
+
+      // Stage: Secret Detection
+      if (secYelp || secGitleaks || secTruffle) {
+        code += `        stage('Secret Scan Audits') {\n`;
+        code += `            steps {\n`;
+        if (secYelp) code += `                sh 'detect-secrets scan .'\n`;
+        if (secGitleaks) code += `                sh 'gitleaks detect --source=. --verbose'\n`;
+        if (secTruffle) code += `                sh 'trufflehog filesystem .'\n`;
         code += `            }\n`;
         code += `        }\n\n`;
       }
 
-      // 2. SonarQube static scan
-      if (scan) {
-        code += `        stage('Static Quality Check') {\n`;
+      // Stage: SonarQube Scan
+      if (scanSonar) {
+        code += `        stage('Static Quality Analysis') {\n`;
         code += `            steps {\n`;
-        code += `                withSonarQubeEnv('SonarQubeServer') {\n`;
-        code += `                    sh 'sonar-scanner -Dsonar.projectKey=devops-core-app'\n`;
+        code += `                withSonarQubeEnv('SonarQube') {\n`;
+        code += `                    sh '${secSonar ? 'sonar-scanner' : 'sonar-scanner'} -Dsonar.projectKey=devops-core-app'\n`;
         code += `                }\n`;
+        code += `            }\n`;
+        code += `        }\n\n`;
+      }
+
+      // Stage: SonarQube Quality Gate
+      if (enhSonarGate && scanSonar) {
+        code += `        stage('SonarQube Quality Gate') {\n`;
+        code += `            steps {\n`;
         code += `                timeout(time: 5, unit: 'MINUTES') {\n`;
         code += `                    waitForQualityGate abortPipeline: true\n`;
         code += `                }\n`;
@@ -626,91 +863,117 @@
         code += `        }\n\n`;
       }
 
-      // 3. Security audit linting
-      if (lint) {
-        code += `        stage('Security Lint Audit') {\n`;
+      // Stage: Snyk / Trivy scan
+      if (scanSnyk || scanTrivy) {
+        code += `        stage('Vulnerability Security Audits') {\n`;
         code += `            steps {\n`;
-        code += `                sh 'trivy fs --severity HIGH,CRITICAL --format table .'\n`;
+        if (scanTrivy) code += `                sh 'trivy fs --severity HIGH,CRITICAL --format table .'\n`;
+        if (scanSnyk) code += `                sh 'snyk test'\n`;
         code += `            }\n`;
         code += `        }\n\n`;
       }
 
-      // 4. Compile / Build steps
-      if (build) {
-        code += `        stage('Application Compilation') {\n`;
+      // Stage: Test stage
+      if (addTest) {
+        code += `        stage('Execute Unit Tests') {\n`;
         code += `            steps {\n`;
-        if (agent.includes('mvn')) {
-          code += `                sh 'mvn clean package -DskipTests'\n`;
-        } else if (agent.includes('python')) {
-          code += `                sh 'python -m pip install -r requirements.txt'\n`;
-        } else {
-          code += `                sh 'npm ci'\n`;
-          code += `                sh 'npm run build --if-present'\n`;
-        }
-        code += `            }\n`;
-        code += `        }\n\n`;
-      }
-
-      // 5. Unit test execution
-      if (test) {
-        code += `        stage('Unit Tests Execution') {\n`;
-        code += `            steps {\n`;
-        if (agent.includes('mvn')) {
+        if (toolMvn) {
           code += `                sh 'mvn test'\n`;
-        } else if (agent.includes('python')) {
-          code += `                sh 'pytest tests/'\n`;
-        } else {
+        } else if (toolNode) {
           code += `                sh 'npm test'\n`;
+        } else {
+          code += `                echo 'Executing unit testing sweeps...'\n`;
         }
         code += `            }\n`;
         code += `        }\n\n`;
       }
 
-      // 6. Docker container building and pushes
-      if (docker) {
-        code += `        stage('Container Build & Push') {\n`;
+      // Stage: Dependency Track
+      if (uploadDt) {
+        code += `        stage('Supply Chain Dependency-Track') {\n`;
         code += `            steps {\n`;
-        code += `                sh 'docker build -t app-prod:latest .'\n`;
-        code += `                sh 'docker tag app-prod:latest registry.hub.docker.com/sreapp/app-prod:\${BUILD_NUMBER}'\n`;
-        code += `                sh 'docker push registry.hub.docker.com/sreapp/app-prod:\${BUILD_NUMBER}'\n`;
+        code += `                sh 'curl -X POST -H "X-API-Key: $DT_API_KEY" -F "bom=@target/bom.xml" http://dependencytrack/api/v1/bom'\n`;
         code += `            }\n`;
         code += `        }\n\n`;
       }
 
-      // 7. Kubernetes / SRE deploy triggers
-      if (deploy) {
+      // Stage: Package Artifact
+      if (enhTar) {
+        code += `        stage('Package Deployment Artifact') {\n`;
+        code += `            steps {\n`;
+        code += `                sh 'tar -czf deployment-artifact.tar.gz .'\n`;
+        code += `            }\n`;
+        code += `        }\n\n`;
+      }
+
+      // Stage: Artifact Upload
+      if (enhUploadTarget !== 'none' || uploadArt) {
+        code += `        stage('Archive Deployment Artifact') {\n`;
+        code += `            steps {\n`;
+        if (enhUploadTarget === 'artifactory' || uploadArt) {
+          code += `                sh 'jfrog rt u "deployment-artifact.tar.gz" libs-release-local/'\n`;
+        } else if (enhUploadTarget === 's3') {
+          code += `                sh 'aws s3 cp deployment-artifact.tar.gz s3://my-s3-production-bucket/'\n`;
+        } else {
+          code += `                echo 'Archiving artifact to local repository targets...'\n`;
+        }
+        code += `            }\n`;
+        code += `        }\n\n`;
+      }
+
+      // Stage: Docker Build
+      if (useDocker) {
+        code += `        stage('Docker Core Containerization') {\n`;
+        code += `            steps {\n`;
+        code += `                sh 'docker build -t \${IMAGE_NAME}:latest .'\n`;
+        code += `                sh 'docker tag \${IMAGE_NAME}:latest \${IMAGE_NAME}:\${BUILD_NUMBER}'\n`;
+        code += `            }\n`;
+        code += `        }\n\n`;
+      }
+
+      // Stage: OWASP ZAP
+      if (scanZap) {
+        code += `        stage('OWASP ZAP baseline scan') {\n`;
+        code += `            steps {\n`;
+        code += `                sh 'zap-baseline.py -t http://localhost:8080 -r zap_report.html'\n`;
+        code += `            }\n`;
+        code += `        }\n\n`;
+      }
+
+      // Stage: SRE Deploy
+      if (addDeploy || enhK8s) {
         code += `        stage('Orchestrate SRE Deploy') {\n`;
         code += `            steps {\n`;
-        code += `                sh 'helm upgrade --install production-app ./charts --set image.tag=\${BUILD_NUMBER}'\n`;
+        if (enhK8s) {
+          code += `                sh 'kubectl apply -f k8s/'\n`;
+        } else {
+          code += `                echo 'Triggering environment deploy hook...'\n`;
+        }
         code += `            }\n`;
         code += `        }\n\n`;
       }
 
       code += `    }\n\n`;
 
-      // Post SRE Alerts pipeline block
-      if (postSlack || postEmail || postArchive) {
+      // Post SRE Alerts Block
+      if (enhSlack || enhEmail) {
         code += `    post {\n`;
-        if (postSlack) {
-          code += `        success {\n`;
-          code += `            slackSend channel: '#ci-cd-sre-alerts', color: 'good', message: "🚀 Pipeline build completed successfully: Job '\${env.JOB_NAME}' (Build #\${env.BUILD_NUMBER})"\n`;
-          code += `        }\n`;
-        }
-        
         code += `        failure {\n`;
-        if (postSlack) {
-          code += `            slackSend channel: '#ci-cd-sre-alerts', color: 'danger', message: "🔴 SRE Alert: CI/CD Pipeline collapsed at stage: '\${env.JOB_NAME}' (Build #\${env.BUILD_NUMBER})"\n`;
+        code += `            echo 'Build failed.'\n`;
+        if (enhSlack) {
+          code += `            slackSend channel: '#devsecops-alerts', color: 'danger', message: "🔴 DevSecOps Alert: Build Failed - '\${env.JOB_NAME}' (Build #\${env.BUILD_NUMBER})"\n`;
         }
-        if (postEmail) {
-          code += `            mail to: 'sre-devops-leads@talaripradeep.info', subject: "Failed Build Alert: \${env.JOB_NAME}", body: "System diagnostics collapse on Build #\${env.BUILD_NUMBER}"\n`;
+        if (enhEmail) {
+          code += `            mail to: 'devsecops-alerts@talaripradeep.info', subject: "Failed DevSecOps Build: \${env.JOB_NAME}", body: "Diagnose stages logs for failure details."\n`;
         }
         code += `        }\n`;
-
-        if (postArchive) {
-          code += `        always {\n`;
-          code += `            archiveArtifacts artifacts: '**/target/*.jar, **/dist/*.zip', allowEmptyArchive: true\n`;
-          code += `        }\n`;
+        
+        code += `        success {\n`;
+        code += `            echo 'Container started successfully.'\n`;
+        if (enhSlack) {
+          code += `            slackSend channel: '#devsecops-alerts', color: 'good', message: "🚀 DevSecOps Alert: Build Success - '\${env.JOB_NAME}' (Build #\${env.BUILD_NUMBER})"\n`;
         }
+        code += `        }\n`;
         code += `    }\n`;
       }
 
@@ -719,38 +982,16 @@
       compiledCode.jenkinsfile = code;
     }
 
-    // Compile sonar-project.properties
+    // Compile Sonar project properties
     function compileSonar() {
-      let code = `# SonarQube Scanner configuration\n`;
+      let code = `# SonarQube scan configuration properties\n`;
       code += `sonar.projectKey=devops-core-app\n`;
-      code += `sonar.projectName=Talari Pradeep Devops Core application\n`;
-      code += `sonar.projectVersion=2.0.0\n\n`;
-      code += `# Path to source directories\n`;
-      code += `sonar.sources=src\n`;
-      code += `sonar.tests=tests\n\n`;
-      code += `# Exclusion files\n`;
+      code += `sonar.projectName=Talari Pradeep DEVSECOPS Pipeline\n`;
+      code += `sonar.projectVersion=2.0.0\n`;
+      code += `sonar.sources=.\n`;
       code += `sonar.exclusions=**/node_modules/**, **/dist/**, **/target/**\n`;
       code += `sonar.sourceEncoding=UTF-8\n`;
       compiledCode.sonar = code;
-    }
-
-    // Compile Pipeline Guide Markdown
-    function compileGuide() {
-      let code = `# CI/CD Pipeline Setup Guide\n\n`;
-      code += `Generated client-side via **Talari Pradeep's Jenkins Pipeline Studio**.\n\n`;
-      code += `## Prerequisites in Jenkins Server\n\n`;
-      code += `1. **Required Plugins**: Ensure SonarQube Scanner, Slack Notification, Docker, and Pipeline plugins are active.\n`;
-      code += `2. **Configure SonarQube Server**: Map server address inside Jenkins global configuration named \`SonarQubeServer\`.\n`;
-      code += `3. **Credentials Setup**: Create mapped credential IDs within your Jenkins credentials vault:\n`;
-      
-      credentials.forEach(item => {
-        code += `   - **Credential ID**: \`${item.ref}\` (Type: ${item.type})\n`;
-      });
-
-      code += `\n## Execution Details\n`;
-      code += `- Trigger builds on GitHub webhook push triggers.\n`;
-      code += `- Builds will report automatically in the \`#ci-cd-sre-alerts\` Slack channel.\n`;
-      compiledCode.guide = code;
     }
 
     function switchTab(tabId) {
@@ -767,11 +1008,7 @@
       } else if (tabId === 'sonar') {
         nameBox.value = 'sonar-project';
         extTag.textContent = '.properties';
-      } else if (tabId === 'guide') {
-        nameBox.value = 'ci-pipeline-guide';
-        extTag.textContent = '.md';
       }
-
       updateViewportContent();
     }
 
@@ -782,48 +1019,106 @@
     function copyActiveTabContent() {
       const content = compiledCode[activeTab];
       navigator.clipboard.writeText(content).then(() => {
-        showToast('✅ Copied tab config to clipboard!');
+        showToast('✅ Copied file to clipboard!');
       });
     }
 
-    function downloadJenkinsZip() {
-      const zip = new JSZip();
-      zip.file('Jenkinsfile', compiledCode.jenkinsfile);
-      zip.file('sonar-project.properties', compiledCode.sonar);
-      zip.file('ci-pipeline-guide.md', compiledCode.guide);
+    function downloadActiveFile() {
+      const content = compiledCode[activeTab];
+      let filename = 'Jenkinsfile';
+      if (activeTab === 'sonar') filename = 'sonar-project.properties';
+      
+      const blob = new Blob([content], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      showToast(`⬇️ Downloaded ${filename}`);
+    }
 
-      zip.generateAsync({ type: 'blob' }).then(blob => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'jenkins-pipeline.zip';
-        a.click();
-        showToast('⬇️ jenkins-pipeline.zip downloaded successfully!');
+    function exportEnvBlock() {
+      // Export environment variables block only
+      let code = `environment {\n`;
+      if ($('env_image_name').checked) code += `    IMAGE_NAME = 'devops-app-image'\n`;
+      if ($('env_container_name').checked) code += `    CONTAINER_NAME = 'devops-app-container'\n`;
+      if ($('env_git_repo').checked) code += `    GIT_REPO = 'https://github.com/Pradeeptalari14/portfolio.git'\n`;
+      if ($('env_git_branch').checked) code += `    GIT_BRANCH = 'main'\n`;
+      
+      customEnvVars.forEach(item => {
+        if (item.name.trim()) {
+          code += `    ${item.name.trim()} = '${item.value.trim()}'\n`;
+        }
       });
+      code += `}\n`;
+
+      const blob = new Blob([code], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'env-block.groovy';
+      a.click();
+      showToast('⬇️ Exported environment variables block!');
+    }
+
+    function resetEnvVars() {
+      customEnvVars = [
+        { name: 'SONAR_URL', value: 'http://sonar-sre-prod:9000' }
+      ];
+      renderCustomEnvTable();
+      triggerCompileAll();
+      showToast('🔄 Reset custom environment variables to defaults');
     }
 
     function clearAllFields() {
-      credentials = [
-        { name: 'SONAR_TOKEN', type: 'String', ref: 'sonar-project-access-token' }
-      ];
-      $('agent_type').value = 'any';
-      $('agent_label').value = 'aws-sre-runner';
-      $('custom-label-box').classList.add('hidden');
+      customEnvVars = [];
+      
+      $('agent_any').checked = true;
+      $('agent_custom').checked = false;
+      $('custom-agent-name-box').classList.add('hidden');
 
-      $('stage_checkout').checked = true;
-      $('stage_scan').checked = true;
-      $('stage_lint').checked = true;
-      $('stage_build').checked = true;
-      $('stage_test').checked = true;
-      $('stage_docker').checked = false;
-      $('stage_deploy').checked = false;
+      $('tool_java').checked = false;
+      $('tool_maven').checked = false;
+      $('tool_gradle').checked = false;
+      $('tool_node').checked = false;
+      $('tool_python').checked = false;
+      $('tool_ant').checked = false;
 
-      $('post_slack').checked = true;
-      $('post_email').checked = false;
-      $('post_artifacts').checked = true;
+      $('sectool_sonar').checked = false;
+      $('sectool_snyk').checked = false;
+      $('sectool_trivy').checked = false;
+      $('sectool_zap').checked = false;
 
-      renderCredsTable();
+      $('stage_test_add').checked = false;
+      $('stage_deploy_add').checked = false;
+
+      $('sec_sonar_scan').checked = false;
+      $('sec_snyk_scan').checked = false;
+      $('sec_trivy_scan').checked = false;
+      $('sec_zap_scan').checked = false;
+      $('sec_dep_track').checked = false;
+      $('sec_artifactory').checked = false;
+      $('sec_secrets_yelp').checked = false;
+      $('sec_secrets_gitleaks').checked = false;
+      $('sec_secrets_truffle').checked = false;
+
+      $('env_image_name').checked = false;
+      $('env_container_name').checked = false;
+      $('env_git_repo').checked = false;
+      $('env_git_branch').checked = false;
+      $('env_java_home').checked = false;
+      $('env_mvn_home').checked = false;
+
+      $('enh_k8s').checked = false;
+      $('enh_tar').checked = false;
+      $('enh_sonar_gate').checked = false;
+      $('enh_upload').value = 'none';
+      $('enh_slack').checked = false;
+      $('enh_email').checked = false;
+
+      $('docker_cli').checked = false;
+
+      renderCustomEnvTable();
       triggerCompileAll();
-      showToast('🗑️ Output configuration cleared and reset to defaults');
+      showToast('🗑️ Layout outputs cleared and reset to blank');
     }
 
     function showToast(message) {
