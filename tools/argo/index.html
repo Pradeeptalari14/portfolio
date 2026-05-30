@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ArgoCD GitOps App Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready ArgoCD Application manifests, tenancy AppProjects wrappers, and CLI setup commands dynamically." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --border:         #e2e8f0;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN ARGOCD STUDIO -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">GitOps Infrastructure</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">ArgoCD GitOps App Studio</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>Enable automated continuous synchronization. Generate declarative ArgoCD Applications, AppProject secure boundaries wrappers, and CLI instructions.</em>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- App Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🚀 Application Specs</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="app_name" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Application Name</label>
+              <input type="text" id="app_name" class="form-input w-full p-2.5 text-xs" value="frontend-app" />
+            </div>
+
+            <div>
+              <label for="argo_project" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">ArgoCD Target Project</label>
+              <input type="text" id="argo_project" class="form-input w-full p-2.5 text-xs" value="default" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="md:col-span-2">
+              <label for="repo_url" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Git Repository URL</label>
+              <input type="text" id="repo_url" class="form-input w-full p-2.5 text-xs" value="https://github.com/my-org/gitops-infra.git" />
+            </div>
+
+            <div>
+              <label for="target_branch" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Revision Branch / Tag</label>
+              <input type="text" id="target_branch" class="form-input w-full p-2.5 text-xs" value="main" />
+            </div>
+          </div>
+
+          <div>
+            <label for="target_path" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Source Folder Path inside Repo</label>
+            <input type="text" id="target_path" class="form-input w-full p-2.5 text-xs" value="charts/frontend-app" />
+          </div>
+        </div>
+
+        <!-- Destination Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⚓ Destination Infrastructure</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="md:col-span-2">
+              <label for="dest_server" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Kubernetes Cluster API Endpoint</label>
+              <input type="text" id="dest_server" class="form-input w-full p-2.5 text-xs" value="https://kubernetes.default.svc" />
+            </div>
+
+            <div>
+              <label for="dest_ns" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Namespace</label>
+              <input type="text" id="dest_ns" class="form-input w-full p-2.5 text-xs" value="production" />
+            </div>
+          </div>
+
+          <div class="border-t border-gray-100 pt-4 text-xs font-semibold text-gray-700">
+            <span class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">Sync Policies Action Rules</span>
+            <div class="flex flex-wrap gap-4">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sync_auto" class="custom-checkbox" checked />
+                <span>Auto-Sync Application</span>
+              </label>
+              
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sync_prune" class="custom-checkbox" checked />
+                <span>Prune Resources (Delete orphaned objects)</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sync_selfheal" class="custom-checkbox" checked />
+                <span>Self-Heal (Revert manual edits)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- AppProject boundaries wrapper -->
+        <div class="studio-card border-amber-200 bg-amber-50/20">
+          <h3 class="studio-title text-base font-bold text-amber-900 mb-2 flex items-center gap-2">🛡️ SRE AppProject Secure Tenancy</h3>
+          <p class="text-xs text-gray-500 mb-4">Limit GitOps blast radiuses by defining secure repository boundaries and target namespaces limits.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="project_repo_limit" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Restricted Source Repositories</label>
+              <input type="text" id="project_repo_limit" class="form-input w-full p-2.5 text-xs" value="https://github.com/my-org/*.git" />
+            </div>
+            
+            <div>
+              <label for="project_ns_limit" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Allowed Namespaces list</label>
+              <input type="text" id="project_ns_limit" class="form-input w-full p-2.5 text-xs" value="production, staging" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SRE tip callout -->
+        <div class="studio-card bg-indigo-50/20">
+          <h4 class="studio-title text-xs font-bold text-indigo-900 uppercase tracking-wider mb-2">💡 GitOps SRE Tip</h4>
+          <p class="text-xs text-indigo-950/80 leading-relaxed font-normal">
+            <strong>Self-Heal</strong> is highly recommended in production to prevent "configuration drift." If developers make manual modifications inside clusters using <code>kubectl</code>, ArgoCD automatically overwrites them to match Git state records.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Terminal IDE Viewport -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="application" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yaml</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('application')" id="tab-application" class="tab-btn active">application.yaml</button>
+              <button onclick="switchTab('appproject')" id="tab-appproject" class="tab-btn">appproject.yaml</button>
+              <button onclick="switchTab('commands')" id="tab-commands" class="tab-btn">commands.sh</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate GitOps Manifests</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Reset Defaults</span>
+            </button>
+          </div>
+
+          <button onclick="downloadArgoZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download GitOps-Studio.Zip</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info</p>
+    </div>
+  </footer>
+
+  <!-- ENGINE SCRIPT -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'application';
+
+    let compiledCode = {
+      application: '',
+      appproject: '',
+      commands: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    function triggerCompileAll() {
+      compileApplication();
+      compileProject();
+      compileCommands();
+      updateViewportContent();
+    }
+
+    function compileApplication() {
+      const name = $('app_name').value;
+      const project = $('argo_project').value;
+      const repo = $('repo_url').value;
+      const branch = $('target_branch').value;
+      const path = $('target_path').value;
+      const server = $('dest_server').value;
+      const ns = $('dest_ns').value;
+
+      const isAuto = $('sync_auto').checked;
+      const isPrune = $('sync_prune').checked;
+      const isSelfHeal = $('sync_selfheal').checked;
+
+      let code = `apiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: ${name}\n  namespace: argocd\n  finalizers:\n    - resources-finalizer.argocd.argoproj.io\nspec:\n  project: ${project}\n  source:\n    repoURL: "${repo}"\n    targetRevision: ${branch}\n    path: ${path}\n  destination:\n    server: "${server}"\n    namespace: ${ns}\n`;
+
+      if (isAuto || isPrune || isSelfHeal) {
+        code += `  syncPolicy:\n`;
+        if (isAuto) {
+          code += `    automated:\n`;
+          code += `      prune: ${isPrune}\n`;
+          code += `      selfHeal: ${isSelfHeal}\n`;
+        }
+        code += `    syncOptions:\n      - CreateNamespace=true\n      - ApplyOutOfSyncOnly=true\n`;
+      }
+
+      compiledCode.application = code;
+    }
+
+    function compileProject() {
+      const project = $('argo_project').value;
+      const repoLimit = $('project_repo_limit').value;
+      const server = $('dest_server').value;
+      const nsLimit = $('project_ns_limit').value.split(',').map(n => n.trim()).filter(Boolean);
+
+      let code = `apiVersion: argoproj.io/v1alpha1\nkind: AppProject\nmetadata:\n  name: ${project}\n  namespace: argocd\nspec:\n  description: Multi-tenant tenancy bounds mapped by Talari Pradeep's Studio\n  sourceRepos:\n    - "${repoLimit}"\n  destinations:\n`;
+      
+      if (nsLimit.length > 0) {
+        nsLimit.forEach(ns => {
+          code += `    - server: "${server}"\n      namespace: ${ns}\n`;
+        });
+      } else {
+        code += `    - server: "${server}"\n      namespace: "*"\n`;
+      }
+
+      code += `  # Restrict cluster-wide actions to enhance multi-tenant security\n  clusterResourceWhitelist:\n    - group: '*'\n      kind: '*'\n`;
+      compiledCode.appproject = code;
+    }
+
+    function compileCommands() {
+      const name = $('app_name').value;
+      const server = $('dest_server').value;
+      const ns = $('dest_ns').value;
+      const repo = $('repo_url').value;
+      const path = $('target_path').value;
+      const branch = $('target_branch').value;
+
+      let code = `#!/bin/bash\n# commands.sh - ArgoCD CLI synchronization operations scripts\n\n`;
+      code += `echo "⚓ Logging into ArgoCD controller server via terminal..."\n`;
+      code += `argocd login localhost:8080 --username admin --password changeme || true\n\n`;
+      code += `echo "🚀 Provisioning dynamic GitOps App manifest via CLI..."\n`;
+      code += `argocd app create ${name} \\\n`;
+      code += `  --repo ${repo} \\\n`;
+      code += `  --path ${path} \\\n`;
+      code += `  --dest-server ${server} \\\n`;
+      code += `  --dest-namespace ${ns} \\\n`;
+      code += `  --revision ${branch} \\\n`;
+      code += `  --sync-policy automated \\\n`;
+      code += `  --sync-option CreateNamespace=true\n\n`;
+      code += `echo "⏱️ Triggering manual synch check checks..."\n`;
+      code += `argocd app sync ${name}\n`;
+
+      compiledCode.commands = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'application') {
+        nameBox.value = 'application';
+        extTag.textContent = '.yaml';
+      } else if (tabId === 'appproject') {
+        nameBox.value = 'appproject';
+        extTag.textContent = '.yaml';
+      } else if (tabId === 'commands') {
+        nameBox.value = 'argo-setup';
+        extTag.textContent = '.sh';
+      }
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadArgoZip() {
+      const zip = new JSZip();
+      zip.file('application.yaml', compiledCode.application);
+      zip.file('appproject.yaml', compiledCode.appproject);
+      zip.file('argo-setup.sh', compiledCode.commands);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'argocd-gitops-manifests.zip';
+        a.click();
+        showToast('⬇️ argocd-gitops-manifests.zip downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('app_name').value = 'frontend-app';
+      $('argo_project').value = 'default';
+      $('repo_url').value = 'https://github.com/my-org/gitops-infra.git';
+      $('target_branch').value = 'main';
+      $('target_path').value = 'charts/frontend-app';
+      $('dest_server').value = 'https://kubernetes.default.svc';
+      $('dest_ns').value = 'production';
+      $('sync_auto').checked = true;
+      $('sync_prune').checked = true;
+      $('sync_selfheal').checked = true;
+      $('project_repo_limit').value = 'https://github.com/my-org/*.git';
+      $('project_ns_limit').value = 'production, staging';
+
+      triggerCompileAll();
+      showToast('🗑️ Defaults configurations successfully restored!');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

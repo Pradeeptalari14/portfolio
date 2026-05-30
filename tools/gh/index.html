@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GitHub Actions Workflow Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready GitHub Actions pipelines, Sonar properties, and deployment documentation dynamically with enterprise security checks." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --border:         #e2e8f0;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN GH ACTIONS STUDIO -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">CI/CD Pipelines Studio</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">GitHub Actions Workflow Generator</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>Automate your delivery workflows. Generate secure and highly optimized CI/CD pipeline steps for continuous linting, vulnerability checking, and cloud distribution.</em>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Environment Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⚙️ Pipeline Core Environment</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="gh_lang" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Development Tech Stack</label>
+              <select id="gh_lang" class="form-select w-full p-2.5 text-xs">
+                <option value="node">Node.js (npm / CI)</option>
+                <option value="python">Python (pip / pytest)</option>
+                <option value="go">Go Runtime (go test / build)</option>
+                <option value="docker">Docker Hub Image compilation</option>
+                <option value="java">Java (Maven / Gradle build)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="gh_branch" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Branches (comma-separated)</label>
+              <input type="text" id="gh_branch" class="form-input w-full p-2.5 text-xs" value="main, dev" />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-700 pt-3 border-t border-gray-100">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="trigger_push" class="custom-checkbox" checked />
+              <span>Trigger on Push</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="trigger_pr" class="custom-checkbox" checked />
+              <span>Trigger on Pull Request</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- DevSecOps Pipeline Scanners -->
+        <div class="studio-card border-amber-200 bg-amber-50/20">
+          <h3 class="studio-title text-base font-bold text-amber-900 mb-2 flex items-center gap-2">🛡️ SRE DevSecOps Checklists</h3>
+          <p class="text-xs text-gray-500 mb-4">Inject pipeline scanners to audit packages and block security credentials escapes.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white border border-amber-200 rounded-xl p-4">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-950 mb-2">
+                <input type="checkbox" id="scan_trivy" class="custom-checkbox" checked />
+                <span>Trivy Image Scan</span>
+              </label>
+              <p class="text-[10px] text-gray-500 leading-relaxed">
+                Audits final container dependencies structures to detect OS vulnerabilities during pipeline runs.
+              </p>
+            </div>
+            
+            <div class="bg-white border border-amber-200 rounded-xl p-4">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-950 mb-2">
+                <input type="checkbox" id="scan_snyk" class="custom-checkbox" />
+                <span>Snyk Dependencies</span>
+              </label>
+              <p class="text-[10px] text-gray-500 leading-relaxed">
+                Checks application packages libraries (npm/pip) against public vulnerability databases.
+              </p>
+            </div>
+
+            <div class="bg-white border border-amber-200 rounded-xl p-4">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-950 mb-2">
+                <input type="checkbox" id="scan_sonar" class="custom-checkbox" checked />
+                <span>SonarCloud Analysis</span>
+              </label>
+              <p class="text-[10px] text-gray-500 leading-relaxed">
+                Runs static code analysis to audit maintainability, code smell footprints, and bugs logs.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Cloud Distributions -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2">🌐 Cloud Distribution & Docker Push</h3>
+          <p class="text-xs text-gray-500 mb-4">Deploy compiled container resources dynamically onto cloud infrastructure hosts.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-gray-700">
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-1 font-bold">
+                <input type="checkbox" id="deploy_aws" class="custom-checkbox" />
+                <span>AWS EKS Deploy</span>
+              </label>
+              <p class="text-[10px] text-gray-400 font-normal">Authenticates to AWS CLI using IAM OIDC roles to deploy kube-configs.</p>
+            </div>
+
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-1 font-bold">
+                <input type="checkbox" id="deploy_gcp" class="custom-checkbox" />
+                <span>Google GKE Deploy</span>
+              </label>
+              <p class="text-[10px] text-gray-400 font-normal">Signs into Google Cloud auth keys to publish containers straight to Kubernetes.</p>
+            </div>
+
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-1 font-bold">
+                <input type="checkbox" id="push_docker" class="custom-checkbox" checked />
+                <span>Push DockerHub</span>
+              </label>
+              <p class="text-[10px] text-gray-400 font-normal">Builds multi-platform container assets and pushes directly to registry storage.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fresher Tips Callout -->
+        <div class="studio-card bg-indigo-50/20">
+          <h4 class="studio-title text-xs font-bold text-indigo-900 uppercase tracking-wider mb-2">💡 CI/CD Pipelines SRE Tip</h4>
+          <p class="text-xs text-indigo-950/80 leading-relaxed font-normal">
+            Executing scanners inside independent parallel jobs inside your actions workflows drops final delivery times. Always use OIDC providers instead of long-term static AWS credentials keys to satisfy standard CIS security policies.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Terminal IDE Viewport -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="ci" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yml</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('pipeline')" id="tab-pipeline" class="tab-btn active">ci-pipeline.yml</button>
+              <button onclick="switchTab('sonar')" id="tab-sonar" class="tab-btn">sonar-project.properties</button>
+              <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate Workflow Files</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Reset Defaults</span>
+            </button>
+          </div>
+
+          <button onclick="downloadWorkflowZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇ decline Download-Workflow.Zip</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info</p>
+    </div>
+  </footer>
+
+  <!-- ENGINE SCRIPT -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'pipeline';
+
+    let compiledCode = {
+      pipeline: '',
+      sonar: '',
+      readme: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    function triggerCompileAll() {
+      compilePipeline();
+      compileSonar();
+      compileReadme();
+      updateViewportContent();
+    }
+
+    function compilePipeline() {
+      const lang = $('gh_lang').value;
+      const branches = $('gh_branch').value.split(',').map(b => b.trim()).filter(Boolean);
+      const isPush = $('trigger_push').checked;
+      const isPR = $('trigger_pr').checked;
+
+      const isTrivy = $('scan_trivy').checked;
+      const isSnyk = $('scan_snyk').checked;
+      const isSonar = $('scan_sonar').checked;
+
+      const isAWS = $('deploy_aws').checked;
+      const isGCP = $('deploy_gcp').checked;
+      const isDocker = $('push_docker').checked;
+
+      let code = `# .github/workflows/ci.yml\nname: Enterprise CI/CD Pipeline\n\non:\n`;
+      
+      if (isPush && branches.length > 0) {
+        code += `  push:\n    branches:\n`;
+        branches.forEach(b => {
+          code += `      - "${b}"\n`;
+        });
+      }
+      if (isPR && branches.length > 0) {
+        code += `  pull_request:\n    branches:\n`;
+        branches.forEach(b => {
+          code += `      - "${b}"\n`;
+        });
+      }
+
+      code += `\njobs:\n`;
+
+      // 1. Build and Test Job
+      code += `  build-and-test:\n    runs-on: ubuntu-latest\n    steps:\n`;
+      code += `      - name: Checkout Source Code\n        uses: actions/checkout@v4\n\n`;
+
+      if (lang === 'node') {
+        code += `      - name: Setup Node.js Environment\n        uses: actions/setup-node@v4\n        with:\n          node-version: "20"\n          cache: "npm"\n\n`;
+        code += `      - name: Install Packages\n        run: npm ci\n\n`;
+        code += `      - name: Run Tests\n        run: npm test --if-present\n\n`;
+      } else if (lang === 'python') {
+        code += `      - name: Setup Python Environment\n        uses: actions/setup-python@v5\n        with:\n          python-version: "3.11"\n          cache: "pip"\n\n`;
+        code += `      - name: Install Dependencies\n        run: |\n          pip install -r requirements.txt\n          pip install pytest\n\n`;
+        code += `      - name: Run Tests\n        run: pytest\n\n`;
+      } else if (lang === 'go') {
+        code += `      - name: Setup Go Environment\n        uses: actions/setup-go@v5\n        with:\n          go-version: "1.21"\n\n`;
+        code += `      - name: Fetch Dependencies\n        run: go mod download\n\n`;
+        code += `      - name: Run Tests\n        run: go test ./...\n\n`;
+      } else if (lang === 'java') {
+        code += `      - name: Setup JDK Runtime\n        uses: actions/setup-java@v4\n        with:\n          distribution: "temurin"\n          java-version: "17"\n          cache: "maven"\n\n`;
+        code += `      - name: Compile and Test\n        run: mvn test\n\n`;
+      } else if (lang === 'docker') {
+        code += `      - name: Compile local configuration validator\n        run: echo "Validating local scripts files..."\n\n`;
+      }
+
+      // Security Checks inside job
+      if (isSnyk) {
+        code += `      - name: Run Snyk Security Vulnerability Scan\n        uses: snyk/actions/node@master\n        env:\n          SNYK_TOKEN: \${{ secrets.SNYK_TOKEN }}\n        with:\n          command: monitor\n\n`;
+      }
+
+      if (isSonar) {
+        code += `      - name: Run Static Code Analysis via SonarCloud\n        uses: sonarsource/sonarcloud-github-action@master\n        env:\n          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}\n          SONAR_TOKEN: \${{ secrets.SONAR_TOKEN }}\n\n`;
+      }
+
+      // 2. Containerization and Distribution Job
+      if (isDocker || isTrivy || isAWS || isGCP) {
+        code += `  publish-and-deploy:\n    needs: build-and-test\n    runs-on: ubuntu-latest\n    steps:\n`;
+        code += `      - name: Checkout Source Code\n        uses: actions/checkout@v4\n\n`;
+        
+        if (isDocker || isTrivy) {
+          code += `      - name: Set up Docker Buildx\n        uses: docker/setup-buildx-action@v3\n\n`;
+          code += `      - name: Sign into DockerHub Registry\n        uses: docker/login-action@v3\n        with:\n          username: \${{ secrets.DOCKERHUB_USERNAME }}\n          password: \${{ secrets.DOCKERHUB_TOKEN }}\n\n`;
+          code += `      - name: Build local container\n        uses: docker/build-push-action@v5\n        with:\n          context: .\n          load: true\n          tags: my-app:latest\n\n`;
+        }
+
+        if (isTrivy) {
+          code += `      - name: Scan Image via Trivy Security Scanner\n        uses: aquasecurity/trivy-action@master\n        with:\n          image-ref: "my-app:latest"\n          format: "table"\n          exit-code: "1"\n          ignore-unfixed: true\n          vuln-type: "os,library"\n          severity: "CRITICAL,HIGH"\n\n`;
+        }
+
+        if (isDocker) {
+          code += `      - name: Push Container to DockerHub Registry\n        uses: docker/build-push-action@v5\n        with:\n          context: .\n          push: true\n          tags: \${{ secrets.DOCKERHUB_USERNAME }}/my-app:\${{ github.sha }}\n\n`;
+        }
+
+        if (isAWS) {
+          code += `      - name: Authenticate to AWS CLI via IAM OIDC Role\n        uses: aws-actions/configure-aws-credentials@v4\n        with:\n          role-to-assume: arn:aws:iam::123456789012:role/github-actions-gke-role\n          aws-region: us-east-1\n\n`;
+          code += `      - name: Set Kubernetes targets via EKS\n        run: aws eks update-kubeconfig --name enterprise-cluster\n\n`;
+          code += `      - name: Deploy manifests to EKS Cluster\n        run: kubectl rollout restart deployment/app-deployment\n\n`;
+        } else if (isGCP) {
+          code += `      - name: Sign into Google Cloud SDK\n        uses: google-github-actions/auth@v2\n        with:\n          credentials_json: \${{ secrets.GCP_CREDENTIALS }}\n\n`;
+          code += `      - name: Set GKE Target Access\n        uses: google-github-actions/get-gke-credentials@v2\n        with:\n          cluster_name: enterprise-cluster\n          location: us-central1\n\n`;
+          code += `      - name: Rollout manifest updates on GKE\n        run: kubectl rollout restart deployment/app-deployment\n\n`;
+        }
+      }
+
+      compiledCode.pipeline = code;
+    }
+
+    function compileSonar() {
+      const isSonar = $('scan_sonar').checked;
+      if (!isSonar) {
+        compiledCode.sonar = `# SonarCloud analysis is currently disabled. Toggle the checkbox in the settings panel to generate rules.`;
+        return;
+      }
+      let code = `# sonar-project.properties\n`;
+      code += `sonar.projectKey=TalariPradeep_enterprise-devops-app\n`;
+      code += `sonar.organization=talaripradeep\n`;
+      code += `sonar.host.url=https://sonarcloud.io\n\n`;
+      code += `sonar.sources=.\n`;
+      code += `sonar.exclusions=**/node_modules/**,**/dist/**,**/*.spec.js,**/test/**\n\n`;
+      code += `sonar.sourceEncoding=UTF-8\n`;
+      compiledCode.sonar = code;
+    }
+
+    function compileReadme() {
+      let code = `# Enterprise CI/CD Pipeline Setup Guide\n\n`;
+      code += `This directory houses the dynamic configuration templates compiled client-side.\n\n`;
+      code += `## Required GitHub Repository Secrets\n\n`;
+      code += `To execute the generated pipeline workflow successfully, configure the following secrets within your GitHub Repository Settings:\n\n`;
+      code += `1. **DOCKERHUB_USERNAME**: Your DockerHub username profile ID.\n`;
+      code += `2. **DOCKERHUB_TOKEN**: Secure registry access token (do not use raw accounts passwords).\n`;
+      code += `3. **SONAR_TOKEN**: Organization SonarCloud key credential (required if static scan is enabled).\n`;
+      code += `4. **SNYK_TOKEN**: Snyk CLI access security token (if snyk is selected).\n`;
+      code += `5. **GCP_CREDENTIALS**: Google Cloud IAM keys JSON payload block (required if GKE deploy is enabled).\n\n`;
+      code += `## Workflow Path Location\n\n`;
+      code += `Place the compiled workflow script inside your repository path: \`.github/workflows/ci.yml\`.\n`;
+
+      compiledCode.readme = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'pipeline') {
+        nameBox.value = 'ci';
+        extTag.textContent = '.yml';
+      } else if (tabId === 'sonar') {
+        nameBox.value = 'sonar-project';
+        extTag.textContent = '.properties';
+      } else if (tabId === 'readme') {
+        nameBox.value = 'README';
+        extTag.textContent = '.md';
+      }
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadWorkflowZip() {
+      const zip = new JSZip();
+      zip.file('.github/workflows/ci.yml', compiledCode.pipeline);
+      zip.file('sonar-project.properties', compiledCode.sonar);
+      zip.file('README.md', compiledCode.readme);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'github-actions-workflow.zip';
+        a.click();
+        showToast('⬇️ github-actions-workflow.zip downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('gh_lang').value = 'node';
+      $('gh_branch').value = 'main, dev';
+      $('trigger_push').checked = true;
+      $('trigger_pr').checked = true;
+      $('scan_trivy').checked = true;
+      $('scan_snyk').checked = false;
+      $('scan_sonar').checked = true;
+      $('deploy_aws').checked = false;
+      $('deploy_gcp').checked = false;
+      $('push_docker').checked = true;
+
+      triggerCompileAll();
+      showToast('🗑️ Defaults configurations successfully restored!');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

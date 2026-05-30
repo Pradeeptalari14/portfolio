@@ -15,6 +15,10 @@ export default defineConfig({
         terraform: resolve(__dirname, 'tools/te/index.html'),
         k8s: resolve(__dirname, 'tools/k8s/index.html'),
         mon: resolve(__dirname, 'tools/mon/index.html'),
+        github: resolve(__dirname, 'tools/gh/index.html'),
+        helm: resolve(__dirname, 'tools/helm/index.html'),
+        argo: resolve(__dirname, 'tools/argo/index.html'),
+        logging: resolve(__dirname, 'tools/log/index.html'),
       }
     }
   }

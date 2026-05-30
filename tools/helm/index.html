@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Helm Chart Scaffold Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Kubernetes Helm Charts, value configurations overrides, deployment manifests, and services dynamically." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --border:         #e2e8f0;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN HELM CHART STUDIO -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Kubernetes Templates</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Helm Chart Scaffold Studio</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>Automate Kubernetes package layouts. Scaffold comprehensive charts, custom overrides values files, dynamic template loops, and ingresses using dynamic variables mapping.</em>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Chart Details -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⛵ Chart Core Description</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label for="chart_name" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Chart Name</label>
+              <input type="text" id="chart_name" class="form-input w-full p-2.5 text-xs" value="my-app" />
+            </div>
+            
+            <div class="md:col-span-2">
+              <label for="chart_desc" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Short Description</label>
+              <input type="text" id="chart_desc" class="form-input w-full p-2.5 text-xs" value="A production-ready Helm chart compiled via Talari Pradeep's Studio" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label for="chart_version" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Chart Version</label>
+              <input type="text" id="chart_version" class="form-input w-full p-2.5 text-xs" value="0.1.0" />
+            </div>
+            
+            <div>
+              <label for="app_version" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">App Version</label>
+              <input type="text" id="app_version" class="form-input w-full p-2.5 text-xs" value="1.0.0" />
+            </div>
+
+            <div>
+              <label for="replicas" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Default Replicas</label>
+              <input type="number" id="replicas" class="form-input w-full p-2.5 text-xs" value="2" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Workload Image & Network Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🐳 Workload & Service Bindings</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="image_repo" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Container Registry/Repository</label>
+              <input type="text" id="image_repo" class="form-input w-full p-2.5 text-xs" value="nginx" />
+            </div>
+
+            <div>
+              <label for="image_policy" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Pull Policy</label>
+              <select id="image_policy" class="form-select w-full p-2.5 text-xs">
+                <option value="IfNotPresent">IfNotPresent (Cache layers first)</option>
+                <option value="Always">Always (Pull fresh digests)</option>
+                <option value="Never">Never (Local images only)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-gray-100">
+            <div>
+              <label for="service_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Discovery Type</label>
+              <select id="service_type" class="form-select w-full p-2.5 text-xs">
+                <option value="ClusterIP">ClusterIP (Internal connection)</option>
+                <option value="NodePort">NodePort (Host ports mapping)</option>
+                <option value="LoadBalancer">LoadBalancer (Cloud provider integration)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="service_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Port</label>
+              <input type="number" id="service_port" class="form-input w-full p-2.5 text-xs" value="80" />
+            </div>
+
+            <div>
+              <label for="container_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Container Port</label>
+              <input type="number" id="container_port" class="form-input w-full p-2.5 text-xs" value="80" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Ingress & Storage Settings -->
+        <div class="studio-card border-amber-200 bg-amber-50/20">
+          <h3 class="studio-title text-base font-bold text-amber-900 mb-2 flex items-center gap-2">🛡️ SRE Routing & Persistent Storage</h3>
+          <p class="text-xs text-gray-500 mb-4">Leverage production features like ingress hosts and persistent storage volumes mapping dynamically.</p>
+          
+          <div class="space-y-4">
+            <div class="p-3 bg-white border border-amber-200 rounded-xl">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-950 mb-2">
+                <input type="checkbox" id="ingress_enable" class="custom-checkbox" checked />
+                <span>Enable Ingress Controller Routing</span>
+              </label>
+              
+              <div id="ingress-box" class="pl-6 space-y-2 mt-2">
+                <label for="ingress_host" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Host Domain mapping</label>
+                <input type="text" id="ingress_host" class="form-input w-full p-2 text-xs" value="my-app.local" />
+              </div>
+            </div>
+
+            <div class="p-3 bg-white border border-amber-200 rounded-xl">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-950 mb-2">
+                <input type="checkbox" id="storage_enable" class="custom-checkbox" />
+                <span>Map Persistent Volume Claims (PVC)</span>
+              </label>
+              
+              <div id="storage-box" class="hidden pl-6 space-y-2 mt-2">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label for="pvc_size" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Volume Storage Size</label>
+                    <input type="text" id="pvc_size" class="form-input w-full p-2 text-xs" value="10Gi" />
+                  </div>
+                  <div>
+                    <label for="mount_path" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Container Mount Path</label>
+                    <input type="text" id="mount_path" class="form-input w-full p-2 text-xs" value="/var/data" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SRE tip callout -->
+        <div class="studio-card bg-indigo-50/20">
+          <h4 class="studio-title text-xs font-bold text-indigo-900 uppercase tracking-wider mb-2">💡 SRE Helm Tip</h4>
+          <p class="text-xs text-indigo-950/80 leading-relaxed font-normal">
+            Helm decouples code manifests from environment configuration values. Running <code>helm lint</code> on your directory prevents structure syntax crashes during continuous integration (CI) pipeline steps.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Terminal Viewport -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="Chart" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yaml</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('chart')" id="tab-chart" class="tab-btn active">Chart.yaml</button>
+              <button onclick="switchTab('values')" id="tab-values" class="tab-btn">values.yaml</button>
+              <button onclick="switchTab('deployment')" id="tab-deployment" class="tab-btn">deployment.yaml</button>
+              <button onclick="switchTab('service')" id="tab-service" class="tab-btn">service.yaml</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate Chart Scaffold</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Reset Defaults</span>
+            </button>
+          </div>
+
+          <button onclick="downloadHelmZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Helm-Chart.Zip</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info</p>
+    </div>
+  </footer>
+
+  <!-- ENGINE SCRIPT -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'chart';
+
+    let compiledCode = {
+      chart: '',
+      values: '',
+      deployment: '',
+      service: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $('ingress_enable').addEventListener('change', function() {
+        $('ingress-box').classList.toggle('hidden', !this.checked);
+        triggerCompileAll();
+      });
+
+      $('storage_enable').addEventListener('change', function() {
+        $('storage-box').classList.toggle('hidden', !this.checked);
+        triggerCompileAll();
+      });
+
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    function triggerCompileAll() {
+      compileChart();
+      compileValues();
+      compileDeployment();
+      compileService();
+      updateViewportContent();
+    }
+
+    function compileChart() {
+      const name = $('chart_name').value;
+      const desc = $('chart_desc').value;
+      const ver = $('chart_version').value;
+      const appVer = $('app_version').value;
+
+      let code = `apiVersion: v2\nname: ${name}\ndescription: ${desc}\ntype: application\nversion: ${ver}\nappVersion: "${appVer}"\n`;
+      compiledCode.chart = code;
+    }
+
+    function compileValues() {
+      const repo = $('image_repo').value;
+      const policy = $('image_policy').value;
+      const replicas = $('replicas').value;
+      const serviceType = $('service_type').value;
+      const port = $('service_port').value;
+      const targetPort = $('container_port').value;
+
+      const isIngress = $('ingress_enable').checked;
+      const ingressHost = $('ingress_host').value;
+
+      const isStorage = $('storage_enable').checked;
+      const pvcSize = $('pvc_size').value;
+      const mountPath = $('mount_path').value;
+
+      let code = `# values.yaml - Configuration overrides compiled client-side\n\n`;
+      code += `replicaCount: ${replicas}\n\n`;
+      code += `image:\n  repository: ${repo}\n  pullPolicy: ${policy}\n  tag: "latest"\n\n`;
+      code += `service:\n  type: ${serviceType}\n  port: ${port}\n  targetPort: ${targetPort}\n\n`;
+      
+      code += `ingress:\n  enabled: ${isIngress}\n`;
+      if (isIngress) {
+        code += `  host: "${ingressHost}"\n  path: /\n`;
+      }
+
+      code += `\nstorage:\n  enabled: ${isStorage}\n`;
+      if (isStorage) {
+        code += `  size: "${pvcSize}"\n  mountPath: "${mountPath}"\n`;
+      }
+
+      compiledCode.values = code;
+    }
+
+    function compileDeployment() {
+      const name = $('chart_name').value;
+      const isStorage = $('storage_enable').checked;
+
+      let code = `# templates/deployment.yaml\n`;
+      code += `apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: {{ include "${name}.fullname" . }}\n  labels:\n    app.kubernetes.io/name: ${name}\nspec:\n  replicas: {{ .Values.replicaCount }}\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: ${name}\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: ${name}\n    spec:\n      containers:\n        - name: ${name}\n          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"\n          imagePullPolicy: {{ .Values.image.pullPolicy }}\n          ports:\n            - name: http\n              containerPort: {{ .Values.service.targetPort }}\n              protocol: TCP\n`;
+
+      if (isStorage) {
+        code += `          volumeMounts:\n            - name: app-persistent-storage\n              mountPath: {{ .Values.storage.mountPath }}\n      volumes:\n        - name: app-persistent-storage\n          persistentVolumeClaim:\n            claimName: {{ include "${name}.fullname" . }}-pvc\n`;
+      }
+
+      compiledCode.deployment = code;
+    }
+
+    function compileService() {
+      const name = $('chart_name').value;
+      let code = `# templates/service.yaml\n`;
+      code += `apiVersion: v1\nkind: Service\nmetadata:\n  name: {{ include "${name}.fullname" . }}\n  labels:\n    app.kubernetes.io/name: ${name}\nspec:\n  type: {{ .Values.service.type }}\n  ports:\n    - port: {{ .Values.service.port }}\n      targetPort: {{ .Values.service.targetPort }}\n      protocol: TCP\n      name: http\n  selector:\n    app.kubernetes.io/name: ${name}\n`;
+      compiledCode.service = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'chart') {
+        nameBox.value = 'Chart';
+        extTag.textContent = '.yaml';
+      } else if (tabId === 'values') {
+        nameBox.value = 'values';
+        extTag.textContent = '.yaml';
+      } else if (tabId === 'deployment') {
+        nameBox.value = 'deployment';
+        extTag.textContent = '.yaml';
+      } else if (tabId === 'service') {
+        nameBox.value = 'service';
+        extTag.textContent = '.yaml';
+      }
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadHelmZip() {
+      const name = $('chart_name').value;
+      const zip = new JSZip();
+
+      // Create structure
+      zip.file(`${name}/Chart.yaml`, compiledCode.chart);
+      zip.file(`${name}/values.yaml`, compiledCode.values);
+      zip.file(`${name}/templates/deployment.yaml`, compiledCode.deployment);
+      zip.file(`${name}/templates/service.yaml`, compiledCode.service);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${name}-chart.zip`;
+        a.click();
+        showToast(`⬇️ ${name}-chart.zip downloaded successfully!`);
+      });
+    }
+
+    function clearAllFields() {
+      $('chart_name').value = 'my-app';
+      $('chart_desc').value = 'A production-ready Helm chart compiled via Talari Pradeep\'s Studio';
+      $('chart_version').value = '0.1.0';
+      $('app_version').value = '1.0.0';
+      $('replicas').value = '2';
+      $('image_repo').value = 'nginx';
+      $('image_policy').value = 'IfNotPresent';
+      $('service_type').value = 'ClusterIP';
+      $('service_port').value = '80';
+      $('container_port').value = '80';
+      $('ingress_enable').checked = true;
+      $('ingress-box').classList.remove('hidden');
+      $('ingress_host').value = 'my-app.local';
+      $('storage_enable').checked = false;
+      $('storage-box').classList.add('hidden');
+
+      triggerCompileAll();
+      showToast('🗑️ Defaults configurations successfully restored!');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
