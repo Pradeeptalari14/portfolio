@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advanced Monitoring Script Generator | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Prometheus and Grafana installation shell scripts, configuration parameters, and systemd service descriptors dynamically." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    /* ── Design Tokens & Monograph Styles ── */
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important; /* Dark slate */
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN MONITORING STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Telemetry & Alerts</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Advanced Monitoring Script Generator</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>This tool is still in improvement stage — please review and modify the generated script based on your own knowledge.</em>
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Installation Type -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">📈 Prometheus and Grafana Installation Generator</h3>
+          
+          <div class="mb-4">
+            <label for="install_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Installation Type</label>
+            <select id="install_type" class="form-select w-full p-2.5 text-xs">
+              <option value="system">System (On-prem/VMs)</option>
+              <option value="docker">Docker Containers (Docker Compose)</option>
+              <option value="k8s">Kubernetes manifests (YAML)</option>
+            </select>
+          </div>
+
+          <div class="space-y-4 pt-3 border-t border-gray-100 text-xs font-semibold text-gray-700">
+            <!-- Install Prometheus -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-2.5 font-bold">
+                <input type="checkbox" id="install_prom" class="custom-checkbox" checked />
+                <span>Install Prometheus</span>
+              </label>
+              
+              <div id="prom-settings-box" class="space-y-3 pl-6">
+                <div>
+                  <label for="prom_url" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Prometheus Download URL</label>
+                  <input type="text" id="prom_url" class="form-input w-full p-2 text-xs" value="https://github.com/prometheus/prometheus/releases/download/v3.5.0/prometheus-3.5.0.linux-amd64.tar.gz" />
+                  <p class="text-[9px] text-indigo-500 font-medium mt-1">You can find latest versions at <a href="https://prometheus.io/download" class="underline" target="_blank">prometheus.io/download</a></p>
+                </div>
+                <div>
+                  <label for="prom_port" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Prometheus Web Port</label>
+                  <input type="number" id="prom_port" class="form-input p-2 text-xs w-28" value="9090" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Host to Scrape -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-2.5 font-bold">
+                <input type="checkbox" id="add_hosts" class="custom-checkbox" />
+                <span>Add Host To Monitoring</span>
+              </label>
+              
+              <div id="hosts-settings-box" class="hidden pl-6">
+                <label for="scrape_targets" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Targets IPs / Exporters Mapped (comma-separated)</label>
+                <input type="text" id="scrape_targets" class="form-input w-full p-2 text-xs" value="10.0.1.10:9100, 10.0.1.11:9100" placeholder="10.0.1.10:9100, 10.0.1.11:9100" />
+              </div>
+            </div>
+
+            <!-- Install Node Exporter -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-2.5 font-bold">
+                <input type="checkbox" id="install_exporter" class="custom-checkbox" />
+                <span>Install Node Exporter</span>
+              </label>
+              
+              <div id="exporter-settings-box" class="hidden pl-6 space-y-3">
+                <div>
+                  <label for="exporter_url" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Node Exporter Download URL</label>
+                  <input type="text" id="exporter_url" class="form-input w-full p-2 text-xs" value="https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz" />
+                </div>
+                <div>
+                  <label for="exporter_port" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Node Exporter Port</label>
+                  <input type="number" id="exporter_port" class="form-input p-2 text-xs w-28" value="9100" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Install Grafana -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-2.5 font-bold">
+                <input type="checkbox" id="install_grafana" class="custom-checkbox" />
+                <span>Install Grafana</span>
+              </label>
+              
+              <div id="grafana-settings-box" class="hidden pl-6">
+                <label for="grafana_port" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Grafana Dashboard Port</label>
+                <input type="number" id="grafana_port" class="form-input p-2 text-xs w-28" value="3000" />
+              </div>
+            </div>
+
+            <!-- Systemd Services -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50">
+              <label class="flex items-center gap-2 cursor-pointer mb-2.5 font-bold">
+                <input type="checkbox" id="systemd_enable" class="custom-checkbox" checked />
+                <span>Enable as Systemd Service</span>
+              </label>
+            </div>
+
+            <!-- Linux Dist -->
+            <div>
+              <label for="linux_dist" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Linux Distribution</label>
+              <select id="linux_dist" class="form-select w-full p-2.5 text-xs">
+                <option value="ubuntu">Ubuntu/Debian</option>
+                <option value="centos">CentOS/RHEL</option>
+                <option value="amazon">Amazon Linux</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="pt-4 border-t border-gray-100 flex justify-end">
+            <button onclick="triggerCompileAll(); showToast('📈 script compile successfully!');" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition shadow-md shadow-indigo-100">
+              ⚡ Generate Installation Script
+            </button>
+          </div>
+        </div>
+
+        <!-- DevOps SRE explanation callout -->
+        <div class="studio-card bg-indigo-50/20">
+          <h4 class="studio-title text-xs font-bold text-indigo-900 uppercase tracking-wider mb-3">💡 SRE Telemetry Guide</h4>
+          <div class="text-xs text-indigo-950/80 space-y-3 leading-relaxed">
+            <p>
+              <strong>Prometheus</strong> runs as an unprivileged system daemon, regularly scraping performance metrics from exporters. We create dedicated unprivileged <code>prometheus</code> shell logins to comply with strict CIS benchmark controls.
+            </p>
+            <p>
+              <strong>Node Exporter</strong> gathers system hardware stats (disk, memory, CPU) and exposes them on <code>:9100</code>. Prometheus parses these metrics into timeseries datastores.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-28 focus:outline-none" value="install" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.sh</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('install')" id="tab-install" class="tab-btn active">install.sh</button>
+              <button onclick="switchTab('prometheus')" id="tab-prometheus" class="tab-btn">prometheus.yml</button>
+              <button onclick="switchTab('service')" id="tab-service" class="tab-btn">node-exporter.service</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate Script Manifests</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear Output</span>
+            </button>
+          </div>
+
+          <button onclick="downloadMonitoringZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download-Monitoring.Zip</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-indigo-400">⚡</span> SRE Telemetry Commands
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Check running log outputs from systemd:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">journalctl -u prometheus -f --no-tail</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Verify scraped targets metrics context:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">curl localhost:9090/metrics</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info · Designed and provisioned as an open-source SRE tool.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'install';
+
+    let compiledCode = {
+      install: '',
+      prometheus: '',
+      service: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      // Toggle custom settings display depending on checkboxes
+      $('install_prom').addEventListener('change', function() {
+        $('prom-settings-box').classList.toggle('hidden', !this.checked);
+        triggerCompileAll();
+      });
+
+      $('add_hosts').addEventListener('change', function() {
+        $('hosts-settings-box').classList.toggle('hidden', !this.checked);
+        triggerCompileAll();
+      });
+
+      $('install_exporter').addEventListener('change', function() {
+        $('exporter-settings-box').classList.toggle('hidden', !this.checked);
+        triggerCompileAll();
+      });
+
+      $('install_grafana').addEventListener('change', function() {
+        $('grafana-settings-box').classList.toggle('hidden', !this.checked);
+        triggerCompileAll();
+      });
+
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    // Dynamic compilation master
+    function triggerCompileAll() {
+      compileInstallScript();
+      compilePromConfig();
+      compileServiceConfig();
+      updateViewportContent();
+    }
+
+    // Compile install.sh
+    function compileInstallScript() {
+      const type = $('install_type').value;
+      const isProm = $('install_prom').checked;
+      const promUrl = $('prom_url').value;
+      const promPort = $('prom_port').value;
+
+      const isExp = $('install_exporter').checked;
+      const expUrl = $('exporter_url').value;
+      const expPort = $('exporter_port').value;
+
+      const isGrafana = $('install_grafana').checked;
+      const grPort = $('grafana_port').value;
+
+      const systemd = $('systemd_enable').checked;
+      const dist = $('linux_dist').value;
+
+      let code = `#!/bin/bash\n# install.sh - Telemetry Provisioner compiled via Talari Pradeep's Studio\nset -e\n\n`;
+      code += `echo "⏱️ Starting deployment of Prometheus Telemetry tools..."\n`;
+      code += `sudo apt-get update -y && sudo apt-get install -y curl tar\n\n`;
+
+      if (isProm) {
+        code += `# ── PROMETHEUS CORE ──\n`;
+        code += `echo "Downloading Prometheus from archive..."\n`;
+        code += `curl -LO "${promUrl}"\n`;
+        code += `tar -xzf prometheus-*.tar.gz\n`;
+        code += `cd prometheus-*\n\n`;
+        code += `echo "Configuring unprivileged system user for Prometheus..."\n`;
+        code += `sudo useradd --no-create-home --shell /bin/false prometheus || true\n`;
+        code += `sudo mkdir -p /etc/prometheus /var/lib/prometheus\n`;
+        code += `sudo cp prometheus promtool /usr/local/bin/\n`;
+        code += `sudo cp -r consoles console_libraries /etc/prometheus/\n`;
+        code += `sudo cp ../prometheus.yml /etc/prometheus/\n`;
+        code += `sudo chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus\n`;
+        code += `sudo chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool\n\n`;
+        code += `cd ..\n\n`;
+      }
+
+      if (isExp) {
+        code += `# ── NODE EXPORTER CORE ──\n`;
+        code += `echo "Downloading Node Exporter archive..."\n`;
+        code += `curl -LO "${expUrl}"\n`;
+        code += `tar -xzf node_exporter-*.tar.gz\n`;
+        code += `sudo cp node_exporter-*/node_exporter /usr/local/bin/\n`;
+        code += `sudo useradd --no-create-home --shell /bin/false node_exporter || true\n`;
+        code += `sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter\n\n`;
+      }
+
+      if (isGrafana) {
+        code += `# ── GRAFANA CORE ──\n`;
+        code += `echo "Adding Grafana GPG keys and packages repositories..."\n`;
+        code += `sudo mkdir -p /etc/apt/keyrings/\n`;
+        code += `wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null\n`;
+        code += `echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list\n`;
+        code += `sudo apt-get update -y && sudo apt-get install -y grafana\n\n`;
+      }
+
+      if (systemd) {
+        code += `# ── DAEMON SERVICES LIFECYCLES ──\n`;
+        if (isProm) {
+          code += `echo "Setting up systemd service unit: prometheus"\n`;
+          code += `sudo systemctl daemon-reload\n`;
+          code += `sudo systemctl enable prometheus\n`;
+          code += `sudo systemctl start prometheus\n`;
+        }
+        if (isExp) {
+          code += `echo "Setting up systemd service unit: node_exporter"\n`;
+          code += `sudo cp node-exporter.service /etc/systemd/system/\n`;
+          code += `sudo systemctl daemon-reload\n`;
+          code += `sudo systemctl enable node-exporter\n`;
+          code += `sudo systemctl start node-exporter\n`;
+        }
+        if (isGrafana) {
+          code += `echo "Setting up systemd service unit: grafana-server"\n`;
+          code += `sudo systemctl enable grafana-server\n`;
+          code += `sudo systemctl start grafana-server\n`;
+        }
+      }
+
+      code += `\necho "✅ Telemetry configurations successfully provisioned! check metrics."\n`;
+
+      compiledCode.install = code;
+    }
+
+    // Compile prometheus.yml
+    function compilePromConfig() {
+      const port = $('prom_port').value;
+      const addHosts = $('add_hosts').checked;
+      const scrapeTargets = $('scrape_targets').value.split(',');
+
+      let code = `# prometheus.yml config compiled client-side\n`;
+      code += `global:\n`;
+      code += `  scrape_interval: 15s\n`;
+      code += `  evaluation_interval: 15s\n\n`;
+      code += `scrape_configs:\n`;
+      code += `  - job_name: "prometheus"\n`;
+      code += `    static_configs:\n`;
+      code += `      - targets: ["localhost:${port}"]\n`;
+
+      if (addHosts && scrapeTargets.length > 0) {
+        code += `\n  - job_name: "node-exporters-cluster"\n`;
+        code += `    static_configs:\n`;
+        code += `      - targets:\n`;
+        scrapeTargets.forEach(tgt => {
+          if (tgt.trim()) {
+            code += `          - "${tgt.trim()}"\n`;
+          }
+        });
+      }
+
+      compiledCode.prometheus = code;
+    }
+
+    // Compile node-exporter.service
+    function compileServiceConfig() {
+      const port = $('exporter_port').value;
+      let code = `[Unit]\n`;
+      code += `Description=Node Exporter Metric Scraper daemon\n`;
+      code += `Wants=network-online.target\n`;
+      code += `After=network-online.target\n\n`;
+      code += `[Service]\n`;
+      code += `User=node_exporter\n`;
+      code += `Group=node_exporter\n`;
+      code += `Type=simple\n`;
+      code += `ExecStart=/usr/local/bin/node_exporter --web.listen-address=:${port}\n\n`;
+      code += `[Install]\n`;
+      code += `WantedBy=multi-user.target\n`;
+      compiledCode.service = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'install') {
+        nameBox.value = 'install';
+        extTag.textContent = '.sh';
+      } else if (tabId === 'prometheus') {
+        nameBox.value = 'prometheus';
+        extTag.textContent = '.yml';
+      } else if (tabId === 'service') {
+        nameBox.value = 'node-exporter';
+        extTag.textContent = '.service';
+      }
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadMonitoringZip() {
+      const zip = new JSZip();
+      zip.file('install.sh', compiledCode.install);
+      zip.file('prometheus.yml', compiledCode.prometheus);
+      zip.file('node-exporter.service', compiledCode.service);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'monitoring-resources.zip';
+        a.click();
+        showToast('⬇️ monitoring-resources.zip downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('install_type').value = 'system';
+      $('install_prom').checked = true;
+      $('prom-settings-box').classList.remove('hidden');
+      $('prom_port').value = '9090';
+
+      $('add_hosts').checked = false;
+      $('hosts-settings-box').classList.add('hidden');
+      $('scrape_targets').value = '10.0.1.10:9100, 10.0.1.11:9100';
+
+      $('install_exporter').checked = false;
+      $('exporter-settings-box').classList.add('hidden');
+      $('exporter_port').value = '9100';
+
+      $('install_grafana').checked = false;
+      $('grafana-settings-box').classList.add('hidden');
+      $('grafana_port').value = '3000';
+
+      $('systemd_enable').checked = true;
+      $('linux_dist').value = 'ubuntu';
+
+      triggerCompileAll();
+      showToast('🗑️ Output configuration cleared and reset to defaults');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
