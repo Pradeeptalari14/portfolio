@@ -13,11 +13,11 @@ export default defineConfig({
         docker: resolve(__dirname, 'tools/docker/index.html'),
         jenkins: resolve(__dirname, 'tools/jenkins/index.html'),
         terraform: resolve(__dirname, 'tools/terraform/index.html'),
-        k8s: resolve(__dirname, 'tools/kubernetes/index.html'),
-        mon: resolve(__dirname, 'tools/monitoring/index.html'),
+        kubernetes: resolve(__dirname, 'tools/kubernetes/index.html'),
+        monitoring: resolve(__dirname, 'tools/monitoring/index.html'),
         github: resolve(__dirname, 'tools/github-actions/index.html'),
         helm: resolve(__dirname, 'tools/helm/index.html'),
-        argo: resolve(__dirname, 'tools/argocd/index.html'),
+        argocd: resolve(__dirname, 'tools/argocd/index.html'),
         logging: resolve(__dirname, 'tools/logging/index.html'),
       }
     }

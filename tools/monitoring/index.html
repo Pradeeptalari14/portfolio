@@ -423,9 +423,27 @@
       service: ''
     };
 
+    const installTypesConfig = {
+      system: {
+        tab1: { label: 'install.sh', filename: 'install', ext: '.sh' },
+        tab2: { label: 'prometheus.yml', filename: 'prometheus', ext: '.yml' },
+        tab3: { label: 'node-exporter.service', filename: 'node-exporter', ext: '.service' }
+      },
+      docker: {
+        tab1: { label: 'docker-compose.yml', filename: 'docker-compose', ext: '.yml' },
+        tab2: { label: 'prometheus.yml', filename: 'prometheus', ext: '.yml' },
+        tab3: { label: 'readme.txt', filename: 'readme', ext: '.txt' }
+      },
+      k8s: {
+        tab1: { label: 'prometheus-k8s.yaml', filename: 'prometheus-k8s', ext: '.yaml' },
+        tab2: { label: 'grafana-k8s.yaml', filename: 'grafana-k8s', ext: '.yaml' },
+        tab3: { label: 'node-exporter-k8s.yaml', filename: 'node-exporter-k8s', ext: '.yaml' }
+      }
+    };
+
     window.addEventListener('DOMContentLoaded', () => {
       setupInteractiveListeners();
-      triggerCompileAll();
+      onInstallTypeChange();
     });
 
     function setupInteractiveListeners() {
@@ -450,12 +468,54 @@
         triggerCompileAll();
       });
 
+      $('install_type').addEventListener('change', onInstallTypeChange);
+
       $$('input, select').forEach(input => {
-        if (input.id !== 'download-name-input') {
+        if (input.id !== 'download-name-input' && input.id !== 'install_type') {
           input.addEventListener('input', triggerCompileAll);
           input.addEventListener('change', triggerCompileAll);
         }
       });
+    }
+
+    function onInstallTypeChange() {
+      const type = $('install_type').value;
+      const isSystem = (type === 'system');
+
+      // Toggle display of System-specific blocks
+      const systemdBox = $('systemd_enable').closest('.p-3');
+      if (systemdBox) systemdBox.style.display = isSystem ? 'block' : 'none';
+
+      const distBox = $('linux_dist').closest('div');
+      if (distBox) distBox.style.display = isSystem ? 'block' : 'none';
+
+      const urlInputBox = $('prom_url').closest('div');
+      if (urlInputBox) urlInputBox.style.display = isSystem ? 'block' : 'none';
+
+      const expUrlInputBox = $('exporter_url').closest('div');
+      if (expUrlInputBox) expUrlInputBox.style.display = isSystem ? 'block' : 'none';
+
+      updateTabsUI();
+      triggerCompileAll();
+    }
+
+    function updateTabsUI() {
+      const type = $('install_type').value;
+      const cfg = installTypesConfig[type];
+
+      $('tab-install').textContent = cfg.tab1.label;
+      $('tab-prometheus').textContent = cfg.tab2.label;
+      $('tab-service').textContent = cfg.tab3.label;
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      let currentActiveCfg = cfg.tab1;
+      if (activeTab === 'prometheus') currentActiveCfg = cfg.tab2;
+      if (activeTab === 'service') currentActiveCfg = cfg.tab3;
+
+      nameBox.value = currentActiveCfg.filename;
+      extTag.textContent = currentActiveCfg.ext;
     }
 
     // Dynamic compilation master
@@ -466,7 +526,7 @@
       updateViewportContent();
     }
 
-    // Compile install.sh
+    // Compile install.sh (tab1)
     function compileInstallScript() {
       const type = $('install_type').value;
       const isProm = $('install_prom').checked;
@@ -481,119 +541,265 @@
       const grPort = $('grafana_port').value;
 
       const systemd = $('systemd_enable').checked;
-      const dist = $('linux_dist').value;
 
-      let code = `#!/bin/bash\n# install.sh - Telemetry Provisioner compiled via Talari Pradeep's Studio\nset -e\n\n`;
-      code += `echo "⏱️ Starting deployment of Prometheus Telemetry tools..."\n`;
-      code += `sudo apt-get update -y && sudo apt-get install -y curl tar\n\n`;
+      if (type === 'system') {
+        let code = `#!/bin/bash\n# install.sh - Telemetry Provisioner compiled via Talari Pradeep's Studio\nset -e\n\n`;
+        code += `echo "⏱️ Starting SRE deployment of Prometheus Telemetry tools..."\n`;
+        code += `sudo apt-get update -y && sudo apt-get install -y curl tar\n\n`;
 
-      if (isProm) {
-        code += `# ── PROMETHEUS CORE ──\n`;
-        code += `echo "Downloading Prometheus from archive..."\n`;
-        code += `curl -LO "${promUrl}"\n`;
-        code += `tar -xzf prometheus-*.tar.gz\n`;
-        code += `cd prometheus-*\n\n`;
-        code += `echo "Configuring unprivileged system user for Prometheus..."\n`;
-        code += `sudo useradd --no-create-home --shell /bin/false prometheus || true\n`;
-        code += `sudo mkdir -p /etc/prometheus /var/lib/prometheus\n`;
-        code += `sudo cp prometheus promtool /usr/local/bin/\n`;
-        code += `sudo cp -r consoles console_libraries /etc/prometheus/\n`;
-        code += `sudo cp ../prometheus.yml /etc/prometheus/\n`;
-        code += `sudo chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus\n`;
-        code += `sudo chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool\n\n`;
-        code += `cd ..\n\n`;
-      }
-
-      if (isExp) {
-        code += `# ── NODE EXPORTER CORE ──\n`;
-        code += `echo "Downloading Node Exporter archive..."\n`;
-        code += `curl -LO "${expUrl}"\n`;
-        code += `tar -xzf node_exporter-*.tar.gz\n`;
-        code += `sudo cp node_exporter-*/node_exporter /usr/local/bin/\n`;
-        code += `sudo useradd --no-create-home --shell /bin/false node_exporter || true\n`;
-        code += `sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter\n\n`;
-      }
-
-      if (isGrafana) {
-        code += `# ── GRAFANA CORE ──\n`;
-        code += `echo "Adding Grafana GPG keys and packages repositories..."\n`;
-        code += `sudo mkdir -p /etc/apt/keyrings/\n`;
-        code += `wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null\n`;
-        code += `echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list\n`;
-        code += `sudo apt-get update -y && sudo apt-get install -y grafana\n\n`;
-      }
-
-      if (systemd) {
-        code += `# ── DAEMON SERVICES LIFECYCLES ──\n`;
         if (isProm) {
-          code += `echo "Setting up systemd service unit: prometheus"\n`;
-          code += `sudo systemctl daemon-reload\n`;
-          code += `sudo systemctl enable prometheus\n`;
-          code += `sudo systemctl start prometheus\n`;
+          code += `# ── PROMETHEUS CORE ──\n`;
+          code += `echo "Downloading Prometheus from archive..."\n`;
+          code += `curl -LO "${promUrl}"\n`;
+          code += `tar -xzf prometheus-*.tar.gz\n`;
+          code += `cd prometheus-*\n\n`;
+          code += `echo "Configuring unprivileged system user for Prometheus..."\n`;
+          code += `sudo useradd --no-create-home --shell /bin/false prometheus || true\n`;
+          code += `sudo mkdir -p /etc/prometheus /var/lib/prometheus\n`;
+          code += `sudo cp prometheus promtool /usr/local/bin/\n`;
+          code += `sudo cp -r consoles console_libraries /etc/prometheus/\n`;
+          code += `sudo cp ../prometheus.yml /etc/prometheus/\n`;
+          code += `sudo chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus\n`;
+          code += `sudo chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool\n\n`;
+          code += `cd ..\n\n`;
         }
+
         if (isExp) {
-          code += `echo "Setting up systemd service unit: node_exporter"\n`;
-          code += `sudo cp node-exporter.service /etc/systemd/system/\n`;
-          code += `sudo systemctl daemon-reload\n`;
-          code += `sudo systemctl enable node-exporter\n`;
-          code += `sudo systemctl start node-exporter\n`;
+          code += `# ── NODE EXPORTER CORE ──\n`;
+          code += `echo "Downloading Node Exporter archive..."\n`;
+          code += `curl -LO "${expUrl}"\n`;
+          code += `tar -xzf node_exporter-*.tar.gz\n`;
+          code += `sudo cp node_exporter-*/node_exporter /usr/local/bin/\n`;
+          code += `sudo useradd --no-create-home --shell /bin/false node_exporter || true\n`;
+          code += `sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter\n\n`;
         }
+
         if (isGrafana) {
-          code += `echo "Setting up systemd service unit: grafana-server"\n`;
-          code += `sudo systemctl enable grafana-server\n`;
-          code += `sudo systemctl start grafana-server\n`;
+          code += `# ── GRAFANA CORE ──\n`;
+          code += `echo "Adding Grafana GPG keys and packages repositories..."\n`;
+          code += `sudo mkdir -p /etc/apt/keyrings/\n`;
+          code += `wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null\n`;
+          code += `echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list\n`;
+          code += `sudo apt-get update -y && sudo apt-get install -y grafana\n\n`;
         }
+
+        if (systemd) {
+          code += `# ── DAEMON SERVICES LIFECYCLES ──\n`;
+          if (isProm) {
+            code += `echo "Setting up systemd service unit: prometheus"\n`;
+            code += `sudo systemctl daemon-reload\n`;
+            code += `sudo systemctl enable prometheus\n`;
+            code += `sudo systemctl start prometheus\n`;
+          }
+          if (isExp) {
+            code += `echo "Setting up systemd service unit: node_exporter"\n`;
+            code += `sudo cp node-exporter.service /etc/systemd/system/\n`;
+            code += `sudo systemctl daemon-reload\n`;
+            code += `sudo systemctl enable node-exporter\n`;
+            code += `sudo systemctl start node-exporter\n`;
+          }
+          if (isGrafana) {
+            code += `echo "Setting up systemd service unit: grafana-server"\n`;
+            code += `sudo systemctl enable grafana-server\n`;
+            code += `sudo systemctl start grafana-server\n`;
+          }
+        }
+
+        code += `\necho "✅ Telemetry configurations successfully provisioned!"\n`;
+        compiledCode.install = code;
+
+      } else if (type === 'docker') {
+        let code = `version: '3.8'\n\nservices:\n`;
+        if (isProm) {
+          code += `  prometheus:\n`;
+          code += `    image: prom/prometheus:latest\n`;
+          code += `    container_name: prometheus\n`;
+          code += `    volumes:\n`;
+          code += `      - ./prometheus.yml:/etc/prometheus/prometheus.yml\n`;
+          code += `      - prometheus_data:/prometheus\n`;
+          code += `    command:\n`;
+          code += `      - '--config.file=/etc/prometheus/prometheus.yml'\n`;
+          code += `      - '--storage.tsdb.path=/prometheus'\n`;
+          code += `    ports:\n`;
+          code += `      - "${promPort}:${promPort}"\n`;
+          code += `    restart: unless-stopped\n`;
+          code += `    deploy:\n`;
+          code += `      resources:\n`;
+          code += `        limits:\n`;
+          code += `          cpus: '0.50'\n`;
+          code += `          memory: 512M\n\n`;
+        }
+
+        if (isExp) {
+          code += `  node-exporter:\n`;
+          code += `    image: prom/node-exporter:latest\n`;
+          code += `    container_name: node-exporter\n`;
+          code += `    volumes:\n`;
+          code += `      - /proc:/host/proc:ro\n`;
+          code += `      - /sys:/host/sys:ro\n`;
+          code += `      - /:/rootfs:ro\n`;
+          code += `    command:\n`;
+          code += `      - '--path.procfs=/host/proc'\n`;
+          code += `      - '--path.sysfs=/host/sys'\n`;
+          code += `    ports:\n`;
+          code += `      - "${expPort}:${expPort}"\n`;
+          code += `    restart: unless-stopped\n\n`;
+        }
+
+        if (isGrafana) {
+          code += `  grafana:\n`;
+          code += `    image: grafana/grafana:latest\n`;
+          code += `    container_name: grafana\n`;
+          code += `    ports:\n`;
+          code += `      - "${grPort}:${grPort}"\n`;
+          code += `    volumes:\n`;
+          code += `      - grafana_data:/var/lib/grafana\n`;
+          code += `    restart: unless-stopped\n\n`;
+        }
+
+        code += `volumes:\n`;
+        if (isProm) code += `  prometheus_data:\n`;
+        if (isGrafana) code += `  grafana_data:\n`;
+
+        compiledCode.install = code;
+
+      } else if (type === 'k8s') {
+        let code = `apiVersion: v1\nkind: Namespace\nmetadata:\n  name: monitoring\n---\n`;
+        if (isProm) {
+          code += `apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: prometheus-config\n  namespace: monitoring\ndata:\n  prometheus.yml: |\n`;
+          code += `    global:\n      scrape_interval: 15s\n    scrape_configs:\n      - job_name: 'prometheus'\n        static_configs:\n          - targets: ['localhost:${promPort}']\n`;
+          if (isExp) {
+            code += `      - job_name: 'node-exporter'\n        static_configs:\n          - targets: ['node-exporter:${expPort}']\n`;
+          }
+          code += `---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: prometheus\n  namespace: monitoring\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: prometheus\n  template:\n    metadata:\n      labels:\n        app: prometheus\n    spec:\n      containers:\n      - name: prometheus\n        image: prom/prometheus:latest\n        ports:\n        - containerPort: ${promPort}\n        volumeMounts:\n        - name: config-volume\n          mountPath: /etc/prometheus\n        - name: storage-volume\n          mountPath: /prometheus\n        resources:\n          limits:\n            cpu: 500m\n            memory: 512Mi\n          requests:\n            cpu: 200m\n            memory: 256Mi\n      volumes:\n      - name: config-volume\n        configMap:\n          name: prometheus-config\n      - name: storage-volume\n        emptyDir: {}\n---\n`;
+          code += `apiVersion: v1\nkind: Service\nmetadata:\n  name: prometheus-service\n  namespace: monitoring\nspec:\n  type: NodePort\n  ports:\n  - port: ${promPort}\n    targetPort: ${promPort}\n    nodePort: 30090\n  selector:\n    app: prometheus\n`;
+        } else {
+          code += `# Prometheus Setup is disabled\n`;
+        }
+        compiledCode.install = code;
       }
-
-      code += `\necho "✅ Telemetry configurations successfully provisioned! check metrics."\n`;
-
-      compiledCode.install = code;
     }
 
-    // Compile prometheus.yml
+    // Compile prometheus.yml (tab2)
     function compilePromConfig() {
-      const port = $('prom_port').value;
+      const type = $('install_type').value;
+      const isProm = $('install_prom').checked;
+      const promPort = $('prom_port').value;
+      const isExp = $('install_exporter').checked;
+      const expPort = $('exporter_port').value;
+      const isGrafana = $('install_grafana').checked;
+      const grPort = $('grafana_port').value;
       const addHosts = $('add_hosts').checked;
       const scrapeTargets = $('scrape_targets').value.split(',');
 
-      let code = `# prometheus.yml config compiled client-side\n`;
-      code += `global:\n`;
-      code += `  scrape_interval: 15s\n`;
-      code += `  evaluation_interval: 15s\n\n`;
-      code += `scrape_configs:\n`;
-      code += `  - job_name: "prometheus"\n`;
-      code += `    static_configs:\n`;
-      code += `      - targets: ["localhost:${port}"]\n`;
-
-      if (addHosts && scrapeTargets.length > 0) {
-        code += `\n  - job_name: "node-exporters-cluster"\n`;
+      if (type === 'system') {
+        let code = `# prometheus.yml config compiled client-side\n`;
+        code += `global:\n`;
+        code += `  scrape_interval: 15s\n`;
+        code += `  evaluation_interval: 15s\n\n`;
+        code += `scrape_configs:\n`;
+        code += `  - job_name: "prometheus"\n`;
         code += `    static_configs:\n`;
-        code += `      - targets:\n`;
-        scrapeTargets.forEach(tgt => {
-          if (tgt.trim()) {
-            code += `          - "${tgt.trim()}"\n`;
-          }
-        });
-      }
+        code += `      - targets: ["localhost:${promPort}"]\n`;
 
-      compiledCode.prometheus = code;
+        if (addHosts && scrapeTargets.length > 0) {
+          code += `\n  - job_name: "node-exporters-cluster"\n`;
+          code += `    static_configs:\n`;
+          code += `      - targets:\n`;
+          scrapeTargets.forEach(tgt => {
+            if (tgt.trim()) {
+              code += `          - "${tgt.trim()}"\n`;
+            }
+          });
+        }
+        compiledCode.prometheus = code;
+
+      } else if (type === 'docker') {
+        let code = `# prometheus.yml for Docker Compose\n`;
+        code += `global:\n`;
+        code += `  scrape_interval: 15s\n\n`;
+        code += `scrape_configs:\n`;
+        code += `  - job_name: "prometheus"\n`;
+        code += `    static_configs:\n`;
+        code += `      - targets: ["localhost:9090"]\n`;
+
+        if (isExp) {
+          code += `\n  - job_name: "node-exporter"\n`;
+          code += `    static_configs:\n`;
+          code += `      - targets: ["node-exporter:${expPort}"]\n`;
+        }
+
+        if (addHosts && scrapeTargets.length > 0) {
+          code += `\n  - job_name: "external-nodes"\n`;
+          code += `    static_configs:\n`;
+          code += `      - targets:\n`;
+          scrapeTargets.forEach(tgt => {
+            if (tgt.trim()) {
+              code += `          - "${tgt.trim()}"\n`;
+            }
+          });
+        }
+        compiledCode.prometheus = code;
+
+      } else if (type === 'k8s') {
+        if (isGrafana) {
+          let code = `apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: grafana\n  namespace: monitoring\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: grafana\n  template:\n    metadata:\n      labels:\n        app: grafana\n    spec:\n      containers:\n      - name: grafana\n        image: grafana/grafana:latest\n        ports:\n        - containerPort: ${grPort}\n        resources:\n          limits:\n            cpu: 500m\n            memory: 512Mi\n          requests:\n            cpu: 200m\n            memory: 256Mi\n---\n`;
+          code += `apiVersion: v1\nkind: Service\nmetadata:\n  name: grafana-service\n  namespace: monitoring\nspec:\n  type: NodePort\n  ports:\n  - port: ${grPort}\n    targetPort: ${grPort}\n    nodePort: 30300\n  selector:\n    app: grafana\n`;
+          compiledCode.prometheus = code;
+        } else {
+          compiledCode.prometheus = `# Grafana installation is disabled`;
+        }
+      }
     }
 
-    // Compile node-exporter.service
+    // Compile node-exporter.service (tab3)
     function compileServiceConfig() {
-      const port = $('exporter_port').value;
-      let code = `[Unit]\n`;
-      code += `Description=Node Exporter Metric Scraper daemon\n`;
-      code += `Wants=network-online.target\n`;
-      code += `After=network-online.target\n\n`;
-      code += `[Service]\n`;
-      code += `User=node_exporter\n`;
-      code += `Group=node_exporter\n`;
-      code += `Type=simple\n`;
-      code += `ExecStart=/usr/local/bin/node_exporter --web.listen-address=:${port}\n\n`;
-      code += `[Install]\n`;
-      code += `WantedBy=multi-user.target\n`;
-      compiledCode.service = code;
+      const type = $('install_type').value;
+      const isProm = $('install_prom').checked;
+      const promPort = $('prom_port').value;
+      const isExp = $('install_exporter').checked;
+      const expPort = $('exporter_port').value;
+      const isGrafana = $('install_grafana').checked;
+      const grPort = $('grafana_port').value;
+
+      if (type === 'system') {
+        let code = `[Unit]\n`;
+        code += `Description=Node Exporter Metric Scraper daemon\n`;
+        code += `Wants=network-online.target\n`;
+        code += `After=network-online.target\n\n`;
+        code += `[Service]\n`;
+        code += `User=node_exporter\n`;
+        code += `Group=node_exporter\n`;
+        code += `Type=simple\n`;
+        code += `ExecStart=/usr/local/bin/node_exporter --web.listen-address=:${expPort}\n\n`;
+        code += `[Install]\n`;
+        code += `WantedBy=multi-user.target\n`;
+        compiledCode.service = code;
+
+      } else if (type === 'docker') {
+        let code = `SRE OBSERVABILITY DEPLOYMENT INSTRUCTIONS (DOCKER COMPOSE)\n`;
+        code += `==========================================================\n\n`;
+        code += `1. Ensure Docker and Docker Compose are installed on your host system.\n`;
+        code += `2. Save 'docker-compose.yml' and 'prometheus.yml' in the same folder.\n`;
+        code += `3. Start the SRE telemetry stack:\n`;
+        code += `   $ docker compose up -d\n\n`;
+        code += `4. Verify operational health:\n`;
+        code += `   $ docker compose ps\n\n`;
+        code += `5. Service Endpoints:\n`;
+        if (isProm) code += `   - Prometheus Server:  http://localhost:${promPort}\n`;
+        if (isExp)  code += `   - Node Exporter Core: http://localhost:${expPort}\n`;
+        if (isGrafana) code += `   - Grafana Dashboards: http://localhost:${grPort} (Default credentials: admin / admin)\n`;
+        compiledCode.service = code;
+
+      } else if (type === 'k8s') {
+        if (isExp) {
+          let code = `apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: node-exporter\n  namespace: monitoring\nspec:\n  selector:\n    matchLabels:\n      app: node-exporter\n  template:\n    metadata:\n      labels:\n        app: node-exporter\n    spec:\n      hostNetwork: true\n      hostPID: true\n      containers:\n      - name: node-exporter\n        image: prom/node-exporter:latest\n        securityContext:\n          privileged: true\n        ports:\n        - containerPort: ${expPort}\n          hostPort: ${expPort}\n          name: scrape\n        volumeMounts:\n        - name: proc\n          mountPath: /host/proc\n          readOnly: true\n        - name: sys\n          mountPath: /host/sys\n          readOnly: true\n        - name: root\n          mountPath: /rootfs\n          readOnly: true\n      volumes:\n      - name: proc\n        hostPath:\n          path: /proc\n      - name: sys\n        hostPath:\n          path: /sys\n      - name: root\n        hostPath:\n          path: /\n---\n`;
+          code += `apiVersion: v1\nkind: Service\nmetadata:\n  name: node-exporter\n  namespace: monitoring\nspec:\n  ports:\n  - port: ${expPort}\n    targetPort: ${expPort}\n    name: scrape\n  selector:\n    app: node-exporter\n`;
+          compiledCode.service = code;
+        } else {
+          compiledCode.service = `# Node Exporter DaemonSet setup is disabled`;
+        }
+      }
     }
 
     function switchTab(tabId) {
@@ -601,45 +807,53 @@
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
 
+      const type = $('install_type').value;
+      const cfg = installTypesConfig[type];
       const nameBox = $('download-name-input');
       const extTag = $('file-extension-tag');
 
-      if (tabId === 'install') {
-        nameBox.value = 'install';
-        extTag.textContent = '.sh';
-      } else if (tabId === 'prometheus') {
-        nameBox.value = 'prometheus';
-        extTag.textContent = '.yml';
-      } else if (tabId === 'service') {
-        nameBox.value = 'node-exporter';
-        extTag.textContent = '.service';
-      }
+      let currentActiveCfg = cfg.tab1;
+      if (tabId === 'prometheus') currentActiveCfg = cfg.tab2;
+      if (tabId === 'service') currentActiveCfg = cfg.tab3;
+
+      nameBox.value = currentActiveCfg.filename;
+      extTag.textContent = currentActiveCfg.ext;
+
       updateViewportContent();
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab];
+      $('output-box').textContent = compiledCode[activeTab === 'install' ? 'install' : (activeTab === 'prometheus' ? 'prometheus' : 'service')];
     }
 
     function copyActiveTabContent() {
-      const content = compiledCode[activeTab];
-      navigator.clipboard.writeText(content).then(() => {
-        showToast('✅ Copied tab config to clipboard!');
+      const type = $('install_type').value;
+      const cfg = installTypesConfig[type];
+      const activeText = compiledCode[activeTab === 'install' ? 'install' : (activeTab === 'prometheus' ? 'prometheus' : 'service')];
+      
+      navigator.clipboard.writeText(activeText).then(() => {
+        let label = cfg.tab1.label;
+        if (activeTab === 'prometheus') label = cfg.tab2.label;
+        if (activeTab === 'service') label = cfg.tab3.label;
+        showToast(`✅ Copied ${label} to clipboard!`);
       });
     }
 
     function downloadMonitoringZip() {
+      const type = $('install_type').value;
+      const cfg = installTypesConfig[type];
+
       const zip = new JSZip();
-      zip.file('install.sh', compiledCode.install);
-      zip.file('prometheus.yml', compiledCode.prometheus);
-      zip.file('node-exporter.service', compiledCode.service);
+      zip.file(cfg.tab1.label, compiledCode.install);
+      zip.file(cfg.tab2.label, compiledCode.prometheus);
+      zip.file(cfg.tab3.label, compiledCode.service);
 
       zip.generateAsync({ type: 'blob' }).then(blob => {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'monitoring-resources.zip';
+        a.download = `monitoring-${type}-resources.zip`;
         a.click();
-        showToast('⬇️ monitoring-resources.zip downloaded successfully!');
+        showToast(`⬇️ monitoring-${type}-resources.zip downloaded successfully!`);
       });
     }
 
@@ -664,7 +878,7 @@
       $('systemd_enable').checked = true;
       $('linux_dist').value = 'ubuntu';
 
-      triggerCompileAll();
+      onInstallTypeChange();
       showToast('🗑️ Output configuration cleared and reset to defaults');
     }
 
