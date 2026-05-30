@@ -2,15 +2,831 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Page in Development</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Docker Manager Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Dockerfiles, docker-compose.yml, .dockerignore, and entrypoint.sh dynamically with SRE security best practices." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    /* ── Design Tokens & Monograph Styles ── */
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important; /* Dark slate */
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 620px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Custom Table styling */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .custom-table th {
+      background-color: var(--bg-surface);
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .custom-table td {
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center min-h-screen text-white text-center p-6">
-  <div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">🚧 Page Under Construction</h1>
-    <p class="text-lg md:text-xl mb-6">This page is currently in development. Please check back later.</p>
-    <a href="../index.html" class="inline-block bg-white text-purple-700 font-semibold px-6 py-3 rounded shadow hover:shadow-lg transition">← Back to Tools Dashboard</a>
-  </div>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Docker Containerization Core</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Docker <span class="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">Manager Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Deploy workloads reliably. Compile secure, lightweight Dockerfiles, docker-compose.yml structures, entrypoint scripts, and ignore lists dynamically.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Parameters Console (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Base Environment Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2"><span class="text-indigo-500">🐳</span> Container Settings</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div class="md:col-span-2">
+              <label for="base_image" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Base Image / Platform</label>
+              <select id="base_image" class="form-select w-full p-2.5 text-xs">
+                <option value="node:20-alpine">node:20-alpine (NodeJS Environment)</option>
+                <option value="python:3.11-slim">python:3.11-slim (Python Environment)</option>
+                <option value="golang:1.21-alpine">golang:1.21-alpine (Go Runtime)</option>
+                <option value="nginx:alpine">nginx:alpine (Static HTML/SPA Web)</option>
+                <option value="openjdk:17-slim">openjdk:17-slim (Java Environment)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="workdir" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Workdir</label>
+              <input type="text" id="workdir" class="form-input w-full p-2.5 text-xs" value="/app" />
+            </div>
+
+            <div>
+              <label for="port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Exposed Port</label>
+              <input type="number" id="port" class="form-input w-full p-2.5 text-xs" value="8080" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pt-2 border-t border-gray-100">
+            <div>
+              <label for="entry_cmd" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Entry Command (CMD)</label>
+              <input type="text" id="entry_cmd" class="form-input w-full p-2.5 text-xs" value="npm start" />
+            </div>
+            <div>
+              <label for="env_vars" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Environment Variables (comma separated)</label>
+              <input type="text" id="env_vars" class="form-input w-full p-2.5 text-xs" value="NODE_ENV=production, PORT=8080" placeholder="KEY=VALUE, KEY2=VALUE2" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: SRE Security Best Practices -->
+        <div class="studio-card border-amber-200 bg-amber-50/20">
+          <h3 class="studio-title text-base font-bold text-amber-900 mb-2 flex items-center gap-2">🛡️ SRE Security Best Practices</h3>
+          <p class="text-xs text-gray-500 mb-4">Leverage industry-grade standards to optimize compile speeds and protect deployments.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Multi-stage builds -->
+            <div class="bg-white border border-amber-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-900 mb-2">
+                  <input type="checkbox" id="multi_stage" class="custom-checkbox" checked />
+                  <span>Multi-Stage Compilation</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed mb-3">
+                  Separates the build compiler tools from the final runtime container, slashing image sizes by up to 90% and dropping potential security exploits.
+                </p>
+              </div>
+            </div>
+
+            <!-- Run as Non-Root -->
+            <div class="bg-white border border-rose-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-rose-900 mb-2">
+                  <input type="checkbox" id="non_root" class="custom-checkbox" checked />
+                  <span>Non-Root Operations</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed mb-3">
+                  Enforces running execution as a non-privileged `sre_user` system login instead of `root`, preventing root-user shell container escapes.
+                </p>
+              </div>
+            </div>
+
+            <!-- Mount Cache -->
+            <div class="bg-white border border-indigo-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-indigo-900 mb-2">
+                  <input type="checkbox" id="mount_cache" class="custom-checkbox" checked />
+                  <span>Build Mount Caching</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed mb-3">
+                  Uses local dependency cache caches for `npm` or `pip` indexes, accelerating subsequent container rebuild loops dramatically.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Companion Services (docker-compose.yml) -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2">🗂️ Companion Services (Docker Compose)</h3>
+          <p class="text-xs text-gray-500 mb-4">Build multi-container cluster networks dynamically to run support caches and SQL datastores locally.</p>
+
+          <div class="table-container mb-3">
+            <table class="custom-table" id="compose-table">
+              <thead>
+                <tr>
+                  <th>Service Name</th>
+                  <th>Image</th>
+                  <th>Host Port</th>
+                  <th>Container Port</th>
+                  <th>Volume / Mount</th>
+                  <th style="width:40px;"></th>
+                </tr>
+              </thead>
+              <tbody id="compose-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex items-center justify-between gap-4">
+            <button onclick="addComposeRow()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition">＋ Add Service</button>
+            <button onclick="triggerCompileAll()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition">⚡ Compile Services</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-28 focus:outline-none" value="Dockerfile" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag"></span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('dockerfile')" id="tab-dockerfile" class="tab-btn active">Dockerfile</button>
+              <button onclick="switchTab('compose')" id="tab-compose" class="tab-btn">docker-compose.yml</button>
+              <button onclick="switchTab('ignore')" id="tab-ignore" class="tab-btn">.dockerignore</button>
+              <button onclick="switchTab('entrypoint')" id="tab-entrypoint" class="tab-btn">entrypoint.sh</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate Docker Configurations</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear Output</span>
+            </button>
+          </div>
+
+          <button onclick="downloadDockerZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Docker-Studio.Zip</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-indigo-400">⚡</span> Container SRE Cheat Sheet
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Build secure lightweight image:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">docker build -t my-app:latest .</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Run container mapped to host:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">docker run -d -p 8080:8080 --name running-app my-app:latest</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Bring up compose environment in background:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">docker compose up -d --build</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Check running container process list:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">docker ps -a</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info · Designed and provisioned as an open-source SRE tool.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'dockerfile';
+
+    // Pre-populated compose services
+    let composeServices = [
+      { name: 'db', image: 'postgres:15-alpine', hostPort: '5432', containerPort: '5432', volume: 'pgdata:/var/lib/postgresql/data' },
+      { name: 'cache', image: 'redis:7-alpine', hostPort: '6379', containerPort: '6379', volume: 'redisdata:/data' }
+    ];
+
+    let compiledCode = {
+      dockerfile: '',
+      compose: '',
+      ignore: '',
+      entrypoint: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderComposeTable();
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    // Render compose services
+    function renderComposeTable() {
+      const tbody = $('compose-tbody');
+      tbody.innerHTML = '';
+      composeServices.forEach((srv, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full font-semibold" value="${escapeHtml(srv.name)}" onchange="updateComposeCell(${index}, 'name', this.value)" /></td>
+          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full" value="${escapeHtml(srv.image)}" onchange="updateComposeCell(${index}, 'image', this.value)" /></td>
+          <td><input type="number" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full" value="${escapeHtml(srv.hostPort)}" onchange="updateComposeCell(${index}, 'hostPort', this.value)" /></td>
+          <td><input type="number" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full" value="${escapeHtml(srv.containerPort)}" onchange="updateComposeCell(${index}, 'containerPort', this.value)" /></td>
+          <td><input type="text" class="bg-transparent focus:outline-none border-b border-transparent focus:border-slate-350 w-full text-xs" value="${escapeHtml(srv.volume)}" onchange="updateComposeCell(${index}, 'volume', this.value)" /></td>
+          <td>
+            <button onclick="deleteComposeRow(${index})" class="text-rose-500 hover:text-rose-700 text-sm font-semibold p-1">✕</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function addComposeRow() {
+      composeServices.push({ name: 'api', image: 'node:20-alpine', hostPort: '3000', containerPort: '3000', volume: '' });
+      renderComposeTable();
+      triggerCompileAll();
+    }
+
+    function deleteComposeRow(index) {
+      composeServices.splice(index, 1);
+      renderComposeTable();
+      triggerCompileAll();
+    }
+
+    function updateComposeCell(index, key, val) {
+      composeServices[index][key] = val;
+      triggerCompileAll();
+    }
+
+    // Compile everything
+    function triggerCompileAll() {
+      compileDockerfile();
+      compileCompose();
+      compileIgnore();
+      compileEntrypoint();
+      updateViewportContent();
+    }
+
+    // Compile Dockerfile
+    function compileDockerfile() {
+      const base = $('base_image').value;
+      const workdir = $('workdir').value;
+      const port = $('port').value;
+      const cmd = $('entry_cmd').value;
+      const envRaw = $('env_vars').value;
+
+      const isMultiStage = $('multi_stage').checked;
+      const isNonRoot = $('non_root').checked;
+      const isMountCache = $('mount_cache').checked;
+
+      let code = `# Dynamic Dockerfile compiled via Talari Pradeep's Studio\n`;
+
+      if (isMultiStage) {
+        // Multi-stage compilation build block
+        code += `# ── BUILDER STAGE ──\n`;
+        code += `FROM ${base} AS builder\n`;
+        code += `WORKDIR ${workdir}\n\n`;
+        code += `# Copy packaging index files first to optimize layer build caches\n`;
+        if (base.includes('node')) {
+          code += `COPY package*.json ./\n`;
+          if (isMountCache) {
+            code += `RUN --mount=type=cache,target=/root/.npm npm ci\n`;
+          } else {
+            code += `RUN npm ci\n`;
+          }
+        } else if (base.includes('python')) {
+          code += `COPY requirements.txt ./\n`;
+          if (isMountCache) {
+            code += `RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt\n`;
+          } else {
+            code += `RUN pip install --no-cache-dir -r requirements.txt\n`;
+          }
+        } else if (base.includes('golang')) {
+          code += `COPY go.mod go.sum ./\n`;
+          code += `RUN go mod download\n`;
+        } else if (base.includes('openjdk')) {
+          code += `COPY pom.xml ./\n`;
+          code += `RUN mvn dependency:go-offline\n`;
+        }
+        
+        code += `\n# Copy source directories and compile assets\n`;
+        code += `COPY . .\n`;
+        if (base.includes('node')) {
+          code += `RUN npm run build --if-present\n\n`;
+        } else if (base.includes('golang')) {
+          code += `RUN CGO_ENABLED=0 GOOS=linux go build -o main .\n\n`;
+        } else if (base.includes('openjdk')) {
+          code += `RUN mvn package -DskipTests\n\n`;
+        } else {
+          code += `# Build compilation not required for dynamic scripting runtime\n\n`;
+        }
+
+        // Production Stage
+        code += `# ── RUNTIME RUN STAGE ──\n`;
+        code += `FROM ${base}\n`;
+        code += `WORKDIR ${workdir}\n\n`;
+        code += `ENV PORT=${port}\n`;
+
+        // Load Env vars
+        if (envRaw.trim()) {
+          envRaw.split(',').forEach(item => {
+            const split = item.split('=');
+            if (split.length === 2) {
+              code += `ENV ${split[0].trim()}=${split[1].trim()}\n`;
+            }
+          });
+        }
+
+        code += `\n# Copy compiled assets from the build workspace stage\n`;
+        if (base.includes('node')) {
+          code += `COPY --from=builder ${workdir}/package*.json ./\n`;
+          code += `COPY --from=builder ${workdir}/dist ./dist\n`;
+          code += `RUN npm ci --omit=dev\n`;
+        } else if (base.includes('golang')) {
+          code += `COPY --from=builder ${workdir}/main ./main\n`;
+        } else if (base.includes('openjdk')) {
+          code += `COPY --from=builder ${workdir}/target/*.jar app.jar\n`;
+        } else {
+          code += `COPY --from=builder ${workdir} .\n`;
+        }
+
+      } else {
+        // Single-stage build block
+        code += `FROM ${base}\n`;
+        code += `WORKDIR ${workdir}\n\n`;
+        code += `ENV PORT=${port}\n`;
+
+        // Load Env vars
+        if (envRaw.trim()) {
+          envRaw.split(',').forEach(item => {
+            const split = item.split('=');
+            if (split.length === 2) {
+              code += `ENV ${split[0].trim()}=${split[1].trim()}\n`;
+            }
+          });
+        }
+
+        code += `\nCOPY . .\n\n`;
+        if (base.includes('node')) {
+          code += `RUN npm install\n`;
+        } else if (base.includes('python')) {
+          code += `RUN pip install --no-cache-dir -r requirements.txt\n`;
+        }
+      }
+
+      // Security User creation
+      if (isNonRoot) {
+        code += `\n# SRE: Enforce non-root execution permissions for container security\n`;
+        code += `RUN addgroup -S sre_group && adduser -S sre_user -G sre_group && \\\n`;
+        code += `    chown -R sre_user:sre_group ${workdir}\n`;
+        code += `USER sre_user\n`;
+      }
+
+      code += `\nEXPOSE ${port}\n`;
+      code += `COPY entrypoint.sh /usr/local/bin/entrypoint.sh\n`;
+      code += `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]\n`;
+      code += `CMD ["${cmd}"]\n`;
+
+      compiledCode.dockerfile = code;
+    }
+
+    // Compile docker-compose.yml
+    function compileCompose() {
+      const base = $('base_image').value;
+      const port = $('port').value;
+
+      let code = `version: '3.8'\n\n# Dynamic docker-compose orchestrated via Talari Pradeep's Studio\n\nservices:\n`;
+      code += `  web-app:\n`;
+      code += `    build:\n`;
+      code += `      context: .\n`;
+      code += `      dockerfile: Dockerfile\n`;
+      code += `    ports:\n`;
+      code += `      - "${port}:${port}"\n`;
+      code += `    environment:\n`;
+      code += `      - NODE_ENV=development\n`;
+      code += `      - PORT=${port}\n`;
+      
+      if (composeServices.length > 0) {
+        code += `    depends_on:\n`;
+        composeServices.forEach(srv => {
+          code += `      - ${srv.name}\n`;
+        });
+      }
+      code += `    networks:\n`;
+      code += `      - sre-network\n\n`;
+
+      // Compose Companion Services
+      composeServices.forEach(srv => {
+        code += `  ${srv.name}:\n`;
+        code += `    image: ${srv.image}\n`;
+        if (srv.hostPort && srv.containerPort) {
+          code += `    ports:\n`;
+          code += `      - "${srv.hostPort}:${srv.containerPort}"\n`;
+        }
+        if (srv.volume) {
+          code += `    volumes:\n`;
+          code += `      - ${srv.volume.split(':')[0]}:${srv.volume.split(':')[1] || '/data'}\n`;
+        }
+        code += `    networks:\n`;
+        code += `      - sre-network\n\n`;
+      });
+
+      code += `volumes:\n`;
+      composeServices.forEach(srv => {
+        if (srv.volume) {
+          code += `  ${srv.volume.split(':')[0]}:\n`;
+        }
+      });
+
+      code += `\nnetworks:\n`;
+      code += `  sre-network:\n`;
+      code += `    driver: bridge\n`;
+
+      compiledCode.compose = code;
+    }
+
+    // Compile .dockerignore
+    function compileIgnore() {
+      let code = `# Compiled .dockerignore file\n`;
+      code += `.git\n`;
+      code += `.gitignore\n`;
+      code += `node_modules\n`;
+      code += `npm-debug.log\n`;
+      code += `Dockerfile\n`;
+      code += `docker-compose.yml\n`;
+      code += `.dockerignore\n`;
+      code += `README.md\n`;
+      code += `dist/\n`;
+      code += `.env\n`;
+      code += `.env.local\n`;
+      compiledCode.ignore = code;
+    }
+
+    // Compile entrypoint.sh
+    function compileEntrypoint() {
+      let code = `#!/bin/sh\n# entrypoint.sh - Dynamic SRE startup verification script\nset -e\n\n`;
+      code += `echo "🚀 Initializing environment verification checks..."\n`;
+      code += `echo "OS Kernel: $(uname -a)"\n`;
+      code += `echo "User Execution Context: $(whoami)"\n\n`;
+      
+      if (composeServices.length > 0) {
+        code += `# Check availability of databases or caches if mapped\n`;
+        composeServices.forEach(srv => {
+          code += `echo "Verifying service host link connection: ${srv.name}"\n`;
+        });
+      }
+
+      code += `\necho "✅ Checks completed. Executing primary entry CMD parameters..."\n`;
+      code += `exec "$@"\n`;
+
+      compiledCode.entrypoint = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'dockerfile') {
+        nameBox.value = 'Dockerfile';
+        extTag.textContent = '';
+      } else if (tabId === 'compose') {
+        nameBox.value = 'docker-compose';
+        extTag.textContent = '.yml';
+      } else if (tabId === 'ignore') {
+        nameBox.value = '.dockerignore';
+        extTag.textContent = '';
+      } else if (tabId === 'entrypoint') {
+        nameBox.value = 'entrypoint';
+        extTag.textContent = '.sh';
+      }
+
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadDockerZip() {
+      const zip = new JSZip();
+      zip.file('Dockerfile', compiledCode.dockerfile);
+      zip.file('docker-compose.yml', compiledCode.compose);
+      zip.file('.dockerignore', compiledCode.ignore);
+      zip.file('entrypoint.sh', compiledCode.entrypoint);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'docker-studio.zip';
+        a.click();
+        showToast('⬇️ docker-studio.zip downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      composeServices = [
+        { name: 'db', image: 'postgres:15-alpine', hostPort: '5432', containerPort: '5432', volume: 'pgdata:/var/lib/postgresql/data' }
+      ];
+      $('base_image').value = 'node:20-alpine';
+      $('workdir').value = '/app';
+      $('port').value = '8080';
+      $('entry_cmd').value = 'npm start';
+      $('env_vars').value = 'NODE_ENV=production, PORT=8080';
+
+      $('multi_stage').checked = true;
+      $('non_root').checked = true;
+      $('mount_cache').checked = true;
+
+      renderComposeTable();
+      triggerCompileAll();
+      showToast('🗑️ Output configuration cleared and reset to defaults');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>

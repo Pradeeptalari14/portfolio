@@ -2,15 +2,817 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Page in Development</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terraform Architect Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready infrastructure-as-code main.tf, variables.tf, outputs.tf, and providers.tf dynamically with SRE security parameters." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    /* ── Design Tokens & Monograph Styles ── */
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important; /* Dark slate */
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 620px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center min-h-screen text-white text-center p-6">
-  <div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">🚧 Page Under Construction</h1>
-    <p class="text-lg md:text-xl mb-6">This page is currently in development. Please check back later.</p>
-    <a href="../index.html" class="inline-block bg-white text-purple-700 font-semibold px-6 py-3 rounded shadow hover:shadow-lg transition">← Back to Tools Dashboard</a>
-  </div>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Terraform Architecture IaC Core</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Terraform <span class="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">Architect Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Deploy enterprise infrastructure-as-code securely. Design public-private network subnets, RDS datastores, virtual systems, and remote locks dynamically in HCL.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Parameters Console (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Target Cloud & Networks Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">☁️ Cloud Provider & VPC Networks</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label for="provider" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Cloud</label>
+              <select id="provider" class="form-select w-full p-2.5 text-xs">
+                <option value="aws">Amazon Web Services (AWS)</option>
+                <option value="azure">Microsoft Azure Cloud</option>
+                <option value="gcp">Google Cloud Platform (GCP)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="region" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Primary Region</label>
+              <select id="region" class="form-select w-full p-2.5 text-xs">
+                <!-- Rendered dynamically depending on provider -->
+              </select>
+            </div>
+
+            <div>
+              <label for="cidr" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">VPC Subnet CIDR Block</label>
+              <input type="text" id="cidr" class="form-input w-full p-2.5 text-xs" value="10.0.0.0/16" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Resources Selection Checklist -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2"><span class="text-indigo-500">⚡</span> Core Resources Checklist</h3>
+          <p class="text-xs text-gray-500 mb-4">Select target components to automatically generate HCL deployment blocks.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_vpc" class="custom-checkbox" checked />
+              <span>Core VPC Network (IGW, route tables, subnets)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_nat" class="custom-checkbox" checked />
+              <span>NAT Gateway (Private Subnet secure egress)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_sg" class="custom-checkbox" checked />
+              <span>Security Groups & Port Filtering rules</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_vm" class="custom-checkbox" checked />
+              <span>Virtual Compute Instances (VM/EC2)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_db" class="custom-checkbox" />
+              <span>Relational SQL RDS Datastore</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_s3" class="custom-checkbox" checked />
+              <span>Secure Object Storage Bucket</span>
+            </label>
+          </div>
+
+          <!-- VM Sizing dynamic selection -->
+          <div class="mt-4 border-t border-gray-100 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="vm-size-box">
+            <div>
+              <label for="vm_size" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Instance T-Shirt Size</label>
+              <select id="vm_size" class="form-select w-full p-2.5 text-xs">
+                <option value="micro">t3.micro (Micro operations, testing)</option>
+                <option value="small">t3.small (Development, small databases)</option>
+                <option value="medium">t3.medium (Staging, moderate workloads)</option>
+                <option value="large">t3.large (Production environments)</option>
+              </select>
+            </div>
+            <div>
+              <label for="disk_size" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">System Storage Disk (GB)</label>
+              <input type="number" id="disk_size" class="form-input w-full p-2.5 text-xs" value="30" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: SRE Security & State Locking Toggles -->
+        <div class="studio-card border-amber-200 bg-amber-50/20">
+          <h3 class="studio-title text-base font-bold text-amber-900 mb-2 flex items-center gap-2">⚠️ SRE Enterprise Security & State Locks</h3>
+          <p class="text-xs text-gray-500 mb-4 font-normal">Ensure multi-developer safety and resource tags auditing standardizations.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <!-- Remote State Backend with DynamoDB -->
+            <div class="bg-white border border-amber-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-amber-900 mb-2">
+                  <input type="checkbox" id="backend_lock" class="custom-checkbox" checked />
+                  <span>S3 Remote State + Locks (DynamoDB)</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed">
+                  Stores `.tfstate` in an S3 bucket with a DynamoDB table locking mechanism. Safe deployment concurrency, preventing overlapping state conflicts.
+                </p>
+              </div>
+            </div>
+
+            <!-- KMS Encryption -->
+            <div class="bg-white border border-indigo-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-indigo-900 mb-2">
+                  <input type="checkbox" id="kms_encrypt" class="custom-checkbox" checked />
+                  <span>Customer Managed KMS Encryption</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed">
+                  Enforces server-side KMS cryptographic key validation on S3 state storage containers, shielding credentials and environment variables.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Standard SRE Audit tags -->
+          <div class="border-t border-amber-200/50 pt-3">
+            <span class="block text-[10px] font-bold text-amber-900 uppercase tracking-wider mb-2">SRE Infrastructure Billing Tags</span>
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label for="tag_project" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Project Name</label>
+                <input type="text" id="tag_project" class="form-input w-full p-2 text-xs" value="sre-infrastructure" />
+              </div>
+              <div>
+                <label for="tag_owner" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Owner Tag</label>
+                <input type="text" id="tag_owner" class="form-input w-full p-2 text-xs" value="talari-pradeep" />
+              </div>
+              <div>
+                <label for="tag_env" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Environment</label>
+                <select id="tag_env" class="form-select w-full p-2 text-xs">
+                  <option value="production">Production</option>
+                  <option value="staging">Staging</option>
+                  <option value="development">Development</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-28 focus:outline-none" value="main" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.tf</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('main')" id="tab-main" class="tab-btn active">main.tf</button>
+              <button onclick="switchTab('variables')" id="tab-variables" class="tab-btn">variables.tf</button>
+              <button onclick="switchTab('outputs')" id="tab-outputs" class="tab-btn">outputs.tf</button>
+              <button onclick="switchTab('providers')" id="tab-providers" class="tab-btn">providers.tf</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate HCL Configurations</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear Output</span>
+            </button>
+          </div>
+
+          <button onclick="downloadTerraformZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Terraform-Infra.Zip</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-indigo-400">⚡</span> Infrastructure IaC Cheat Sheet
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Fetch providers and lock workspaces:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">terraform init</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Review plans and secure dry-run outputs:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">terraform plan -out=tfplan.binary</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Deploy mapped structures directly to cloud:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">terraform apply "tfplan.binary"</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info · Designed and provisioned as an open-source SRE tool.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'main';
+
+    const regionsList = {
+      aws: ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-south-1'],
+      azure: ['eastus', 'westus2', 'westeurope', 'centralindia'],
+      gcp: ['us-central1', 'us-east1', 'europe-west1', 'asia-south1']
+    };
+
+    let compiledCode = {
+      main: '',
+      variables: '',
+      outputs: '',
+      providers: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      populateRegions('aws');
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      // Toggle custom cloud regions select list dynamically
+      $('provider').addEventListener('change', function() {
+        populateRegions(this.value);
+        triggerCompileAll();
+      });
+
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    function populateRegions(providerVal) {
+      const select = $('region');
+      select.innerHTML = '';
+      const list = regionsList[providerVal] || regionsList['aws'];
+      list.forEach(reg => {
+        const opt = document.createElement('option');
+        opt.value = reg;
+        opt.textContent = reg;
+        select.appendChild(opt);
+      });
+    }
+
+    function triggerCompileAll() {
+      compileMainTf();
+      compileVariablesTf();
+      compileOutputsTf();
+      compileProvidersTf();
+      updateViewportContent();
+    }
+
+    // Compile main.tf
+    function compileMainTf() {
+      const provider = $('provider').value;
+      const vpcCheck = $('res_vpc').checked;
+      const natCheck = $('res_nat').checked;
+      const sgCheck = $('res_sg').checked;
+      const vmCheck = $('res_vm').checked;
+      const dbCheck = $('res_db').checked;
+      const s3Check = $('res_s3').checked;
+
+      let code = `# main.tf - Compiled via Talari Pradeep's Terraform Studio\n\n`;
+
+      if (vpcCheck) {
+        code += `# ── CORE NETWORKS DEFINITIONS ──\n`;
+        if (provider === 'aws') {
+          code += `resource "aws_vpc" "sre_vpc" {\n`;
+          code += `  cidr_block           = var.vpc_cidr\n`;
+          code += `  enable_dns_hostnames = true\n`;
+          code += `  tags                 = local.common_tags\n`;
+          code += `}\n\n`;
+          code += `resource "aws_subnet" "public_subnet" {\n`;
+          code += `  vpc_id                  = aws_vpc.sre_vpc.id\n`;
+          code += `  cidr_block              = cidrsubnet(var.vpc_cidr, 8, 1)\n`;
+          code += `  map_public_ip_on_launch = true\n`;
+          code += `  tags                    = merge(local.common_tags, { Name = "public-subnet" })\n`;
+          code += `}\n\n`;
+        } else if (provider === 'azure') {
+          code += `resource "azurerm_virtual_network" "sre_vnet" {\n`;
+          code += `  name                = "sre-virtual-network"\n`;
+          code += `  address_space       = [var.vpc_cidr]\n`;
+          code += `  location            = var.region\n`;
+          code += `  resource_group_name = "sre-rg"\n`;
+          code += `  tags                = local.common_tags\n`;
+          code += `}\n\n`;
+        } else {
+          code += `resource "google_compute_network" "sre_vpc" {\n`;
+          code += `  name                    = "sre-vpc-network"\n`;
+          code += `  auto_create_subnetworks = false\n`;
+          code += `}\n\n`;
+        }
+      }
+
+      if (natCheck && provider === 'aws' && vpcCheck) {
+        code += `# ── NAT GATEWAY EGRESS SYSTEM ──\n`;
+        code += `resource "aws_eip" "nat_eip" {\n`;
+        code += `  domain = "vpc"\n`;
+        code += `}\n\n`;
+        code += `resource "aws_nat_gateway" "sre_nat" {\n`;
+        code += `  allocation_id = aws_eip.nat_eip.id\n`;
+        code += `  subnet_id     = aws_subnet.public_subnet.id\n`;
+        code += `  tags          = local.common_tags\n`;
+        code += `}\n\n`;
+      }
+
+      if (sgCheck && provider === 'aws' && vpcCheck) {
+        code += `# ── SECURITY GROUPS ──\n`;
+        code += `resource "aws_security_group" "web_traffic" {\n`;
+        code += `  name        = "allow-http-https"\n`;
+        code += `  description = "Filter incoming HTTP/HTTPS protocols"\n`;
+        code += `  vpc_id      = aws_vpc.sre_vpc.id\n\n`;
+        code += `  ingress {\n    from_port   = 80\n    to_port     = 80\n    protocol    = "tcp"\n    cidr_blocks = ["0.0.0.0/0"]\n  }\n\n`;
+        code += `  ingress {\n    from_port   = 443\n    to_port     = 443\n    protocol    = "tcp"\n    cidr_blocks = ["0.0.0.0/0"]\n  }\n\n`;
+        code += `  egress {\n    from_port   = 0\n    to_port     = 0\n    protocol    = "-1"\n    cidr_blocks = ["0.0.0.0/0"]\n  }\n`;
+        code += `}\n\n`;
+      }
+
+      if (vmCheck) {
+        code += `# ── VIRTUAL INSTANCE ORCHESTRATIONS ──\n`;
+        if (provider === 'aws') {
+          code += `resource "aws_instance" "app_host" {\n`;
+          code += `  ami           = "ami-0c7217cdde317cfec" # Ubuntu OS reference\n`;
+          code += `  instance_type = var.instance_sizing\n`;
+          if (vpcCheck) code += `  subnet_id     = aws_subnet.public_subnet.id\n`;
+          if (sgCheck)  code += `  vpc_security_group_ids = [aws_security_group.web_traffic.id]\n`;
+          code += `  root_block_device {\n    volume_size = var.disk_gb\n  }\n`;
+          code += `  tags          = merge(local.common_tags, { Name = "sre-app-node" })\n`;
+          code += `}\n\n`;
+        } else if (provider === 'azure') {
+          code += `resource "azurerm_linux_virtual_machine" "app_host" {\n`;
+          code += `  name                = "sre-vm"\n`;
+          code += `  size                = "Standard_B2s"\n`;
+          code += `  location            = var.region\n`;
+          code += `  admin_username      = "sreadmin"\n`;
+          code += `  os_disk {\n    caching              = "ReadWrite"\n    storage_account_type = "Standard_LRS"\n  }\n`;
+          code += `}\n\n`;
+        }
+      }
+
+      if (dbCheck && provider === 'aws') {
+        code += `# ── RELATIONAL SQL RDS ──\n`;
+        code += `resource "aws_db_instance" "postgresql" {\n`;
+        code += `  allocated_storage   = 20\n`;
+        code += `  engine              = "postgres"\n`;
+        code += `  engine_version      = "15"\n`;
+        code += `  instance_class      = "db.t3.micro"\n`;
+        code += `  db_name             = "sredatastore"\n`;
+        code += `  username            = "sreadmin"\n`;
+        code += `  password            = "SuperSecurePassword123"\n`;
+        code += `  skip_final_snapshot = true\n`;
+        code += `}\n\n`;
+      }
+
+      if (s3Check) {
+        code += `# ── SECURE STORAGE BUCKETS ──\n`;
+        if (provider === 'aws') {
+          code += `resource "aws_s3_bucket" "sre_datastore" {\n`;
+          code += `  bucket        = "sre-production-bucket-talari-pradeep"\n`;
+          code += `  force_destroy = true\n`;
+          code += `  tags          = local.common_tags\n`;
+          code += `}\n\n`;
+          code += `resource "aws_s3_bucket_server_side_encryption_configuration" "s3_sse" {\n`;
+          code += `  bucket = aws_s3_bucket.sre_datastore.id\n`;
+          code += `  rule {\n    apply_server_side_encryption_by_default {\n      sse_algorithm = "AES256"\n    }\n  }\n`;
+          code += `}\n`;
+        } else if (provider === 'azure') {
+          code += `resource "azurerm_storage_account" "sre_store" {\n`;
+          code += `  name                     = "srestorpradeep"\n`;
+          code += `  account_tier             = "Standard"\n`;
+          code += `  account_replication_type = "LRS"\n`;
+          code += `}\n`;
+        }
+      }
+
+      compiledCode.main = code;
+    }
+
+    // Compile variables.tf
+    function compileVariablesTf() {
+      const cidr = $('cidr').value;
+      const region = $('region').value;
+      const size = $('vm_size').value;
+      const disk = $('disk_size').value;
+
+      let code = `# variables.tf - Subnet lists & compute instances parameters\n\n`;
+      code += `variable "region" {\n  description = "Target deployed region"\n  type        = string\n  default     = "${region}"\n}\n\n`;
+      code += `variable "vpc_cidr" {\n  description = "CIDR range address map for networks"\n  type        = string\n  default     = "${cidr}"\n}\n\n`;
+      code += `variable "instance_sizing" {\n  description = "Instance T-shirt size"\n  type        = string\n  default     = "${size === 'micro' ? 't3.micro' : size === 'small' ? 't3.small' : size === 'medium' ? 't3.medium' : 't3.large'}"\n}\n\n`;
+      code += `variable "disk_gb" {\n  description = "Operating system root volume storage capacity"\n  type        = number\n  default     = ${disk}\n}\n`;
+
+      compiledCode.variables = code;
+    }
+
+    // Compile outputs.tf
+    function compileOutputsTf() {
+      const provider = $('provider').value;
+      const vmCheck = $('res_vm').checked;
+      const s3Check = $('res_s3').checked;
+
+      let code = `# outputs.tf - Mapped ingress points and IPs\n\n`;
+
+      if (vmCheck && provider === 'aws') {
+        code += `output "host_public_ip" {\n`;
+        code += `  description = "Publicly reachable IP context of target Host"\n`;
+        code += `  value       = aws_instance.app_host.public_ip\n`;
+        code += `}\n\n`;
+      }
+
+      if (s3Check && provider === 'aws') {
+        code += `output "s3_bucket_arn" {\n`;
+        code += `  description = "Standardized Amazon Resource Name identifier for bucket storage"\n`;
+        code += `  value       = aws_s3_bucket.sre_datastore.arn\n`;
+        code += `}\n`;
+      }
+
+      compiledCode.outputs = code;
+    }
+
+    // Compile providers.tf
+    function compileProvidersTf() {
+      const provider = $('provider').value;
+      const region = $('region').value;
+
+      const backendLock = $('backend_lock').checked;
+      const kmsEncrypt = $('kms_encrypt').checked;
+
+      const tagProj = $('tag_project').value;
+      const tagOwn = $('tag_owner').value;
+      const tagEnv = $('tag_env').value;
+
+      let code = `# providers.tf - API cloud mappings & SRE Remote locks\n\n`;
+
+      code += `terraform {\n`;
+      code += `  required_version = ">= 1.5.0"\n`;
+      code += `  required_providers {\n`;
+      if (provider === 'aws') {
+        code += `    aws = {\n      source  = "hashicorp/aws"\n      version = "~> 5.0"\n    }\n`;
+      } else if (provider === 'azure') {
+        code += `    azurerm = {\n      source  = "hashicorp/azurerm"\n      version = "~> 3.0"\n    }\n`;
+      } else {
+        code += `    google = {\n      source  = "hashicorp/google"\n      version = "~> 4.0"\n    }\n`;
+      }
+      code += `  }\n\n`;
+
+      if (backendLock) {
+        code += `  backend "s3" {\n`;
+        code += `    bucket         = "sre-tfstate-bucket-${tagOwn}"\n`;
+        code += `    key            = "environments/${tagEnv}/terraform.tfstate"\n`;
+        code += `    region         = "${region}"\n`;
+        code += `    dynamodb_table = "sre-infra-state-locks"\n`;
+        code += `    encrypt        = true\n`;
+        code += `  }\n`;
+      }
+      code += `}\n\n`;
+
+      // Provider Block
+      if (provider === 'aws') {
+        code += `provider "aws" {\n`;
+        code += `  region = var.region\n`;
+        code += `}\n\n`;
+      } else if (provider === 'azure') {
+        code += `provider "azurerm" {\n`;
+        code += `  features {}\n`;
+        code += `}\n\n`;
+      } else {
+        code += `provider "google" {\n`;
+        code += `  project = "sre-gcp-project"\n`;
+        code += `  region  = var.region\n`;
+        code += `}\n\n`;
+      }
+
+      // SRE Tags Local Block
+      code += `# ── AUDIT TAGS LOCAL BLOCKS ──\n`;
+      code += `locals {\n`;
+      code += `  common_tags = {\n`;
+      code += `    Project     = "${tagProj}"\n`;
+      code += `    Owner       = "${tagOwn}"\n`;
+      code += `    Environment = "${tagEnv}"\n`;
+      code += `    ManagedBy   = "Terraform"\n`;
+      code += `  }\n`;
+      code += `}\n`;
+
+      compiledCode.providers = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      nameBox.value = tabId;
+      extTag.textContent = '.tf';
+
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadTerraformZip() {
+      const zip = new JSZip();
+      zip.file('main.tf', compiledCode.main);
+      zip.file('variables.tf', compiledCode.variables);
+      zip.file('outputs.tf', compiledCode.outputs);
+      zip.file('providers.tf', compiledCode.providers);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'terraform-infra.zip';
+        a.click();
+        showToast('⬇️ terraform-infra.zip downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('provider').value = 'aws';
+      populateRegions('aws');
+      $('cidr').value = '10.0.0.0/16';
+      
+      $('res_vpc').checked = true;
+      $('res_nat').checked = true;
+      $('res_sg').checked = true;
+      $('res_vm').checked = true;
+      $('res_db').checked = false;
+      $('res_s3').checked = true;
+
+      $('vm_size').value = 'micro';
+      $('disk_size').value = '30';
+
+      $('backend_lock').checked = true;
+      $('kms_encrypt').checked = true;
+
+      $('tag_project').value = 'sre-infrastructure';
+      $('tag_owner').value = 'talari-pradeep';
+      $('tag_env').value = 'production';
+
+      triggerCompileAll();
+      showToast('🗑️ Output configuration cleared and reset to defaults');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
