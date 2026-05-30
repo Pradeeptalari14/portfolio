@@ -1040,16 +1040,20 @@
       const fatalErrSub = $('max_fail_zero').checked;
 
       // Header comment
-      let code = `---\n# Compiled via Talari Pradeep's Ansible Studio\n`;
+      let code = `---\n# Compiled via Talari Pradeep's Ansible Studio\n# This playbook defines an enterprise deployment config, demonstrating SRE core safety limits.\n`;
       code += `- name: Standard SRE Automation Playbook\n`;
+      code += `  # Target host inventory nodes group to run execution actions on\n`;
       code += `  hosts: ${hostGroup}\n`;
+      code += `  # become: true instructs Ansible to escalate root administrator privileges using sudo\n`;
       code += `  become: true\n`;
       if (becomeUser && becomeUser !== 'root') {
         code += `  become_user: ${becomeUser}\n`;
       }
+      code += `  # gather_facts instructs Ansible to pull system hardware, networking and OS variables first\n`;
       code += `  gather_facts: ${gatherFacts ? 'yes' : 'no'}\n`;
       
       if (fatalErrors) {
+        code += `  # SRE: Halt entire cluster run instantly if any node encounters task execution failure\n`;
         code += `  any_errors_fatal: true\n`;
         if (fatalErrSub) {
           code += `  max_fail_percentage: 0\n`;
@@ -1057,12 +1061,14 @@
       }
 
       if (addVars) {
+        code += `  # Environment and deployment variables mapped for task context values\n`;
         code += `  vars:\n`;
         code += `    sre_deployment_mode: production\n`;
         code += `    custom_log_retention_days: 14\n`;
         code += `    package_state: present\n\n`;
       }
 
+      code += `  # Sequence of execution tasks run on target instances\n`;
       code += `  tasks:\n`;
 
       // Check actions and generate proper tasks
@@ -1127,6 +1133,7 @@
       // 3. User Creation
       if (userFeature) {
         code += `    - name: Deploy secure SRE user shell for operations\n`;
+        code += `      # user module allocates logins, group tenancies and shell environments\n`;
         code += `      user:\n`;
         code += `        name: sre_ops\n`;
         code += `        shell: /bin/bash\n`;
@@ -1139,6 +1146,7 @@
       if (isInstall) {
         selectedApps.forEach(app => {
           code += `    - name: Ensure target release of ${app} is installed\n`;
+          code += `      # apt/dnf modules package applications dynamically utilizing target repositories\n`;
           if (['ubuntu', 'debian'].includes(os)) {
             code += `      apt:\n        name: ${app}\n        state: present\n        update_cache: yes\n`;
           } else if (os === 'redhat') {
@@ -1149,6 +1157,7 @@
             code += `      apk:\n        name: ${app}\n        state: present\n`;
           }
           if (ignErrors) {
+            code += `      # ignore_errors prevents playbook crashes if this installation encounters a non-zero exit code\n`;
             code += `      ignore_errors: yes\n`;
             if (ignErrSub) code += `      failed_when: false\n`;
           }

@@ -673,26 +673,21 @@
         labelsYaml = `    app: "${name}"\n    env: "prod"\n`;
       }
 
-      let code = `apiVersion: apps/v1\n`;
-      code += `kind: ${type}\n`;
+      let code = `# apiVersion defines the schema version of the workload resource manifest\napiVersion: apps/v1\n`;
+      code += `# kind dictates the API controller resource type to be created in the cluster\nkind: ${type}\n`;
       code += `metadata:\n`;
       code += `  name: ${name}\n`;
       code += `  namespace: ${ns}\n`;
       code += `  labels:\n${labelsYaml}`;
       code += `spec:\n`;
       if (type !== 'DaemonSet') {
-        code += `  replicas: ${replicas}\n`;
+        code += `  # replicas determines how many active pod nodes should execute concurrently\n  replicas: ${replicas}\n`;
       }
-      code += `  selector:\n`;
-      code += `    matchLabels:\n`;
-      code += `      app: "${name}"\n`;
-      code += `  template:\n`;
-      code += `    metadata:\n`;
-      code += `      labels:\n`;
-      code += `        app: "${name}"\n`;
+      code += `  # selector instructs the deployment manager controller how to match target pod labels\n  selector:\n    matchLabels:\n      app: "${name}"\n`;
+      code += `  # template describes the configuration blueprint for spawning new pod instances\n  template:\n    metadata:\n      labels:\n        app: "${name}"\n`;
       code += `    spec:\n`;
       if (rbac) {
-        code += `      serviceAccountName: ${saName}\n`;
+        code += `      # serviceAccountName binds cluster RBAC permissions down to the executing pod workload\n      serviceAccountName: ${saName}\n`;
       }
 
       // Security Context
@@ -714,6 +709,7 @@
 
       // Resources Limits & Requests
       if (cpuReq || cpuLim || memReq || memLim) {
+        code += `        # SRE: Enforces CPU and Memory resources limits (Requests for scheduling, Limits for throttling)\n`;
         code += `        resources:\n`;
         if (cpuReq || memReq) {
           code += `          requests:\n`;
