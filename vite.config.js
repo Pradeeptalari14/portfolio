@@ -13,6 +13,7 @@ export default defineConfig({
         docker: resolve(__dirname, 'tools/do/index.html'),
         jenkins: resolve(__dirname, 'tools/je/index.html'),
         terraform: resolve(__dirname, 'tools/te/index.html'),
+        k8s: resolve(__dirname, 'tools/k8s/index.html'),
       }
     }
   }

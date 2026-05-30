@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advanced k8s Script Generator | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Kubernetes manifests including Deployments, Services, Ingress, HPAs, and Pod Quotas dynamically with SRE security parameters." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    /* ── Design Tokens & Monograph Styles ── */
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important; /* Dark slate */
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Wizard steps */
+    .wizard-step {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.5rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .wizard-step.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../index.html#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../index.html#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../index.html" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN K8S STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Kubernetes Cluster Orch</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Advanced k8s Script Generator</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>This tool is still in improvement stage — please review and modify the generated script based on your own knowledge.</em>
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Wizard Console (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- WIZARD STEP NAVIGATION BAR -->
+        <div class="studio-card">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-2 mb-4">
+            <span onclick="setWizardStep(1)" id="step-nav-1" class="wizard-step active">1. Cluster Setup</span>
+            <span onclick="setWizardStep(2)" id="step-nav-2" class="wizard-step">2. Workload</span>
+            <span onclick="setWizardStep(3)" id="step-nav-3" class="wizard-step">3. Networking</span>
+            <span onclick="setWizardStep(4)" id="step-nav-4" class="wizard-step">4. Advanced</span>
+            <span onclick="setWizardStep(5)" id="step-nav-5" class="wizard-step">5. Review</span>
+          </div>
+
+          <!-- STEP 1: Cluster Setup -->
+          <div id="step-panel-1" class="wizard-panel space-y-4">
+            <h3 class="studio-title text-sm font-bold text-gray-900">Cluster Configuration</h3>
+            
+            <div>
+              <label for="env_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Environment Type</label>
+              <select id="env_type" class="form-select w-full p-2.5 text-xs">
+                <option value="cloud">Cloud Provider</option>
+                <option value="local">Local Cluster (Minikube / Kind)</option>
+                <option value="baremetal">Bare Metal / Virtual Machines</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="cloud_prov" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Cloud Provider</label>
+              <select id="cloud_prov" class="form-select w-full p-2.5 text-xs">
+                <option value="aws">AWS (EKS)</option>
+                <option value="azure">Azure (AKS)</option>
+                <option value="gcp">Google Cloud (GKE)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="k8s_version" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Kubernetes Version</label>
+              <select id="k8s_version" class="form-select w-full p-2.5 text-xs">
+                <option value="1.28">1.28 (latest stable)</option>
+                <option value="1.27">1.27</option>
+                <option value="1.26">1.26</option>
+                <option value="1.25">1.25</option>
+              </select>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex justify-end">
+              <button onclick="setWizardStep(2)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span>Next: Workload</span> <span class="text-sm">→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Workload -->
+          <div id="step-panel-2" class="wizard-panel space-y-4 hidden">
+            <h3 class="studio-title text-sm font-bold text-gray-900">Workload Configuration</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="namespace" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Namespace</label>
+                <input type="text" id="namespace" class="form-input w-full p-2.5 text-xs" value="default" />
+              </div>
+              <div>
+                <label for="workload_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Workload Type</label>
+                <select id="workload_type" class="form-select w-full p-2.5 text-xs">
+                  <option value="Deployment">Deployment</option>
+                  <option value="StatefulSet">StatefulSet</option>
+                  <option value="DaemonSet">DaemonSet</option>
+                  <option value="Job">Job</option>
+                  <option value="CronJob">CronJob</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="workload_name" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Workload Name <span class="text-rose-500">*</span></label>
+                <input type="text" id="workload_name" class="form-input w-full p-2.5 text-xs" value="my-app" />
+              </div>
+              <div>
+                <label for="labels" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Labels (comma-separated key=value pairs)</label>
+                <input type="text" id="labels" class="form-input w-full p-2.5 text-xs" value="app=my-app,env=prod" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-2">
+                <label for="image" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Container Image <span class="text-rose-500">*</span></label>
+                <input type="text" id="image" class="form-input w-full p-2.5 text-xs" value="nginx:latest" />
+              </div>
+              <div>
+                <label for="container_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Container Port <span class="text-rose-500">*</span></label>
+                <input type="number" id="container_port" class="form-input w-full p-2.5 text-xs" value="80" />
+              </div>
+            </div>
+
+            <div>
+              <label for="replicas" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Replicas</label>
+              <input type="number" id="replicas" class="form-input w-full p-2.5 text-xs" value="2" />
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex justify-between">
+              <button onclick="setWizardStep(1)" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span class="text-sm">←</span> <span>Back</span>
+              </button>
+              <button onclick="setWizardStep(3)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span>Next: Networking</span> <span class="text-sm">→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Networking -->
+          <div id="step-panel-3" class="wizard-panel space-y-4 hidden">
+            <h3 class="studio-title text-sm font-bold text-gray-900">Service Configuration</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="service_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Type</label>
+                <select id="service_type" class="form-select w-full p-2.5 text-xs">
+                  <option value="ClusterIP">ClusterIP (Internal Discovery)</option>
+                  <option value="NodePort">NodePort (Expose via Node IPs)</option>
+                  <option value="LoadBalancer">LoadBalancer (Cloud provider LB)</option>
+                  <option value="none">No Service</option>
+                </select>
+              </div>
+              <div>
+                <label for="service_name" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Name</label>
+                <input type="text" id="service_name" class="form-input w-full p-2.5 text-xs" value="app-service" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <label for="service_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Port</label>
+                <input type="number" id="service_port" class="form-input w-full p-2.5 text-xs" value="80" />
+              </div>
+              <div>
+                <label for="target_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Port</label>
+                <input type="number" id="target_port" class="form-input w-full p-2.5 text-xs" value="80" />
+              </div>
+            </div>
+
+            <h3 class="studio-title text-sm font-bold text-gray-900 mt-2">Ingress Configuration</h3>
+            <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+              <input type="checkbox" id="ingress_enable" class="custom-checkbox" />
+              <span>Enable Ingress Routing</span>
+            </label>
+
+            <div class="pt-4 border-t border-gray-100 flex justify-between">
+              <button onclick="setWizardStep(2)" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span class="text-sm">←</span> <span>Back</span>
+              </button>
+              <button onclick="setWizardStep(4)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span>Next: Advanced</span> <span class="text-sm">→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Advanced Settings -->
+          <div id="step-panel-4" class="wizard-panel space-y-4 hidden">
+            <h3 class="studio-title text-sm font-bold text-gray-900">Resource Configuration</h3>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div>
+                <label for="cpu_req" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">CPU Request</label>
+                <input type="text" id="cpu_req" class="form-input w-full p-2 text-xs" value="100m" />
+              </div>
+              <div>
+                <label for="cpu_lim" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">CPU Limit</label>
+                <input type="text" id="cpu_lim" class="form-input w-full p-2 text-xs" value="500m" />
+              </div>
+              <div>
+                <label for="mem_req" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Memory Request</label>
+                <input type="text" id="mem_req" class="form-input w-full p-2 text-xs" value="128Mi" />
+              </div>
+              <div>
+                <label for="mem_lim" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Memory Limit</label>
+                <input type="text" id="mem_lim" class="form-input w-full p-2 text-xs" value="512Mi" />
+              </div>
+            </div>
+
+            <div class="border-t border-gray-100 pt-3">
+              <h3 class="studio-title text-sm font-bold text-gray-900 mb-2">Autoscaling</h3>
+              <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-700">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="hpa_enable" class="custom-checkbox" />
+                  <span>Enable Horizontal Pod Autoscaler (HPA)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="vpa_enable" class="custom-checkbox" />
+                  <span>Enable Vertical Pod Autoscaler (VPA)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="border-t border-gray-100 pt-3">
+              <h3 class="studio-title text-sm font-bold text-gray-900 mb-2">Security</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-3">
+                  <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+                    <input type="checkbox" id="rbac_enable" class="custom-checkbox" checked />
+                    <span>Enable RBAC Role Binding</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+                    <input type="checkbox" id="netpol_enable" class="custom-checkbox" />
+                    <span>Add Default Deny Network Policy</span>
+                  </label>
+                  <div>
+                    <label for="sa_name" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Account Name</label>
+                    <input type="text" id="sa_name" class="form-input w-full p-2 text-xs" value="default" />
+                  </div>
+                </div>
+                <div>
+                  <label for="sec_ctx" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Security Context (YAML properties)</label>
+                  <textarea id="sec_ctx" rows="4" class="form-textarea w-full p-2.5 font-mono text-xs text-slate-800" placeholder="runAsUser: 1000&#10;fsGroup: 2000"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex justify-between">
+              <button onclick="setWizardStep(3)" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span class="text-sm">←</span> <span>Back</span>
+              </button>
+              <button onclick="setWizardStep(5)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span>Next: Review</span> <span class="text-sm">→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 5: Review & Compile -->
+          <div id="step-panel-5" class="wizard-panel space-y-4 hidden">
+            <h3 class="studio-title text-sm font-bold text-gray-900 border-b border-gray-100 pb-2">Review Your Configuration</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-normal font-medium text-gray-700" id="review-summary-box">
+              <!-- Summary populated dynamically -->
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex justify-between">
+              <button onclick="setWizardStep(4)" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                <span class="text-sm">←</span> <span>Back</span>
+              </button>
+              <button onclick="triggerCompileAll(); showToast('☸️ manifests compilation completed!');" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition shadow-md shadow-emerald-100 flex items-center gap-1.5">
+                <span>⚡ Generate Configuration</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-28 focus:outline-none" value="deployment" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yaml</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('deployment')" id="tab-deployment" class="tab-btn active">deployment.yaml</button>
+              <button onclick="switchTab('service')" id="tab-service" class="tab-btn">service.yaml</button>
+              <button onclick="switchTab('ingress')" id="tab-ingress" class="tab-btn">ingress.yaml</button>
+              <button onclick="switchTab('hpa')" id="tab-hpa" class="tab-btn">hpa.yaml</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate YAML Manifests</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear Output</span>
+            </button>
+          </div>
+
+          <button onclick="downloadK8sZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Kubernetes-Resources.Zip</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-indigo-400">⚡</span> Kubectl Command Cheat Sheet
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Deploy manifests to cluster namespace:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">kubectl apply -f .</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># List all active pods in namespace:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">kubectl get pods -n default</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Stream live container output logs:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">kubectl logs -f deployment/my-app -n default</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 text-center text-xs text-gray-400 mt-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <p>© 2026 Talari Pradeep · talaripradeep.info · Designed and provisioned as an open-source SRE tool.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'deployment';
+    let currentStep = 1;
+
+    let compiledCode = {
+      deployment: '',
+      service: '',
+      ingress: '',
+      hpa: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select, textarea').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    // Wizard navigation controls
+    function setWizardStep(stepNum) {
+      currentStep = stepNum;
+      
+      // Update nav styles
+      $$('.wizard-step').forEach(step => step.classList.remove('active'));
+      $('step-nav-' + stepNum).classList.add('active');
+
+      // Update panels visibility
+      $$('.wizard-panel').forEach(panel => panel.classList.add('hidden'));
+      $('step-panel-' + stepNum).classList.remove('hidden');
+
+      if (stepNum === 5) {
+        populateReviewSummary();
+      }
+    }
+
+    // Populate the step 5 review parameters dynamically
+    function populateReviewSummary() {
+      const box = $('review-summary-box');
+      box.innerHTML = `
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+          <p class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-1">Cluster Settings</p>
+          <p>Environment: <strong>${$('env_type').value}</strong></p>
+          <p>Cloud Provider: <strong>${$('cloud_prov').value}</strong></p>
+          <p>K8s Version: <strong>${$('k8s_version').value}</strong></p>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+          <p class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-1">Workload Settings</p>
+          <p>Namespace: <strong>${$('namespace').value}</strong></p>
+          <p>Workload: <strong>${$('workload_type').value}</strong></p>
+          <p>Name: <strong>${$('workload_name').value || '<span class="text-rose-500 font-bold">Required</span>'}</strong></p>
+          <p>Image: <strong>${$('image').value || '<span class="text-rose-500 font-bold">Required</span>'}</strong></p>
+          <p>Replicas: <strong>${$('replicas').value}</strong></p>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+          <p class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-1">Networking Settings</p>
+          <p>Service Type: <strong>${$('service_type').value}</strong></p>
+          <p>Service Name: <strong>${$('service_name').value}</strong></p>
+          <p>Ingress Enabled: <strong>${$('ingress_enable').checked ? 'Yes' : 'No'}</strong></p>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+          <p class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-1">Advanced Settings</p>
+          <p>CPU Req / Limit: <strong>${$('cpu_req').value} / ${$('cpu_lim').value}</strong></p>
+          <p>Mem Req / Limit: <strong>${$('mem_req').value} / ${$('mem_lim').value}</strong></p>
+          <p>HPA / VPA: <strong>${$('hpa_enable').checked ? 'Yes' : 'No'} / ${$('vpa_enable').checked ? 'Yes' : 'No'}</strong></p>
+          <p>RBAC / NetPol: <strong>${$('rbac_enable').checked ? 'Yes' : 'No'} / ${$('netpol_enable').checked ? 'Yes' : 'No'}</strong></p>
+        </div>
+      `;
+    }
+
+    // Trigger manifest compilation
+    function triggerCompileAll() {
+      compileDeployment();
+      compileService();
+      compileIngress();
+      compileHpa();
+      updateViewportContent();
+    }
+
+    // Compile deployment.yaml
+    function compileDeployment() {
+      const type = $('workload_type').value;
+      const name = $('workload_name').value.trim() || 'my-app';
+      const ns = $('namespace').value.trim() || 'default';
+      const image = $('image').value.trim() || 'nginx:latest';
+      const port = $('container_port').value || '80';
+      const replicas = $('replicas').value || '2';
+      const labelsRaw = $('labels').value.split(',');
+
+      const cpuReq = $('cpu_req').value;
+      const cpuLim = $('cpu_lim').value;
+      const memReq = $('mem_req').value;
+      const memLim = $('mem_lim').value;
+
+      const rbac = $('rbac_enable').checked;
+      const saName = $('sa_name').value.trim() || 'default';
+      const secCtxRaw = $('sec_ctx').value.split('\n');
+
+      let labelsYaml = '';
+      labelsRaw.forEach(lbl => {
+        const split = lbl.split('=');
+        if (split.length === 2) {
+          labelsYaml += `    ${split[0].trim()}: "${split[1].trim()}"\n`;
+        }
+      });
+      if (!labelsYaml) {
+        labelsYaml = `    app: "${name}"\n    env: "prod"\n`;
+      }
+
+      let code = `apiVersion: apps/v1\n`;
+      code += `kind: ${type}\n`;
+      code += `metadata:\n`;
+      code += `  name: ${name}\n`;
+      code += `  namespace: ${ns}\n`;
+      code += `  labels:\n${labelsYaml}`;
+      code += `spec:\n`;
+      if (type !== 'DaemonSet') {
+        code += `  replicas: ${replicas}\n`;
+      }
+      code += `  selector:\n`;
+      code += `    matchLabels:\n`;
+      code += `      app: "${name}"\n`;
+      code += `  template:\n`;
+      code += `    metadata:\n`;
+      code += `      labels:\n`;
+      code += `        app: "${name}"\n`;
+      code += `    spec:\n`;
+      if (rbac) {
+        code += `      serviceAccountName: ${saName}\n`;
+      }
+
+      // Security Context
+      if ($('sec_ctx').value.trim()) {
+        code += `      securityContext:\n`;
+        secCtxRaw.forEach(line => {
+          if (line.trim()) {
+            code += `        ${line.trim()}\n`;
+          }
+        });
+      }
+
+      code += `      containers:\n`;
+      code += `      - name: container-app\n`;
+      code += `        image: ${image}\n`;
+      code += `        imagePullPolicy: IfNotPresent\n`;
+      code += `        ports:\n`;
+      code += `        - containerPort: ${port}\n`;
+
+      // Resources Limits & Requests
+      if (cpuReq || cpuLim || memReq || memLim) {
+        code += `        resources:\n`;
+        if (cpuReq || memReq) {
+          code += `          requests:\n`;
+          if (cpuReq) code += `            cpu: "${cpuReq}"\n`;
+          if (memReq) code += `            memory: "${memReq}"\n`;
+        }
+        if (cpuLim || memLim) {
+          code += `          limits:\n`;
+          if (cpuLim) code += `            cpu: "${cpuLim}"\n`;
+          if (memLim) code += `            memory: "${memLim}"\n`;
+        }
+      }
+
+      compiledCode.deployment = code;
+    }
+
+    // Compile service.yaml
+    function compileService() {
+      const type = $('service_type').value;
+      const srvName = $('service_name').value.trim() || 'app-service';
+      const appName = $('workload_name').value.trim() || 'my-app';
+      const ns = $('namespace').value.trim() || 'default';
+      const port = $('service_port').value || '80';
+      const targetPort = $('target_port').value || '80';
+
+      if (type === 'none') {
+        compiledCode.service = `# Service Discovery disabled by choice`;
+        return;
+      }
+
+      let code = `apiVersion: v1\n`;
+      code += `kind: Service\n`;
+      code += `metadata:\n`;
+      code += `  name: ${srvName}\n`;
+      code += `  namespace: ${ns}\n`;
+      code += `spec:\n`;
+      code += `  type: ${type}\n`;
+      code += `  selector:\n`;
+      code += `    app: "${appName}"\n`;
+      code += `  ports:\n`;
+      code += `  - protocol: TCP\n`;
+      code += `    port: ${port}\n`;
+      code += `    targetPort: ${targetPort}\n`;
+
+      compiledCode.service = code;
+    }
+
+    // Compile ingress.yaml
+    function compileIngress() {
+      const enable = $('ingress_enable').checked;
+      const ns = $('namespace').value.trim() || 'default';
+      const appName = $('workload_name').value.trim() || 'my-app';
+      const srvName = $('service_name').value.trim() || 'app-service';
+      const port = $('service_port').value || '80';
+
+      if (!enable) {
+        compiledCode.ingress = `# Ingress Routing disabled by choice`;
+        return;
+      }
+
+      let code = `apiVersion: networking.k8s.io/v1\n`;
+      code += `kind: Ingress\n`;
+      code += `metadata:\n`;
+      code += `  name: ${appName}-ingress\n`;
+      code += `  namespace: ${ns}\n`;
+      code += `  annotations:\n`;
+      code += `    nginx.ingress.kubernetes.io/ssl-redirect: "true"\n`;
+      code += `    nginx.ingress.kubernetes.io/rewrite-target: /\n`;
+      code += `spec:\n`;
+      code += `  ingressClassName: nginx\n`;
+      code += `  rules:\n`;
+      code += `  - host: my-app.talaripradeep.info\n`;
+      code += `    http:\n`;
+      code += `      paths:\n`;
+      code += `      - path: /\n`;
+      code += `        pathType: Prefix\n`;
+      code += `        backend:\n`;
+      code += `          service:\n`;
+      code += `            name: ${srvName}\n`;
+      code += `            port:\n`;
+      code += `              number: ${port}\n`;
+
+      compiledCode.ingress = code;
+    }
+
+    // Compile hpa.yaml
+    function compileHpa() {
+      const enable = $('hpa_enable').checked;
+      const ns = $('namespace').value.trim() || 'default';
+      const appName = $('workload_name').value.trim() || 'my-app';
+      const type = $('workload_type').value;
+
+      if (!enable) {
+        compiledCode.hpa = `# HorizontalPodAutoscaler disabled by choice`;
+        return;
+      }
+
+      let code = `apiVersion: autoscaling/v2\n`;
+      code += `kind: HorizontalPodAutoscaler\n`;
+      code += `metadata:\n`;
+      code += `  name: ${appName}-hpa\n`;
+      code += `  namespace: ${ns}\n`;
+      code += `spec:\n`;
+      code += `  scaleTargetRef:\n`;
+      code += `    apiVersion: apps/v1\n`;
+      code += `    kind: ${type}\n`;
+      code += `    name: ${appName}\n`;
+      code += `  minReplicas: 2\n`;
+      code += `  maxReplicas: 10\n`;
+      code += `  metrics:\n`;
+      code += `  - type: Resource\n`;
+      code += `    resource:\n`;
+      code += `      name: cpu\n`;
+      code += `      target:\n`;
+      code += `        type: Utilization\n`;
+      code += `        averageUtilization: 75\n`;
+
+      compiledCode.hpa = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      nameBox.value = tabId;
+
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast(`✅ Copied ${activeTab}.yaml to clipboard!`);
+      });
+    }
+
+    function downloadK8sZip() {
+      const zip = new JSZip();
+      zip.file('deployment.yaml', compiledCode.deployment);
+      zip.file('service.yaml', compiledCode.service);
+      zip.file('ingress.yaml', compiledCode.ingress);
+      zip.file('hpa.yaml', compiledCode.hpa);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'kubernetes-resources.zip';
+        a.click();
+        showToast('⬇️ kubernetes-resources.zip downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('env_type').value = 'cloud';
+      $('cloud_prov').value = 'aws';
+      $('k8s_version').value = '1.28';
+      $('namespace').value = 'default';
+      $('workload_type').value = 'Deployment';
+      $('workload_name').value = 'my-app';
+      $('labels').value = 'app=my-app,env=prod';
+      $('image').value = 'nginx:latest';
+      $('container_port').value = '80';
+      $('replicas').value = '2';
+      $('service_type').value = 'ClusterIP';
+      $('service_name').value = 'app-service';
+      $('service_port').value = '80';
+      $('target_port').value = '80';
+      $('ingress_enable').checked = false;
+
+      $('cpu_req').value = '100m';
+      $('cpu_lim').value = '500m';
+      $('mem_req').value = '128Mi';
+      $('mem_lim').value = '512Mi';
+      $('hpa_enable').checked = false;
+      $('vpa_enable').checked = false;
+      $('rbac_enable').checked = true;
+      $('netpol_enable').checked = false;
+      $('sa_name').value = 'default';
+      $('sec_ctx').value = 'runAsUser: 1000\nfsGroup: 2000';
+
+      setWizardStep(1);
+      triggerCompileAll();
+      showToast('🗑️ Output configuration cleared and reset to defaults');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
