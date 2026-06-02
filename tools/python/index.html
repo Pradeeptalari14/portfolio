@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Python SRE Utility Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Python SRE automation scripts, requirements.txt files, and execution guides dynamically with SRE safety parameters." />
+  <link rel="icon" type="image/png" href="../../Favicon.png?v=3" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --border:         #e2e8f0;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN WINDOW -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Python & Ops</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Python SRE Utility Studio</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>Configure enterprise-grade Python automation scripts. Generate robust Python automation files containing alert dispatch pipelines, multi-threaded checks, and SDK wrappers.</em>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Script Purpose selection -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🐍 Python Utility Configuration</h3>
+          
+          <div class="mb-4">
+            <label for="script_purpose" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target SRE Task</label>
+            <select id="script_purpose" class="form-select w-full p-2.5 text-xs">
+              <option value="aws_finops">AWS FinOps: Cleanup Unattached EBS / Snapshots / Elastic IPs</option>
+              <option value="k8s_monitor">Kubernetes Monitor: Alert on Pod CrashLoopBackOff & OOMKilled</option>
+              <option value="ssl_expiry">SSL Expiry Audit: Multi-domain Cert Expiry Warnings Checker</option>
+              <option value="api_ping">API Latency Telemetry: Latency distribution metrics (CSV logger)</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="alert_webhook" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Notification Webhook URL (Slack/Teams)</label>
+            <input type="text" id="alert_webhook" class="form-input w-full p-2.5 text-xs" value="https://hooks.slack.com/services/T000/B000/XXXXXX" />
+          </div>
+        </div>
+
+        <!-- AWS FinOps Settings -->
+        <div class="studio-card" id="aws_finops-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">💰 AWS Cost Sweep Parameters</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="snapshot_retention" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Snapshot Expiry Days (Retention)</label>
+              <input type="number" id="snapshot_retention" class="form-input w-full p-2.5 text-xs" value="30" />
+            </div>
+            <div>
+              <label for="aws_region" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">AWS Target Region</label>
+              <input type="text" id="aws_region" class="form-input w-full p-2.5 text-xs" value="us-east-1" />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 text-xs font-semibold text-gray-700 pt-3 border-t border-gray-100">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="aws_ebs" class="custom-checkbox" checked />
+              <span>Audit and delete unattached EBS Volumes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="aws_eip" class="custom-checkbox" checked />
+              <span>Audit and release unused Elastic IPs (EIPs)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="aws_dry" class="custom-checkbox" checked />
+              <span>Dry Run mode (simulates sweep, does not perform delete operations)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Kubernetes Health settings -->
+        <div class="studio-card hidden" id="k8s_monitor-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">☸️ Kubernetes Cluster Target settings</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="k8s_namespace" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Kubernetes Namespace (all for cluster-wide)</label>
+              <input type="text" id="k8s_namespace" class="form-input w-full p-2.5 text-xs" value="production" />
+            </div>
+            <div>
+              <label for="min_restarts" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Alert threshold container restarts count</label>
+              <input type="number" id="min_restarts" class="form-input w-full p-2.5 text-xs" value="5" />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 text-xs font-semibold text-gray-700 pt-3 border-t border-gray-100">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="k8s_incluster" class="custom-checkbox" />
+              <span>Use in-cluster configuration (for running inside pods)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="k8s_oom" class="custom-checkbox" checked />
+              <span>Specifically detect OOMKilled events via pods termination status</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- SSL Expiry settings -->
+        <div class="studio-card hidden" id="ssl_expiry-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🔒 SSL Certificates Audit Targets</h3>
+          
+          <div class="mb-4">
+            <label for="ssl_domains" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Domain Names List (comma-separated)</label>
+            <input type="text" id="ssl_domains" class="form-input w-full p-2.5 text-xs" value="google.com, github.com, talaripradeep.info" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="ssl_alert_days" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Alert warning days before expiry</label>
+              <input type="number" id="ssl_alert_days" class="form-input w-full p-2.5 text-xs" value="14" />
+            </div>
+            <div>
+              <label for="ssl_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Connection Port</label>
+              <input type="number" id="ssl_port" class="form-input w-full p-2.5 text-xs" value="443" />
+            </div>
+          </div>
+        </div>
+
+        <!-- API Ping settings -->
+        <div class="studio-card hidden" id="api_ping-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🚀 HTTP Latency Telemetry Parameters</h3>
+          
+          <div class="mb-4">
+            <label for="ping_url" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target URL Endpoint</label>
+            <input type="text" id="ping_url" class="form-input w-full p-2.5 text-xs" value="https://talaripradeep.info/" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label for="ping_concurrency" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Max Concurrent Workers</label>
+              <input type="number" id="ping_concurrency" class="form-input w-full p-2.5 text-xs" value="5" />
+            </div>
+            <div>
+              <label for="ping_total" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Total HTTP Requests Count</label>
+              <input type="number" id="ping_total" class="form-input w-full p-2.5 text-xs" value="50" />
+            </div>
+            <div>
+              <label for="ping_timeout" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Request Timeout (seconds)</label>
+              <input type="number" id="ping_timeout" class="form-input w-full p-2.5 text-xs" value="5" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Safeguards Options -->
+        <div class="studio-card border-rose-200 bg-rose-50/10">
+          <h3 class="studio-title text-base font-bold text-rose-900 mb-2 flex items-center gap-2">🛡️ Python Script Safeguards</h3>
+          <p class="text-xs text-gray-500 mb-4">Integrate clean SRE guidelines into compiled Python scripts.</p>
+          
+          <div class="flex flex-col gap-2.5 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="py_logging" class="custom-checkbox" checked />
+              <span>Configure standard output logging formats (<code>logging.basicConfig</code>)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="py_exceptions" class="custom-checkbox" checked />
+              <span>Catch all network & API exceptions gracefully to prevent stacktrace leak</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Terminal Viewport (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="sre_utility" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.py</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('script')" id="tab-script" class="tab-btn active">sre_utility.py</button>
+              <button onclick="switchTab('requirements')" id="tab-requirements" class="tab-btn">requirements.txt</button>
+              <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate Python Files</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Reset Defaults</span>
+            </button>
+          </div>
+
+          <button onclick="downloadScriptZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Project.Zip</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ENGINE SCRIPT -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'script';
+
+    let compiledCode = {
+      script: '',
+      requirements: '',
+      readme: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      // Show/Hide relevant options based on script purpose
+      $('script_purpose').addEventListener('change', function() {
+        const val = this.value;
+        ['aws_finops', 'k8s_monitor', 'ssl_expiry', 'api_ping'].forEach(category => {
+          const el = $(category + '-options');
+          if (el) {
+            if (val === category) {
+              el.classList.remove('hidden');
+            } else {
+              el.classList.add('hidden');
+            }
+          }
+        });
+        triggerCompileAll();
+      });
+
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    function triggerCompileAll() {
+      compileScript();
+      compileRequirements();
+      compileReadme();
+      updateViewportContent();
+    }
+
+    function compileScript() {
+      const purpose = $('script_purpose').value;
+      const webhook = $('alert_webhook').value;
+      const configureLogging = $('py_logging').checked;
+      const gracefulExceptions = $('py_exceptions').checked;
+
+      let code = `#!/usr/bin/env python3\n`;
+      code += `# -*- coding: utf-8 -*-\n`;
+      code += `# sre_utility.py - SRE Automation Python Script generated client-side\n\n`;
+
+      code += `import os\nimport sys\nimport time\nimport json\nimport requests\n`;
+      
+      if (configureLogging) {
+        code += `import logging\n\n`;
+        code += `logging.basicConfig(\n    level=logging.INFO,\n    format='%(asctime)s [%(levelname)s] %(message)s',\n    handlers=[logging.StreamHandler(sys.stdout)]\n)\nlogger = logging.getLogger('SRE_Utility')\n\n`;
+      }
+
+      code += `# ── ALERT NOTIFICATION FUNCTION ──\n`;
+      code += `def dispatch_alert(message):\n`;
+      if (configureLogging) {
+        code += `    logger.warning(f"Dispatching Slack alert: {message}")\n`;
+      } else {
+        code += `    print(f"🚨 ALERT: {message}")\n`;
+      }
+      if (webhook) {
+        code += `    webhook_url = "${webhook}"\n`;
+        code += `    payload = {"text": f"🐍 [SRE PyEngine] Alert:\\n{message}"}\n`;
+        code += `    try:\n        requests.post(webhook_url, json=payload, timeout=5)\n    except Exception as e:\n        print(f"Failed to post alert: {e}")\n`;
+      } else {
+        code += `    pass\n`;
+      }
+      code += `\n`;
+
+      if (purpose === 'aws_finops') {
+        const retention = $('snapshot_retention').value;
+        const region = $('aws_region').value;
+        const auditEbs = $('aws_ebs').checked;
+        const auditEip = $('aws_eip').checked;
+        const dryRun = $('aws_dry').checked;
+
+        code += `import boto3\nfrom datetime import datetime, timezone, timedelta\n\n`;
+        code += `def execute_finops_sweep():\n`;
+        code += `    region = "${region}"\n`;
+        code += `    dry_run = ${dryRun ? 'True' : 'False'}\n`;
+        code += `    retention_days = ${retention}\n\n`;
+        code += `    logger.info(f"Starting AWS FinOps Cloud Sweep in region: {region} (Dry Run = {dry_run})")\n`;
+        code += `    ec2_client = boto3.client('ec2', region_name=region)\n\n`;
+
+        if (auditEbs) {
+          code += `    # 1. Sweep Unattached EBS Volumes\n`;
+          code += `    logger.info("Scanning for unattached EBS volumes...")\n`;
+          code += `    volumes = ec2_client.describe_volumes(Filters=[{'Name': 'status', 'Values': ['available']}])['Volumes']\n`;
+          code += `    unattached_count = len(volumes)\n`;
+          code += `    logger.info(f"Found {unattached_count} unattached volume(s).")\n`;
+          code += `    for vol in volumes:\n`;
+          code += `        vol_id = vol['VolumeId']\n`;
+          code += `        size = vol['Size']\n`;
+          code += `        logger.info(f"Volume {vol_id} ({size} GiB) is unattached.")\n`;
+          code += `        if not dry_run:\n`;
+          code += `            try:\n`;
+          code += `                ec2_client.delete_volume(VolumeId=vol_id)\n`;
+          code += `                logger.info(f"Successfully deleted volume: {vol_id}")\n`;
+          code += `            except Exception as e:\n`;
+          code += `                logger.error(f"Failed to delete volume {vol_id}: {e}")\n`;
+          code += `                dispatch_alert(f"Failed to delete volume {vol_id}: {e}")\n\n`;
+        }
+
+        if (auditEip) {
+          code += `    # 2. Sweep Unassociated Elastic IPs\n`;
+          code += `    logger.info("Scanning for unassociated Elastic IPs...")\n`;
+          code += `    addresses = ec2_client.describe_addresses()['Addresses']\n`;
+          code += `    unused_eips = [addr for addr in addresses if 'AssociationId' not in addr]\n`;
+          code += `    logger.info(f"Found {len(unused_eips)} unused Elastic IP(s).")\n`;
+          code += `    for eip in unused_eips:\n`;
+          code += `        alloc_id = eip['AllocationId']\n`;
+          code += `        ip = eip['PublicIp']\n`;
+          code += `        logger.info(f"Elastic IP {ip} (AllocationId: {alloc_id}) is unused.")\n`;
+          code += `        if not dry_run:\n`;
+          code += `            try:\n`;
+          code += `                ec2_client.release_address(AllocationId=alloc_id)\n`;
+          code += `                logger.info(f"Successfully released EIP: {ip}")\n`;
+          code += `            except Exception as e:\n`;
+          code += `                logger.error(f"Failed to release EIP {ip}: {e}")\n`;
+          code += `                dispatch_alert(f"Failed to release EIP {ip}: {e}")\n\n`;
+        }
+
+        code += `if __name__ == "__main__":\n`;
+        if (gracefulExceptions) {
+          code += `    try:\n        execute_finops_sweep()\n    except Exception as err:\n        logger.critical(f"Unhandled sweep error: {err}")\n        sys.exit(1)\n`;
+        } else {
+          code += `    execute_finops_sweep()\n`;
+        }
+
+      } else if (purpose === 'k8s_monitor') {
+        const ns = $('k8s_namespace').value;
+        const restarts = $('min_restarts').value;
+        const incluster = $('k8s_incluster').checked;
+        const oom = $('k8s_oom').checked;
+
+        code += `from kubernetes import client, config\n\n`;
+        code += `def monitor_pods():\n`;
+        code += `    namespace = "${ns}"\n`;
+        code += `    restart_threshold = ${restarts}\n\n`;
+        code += `    logger.info("Initializing Kubernetes SDK Client...")\n`;
+        if (incluster) {
+          code += `    config.load_incluster_config()\n`;
+        } else {
+          code += `    config.load_kube_config()\n`;
+        }
+        code += `    v1 = client.CoreV1Api()\n\n`;
+        code += `    logger.info(f"Scanning namespace '{namespace}' for pod health...")\n`;
+        code += `    if namespace.lower() == 'all':\n`;
+        code += `        pods = v1.list_pod_for_all_namespaces(watch=False)\n`;
+        code += `    else:\n`;
+        code += `        pods = v1.list_namespaced_pod(namespace=namespace, watch=False)\n\n`;
+        
+        code += `    for pod in pods.items:\n`;
+        code += `        pod_name = pod.metadata.name\n`;
+        code += `        pod_ns = pod.metadata.namespace\n`;
+        code += `        status = pod.status\n\n`;
+        code += `        # Check container statuses\n`;
+        code += `        container_statuses = status.container_statuses or []\n`;
+        code += `        for cs in container_statuses:\n`;
+        code += `            name = cs.name\n`;
+        code += `            restarts = cs.restart_count\n`;
+        code += `            state = cs.state\n\n`;
+        code += `            if restarts >= restart_threshold:\n`;
+        code += `                dispatch_alert(f"Pod {pod_name} in namespace {pod_ns} container {name} restarted {restarts} times!")\n\n`;
+        
+        if (oom) {
+          code += `            # Check for OOMKilled or CrashLoopBackOff\n`;
+          code += `            if state.waiting and state.waiting.reason in ['CrashLoopBackOff', 'ErrImagePull']:\n`;
+          code += `                dispatch_alert(f"Pod {pod_name} ({pod_ns}) is waiting with reason: {state.waiting.reason}")\n`;
+          code += `            if state.terminated and state.terminated.reason == 'OOMKilled':\n`;
+          code += `                dispatch_alert(f"Pod {pod_name} ({pod_ns}) container {name} was OOMKilled!")\n`;
+        }
+        code += `\n`;
+        code += `if __name__ == "__main__":\n`;
+        if (gracefulExceptions) {
+          code += `    try:\n        monitor_pods()\n    except Exception as err:\n        logger.critical(f"K8s API connection failed: {err}")\n        sys.exit(1)\n`;
+        } else {
+          code += `    monitor_pods()\n`;
+        }
+
+      } else if (purpose === 'ssl_expiry') {
+        const domains = $('ssl_domains').value;
+        const alertDays = $('ssl_alert_days').value;
+        const port = $('ssl_port').value;
+
+        code += `import socket\nimport ssl\nfrom datetime import datetime\n\n`;
+        code += `def check_ssl_expiry():\n`;
+        code += `    domains = [d.strip() for d in "${domains}".split(",") if d.strip()]\n`;
+        code += `    port = ${port}\n`;
+        code += `    alert_threshold_days = ${alertDays}\n\n`;
+        code += `    for domain in domains:\n`;
+        code += `        logger.info(f"Connecting to {domain}:{port} to fetch TLS certificate...")\n`;
+        code += `        context = ssl.create_default_context()\n`;
+        code += `        try:\n`;
+        code += `            with socket.create_connection((domain, port), timeout=5) as sock:\n`;
+        code += `                with context.wrap_socket(sock, server_hostname=domain) as ssock:\n`;
+        code += `                    cert = ssock.getpeercert()\n`;
+        code += `                    expiry_str = cert['notAfter']\n`;
+        code += `                    expiry_date = datetime.strptime(expiry_str, '%b %d %H:%M:%S %Y %Z')\n`;
+        code += `                    days_remaining = (expiry_date - datetime.utcnow()).days\n\n`;
+        code += `                    if days_remaining < alert_threshold_days:\n`;
+        code += `                        msg = f"Domain {domain} TLS cert expires in {days_remaining} day(s) on {expiry_str}!"\n`;
+        code += `                        dispatch_alert(msg)\n`;
+        code += `                    else:\n`;
+        code += `                        logger.info(f"✅ Domain {domain} SSL cert is healthy. Expiry in {days_remaining} days.")\n`;
+        code += `        except Exception as e:\n`;
+        code += `            logger.error(f"Connection to {domain} failed: {e}")\n`;
+        code += `            dispatch_alert(f"Domain SSL audit failed for {domain}: {e}")\n\n`;
+        code += `if __name__ == "__main__":\n`;
+        code += `    check_ssl_expiry()\n`;
+
+      } else if (purpose === 'api_ping') {
+        const url = $('ping_url').value;
+        const concurrency = $('ping_concurrency').value;
+        const total = $('ping_total').value;
+        const timeout = $('ping_timeout').value;
+
+        code += `import csv\nfrom concurrent.futures import ThreadPoolExecutor, as_completed\n\n`;
+        code += `def ping_endpoint():\n`;
+        code += `    target_url = "${url}"\n`;
+        code += `    concurrency = ${concurrency}\n`;
+        code += `    total_requests = ${total}\n`;
+        code += `    timeout = ${timeout}\n`;
+        code += `    csv_file = "latency_results.csv"\n\n`;
+        code += `    logger.info(f"Launching HTTP latency test against: {target_url}")\n`;
+        code += `    logger.info(f"Total requests: {total_requests}, Concurrency: {concurrency}")\n\n`;
+        code += `    latencies = []\n`;
+        code += `    failures = 0\n\n`;
+        code += `    def send_single_ping():\n`;
+        code += `        t0 = time.perf_counter()\n`;
+        code += `        try:\n`;
+        code += `            r = requests.get(target_url, timeout=timeout)\n`;
+        code += `            latency = (time.perf_counter() - t0) * 1000  # to ms\n`;
+        code += `            return {"status": r.status_code, "latency": latency, "success": True}\n`;
+        code += `        except Exception as err:\n`;
+        code += `            return {"status": "ERROR", "latency": 0, "success": False, "error": str(err)}\n\n`;
+        code += `    with ThreadPoolExecutor(max_workers=concurrency) as executor:\n`;
+        code += `        futures = [executor.submit(send_single_ping) for _ in range(total_requests)]\n`;
+        code += `        for fut in as_completed(futures):\n`;
+        code += `            res = fut.result()\n`;
+        code += `            if res['success']:\n`;
+        code += `                latencies.append(res['latency'])\n`;
+        code += `            else:\n`;
+        code += `                failures += 1\n\n`;
+        code += `    if not latencies:\n`;
+        code += `        logger.error("All latency ping requests failed!")\n`;
+        code += `        dispatch_alert(f"Ping load test failed completely for {target_url}!")\n`;
+        code += `        return\n\n`;
+        code += `    latencies.sort()\n`;
+        code += `    avg_lat = sum(latencies) / len(latencies)\n`;
+        code += `    p95_lat = latencies[int(len(latencies) * 0.95)]\n`;
+        code += `    p99_lat = latencies[int(len(latencies) * 0.99)] if len(latencies) >= 100 else latencies[-1]\n\n`;
+        code += `    logger.info(f"✅ Completed: {len(latencies)} success, {failures} failures.")\n`;
+        code += `    logger.info(f"Metrics (ms): Average={avg_lat:.2f}, P95={p95_lat:.2f}, P99={p99_lat:.2f}")\n\n`;
+        code += `    # Export metrics to CSV\n`;
+        code += `    with open(csv_file, mode='w', newline='') as f:\n`;
+        code += `        writer = csv.writer(f)\n`;
+        code += `        writer.writerow(["Request_Index", "Latency_MS"])\n`;
+        code += `        for idx, lat in enumerate(latencies):\n`;
+        code += `            writer.writerow([idx + 1, f"{lat:.2f}"])\n`;
+        code += `    logger.info(f"Telemetry log saved successfully to {csv_file}")\n\n`;
+        code += `    # Alert if p95 latency is too slow\n`;
+        code += `    if p95_lat > 2000:\n`;
+        code += `        dispatch_alert(f"High latency warning for {target_url}! P95 latency is {p95_lat:.2f}ms")\n\n`;
+        code += `if __name__ == "__main__":\n`;
+        code += `    ping_endpoint()\n`;
+      }
+
+      compiledCode.script = code;
+    }
+
+    function compileRequirements() {
+      const purpose = $('script_purpose').value;
+      let req = 'requests>=2.31.0\n';
+
+      if (purpose === 'aws_finops') {
+        req += 'boto3>=1.34.0\n';
+      } else if (purpose === 'k8s_monitor') {
+        req += 'kubernetes>=29.0.0\n';
+      }
+
+      compiledCode.requirements = req;
+    }
+
+    function compileReadme() {
+      const purpose = $('script_purpose').value;
+      let md = `# Python SRE Automation Script\n\n`;
+      md += `This automation package is generated client-side for cloud infrastructure health and maintenance operations.\n\n`;
+      
+      md += `## Installation Requirements\n`;
+      md += `Install Python dependencies using pip:\n`;
+      md += `\`\`\`bash\n`;
+      md += `pip install -r requirements.txt\n`;
+      md += `\`\`\`\n\n`;
+
+      md += `## Configuration and Execution\n`;
+      if (purpose === 'aws_finops') {
+        md += `Ensure you have valid AWS credentials configured via environment variables or \`~/.aws/credentials\` profile.\n`;
+        md += `Execute the cleanup scanner script:\n`;
+        md += `\`\`\`bash\n`;
+        md += `python sre_utility.py\n`;
+        md += `\`\`\`\n`;
+      } else if (purpose === 'k8s_monitor') {
+        md += `Ensure you have configured a valid connection namespace context in \`~/.kube/config\` before execution.\n`;
+        md += `\`\`\`bash\n`;
+        md += `python sre_utility.py\n`;
+        md += `\`\`\`\n`;
+      } else {
+        md += `Execute python utility:\n`;
+        md += `\`\`\`bash\n`;
+        md += `python sre_utility.py\n`;
+        md += `\`\`\`\n`;
+      }
+
+      compiledCode.readme = md;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'script') {
+        nameBox.value = 'sre_utility';
+        extTag.textContent = '.py';
+      } else if (tabId === 'requirements') {
+        nameBox.value = 'requirements';
+        extTag.textContent = '.txt';
+      } else if (tabId === 'readme') {
+        nameBox.value = 'README';
+        extTag.textContent = '.md';
+      }
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadScriptZip() {
+      const purpose = $('script_purpose').value;
+      const zip = new JSZip();
+      
+      zip.file('sre_utility.py', compiledCode.script);
+      zip.file('requirements.txt', compiledCode.requirements);
+      zip.file('README.md', compiledCode.readme);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `python-sre-${purpose}.zip`;
+        a.click();
+        showToast('⬇️ Python package downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('script_purpose').value = 'aws_finops';
+      $('alert_webhook').value = 'https://hooks.slack.com/services/T000/B000/XXXXXX';
+      $('snapshot_retention').value = '30';
+      $('aws_region').value = 'us-east-1';
+      $('aws_ebs').checked = true;
+      $('aws_eip').checked = true;
+      $('aws_dry').checked = true;
+
+      // trigger category element visibility
+      $('aws_finops-options').classList.remove('hidden');
+      $('k8s_monitor-options').classList.add('hidden');
+      $('ssl_expiry-options').classList.add('hidden');
+      $('api_ping-options').classList.add('hidden');
+
+      triggerCompileAll();
+      showToast('🗑️ Defaults configurations successfully restored!');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

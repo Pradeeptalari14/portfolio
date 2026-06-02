@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page Not Found | Talari Pradeep</title>
+  <meta name="description" content="Page not found. Return to Talari Pradeep's DevOps portfolio." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/Favicon.png?v=3" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-base:          #020818;
+      --bg-surface:       #0d1627;
+      --accent-primary:   #6366f1;
+      --accent-secondary: #22d3ee;
+      --text-primary:     #f1f5f9;
+      --text-secondary:   #94a3b8;
+      --border:           rgba(99,102,241,0.15);
+    }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgba(99,102,241,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(34,211,238,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .error-container {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    .error-terminal {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .term-header {
+      background: #1e293b;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .term-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .term-dot:nth-child(1) { background: #ef4444; }
+    .term-dot:nth-child(2) { background: #f59e0b; }
+    .term-dot:nth-child(3) { background: #10b981; }
+
+    .term-title {
+      color: #64748b;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      margin-left: auto;
+    }
+
+    .term-body {
+      padding: 1.25rem 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .term-prompt { color: #38bdf8; }
+    .term-error  { color: #f87171; }
+    .term-warn   { color: #fbbf24; }
+    .term-ok     { color: #34d399; }
+    .term-dim    { color: #475569; }
+
+    .error-code {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(6rem, 18vw, 9rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #6366f1 0%, #22d3ee 50%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      letter-spacing: -4px;
+    }
+
+    .error-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .error-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.75rem 1.75rem;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(99,102,241,0.5);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.75rem 1.75rem;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(99,102,241,0.5);
+      color: var(--text-primary);
+      background: rgba(99,102,241,0.08);
+    }
+
+    .footer-note {
+      margin-top: 3rem;
+      color: #334155;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .cursor { animation: blink 1s step-start infinite; }
+  </style>
+</head>
+<body>
+
+  <div class="error-container">
+
+    <!-- Terminal block -->
+    <div class="error-terminal">
+      <div class="term-header">
+        <span class="term-dot"></span>
+        <span class="term-dot"></span>
+        <span class="term-dot"></span>
+        <span class="term-title">sre-shell@tp-core:~</span>
+      </div>
+      <div class="term-body">
+        <div><span class="term-prompt">pradeep@sre-core:~$</span> kubectl get pod page-not-found</div>
+        <div class="term-error">Error from server (NotFound): pods "page-not-found" not found</div>
+        <br>
+        <div><span class="term-prompt">pradeep@sre-core:~$</span> curl -I https://talaripradeep.info/this-path</div>
+        <div class="term-warn">HTTP/2 404 · Content-Type: text/html</div>
+        <br>
+        <div><span class="term-prompt">pradeep@sre-core:~$</span> grep "404" /var/log/nginx/access.log</div>
+        <div class="term-ok">[FOUND] Route does not exist in deployment manifest.</div>
+        <div><span class="term-prompt">pradeep@sre-core:~$</span> <span class="cursor">|</span></div>
+      </div>
+    </div>
+
+    <!-- Error content -->
+    <div class="error-code">404</div>
+    <h1 class="error-title">Route Not Found</h1>
+    <p class="error-desc">
+      The page you're looking for has been decommissioned, moved, or never existed.<br>
+      Let's get you back to a healthy endpoint.
+    </p>
+
+    <div class="error-actions">
+      <a href="/" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Back to Home
+      </a>
+      <a href="/#contact" class="btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact Me
+      </a>
+    </div>
+
+    <p class="footer-note">talaripradeep.info · SLA: 99.99% · Status: Operational</p>
+  </div>
+
+</body>
+</html>

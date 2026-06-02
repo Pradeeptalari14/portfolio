@@ -50,6 +50,8 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overflow-x: hidden;       /* prevent horizontal scroll on html level */
+  scrollbar-gutter: stable; /* reserve scrollbar space — eliminates page-width jump */
 }
 
 body {
@@ -59,6 +61,9 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Safe area insets for notched phones */
+  padding-left:  env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 a { text-decoration: none; color: inherit; }
@@ -316,6 +321,43 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: relative;
 }
 
+/* Hero Particles */
+.hero-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatParticle var(--dur) ease-in-out var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0.6);
+    opacity: 0;
+  }
+}
+
 .hero-inner {
   min-height: 100vh;
   display: grid;
@@ -324,10 +366,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 5rem;
   padding-top: 100px;
   padding-bottom: 60px;
-}
-
-.hero-content {
-  /* left column */
+  position: relative;
+  z-index: 2;
 }
 
 
@@ -378,7 +418,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* left-align on desktop — prevents shift */
   gap: 4px;
   min-height: 1.8rem;
   font-weight: 500;
@@ -417,7 +457,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   box-shadow: var(--shadow-sm);
 }
 
-.stat-item { text-align: center; }
+.stat-item {
+  text-align: center;
+  min-width: 80px;
+}
 
 .stat-num {
   display: block;
@@ -429,6 +472,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
@@ -1466,11 +1510,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  will-change: opacity, transform; /* GPU layer — prevents layout recalc shake */
 }
 
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto; /* release after animation completes */
 }
 
 /* ══════════════════════════════
@@ -1483,18 +1529,46 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 @media (max-width: 1024px) {
   .hero-inner {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
     padding-top: 100px;
     padding-bottom: 60px;
     text-align: center;
   }
 
+  .hero-roles {
+    justify-content: flex-start;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .hero-photo-wrap { order: -1; }
   .hero-photo-card { max-width: 340px; aspect-ratio: 1/1; border-radius: 50%; }
   .hero-bio { max-width: 100%; }
   .hero-actions { justify-content: center; }
-  .hero-stats { justify-content: center; }
-  .hero-roles { justify-content: center; }
+  .hero-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: 1.1rem 1.5rem;
+  }
+
+  /* Profile card — constrain width and reduce padding on tablet */
+  .hero-profile-card {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    gap: 1.1rem;
+  }
+
+  /* Terminal in hero card — prevent overflow */
+  .hpc-terminal {
+    overflow-x: hidden;
+  }
+  #heroTerminalContent {
+    font-size: 0.68rem !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
 
   .about-grid {
     grid-template-columns: 1fr;
@@ -1518,7 +1592,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    RESPONSIVE — MOBILE
 ══════════════════════════════ */
 @media (max-width: 768px) {
-  .section { padding: 70px 0; }
+  .section { padding: 60px 0; }
 
   .nav-links, .nav-cta { display: none; }
 
@@ -1543,21 +1617,56 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
   .hamburger { display: flex; z-index: 1000; position: relative; }
 
-  .hero-name { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+  .hero-name { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+  .hero-bio   { font-size: 0.94rem; }
+
+  /* Profile card full-width on mobile */
+  .hero-profile-card {
+    max-width: 100%;
+    padding: 1.25rem;
+    gap: 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .hpc-links { gap: 0.4rem; }
+  .hpc-link  { font-size: 0.75rem; padding: 0.35rem 0.7rem; }
+
+  /* Stats: wrap & shrink on small screens */
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    width: 100%;
+    justify-content: space-around;
+  }
+  .stat-divider { display: none; } /* hide dividers when wrapping */
 
   .projects-grid { grid-template-columns: 1fr; }
   .skills-categories { grid-template-columns: 1fr; }
   .certs-grid { grid-template-columns: 1fr; }
 
-  .footer-bottom { flex-direction: column; text-align: center; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 0.75rem; }
   .about-highlights { grid-template-columns: 1fr; }
+
+  /* Prevent terminal from overflowing hero card */
+  .hpc-terminal { max-width: 100%; overflow: hidden; }
+  #heroTerminalContent {
+    font-size: 0.65rem !important;
+    min-height: 90px !important;
+    word-break: break-all;
+  }
 }
 
 @media (max-width: 480px) {
-  .container { padding: 0 1.25rem; }
-  .hero { padding: 115px 1.25rem 60px; }
-  .hero-stats { gap: 1.25rem; padding: 1.25rem 1.5rem; }
-  .stat-num { font-size: 1.65rem; }
+  .container { padding: 0 1rem; }
+  .section { padding: 50px 0; }
+  .hero-inner { gap: 2rem; padding-top: 90px; }
+  .hero-stats { gap: 0.75rem; padding: 0.9rem 1rem; }
+  .stat-num { font-size: 1.55rem; }
+  .stat-label { font-size: 0.6rem; }
+  .hero-profile-card { padding: 1rem; }
+  .section-header { margin-bottom: 40px; }
+  .section-title { font-size: clamp(1.6rem, 7vw, 2rem); }
 }
 
 /* ══════════════════════════════
@@ -1809,9 +1918,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border-radius: 50px;
 }
 
-/* Body Scroll Lock */
+/* Body Scroll Lock — use scrollbar-gutter to prevent page-width shake on modal open */
 body.modal-open {
   overflow: hidden;
+  scrollbar-gutter: stable; /* keeps layout stable when scrollbar disappears */
 }
 
 /* Responsive Modal Styling */
@@ -1861,18 +1971,6 @@ body.modal-open {
   }
 }
 
-.legal-link {
-  color: #64748b;
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: var(--transition);
-}
-
-.legal-link:hover {
-  color: #818cf8;
-  text-decoration: underline;
-}
-
 /* ══════════════════════════════
    PRINT STYLESHEET (Ctrl + P)
    ══════════════════════════════ */
@@ -1901,8 +1999,6 @@ body.modal-open {
   .hero-actions,
   .footer-socials,
   .sre-heartbeat-bar,
-  #legalReportBtn,
-  .legal-link,
   .hamburger,
   .project-modal,
   .pm-close,

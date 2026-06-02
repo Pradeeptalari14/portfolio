@@ -316,16 +316,6 @@
       font-size: 0.82rem;
       color: var(--text-secondary);
     }
-    .legal-link {
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      text-decoration: none;
-      transition: var(--transition);
-    }
-    .legal-link:hover {
-      color: var(--accent-primary);
-      text-decoration: underline;
-    }
 
     /* ── FinOps Calculator ── */
     .finops-section {
@@ -385,6 +375,7 @@
     }
     .finops-slider {
       -webkit-appearance: none;
+      appearance: none;
       width: 100%;
       height: 6px;
       border-radius: 5px;
@@ -685,6 +676,62 @@
           </a>
         </div>
       </div>
+
+      <!-- Linux & PowerShell -->
+      <div class="tool-card">
+        <div class="tool-icon-wrap" style="color: #007acc;">🐚</div>
+        <h3 class="tool-title">Linux & PowerShell Studio</h3>
+        <p class="tool-desc">Orchestrate raw infrastructure tasks. Generate robust Linux Bash script files or Windows PowerShell cmdlets with built-in telemetry, logging, and cron/scheduler setups.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">sre-script.sh</span>
+          <a href="linux/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Python SRE -->
+      <div class="tool-card">
+        <div class="tool-icon-wrap" style="color: #ffd43b;">🐍</div>
+        <h3 class="tool-title">Python SRE Utility Studio</h3>
+        <p class="tool-desc">Deploy script tasks with SDK integrations. Generate automated Python scripts for AWS FinOps sweeps, Kubernetes health APIs, SSL certificate audits, or API load pings.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">sre_utility.py</span>
+          <a href="python/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- ShellScript -->
+      <div class="tool-card">
+        <div class="tool-icon-wrap" style="color: #4eb82a;">💲</div>
+        <h3 class="tool-title">ShellScript SRE Studio</h3>
+        <p class="tool-desc">Deploy production Bash automation scripts. Generate robust shell commands, automated health audits, logs rotations, and alert notifications.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">sre-script.sh</span>
+          <a href="shellscript/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- GitLab -->
+      <div class="tool-card">
+        <div class="tool-icon-wrap" style="color: #fc6d26;">🦊</div>
+        <h3 class="tool-title">GitLab CI/CD Pipeline Studio</h3>
+        <p class="tool-desc">Generate robust GitLab CI/CD pipelines (.gitlab-ci.yml) with SRE stages, dependency caching, container builds, and security scans.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">.gitlab-ci.yml</span>
+          <a href="gitlab/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- FinOps Cloud Cost Optimizer Studio -->
@@ -789,8 +836,6 @@
         <span class="heartbeat-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulseDot 2s ease-in-out infinite; flex-shrink: 0;"></span>
         <span class="heartbeat-text">SRE Metrics: Operational · Latency: <span id="site-latency">--</span>ms · SLA: 99.99%</span>
       </div>
-
-      <a href="../#legalModal" class="legal-link">Report legal issue</a>
     </div>
   </footer>
 

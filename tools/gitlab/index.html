@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GitLab CI/CD Pipeline Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready GitLab CI/CD pipeline configurations (.gitlab-ci.yml) dynamically with SRE stages, caching, and security scans." />
+  <link rel="icon" type="image/png" href="../../Favicon.png?v=3" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --border:         #e2e8f0;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 640px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN WINDOW -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">GitOps CI/CD</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">GitLab CI/CD Pipeline Studio</h1>
+      <p class="text-xs text-gray-500 mt-2 max-w-2xl leading-normal">
+        <em>Compile robust GitLab pipelines. Generate production-ready `.gitlab-ci.yml` configurations incorporating dependency caching, Docker image builds, security scanners, and cloud deployments.</em>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Environment Configuration -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🚀 Environment & Stack Settings</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="app_stack" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Application Runtime Stack</label>
+              <select id="app_stack" class="form-select w-full p-2.5 text-xs">
+                <option value="node">Node.js Environment (npm / yarn)</option>
+                <option value="python">Python Environment (pip)</option>
+                <option value="maven">Java Maven Environment</option>
+                <option value="docker">Docker Container (Generic Build)</option>
+              </select>
+            </div>
+            <div>
+              <label for="runner_tag" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">GitLab Runner Tag</label>
+              <input type="text" id="runner_tag" class="form-input w-full p-2.5 text-xs" value="sre-docker-runner" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="registry_url" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Docker Registry URI (e.g. AWS ECR / GitLab)</label>
+              <input type="text" id="registry_url" class="form-input w-full p-2.5 text-xs" value="$CI_REGISTRY_IMAGE" />
+            </div>
+            <div>
+              <label for="target_deploy" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Cloud Deployment</label>
+              <select id="target_deploy" class="form-select w-full p-2.5 text-xs">
+                <option value="aws_s3">AWS S3 (Static Website)</option>
+                <option value="aws_ecs">AWS ECS (Docker Workload)</option>
+                <option value="k8s">Kubernetes Cluster (kubectl manifest)</option>
+                <option value="pages">GitLab Pages (Static HTML)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Stages Selection -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⚙️ Pipeline Configuration checklist</h3>
+          
+          <div class="flex flex-col gap-3 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="stage_lint" class="custom-checkbox" checked />
+              <span>Enforce Linting & Syntax validation (early fail)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="stage_test" class="custom-checkbox" checked />
+              <span>Execute Unit & Integration testing suite</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="stage_cache" class="custom-checkbox" checked />
+              <span>Configure optimal node_modules / pip cache keys (speedup build)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="docker_build" class="custom-checkbox" checked />
+              <span>Build and Push Docker image (Kaniko containerizer / Docker-in-Docker)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- SRE Security scanners -->
+        <div class="studio-card border-rose-200 bg-rose-50/10">
+          <h3 class="studio-title text-base font-bold text-rose-900 mb-2 flex items-center gap-2">🛡️ SRE Security Scanning Gates</h3>
+          <p class="text-xs text-gray-500 mb-4">Inject automated vulnerability and container scanning steps into the compilation lifecycle.</p>
+          
+          <div class="flex flex-col gap-2.5 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="sec_trivy" class="custom-checkbox" checked />
+              <span>Trivy Container Scan (blocks pipeline if critical vulnerabilities found)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="sec_sonar" class="custom-checkbox" />
+              <span>SonarQube Code Quality Gate Scan (static analysis check)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="sec_secrets" class="custom-checkbox" checked />
+              <span>GitLab Secret Detection template integration (audit passwords leaks)</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Terminal Viewport (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value=".gitlab-ci" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yml</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('pipeline')" id="tab-pipeline" class="tab-btn active">.gitlab-ci.yml</button>
+              <button onclick="switchTab('variables')" id="tab-variables" class="tab-btn">ci-vars.env</button>
+              <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate GitLab Config</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Reset Defaults</span>
+            </button>
+          </div>
+
+          <button onclick="downloadScriptZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Pipeline.Zip</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ENGINE SCRIPT -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'pipeline';
+
+    let compiledCode = {
+      pipeline: '',
+      variables: '',
+      readme: ''
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+    }
+
+    function triggerCompileAll() {
+      compilePipeline();
+      compileVariables();
+      compileReadme();
+      updateViewportContent();
+    }
+
+    function compilePipeline() {
+      const appStack = $('app_stack').value;
+      const runnerTag = $('runner_tag').value;
+      const registryUrl = $('registry_url').value;
+      const deployTarget = $('target_deploy').value;
+
+      const hasLint = $('stage_lint').checked;
+      const hasTest = $('stage_test').checked;
+      const hasCache = $('stage_cache').checked;
+      const hasDocker = $('docker_build').checked;
+
+      const secTrivy = $('sec_trivy').checked;
+      const secSonar = $('sec_sonar').checked;
+      const secDetect = $('sec_secrets').checked;
+
+      let code = `# .gitlab-ci.yml - Production GitLab CI/CD Pipeline compiled client-side\n\n`;
+
+      // Templates integration
+      if (secDetect) {
+        code += `include:\n  - template: Jobs/Secret-Detection.gitlab-ci.yml\n\n`;
+      }
+
+      // Stages
+      code += `stages:\n`;
+      if (hasLint) code += `  - lint\n`;
+      if (hasTest) code += `  - test\n`;
+      if (secSonar) code += `  - analyze\n`;
+      if (hasDocker) code += `  - build\n`;
+      if (secTrivy) code += `  - scan\n`;
+      code += `  - deploy\n\n`;
+
+      // Globals
+      code += `variables:\n`;
+      code += `  DOCKER_DRIVER: overlay2\n`;
+      code += `  IMAGE_TAG: $CI_COMMIT_SHORT_SHA\n`;
+      code += `  REGISTRY_PATH: "${registryUrl}"\n\n`;
+
+      code += `default:\n`;
+      code += `  tags:\n`;
+      code += `    - ${runnerTag}\n\n`;
+
+      // Caching block
+      if (hasCache) {
+        code += `# ── DEPENDENCY CACHING ──\n`;
+        code += `cache:\n`;
+        code += `  key: "$CI_COMMIT_REF_SLUG"\n`;
+        code += `  paths:\n`;
+        if (appStack === 'node') {
+          code += `    - .npm/\n    - node_modules/\n\n`;
+        } else if (appStack === 'python') {
+          code += `    - .cache/pip/\n    - venv/\n\n`;
+        } else if (appStack === 'maven') {
+          code += `    - .m2/repository/\n\n`;
+        } else {
+          code += `    - .cache/\n\n`;
+        }
+      }
+
+      // Lint stage
+      if (hasLint) {
+        code += `lint-job:\n  stage: lint\n`;
+        if (appStack === 'node') {
+          code += `  image: node:18-alpine\n  script:\n    - npm ci --cache .npm --prefer-offline\n    - npm run lint || echo "Lint warning bypass"\n\n`;
+        } else if (appStack === 'python') {
+          code += `  image: python:3.10-slim\n  script:\n    - pip install flake8\n    - flake8 . --exclude=venv\n\n`;
+        } else if (appStack === 'maven') {
+          code += `  image: maven:3.8-openjdk-17-slim\n  script:\n    - mvn clean checkstyle:check || echo "Style issues found"\n\n`;
+        } else {
+          code += `  image: alpine:latest\n  script:\n    - echo "Running generic syntax check..."\n\n`;
+        }
+      }
+
+      // Test stage
+      if (hasTest) {
+        code += `unit-testing-job:\n  stage: test\n`;
+        if (appStack === 'node') {
+          code += `  image: node:18-alpine\n  script:\n    - npm ci --cache .npm --prefer-offline\n    - npm test\n\n`;
+        } else if (appStack === 'python') {
+          code += `  image: python:3.10-slim\n  script:\n    - pip install pytest\n    - pytest\n\n`;
+        } else if (appStack === 'maven') {
+          code += `  image: maven:3.8-openjdk-17-slim\n  script:\n    - mvn test\n\n`;
+        } else {
+          code += `  image: alpine:latest\n  script:\n    - echo "Running tests..."\n\n`;
+        }
+      }
+
+      // SonarQube stage
+      if (secSonar) {
+        code += `sonarqube-analysis-job:\n  stage: analyze\n  image: sonarsource/sonar-scanner-cli:latest\n  variables:\n    SONAR_USER_HOME: "\${CI_PROJECT_DIR}/.sonar"\n  script:\n    - sonar-scanner -Dsonar.projectKey=sre-app -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN\n  allow_failure: true\n\n`;
+      }
+
+      // Docker build stage
+      if (hasDocker) {
+        code += `docker-build-job:\n  stage: build\n  image: gcr.io/kaniko-project/executor:debug\n  script:\n    - mkdir -p /kaniko/.docker\n    - echo "{\\"auths\\":{\\"$CI_REGISTRY\\":{\\"username\\":\\"$CI_REGISTRY_USER\\",\\"password\\":\\"$CI_REGISTRY_PASSWORD\\"}}}" > /kaniko/.docker/config.json\n    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $REGISTRY_PATH:$IMAGE_TAG\n\n`;
+      }
+
+      // Trivy scanning
+      if (secTrivy) {
+        code += `trivy-security-scan-job:\n  stage: scan\n  image:\n    name: aquasec/trivy:latest\n    entrypoint: [""]\n  script:\n    - trivy image --exit-code 0 --severity HIGH --format table $REGISTRY_PATH:$IMAGE_TAG\n    - trivy image --exit-code 1 --severity CRITICAL --format table $REGISTRY_PATH:$IMAGE_TAG\n\n`;
+      }
+
+      // Deploy stage
+      code += `deploy-production-job:\n  stage: deploy\n`;
+      if (deployTarget === 'aws_s3') {
+        code += `  image: amazon/aws-cli:latest\n  script:\n    - aws s3 sync dist/ s3://$AWS_S3_BUCKET_NAME/ --delete\n`;
+      } else if (deployTarget === 'aws_ecs') {
+        code += `  image: amazon/aws-cli:latest\n  script:\n    - aws ecs update-service --cluster $AWS_ECS_CLUSTER --service $AWS_ECS_SERVICE --force-new-deployment\n`;
+      } else if (deployTarget === 'k8s') {
+        code += `  image: bitnami/kubectl:latest\n  script:\n    - kubectl config set-cluster sre-k8s --server=$K8S_SERVER_IP --insecure-skip-tls-verify=true\n    - kubectl config set-credentials admin --token=$K8S_TOKEN\n    - kubectl config set-context default --cluster=sre-k8s --user=admin\n    - kubectl config use-context default\n    - sed -i "s|IMAGE_PLACEHOLDER|$REGISTRY_PATH:$IMAGE_TAG|g" deployment.yaml\n    - kubectl apply -f deployment.yaml\n`;
+      } else if (deployTarget === 'pages') {
+        code += `  image: alpine:latest\n  script:\n    - mkdir public\n    - cp -r dist/* public/\n  artifacts:\n    paths:\n      - public\n`;
+      }
+      code += `  rules:\n    - if: '$CI_COMMIT_BRANCH == "main"'\n`;
+
+      compiledCode.pipeline = code;
+    }
+
+    function compileVariables() {
+      let code = `# GitLab CI/CD Repository Variables (.env simulation)\n`;
+      code += `# Register these parameters securely inside GitLab Settings -> CI/CD -> Variables\n\n`;
+      code += `CI_REGISTRY_USER="gitlab-ci-token"\n`;
+      code += `CI_REGISTRY_PASSWORD="<auto-generated-token>"\n`;
+      code += `AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE"\n`;
+      code += `AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"\n`;
+      code += `AWS_S3_BUCKET_NAME="production-sre-static-assets"\n`;
+      code += `K8S_SERVER_IP="https://10.0.0.1:6443"\n`;
+      code += `K8S_TOKEN="eyJhbGciOiJSUzI1NiIsImtpZCI..."\n`;
+      code += `SONAR_HOST_URL="https://sonarcloud.io"\n`;
+      code += `SONAR_TOKEN="sqa_0a1b2c3d4e5f6g7h8i9j..."\n`;
+
+      compiledCode.variables = code;
+    }
+
+    function compileReadme() {
+      let code = `# GitLab CI/CD Pipeline Package\n\n`;
+      code += `This package contains dynamic pipeline templates for automated building, scanning, and staging operations.\n\n`;
+      code += `## Files Checklist\n`;
+      code += `* \`.gitlab-ci.yml\`: The root pipelines description file.\n`;
+      code += `* \`ci-vars.env\`: Guide outlining credentials variable keys.\n\n`;
+      code += `## How to Deploy\n`;
+      code += `1. Place the generated \`.gitlab-ci.yml\` file at the absolute root of your GitLab repository.\n`;
+      code += `2. Commit and push changes:\n`;
+      code += `   \`\`\`bash\n`;
+      code += `   git add .gitlab-ci.yml\n`;
+      code += `   git commit -m "chore: integrate production-grade SRE pipelines"\n`;
+      code += `   git push origin main\n`;
+      code += `   \`\`\`\n`;
+      code += `3. Navigate to **Settings -> CI/CD -> Variables** in GitLab UI to register the key/value parameters listed in \`ci-vars.env\` securely.\n`;
+
+      compiledCode.readme = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const nameBox = $('download-name-input');
+      const extTag = $('file-extension-tag');
+
+      if (tabId === 'pipeline') {
+        nameBox.value = '.gitlab-ci';
+        extTag.textContent = '.yml';
+      } else if (tabId === 'variables') {
+        nameBox.value = 'ci-vars';
+        extTag.textContent = '.env';
+      } else if (tabId === 'readme') {
+        nameBox.value = 'README';
+        extTag.textContent = '.md';
+      }
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab];
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('✅ Copied tab config to clipboard!');
+      });
+    }
+
+    function downloadScriptZip() {
+      const zip = new JSZip();
+      
+      zip.file('.gitlab-ci.yml', compiledCode.pipeline);
+      zip.file('ci-vars.env', compiledCode.variables);
+      zip.file('README.md', compiledCode.readme);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `gitlab-pipeline.zip`;
+        a.click();
+        showToast('⬇️ GitLab Pipeline configs downloaded successfully!');
+      });
+    }
+
+    function clearAllFields() {
+      $('app_stack').value = 'node';
+      $('runner_tag').value = 'sre-docker-runner';
+      $('registry_url').value = '$CI_REGISTRY_IMAGE';
+      $('target_deploy').value = 'aws_s3';
+      $('stage_lint').checked = true;
+      $('stage_test').checked = true;
+      $('stage_cache').checked = true;
+      $('docker_build').checked = true;
+      $('sec_trivy').checked = true;
+      $('sec_sonar').checked = false;
+      $('sec_secrets').checked = true;
+
+      triggerCompileAll();
+      showToast('🗑️ Defaults configurations successfully restored!');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

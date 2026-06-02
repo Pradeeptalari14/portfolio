@@ -19,6 +19,10 @@ export default defineConfig({
         helm: resolve(__dirname, 'tools/helm/index.html'),
         argocd: resolve(__dirname, 'tools/argocd/index.html'),
         logging: resolve(__dirname, 'tools/logging/index.html'),
+        linux: resolve(__dirname, 'tools/linux/index.html'),
+        python: resolve(__dirname, 'tools/python/index.html'),
+        shellscript: resolve(__dirname, 'tools/shellscript/index.html'),
+        gitlab: resolve(__dirname, 'tools/gitlab/index.html'),
       }
     }
   }

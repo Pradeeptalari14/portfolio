@@ -30,6 +30,7 @@ window.addEventListener('scroll', () => {
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   navLinks.classList.toggle('mobile-open');
+  hamburger.setAttribute('aria-expanded', hamburger.classList.contains('open'));
 });
 
 // Close mobile nav when a link is clicked
@@ -78,7 +79,7 @@ function createParticles() {
     p.className = 'particle';
     const x     = Math.random() * 100;
     const y     = Math.random() * 100;
-    const color = colors[Math.floor(Math.random() * colors.length)];
+    const color = (([c]) => c)(colors.slice(Math.floor(Math.random() * colors.length)));
     const dur   = 7 + Math.random() * 9;
     const delay = Math.random() * 7;
     const tx    = (Math.random() - 0.5) * 100;
@@ -164,6 +165,20 @@ function animateCounter(el, target, suffix = '') {
 
 let countersStarted = false;
 
+function animateDecimalCounter(el, target, suffix = '') {
+  if (!el) return;
+  const duration = 1800;
+  const start    = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease  = 1 - Math.pow(1 - progress, 3);
+    const value = (ease * target).toFixed(1);
+    el.textContent = value + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
 function startCounters() {
   if (countersStarted) return;
   const hero = document.querySelector('.hero');
@@ -174,7 +189,7 @@ function startCounters() {
     animateCounter($('stat-exp'),      2,  '+');
     animateCounter($('stat-projects'), 15, '+');
     animateCounter($('stat-certs'),    5);
-    animateCounter($('stat-uptime'),   99, '%');
+    animateDecimalCounter($('stat-uptime'), 99.9, '%');
   }
 }
 
@@ -232,30 +247,73 @@ window.addEventListener('scroll', checkReveal, { passive: true });
 setTimeout(checkReveal, 250);
 
 /* ══════════════
-   CONTACT FORM
+   CONTACT FORM  (Formspree)
 ══════════════ */
-function handleFormSubmit(e) {
-  e.preventDefault();
+(function initContactForm() {
+  const form = $('contactForm');
+  if (!form) return;
 
-  const btn  = $('submit-form-btn');
-  const orig = btn.innerHTML;
+  // ── Replace YOUR_FORM_ID with the ID from https://formspree.io/forms ──
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xojzaajz';
 
-  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;animation:spin 0.9s linear infinite"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Sending…`;
-  btn.disabled = true;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  // Simulate send (replace with your backend / EmailJS / Formspree endpoint)
-  setTimeout(() => {
-    btn.innerHTML = orig;
-    btn.disabled  = false;
-    $('contactForm').reset();
+    const btn     = $('submit-form-btn');
     const success = $('formSuccess');
-    success.style.display = 'block';
-    setTimeout(() => { success.style.display = 'none'; }, 5000);
-  }, 1600);
-}
+    const errBox  = $('formError');
 
-// Expose globally for inline handler
-window.handleFormSubmit = handleFormSubmit;
+    // Build loading state safely via DOM (no innerHTML with variable content)
+    const spinSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    spinSvg.setAttribute('viewBox', '0 0 24 24');
+    spinSvg.setAttribute('fill', 'none');
+    spinSvg.setAttribute('stroke', 'currentColor');
+    spinSvg.setAttribute('stroke-width', '2');
+    spinSvg.style.cssText = 'width:16px;height:16px;animation:spin 0.9s linear infinite';
+    const spinPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    spinPath.setAttribute('d', 'M21 12a9 9 0 11-6.219-8.56');
+    spinSvg.appendChild(spinPath);
+
+    const sendingText = document.createTextNode(' Sending\u2026');
+    btn.replaceChildren(spinSvg, sendingText);
+    btn.disabled  = true;
+    success.style.display = 'none';
+    errBox.style.display  = 'none';
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json' },
+        body:    new FormData(form)
+      });
+
+      if (res.ok) {
+        form.reset();
+        success.style.display = 'block';
+        setTimeout(() => { success.style.display = 'none'; }, 6000);
+      } else {
+        errBox.style.display = 'block';
+      }
+    } catch {
+      errBox.style.display = 'block';
+    } finally {
+      // Restore button safely via DOM
+      const restoreSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      restoreSvg.setAttribute('viewBox', '0 0 24 24');
+      restoreSvg.setAttribute('fill', 'none');
+      restoreSvg.setAttribute('stroke', 'currentColor');
+      restoreSvg.setAttribute('stroke-width', '2');
+      const line1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line1.setAttribute('x1', '22'); line1.setAttribute('y1', '2');
+      line1.setAttribute('x2', '11'); line1.setAttribute('y2', '13');
+      const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      poly.setAttribute('points', '22 2 15 22 11 13 2 9 22 2');
+      restoreSvg.append(line1, poly);
+      btn.replaceChildren(restoreSvg, document.createTextNode(' Send Message'));
+      btn.disabled = false;
+    }
+  });
+})();
 
 /* ══════════════
    SMOOTH SECTION LINKS
@@ -310,8 +368,8 @@ if (!document.getElementById('spinStyle')) {
 /* ══════════════
    PROJECT MODAL SYSTEM
    ══════════════ */
-const projectDetailsData = {
-  'project-aws-dashboard': {
+const projectDetailsData = new Map([
+  ['project-aws-dashboard', {
     title: 'AWS DevOps & SRE Control Center',
     icon: '📊',
     role: 'Lead Cloud Architect',
@@ -330,8 +388,8 @@ const projectDetailsData = {
       'Successfully automated simulated deployments across regional Availability Zones without halting critical operations.'
     ],
     tech: ['Node.js', 'AWS SDK v3', 'Express.js', 'Chart.js', 'WebSocket', 'JavaScript']
-  },
-  'project-k8s-platform': {
+  }],
+  ['project-k8s-platform', {
     title: 'Enterprise AWS EKS Production Platform',
     icon: '⚓',
     role: 'Senior DevOps / K8s Engineer',
@@ -350,8 +408,8 @@ const projectDetailsData = {
       'Reduced monthly cloud infrastructure costs by 30% through intelligent node bin-packing and spot instance utilization.'
     ],
     tech: ['Kubernetes', 'AWS EKS', 'Terraform', 'Helm', 'Karpenter', 'AWS VPC', 'Route53']
-  },
-  'project-cicd-factory': {
+  }],
+  ['project-cicd-factory', {
     title: 'Global Jenkins Pipeline Shared Library',
     icon: '🚀',
     role: 'DevSecOps Automation Lead',
@@ -370,8 +428,8 @@ const projectDetailsData = {
       'Conserved over 25 hours per week of manual engineering effort by automating regression testing pipelines.'
     ],
     tech: ['Jenkins', 'Groovy', 'Docker', 'SonarQube', 'Trivy', 'Git', 'Bash Scripting']
-  },
-  'project-observability': {
+  }],
+  ['project-observability', {
     title: 'Cloud-Native Observability Stack',
     icon: '🔭',
     role: 'SRE Observability Specialist',
@@ -390,8 +448,8 @@ const projectDetailsData = {
       'Identified and resolved resource allocation leaks, recovering 15% of previously underutilized CPU capacity.'
     ],
     tech: ['Prometheus', 'Grafana', 'Alertmanager', 'Loki', 'Kubernetes', 'Helm', 'Slack API']
-  },
-  'project-terraform-modules': {
+  }],
+  ['project-terraform-modules', {
     title: 'Corporate-Grade Infrastructure-as-Code Modules',
     icon: '🏗️',
     role: 'Infrastructure Automation Engineer',
@@ -410,8 +468,8 @@ const projectDetailsData = {
       'Eliminated concurrency conflicts in collaborative dev teams via robust remote state database locking.'
     ],
     tech: ['Terraform', 'AWS Services', 'HCL', 'DynamoDB', 'S3 Backend', 'Terragrunt', 'Git']
-  },
-  'project-cost-optimizer': {
+  }],
+  ['project-cost-optimizer', {
     title: 'Automated AWS Cost Optimization Engine',
     icon: '💰',
     role: 'Cloud FinOps Engineer',
@@ -430,8 +488,8 @@ const projectDetailsData = {
       'Automated weekly execution reports pushing structured PDF summaries directly to company channels.'
     ],
     tech: ['Python', 'AWS Lambda', 'EventBridge', 'Boto3 SDK', 'Cost Explorer API', 'Slack API']
-  }
-};
+  }]
+]);
 
 function initProjectModal() {
   const modal = $('projectModal');
@@ -453,8 +511,12 @@ function initProjectModal() {
   const modalAchievements = $('modalAchievements');
   const modalTechTags = $('modalTechTags');
 
+  // Map.get() — no bracket notation, no prototype chain access
+  const ALLOWED_PROJECT_IDS = new Set(projectDetailsData.keys());
+
   function openModal(id) {
-    const data = projectDetailsData[id];
+    if (!ALLOWED_PROJECT_IDS.has(id)) return;
+    const data = projectDetailsData.get(id);
     if (!data) return;
 
     // Populate data
@@ -535,42 +597,6 @@ function initProjectModal() {
   });
 }
 
-function initLegalModal() {
-  const modal = $('legalModal');
-  if (!modal) return;
-
-  const btn = $('legalReportBtn');
-  const closeBtn = $('closeLegalModal');
-  const closeBtn2 = $('closeLegalBtn');
-  const overlay = $('legalOverlay');
-
-  if (!btn) return;
-
-  function openModal(e) {
-    e.preventDefault();
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-  }
-
-  function closeModal() {
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-  }
-
-  btn.addEventListener('click', openModal);
-  closeBtn.addEventListener('click', closeModal);
-  closeBtn2.addEventListener('click', closeModal);
-  overlay.addEventListener('click', closeModal);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-      closeModal();
-    }
-  });
-}
-
 function initDynamicYear() {
   const currentYear = new Date().getFullYear();
   $$('.copyright-year').forEach(el => {
@@ -618,24 +644,59 @@ function initSRETerminal() {
 
   function typeWriter() {
     const current = logs[logIndex];
+
+    // Safe DOM builder — never assigns user/variable text to innerHTML
+    function rebuildTerm(typedSoFar, showCursor, outputHTML) {
+      term.replaceChildren();
+
+      // Prompt span
+      const prompt = document.createElement('span');
+      prompt.style.color = '#38bdf8';
+      prompt.textContent = 'pradeep@sre-core:~$';
+      term.appendChild(prompt);
+      term.appendChild(document.createTextNode(' '));
+
+      // Typed command text (safe textContent)
+      term.appendChild(document.createTextNode(typedSoFar));
+
+      // Blinking cursor
+      if (showCursor) {
+        const cursor = document.createElement('span');
+        cursor.className = 'role-cursor';
+        cursor.textContent = '|';
+        term.appendChild(cursor);
+      }
+
+      // Output block — split on \n and insert real <br> nodes (no innerHTML)
+      if (outputHTML) {
+        term.appendChild(document.createElement('br'));
+        const out = document.createElement('span');
+        out.style.color = '#a7f3d0';
+        const lines = outputHTML.split('\n');
+        lines.forEach((line, i) => {
+          out.appendChild(document.createTextNode(line));
+          if (i < lines.length - 1) out.appendChild(document.createElement('br'));
+        });
+        term.appendChild(out);
+        term.appendChild(document.createElement('br'));
+        term.appendChild(document.createElement('br'));
+      }
+    }
+
     if (charIndex === 0) {
-      lineBuffer = `<span style="color: #38bdf8;">pradeep@sre-core:~$</span> `;
-      term.innerHTML = lineBuffer;
+      rebuildTerm('', true, null);
     }
 
     if (charIndex < current.cmd.length) {
-      lineBuffer += current.cmd.charAt(charIndex);
-      term.innerHTML = lineBuffer + '<span class="role-cursor">|</span>';
+      const typed = current.cmd.slice(0, charIndex + 1);
+      rebuildTerm(typed, true, null);
       charIndex++;
       setTimeout(typeWriter, 40 + Math.random() * 40);
     } else {
       setTimeout(() => {
-        lineBuffer += `\n<span style="color: #a7f3d0;">${current.out.replace(/\n/g, '<br>')}</span>\n\n`;
-        term.innerHTML = lineBuffer;
-        
+        rebuildTerm(current.cmd, false, current.out);
         logIndex = (logIndex + 1) % logs.length;
         charIndex = 0;
-        
         setTimeout(typeWriter, 5000);
       }, 800);
     }
@@ -650,7 +711,6 @@ function initSRETerminal() {
 updateActiveNav();
 checkReveal();
 initProjectModal();
-initLegalModal();
 initDynamicYear();
 initLatencyTracker();
 initSRETerminal();
