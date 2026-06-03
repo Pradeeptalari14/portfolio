@@ -637,6 +637,19 @@
               "• **Triggered Action:** Running automated cleanup playbook `ansible-playbook cleanup.yml`...<br>" +
               "• **Cleanup Steps Executed:** Pruned unused Docker containers, cleared journald log caches, and archived temp dumps.<br>" +
               "• **Result:** Disk usage successfully reduced to **55%**. Incident resolved automatically! ✅"
+    },
+    {
+      keywords: ['database', 'postgres', 'mysql', 'db connection', 'redis', 'mongodb', 'database connection', 'replication', 'backup'],
+      answer: "🗄️ **SRE Database & Storage Operations**:<br><br>" +
+              "**Common DB Troubleshooting Scenarios:**<br>" +
+              "1. **Connection Timeouts & Pools**: Verify database connection limits and pool configurations (`max_connections`). Check if the app is leaking active connection contexts.<br>" +
+              "2. **Replication & Lag**: For PostgreSQL/MySQL replica nodes, run `SELECT pg_last_wal_receive_lsn() - pg_last_wal_replay_lsn();` to audit replication lag.<br>" +
+              "3. **Backup & Recovery**: Automate dumps (e.g. `pg_dump`) via Kubernetes CronJobs, and store backups securely in AWS S3 buckets with lifecycle rules.<br>" +
+              "4. **Vector Databases (AI/RAG)**: For AI applications, Pradeep uses **ChromaDB** and **pgvector** to manage high-dimensional vector embeddings.<br><br>" +
+              "💡 **SRE Commands:**<br>" +
+              "• Test DB socket port connectivity: `nc -zv <db-host> <db-port>` (e.g., `5432` for Postgres, `3306` for MySQL).<br>" +
+              "• View active Postgres connections: `SELECT count(*), state FROM pg_stat_activity GROUP BY state;`<br><br>" +
+              "Scaffold clean environment setups and migrations using Pradeep's **[Terraform Architect](/tools/terraform/)** or the **[k8s Script Generator](/tools/kubernetes/)**!"
     }
   ];
 
