@@ -464,9 +464,9 @@
       return "👤 **Talari Pradeep** is a DevOps & Cloud Engineer specializing in AWS, Kubernetes, Terraform, and CI/CD operations. He has enterprise experience on the Sutter Health project at Accenture. You can view his skills under [Skills](/skills/) or check out his qualifications at [Credentials](/certifications/).";
     }
 
-    // 2. AI RAG Studio specific
-    if (q.includes('rag') || q.includes('ai studio') || q.includes('artificial') || q.includes('llm')) {
-      return "🤖 **DevOps AI RAG Studio**: This is an interactive configuration dashboard to generate, build, and deploy local RAG pipelines. It scaffolds code for:<ul><li>Streamlit chat interfaces</li><li>FastAPI server layers</li><li>LangChain/ChromaDB semantic indexing</li></ul>Check it out at [/tools/ai/](/tools/ai/)!";
+    // 2. AI RAG Studio & general RAG/AI questions
+    if (q.includes('rag') || q.includes('ai') || q.includes('llm') || q.includes('vector') || q.includes('embedding')) {
+      return "🤖 **DevOps AI RAG (Retrieval-Augmented Generation)**: RAG combines document search with local Large Language Models (LLMs) to answer technical questions using your private infrastructure manuals.<br><br>Try Pradeep's **[DevOps AI RAG Studio](/tools/ai/)** to customize and generate Streamlit chat clients, FastAPI gateways, LangChain retrieval pipelines, Docker compose, and Kubernetes configurations!";
     }
 
     // 3. All tools
@@ -532,8 +532,8 @@
     }
 
     // 12. General DevOps SRE Questions
-    if (q.includes('what is devops') || q.includes('what is sre')) {
-      return "💡 **DevOps & SRE**: DevOps bridges development and operations, while Site Reliability Engineering (SRE) uses software development practices to automate operational tasks, ensuring high system reliability and availability.";
+    if (q.includes('devops') || q.includes('sre')) {
+      return "💡 **DevOps & SRE**: DevOps bridges software development and system operations, while Site Reliability Engineering (SRE) applies software engineering principles to operations to build highly reliable, automated cloud infrastructures. Pradeep specializes in implementing these via CI/CD, IaC, and Kubernetes! View his dashboard at [/tools/](/tools/).";
     }
 
     // 13. General RAG details
