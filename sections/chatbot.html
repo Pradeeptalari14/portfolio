@@ -609,6 +609,30 @@
     if (q.includes('ps ') || q.includes('kill ') || q.includes('top') || q.includes('htop')) {
       commandsFound.push("• `ps` / `kill` / `top` / `htop`: Processes management. Run to identify running processes, trace high CPU spikes, and terminate unresponsive jobs.");
     }
+    if (q.includes('docker run') || q.includes('docker ps') || q.includes('docker build') || q.includes('docker exec') || q.includes('docker compose') || q.includes('docker-compose') || q.includes('docker images')) {
+      commandsFound.push("• `docker` CLI: Used to build, run, and manage isolated container instances. For example, `docker run` starts a container, `docker build` compiles a Dockerfile, and `docker-compose up` orchestrates multi-container workspaces. Scaffold container configurations at the **[Docker Manager](/tools/docker/)**!");
+    }
+    if (q.includes('kubectl ') || q === 'kubectl') {
+      commandsFound.push("• `kubectl` CLI: The command-line utility for communicating with Kubernetes cluster API gateways. Common tasks include: `kubectl apply -f` to deploy manifests, `kubectl get pods` to view container statuses, and `kubectl logs` to pull container logs. Scaffold manifest resources at the **[k8s Script Generator](/tools/kubernetes/)**!");
+    }
+    if (q.includes('helm ') || q === 'helm') {
+      commandsFound.push("• `helm` CLI: The package manager for Kubernetes resources. Common commands include `helm install` to deploy charts, `helm upgrade` to release updates, and `helm repo add` to index chart repositories. Scaffold charts at the **[Helm Chart Studio](/tools/helm/)**!");
+    }
+    if (q.includes('terraform ') || q === 'terraform') {
+      commandsFound.push("• `terraform` CLI: The tool for deploying Infrastructure as Code. Key operations include: `terraform init` to download cloud provider plugins, `terraform plan` to dry-run changes, and `terraform apply` to provision live resources. Scaffold HCL files at the **[Terraform Architect](/tools/terraform/)**!");
+    }
+    if (q.includes('ansible-playbook') || q.includes('ansible ') || q === 'ansible') {
+      commandsFound.push("• `ansible` CLI: Agentless automation tool. SREs run `ansible-playbook -i inventory playbook.yml` to execute tasks and configuration states on remote nodes. Scaffold playbooks and host inventories at the **[Ansible Playbook Builder](/tools/ansible/)**!");
+    }
+    if (q.includes('git clone') || q.includes('git commit') || q.includes('git push') || q.includes('git status') || q.includes('git add') || q.includes('git pull') || q.includes('git checkout')) {
+      commandsFound.push("• `git` CLI: Distributed version control engine. Commonly used to manage codebase revisions, track modifications, and push changes to remote repositories (`git push`).");
+    }
+    if (q.includes('argocd ') || q === 'argocd') {
+      commandsFound.push("• `argocd` CLI: Tool to manage declarative GitOps configurations. It synchronizes cluster states with Git code bases via `argocd app sync`. Scaffold GitOps components at the **[ArgoCD Studio](/tools/argocd/)**!");
+    }
+    if (q.includes('rate(') || q.includes('http_requests_total') || q.includes('sum(') || q.includes('by (') || q.includes('prometheus query') || q === 'promql') {
+      commandsFound.push("• `PromQL` (Prometheus Query Language): Used to filter and analyze real-time SRE telemetry metrics. For example, `rate(...)` computes per-second alert thresholds over a historical window. Scaffold observability configurations at the **[Monitoring Telemetry](/tools/monitoring/)**!");
+    }
 
     if (commandsFound.length > 0) {
       return "📈 **SRE Command Analyzer**: I parsed your command line! Here is a breakdown of what this health-check sequence performs:<br><br>" +
