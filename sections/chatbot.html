@@ -456,94 +456,128 @@
   /* ═══════════════════════════════════════════════
      CLIENT-SIDE AI EXPERT MATCHING ENGINE
      ═══════════════════════════════════════════════ */
-  function generateAnswer(query) {
-    const q = query.toLowerCase();
-
-    // 1. About / Talari Pradeep
-    if (q.includes('pradeep') || q.includes('who is') || q.includes('about') || q.includes('profile')) {
-      return "👤 **Talari Pradeep** is a DevOps & Cloud Engineer specializing in AWS, Kubernetes, Terraform, and CI/CD operations. He has enterprise experience on the Sutter Health project at Accenture. You can view his skills under [Skills](/skills/) or check out his qualifications at [Credentials](/certifications/).";
-    }
-
-    // 2. AI RAG Studio & general RAG/AI questions
-    if (q.includes('rag') || q.includes('ai') || q.includes('llm') || q.includes('vector') || q.includes('embedding')) {
-      return "🤖 **DevOps AI RAG (Retrieval-Augmented Generation)**: RAG combines document search with local Large Language Models (LLMs) to answer technical questions using your private infrastructure manuals.<br><br>Try Pradeep's **[DevOps AI RAG Studio](/tools/ai/)** to customize and generate Streamlit chat clients, FastAPI gateways, LangChain retrieval pipelines, Docker compose, and Kubernetes configurations!";
-    }
-
-    // 3. All tools
-    if (q.includes('tool') || q.includes('generator') || q.includes('scripts') || q.includes('list')) {
-      return "🛠️ Pradeep has designed 15 interactive automation studios:<ul>" +
+  const qaDatabase = [
+    {
+      keywords: ['pradeep', 'who is', 'profile', 'about', 'accenture', 'sutter', 'resume', 'cv'],
+      answer: "👤 **Talari Pradeep** is a DevOps & Cloud Engineer specializing in AWS, Kubernetes, Terraform, and CI/CD operations. He has enterprise experience on the Sutter Health project at Accenture. You can view his skills under [Skills](/skills/) or check out his qualifications at [Credentials](/certifications/)."
+    },
+    {
+      keywords: ['rag', 'ai', 'llm', 'vector', 'embedding', 'ollama', 'chroma', 'nomic', 'llama', 'qwen', 'retrieval'],
+      answer: "🤖 **DevOps AI RAG (Retrieval-Augmented Generation)**: RAG combines document search with local Large Language Models (LLMs) to answer technical questions using your private infrastructure manuals.<br><br>Try Pradeep's **[DevOps AI RAG Studio](/tools/ai/)** to customize and generate Streamlit chat clients, FastAPI gateways, LangChain retrieval pipelines, Docker compose, and Kubernetes configurations!"
+    },
+    {
+      keywords: ['tool', 'generator', 'scripts', 'list', 'studio', 'studios'],
+      answer: "🛠️ Pradeep has designed 15 interactive automation studios:<ul>" +
              "<li>[Ansible Playbook Builder](/tools/ansible/)</li>" +
              "<li>[Docker Manager](/tools/docker/)</li>" +
              "<li>[Terraform Architect](/tools/terraform/)</li>" +
              "<li>[k8s Script Generator](/tools/kubernetes/)</li>" +
              "<li>[Monitoring Telemetry](/tools/monitoring/)</li>" +
              "<li>[DevOps AI RAG Studio](/tools/ai/)</li>" +
-             "</ul>Click any of them to launch the tool!";
+             "</ul>Click any of them to launch the tool!"
+    },
+    {
+      keywords: ['kubernetes', 'k8s', 'kube', 'kubectl', 'pod', 'deployment', 'cluster', 'orchestration', 'ingress', 'replica'],
+      answer: "⚓ **Kubernetes (K8s)**: An open-source container orchestration platform for automating deployment, scaling, and management of containerized applications. Pradeep is a **Certified Kubernetes Administrator (CKA)** and experienced in setting up EKS, Helm charts, ingress controllers, and network policies. You can generate custom manifests at the [Kubernetes Studio](/tools/kubernetes/)!"
+    },
+    {
+      keywords: ['terraform', 'iac', 'infrastructure as code', 'terraform associate', 'hcl'],
+      answer: "🔧 **Terraform (IaC)**: An open-source Infrastructure as Code tool by HashiCorp used to define and provision cloud resources safely using declarative configuration files (HCL). Pradeep is a **HashiCorp Certified Terraform Associate** and builds automated, dry-run templates for AWS environments. Scaffold your IaC using the [Terraform Architect Studio](/tools/terraform/)!"
+    },
+    {
+      keywords: ['ansible', 'playbook', 'yaml', 'inventory', 'configuration management', 'adhoc'],
+      answer: "🤖 **Ansible**: An agentless IT automation tool used for configuration management, application deployment, and task automation. Pradeep uses Ansible to automate server provisioning and application deployments. Check out the [Ansible Playbook Builder](/tools/ansible/) to generate playbooks and inventories!"
+    },
+    {
+      keywords: ['prometheus', 'grafana', 'monitor', 'alert', 'observability', 'metrics', 'telemetry'],
+      answer: "📈 **Observability (Prometheus & Grafana)**: Prometheus is an open-source monitoring and alerting toolkit that collects metrics as time-series data. Grafana is a visualization platform that maps these metrics into real-time dashboards. Pradeep builds robust telemetry systems to ensure 99.9% uptime. Configure yours at the [Monitoring Telemetry Studio](/tools/monitoring/)!"
+    },
+    {
+      keywords: ['ci/cd', 'pipeline', 'github actions', 'gitlab', 'jenkins', 'automation pipeline', 'continuous integration'],
+      answer: "⚡ **CI/CD (Continuous Integration / Continuous Delivery)**: Automates the process of building, testing, scanning, and deploying code. Pradeep designs secure pipelines containing static analysis (SonarQube) and container vulnerability scanning (Trivy). Try his pipeline builders:<ul><li>[GitHub Actions Studio](/tools/github-actions/)</li><li>[GitLab CI/CD Studio](/tools/gitlab/)</li><li>[Jenkins Pipeline Studio](/tools/jenkins/)</li></ul>"
+    },
+    {
+      keywords: ['cert', 'credential', 'certification', 'achievement', 'qualification', 'cka', 'aws cert'],
+      answer: "🎓 **Pradeep's Certifications**:<ul><li>AWS Certified DevOps Engineer – Professional</li><li>Certified Kubernetes Administrator (CKA)</li><li>AWS Certified Solutions Architect – Associate</li><li>HashiCorp Certified Terraform Associate</li><li>Linux Foundation Certified System Administrator (LFCS)</li></ul>Check out the credentials at [/certifications/](/certifications/)!"
+    },
+    {
+      keywords: ['contact', 'hire', 'email', 'phone', 'linkedin', 'reach'],
+      answer: "📧 **Contact Talari Pradeep**: You can email him at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com) or connect on [LinkedIn](https://linkedin.com/in/pradeep-talari). He is currently available for DevOps/SRE roles!"
+    },
+    {
+      keywords: ['skills', 'tech', 'stack', 'languages', 'python', 'bash', 'go', 'shell'],
+      answer: "🚀 **Core Tech Stack**: AWS, Google Cloud, Azure, Kubernetes (EKS), Docker, Helm, ArgoCD, Terraform, Ansible, Prometheus, Grafana, GitHub Actions, Jenkins, Python, Bash/Shell, and Go. Details are on the [Skills Page](/skills/)."
+    },
+    {
+      keywords: ['devops', 'sre', 'site reliability', 'operations', 'devops engineer', 'reliability'],
+      answer: "💡 **DevOps & Site Reliability Engineering (SRE)**: DevOps is a cultural and technical movement bridging development and operations. SRE is a specific implementation of DevOps created by Google, applying software engineering practices to infrastructure operations. Pradeep specializes in automating these practices using CI/CD, Infrastructure as Code, Kubernetes, and comprehensive monitoring."
+    },
+    {
+      keywords: ['argocd', 'gitops', 'git ops', 'continuous deployment'],
+      answer: "🐙 **ArgoCD (GitOps)**: A declarative, GitOps continuous delivery tool for Kubernetes. It monitors Git repositories for manifest changes and automatically synchronizes them with target clusters. Pradeep implements ArgoCD for automated deployments. Scaffold GitOps configurations at the [ArgoCD Studio](/tools/argocd/)!"
+    },
+    {
+      keywords: ['helm', 'chart', 'helm chart'],
+      answer: "⚓ **Helm**: The package manager for Kubernetes. Helm uses 'charts' to define, install, and upgrade even the most complex Kubernetes applications. Pradeep builds Helm charts to parameterize microservices. Scaffold Helm files at the [Helm Chart Studio](/tools/helm/)!"
+    },
+    {
+      keywords: ['logging', 'log', 'elk', 'loki', 'fluentd', 'elasticsearch', 'kibana'],
+      answer: "🪵 **Centralized Logging**: Tools like the ELK stack (Elasticsearch, Logstash, Kibana) or Grafana Loki aggregate logs across microservices to enable rapid SRE troubleshooting. Pradeep sets up structured logging configurations. Scaffold yours at the [Logging Studio](/tools/logging/)!"
+    },
+    {
+      keywords: ['linux', 'bash', 'shell', 'script', 'ubuntu', 'redhat', 'centos', 'kernel', 'unix', 'cron'],
+      answer: "🐧 **Linux & Scripting**: Pradeep is a **Linux Foundation Certified System Administrator (LFCS)** and writes automated Bash/Shell scripts for cron jobs, log rotations, and system backups. Try his scripting generators:<ul><li>[Linux Sysadmin Studio](/tools/linux/)</li><li>[Shell Script Studio](/tools/shellscript/)</li></ul>"
+    },
+    {
+      keywords: ['python', 'pip', 'fastapi', 'flask', 'django'],
+      answer: "🐍 **Python**: Used heavily in SRE for automation, custom metrics collection, and AI/RAG backend engines (like FastAPI). Pradeep designs clean Python utilities. Scaffold production scripts at the [Python Studio](/tools/python/)!"
+    },
+    {
+      keywords: ['aws', 'amazon', 'cloud', 'gcp', 'azure', 'vpc', 's3', 'ec2', 'iam', 'route53'],
+      answer: "☁️ **Cloud Infrastructure (AWS/GCP/Azure)**: Pradeep is an **AWS Certified Solutions Architect** and **AWS Certified DevOps Engineer – Professional**. He configures secure VPCs, IAM policies, auto-scaling groups, and load balancers to ensure cloud reliability."
+    },
+    {
+      keywords: ['git', 'github', 'version control', 'repo', 'repository'],
+      answer: "🐙 **Git & Version Control**: Git is essential for version control and collaborating on codebase deployments. Pradeep implements trunk-based development and branch protection rules. Configure GitHub actions at the [GitHub Actions Studio](/tools/github-actions/)."
+    }
+  ];
+
+  function generateAnswer(query) {
+    const q = query.toLowerCase().trim();
+    
+    // Check if query is a simple greeting
+    if (q === 'hi' || q === 'hello' || q === 'hey' || q === 'yo' || q === 'greetings') {
+      return "👋 Hello! I am **TP DevOps AI Partner** – a client-side SRE assistant. Ask me anything about Talari Pradeep's background, DevOps tools, or technical concepts (e.g. 'What is Kubernetes?', 'Tell me about RAG').";
     }
 
-    // 4. Kubernetes
-    if (q.includes('kubernetes') || q.includes('k8s') || q.includes('orchestrat')) {
-      return "⚓ **Kubernetes (k8s)** is one of Pradeep's core strengths! He holds the **Certified Kubernetes Administrator (CKA)** credential. Try his interactive manifest utility at [k8s Script Generator](/tools/kubernetes/).";
+    // Search for best matching response
+    let bestMatch = null;
+    let maxMatchCount = 0;
+
+    for (const entry of qaDatabase) {
+      let matchCount = 0;
+      for (const keyword of entry.keywords) {
+        if (q.includes(keyword)) {
+          matchCount += keyword.length; // weight by length of keyword for precision
+        }
+      }
+      if (matchCount > maxMatchCount) {
+        maxMatchCount = matchCount;
+        bestMatch = entry;
+      }
     }
 
-    // 5. Terraform
-    if (q.includes('terraform') || q.includes('iac') || q.includes('infrastructure as code')) {
-      return "🔧 **Terraform**: Used for provisioning clean multi-tier VPCs, DBs, and EKS nodes. Check out Pradeep's [Terraform Architect](/tools/terraform/) tool to scaffold dry-run HCL files!";
+    if (bestMatch) {
+      return bestMatch.answer;
     }
 
-    // 6. Ansible
-    if (q.includes('ansible') || q.includes('playbook') || q.includes('automation')) {
-      return "🤖 **Ansible**: Great for configuration management and patch runs. Scaffold roles, task recipes, and custom inventory setups using Pradeep's [Ansible Playbook Builder](/tools/ansible/).";
-    }
-
-    // 7. Monitoring / Prometheus / Grafana
-    if (q.includes('monitor') || q.includes('prometheus') || q.includes('grafana') || q.includes('alert')) {
-      return "📈 **Observability**: Prometheus collects SRE metrics, and Grafana maps them into dashboards. Scaffold systemd scripts at [Monitoring Generator](/tools/monitoring/).";
-    }
-
-    // 8. CI/CD / GitHub / GitLab / Jenkins
-    if (q.includes('ci/cd') || q.includes('pipeline') || q.includes('actions') || q.includes('jenkins') || q.includes('gitlab')) {
-      return "⚡ **CI/CD Pipelines**: Automate code compilation, testing, Trivy scans, and pushes. Try:<ul>" +
-             "<li>[GitHub Actions Studio](/tools/github-actions/)</li>" +
-             "<li>[GitLab CI/CD Studio](/tools/gitlab/)</li>" +
-             "<li>[Jenkins Pipeline Generator](/tools/jenkins/)</li>" +
-             "</ul>";
-    }
-
-    // 9. Certifications
-    if (q.includes('cert') || q.includes('credential') || q.includes('achievement') || q.includes('qualification')) {
-      return "🎓 **Credentials & Achievements**: Pradeep holds 5 major industry validations:<ul>" +
-             "<li>**AWS Solutions Architect – Associate**</li>" +
-             "<li>**Certified Kubernetes Administrator (CKA)**</li>" +
-             "<li>**HashiCorp Terraform Associate**</li>" +
-             "<li>**AWS DevOps Engineer – Professional**</li>" +
-             "<li>**Linux Foundation Certified SysAdmin**</li>" +
-             "</ul>Read details at [/certifications/](/certifications/).";
-    }
-
-    // 10. Contact / Email / LinkedIn
-    if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('phone') || q.includes('reach')) {
-      return "📧 **Connect**: You can write to Pradeep directly at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com) or visit his [LinkedIn Profile](https://linkedin.com/in/pradeep-talari). He is open to DevOps, SRE, and Cloud contracts.";
-    }
-
-    // 11. Skills
-    if (q.includes('skills') || q.includes('stack') || q.includes('languages') || q.includes('python')) {
-      return "🚀 **Core Tech Stack**: AWS, Google Cloud, Azure, Kubernetes (EKS), Docker, Helm, ArgoCD, Terraform, Ansible, Prometheus, Grafana, GitHub Actions, Jenkins, Python, Bash/Shell, and Go.";
-    }
-
-    // 12. General DevOps SRE Questions
-    if (q.includes('devops') || q.includes('sre')) {
-      return "💡 **DevOps & SRE**: DevOps bridges software development and system operations, while Site Reliability Engineering (SRE) applies software engineering principles to operations to build highly reliable, automated cloud infrastructures. Pradeep specializes in implementing these via CI/CD, IaC, and Kubernetes! View his dashboard at [/tools/](/tools/).";
-    }
-
-    // 13. General RAG details
-    if (q.includes('what is rag') || q.includes('retrieval augmented')) {
-      return "💡 **Retrieval-Augmented Generation (RAG)**: RAG combines document search with LLMs. It splits your local manuals into chunks, saves them as embeddings in databases, retrieves relative context, and passes it to the LLM to get accurate answers.";
-    }
-
-    // Fallback
-    return "🧠 **SRE Intelligent Assistant**: I am currently running client-side on your static site. I can guide you to all portfolio sections and tools.<br><br>Try asking: *'Who is Pradeep?'*, *'List all SRE Tools'*, *'What credentials do you hold?'*, or *'How does AI RAG Studio work?'*";
-  }
+    // Smart general fallback: Try to extract SRE-like words to give a customized response
+    const words = q.split(/[^a-zA-Z0-9]/).filter(w => w.length > 2);
+    const techWords = words.map(w => `*${w}*`).join(', ');
+    
+    return `🧠 **SRE Intelligent Assistant**: I analyzed your query keywords: ${techWords || 'your query'}.<br><br>` +
+           `While I don't have a direct answer pre-loaded for this exact phrase, you can ask about **Kubernetes**, **Terraform**, **Docker**, **Ansible**, **CI/CD**, or **RAG AI**. <br><br>` +
+           `Feel free to check out Pradeep's work under the [Skills](/skills/) page, his [Projects](/projects/), or email him directly at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com).`;
 
 })();
 </script>
