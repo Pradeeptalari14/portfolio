@@ -569,6 +569,74 @@
     {
       keywords: ['shellscript', 'shell script', 'shell scripting', 'bash script'],
       answer: "🐚 **Shell Scripting**: Bash/Shell scripts are the glue of SRE operations. Pradeep automates backups, log checks, and status checks with clean scripting structures. Scaffold your scripts at the **[Shell Script Studio](/tools/shellscript/)**!"
+    },
+    {
+      keywords: ['crashloopbackoff', 'crash loop', 'crashloop'],
+      answer: "🛠️ **SRE Troubleshooting Runbook - CrashLoopBackOff (Level 1)**:<br><br>" +
+              "**Recommended Diagnostics:**<br>" +
+              "1. **Check Pod Logs**: Run `kubectl logs <pod-name> --previous` to see the logs from the crashed container instance.<br>" +
+              "2. **Check Events**: Run `kubectl describe pod <pod-name>` to look at the scheduling and container restart events.<br>" +
+              "3. **Check Readiness & Liveness Probes**: Verify if failure thresholds are set too low or paths are misconfigured.<br>" +
+              "4. **Check Resource Limits**: Verify if the pod exceeded memory limits and was killed by OOMKilled (Out-of-Memory).<br><br>" +
+              "*Source: Kubernetes Runbook v2*"
+    },
+    {
+      keywords: ['payment-api', 'database connection timeout', 'timeout error', 'unreachable'],
+      answer: "🔍 **DevOps AI Incident Analyzer (Level 2)**:<br><br>" +
+              "**Root Cause Analysis:**<br>" +
+              "• **Likely Cause:** Database unreachable (Database connection timeout)<br>" +
+              "• **Confidence:** 85%<br><br>" +
+              "**Recommended Actions:**<br>" +
+              "1. **Verify Database Service**: Ensure database instances/pods are running and listening on target ports.<br>" +
+              "2. **Check Network Policies**: Ensure the firewall/K8s NetworkPolicy allows traffic from `payment-api` namespace to the database namespace.<br>" +
+              "3. **Test DNS Resolution**: Check internal coreDNS resolution by executing `nslookup <database-service>`.<br><br>" +
+              "*Powered by Local LLM (Qwen3)*"
+    },
+    {
+      keywords: ['analyze cluster', 'analyze my cluster', 'cluster status', 'cluster health'],
+      answer: "⚓ **Kubernetes Copilot Diagnostics (Level 3)**:<br><br>" +
+              "Running cluster audits... Executing: `kubectl get pods -A`, `kubectl get events -A`, `kubectl top nodes`<br><br>" +
+              "🚨 **SRE Issues Summary:**<br>" +
+              "1. **payment-api** Pod is actively restarting (CrashLoopBackOff due to DB timeout).<br>" +
+              "2. Node **worker-03** Memory capacity is at **92%** utilization.<br>" +
+              "3. **Pending Pods** identified due to cluster-wide CPU shortages.<br><br>" +
+              "• **Priority:** <span style='color:#ef4444;font-weight:700;'>HIGH</span><br>" +
+              "• **Action Plan:** Initiate scale limits, inspect DB connectivity, and provision a new node."
+    },
+    {
+      keywords: ['cpu > 90%', 'cpu alert', 'grafana alert', 'prometheus alert', 'cpu high'],
+      answer: "📈 **Grafana Alert Analyzer (Level 4)**:<br><br>" +
+              "**Alert Received:** Node CPU High (> 90% Threshold)<br><br>" +
+              "⚠️ **Potential Root Causes:**<br>" +
+              "1. **Traffic Spike**: Check network connections rate counts.<br>" +
+              "2. **Infinite Loop Process**: Inspect top system processes using `htop`.<br>" +
+              "3. **Resource Misconfiguration**: Verify CPU request limits are set correctly.<br><br>" +
+              "**Suggested Actions:** Run `top -b -n 1 -o %CPU` to locate resource leaks. If necessary, trigger horizontal pod auto-scaling (HPA)."
+    },
+    {
+      keywords: ['jenkins log', 'maven dependency failed', 'pipeline failed', 'jenkins failure'],
+      answer: "👷 **Jenkins Pipeline Failure Analyzer (Level 5)**:<br><br>" +
+              "**Pipeline Log Audit:** Maven dependency download failed.<br><br>" +
+              "• **Root Cause:** Artifact repository (Nexus/Artifactory) is currently unavailable or network-blocked.<br>" +
+              "• **Fix Recommendation:** Check Nexus server availability on the internal network. Verify credentials inside Maven `settings.xml` settings."
+    },
+    {
+      keywords: ['deploy version', 'risk assessment', 'release risk'],
+      answer: "🛡️ **AI Change Risk Assessment (Level 6)**:<br><br>" +
+              "Analyzing release package... (Previous incidents, change history, DB schemas)<br><br>" +
+              "• **Risk Level:** <span style='color:#f59e0b;font-weight:700;'>MEDIUM</span><br>" +
+              "• **Reasons:**<br>" +
+              "  1. A similar microservice release failed last month due to memory leak configurations.<br>" +
+              "  2. Database schema modifications are detected in this deployment release.<br>" +
+              "• **Recommendation:** Deploy during the designated maintenance window with active telemetry scrapers enabled."
+    },
+    {
+      keywords: ['disk usage 95%', 'disk alert', 'cleanup.yml', 'self-healing', 'disk clean'],
+      answer: "⚡ **Self-Healing Automation Agent (Level 7)**:<br><br>" +
+              "**Alert:** Disk usage reached 95% on host server node.<br><br>" +
+              "• **Triggered Action:** Running automated cleanup playbook `ansible-playbook cleanup.yml`...<br>" +
+              "• **Cleanup Steps Executed:** Pruned unused Docker containers, cleared journald log caches, and archived temp dumps.<br>" +
+              "• **Result:** Disk usage successfully reduced to **55%**. Incident resolved automatically! ✅"
     }
   ];
 
