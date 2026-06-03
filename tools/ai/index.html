@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevOps AI RAG Architect Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Enterprise Retrieval Augmented Generation (RAG) code bases, Docker compose, Kubernetes, CI/CD pipelines, and Prometheus monitoring setups." />
+  <link rel="icon" type="image/png" href="../../Favicon.png?v=3" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --accent-green:   #059669;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important; /* Dark slate */
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 720px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Flowchart styles */
+    .diagram-container {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      color: #e2e8f0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .diagram-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .diagram-step {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.72rem;
+      text-align: center;
+      min-width: 100px;
+      transition: all 0.3s ease;
+    }
+    
+    .diagram-step.active {
+      background: rgba(79, 70, 229, 0.15);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px rgba(79, 70, 229, 0.3);
+    }
+    
+    .diagram-arrow {
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+
+    /* Custom scrollbar for tabs */
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ARCHITECT STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Enterprise AI &amp; SRE</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">DevOps AI RAG Architect Studio</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl leading-normal">
+        Design, customize, and generate a production-ready Local RAG (Retrieval Augmented Generation) knowledge engine for DevOps &amp; SRE workflows. Package the entire codebase, deployment orchestrations, and monitoring dashboards dynamically.
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Architecture Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⚙️ RAG Pipeline Configuration</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="rag_llm" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Local LLM Model (Ollama)</label>
+              <select id="rag_llm" class="form-select w-full p-2.5 text-xs">
+                <option value="llama3:8b">Llama 3 (8B) - Balanced</option>
+                <option value="qwen3:7b">Qwen 3 (7B) - High Coding Accuracy</option>
+                <option value="mistral:7b">Mistral (7B) - High Speed</option>
+                <option value="phi3:3.8b">Phi 3 (3.8B) - Ultra Lightweight</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="rag_embedding" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Embedding Model</label>
+              <select id="rag_embedding" class="form-select w-full p-2.5 text-xs">
+                <option value="nomic-embed-text">nomic-embed-text (Local, 8192 Context)</option>
+                <option value="all-minilm-l6-v2">all-MiniLM-L6-v2 (Fast, 384 Dim)</option>
+                <option value="bge-large-en-v1.5">bge-large-en-v1.5 (High Accuracy)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="chunk_size" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Chunk Size: <span id="chunk_size_val" class="font-bold text-indigo-600">500</span> chars</label>
+              <input type="range" id="chunk_size" min="100" max="2000" step="50" value="500" class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+            </div>
+
+            <div>
+              <label for="chunk_overlap" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Chunk Overlap: <span id="chunk_overlap_val" class="font-bold text-indigo-600">50</span> chars</label>
+              <input type="range" id="chunk_overlap" min="0" max="500" step="10" value="50" class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="vector_db" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Vector Database</label>
+              <select id="vector_db" class="form-select w-full p-2.5 text-xs">
+                <option value="chromadb">ChromaDB (Local, Embedded)</option>
+                <option value="qdrant">Qdrant (High-performance Server)</option>
+                <option value="pgvector">PostgreSQL pgvector (Relational integration)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="auth_strategy" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Security Strategy</label>
+              <select id="auth_strategy" class="form-select w-full p-2.5 text-xs">
+                <option value="jwt">JWT Token Authentication + Rate Limiting</option>
+                <option value="simple">API Key Only</option>
+                <option value="none">No Auth (Local Development)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: DevOps & Infra Toggles -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🐳 DevOps &amp; Production Infrastructure</h3>
+          
+          <div class="space-y-4 text-xs font-semibold text-gray-700">
+            <!-- Dockerization -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="devops_docker" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="devops_docker" class="font-bold text-gray-900 block cursor-pointer">Docker Integration</label>
+                <span class="text-[10px] text-gray-400 font-normal">Generate multi-stage Dockerfiles for Frontend and Backend + docker-compose.yml for local clustering.</span>
+              </div>
+            </div>
+
+            <!-- Kubernetes -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="devops_k8s" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="devops_k8s" class="font-bold text-gray-900 block cursor-pointer">Kubernetes Orchestration Manifests</label>
+                <span class="text-[10px] text-gray-400 font-normal">Create complete ConfigMaps, Secrets, Deployments, ClusterIP Services, Ingress Routes, and Horizontal Pod Autoscalers (HPA).</span>
+              </div>
+            </div>
+
+            <!-- CI/CD GitHub Actions -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="devops_cicd" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="devops_cicd" class="font-bold text-gray-900 block cursor-pointer">CI/CD Pipeline Workflow</label>
+                <span class="text-[10px] text-gray-400 font-normal">Include a GitHub Actions workflow with unit testing (`pytest`), Trivy vulnerability scans, container builds, and deployment.</span>
+              </div>
+            </div>
+
+            <!-- Telemetry Monitoring -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="devops_monitoring" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="devops_monitoring" class="font-bold text-gray-900 block cursor-pointer">Observability Stack (Prometheus + Grafana)</label>
+                <span class="text-[10px] text-gray-400 font-normal">Integrate a prometheus scrape configuration and export a complete Grafana analytics dashboard JSON payload.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: RAG Architecture Flowchart Diagram -->
+        <div class="diagram-container">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-2">💡 Interactive RAG Flowchart</h4>
+          <p class="text-[10px] text-slate-400 mb-4">Click configuration sliders/toggles to visualize RAG pipeline updates.</p>
+          
+          <div class="diagram-flow">
+            <div class="diagram-step active" id="diag-upload">Upload Documents</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-split">Recursive Splitter</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-embed">Text Embeddings</div>
+          </div>
+          
+          <div class="diagram-flow mt-3">
+            <div class="diagram-step active" id="diag-db">Vector Database</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-query">Similarity Search</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-prompt">Context Injection</div>
+          </div>
+
+          <div class="diagram-flow mt-3">
+            <div class="diagram-arrow" style="transform: rotate(90deg); margin: 0.25rem 0;">➔</div>
+          </div>
+
+          <div class="diagram-flow">
+            <div class="diagram-step active" id="diag-llm">Local LLM Inference</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-client">Streamlit Web Interface</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <!-- IDE Header Row -->
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-32 focus:outline-none" value="app" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.py</span>
+              </div>
+            </div>
+            
+            <!-- File Tabs Navigation (Scrollable) -->
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable">
+              <button onclick="switchTab('app')" id="tab-app" class="tab-btn active">app.py</button>
+              <button onclick="switchTab('main')" id="tab-main" class="tab-btn">main.py</button>
+              <button onclick="switchTab('rag_engine')" id="tab-rag_engine" class="tab-btn">rag_engine.py</button>
+              <button onclick="switchTab('dockerfile')" id="tab-dockerfile" class="tab-btn">Dockerfile</button>
+              <button onclick="switchTab('docker_compose')" id="tab-docker_compose" class="tab-btn">docker-compose.yml</button>
+              <button onclick="switchTab('k8s')" id="tab-k8s" class="tab-btn">k8s-manifests.yaml</button>
+              <button onclick="switchTab('cicd')" id="tab-cicd" class="tab-btn">ci-cd.yml</button>
+              <button onclick="switchTab('prometheus')" id="tab-prometheus" class="tab-btn">prometheus.yml</button>
+              <button onclick="switchTab('grafana')" id="tab-grafana" class="tab-btn">grafana-dashboard.json</button>
+              <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+            </div>
+          </div>
+
+          <!-- Output Viewport -->
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <button onclick="triggerCompileAll(); showToast('⚡ Code files recompiled successfully!');" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>🔄 Recompile Code Artifacts</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear Output</span>
+            </button>
+          </div>
+
+          <button onclick="downloadWorkspaceZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download RAG Project (.zip)</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-indigo-400">⚡</span> LLM SRE Cheat Sheet
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Verify local Ollama running models:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">ollama list</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Pre-pull LLM models in automation scripts:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">ollama pull llama3:8b</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Check Vector Store size & index details:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">du -sh ./chroma_data</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Wrapper -->
+  <div id="toast-wrapper" class="fixed bottom-5 right-5 z-50 transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none">
+    <div id="toast-content" class="bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2">
+      <!-- Injected -->
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'app';
+
+    let compiledCode = {
+      app: '',
+      main: '',
+      rag_engine: '',
+      dockerfile: '',
+      docker_compose: '',
+      k8s: '',
+      cicd: '',
+      prometheus: '',
+      grafana: '',
+      readme: ''
+    };
+
+    // Tab files mapping metadata
+    const tabConfigs = {
+      app: { label: 'app.py', filename: 'app', ext: '.py' },
+      main: { label: 'main.py', filename: 'main', ext: '.py' },
+      rag_engine: { label: 'rag_engine.py', filename: 'rag_engine', ext: '.py' },
+      dockerfile: { label: 'Dockerfile', filename: 'Dockerfile', ext: '' },
+      docker_compose: { label: 'docker-compose.yml', filename: 'docker-compose', ext: '.yml' },
+      k8s: { label: 'k8s-manifests.yaml', filename: 'k8s-manifests', ext: '.yaml' },
+      cicd: { label: 'ci-cd.yml', filename: 'ci-cd', ext: '.yml' },
+      prometheus: { label: 'prometheus.yml', filename: 'prometheus', ext: '.yml' },
+      grafana: { label: 'grafana-dashboard.json', filename: 'grafana-dashboard', ext: '.json' },
+      readme: { label: 'README.md', filename: 'README', ext: '.md' }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupSliders();
+      setupToggles();
+      triggerCompileAll();
+    });
+
+    function setupSliders() {
+      const sizeSlider = $('chunk_size');
+      const sizeVal = $('chunk_size_val');
+      sizeSlider.addEventListener('input', () => {
+        sizeVal.textContent = sizeSlider.value;
+        triggerCompileAll();
+      });
+
+      const overlapSlider = $('chunk_overlap');
+      const overlapVal = $('chunk_overlap_val');
+      overlapSlider.addEventListener('input', () => {
+        overlapVal.textContent = overlapSlider.value;
+        triggerCompileAll();
+      });
+    }
+
+    function setupToggles() {
+      const toggles = [
+        'rag_llm', 'rag_embedding', 'vector_db', 'auth_strategy',
+        'devops_docker', 'devops_k8s', 'devops_cicd', 'devops_monitoring'
+      ];
+      toggles.forEach(id => {
+        $(id).addEventListener('change', () => {
+          updateDiagram();
+          triggerCompileAll();
+        });
+      });
+    }
+
+    function updateDiagram() {
+      // Highlight diagram items depending on choices
+      const vectorDb = $('vector_db').value;
+      const diagDb = $('diag-db');
+      if (vectorDb === 'chromadb') diagDb.textContent = 'ChromaDB';
+      if (vectorDb === 'qdrant') diagDb.textContent = 'Qdrant Store';
+      if (vectorDb === 'pgvector') diagDb.textContent = 'PostgreSQL pgvector';
+
+      const model = $('rag_llm').value;
+      const diagLlm = $('diag-llm');
+      if (model.includes('llama3')) diagLlm.textContent = 'Llama 3';
+      if (model.includes('qwen3')) diagLlm.textContent = 'Qwen 3';
+      if (model.includes('mistral')) diagLlm.textContent = 'Mistral';
+      if (model.includes('phi3')) diagLlm.textContent = 'Phi 3';
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      
+      // Update UI active buttons
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $(`tab-${tabId}`).classList.add('active');
+
+      // Update filename & extension labels
+      const cfg = tabConfigs[tabId];
+      $('download-name-input').value = cfg.filename;
+      $('file-extension-tag').textContent = cfg.ext;
+
+      // Update viewport content
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      $('output-box').textContent = compiledCode[activeTab] || `# File is disabled / empty`;
+    }
+
+    function triggerCompileAll() {
+      compileApp();
+      compileMain();
+      compileRagEngine();
+      compileDockerfile();
+      compileDockerCompose();
+      compileK8s();
+      compileCicd();
+      compilePrometheus();
+      compileGrafana();
+      compileReadme();
+      updateViewportContent();
+    }
+
+    /* ═══════════════════════════════════════════════
+       COMPILATION LOGIC (COMPLETE PRODUCTION CODE)
+       ═══════════════════════════════════════════════ */
+
+    function compileApp() {
+      const llmModel = $('rag_llm').value;
+      compiledCode.app = `import streamlit as st
+import requests
+import os
+
+# Streamlit UI Configuration
+st.set_page_config(
+    page_title="Enterprise DevOps RAG Assistant",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Custom Premium Styling Injections
+st.markdown("""
+<style>
+    .chat-bubble {
+        padding: 1rem 1.25rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+    .user-bubble {
+        background-color: #f1f5f9;
+        color: #0f172a;
+        margin-left: 20%;
+        border-bottom-right-radius: 2px;
+    }
+    .assistant-bubble {
+        background-color: #e0e7ff;
+        color: #1e1b4b;
+        margin-right: 20%;
+        border-bottom-left-radius: 2px;
+    }
+    .citation-box {
+        font-size: 0.78rem;
+        color: #4f46e5;
+        background-color: #f5f3ff;
+        border: 1px solid #ddd6fe;
+        border-radius: 6px;
+        padding: 0.4rem 0.6rem;
+        margin-top: 0.5rem;
+        display: inline-block;
+    }
+</style>
+""", unsafe_allowed_html=True)
+
+BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
+
+st.title("🤖 Enterprise DevOps Knowledge Assistant")
+st.caption("A private, local RAG pipeline powering DevOps Knowledge & SRE operations.")
+
+# Sidebar - Document Manager
+with st.sidebar:
+    st.header("📂 Document Manager")
+    uploaded_files = st.file_uploader(
+        "Upload DevOps references (PDF, DOCX, TXT)",
+        type=["pdf", "docx", "txt"],
+        accept_multiple_files=True
+    )
+    
+    if st.button("Index Documents", use_container_width=True):
+        if uploaded_files:
+            for file in uploaded_files:
+                with st.spinner(f"Indexing {file.name}..."):
+                    files = {"file": (file.name, file.getvalue(), file.type)}
+                    try:
+                        res = requests.post(f"{BACKEND_URL}/api/v1/upload", files=files)
+                        if res.status_code == 200:
+                            st.success(f"Successfully indexed: {file.name}")
+                        else:
+                            st.error(f"Failed indexing: {file.name} (API Error)")
+                    except Exception as e:
+                        st.sidebar.error(f"Network error: {str(e)}")
+        else:
+            st.warning("Please select files to upload first.")
+
+    st.markdown("---")
+    st.subheader("⚙️ System Status")
+    st.info("LLM Model: \`${llmModel}\`\\nEmbeddings: nomic-embed-text\\nDatabase: ChromaDB")
+
+# Chat History Setup
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Render chat history
+for msg in st.session_state.messages:
+    role = msg["role"]
+    bubble_class = "user-bubble" if role == "user" else "assistant-bubble"
+    
+    with st.container():
+        st.markdown(f'<div class="chat-bubble {bubble_class}"><b>{role.upper()}:</b><br>{msg["content"]}</div>', unsafe_allowed_html=True)
+        if "citations" in msg and msg["citations"]:
+            for cit in msg["citations"]:
+                st.markdown(f'<div class="citation-box">📄 Source: {cit}</div>', unsafe_allowed_html=True)
+
+# User Chat Input
+if prompt := st.chat_input("Ask a question about your DevOps infrastructure..."):
+    # Append user question
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.markdown(f'<div class="chat-bubble user-bubble"><b>USER:</b><br>{prompt}</div>', unsafe_allowed_html=True)
+    
+    # Query Backend API
+    with st.spinner("Retrieving knowledge and generating answer..."):
+        try:
+            payload = {"query": prompt}
+            res = requests.post(f"{BACKEND_URL}/api/v1/query", json=payload)
+            if res.status_code == 200:
+                data = res.json()
+                answer = data.get("answer", "No context matches found.")
+                citations = data.get("citations", [])
+                
+                # Append assistant reply
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": answer,
+                    "citations": citations
+                })
+                
+                # Render reply
+                st.markdown(f'<div class="chat-bubble assistant-bubble"><b>ASSISTANT:</b><br>{answer}</div>', unsafe_allowed_html=True)
+                for cit in citations:
+                    st.markdown(f'<div class="citation-box">📄 Source: {cit}</div>', unsafe_allowed_html=True)
+            else:
+                st.error("API error during query generation.")
+        except Exception as e:
+            st.error(f"Error querying backend API: {str(e)}")
+`;
+    }
+
+    function compileMain() {
+      const auth = $('auth_strategy').value;
+      const enableMonitoring = $('devops_monitoring').checked;
+      
+      let code = `from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List
+import os
+import shutil
+from rag_engine import RagEngine
+`;
+
+      if (enableMonitoring) {
+        code += `from prometheus_fastapi_instrumentator import Instrumentator
+`;
+      }
+
+      code += `
+app = FastAPI(
+    title="DevOps RAG Assistant API",
+    description="Backend FastAPI system supporting enterprise knowledge retrievals.",
+    version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialize Core RAG Engine
+rag = RagEngine()
+`;
+
+      if (enableMonitoring) {
+        code += `
+# Prometheus Metrics Instrumentation
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
+`;
+      }
+
+      code += `
+# Request/Response Schemas
+class QueryRequest(BaseModel):
+    query: str
+
+class QueryResponse(BaseModel):
+    answer: str
+    citations: List[str]
+
+`;
+
+      // JWT Authentication Strategy
+      if (auth === 'jwt') {
+        code += `# JWT Auth & Security setup
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+
+SECRET_KEY = os.getenv("JWT_SECRET", "super-secret-key-do-not-use-in-production")
+ALGORITHM = "HS256"
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        return username
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token credentials")
+`;
+      }
+
+      code += `
+@app.post("/api/v1/upload", status_code=200)
+async def upload_document(
+    file: UploadFile = File(...)`;
+
+      if (auth === 'jwt') {
+        code += `,
+    current_user: str = Depends(get_current_user)`
+      }
+
+      code += `
+):
+    """
+    Endpoint for secure DevOps document indexing.
+    Saves document and triggers RAG embeddings update.
+    """
+    upload_dir = "temp_docs"
+    os.makedirs(upload_dir, exist_ok=True)
+    file_path = os.path.join(upload_dir, file.filename)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    try:
+        rag.index_file(file_path)
+        return {"status": "success", "message": f"Successfully indexed {file.name}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+@app.post("/api/v1/query", response_model=QueryResponse)
+async def query_rag(
+    request: QueryRequest`;
+
+      if (auth === 'jwt') {
+        code += `,
+    current_user: str = Depends(get_current_user)`
+      }
+
+      code += `
+):
+    """
+    RAG semantic search and local LLM context generation endpoint.
+    """
+    try:
+        answer, sources = rag.generate_response(request.query)
+        return QueryResponse(answer=answer, citations=sources)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/health", status_code=200)
+def health_check():
+    return {"status": "healthy", "service": "DevOps RAG Backend"}
+`;
+      compiledCode.main = code;
+    }
+
+    function compileRagEngine() {
+      const llm = $('rag_llm').value;
+      const embedding = $('rag_embedding').value;
+      const vectorDb = $('vector_db').value;
+      const chunkSize = $('chunk_size').value;
+      const chunkOverlap = $('chunk_overlap').value;
+
+      let code = `from langchain_community.document_loaders import PyPDFLoader, TextLoader, Docx2txtLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.llms import Ollama
+from langchain_core.prompts import ChatPromptTemplate
+import os
+`;
+
+      if (vectorDb === 'chromadb') {
+        code += `from langchain_community.vectorstores import Chroma\n`;
+      } else if (vectorDb === 'qdrant') {
+        code += `from langchain_community.vectorstores import Qdrant\nfrom qdrant_client import QdrantClient\n`;
+      } else if (vectorDb === 'pgvector') {
+        code += `from langchain_community.vectorstores import PGVector\n`;
+      }
+
+      code += `
+class RagEngine:
+    def __init__(self):
+        self.chunk_size = ${chunkSize}
+        self.chunk_overlap = ${chunkOverlap}
+        
+        # Configure Local Embeddings (Ollama)
+        self.embeddings = OllamaEmbeddings(
+            model="${embedding}",
+            base_url=os.getenv("OLLAMA_URL", "http://localhost:11434")
+        )
+        
+        # Configure Local LLM Model (Ollama)
+        self.llm = Ollama(
+            model="${llm}",
+            base_url=os.getenv("OLLAMA_URL", "http://localhost:11434")
+        )
+        
+        # Setup Vector Storage
+        self.vector_dir = "chroma_db_store"
+        self._init_vector_store()
+
+    def _init_vector_store(self):
+`;
+
+      if (vectorDb === 'chromadb') {
+        code += `        self.vector_store = Chroma(
+            persist_directory=self.vector_dir,
+            embedding_function=self.embeddings
+        )\n`;
+      } else if (vectorDb === 'qdrant') {
+        code += `        qdrant_url = os.getenv("QDRANT_URL", "http://localhost:6333")
+        self.vector_store = Qdrant(
+            client=QdrantClient(url=qdrant_url),
+            collection_name="devops_docs",
+            embeddings=self.embeddings
+        )\n`;
+      } else if (vectorDb === 'pgvector') {
+        code += `        connection_string = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/vector_db")
+        self.vector_store = PGVector(
+            connection_string=connection_string,
+            collection_name="devops_docs",
+            embeddings=self.embeddings
+        )\n`;
+      }
+
+      code += `
+    def index_file(self, file_path: str):
+        """
+        Parses document, splits it into chunks, embeds text and inserts vectors.
+        """
+        ext = os.path.splitext(file_path)[-1].lower()
+        if ext == ".pdf":
+            loader = PyPDFLoader(file_path)
+        elif ext == ".docx":
+            loader = Docx2txtLoader(file_path)
+        else:
+            loader = TextLoader(file_path)
+            
+        documents = loader.load()
+        
+        # Split text intelligently
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=self.chunk_size,
+            chunk_overlap=self.chunk_overlap,
+            length_function=len
+        )
+        chunks = text_splitter.split_documents(documents)
+        
+        # Add chunks to vector store
+        self.vector_store.add_documents(chunks)
+
+    def generate_response(self, query: str):
+        """
+        RAG workflow - queries database, injects context, prompts LLM, returns answer.
+        """
+        # 1. Similarity Retrieval
+        retriever = self.vector_store.as_retriever(search_kwargs={"k": 4})
+        context_docs = retriever.get_relevant_documents(query)
+        
+        context_text = "\\n\\n".join([doc.page_content for doc in context_docs])
+        sources = list(set([doc.metadata.get("source", "Unknown Document") for doc in context_docs]))
+        
+        # 2. Prompt Template Generation
+        system_prompt = """You are an expert DevOps and SRE Knowledge Assistant. 
+Answer the question using the retrieved infrastructure context below. If you do not know the answer, say that you don't know based on the documents. Keep answers technical and clean.
+
+Retrieved Context:
+{context}
+
+Question:
+{question}
+"""
+        prompt_template = ChatPromptTemplate.from_template(system_prompt)
+        formatted_prompt = prompt_template.format(context=context_text, question=query)
+        
+        # 3. LLM Response Generation
+        response = self.llm.invoke(formatted_prompt)
+        return response, sources
+`;
+      compiledCode.rag_engine = code;
+    }
+
+    function compileDockerfile() {
+      if (!$('devops_docker').checked) {
+        compiledCode.dockerfile = `# Docker features are disabled.`;
+        return;
+      }
+      compiledCode.dockerfile = `# ══ MULTI-STAGE DOCKERFILE ══
+
+# --- STAGE 1: Dependency builder ---
+FROM python:3.10-slim as builder
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends gcc build-essential \\
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# --- STAGE 2: Production runner ---
+FROM python:3.10-slim as runner
+WORKDIR /app
+
+# Create unprivileged system user for secure container running
+RUN groupadd -g 10001 appgroup && \\
+    useradd -r -u 10001 -g appgroup -d /app -s /sbin/nologin appuser
+
+# Copy installed libraries and code from builder
+COPY --from=builder /root/.local /home/appuser/.local
+COPY . .
+
+# Set permissions and ownership
+RUN chown -R appuser:appgroup /app
+USER appuser
+ENV PATH=/home/appuser/.local/bin:$PATH
+
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \\
+  CMD curl -f http://localhost:8000/health || exit 1
+
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+`;
+    }
+
+    function compileDockerCompose() {
+      if (!$('devops_docker').checked) {
+        compiledCode.docker_compose = `# Docker features are disabled.`;
+        return;
+      }
+      compiledCode.docker_compose = `version: '3.8'
+
+services:
+  # FastAPI Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rag_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - JWT_SECRET=change-me-to-a-secure-secret-key-32-chars-long
+    volumes:
+      - chroma_data:/app/chroma_db_store
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  # Streamlit Frontend Client
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rag_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Local Ollama AI Engine
+  ollama:
+    image: ollama/ollama:latest
+    container_name: local_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_store:/root/.ollama
+    restart: unless-stopped
+    # If GPU is available on host, mount it here
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  chroma_data:
+  ollama_store:
+`;
+    }
+
+    function compileK8s() {
+      if (!$('devops_k8s').checked) {
+        compiledCode.k8s = `# Kubernetes manifests are disabled.`;
+        return;
+      }
+      compiledCode.k8s = `apiVersion: v1
+kind: Namespace
+metadata:
+  name: devops-ai
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-config
+  namespace: devops-ai
+data:
+  OLLAMA_URL: "http://ollama-service.devops-ai.svc.cluster.local:11434"
+  BACKEND_API_URL: "http://backend-service:8000"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rag-secrets
+  namespace: devops-ai
+type: Opaque
+data:
+  # Base64 of JWT key
+  JWT_SECRET: "c3VwZXItc2VjcmV0LWtleS1kby1ub3QtdXNlLWluLXByb2R1Y3Rpb24=" 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-backend
+  namespace: devops-ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rag-backend
+  template:
+    metadata:
+      labels:
+        app: rag-backend
+    spec:
+      containers:
+      - name: backend
+        image: ghcr.io/pradeeptalari14/rag-backend:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: rag-config
+        - secretRef:
+            name: rag-secrets
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: devops-ai
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: rag-backend
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rag-ingress
+  namespace: devops-ai
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: rag.talaripradeep.info
+    http:
+      paths:
+      - path: /api/?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 8000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend-hpa
+  namespace: devops-ai
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rag-backend
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+`;
+    }
+
+    function compileCicd() {
+      if (!$('devops_cicd').checked) {
+        compiledCode.cicd = `# CI/CD pipeline workflow is disabled.`;
+        return;
+      }
+      compiledCode.cicd = `name: Build and Deploy DevOps RAG Engine
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r backend/requirements.txt
+        pip install pytest httpx
+
+    - name: Run Unit Tests
+      run: |
+        pytest backend/tests/
+
+  security:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy Vulnerability Scan (Code)
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        ignore-unfixed: true
+        format: 'table'
+        severity: 'HIGH,CRITICAL'
+
+  build-and-push:
+    needs: security
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: \${{ github.actor }}
+        password: \${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and Push Backend Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        push: true
+        tags: ghcr.io/pradeeptalari14/rag-backend:latest
+`;
+    }
+
+    function compilePrometheus() {
+      if (!$('devops_monitoring').checked) {
+        compiledCode.prometheus = `# Telemetry scraping is disabled.`;
+        return;
+      }
+      compiledCode.prometheus = `global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "rag-backend"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["backend-service.devops-ai.svc.cluster.local:8000"]
+
+  - job_name: "ollama-metrics"
+    static_configs:
+      - targets: ["ollama-service.devops-ai.svc.cluster.local:11434"]
+`;
+    }
+
+    function compileGrafana() {
+      if (!$('devops_monitoring').checked) {
+        compiledCode.grafana = `# Grafana payload configurations are disabled.`;
+        return;
+      }
+      compiledCode.grafana = `{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "title": "Enterprise DevOps RAG Telemetry",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "FastAPI Query Latency (95th percentile)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
+          "legendFormat": "API Latency",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Total Semantic Questions Asked",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{handler=\\"/api/v1/query\\"})",
+          "legendFormat": "Total Queries",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}`;
+    }
+
+    function compileReadme() {
+      const llm = $('rag_llm').value;
+      const embedding = $('rag_embedding').value;
+      const vectorDb = $('vector_db').value;
+
+      compiledCode.readme = `# Enterprise DevOps RAG Knowledge Assistant
+
+This repository contains a production-ready, locally hosted RAG (Retrieval Augmented Generation) pipeline configured for secure enterprise SRE operations.
+
+## Architecture Decisions
+
+- **Embedding Engine**: Local vector creation using \`${embedding}\` to comply with internal privacy standards.
+- **Local Inference**: Self-hosted \`${llm}\` running locally via Ollama. No data ever leaves the local network boundary.
+- **Vector Database**: Utilizes \`${vectorDb}\` for lightning-fast semantic queries.
+
+## Folder Structure
+\`\`\`
+.
+├── backend/
+│   ├── Dockerfile
+│   ├── main.py            # FastAPI Application Interface
+│   ├── rag_engine.py      # LangChain & ChromaDB integrations
+│   └── requirements.txt
+├── frontend/
+│   ├── Dockerfile
+│   └── app.py             # Streamlit ChatGPT Interface
+├── k8s/
+│   └── k8s-manifests.yaml # K8s Deployments, ConfigMap, Secrets
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml      # CI/CD automation pipeline
+└── README.md
+\`\`\`
+
+## Installation & Deployment
+
+1. **Start Local AI Engine (Ollama)**:
+   Ensure Ollama is installed on your local host, then run:
+   \`$ ollama pull ${embedding}\`
+   \`$ ollama pull ${llm}\`
+
+2. **Spin Up Docker Compose Stack**:
+   \`$ docker compose up -d --build\`
+   * Frontend chat dashboard is exposed at \`http://localhost:8501\`
+   * Backend REST API endpoints are exposed at \`http://localhost:8000\`
+
+3. **Deploy to Production (Kubernetes)**:
+   \`$ kubectl apply -f k8s/k8s-manifests.yaml\`
+`;
+    }
+
+    /* ═══════════════════════════════════════════════
+       UTILITIES & DOWNLOADS (.ZIP GENERATION ENGINE)
+       ═══════════════════════════════════════════════ */
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      if (!content) {
+        showToast("⚠️ Active tab is empty!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(content).then(() => {
+        showToast("📋 Copied to clipboard!");
+      }).catch(err => {
+        showToast("❌ Failed to copy to clipboard.");
+      });
+    }
+
+    function clearAllFields() {
+      compiledCode[activeTab] = '';
+      updateViewportContent();
+      showToast("🗑️ Viewport cleared.");
+    }
+
+    function downloadWorkspaceZip() {
+      const zip = new JSZip();
+
+      // Core instructions
+      zip.file("README.md", compiledCode.readme);
+      
+      // Requirements file
+      zip.file("requirements.txt", "fastapi\\nuvicorn\\nstreamlit\\nrequests\\nlangchain\\nchromadb\\nlangchain-community\\nlangchain-text-splitters\\npydantic\\npython-multipart\\nprometheus-fastapi-instrumentator\\npython-jose\\npasslib");
+
+      // Folders scaffolding
+      const backendFolder = zip.folder("backend");
+      backendFolder.file("main.py", compiledCode.main);
+      backendFolder.file("rag_engine.py", compiledCode.rag_engine);
+      backendFolder.file("Dockerfile", compiledCode.dockerfile);
+      
+      const frontendFolder = zip.folder("frontend");
+      frontendFolder.file("app.py", compiledCode.app);
+      frontendFolder.file("Dockerfile", "FROM python:3.10-slim\\nWORKDIR /app\\nRUN pip install streamlit requests\\nCOPY . .\\nEXPOSE 8501\\nENTRYPOINT [\\"streamlit\\", \\"run\\", \\"app.py\\", \\"--server.port\\", \\"8501\\", \\"--server.address\\", \\"0.0.0.0\\"]");
+
+      if ($('devops_docker').checked) {
+        zip.file("docker-compose.yml", compiledCode.docker_compose);
+      }
+
+      if ($('devops_k8s').checked) {
+        const k8sFolder = zip.folder("k8s");
+        k8sFolder.file("k8s-manifests.yaml", compiledCode.k8s);
+      }
+
+      if ($('devops_cicd').checked) {
+        const githubWorkflows = zip.folder(".github").folder("workflows");
+        githubWorkflows.file("ci-cd.yml", compiledCode.cicd);
+      }
+
+      if ($('devops_monitoring').checked) {
+        const monitoringFolder = zip.folder("monitoring");
+        monitoringFolder.file("prometheus.yml", compiledCode.prometheus);
+        monitoringFolder.file("grafana-dashboard.json", compiledCode.grafana);
+      }
+
+      zip.generateAsync({ type: "blob" }).then(function (content) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "devops-rag-assistant.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast("⬇️ RAG Workspace zip downloaded!");
+      });
+    }
+
+    function showToast(message) {
+      const wrapper = $('toast-wrapper');
+      const content = $('toast-content');
+      content.innerHTML = `<span>⚡</span> \${message}`;
+      
+      wrapper.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+      wrapper.classList.add('opacity-100', 'translate-y-0');
+      
+      setTimeout(() => {
+        wrapper.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+        wrapper.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

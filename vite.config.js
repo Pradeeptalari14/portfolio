@@ -13,6 +13,7 @@ export default defineConfig({
         experience: resolve(__dirname, 'experience/index.html'),
         certifications: resolve(__dirname, 'certifications/index.html'),
         tools: resolve(__dirname, 'tools/index.html'),
+        ai: resolve(__dirname, 'tools/ai/index.html'),
         ansible: resolve(__dirname, 'tools/ansible/index.html'),
         docker: resolve(__dirname, 'tools/docker/index.html'),
         jenkins: resolve(__dirname, 'tools/jenkins/index.html'),
