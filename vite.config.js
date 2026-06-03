@@ -30,6 +30,7 @@ export default defineConfig({
         gitlab: resolve(__dirname, 'tools/gitlab/index.html'),
         llm: resolve(__dirname, 'tools/llm/index.html'),
         slm: resolve(__dirname, 'tools/slm/index.html'),
+        mlflow: resolve(__dirname, 'tools/mlflow/index.html'),
       }
     }
   }
