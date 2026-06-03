@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enterprise LLM Deployment Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Kubernetes deployments, services, ingress routing, and Prometheus scrapers for hosting Large Language Models (LLMs) like Llama 3 70B and Mixtral using vLLM or Triton." />
+  <link rel="icon" type="image/png" href="../../Favicon.png?v=3" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #7c3aed;
+      --accent-cyan:    #0ea5e9;
+      --accent-fuchsia: #d946ef;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(124, 58, 237, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 720px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .diagram-container {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      color: #e2e8f0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .diagram-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .diagram-step {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.72rem;
+      text-align: center;
+      min-width: 100px;
+      transition: all 0.3s ease;
+    }
+    
+    .diagram-step.active {
+      background: rgba(124, 58, 237, 0.15);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+    }
+    
+    .diagram-arrow {
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-violet-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-violet-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-violet-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ARCHITECT STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-violet-600 bg-violet-50 border border-violet-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Enterprise AI &amp; MLOps</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Enterprise LLM Deployment Studio</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl leading-normal">
+        Orchestrate scalable, GPU-accelerated environments for Large Language Models (LLMs). Generate production Kubernetes manifests, high-performance vLLM configurations, and Prometheus GPU dashboards dynamically.
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: LLM Engine Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⚙️ Model &amp; Engine Configuration</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="llm_model" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target LLM Model</label>
+              <select id="llm_model" class="form-select w-full p-2.5 text-xs">
+                <option value="meta-llama/Meta-Llama-3-70B-Instruct">Llama 3 (70B) - Instruct</option>
+                <option value="mistralai/Mixtral-8x22B-Instruct-v0.1">Mixtral 8x22B - High Capacity</option>
+                <option value="Qwen/Qwen1.5-72B-Chat">Qwen 1.5 (72B) - Coding &amp; Math</option>
+                <option value="meta-llama/Meta-Llama-3-8B-Instruct">Llama 3 (8B) - Lightweight</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="llm_engine" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Inference Engine</label>
+              <select id="llm_engine" class="form-select w-full p-2.5 text-xs">
+                <option value="vllm">vLLM (PagedAttention, Fast)</option>
+                <option value="triton">Triton Inference Server</option>
+                <option value="tgi">HuggingFace TGI</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="llm_gpu" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">GPU Target &amp; Allocation</label>
+              <select id="llm_gpu" class="form-select w-full p-2.5 text-xs">
+                <option value="a100">NVIDIA A100 (80GB) - Production</option>
+                <option value="h100">NVIDIA H100 (80GB) - Ultra Performance</option>
+                <option value="t4">NVIDIA T4 (16GB) - Cost-efficient</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="llm_quant" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Quantization Strategy</label>
+              <select id="llm_quant" class="form-select w-full p-2.5 text-xs">
+                <option value="awq">AWQ (4-bit, Optimized)</option>
+                <option value="gptq">GPTQ (4-bit)</option>
+                <option value="none">None (FP16 / Native)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="tensor_parallel" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Tensor Parallelism (GPUs count)</label>
+              <select id="tensor_parallel" class="form-select w-full p-2.5 text-xs">
+                <option value="4">TP = 4 (Recommended for 70B)</option>
+                <option value="8">TP = 8 (Recommended for Multi-node)</option>
+                <option value="2">TP = 2 (For smaller models)</option>
+                <option value="1">TP = 1 (Single GPU)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="gpu_util" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">GPU Memory Utilization Limit: <span id="gpu_util_val" class="font-bold text-violet-600">0.90</span></label>
+              <input type="range" id="gpu_util" min="0.50" max="0.95" step="0.05" value="0.90" class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-violet-600" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Production Infrastructures -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">☸️ Kubernetes &amp; SRE Telemetry</h3>
+          
+          <div class="space-y-4 text-xs font-semibold text-gray-700">
+            <!-- Namespace selection -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="k8s_namespace" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">K8s Namespace</label>
+                <input type="text" id="k8s_namespace" class="form-input w-full p-2.5 text-xs font-mono" value="llm-hosting" />
+              </div>
+              <div>
+                <label for="ingress_host" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ingress Routing Host</label>
+                <input type="text" id="ingress_host" class="form-input w-full p-2.5 text-xs font-mono" value="llm.production.sre" />
+              </div>
+            </div>
+
+            <!-- Ingress & SSL -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="enable_ingress" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="enable_ingress" class="font-bold text-gray-900 block cursor-pointer">Enable Ingress Routing &amp; SSL</label>
+                <span class="text-[10px] text-gray-400 font-normal">Generate ingress manifests pointing to external endpoints with Cert-Manager annotations.</span>
+              </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="enable_telemetry" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="enable_telemetry" class="font-bold text-gray-900 block cursor-pointer">Export GPU Prometheus Scrapers</label>
+                <span class="text-[10px] text-gray-400 font-normal">Export scraping rules targeting vLLM/Triton metrics endpoints to monitor KV Cache usage and queue delays.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: LLM Pipeline Flowchart -->
+        <div class="diagram-container">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-2">💡 Interactive LLM Host Topology</h4>
+          <p class="text-[10px] text-slate-400 mb-4">Visual path representing how the client requests route to GPU cores.</p>
+          
+          <div class="diagram-flow">
+            <div class="diagram-step active" id="diag-client">HTTP Client Request</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-ingress">Ingress Controller</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-service">K8s Service (8000)</div>
+          </div>
+          
+          <div class="diagram-flow mt-3">
+            <div class="diagram-step active" id="diag-engine">vLLM Engine Pod</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-gpu">NVIDIA GPU (AWQ)</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-metrics">Prometheus Scraper</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <!-- IDE Header Row -->
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-32 focus:outline-none" value="deployment" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yaml</span>
+              </div>
+            </div>
+            
+            <!-- File Tabs Navigation -->
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable">
+              <button onclick="switchTab('deployment')" id="tab-deployment" class="tab-btn active">deployment.yaml</button>
+              <button onclick="switchTab('service')" id="tab-service" class="tab-btn">service.yaml</button>
+              <button onclick="switchTab('ingress')" id="tab-ingress" class="tab-btn">ingress.yaml</button>
+              <button onclick="switchTab('prometheus')" id="tab-prometheus" class="tab-btn">prometheus.yml</button>
+              <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+            </div>
+          </div>
+
+          <!-- Output Viewport -->
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll(); showToast('⚡ LLM configurations compiled successfully!');" class="col-span-3 py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-violet-100 flex items-center justify-center gap-2">
+              <span>🔄 Recompile Deployment Artifacts</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear</span>
+            </button>
+          </div>
+
+          <button onclick="downloadWorkspaceZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇ decline Download LLM Project (.zip)</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-violet-400">⚡</span> LLM SRE GPU Cheat Sheet
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Verify NVIDIA GPU device status on node:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">kubectl exec -it <pod-name> -n llm-hosting -- nvidia-smi</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Query active request throughput from vLLM endpoint:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">curl http://llm-service:8000/metrics | grep vllm</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.py</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Visual Flow -->
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
+          <!-- Injected -->
+        </pre>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Wrapper -->
+  <div id="toast-wrapper" class="fixed bottom-5 right-5 z-50 transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none">
+    <div id="toast-content" class="bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2">
+      <!-- Injected -->
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'deployment';
+
+    // SRE Code Explanations Database
+    const tabExplanations = {
+      deployment: {
+        title: "Kubernetes LLM Deployment",
+        filename: "deployment.yaml",
+        why: "Defines the Kubernetes workload specs for hosting large models using vLLM/Triton. It configures target GPU limit keys (`nvidia.com/gpu`), resource requests, model parameters, and volume mounts for weight storage.",
+        when: "Use this to launch massive GPU-backed language models inside private Kubernetes namespaces.",
+        where: "Deploy directly on a GPU node group inside your Kubernetes cluster.",
+        command: "kubectl apply -f deployment.yaml",
+        practices: [
+          "Set GPU resources limit keys strictly to match your execution parallel count.",
+          "Use quantization (AWQ) to significantly reduce GPU RAM footprint.",
+          "Enable readiness/liveness probes pointing to the vLLM health API endpoint."
+        ],
+        ai_mlops: "Lays down the core model orchestration foundation for the **Kubernetes Troubleshooting Agent** and **vLLM-backed LLM Hosting** workspaces.",
+        flow: "[Kubernetes API] ➔ [Schedules GPU Node] ➔ [Mounts Cache Volume] ➔ [Launches vLLM Container]"
+      },
+      service: {
+        title: "K8s LLM API Service Discovery",
+        filename: "service.yaml",
+        why: "Creates a stable cluster networking interface to route API request queries to active LLM engine pods on port 8000.",
+        when: "Use to expose the model completions endpoints to local client apps or API gateways inside the cluster.",
+        where: "Apply within your target namespace in the Kubernetes control cluster.",
+        command: "kubectl apply -f service.yaml",
+        practices: [
+          "Verify targetPort matches the container API port.",
+          "Use ClusterIP for secure, internal-only backend discovery."
+        ],
+        ai_mlops: "Provides the endpoint routing abstraction for the **RAG Knowledge Chatbot** and **DevOps Copilot** backend clients.",
+        flow: "[Client App] ➔ [llm-service:8000] ➔ [Routes to vLLM Pod Replicas]"
+      },
+      ingress: {
+        title: "LLM Ingress Routing & SSL",
+        filename: "ingress.yaml",
+        why: "Manages external HTTP traffic routing, mapping public hosts queries to internal LLM service ports with SSL certificate provisions.",
+        when: "Use to expose the private API completions server securely to the external developers and applications.",
+        where: "Apply inside the cluster ingress namespace.",
+        command: "kubectl apply -f ingress.yaml",
+        practices: [
+          "Annotate to integrate Cert-Manager for automatic certificate creations.",
+          "Restrict ingress paths to authorized domains only."
+        ],
+        ai_mlops: "Provides secure TLS endpoint interfaces for the **SRE GenAI Copilot** analytics clients.",
+        flow: "[External Dev Client] ➔ [Ingress Controller (SSL)] ➔ [Routes to llm-service]"
+      },
+      prometheus: {
+        title: "Prometheus Telemetry Scraper",
+        filename: "prometheus.yml",
+        why: "Tells Prometheus scraper daemons to scrap GPU memory usage, token throughput, and cache metrics from the engine.",
+        when: "Include when monitoring LLM performance and request queuing times inside telemetry dashboards.",
+        where: "Mount into your Prometheus configuration workspace directory.",
+        command: "prometheus --config.file=prometheus.yml",
+        practices: [
+          "Track KV Cache utilization closely to optimize request concurrent queue limits.",
+          "Alert SREs if GPU temperatures or limits exceed warning thresholds."
+        ],
+        ai_mlops: "Feeds active model efficiency statistics directly into the **SRE GenAI Copilot** dashboard.",
+        flow: "[Prometheus Daemon] ── Scrapes (15s) ──► [vLLM /metrics] ➔ [Saves to TSDB]"
+      },
+      readme: {
+        title: "Deployment & Verification Guide",
+        filename: "README.md",
+        why: "Provides step-by-step commands to configure token tokens, mount cache volumes, and verify GPU execution.",
+        when: "Include in the GitOps deployment repository to guide SREs on setting up LLM pods.",
+        where: "Save in the root of the manifests directory.",
+        command: "# View in terminal or markdown reader",
+        practices: [
+          "Document mandatory environment variables (e.g. HUGGING_FACE_HUB_TOKEN).",
+          "Include API verification curl templates."
+        ],
+        ai_mlops: "Provides documentation on hosting and verifying large language model pipelines in production.",
+        flow: "[README.md Guide] ➔ [Directs Operator deployment checklists]"
+      }
+    };
+
+    let compiledCode = {
+      deployment: '',
+      service: '',
+      ingress: '',
+      prometheus: '',
+      readme: ''
+    };
+
+    const tabConfigs = {
+      deployment: { label: 'deployment.yaml', filename: 'deployment', ext: '.yaml' },
+      service: { label: 'service.yaml', filename: 'service', ext: '.yaml' },
+      ingress: { label: 'ingress.yaml', filename: 'ingress', ext: '.yaml' },
+      prometheus: { label: 'prometheus.yml', filename: 'prometheus', ext: '.yml' },
+      readme: { label: 'README.md', filename: 'README', ext: '.md' }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select, textarea').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+      $('gpu_util').addEventListener('input', (e) => {
+        $('gpu_util_val').textContent = e.target.value;
+      });
+    }
+
+    function triggerCompileAll() {
+      compileDeployment();
+      compileService();
+      compileIngress();
+      compilePrometheus();
+      compileReadme();
+      updateViewportContent();
+    }
+
+    function compileDeployment() {
+      const model = $('llm_model').value;
+      const engine = $('llm_engine').value;
+      const gpu = $('llm_gpu').value;
+      const quant = $('llm_quant').value;
+      const tp = $('tensor_parallel').value;
+      const gpuUtil = $('gpu_util').value;
+      const ns = $('k8s_namespace').value.trim() || 'llm-hosting';
+
+      let containerArgs = '';
+      if (engine === 'vllm') {
+        containerArgs = `        args:
+        - "--model"
+        - "${model}"
+        - "--tensor-parallel-size"
+        - "${tp}"
+        - "--gpu-memory-utilization"
+        - "${gpuUtil}"`;
+        if (quant !== 'none') {
+          containerArgs += `\n        - "--quantization"\n        - "${quant}"`;
+        }
+      } else if (engine === 'triton') {
+        containerArgs = `        args:
+        - "tritonserver"
+        - "--model-repository=/models"
+        - "--allow-gpu-metrics=true"`;
+      } else {
+        containerArgs = `        args:
+        - "--model-id"
+        - "${model}"
+        - "--num-shard"
+        - "${tp}"`;
+      }
+
+      let gpuLimit = '1';
+      if (gpu === 'a100' || gpu === 'h100') {
+        gpuLimit = tp;
+      }
+
+      let code = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-engine
+  namespace: ${ns}
+  labels:
+    app: llm-engine
+    role: inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-engine
+  template:
+    metadata:
+      labels:
+        app: llm-engine
+    spec:
+      containers:
+      - name: llm-container
+        image: ${engine === 'vllm' ? 'vllm/vllm-openai:latest' : (engine === 'triton' ? 'nvcr.io/nvidia/tritonserver:latest' : 'ghcr.io/huggingface/text-generation-inference:latest')}
+        imagePullPolicy: IfNotPresent
+${containerArgs}
+        ports:
+        - containerPort: 8000
+          name: http-api
+        resources:
+          limits:
+            cpu: "8"
+            memory: "32Gi"
+            nvidia.com/gpu: "${gpuLimit}"
+          requests:
+            cpu: "4"
+            memory: "16Gi"
+            nvidia.com/gpu: "${gpuLimit}"
+        env:
+        - name: HUGGING_FACE_HUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hf-secret
+              key: token
+        volumeMounts:
+        - name: model-cache
+          mountPath: /root/.cache/huggingface
+      volumes:
+      - name: model-cache
+        persistentVolumeClaim:
+          claimName: llm-model-pvc
+`;
+      compiledCode.deployment = code;
+    }
+
+    function compileService() {
+      const ns = $('k8s_namespace').value.trim() || 'llm-hosting';
+      let code = `apiVersion: v1
+kind: Service
+metadata:
+  name: llm-service
+  namespace: ${ns}
+  labels:
+    app: llm-engine
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    targetPort: http-api
+    name: http
+    protocol: TCP
+  selector:
+    app: llm-engine
+`;
+      compiledCode.service = code;
+    }
+
+    function compileIngress() {
+      const ns = $('k8s_namespace').value.trim() || 'llm-hosting';
+      const host = $('ingress_host').value.trim() || 'llm.production.sre';
+      const enable = $('enable_ingress').checked;
+
+      if (!enable) {
+        compiledCode.ingress = "# Ingress is disabled by choice.";
+        return;
+      }
+
+      let code = `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: llm-ingress
+  namespace: ${ns}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "128m"
+spec:
+  tls:
+  - hosts:
+    - ${host}
+    secretName: llm-tls-secret
+  rules:
+  - host: ${host}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: llm-service
+            port:
+              number: 8000
+`;
+      compiledCode.ingress = code;
+    }
+
+    function compilePrometheus() {
+      const enable = $('enable_telemetry').checked;
+      const ns = $('k8s_namespace').value.trim() || 'llm-hosting';
+
+      if (!enable) {
+        compiledCode.prometheus = "# Telemetry metrics scraping is disabled.";
+        return;
+      }
+
+      let code = `global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'llm-vllm-metrics'
+    kubernetes_sd_configs:
+    - role: pod
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_label_app]
+      action: keep
+      regex: llm-engine
+    - source_labels: [__meta_kubernetes_namespace]
+      action: keep
+      regex: ${ns}
+    - source_labels: [__address__]
+      action: replace
+      target_label: __address__
+      regex: ([^:]+)(?::\\d+)?
+      replacement: $1:8000
+`;
+      compiledCode.prometheus = code;
+    }
+
+    function compileReadme() {
+      const model = $('llm_model').value;
+      const engine = $('llm_engine').value;
+      const tp = $('tensor_parallel').value;
+      const ns = $('k8s_namespace').value.trim() || 'llm-hosting';
+
+      let code = `# Production LLM Orchestration Deployment Guide
+
+This workspace deploys the large language model \`${model}\` inside Kubernetes namespace \`${ns}\` using the \`${engine}\` inference engine.
+
+## Prerequisites
+
+1.  **NVIDIA GPU operator** active in your Kubernetes cluster.
+2.  **HuggingFace token secret** configured in namespace \`${ns}\`:
+    \`kubectl create secret generic hf-secret --from-literal=token=YOUR_HF_TOKEN -n ${ns}\`
+3.  **PV Storage Provisioner** active to mount the \`llm-model-pvc\`.
+
+## Deploy Commands
+
+\`\`\`bash
+# 1. Create target namespace
+kubectl create namespace ${ns}
+
+# 2. Deploy secret and resources
+kubectl apply -f deployment.yaml -n ${ns}
+kubectl apply -f service.yaml -n ${ns}
+kubectl apply -f ingress.yaml -n ${ns}
+\`\`\`
+
+## Verify Setup
+
+Stream the container logs to track model weights downloading:
+\`\`\`bash
+kubectl logs -f deployment/llm-engine -n ${ns}
+\`\`\`
+
+Once running, send a completions request:
+\`\`\`bash
+curl http://localhost:8000/v1/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "${model}",
+    "messages": [{"role": "user", "content": "Explain what PagedAttention is in SRE terms."}]
+  }'
+\`\`\`
+`;
+      compiledCode.readme = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const config = tabConfigs[tabId];
+      $('download-name-input').value = config.filename;
+      $('file-extension-tag').textContent = config.ext;
+
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      const content = compiledCode[activeTab];
+      $('output-box').textContent = content || '';
+    }
+
+    function copyActiveTabContent() {
+      const content = compiledCode[activeTab];
+      if (!content) {
+        showToast("⚠️ Active tab is empty!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(content).then(() => {
+        showToast("📋 Copied to clipboard!");
+      }).catch(err => {
+        showToast("❌ Failed to copy to clipboard.");
+      });
+    }
+
+    function clearAllFields() {
+      compiledCode[activeTab] = '';
+      updateViewportContent();
+      showToast("🗑️ Viewport cleared.");
+    }
+
+    function downloadWorkspaceZip() {
+      const zip = new JSZip();
+      zip.file("README.md", compiledCode.readme);
+      zip.file("deployment.yaml", compiledCode.deployment);
+      zip.file("service.yaml", compiledCode.service);
+      if ($('enable_ingress').checked) {
+        zip.file("ingress.yaml", compiledCode.ingress);
+      }
+      if ($('enable_telemetry').checked) {
+        zip.file("prometheus.yml", compiledCode.prometheus);
+      }
+
+      zip.generateAsync({ type: "blob" }).then(function (content) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "llm-deployment-project.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast("⬇️ LLM Workspace zip downloaded!");
+      });
+    }
+
+    function explainActiveTabCode() {
+      const explanation = tabExplanations[activeTab];
+      if (!explanation) {
+        showToast("⚠️ No explanation available for this tab.");
+        return;
+      }
+
+      $('drawer-title').textContent = explanation.title;
+      $('drawer-filename').textContent = explanation.filename;
+      $('explain-why').innerHTML = explanation.why;
+      $('explain-when').innerHTML = explanation.when;
+      $('explain-where').innerHTML = explanation.where;
+      $('explain-command').textContent = explanation.command;
+
+      const practicesBox = $('explain-practices');
+      practicesBox.innerHTML = '';
+      explanation.practices.forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+
+      $('explain-ai-mlops').innerHTML = explanation.ai_mlops || 'Integrated with MLOps pipelines and SRE AI workloads.';
+      $('explain-flow').textContent = explanation.flow;
+
+      const drawer = $('explanation-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeExplanationDrawer() {
+      const drawer = $('explanation-drawer');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+
+    function showToast(message) {
+      const wrapper = $('toast-wrapper');
+      const content = $('toast-content');
+      content.innerHTML = `<span>⚡</span> ${message}`;
+      
+      wrapper.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+      wrapper.classList.add('opacity-100', 'translate-y-0');
+      
+      setTimeout(() => {
+        wrapper.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+        wrapper.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+  </script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

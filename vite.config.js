@@ -28,6 +28,8 @@ export default defineConfig({
         python: resolve(__dirname, 'tools/python/index.html'),
         shellscript: resolve(__dirname, 'tools/shellscript/index.html'),
         gitlab: resolve(__dirname, 'tools/gitlab/index.html'),
+        llm: resolve(__dirname, 'tools/llm/index.html'),
+        slm: resolve(__dirname, 'tools/slm/index.html'),
       }
     }
   }
