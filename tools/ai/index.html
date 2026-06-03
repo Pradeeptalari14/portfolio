@@ -437,15 +437,18 @@
 
         <!-- Global Actions -->
         <div class="studio-card">
-          <div class="grid grid-cols-2 gap-2.5 mb-3">
-            <button onclick="triggerCompileAll(); showToast('⚡ Code files recompiled successfully!');" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll(); showToast('⚡ Code files recompiled successfully!');" class="col-span-3 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
               <span>🔄 Recompile Code Artifacts</span>
             </button>
             <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
-              <span>📋 Copy Active Tab</span>
+              <span>📋 Copy</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
             </button>
             <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>🗑️ Clear Output</span>
+              <span>🗑️ Clear</span>
             </button>
           </div>
 
@@ -481,6 +484,82 @@
 
   </main>
 
+  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.py</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: Visual Flow -->
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
+          <!-- Injected -->
+        </pre>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Toast Notification Wrapper -->
   <div id="toast-wrapper" class="fixed bottom-5 right-5 z-50 transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none">
     <div id="toast-content" class="bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2">
@@ -501,6 +580,151 @@
     const $$ = (sel) => document.querySelectorAll(sel);
 
     let activeTab = 'app';
+
+    // SRE Code Explanations Database
+    const tabExplanations = {
+      app: {
+        title: "Streamlit UI Assistant",
+        filename: "frontend/app.py",
+        why: "This file builds a fully interactive, responsive ChatGPT-style web interface using Streamlit. It connects directly to the FastAPI gateway backend, manages chat history in the session state, provides a file uploader widget for document ingestion, and renders responses with source citations.",
+        when: "Use this whenever you need a quick, low-overhead frontend interface to demonstrate or interact with your Retrieval-Augmented Generation pipeline. It is perfect for SRE teams to query playbooks or log references without having to build a complex React/Vue frontend.",
+        where: "Deploy this inside a frontend container or host it on your local environment. You can test it locally by running the Streamlit app command.",
+        command: "pip install streamlit requests\nstreamlit run frontend/app.py --server.port 8501",
+        practices: [
+          "Use Streamlit session state to persist history across page reloads.",
+          "Inject custom CSS rules to design an immersive premium dark-mode interface.",
+          "Set a timeout on requests to the FastAPI gateway to prevent the UI from freezing.",
+          "Ensure secure network communication (HTTPS) when requesting internal APIs in production."
+        ],
+        flow: "[User Query] ➔ [Streamlit App] ➔ [FastAPI Gateway]\n                     ▲                 │\n                     │                 ▼\n             [Citations + Ans] ◀─ [RAG Engine + LLM]"
+      },
+      main: {
+        title: "FastAPI Application Gateway",
+        filename: "backend/main.py",
+        why: "Acts as the unified orchestration API gateway. It receives user prompts, triggers documents parsing, handles standard REST requests, registers CORS middleware for frontend queries, and instruments automatic Prometheus metrics compilation to watch the health of the API.",
+        when: "Use this as the central orchestrator/API gateway in your microservices backend. It separates frontend interactions from the heavier LLM embedding and vector storage workloads, allowing independent scaling.",
+        where: "Deploy this containerized in a Kubernetes cluster or Docker compose setup. Runs by default on port 8000.",
+        command: "pip install fastapi uvicorn\nuvicorn backend.main:app --host 0.0.0.0 --port 8000",
+        practices: [
+          "Enable CORS only for allowed origins in production (don't use '*').",
+          "Include a healthcheck endpoint (e.g. '/health') to allow container runtime checks.",
+          "Integrate Prometheus fastapi-instrumentator for tracking API latency, error counts, and request volume."
+        ],
+        flow: "[Streamlit] ➔ [main.py (FastAPI)] ➔ [rag_engine.py]\n                    │                  │\n                    ▼                  ▼\n              [/metrics endpoint]   [ChromaDB / LLM]"
+      },
+      rag_engine: {
+        title: "LangChain RAG Core Engine",
+        filename: "backend/rag_engine.py",
+        why: "Implements the actual RAG pipeline: document parsing, recursive text chunking, vector database index initialization, semantic query search, and passing relevant context strings to the local Ollama LLM.",
+        when: "Use this to manage the intelligence of your database. It splits large manuals into chunks, runs embed queries, and interfaces with models like Llama 3 or Qwen 3 to answer specialized questions.",
+        where: "Run this inside the backend application container. It requires connections to the Ollama API service (usually on port 11434) and the ChromaDB database directory.",
+        command: "python backend/rag_engine.py # Integrated directly with main.py",
+        practices: [
+          "Configure optimal chunk sizes (500-1000 tokens) with 10% overlap to preserve context.",
+          "Use a reliable local embedding model like nomic-embed-text for consistent similarity computations.",
+          "Implement proper try-catch exception handling for connection timeouts to Ollama."
+        ],
+        flow: "[Upload Manual] ➔ [RecursiveSplitter] ➔ [Nomic Embeddings]\n                                                │\n                                                ▼\n[Ollama Llama3] ◀─ [Build Prompt] ◀─ [ChromaDB Vector Store]"
+      },
+      dockerfile: {
+        title: "Multi-Stage Dockerfile",
+        filename: "backend/Dockerfile",
+        why: "Provides a secure, multi-stage compilation flow. Stage 1 compiles C-dependencies and installs packages to a user directory, and Stage 2 runs as a minimal unprivileged system user (`appuser`), minimizing the attack surface.",
+        when: "Use this to containerize the FastAPI backend API for staging, testing, or production deployments.",
+        where: "Execute inside the backend folder to build the container image.",
+        command: "docker build -t rag-backend:latest ./backend",
+        practices: [
+          "Use multi-stage builds to exclude compiler tools from the final runner image.",
+          "Run the container as a non-root user (e.g., appuser, UID 10001) to prevent root-privilege exploits.",
+          "Include a container HEALTHCHECK parameter to detect and restart frozen API nodes."
+        ],
+        flow: "[Stage 1: Build Dependencies] ➔ [Compile C extensions]\n                                      │\n                                      ▼\n[Stage 2: Run minimal image] ◀─── [Copy packages only]"
+      },
+      docker_compose: {
+        title: "Docker Compose Workspace",
+        filename: "docker-compose.yml",
+        why: "Scaffolds a multi-container local stack combining the Streamlit client, FastAPI gateway, ChromaDB persistence volume, and local Ollama GPU/CPU container, allowing single-command local deployments.",
+        when: "Use this to deploy the entire RAG stack locally or on a single VM for development, demonstration, and offline execution.",
+        where: "Run in the project root directory containing the compose file.",
+        command: "docker-compose up -d --build",
+        practices: [
+          "Define resource limits (CPU/Memory) on containers to prevent host exhaustions.",
+          "Use named volumes (e.g., chroma_data) to ensure vectors are persisted between container restarts.",
+          "Set up dependencies using 'depends_on' to orchestrate the container startup order."
+        ],
+        flow: "[Client Web UI (8501)] ➔ [FastAPI Backend (8000)] ➔ [Ollama LLM (11434)]\n                                        │\n                                        ▼\n                            [chroma_data Named Volume]"
+      },
+      k8s: {
+        title: "Kubernetes Manifests",
+        filename: "k8s-manifests.yaml",
+        why: "Provides enterprise-grade orchestrations: ConfigMaps for configurations, PersistentVolumeClaims for ChromaDB, headless services, deployment configs with cpu/memory limits, and node selector configurations.",
+        when: "Use this when deploying the RAG system to production environments like AWS EKS, GCP GKE, or self-hosted Kubernetes clusters.",
+        where: "Apply these manifests to your target Kubernetes namespace.",
+        command: "kubectl create namespace devops-ai\nkubectl apply -f k8s-manifests.yaml -n devops-ai",
+        practices: [
+          "Use standard resource requests and limits to enable Kubernetes scheduling optimization.",
+          "Configure Readiness/Liveness probes targeting the '/health' endpoint.",
+          "Utilize PersistentVolumeClaims to preserve ChromaDB indices across Pod rescheduling cycles."
+        ],
+        flow: "[K8s Ingress] ➔ [Frontend Pods] ➔ [Backend Pods] ➔ [Ollama Pods]\n                                      │\n                                      ▼\n                          [ChromaDB PV Claim (10Gi)]"
+      },
+      cicd: {
+        title: "GitHub Actions CI/CD",
+        filename: ".github/workflows/ci-cd.yml",
+        why: "Orchestrates an automated quality gateway: triggers on branch pushes, runs code formatting checks, executes python unit tests, scans code for secrets/CVEs using Trivy, builds containers, and pushes them to GHCR.",
+        when: "Use this to enforce Site Reliability engineering quality standards and prevent unsafe container images from entering your repositories.",
+        where: "Place inside the `.github/workflows/` directory in your git repository.",
+        command: "git add .github/workflows/ci-cd.yml\ngit commit -m \"Add CI/CD\"\ngit push origin main",
+        practices: [
+          "Incorporate security scanners like Trivy or Anchore to detect CVE vulnerabilities in your images.",
+          "Use specific image versions and tags (e.g., actions/checkout@v4) rather than 'latest'.",
+          "Ensure token permissions are scoped strictly to read/write packages."
+        ],
+        flow: "[Code Push] ➔ [Unit Tests (pytest)] ➔ [Trivy Scan] ➔ [Docker Build & Push (GHCR)]"
+      },
+      prometheus: {
+        title: "Prometheus Configuration",
+        filename: "monitoring/prometheus.yml",
+        why: "Defines the metrics monitoring layout, telling Prometheus where to scrape metrics (FastAPI metrics on port 8000 and Ollama LLM performance stats on port 11434).",
+        when: "Use this to configure Prometheus telemetry collectors, allowing SRE teams to analyze system load, request latency, and GPU/CPU utilization.",
+        where: "Deploy this config inside a Prometheus instance or mount it to a Prometheus Docker container.",
+        command: "prometheus --config.file=monitoring/prometheus.yml",
+        practices: [
+          "Set conservative evaluation and scrape intervals (e.g., 15 seconds) to prevent overloading endpoints.",
+          "Utilize DNS-based service discovery (like Kubernetes local DNS names) to scale endpoints dynamically.",
+          "Keep metric label cardinalities low to ensure high Prometheus database performance."
+        ],
+        flow: "[Prometheus Collector] ─── Scrapes ───► [FastAPI /metrics (8000)]\n         │\n         └───────────── Scrapes ───► [Ollama /metrics (11434)]"
+      },
+      grafana: {
+        title: "Grafana Analytics Dashboard",
+        filename: "monitoring/grafana-dashboard.json",
+        why: "Contains the JSON definition of a complete SRE Grafana dashboard. It maps metrics into real-time graphs showing system performance (latency percentiles, request volume, error rates).",
+        when: "Use this to instantly set up visual dashboards in Grafana to monitor the RAG pipeline's health and usage metrics.",
+        where: "Import this JSON file directly into your Grafana dashboard manager interface.",
+        command: "# Import JSON code block directly in the Grafana import UI panel",
+        practices: [
+          "Visualize 95th and 99th percentile latencies to monitor long-tail API response delays.",
+          "Set up automated Slack or PagerDuty alerts for system errors (HTTP 5xx spikes).",
+          "Keep dashboard views clean by organizing panels into logical rows (API, LLM, Host)."
+        ],
+        flow: "[Prometheus DB] ➔ [Grafana Data Source] ➔ [JSON Dashboard Panels (Charts & Alerts)]"
+      },
+      readme: {
+        title: "Project Documentation",
+        filename: "README.md",
+        why: "Serves as the guide for the entire workspace. It includes quick-start commands, environmental variable mappings, infrastructure architecture flow summaries, and developer instructions.",
+        when: "Always include this in the root of your project directory to guide developers, SREs, and DevOps engineers on how to deploy and run the workspace.",
+        where: "Save as README.md in the root folder of the generated project repository.",
+        command: "# View on GitHub or any local markdown reader",
+        practices: [
+          "Keep commands clear, copy-pasteable, and tested.",
+          "Include a clear architectural layout indicating how microservices interact.",
+          "Document all environment variable configurations and volume mounts clearly."
+        ],
+        flow: "[README.md Guide] ➔ [Orchestrates Developer & SRE Tasks]"
+      }
+    };
 
     let compiledCode = {
       app: '',
@@ -1506,6 +1730,47 @@ This repository contains a production-ready, locally hosted RAG (Retrieval Augme
         document.body.removeChild(a);
         showToast("⬇️ RAG Workspace zip downloaded!");
       });
+    }
+
+    function explainActiveTabCode() {
+      const explanation = tabExplanations[activeTab];
+      if (!explanation) {
+        showToast("⚠️ No explanation available for this tab.");
+        return;
+      }
+
+      // Populate drawer content
+      $('drawer-title').textContent = explanation.title;
+      $('drawer-filename').textContent = explanation.filename;
+      $('explain-why').innerHTML = explanation.why;
+      $('explain-when').innerHTML = explanation.when;
+      
+      // Where contains paragraph + code
+      $('explain-where').innerHTML = explanation.where;
+      $('explain-command').textContent = explanation.command;
+
+      // Populate practices list
+      const practicesBox = $('explain-practices');
+      practicesBox.innerHTML = '';
+      explanation.practices.forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+
+      // Populate flow diagram
+      $('explain-flow').textContent = explanation.flow;
+
+      // Slide in drawer
+      const drawer = $('explanation-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeExplanationDrawer() {
+      const drawer = $('explanation-drawer');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
     }
 
     function showToast(message) {

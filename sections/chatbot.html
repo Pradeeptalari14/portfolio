@@ -550,6 +550,19 @@
       return "👋 Hello! I am **TP DevOps AI Partner** – a client-side SRE assistant. Ask me anything about Talari Pradeep's background, DevOps tools, or technical concepts (e.g. 'What is Kubernetes?', 'Tell me about RAG').";
     }
 
+    // Check for code explanation request or code structure
+    const isCodeExpl = q.includes('explain') || q.includes('how to run') || q.includes('what does this code') || q.includes('code help') || q.includes('doubt') || q.includes('understand');
+    const hasCodeIndicators = q.includes('dockerfile') || q.includes('yaml') || q.includes('apiversion') || q.includes('kubernetes manifest') || q.includes('def ') || q.includes('import ') || q.includes('playbook:') || q.includes('hosts:') || q.includes('tasks:') || q.includes('{') || q.includes('}') || q.includes('from ');
+    
+    if (isCodeExpl || hasCodeIndicators) {
+      return "🧠 **SRE Code & Config Assistant**: I see you're asking about code or configurations! Here is a guide on how SRE teams evaluate, use, and run infrastructure-as-code:<br><br>" +
+             "1. **Containerization (Dockerfiles)**: Ensure multi-stage builds are used to keep images small and secure. Run as a non-root user (UID 10001) and pin base images (e.g., `python:3.10-slim`). Build with: `docker build -t app:latest .` and test container health.<br><br>" +
+             "2. **Orchestration (Kubernetes / Helm)**: Define resource limits (`cpu` and `memory` limits and requests) to protect clusters from out-of-memory crashes. Run with: `kubectl apply -f manifest.yaml`. Check deployment status using `kubectl rollout status deployment/name`.<br><br>" +
+             "3. **Automation (Ansible / Playbooks)**: Use playbooks to automate setup tasks. Restrict privilege escalations (`become: true`) only to required steps. Execute with: `ansible-playbook -i hosts playbook.yml`. Verify inventory connections first using `ansible -m ping all`.<br><br>" +
+             "4. **Infrastructure as Code (Terraform)**: Provision cloud resources declaratively. Always run dry-run validation checks first: `terraform plan` to preview changes, and then `terraform apply` to apply them. Use remote state backends (S3/DynamoDB) to avoid conflict state.<br><br>" +
+             "💡 *Tip: If you're building a local RAG stack, use the [DevOps AI RAG Studio](/tools/ai/) to generate and immediately view/download complete backend, frontend, and deployment configurations with full explaining guides!*";
+    }
+
     // Search for best matching response
     let bestMatch = null;
     let maxMatchCount = 0;
