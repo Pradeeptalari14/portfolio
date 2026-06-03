@@ -580,6 +580,43 @@
       return "👋 Hello! I am **TP DevOps AI Partner** – a client-side SRE assistant. Ask me anything about Talari Pradeep's background, DevOps tools, or technical concepts (e.g. 'What is Kubernetes?', 'Tell me about RAG').";
     }
 
+    // Check for SRE Shell Commands
+    const commandsFound = [];
+    if (q.includes('df ') || q.includes('df\n') || q.includes('df -') || q === 'df') {
+      commandsFound.push("• `df` (Disk Free): Checks filesystem disk space usage. The `-h` flag prints size in human-readable gigabytes/megabytes, and `/` targets the root filesystem storage volume.");
+    }
+    if (q.includes('free ') || q.includes('free\n') || q.includes('free -') || q === 'free') {
+      commandsFound.push("• `free` (Free Memory): Displays total, used, and available system RAM. The `-m` flag displays the statistics in megabytes (MB), and `-g` displays them in gigabytes (GB).");
+    }
+    if (q.includes('uptime')) {
+      commandsFound.push("• `uptime`: Shows how long the server has been running, active user sessions count, and load averages over the last 1, 5, and 15 minutes (crucial for checking CPU congestion).");
+    }
+    if (q.includes('systemctl') || q.includes('service ')) {
+      commandsFound.push("• `systemctl` / `service`: Used by sysadmins to manage systemd daemons (start, stop, enable, restart, and status checks of services like Nginx or Docker).");
+    }
+    if (q.includes('journalctl') || q.includes('tail ') || q.includes('cat ') || q.includes('grep ')) {
+      commandsFound.push("• `journalctl` / `tail` / `cat` / `grep`: Standard utility tools for viewing, searching, and tailing system logs and application files to troubleshoot SRE runtime issues.");
+    }
+    if (q.includes('curl') || q.includes('wget')) {
+      commandsFound.push("• `curl` / `wget`: Command-line tools to transfer data from or to a server. Commonly used in SRE to perform API calls, validate endpoint status, and pull configuration sheets.");
+    }
+    if (q.includes('ping') || q.includes('nslookup') || q.includes('dig') || q.includes('traceroute')) {
+      commandsFound.push("• `ping` / `nslookup` / `dig` / `traceroute`: Core networking diagnostics. Used to resolve DNS records, verify latency, and locate routing path breaks between servers.");
+    }
+    if (q.includes('netstat') || q.includes('ss ') || q.includes('telnet')) {
+      commandsFound.push("• `netstat` / `ss` / `telnet`: Socket verification commands. SREs run these to identify active socket ports, listen states, and verify if specific network interfaces are reachable.");
+    }
+    if (q.includes('ps ') || q.includes('kill ') || q.includes('top') || q.includes('htop')) {
+      commandsFound.push("• `ps` / `kill` / `top` / `htop`: Processes management. Run to identify running processes, trace high CPU spikes, and terminate unresponsive jobs.");
+    }
+
+    if (commandsFound.length > 0) {
+      return "📈 **SRE Command Analyzer**: I parsed your command line! Here is a breakdown of what this health-check sequence performs:<br><br>" +
+             commandsFound.join('<br><br>') + "<br><br>" +
+             "💡 **Context**: Chaining commands with `&&` ensures that each command executes sequentially *only* if the previous one succeeded. This is a classic SRE diagnostic one-liner to check system storage, memory capacity, and CPU load at a glance. <br><br>" +
+             "To generate custom monitoring scripts, try Pradeep's **[Shell Script Studio](/tools/shellscript/)** or the **[Linux Sysadmin Studio](/tools/linux/)**!";
+    }
+
     // Check for code explanation request or code structure
     const isCodeExpl = q.includes('explain') || q.includes('how to run') || q.includes('what does this code') || q.includes('code help') || q.includes('doubt') || q.includes('understand');
     const hasCodeIndicators = q.includes('dockerfile') || q.includes('yaml') || q.includes('apiversion') || q.includes('kubernetes manifest') || q.includes('def ') || q.includes('import ') || q.includes('playbook:') || q.includes('hosts:') || q.includes('tasks:') || q.includes('{') || q.includes('}') || q.includes('from ');
