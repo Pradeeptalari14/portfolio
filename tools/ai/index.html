@@ -1475,7 +1475,7 @@ This repository contains a production-ready, locally hosted RAG (Retrieval Augme
       
       const frontendFolder = zip.folder("frontend");
       frontendFolder.file("app.py", compiledCode.app);
-      frontendFolder.file("Dockerfile", "FROM python:3.10-slim\\nWORKDIR /app\\nRUN pip install streamlit requests\\nCOPY . .\\nEXPOSE 8501\\nENTRYPOINT [\\"streamlit\\", \\"run\\", \\"app.py\\", \\"--server.port\\", \\"8501\\", \\"--server.address\\", \\"0.0.0.0\\"]");
+      frontendFolder.file("Dockerfile", 'FROM python:3.10-slim\nWORKDIR /app\nRUN pip install streamlit requests\nCOPY . .\nEXPOSE 8501\nENTRYPOINT ["streamlit", "run", "app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]');
 
       if ($('devops_docker').checked) {
         zip.file("docker-compose.yml", compiledCode.docker_compose);
