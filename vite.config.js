@@ -8,6 +8,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        skills: resolve(__dirname, 'skills/index.html'),
+        projects: resolve(__dirname, 'projects/index.html'),
+        experience: resolve(__dirname, 'experience/index.html'),
+        certifications: resolve(__dirname, 'certifications/index.html'),
         tools: resolve(__dirname, 'tools/index.html'),
         ansible: resolve(__dirname, 'tools/ansible/index.html'),
         docker: resolve(__dirname, 'tools/docker/index.html'),

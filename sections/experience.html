@@ -5,49 +5,33 @@
         <span class="section-tag">Work History</span>
         <h2 class="section-title">Professional <span class="gradient-text">Experience</span></h2>
       </div>
-      <div class="timeline">
 
-        <div class="timeline-item" id="exp-1">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="exp-header">
-              <div>
-                <h3 class="exp-role">DevOps Engineer</h3>
-                <p class="exp-company">🏢 Accenture · Sutter Health Project · Full-time</p>
-              </div>
-              <span class="exp-date">March 2024 – Present</span>
-            </div>
-
-            <div class="exp-summary">
-              Leading infrastructure automation and CI/CD operations for Sutter Health's enterprise healthcare applications. Designing resilient, secure, and highly scalable cloud architectures on AWS while promoting DevOps best practices across cross-functional engineering teams.
-            </div>
-
-            <div class="exp-subheading">// Core Achievements</div>
-
-            <ul class="exp-bullets">
-              <li><strong>CI/CD Pipelines:</strong> Architected end-to-end multi-branch Jenkins pipelines with shared libraries (Build → SonarQube/Trivy Scans → Docker Build → EKS Deployment), slashing release cycles by <strong>40%</strong>.</li>
-              <li><strong>Infrastructure as Code:</strong> Provisioned scalable AWS environments (VPC, EC2, EKS, S3, IAM, Route53, Auto Scaling) using clean, modular Terraform with remote state management.</li>
-              <li><strong>Container Orchestration:</strong> Managed Kubernetes clusters (EKS) utilizing Helm charts, and configured HPA, PV/PVC, ConfigMaps, Ingress, and Secrets across staging & production namespaces.</li>
-              <li><strong>Security & Compliance:</strong> Integrated container vulnerability scanning (Trivy) and static analysis (SonarQube) as mandatory pipeline gates — zero critical CVEs in production.</li>
-              <li><strong>Observability:</strong> Built Prometheus + Grafana monitoring stacks with custom dashboards and alerts, reducing production MTTR by <strong>30%</strong>.</li>
-              <li><strong>Configuration Management:</strong> Wrote modular Ansible playbooks for automated OS patching across 50+ Linux servers, eliminating <strong>70%</strong> of manual server operations.</li>
-              <li><strong>Incident Resolution:</strong> Led troubleshooting for complex production incidents (OOMKilled, CrashLoopBackOff, CNI/Ingress/DNS failures) during on-call rotation.</li>
-            </ul>
-
-            <div class="exp-tags">
-              <span class="exp-tag">AWS EKS</span>
-              <span class="exp-tag">Terraform</span>
-              <span class="exp-tag">Jenkins</span>
-              <span class="exp-tag">Docker & Helm</span>
-              <span class="exp-tag">Prometheus & Grafana</span>
-              <span class="exp-tag">Ansible</span>
-              <span class="exp-tag">Linux</span>
-              <span class="exp-tag">SonarQube</span>
-              <span class="exp-tag">Trivy</span>
-            </div>
+      <div class="exp-preview-card reveal">
+        <div class="exp-preview-left">
+          <div class="exp-preview-role-row">
+            <span class="exp-preview-role">DevOps Engineer</span>
+            <span class="exp-status-badge">Current</span>
+          </div>
+          <p class="exp-preview-company">🏢 Accenture · Sutter Health Project · Full-time</p>
+          <p class="exp-preview-date">Mar 2024 – Present</p>
+          <p class="exp-preview-bio">Leading infrastructure automation and CI/CD operations for Sutter Health's enterprise healthcare applications on AWS.</p>
+          <div class="exp-preview-tags">
+            <span class="exp-tag">AWS EKS</span>
+            <span class="exp-tag">Terraform</span>
+            <span class="exp-tag">Jenkins</span>
+            <span class="exp-tag">Kubernetes</span>
+            <span class="exp-tag">Ansible</span>
           </div>
         </div>
-
+        <div class="exp-preview-right">
+          <a href="experience/" class="exp-preview-btn" id="exp-view-full-btn">
+            View Full Experience
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
       </div>
+
     </div>
   </section>

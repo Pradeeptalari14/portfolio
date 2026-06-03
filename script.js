@@ -715,3 +715,64 @@ initDynamicYear();
 initLatencyTracker();
 initSRETerminal();
 
+/* ══════════════════════════════════════════
+   EXPERIENCE — ACCORDION
+   Click header → toggle aria-expanded on card
+   CSS drives the open/close animation
+══════════════════════════════════════════ */
+function initExpAccordion() {
+  const card   = document.querySelector('.exp-accordion');
+  const header = document.querySelector('.exp-acc-header');
+  if (!card || !header) return;
+
+  function toggle() {
+    const isOpen = card.getAttribute('aria-expanded') === 'true';
+    card.setAttribute('aria-expanded', String(!isOpen));
+    header.setAttribute('aria-expanded', String(!isOpen));
+  }
+
+  header.addEventListener('click', toggle);
+
+  // Keyboard: Enter or Space triggers toggle
+  header.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
+  });
+}
+
+/* ══════════════════════════════════════════
+   CERTIFICATIONS — ACCORDION LIST
+   Each row independently toggles; multiple
+   rows can be open at the same time
+══════════════════════════════════════════ */
+function initCertAccordion() {
+  const rows = document.querySelectorAll('.cert-row');
+  if (!rows.length) return;
+
+  rows.forEach(row => {
+    const header = row.querySelector('.cert-row-header');
+    if (!header) return;
+
+    function toggle() {
+      const isOpen = row.classList.toggle('is-open');
+      header.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    header.addEventListener('click', toggle);
+
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+}
+
+initExpAccordion();
+initCertAccordion();
+
+
+
