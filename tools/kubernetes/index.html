@@ -504,12 +504,15 @@
 
         <!-- Global Actions -->
         <div class="studio-card">
-          <div class="grid grid-cols-2 gap-2.5 mb-3">
-            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-3 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
               <span>⚡ Generate YAML Manifests</span>
             </button>
             <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
               <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
             </button>
             <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
               <span>🗑️ Clear Output</span>
@@ -921,7 +924,135 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
     }
-  </script>
+  
+    const tabExplanations = {'deployment': {'title': 'Kubernetes Deployment configuration', 'filename': 'deployment.yaml', 'why': 'Defines the target pod state, setting replica scaling counts, base image tags, ports, probes, and resource constraints.', 'when': 'Use to run scalable, stateless microservices inside Kubernetes clusters.', 'where': 'Apply to target cluster namespace.', 'command': 'kubectl apply -f deployment.yaml', 'practices': ['Define strict CPU/Memory requests and limits.', 'Integrate Readiness/Liveness probes for automatic container recovery.', 'Annotate pods to enable Prometheus metric scraping.'], 'ai_mlops': 'Deploys instances of the **Kubernetes Troubleshooting Agent** with active readiness probes.', 'flow': '[kubectl apply] ➔ [K8s Deployment controller] ➔ [Spins ReplicaSets] ➔ [Launches Pods]'}, 'service': {'title': 'Kubernetes Service configuration', 'filename': 'service.yaml', 'why': 'Establishes a stable networking endpoint (ClusterIP, NodePort, LoadBalancer) to route traffic to active target Pod replicas.', 'when': 'Use to enable internal or external network access to your deployed Pod microservices.', 'where': 'Apply to target cluster namespace.', 'command': 'kubectl apply -f service.yaml', 'practices': ['Use headless services for stateful databases.', 'Set targetPort matching containerPort definitions exactly.', 'Verify selector labels match Pod template labels.'], 'ai_mlops': 'Provides internal cluster routing for requests sent to the **RAG Knowledge Chatbot**.', 'flow': '[Client Traffic] ➔ [Service Endpoint IP] ➔ [Routes traffic to Pod replicas]'}, 'ingress': {'title': 'Kubernetes Ingress Controller Routing', 'filename': 'ingress.yaml', 'why': 'Manages external HTTP/HTTPS routing, mapping target request hosts and paths to target services inside clusters.', 'when': 'Use to expose multiple services to the internet under a single load balancer and domain.', 'where': 'Apply to your cluster ingress namespace.', 'command': 'kubectl apply -f ingress.yaml', 'practices': ["Annotate to automatically provision SSL certs (Cert-Manager/Let's Encrypt).", 'Use secure path matching to prevent unauthorized resource accesses.', 'Monitor ingress controller capacity logs.'], 'ai_mlops': 'Exposes the user dashboard of the **SRE GenAI Copilot** to external endpoints.', 'flow': '[User Browser Request] ➔ [Ingress Controller] ➔ [Routes to Service] ➔ [Routes to Pod]'}, 'configmap': {'title': 'Kubernetes ConfigMap Variables', 'filename': 'configmap.yaml', 'why': 'Stores non-confidential configuration parameters as key-value pairs, decoupling application configs from code packages.', 'when': 'Use to load configurations, ports, and environment flags into your running pods.', 'where': 'Apply to your target cluster namespace.', 'command': 'kubectl apply -f configmap.yaml', 'practices': ['Decrypt sensitive configurations into Secrets instead of ConfigMaps.', 'Decouple configurations to allow easy environment changes.', 'Use ConfigMap volumes to update parameters on the fly.'], 'ai_mlops': 'Feeds system properties and local LLM endpoints into running container pods.', 'flow': '[ConfigMap data] ➔ [Injected as Environment variables / Mounted files] ➔ [Pod reads configs]'}, 'pvc': {'title': 'Kubernetes Persistent Volume Claim', 'filename': 'pvc.yaml', 'why': 'Requests specific storage capacity (e.g. 10Gi) and access modes (ReadWriteOnce) from the cluster persistent storage provider.', 'when': 'Use when deploying stateful applications (like databases or logs) that require data persistence across Pod crashes.', 'where': 'Apply to target cluster namespace.', 'command': 'kubectl apply -f pvc.yaml', 'practices': ['Select the correct storageClass matching execution IOPS requirements.', 'Set accessMode to ReadWriteOnce for typical single-node databases.', 'Monitor volume space usage using Prometheus alerts.'], 'ai_mlops': 'Requests persistent volume slots to store local RAG ChromaDB indices.', 'flow': '[PVC Request] ➔ [PV Provisioner] ➔ [Binds Storage Volume] ➔ [Mounts to Pod Directory]'}, 'hpa': {'title': 'Horizontal Pod Auto-scaler', 'filename': 'hpa.yaml', 'why': 'Configures automatic Pod replication scaling thresholds based on real-time metrics (CPU / Memory utilization).', 'when': 'Use to automatically scale replicas during traffic spikes and scale down during low-load windows.', 'where': 'Apply to target namespace.', 'command': 'kubectl apply -f hpa.yaml', 'practices': ['Define realistic min/max replica boundaries.', 'Set scaling thresholds below peak capacities (e.g. CPU at 75%).', 'Ensure metric-server is active inside the cluster to scrap metrics.'], 'ai_mlops': 'Scales RAG backend pod replicas depending on traffic loads.', 'flow': '[CPU Spike (>75%)] ➔ [HPA Controller detects] ➔ [Increases replicas count]'}, 'readme': {'title': 'Kubernetes Deployment Guide', 'filename': 'README.md', 'why': 'Provides installation steps, namespace configurations, and troubleshooting kubectl checklists.', 'when': 'Always include in your Kubernetes code repositories to guide operators on cluster deployments.', 'where': 'Save in the root of the Kubernetes manifests folder.', 'command': '# View in markdown reader', 'practices': ['Provide clear namespace initialization commands.', 'Document required PV/PVC dependencies.', 'List standard rollout verify commands.'], 'ai_mlops': 'Details cluster configuration steps for deployment of MLOps resources.', 'flow': '[README.md Guide] ➔ [Guides Cluster Deployment Checklists]'}};
+
+    function explainActiveTabCode() {
+      const explanation = tabExplanations[activeTab];
+      if (!explanation) {
+        showToast("⚠️ No explanation available for this tab.");
+        return;
+      }
+
+      // Populate drawer content
+      document.getElementById('drawer-title').textContent = explanation.title;
+      document.getElementById('drawer-filename').textContent = explanation.filename;
+      document.getElementById('explain-why').innerHTML = explanation.why;
+      document.getElementById('explain-when').innerHTML = explanation.when;
+      
+      document.getElementById('explain-where').innerHTML = explanation.where;
+      document.getElementById('explain-command').textContent = explanation.command;
+
+      const practicesBox = document.getElementById('explain-practices');
+      practicesBox.innerHTML = '';
+      explanation.practices.forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+
+      // Populate AI/MLOps Integration
+      document.getElementById('explain-ai-mlops').innerHTML = explanation.ai_mlops || 'Integrated with MLOps pipelines and SRE AI workloads.';
+
+      document.getElementById('explain-flow').textContent = explanation.flow;
+
+      const drawer = document.getElementById('explanation-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeExplanationDrawer() {
+      const drawer = document.getElementById('explanation-drawer');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+        </script>
+  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.py</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Visual Flow -->
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
+          <!-- Injected -->
+        </pre>
+      </div>
+
+    </div>
+  </div>
+
   <load src="../../sections/chatbot.html" />
 </body>
 </html>

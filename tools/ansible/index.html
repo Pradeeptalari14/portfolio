@@ -659,12 +659,15 @@
 
         <!-- Global Trigger Actions Card -->
         <div class="studio-card">
-          <div class="grid grid-cols-2 gap-2.5 mb-3">
-            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-3 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
               <span>⚡ Generate YAML / Configs</span>
             </button>
             <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
               <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
             </button>
             <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
               <span>🗑️ Clear Output</span>
@@ -1588,7 +1591,135 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
     }
-  </script>
+  
+    const tabExplanations = {'playbook': {'title': 'Ansible Playbook Automation', 'filename': 'playbook.yml', 'why': 'This playbook defines SRE configuration tasks (system updates, package installations, user allocations, service setups) with privilege escalations (`become: true`).', 'when': 'Use to standardize and provision configuration states across remote nodes in your inventory.', 'where': 'Place in your ansible workspace root.', 'command': 'ansible-playbook -i inventory.ini playbook.yml', 'practices': ['Maintain idempotency across all tasks.', 'Utilize Ansible Vault for encrypting sensitive credentials.', 'Set check modes (`--check`) to dry-run changes before applying.'], 'ai_mlops': 'Integrates with the **Self-Healing Infrastructure Platform** to execute target automated configuration states when system health alerts trigger.', 'flow': '[Ansible Controller] ➔ SSH ➔ [Target Host Nodes] ➔ [Apply Configuration]'}, 'inventory': {'title': 'Ansible Inventory Configuration', 'filename': 'inventory.ini', 'why': 'Specifies target server hostname coordinates grouped into logical environments with global variables (ssh key, port, connections).', 'when': 'Use to declare target groups (webservers, databases) that playbooks will run against.', 'where': 'Place in your ansible workspace folder.', 'command': 'ansible-playbook -i inventory.ini playbook.yml', 'practices': ['Separate development, staging, and production environments.', 'Use dynamic inventories for cloud environments to auto-discover hosts.', 'Keep SSH keys protected with tight file permissions (chmod 600).'], 'ai_mlops': 'Used by the **Self-Healing Infrastructure Platform** to locate target nodes for automated configuration updates.', 'flow': '[Ansible Playbook] ➔ [Reads inventory.ini Groups] ➔ [Triggers parallel SSH runs]'}, 'site': {'title': 'Ansible Master Orchestrator', 'filename': 'site.yml', 'why': 'Acts as the master playbook that maps roles and plays to specific target host groups, orchestrating cluster configurations.', 'when': 'Use to manage complex multi-tier application deployments (e.g. database setup first, then webservers).', 'where': 'Place in your ansible workspace folder.', 'command': 'ansible-playbook -i inventory.ini site.yml', 'practices': ['Structure tasks inside reusable Roles.', 'Enforce tag-based runs (`--tags`) to execute specific tasks.', 'Handle exceptions gracefully using blocks/rescue.'], 'ai_mlops': 'Orchestrates multi-tier infrastructure configurations for provisioning SRE AI nodes.', 'flow': '[site.yml] ➔ [Imports common role] ➔ [Imports db role] ➔ [Imports app role]'}, 'cfg': {'title': 'Ansible Configuration Properties', 'filename': 'ansible.cfg', 'why': 'Sets execution defaults for Ansible CLI commands, specifying host key checking, concurrent forks, and roles paths.', 'when': 'Include in the root of your playbooks folder to customize execution parameters without relying on system-wide settings.', 'where': 'Place in the root of your ansible repository.', 'command': '# Automatically read by ansible-playbook CLI', 'practices': ['Disable host_key_checking only in trusted/isolated testing environments.', 'Optimize parallel execution speed by adjusting the forks count (e.g., forks = 10).', 'Specify absolute roles_path paths to avoid dependency search issues.'], 'ai_mlops': 'Configures ansible runs optimization parameters utilized by the **Self-Healing Infrastructure**.', 'flow': '[ansible-playbook run] ➔ [Reads local ansible.cfg parameters] ➔ [Executes SSH threads]'}};
+
+    function explainActiveTabCode() {
+      const explanation = tabExplanations[activeTab];
+      if (!explanation) {
+        showToast("⚠️ No explanation available for this tab.");
+        return;
+      }
+
+      // Populate drawer content
+      document.getElementById('drawer-title').textContent = explanation.title;
+      document.getElementById('drawer-filename').textContent = explanation.filename;
+      document.getElementById('explain-why').innerHTML = explanation.why;
+      document.getElementById('explain-when').innerHTML = explanation.when;
+      
+      document.getElementById('explain-where').innerHTML = explanation.where;
+      document.getElementById('explain-command').textContent = explanation.command;
+
+      const practicesBox = document.getElementById('explain-practices');
+      practicesBox.innerHTML = '';
+      explanation.practices.forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+
+      // Populate AI/MLOps Integration
+      document.getElementById('explain-ai-mlops').innerHTML = explanation.ai_mlops || 'Integrated with MLOps pipelines and SRE AI workloads.';
+
+      document.getElementById('explain-flow').textContent = explanation.flow;
+
+      const drawer = document.getElementById('explanation-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeExplanationDrawer() {
+      const drawer = document.getElementById('explanation-drawer');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+        </script>
+  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.py</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Visual Flow -->
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
+          <!-- Injected -->
+        </pre>
+      </div>
+
+    </div>
+  </div>
+
   <load src="../../sections/chatbot.html" />
 </body>
 </html>

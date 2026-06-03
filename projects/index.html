@@ -178,6 +178,97 @@
       </div>
 
     </div>
+
+    <!-- AI & MLOps Initiatives Header -->
+    <header class="page-header" style="margin-top: 5rem; margin-bottom: 3rem;">
+      <div class="page-tag" style="background: rgba(124, 58, 237, 0.08); border: 1px solid rgba(124, 58, 237, 0.15); color: #7c3aed;">GenAI & MLOps</div>
+      <h1 class="page-title">AI &amp; <span class="gradient-text" style="background: linear-gradient(135deg, #7c3aed 0%, #0ea5e9 100%);">MLOps Initiatives</span></h1>
+      <p class="page-subtitle">Production-ready AI agents, Retrieval-Augmented Generation (RAG) copilots, and self-healing infrastructure integrations.</p>
+    </header>
+
+    <!-- AI & MLOps Initiatives Grid -->
+    <div class="projects-grid" style="margin-bottom: 3rem;">
+
+      <!-- Project 1: Kubernetes Troubleshooting Agent -->
+      <div class="project-card featured" id="project-k8s-agent" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.03) 0%, rgba(14, 165, 233, 0.03) 100%); border-color: rgba(124, 58, 237, 0.25);">
+        <div class="project-card-top">
+          <div class="project-icon">⚓</div>
+          <a href="../tools/kubernetes/" class="project-link" title="Launch Tool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="project-featured-badge" style="color: #7c3aed; background: rgba(124, 58, 237, 0.08); border-color: rgba(124, 58, 237, 0.2);">🤖 AI Agent</div>
+        <h2 class="project-title">Kubernetes Troubleshooting Agent</h2>
+        <p class="project-desc">A smart telemetry agent designed for Kubernetes clusters. It tracks pod restart events, scans active YAML manifests, pulls error logs, and uses local LLMs to suggest step-by-step remediation plans for CrashLoopBackOffs, resource starvations, or OOMKilled states.</p>
+        <div class="project-tech"><span>Kubernetes API</span><span>Ollama Llama3</span><span>Python</span><span>SRE Runbooks</span></div>
+      </div>
+
+      <!-- Project 2: RAG Knowledge Chatbot (Vector DB) -->
+      <div class="project-card" id="project-rag-chatbot">
+        <div class="project-card-top">
+          <div class="project-icon">🧠</div>
+          <a href="../tools/ai/" class="project-link" title="Launch Tool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <h2 class="project-title">RAG Knowledge Chatbot</h2>
+        <p class="project-desc">An offline Enterprise RAG chatbot that crawls local runbooks and manuals, computes embeddings using nomic-embed-text, stores them in ChromaDB/pgvector, and queries local LLMs for factual DevOps answers.</p>
+        <div class="project-tech"><span>ChromaDB</span><span>LangChain</span><span>FastAPI</span><span>Streamlit</span></div>
+      </div>
+
+      <!-- Project 3: DevOps Copilot (LLM Integration) -->
+      <div class="project-card" id="project-devops-copilot">
+        <div class="project-card-top">
+          <div class="project-icon">🤖</div>
+          <a href="../tools/" class="project-link" title="Launch Hub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <h2 class="project-title">DevOps Copilot (LLM Integration)</h2>
+        <p class="project-desc">A code/config explanation assistant integrated across all 15 studios. Automatically parses Helm charts, Terraform configurations, Ansible playbooks, and Dockerfiles to explain SRE implications.</p>
+        <div class="project-tech"><span>Ollama API</span><span>Qwen 3 Coding</span><span>JavaScript</span><span>HTML5</span></div>
+      </div>
+
+      <!-- Project 4: AI-Powered Log Analyzer -->
+      <div class="project-card" id="project-log-analyzer">
+        <div class="project-card-top">
+          <div class="project-icon">🪵</div>
+          <a href="../tools/logging/" class="project-link" title="Launch Tool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <h2 class="project-title">AI-Powered Log Analyzer</h2>
+        <p class="project-desc">Real-time log collector and parser that maps application log streams. It flags critical error stack traces (like Java Maven failures or Nginx proxy breaks) and uses AI to summarize root causes.</p>
+        <div class="project-tech"><span>ELK Stack</span><span>Grafana Loki</span><span>FastAPI</span><span>RegEx Parser</span></div>
+      </div>
+
+      <!-- Project 5: SRE GenAI Copilot -->
+      <div class="project-card" id="project-sre-copilot">
+        <div class="project-card-top">
+          <div class="project-icon">🛡️</div>
+          <a href="../tools/monitoring/" class="project-link" title="Launch Tool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <h2 class="project-title">SRE GenAI Copilot</h2>
+        <p class="project-desc">An automated risk auditor integrated into pipelines. Checks Terraform planning files and Kubernetes values parameters for scaling shortages or configuration vulnerabilities before rollout.</p>
+        <div class="project-tech"><span>Prometheus</span><span>Trivy Scan</span><span>Python SDK</span><span>Risk Analysis</span></div>
+      </div>
+
+      <!-- Project 6: Self-Healing Infrastructure Platform -->
+      <div class="project-card" id="project-self-healing">
+        <div class="project-card-top">
+          <div class="project-icon">⚡</div>
+          <a href="../tools/ansible/" class="project-link" title="Launch Tool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <h2 class="project-title">Self-Healing Infrastructure</h2>
+        <p class="project-desc">An alert-to-remediation system that subscribes to Prometheus/Alertmanager hooks. When alerts trigger (e.g. disk usage &gt; 95%), it executes self-healing playbooks to clean up host caches.</p>
+        <div class="project-tech"><span>Alertmanager</span><span>Ansible Runner</span><span>Shell scripts</span><span>Cron</span></div>
+      </div>
+
+    </div>
   </main>
 
   <footer class="footer">

@@ -34,7 +34,12 @@
     <div class="chat-suggestions" id="chatSuggestions">
       <button class="suggestion-chip" data-query="Who is Pradeep?">👤 About Pradeep</button>
       <button class="suggestion-chip" data-query="List all SRE Tools">🛠️ List SRE Tools</button>
-      <button class="suggestion-chip" data-query="What is AI RAG Studio?">🤖 Explain AI RAG</button>
+      <button class="suggestion-chip" data-query="Explain RAG Knowledge Chatbot">🧠 RAG Chatbot (Vector DB)</button>
+      <button class="suggestion-chip" data-query="Tell me about Kubernetes Troubleshooting Agent">⚓ K8s Troubleshooting Agent</button>
+      <button class="suggestion-chip" data-query="Explain AI-Powered Log Analyzer">🪵 AI Log Analyzer</button>
+      <button class="suggestion-chip" data-query="What is SRE GenAI Copilot?">🛡️ SRE GenAI Copilot</button>
+      <button class="suggestion-chip" data-query="Show Self-Healing Infrastructure Platform">⚡ Self-Healing Platform</button>
+      <button class="suggestion-chip" data-query="What is DevOps Copilot?">🤖 DevOps Copilot (LLM)</button>
       <button class="suggestion-chip" data-query="What credentials do you hold?">🎓 Certifications</button>
       <button class="suggestion-chip" data-query="How can I contact you?">📧 Get in Touch</button>
     </div>
@@ -650,6 +655,30 @@
               "• Test DB socket port connectivity: `nc -zv <db-host> <db-port>` (e.g., `5432` for Postgres, `3306` for MySQL).<br>" +
               "• View active Postgres connections: `SELECT count(*), state FROM pg_stat_activity GROUP BY state;`<br><br>" +
               "Scaffold clean environment setups and migrations using Pradeep's **[Terraform Architect](/tools/terraform/)** or the **[k8s Script Generator](/tools/kubernetes/)**!"
+    },
+    {
+      keywords: ['devops copilot', 'llm integration', 'llm copilot', 'copilot'],
+      answer: "🤖 **DevOps Copilot (LLM Integration)**: An AI-powered companion designed to integrate directly with LLMs (like Ollama, GPT-4, Llama 3, or Qwen) to assist in parsing terminal commands, writing scripts, and explaining configuration files. In Pradeep's workspace, this copilot capability is built directly into all 15 tool studios via the **🧠 Explain** drawer, allowing engineers to get instant, localized, and security-aware breakdowns of infrastructure-as-code files."
+    },
+    {
+      keywords: ['rag knowledge chatbot', 'rag chatbot', 'vector db', 'vector database', 'chromadb', 'qdrant', 'pgvector'],
+      answer: "🧠 **RAG Knowledge Chatbot (Vector DB)**: A private, localized chatbot that uses Retrieval-Augmented Generation (RAG) to search through internal SOPs, Kubernetes manuals, and runbooks. It stores document embeddings in a vector database (like ChromaDB, Qdrant, or pgvector) and queries them locally to eliminate LLM hallucinations.<br><br>💡 *Transition to MLOps*: This represents the entry point for DevOps engineers into MLOps, demonstrating how to containerize vector indices, set up embedding search microservices, and orchestrate private AI interfaces. Try generating a full setup at the **[DevOps AI RAG Studio](/tools/ai/)**!"
+    },
+    {
+      keywords: ['kubernetes troubleshooting agent', 'k8s troubleshooting', 'k8s agent', 'k8s troubleshooter', 'troubleshooting agent'],
+      answer: "⚓ **Kubernetes Troubleshooting Agent**: A smart AI agent capable of scanning active Kubernetes clusters, fetching logs, analyzing events, and suggesting step-by-step remediation plans for pod failures (such as `CrashLoopBackOff`, `ImagePullBackOff`, or `OOMKilled`). It combines cluster API telemetry with a fine-tuned DevOps LLM to perform automated root-cause analysis.<br><br>🚀 Try asking the chatbot to: **'analyze cluster'** or **'CrashLoopBackOff'** to see the Troubleshooting Agent's runbook diagnostics in action! Generate clean K8s specs at the **[Kubernetes Studio](/tools/kubernetes/)**."
+    },
+    {
+      keywords: ['ai-powered log analyzer', 'log analyzer', 'ai log', 'analyze logs', 'logstash', 'loki'],
+      answer: "🪵 **AI-Powered Log Analyzer**: An intelligent log parser that hooks into centralized logging streams (like ELK Stack, Promtail, or Grafana Loki). It monitors microservices log stdout, highlights stack traces, classifies error patterns, and uses generative AI to explain Maven build issues, Nginx routing errors, or DB socket exceptions.<br><br>🚀 Try asking this chatbot: **'jenkins log'** or **'payment-api db timeout'** to view the Log Analyzer's root-cause reports! Scaffold logging stacks at the **[Logging Studio](/tools/logging/)**."
+    },
+    {
+      keywords: ['sre genai copilot', 'sre copilot', 'risk assessment', 'release risk'],
+      answer: "🛡️ **SRE GenAI Copilot**: An advanced AI tool that performs risk assessment of CI/CD releases and infrastructure drift before deployment. It checks configuration changes (like Terraform plans or Kubernetes values) against past incidents, alerts, and schema changes to flag potential reliability hazards.<br><br>🚀 Ask the chatbot: **'deploy version risk'** to trigger a mock SRE risk audit! Learn more about pipeline scripts at the **[GitHub Actions Studio](/tools/github-actions/)** or **[Jenkins Studio](/tools/jenkins/)**."
+    },
+    {
+      keywords: ['self-healing infrastructure', 'self-healing', 'remediation', 'disk cleanup', 'ansible cleanup'],
+      answer: "⚡ **Self-Healing Infrastructure Platform**: An automated SRE system that detects high-priority alerts (like disk space exhaustion or node memory pressure) and executes pre-defined Ansible playbooks or shell scripts to remediate the issue automatically without human intervention.<br><br>🚀 Ask the chatbot: **'disk usage 95%'** to trigger the self-healing playbook automation simulator! Generate automation recipes at the **[Ansible Playbook Builder](/tools/ansible/)** or **[Shell Script Studio](/tools/shellscript/)**."
     }
   ];
 

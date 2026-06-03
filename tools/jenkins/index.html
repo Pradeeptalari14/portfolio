@@ -582,8 +582,8 @@
 
         <!-- Global Actions -->
         <div class="studio-card">
-          <div class="grid grid-cols-2 gap-2.5 mb-3">
-            <button onclick="triggerCompileAll()" class="col-span-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-3 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
               <span>⚡ Generate YAML</span>
             </button>
             <button onclick="resetEnvVars()" class="py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
@@ -597,6 +597,9 @@
             </button>
             <button onclick="copyActiveTabContent()" class="py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
               <span>📋 Copy YAML</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
             </button>
             <button onclick="downloadActiveFile()" class="py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
               <span>⬇️ Download File</span>
@@ -1141,7 +1144,135 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
     }
-  </script>
+  
+    const tabExplanations = {'jenkinsfile': {'title': 'Jenkins Declarative Pipeline', 'filename': 'Jenkinsfile', 'why': 'Builds a structured CI/CD pipeline inside Jenkins, managing tools declarations, environment variables, stages (Clone, Lint, Test, Scan, Deploy), and failure handlers.', 'when': 'Use to orchestrate legacy or custom continuous integration pipelines inside self-hosted enterprise setups.', 'where': 'Place in the root of your codebase repository.', 'command': '# Point Jenkins Server Job to Jenkinsfile repo', 'practices': ['Use Declarative syntax over Scripted pipelines to enforce structured phases.', 'Implement shared library blocks for reusable SRE pipeline steps.', 'Enclose secrets pulling inside credentials helper blocks (`withCredentials`).'], 'ai_mlops': 'Triggers build scans and quality pipeline gates for **SRE GenAI Copilot** builds.', 'flow': '[Commit Push] ➔ [Webhook Trigger] ➔ [Jenkins Agent Run] ➔ [Execute Pipeline Stages]'}, 'sonar': {'title': 'SonarQube Scan Properties', 'filename': 'sonar-project.properties', 'why': 'Sets static analysis variables for the Sonar scanner run, specifying sources paths and excluding compile folders.', 'when': 'Include when static quality checks are enabled in the Jenkinsfile pipeline run.', 'where': 'Place in the project root directory.', 'command': '# Read by sonar-scanner CLI during build task execution', 'practices': ['Exclude testing directories and node_modules from code coverage stats.', 'Define project keys clearly to avoid project collisions in SonarCloud.', 'Maintain code smell/bug thresholds strictly.'], 'ai_mlops': 'Reviews custom SRE scripts for vulnerability leaks before deployment.', 'flow': '[Sonar step] ➔ [Reads sonar-project.properties] ➔ [Analyzes Code] ➔ [Pushes Quality Stats]'}};
+
+    function explainActiveTabCode() {
+      const explanation = tabExplanations[activeTab];
+      if (!explanation) {
+        showToast("⚠️ No explanation available for this tab.");
+        return;
+      }
+
+      // Populate drawer content
+      document.getElementById('drawer-title').textContent = explanation.title;
+      document.getElementById('drawer-filename').textContent = explanation.filename;
+      document.getElementById('explain-why').innerHTML = explanation.why;
+      document.getElementById('explain-when').innerHTML = explanation.when;
+      
+      document.getElementById('explain-where').innerHTML = explanation.where;
+      document.getElementById('explain-command').textContent = explanation.command;
+
+      const practicesBox = document.getElementById('explain-practices');
+      practicesBox.innerHTML = '';
+      explanation.practices.forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+
+      // Populate AI/MLOps Integration
+      document.getElementById('explain-ai-mlops').innerHTML = explanation.ai_mlops || 'Integrated with MLOps pipelines and SRE AI workloads.';
+
+      document.getElementById('explain-flow').textContent = explanation.flow;
+
+      const drawer = document.getElementById('explanation-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeExplanationDrawer() {
+      const drawer = document.getElementById('explanation-drawer');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+        </script>
+  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.py</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Visual Flow -->
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
+          <!-- Injected -->
+        </pre>
+      </div>
+
+    </div>
+  </div>
+
   <load src="../../sections/chatbot.html" />
 </body>
 </html>

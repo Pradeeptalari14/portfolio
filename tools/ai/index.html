@@ -547,6 +547,16 @@
         </ul>
       </div>
 
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
       <!-- Section: Visual Flow -->
       <div>
         <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
@@ -596,6 +606,7 @@
           "Set a timeout on requests to the FastAPI gateway to prevent the UI from freezing.",
           "Ensure secure network communication (HTTPS) when requesting internal APIs in production."
         ],
+        ai_mlops: "Serves as the user interface layer for the **RAG Knowledge Chatbot (Vector DB)** and **DevOps Copilot**, providing the interactive portal where SREs query private DevOps SOPs.",
         flow: "[User Query] ➔ [Streamlit App] ➔ [FastAPI Gateway]\n                     ▲                 │\n                     │                 ▼\n             [Citations + Ans] ◀─ [RAG Engine + LLM]"
       },
       main: {
@@ -610,6 +621,7 @@
           "Include a healthcheck endpoint (e.g. '/health') to allow container runtime checks.",
           "Integrate Prometheus fastapi-instrumentator for tracking API latency, error counts, and request volume."
         ],
+        ai_mlops: "Acts as the gateway for the **DevOps Copilot (LLM Integration)**, routing prompts to local models and serving parsed document results securely to clients.",
         flow: "[Streamlit] ➔ [main.py (FastAPI)] ➔ [rag_engine.py]\n                    │                  │\n                    ▼                  ▼\n              [/metrics endpoint]   [ChromaDB / LLM]"
       },
       rag_engine: {
@@ -624,6 +636,7 @@
           "Use a reliable local embedding model like nomic-embed-text for consistent similarity computations.",
           "Implement proper try-catch exception handling for connection timeouts to Ollama."
         ],
+        ai_mlops: "The core intelligence of the **RAG Knowledge Chatbot (Vector DB)**, demonstrating vector embedding indexing, document splits, and semantic retriever logic.",
         flow: "[Upload Manual] ➔ [RecursiveSplitter] ➔ [Nomic Embeddings]\n                                                │\n                                                ▼\n[Ollama Llama3] ◀─ [Build Prompt] ◀─ [ChromaDB Vector Store]"
       },
       dockerfile: {
@@ -638,6 +651,7 @@
           "Run the container as a non-root user (e.g., appuser, UID 10001) to prevent root-privilege exploits.",
           "Include a container HEALTHCHECK parameter to detect and restart frozen API nodes."
         ],
+        ai_mlops: "Containerizes the **AI-Powered Log Analyzer** and the RAG API for deployment to cloud clusters and local development compose setups.",
         flow: "[Stage 1: Build Dependencies] ➔ [Compile C extensions]\n                                      │\n                                      ▼\n[Stage 2: Run minimal image] ◀─── [Copy packages only]"
       },
       docker_compose: {
@@ -652,6 +666,7 @@
           "Use named volumes (e.g., chroma_data) to ensure vectors are persisted between container restarts.",
           "Set up dependencies using 'depends_on' to orchestrate the container startup order."
         ],
+        ai_mlops: "Configures and mounts local vector databases and Ollama instances for the **RAG Knowledge Chatbot** ecosystem.",
         flow: "[Client Web UI (8501)] ➔ [FastAPI Backend (8000)] ➔ [Ollama LLM (11434)]\n                                        │\n                                        ▼\n                            [chroma_data Named Volume]"
       },
       k8s: {
@@ -666,6 +681,7 @@
           "Configure Readiness/Liveness probes targeting the '/health' endpoint.",
           "Utilize PersistentVolumeClaims to preserve ChromaDB indices across Pod rescheduling cycles."
         ],
+        ai_mlops: "Deploys the **Kubernetes Troubleshooting Agent** and vector search pods into the Kubernetes control plane with persistent storage claims.",
         flow: "[K8s Ingress] ➔ [Frontend Pods] ➔ [Backend Pods] ➔ [Ollama Pods]\n                                      │\n                                      ▼\n                          [ChromaDB PV Claim (10Gi)]"
       },
       cicd: {
@@ -680,6 +696,7 @@
           "Use specific image versions and tags (e.g., actions/checkout@v4) rather than 'latest'.",
           "Ensure token permissions are scoped strictly to read/write packages."
         ],
+        ai_mlops: "Enforces automated linting, security scans, and tests for packaging and deploying the **SRE GenAI Copilot**.",
         flow: "[Code Push] ➔ [Unit Tests (pytest)] ➔ [Trivy Scan] ➔ [Docker Build & Push (GHCR)]"
       },
       prometheus: {
@@ -694,6 +711,7 @@
           "Utilize DNS-based service discovery (like Kubernetes local DNS names) to scale endpoints dynamically.",
           "Keep metric label cardinalities low to ensure high Prometheus database performance."
         ],
+        ai_mlops: "Collects model evaluation parameters, latency distributions, and scrape metrics from LLM endpoints for the **SRE GenAI Copilot**.",
         flow: "[Prometheus Collector] ─── Scrapes ───► [FastAPI /metrics (8000)]\n         │\n         └───────────── Scrapes ───► [Ollama /metrics (11434)]"
       },
       grafana: {
@@ -708,6 +726,7 @@
           "Set up automated Slack or PagerDuty alerts for system errors (HTTP 5xx spikes).",
           "Keep dashboard views clean by organizing panels into logical rows (API, LLM, Host)."
         ],
+        ai_mlops: "Visualizes performance telemetry metrics of the **RAG Knowledge Chatbot** and **SRE GenAI Copilot** setups.",
         flow: "[Prometheus DB] ➔ [Grafana Data Source] ➔ [JSON Dashboard Panels (Charts & Alerts)]"
       },
       readme: {
@@ -722,6 +741,7 @@
           "Include a clear architectural layout indicating how microservices interact.",
           "Document all environment variable configurations and volume mounts clearly."
         ],
+        ai_mlops: "Documents deployment orchestration steps for hosting the RAG AI backend and frontend stack.",
         flow: "[README.md Guide] ➔ [Orchestrates Developer & SRE Tasks]"
       }
     };
@@ -1757,6 +1777,9 @@ This repository contains a production-ready, locally hosted RAG (Retrieval Augme
         li.innerHTML = practice;
         practicesBox.appendChild(li);
       });
+
+      // Populate AI/MLOps integration details
+      $('explain-ai-mlops').innerHTML = explanation.ai_mlops || 'Integrated with MLOps pipelines and SRE AI workloads.';
 
       // Populate flow diagram
       $('explain-flow').textContent = explanation.flow;
