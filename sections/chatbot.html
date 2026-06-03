@@ -453,9 +453,6 @@
     messagesBox.scrollTop = messagesBox.scrollHeight;
   }
 
-  /* ═══════════════════════════════════════════════
-     CLIENT-SIDE AI EXPERT MATCHING ENGINE
-     ═══════════════════════════════════════════════ */
   const qaDatabase = [
     {
       keywords: ['pradeep', 'who is', 'profile', 'about', 'accenture', 'sutter', 'resume', 'cv'],
@@ -467,14 +464,27 @@
     },
     {
       keywords: ['tool', 'generator', 'scripts', 'list', 'studio', 'studios'],
-      answer: "🛠️ Pradeep has designed 15 interactive automation studios:<ul>" +
-             "<li>[Ansible Playbook Builder](/tools/ansible/)</li>" +
-             "<li>[Docker Manager](/tools/docker/)</li>" +
-             "<li>[Terraform Architect](/tools/terraform/)</li>" +
-             "<li>[k8s Script Generator](/tools/kubernetes/)</li>" +
-             "<li>[Monitoring Telemetry](/tools/monitoring/)</li>" +
-             "<li>[DevOps AI RAG Studio](/tools/ai/)</li>" +
-             "</ul>Click any of them to launch the tool!"
+      answer: "🛠️ Pradeep has designed 15 interactive automation studios:<br><br>" +
+             "**Cloud & Orchestration:**<br>" +
+             "• [k8s Script Generator](/tools/kubernetes/)<br>" +
+             "• [Helm Chart Studio](/tools/helm/)<br>" +
+             "• [ArgoCD Studio](/tools/argocd/)<br>" +
+             "• [Terraform Architect](/tools/terraform/)<br><br>" +
+             "**CI/CD Pipelines:**<br>" +
+             "• [GitHub Actions Studio](/tools/github-actions/)<br>" +
+             "• [GitLab CI/CD Studio](/tools/gitlab/)<br>" +
+             "• [Jenkins Pipeline Studio](/tools/jenkins/)<br><br>" +
+             "**Configuration & Automation:**<br>" +
+             "• [Ansible Playbook Builder](/tools/ansible/)<br>" +
+             "• [Docker Manager](/tools/docker/)<br>" +
+             "• [DevOps AI RAG Studio](/tools/ai/)<br><br>" +
+             "**Observability & Scripting:**<br>" +
+             "• [Monitoring Telemetry](/tools/monitoring/)<br>" +
+             "• [Logging Studio](/tools/logging/)<br>" +
+             "• [Linux Sysadmin Studio](/tools/linux/)<br>" +
+             "• [Shell Script Studio](/tools/shellscript/)<br>" +
+             "• [Python Studio](/tools/python/)<br><br>" +
+             "Click any link to launch the studio!"
     },
     {
       keywords: ['kubernetes', 'k8s', 'kube', 'kubectl', 'pod', 'deployment', 'cluster', 'orchestration', 'ingress', 'replica'],
@@ -493,7 +503,7 @@
       answer: "📈 **Observability (Prometheus & Grafana)**: Prometheus is an open-source monitoring and alerting toolkit that collects metrics as time-series data. Grafana is a visualization platform that maps these metrics into real-time dashboards. Pradeep builds robust telemetry systems to ensure 99.9% uptime. Configure yours at the [Monitoring Telemetry Studio](/tools/monitoring/)!"
     },
     {
-      keywords: ['ci/cd', 'pipeline', 'github actions', 'gitlab', 'jenkins', 'automation pipeline', 'continuous integration'],
+      keywords: ['ci/cd', 'pipeline', 'automation pipeline', 'continuous integration'],
       answer: "⚡ **CI/CD (Continuous Integration / Continuous Delivery)**: Automates the process of building, testing, scanning, and deploying code. Pradeep designs secure pipelines containing static analysis (SonarQube) and container vulnerability scanning (Trivy). Try his pipeline builders:<ul><li>[GitHub Actions Studio](/tools/github-actions/)</li><li>[GitLab CI/CD Studio](/tools/gitlab/)</li><li>[Jenkins Pipeline Studio](/tools/jenkins/)</li></ul>"
     },
     {
@@ -505,12 +515,12 @@
       answer: "📧 **Contact Talari Pradeep**: You can email him at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com) or connect on [LinkedIn](https://linkedin.com/in/pradeep-talari). He is currently available for DevOps/SRE roles!"
     },
     {
-      keywords: ['skills', 'tech', 'stack', 'languages', 'python', 'bash', 'go', 'shell'],
+      keywords: ['skills', 'tech', 'stack', 'languages', 'go', 'shell'],
       answer: "🚀 **Core Tech Stack**: AWS, Google Cloud, Azure, Kubernetes (EKS), Docker, Helm, ArgoCD, Terraform, Ansible, Prometheus, Grafana, GitHub Actions, Jenkins, Python, Bash/Shell, and Go. Details are on the [Skills Page](/skills/)."
     },
     {
       keywords: ['devops', 'sre', 'site reliability', 'operations', 'devops engineer', 'reliability'],
-      answer: "💡 **DevOps & Site Reliability Engineering (SRE)**: DevOps is a cultural and technical movement bridging development and operations. SRE is a specific implementation of DevOps created by Google, applying software engineering practices to infrastructure operations. Pradeep specializes in automating these practices using CI/CD, Infrastructure as Code, Kubernetes, and comprehensive monitoring."
+      answer: "💡 **DevOps & Site Reliability Engineering (SRE)**: DevOps bridges software development and system operations, while Site Reliability Engineering (SRE) applies software engineering practices to operations to build highly reliable, automated cloud infrastructures. Pradeep specializes in implementing these via CI/CD, IaC, and Kubernetes! View his dashboard at [/tools/](/tools/)."
     },
     {
       keywords: ['argocd', 'gitops', 'git ops', 'continuous deployment'],
@@ -525,8 +535,8 @@
       answer: "🪵 **Centralized Logging**: Tools like the ELK stack (Elasticsearch, Logstash, Kibana) or Grafana Loki aggregate logs across microservices to enable rapid SRE troubleshooting. Pradeep sets up structured logging configurations. Scaffold yours at the [Logging Studio](/tools/logging/)!"
     },
     {
-      keywords: ['linux', 'bash', 'shell', 'script', 'ubuntu', 'redhat', 'centos', 'kernel', 'unix', 'cron'],
-      answer: "🐧 **Linux & Scripting**: Pradeep is a **Linux Foundation Certified System Administrator (LFCS)** and writes automated Bash/Shell scripts for cron jobs, log rotations, and system backups. Try his scripting generators:<ul><li>[Linux Sysadmin Studio](/tools/linux/)</li><li>[Shell Script Studio](/tools/shellscript/)</li></ul>"
+      keywords: ['linux', 'sysadmin', 'ubuntu', 'redhat', 'centos', 'kernel', 'unix', 'cron'],
+      answer: "🐧 **Linux System Administration**: Pradeep is a **Linux Foundation Certified System Administrator (LFCS)** and is experienced in configuring user spaces, package managers, network routes, cron services, and shell environments. Try the [Linux Sysadmin Studio](/tools/linux/)!"
     },
     {
       keywords: ['python', 'pip', 'fastapi', 'flask', 'django'],
@@ -537,8 +547,28 @@
       answer: "☁️ **Cloud Infrastructure (AWS/GCP/Azure)**: Pradeep is an **AWS Certified Solutions Architect** and **AWS Certified DevOps Engineer – Professional**. He configures secure VPCs, IAM policies, auto-scaling groups, and load balancers to ensure cloud reliability."
     },
     {
-      keywords: ['git', 'github', 'version control', 'repo', 'repository'],
-      answer: "🐙 **Git & Version Control**: Git is essential for version control and collaborating on codebase deployments. Pradeep implements trunk-based development and branch protection rules. Configure GitHub actions at the [GitHub Actions Studio](/tools/github-actions/)."
+      keywords: ['git', 'version control', 'repo', 'repository'],
+      answer: "🐙 **Git & Version Control**: Git is essential for version control and collaborating on codebase deployments. Pradeep implements trunk-based development and branch protection rules."
+    },
+    {
+      keywords: ['docker', 'container', 'dockerfile', 'compose', 'docker-compose', 'image'],
+      answer: "🐳 **Docker & Containerization**: Docker packages applications into self-contained environments. Pradeep designs highly optimized, multi-stage Dockerfiles and secure Docker Compose environments. Scaffold your container configurations at the **[Docker Manager](/tools/docker/)**!"
+    },
+    {
+      keywords: ['github actions', 'github-actions', 'gh actions', 'workflow'],
+      answer: "🐙 **GitHub Actions**: Automate your development workflows directly within GitHub. Pradeep scaffolds secure workflows featuring SonarQube quality checks, unit tests, and image publishing to GHCR. Generate your actions at the **[GitHub Actions Studio](/tools/github-actions/)**!"
+    },
+    {
+      keywords: ['gitlab', 'gitlab-ci', 'gitlab ci'],
+      answer: "🦊 **GitLab CI/CD**: Run CI/CD pipelines natively in GitLab. Pradeep designs GitLab CI configurations utilizing runners, caching, parallel test matrices, and automated deployment blocks. Build yours at the **[GitLab CI/CD Studio](/tools/gitlab/)**!"
+    },
+    {
+      keywords: ['jenkins', 'jenkinsfile'],
+      answer: "👷 **Jenkins CI/CD**: The industry-standard automation server. Pradeep writes declarative Jenkinsfiles with clean pipelines, environment blocks, credentials management, and stage execution metrics. Scaffold your pipeline at the **[Jenkins Pipeline Studio](/tools/jenkins/)**!"
+    },
+    {
+      keywords: ['shellscript', 'shell script', 'shell scripting', 'bash script'],
+      answer: "🐚 **Shell Scripting**: Bash/Shell scripts are the glue of SRE operations. Pradeep automates backups, log checks, and status checks with clean scripting structures. Scaffold your scripts at the **[Shell Script Studio](/tools/shellscript/)**!"
     }
   ];
 
