@@ -951,7 +951,11 @@ This workspace spins up an autonomous site reliability troubleshooting agent pow
     function showToast(message) {
       const wrapper = $('toast-wrapper');
       const content = $('toast-content');
-      content.innerHTML = `<span>⚡</span> ${message}`;
+      content.textContent = '';
+      const icon = document.createElement('span');
+      icon.textContent = '⚡ ';
+      content.appendChild(icon);
+      content.appendChild(document.createTextNode(message));
       
       wrapper.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
       wrapper.classList.add('opacity-100', 'translate-y-0');

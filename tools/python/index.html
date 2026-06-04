@@ -443,8 +443,10 @@
         code += `    print(f"🚨 ALERT: {message}")\n`;
       }
       if (webhook) {
+        code += `    import socket\n`;
+        code += `    hostname = socket.gethostname()\n`;
         code += `    webhook_url = "${webhook}"\n`;
-        code += `    payload = {"text": f"🐍 [SRE PyEngine] Alert:\\n{message}"}\n`;
+        code += `    payload = {"text": f"🚨 [SRE ALERT] Level: WARNING | Host: {hostname} | Source: SRE-Python-Engine\\nMessage: {message}"}\n`;
         code += `    try:\n        requests.post(webhook_url, json=payload, timeout=5)\n    except Exception as e:\n        print(f"Failed to post alert: {e}")\n`;
       } else {
         code += `    pass\n`;

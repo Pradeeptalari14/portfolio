@@ -297,6 +297,7 @@
               <button onclick="switchTab('compose')" id="tab-compose" class="tab-btn">docker-compose.yml</button>
               <button onclick="switchTab('ignore')" id="tab-ignore" class="tab-btn">.dockerignore</button>
               <button onclick="switchTab('entrypoint')" id="tab-entrypoint" class="tab-btn">entrypoint.sh</button>
+              <button onclick="switchTab('trivy')" id="tab-trivy" class="tab-btn">trivy.yaml</button>
             </div>
           </div>
 
@@ -380,7 +381,8 @@
       dockerfile: '',
       compose: '',
       ignore: '',
-      entrypoint: ''
+      entrypoint: '',
+      trivy: ''
     };
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -441,6 +443,7 @@
       compileCompose();
       compileIgnore();
       compileEntrypoint();
+      compileTrivy();
       updateViewportContent();
     }
 
@@ -554,8 +557,13 @@
       // Security User creation
       if (isNonRoot) {
         code += `\n# SRE: Enforce non-root execution permissions for container security\n`;
-        code += `RUN addgroup -S sre_group && adduser -S sre_user -G sre_group && \\\n`;
-        code += `    chown -R sre_user:sre_group ${workdir}\n`;
+        if (base.includes('alpine')) {
+          code += `RUN addgroup -S sre_group && adduser -S sre_user -G sre_group && \\\n`;
+          code += `    chown -R sre_user:sre_group ${workdir}\n`;
+        } else {
+          code += `RUN groupadd -r sre_group && useradd -r -g sre_group -d ${workdir} -s /sbin/nologin sre_user && \\\n`;
+          code += `    chown -R sre_user:sre_group ${workdir}\n`;
+        }
         code += `USER sre_user\n`;
       }
 
@@ -659,6 +667,24 @@
       compiledCode.entrypoint = code;
     }
 
+    // Compile trivy-config.yaml
+    function compileTrivy() {
+      let code = `# Trivy image scanning configuration file\n`;
+      code += `# Place this in your repository root to configure local/CI vulnerability scanning\n\n`;
+      code += `scan:\n`;
+      code += `  type: 'image'\n`;
+      code += `  format: 'table'\n`;
+      code += `  exit-code: 1          # Fail CI/CD build if vulnerabilities are found\n`;
+      code += `  severity: 'HIGH,CRITICAL' # Focus only on high and critical vulnerabilities\n`;
+      code += `  ignore-unfixed: true   # Ignore vulnerabilities that do not have a patch available yet\n\n`;
+      code += `cache:\n`;
+      code += `  dir: '.trivycache'\n\n`;
+      code += `report:\n`;
+      code += `  output: 'trivy-report.txt'\n`;
+      
+      compiledCode.trivy = code;
+    }
+
     function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -679,6 +705,9 @@
       } else if (tabId === 'entrypoint') {
         nameBox.value = 'entrypoint';
         extTag.textContent = '.sh';
+      } else if (tabId === 'trivy') {
+        nameBox.value = 'trivy';
+        extTag.textContent = '.yaml';
       }
 
       updateViewportContent();
@@ -701,6 +730,7 @@
       zip.file('docker-compose.yml', compiledCode.compose);
       zip.file('.dockerignore', compiledCode.ignore);
       zip.file('entrypoint.sh', compiledCode.entrypoint);
+      zip.file('trivy.yaml', compiledCode.trivy);
 
       zip.generateAsync({ type: 'blob' }).then(blob => {
         const a = document.createElement('a');

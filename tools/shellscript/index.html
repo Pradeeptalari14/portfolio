@@ -365,7 +365,7 @@
         code += `\n# ── ENVIRONMENT WEBHOOK ALERT METHOD ──\n`;
         code += `send_alert() {\n  local msg="$1"\n  echo "🚨 Alerting: $msg"\n`;
         if (webhook) {
-          code += `  curl -s -X POST -H 'Content-type: application/json' --data "{\\"text\\":\\"[$HOSTNAME] SRE Automation: $msg\\"}" "${webhook}" >/dev/null || true\n`;
+          code += `  curl -s -X POST -H 'Content-type: application/json' --data "{\\"text\\":\\"🚨 [SRE ALERT] Level: WARNING | Host: \${HOSTNAME} | Source: SRE-Shell-Engine\\\\nMessage: \$msg\\"}" "${webhook}" >/dev/null || true\n`;
         }
         code += `}\n\n`;
 
@@ -489,7 +489,7 @@
 
         code += `function Send-Alert {\n  param([string]$message)\n  Write-Warning "Alert: $message"\n`;
         if (webhook) {
-          code += `  $body = @{ text = "[$env:COMPUTERNAME] SRE Script: $message" } | ConvertTo-Json\n`;
+          code += `  $body = @{ text = "🚨 [SRE ALERT] Level: WARNING | Host: $env:COMPUTERNAME | Source: SRE-PowerShell-Engine\`nMessage: $message" } | ConvertTo-Json\n`;
           code += `  try {\n    Invoke-RestMethod -Uri "${webhook}" -Method Post -Body $body -ContentType 'application/json' | Out-Null\n  } catch {}\n`;
         }
         code += `}\n\n`;

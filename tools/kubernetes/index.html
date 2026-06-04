@@ -344,6 +344,10 @@
                     <input type="checkbox" id="netpol_enable" class="custom-checkbox" />
                     <span>Add Default Deny Network Policy</span>
                   </label>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+                    <input type="checkbox" id="k8s_sec_harden" class="custom-checkbox" checked />
+                    <span>Harden Container Security Context (Non-root, Read-only FS)</span>
+                  </label>
                   <div>
                     <label for="sa_name" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Service Account Name</label>
                     <input type="text" id="sa_name" class="form-input w-full p-2 text-xs" value="default" />
@@ -548,7 +552,7 @@
           <p>CPU Req / Limit: <strong>${$('cpu_req').value} / ${$('cpu_lim').value}</strong></p>
           <p>Mem Req / Limit: <strong>${$('mem_req').value} / ${$('mem_lim').value}</strong></p>
           <p>HPA / VPA: <strong>${$('hpa_enable').checked ? 'Yes' : 'No'} / ${$('vpa_enable').checked ? 'Yes' : 'No'}</strong></p>
-          <p>RBAC / NetPol: <strong>${$('rbac_enable').checked ? 'Yes' : 'No'} / ${$('netpol_enable').checked ? 'Yes' : 'No'}</strong></p>
+          <p>RBAC / NetPol / Secure: <strong>${$('rbac_enable').checked ? 'Yes' : 'No'} / ${$('netpol_enable').checked ? 'Yes' : 'No'} / ${$('k8s_sec_harden').checked ? 'Yes' : 'No'}</strong></p>
         </div>
       `;
     }
@@ -625,6 +629,19 @@
       code += `        imagePullPolicy: IfNotPresent\n`;
       code += `        ports:\n`;
       code += `        - containerPort: ${port}\n`;
+
+      // Container Security Context
+      const secHarden = $('k8s_sec_harden').checked;
+      if (secHarden) {
+        code += `        # SRE: Enforce strict container security boundaries\n`;
+        code += `        securityContext:\n`;
+        code += `          runAsNonRoot: true\n`;
+        code += `          readOnlyRootFilesystem: true\n`;
+        code += `          allowPrivilegeEscalation: false\n`;
+        code += `          capabilities:\n`;
+        code += `            drop:\n`;
+        code += `            - ALL\n`;
+      }
 
       // Resources Limits & Requests
       if (cpuReq || cpuLim || memReq || memLim) {
