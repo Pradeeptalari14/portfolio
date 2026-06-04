@@ -13,6 +13,7 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   
   <style>
     :root {
@@ -427,6 +428,14 @@
               <span>Catch all network & API exceptions gracefully to prevent stacktrace leak</span>
             </label>
           </div>
+        <!-- SRE Option Help & Reference Manual -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2">📘 SRE Option Help & Reference Manual</h3>
+          <p class="text-xs text-gray-500 mb-4">Detailed guide on why to configure each parameter, what happens if left unused, and operational runtime behaviors.</p>
+          
+          <div class="space-y-3 text-xs text-gray-700" id="sre-manual-accordion">
+            <!-- Dynamic content injected by JavaScript based on script selection -->
+          </div>
         </div>
 
       </div>
@@ -452,10 +461,13 @@
               <button onclick="switchTab('script')" id="tab-script" class="tab-btn active">sre_utility.py</button>
               <button onclick="switchTab('requirements')" id="tab-requirements" class="tab-btn">requirements.txt</button>
               <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+              <button onclick="switchTab('runbook')" id="tab-runbook" class="tab-btn">sre_runbook.md</button>
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Execution Flow</button>
             </div>
           </div>
 
           <pre id="output-box" class="ide-viewport"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
         </div>
 
         <div class="studio-card">
@@ -502,7 +514,9 @@
     let compiledCode = {
       script: '',
       requirements: '',
-      readme: ''
+      readme: '',
+      runbook: '',
+      flow: ''
     };
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -539,6 +553,9 @@
       compileScript();
       compileRequirements();
       compileReadme();
+      compileRunbook();
+      compileMermaidFlow();
+      compileManual();
       updateViewportContent();
     }
 
@@ -1055,12 +1072,38 @@
       } else if (tabId === 'readme') {
         nameBox.value = 'README';
         extTag.textContent = '.md';
+      } else if (tabId === 'runbook') {
+        nameBox.value = 'sre_runbook';
+        extTag.textContent = '.md';
+      } else if (tabId === 'flow') {
+        nameBox.value = 'flow';
+        extTag.textContent = '.mermaid';
       }
       updateViewportContent();
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab];
+      if (activeTab === 'flow') {
+        $('output-box').classList.add('hidden');
+        $('mermaid-container').classList.remove('hidden');
+        
+        // Render Mermaid
+        const container = $('mermaid-container');
+        container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+        
+        try {
+          mermaid.run({
+            nodes: [container.querySelector('.mermaid')]
+          });
+        } catch (e) {
+          console.error("Mermaid run error:", e);
+          container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
+        }
+      } else {
+        $('output-box').classList.remove('hidden');
+        $('mermaid-container').classList.add('hidden');
+        $('output-box').textContent = compiledCode[activeTab];
+      }
     }
 
     function copyActiveTabContent() {
@@ -1077,6 +1120,7 @@
       zip.file('sre_utility.py', compiledCode.script);
       zip.file('requirements.txt', compiledCode.requirements);
       zip.file('README.md', compiledCode.readme);
+      zip.file('sre_runbook.md', compiledCode.runbook);
 
       zip.generateAsync({ type: 'blob' }).then(blob => {
         const a = document.createElement('a');
@@ -1123,8 +1167,496 @@
       $('log_analyzer-options').classList.add('hidden');
       $('disk_cleanup-options').classList.add('hidden');
 
+      switchTab('script');
       triggerCompileAll();
       showToast('🗑️ Defaults configurations successfully restored!');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-lg z-50 border border-slate-800 transition duration-300';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function toggleManualItem(idx) {
+      const el = $('manual-item-' + idx);
+      if (el) {
+        el.classList.toggle('hidden');
+      }
+    }
+
+    function compileManual() {
+      const purpose = $('script_purpose').value;
+      const container = $('sre-manual-accordion');
+      if (!container) return;
+
+      let html = '';
+
+      const manualData = {
+        'aws_finops': [
+          {
+            title: 'Snapshot Retention Days',
+            why: 'Specifies age limit for EBS snapshots. Safely deletes obsolete backups.',
+            whyNot: 'Snapshots accumulate indefinitely, raising AWS cloud bills.',
+            runtime: 'Compares snapshot CreationDate with datetime threshold delta.'
+          },
+          {
+            title: 'Target AWS Region',
+            why: 'Directs API queries to a specific region (e.g. us-east-1) for localized scans.',
+            whyNot: 'Defaults to client default, potentially scanning wrong region.',
+            runtime: 'Passes region_name parameters to boto3 EC2 clients.'
+          },
+          {
+            title: 'Dry Run Toggle',
+            why: 'Safely logs resources that would be deleted without calling delete API.',
+            whyNot: 'Deletes resources immediately, risking accidental data loss.',
+            runtime: 'Omits delete_volume and release_address API calls.'
+          }
+        ],
+        'k8s_monitor': [
+          {
+            title: 'Target Namespace',
+            why: 'Filters scans to a specific namespace, reducing cluster query loads.',
+            whyNot: 'Queries entire cluster, which might fail due to RBAC issues.',
+            runtime: 'Queries list_namespaced_pod instead of cluster-wide list.'
+          },
+          {
+            title: 'Restart Warning Threshold',
+            why: 'Flags container crash loops that restart more than threshold limits.',
+            whyNot: 'Alerts on every restart, causing ops pager fatigue.',
+            runtime: 'Reads restart_count metrics from pod status.'
+          },
+          {
+            title: 'OOMKilled Event Filter',
+            why: 'Explicitly checks if pod was terminated by kernel due to memory limits.',
+            whyNot: 'Terminations remain unmonitored; pods might crashloop silently without developer noticing.',
+            runtime: 'Inspects state.terminated.reason status values.'
+          }
+        ],
+        'ssl_expiry': [
+          {
+            title: 'Target Domains List',
+            why: 'List of domain DNS hostnames to query TLS certificate metrics.',
+            whyNot: 'No checks executed.',
+            runtime: 'Resolves domains over standard sockets on port 443.'
+          },
+          {
+            title: 'Warning Expiry Days',
+            why: 'Raises alerts $X$ days prior to certificate expiry.',
+            whyNot: 'Certificates expire silently, causing global client TLS errors.',
+            runtime: 'Calculates date difference using cert notAfter field.'
+          }
+        ],
+        'api_ping': [
+          {
+            title: 'Target URL Endpoint',
+            why: 'HTTP/HTTPS url target to measure page load latency metrics.',
+            whyNot: 'No latency metrics recorded.',
+            runtime: 'Dispatches HTTP requests and records CPU timestamp delta.'
+          },
+          {
+            title: 'Concurrent Workers',
+            why: 'Sets max threads executing HTTP calls in parallel to simulate load.',
+            whyNot: 'Requests run sequentially, extending runtime duration.',
+            runtime: 'Configures ThreadPoolExecutor max_workers parameter.'
+          }
+        ],
+        'sys_monitor': [
+          {
+            title: 'CPU Limit (%)',
+            why: 'Sets processor threshold to warn when load is too high.',
+            whyNot: 'Service freeze from thread saturation remains undetected.',
+            runtime: 'Queries psutil.cpu_percent with a 1-second sampling window.'
+          },
+          {
+            title: 'RAM Limit (%)',
+            why: 'Flags memory warning limits before kernel OOMKiller starts.',
+            whyNot: 'Databases or daemons crash silently due to memory exhaustion.',
+            runtime: 'Reads virtual memory allocation percentages.'
+          },
+          {
+            title: 'Disk Limit (%)',
+            why: 'Warns before root partition fills up and blocks writes.',
+            whyNot: 'Full disks cause immediate database write failures.',
+            runtime: 'Computes free disk space percentages using system partition tools.'
+          },
+          {
+            title: 'Monitor Daemon Loop',
+            why: 'Keeps checking metrics continuously in a loop for continuous monitoring.',
+            whyNot: 'Runs once and exits, leaving resource spikes undetected.',
+            runtime: 'Runs a while True loop with time.sleep interval.'
+          }
+        ],
+        'log_analyzer': [
+          {
+            title: 'Access Log Filepath',
+            why: 'Locates web server access logs (Nginx/Apache CLF format).',
+            whyNot: 'No log parsing executed.',
+            runtime: 'Opens log file path in read-only stream mode.'
+          },
+          {
+            title: 'Status Filter list',
+            why: 'Targets only error codes (e.g. 5xx/4xx) to detect anomalies.',
+            whyNot: 'Parses all lines, generating noise and spam.',
+            runtime: 'Filters HTTP status codes using regex match groups.'
+          }
+        ],
+        'disk_cleanup': [
+          {
+            title: 'Target Sweep Directory',
+            why: 'Restricts deletions to safe folder targets (e.g. /var/log).',
+            whyNot: 'Could delete crucial script files or root binaries.',
+            runtime: 'Uses os.walk to recursively list files.'
+          },
+          {
+            title: 'Retention Expiry Days',
+            why: 'Protects active files, purging files older than retention.',
+            whyNot: 'Purger deletes active logs currently written to.',
+            runtime: 'Compares file modified time (st_mtime) with retention.'
+          },
+          {
+            title: 'File Extensions filter',
+            why: 'Targets only custom log extensions, preventing deletion of scripts.',
+            whyNot: 'Purger deletes scripting configurations or executable files.',
+            runtime: 'Filters file basenames using os.path.splitext.'
+          }
+        ]
+      };
+
+      const options = manualData[purpose] || [];
+      options.forEach((opt, idx) => {
+        html += `
+          <div class="border border-slate-100 rounded-lg p-3 bg-slate-50/50 mb-2">
+            <div class="font-bold text-gray-800 flex justify-between items-center cursor-pointer" onclick="toggleManualItem(${idx})">
+              <span>⚙️ ${opt.title}</span>
+              <span class="text-[10px] text-indigo-600 font-mono">🔍 Read Info</span>
+            </div>
+            <div class="mt-2 space-y-1.5 text-[11px] text-gray-600 hidden" id="manual-item-${idx}">
+              <p class="leading-relaxed"><strong>📘 Why Use:</strong> ${opt.why}</p>
+              <p class="leading-relaxed"><strong>⚠️ If Not Used:</strong> ${opt.whyNot}</p>
+              <p class="leading-relaxed"><strong>⚙️ Runtime Behavior:</strong> ${opt.runtime}</p>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function compileMermaidFlow() {
+      const purpose = $('script_purpose').value;
+      const configureLogging = $('py_logging').checked;
+      const gracefulExceptions = $('py_exceptions').checked;
+      const webhook = $('alert_webhook').value;
+
+      let flow = 'graph TD\n';
+
+      if (purpose === 'aws_finops') {
+        const auditEbs = $('aws_ebs').checked;
+        const auditEip = $('aws_eip').checked;
+        
+        flow += `    Start([Start Cost Sweep]) --> Init[Initialize boto3 EC2 Client]\n`;
+        if (auditEbs) {
+          flow += `    Init --> ScanEBS[Scan for unattached EBS volumes]\n`;
+          flow += `    ScanEBS --> LoopEBS{For each Volume}\n`;
+          flow += `    LoopEBS -->|Unattached| CheckDryEBS{Dry Run?}\n`;
+          flow += `    CheckDryEBS -->|No| DelVol[Delete Volume via EC2 API]\n`;
+          flow += `    CheckDryEBS -->|Yes| LogEBS[Log volume ID & size]\n`;
+          if (auditEip) {
+            flow += `    DelVol --> ScanEIP[Scan for unassociated EIPs]\n`;
+            flow += `    LogEBS --> ScanEIP[Scan for unassociated EIPs]\n`;
+          } else {
+            flow += `    DelVol --> Finish([Finish Cost Sweep])\n`;
+            flow += `    LogEBS --> Finish\n`;
+          }
+        } else {
+          if (auditEip) {
+            flow += `    Init --> ScanEIP[Scan for unassociated EIPs]\n`;
+          } else {
+            flow += `    Init --> Finish([Finish Cost Sweep])\n`;
+          }
+        }
+
+        if (auditEip) {
+          flow += `    ScanEIP --> LoopEIP{For each EIP}\n`;
+          flow += `    LoopEIP -->|Unused| CheckDryEIP{Dry Run?}\n`;
+          flow += `    CheckDryEIP -->|No| RelAddr[Release Address via EC2 API]\n`;
+          flow += `    CheckDryEIP -->|Yes| LogEIP[Log unused public IP]\n`;
+          flow += `    RelAddr --> Finish([Finish Cost Sweep])\n`;
+          flow += `    LogEIP --> Finish\n`;
+        }
+      } else if (purpose === 'k8s_monitor') {
+        const incluster = $('k8s_incluster').checked;
+        const oom = $('k8s_oom').checked;
+
+        flow += `    Start([Start Pod Monitor]) --> LoadConfig{In-Cluster Config?}\n`;
+        if (incluster) {
+          flow += `    LoadConfig -->|Yes| LoadIn[load_incluster_config]\n`;
+          flow += `    LoadIn --> Init[Initialize CoreV1Api]\n`;
+        } else {
+          flow += `    LoadConfig -->|No| LoadKube[load_kube_config]\n`;
+          flow += `    LoadKube --> Init[Initialize CoreV1Api]\n`;
+        }
+        flow += `    Init --> Scan[List target pods in namespace]\n`;
+        flow += `    Scan --> Loop[Loop pods container status]\n`;
+        flow += `    Loop --> CheckRestarts{Restarts >= Threshold?}\n`;
+        flow += `    CheckRestarts -->|Yes| AlertRestart[Dispatch restart alert webhook]\n`;
+        if (oom) {
+          flow += `    CheckRestarts -->|No| CheckState{Check State reason?}\n`;
+          flow += `    AlertRestart --> CheckState\n`;
+          flow += `    CheckState -->|CrashLoopBackOff| AlertState[Dispatch state alert webhook]\n`;
+          flow += `    CheckState -->|OOMKilled| AlertOOM[Dispatch OOMKilled alert webhook]\n`;
+          flow += `    CheckState -->|Normal| NextPod[Move to next pod]\n`;
+          flow += `    AlertState --> NextPod\n`;
+          flow += `    AlertOOM --> NextPod\n`;
+          flow += `    NextPod --> Finish([Finish pod scan])\n`;
+        } else {
+          flow += `    CheckRestarts -->|No| NextPod[Move to next pod]\n`;
+          flow += `    AlertRestart --> NextPod\n`;
+          flow += `    NextPod --> Finish([Finish pod scan])\n`;
+        }
+      } else if (purpose === 'ssl_expiry') {
+        flow += `    Start([Start SSL Expiry Check]) --> Loop[For each domain in list]\n`;
+        flow += `    Loop --> Connect[Establish socket connection on port]\n`;
+        flow += `    Connect --> Wrap[Wrap socket with TLS context]\n`;
+        flow += `    Wrap --> GetCert[Retrieve TLS Certificate details]\n`;
+        flow += `    GetCert --> ParseDate[Parse expiry date string]\n`;
+        flow += `    ParseDate --> CalcRemaining[Calculate remaining days]\n`;
+        flow += `    CalcRemaining --> CheckExpiry{Days < Warning threshold?}\n`;
+        flow += `    CheckExpiry -->|Yes| Alert[Dispatch SSL expiry webhook alert]\n`;
+        flow += `    CheckExpiry -->|No| Log[Log cert health status]\n`;
+        flow += `    Alert --> LoopNext[Next domain]\n`;
+        flow += `    Log --> LoopNext\n`;
+        flow += `    LoopNext --> Finish([Finish SSL audit])\n`;
+      } else if (purpose === 'api_ping') {
+        flow += `    Start([Start Latency Telemetry]) --> ThreadPool[Initialize ThreadPoolExecutor]\n`;
+        flow += `    ThreadPool --> WorkerLoop[Submit concurrent GET requests]\n`;
+        flow += `    WorkerLoop --> Measure[Measure latency & status code]\n`;
+        flow += `    Measure --> Aggregate[Collect latency metrics]\n`;
+        flow += `    Aggregate --> Stats[Calculate Average, P95 & P99]\n`;
+        flow += `    Stats --> CSV[Export telemetry to latency_results.csv]\n`;
+        flow += `    CSV --> AlertLatency{P95 Latency > 2000ms?}\n`;
+        flow += `    AlertLatency -->|Yes| Alert[Dispatch high latency webhook alert]\n`;
+        flow += `    AlertLatency -->|No| Finish([Finish telemetry test])\n`;
+        flow += `    Alert --> Finish\n`;
+      } else if (purpose === 'sys_monitor') {
+        const daemonMode = $('monitor_daemon').checked;
+
+        flow += `    Start([Start System Monitor]) --> Loop{Daemon Mode?}\n`;
+        if (daemonMode) {
+          flow += `    Loop -->|Yes| QueryCPU[Query CPU utilization %]\n`;
+        } else {
+          flow += `    Loop -->|No| QueryCPU[Query CPU utilization %]\n`;
+        }
+        flow += `    QueryCPU --> CheckCPU{CPU > Threshold?}\n`;
+        flow += `    CheckCPU -->|Yes| AlertCPU[Dispatch CPU alert webhook]\n`;
+        flow += `    CheckCPU -->|No| QueryRAM[Query virtual memory RAM %]\n`;
+        flow += `    AlertCPU --> QueryRAM\n`;
+        flow += `    QueryRAM --> CheckRAM{RAM > Threshold?}\n`;
+        flow += `    CheckRAM -->|Yes| AlertRAM[Dispatch RAM alert webhook]\n`;
+        flow += `    CheckRAM -->|No| QueryDisk[Query root disk partition %]\n`;
+        flow += `    AlertRAM --> QueryDisk\n`;
+        flow += `    QueryDisk --> CheckDisk{Disk > Threshold?}\n`;
+        flow += `    CheckDisk -->|Yes| AlertDisk[Dispatch Disk alert webhook]\n`;
+        flow += `    CheckDisk -->|No| EndCheck{Daemon loop?}\n`;
+        flow += `    AlertDisk --> EndCheck\n`;
+        if (daemonMode) {
+          flow += `    EndCheck -->|Yes| Sleep[Sleep interval seconds]\n`;
+          flow += `    Sleep --> QueryCPU\n`;
+        } else {
+          flow += `    EndCheck -->|No| Finish([Finish monitor check])\n`;
+        }
+      } else if (purpose === 'log_analyzer') {
+        flow += `    Start([Start Log Analyzer]) --> FileExists{Log file exists?}\n`;
+        flow += `    FileExists -->|No| AlertMissing[Log error & alert file not found]\n`;
+        flow += `    FileExists -->|Yes| OpenFile[Open log file in read-only stream]\n`;
+        flow += `    OpenFile --> Loop[Loop through each log line]\n`;
+        flow += `    Loop --> MatchRegex{Matches CLF regex?}\n`;
+        flow += `    MatchRegex -->|Yes| Extract[Extract IP, request, status]\n`;
+        flow += `    MatchRegex -->|No| Skip[Skip line]\n`;
+        flow += `    Extract --> CountStatus[Increment status frequency counter]\n`;
+        flow += `    CountStatus --> FilterStatus{Matches status filter?}\n`;
+        flow += `    FilterStatus -->|Yes| IncrementError[Increment error counter & track IP]\n`;
+        flow += `    FilterStatus -->|No| LoopNext[Read next line]\n`;
+        flow += `    IncrementError --> LoopNext\n`;
+        flow += `    Skip --> LoopNext\n`;
+        flow += `    LoopNext --> EOF{End of file?}\n`;
+        flow += `    EOF -->|No| Loop\n`;
+        flow += `    EOF -->|Yes| PrintStats[Print HTTP status frequency tables]\n`;
+        flow += `    PrintStats --> CheckErrors{Any errors found?}\n`;
+        flow += `    CheckErrors -->|Yes| AlertOutliers[Dispatch alert with top IP outliers]\n`;
+        flow += `    CheckErrors -->|No| Finish([Finish log analysis])\n`;
+        flow += `    AlertOutliers --> Finish\n`;
+      } else if (purpose === 'disk_cleanup') {
+        const dry = $('cleanup_dry_run').checked;
+
+        flow += `    Start([Start Disk Cleanup]) --> TargetExists{Target folder exists?}\n`;
+        flow += `    TargetExists -->|No| AlertMissing[Log error & alert target not found]\n`;
+        flow += `    TargetExists -->|Yes| WalkDir[Recursively walk target directory tree]\n`;
+        flow += `    WalkDir --> LoopFiles[For each file found]\n`;
+        flow += `    LoopFiles --> CheckExt{Extension in target list?}\n`;
+        flow += `    CheckExt -->|Yes| GetStats[Get last modified mtime & size]\n`;
+        flow += `    CheckExt -->|No| LoopNext[Next file]\n`;
+        flow += `    GetStats --> CheckAge{Age > Expiry threshold?}\n`;
+        flow += `    CheckAge -->|Yes| ModeCheck{Dry Run?}\n`;
+        flow += `    CheckAge -->|No| LoopNext\n`;
+        if (dry) {
+          flow += `    ModeCheck -->|Yes| Log[Log files that would be deleted]\n`;
+          flow += `    Log --> TrackStats[Increment deleted count & size]\n`;
+        } else {
+          flow += `    ModeCheck -->|No| Delete[Permanently delete file]\n`;
+          flow += `    Delete --> TrackStats[Increment deleted count & size]\n`;
+        }
+        flow += `    TrackStats --> LoopNext\n`;
+        flow += `    LoopNext --> WalkEnd{End of directory walk?}\n`;
+        flow += `    WalkEnd -->|No| LoopFiles\n`;
+        flow += `    WalkEnd -->|Yes| Report[Log reclaimed space stats]\n`;
+        flow += `    Report --> ReportAlert{Purged > 0 and not Dry Run?}\n`;
+        flow += `    ReportAlert -->|Yes| Alert[Dispatch cleanup status webhook alert]\n`;
+        flow += `    ReportAlert -->|No| Finish([Finish cleanup sweep])\n`;
+        flow += `    Alert --> Finish\n`;
+      }
+
+      if (webhook) {
+        flow += `\n    subgraph Alerting Pipeline\n`;
+        flow += `        AlertRestart\n`;
+        flow += `        AlertState\n`;
+        flow += `        AlertOOM\n`;
+        flow += `        Alert\n`;
+        flow += `        AlertCPU\n`;
+        flow += `        AlertRAM\n`;
+        flow += `        AlertDisk\n`;
+        flow += `        AlertOutliers\n`;
+        flow += `    end\n`;
+      }
+
+      compiledCode.flow = flow;
+    }
+
+    function compileRunbook() {
+      const purpose = $('script_purpose').value;
+      const configureLogging = $('py_logging').checked;
+      const gracefulExceptions = $('py_exceptions').checked;
+      const webhook = $('alert_webhook').value;
+
+      let md = `# SRE Runbook & Operational Reference Guide\n\n`;
+      md += `This runbook was generated client-side by Talari Pradeep's Python SRE Studio. It contains reference material, parameter impacts, and troubleshooting guidelines for the generated \`sre_utility.py\` script.\n\n`;
+
+      md += `## Configuration Manual\n\n`;
+
+      if (purpose === 'aws_finops') {
+        const retention = $('snapshot_retention').value;
+        const region = $('aws_region').value;
+        const auditEbs = $('aws_ebs').checked;
+        const auditEip = $('aws_eip').checked;
+        const dryRun = $('aws_dry').checked;
+
+        md += `### AWS Cost Sweep Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **Snapshot Retention** | \`${retention} days\` | Purges snapshots older than threshold to save AWS cost. | Snapshots persist forever, causing high storage bills. | Compares CreationDate with threshold delta. |\n`;
+        md += `| **Target Region** | \`${region}\` | Restricts scanning to the specified region to limit latency. | May scan wrong or all regions. | Configures boto3 regional endpoints. |\n`;
+        md += `| **Audit EBS Volumes** | \`${auditEbs}\` | Automatically cleans unattached EBS volumes. | Unattached volumes continue costing money. | Scans for volumes in 'available' status. |\n`;
+        md += `| **Audit Elastic IPs** | \`${auditEip}\` | Releases idle Elastic IP addresses. | AWS charges for unassociated EIPs hourly. | Scans for addresses without 'AssociationId'. |\n`;
+        md += `| **Dry Run Mode** | \`${dryRun}\` | Prevents deletion operations; safe logging only. | Operations execute immediately, risking data loss. | Omits volume deletion and address release APIs. |\n\n`;
+      } else if (purpose === 'k8s_monitor') {
+        const ns = $('k8s_namespace').value;
+        const restarts = $('min_restarts').value;
+        const incluster = $('k8s_incluster').checked;
+        const oom = $('k8s_oom').checked;
+
+        md += `### Kubernetes Cluster Health Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **Target Namespace** | \`${ns}\` | Limits queries to specified namespace to avoid high API load. | Scans cluster-wide, which may fail due to RBAC block. | Queries namespaced resources via CoreV1Api. |\n`;
+        md += `| **Restart Threshold** | \`${restarts}\` | Triggers alert only after container restarts cross this count. | Alerts on every container restart, causing alert fatigue. | Evaluates restart_count field in pod status. |\n`;
+        md += `| **In-Cluster Config** | \`${incluster}\` | Uses service accounts when running inside pod container. | Fails to connect unless local kubeconfig is present. | Invokes config.load_incluster_config(). |\n`;
+        md += `| **OOMKilled Check** | \`${oom}\` | Checks terminated container states for Memory Limit flags. | Pods crash silently from memory leaks without warnings. | Inspects state.terminated.reason field. |\n\n`;
+      } else if (purpose === 'ssl_expiry') {
+        const domains = $('ssl_domains').value;
+        const alertDays = $('ssl_alert_days').value;
+        const port = $('ssl_port').value;
+
+        md += `### SSL Certificates Audit Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **Target Domains** | \`${domains}\` | Domains to check for TLS socket validity. | No verification runs. | Resolves domains and connects over socket. |\n`;
+        md += `| **Expiry Alert Days** | \`${alertDays} days\` | Raises alert warnings $X$ days before certificate expiry. | SSL certificates expire silently, breaking customer sites. | Calculates cert notAfter date against UTC. |\n`;
+        md += `| **Connection Port** | \`${port}\` | Checks TLS certificate bound to a specific port. | Fails to audit non-standard ports (e.g. SMTP 587). | Establishes socket connection on specified port. |\n\n`;
+      } else if (purpose === 'api_ping') {
+        const url = $('ping_url').value;
+        const concurrency = $('ping_concurrency').value;
+        const total = $('ping_total').value;
+        const timeout = $('ping_timeout').value;
+
+        md += `### HTTP Latency Telemetry Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **Target URL** | \`${url}\` | Measures response latency of target web endpoint. | Telemetry remains unmonitored. | Sends HTTP GET requests to target URL. |\n`;
+        md += `| **Concurrency** | \`${concurrency} threads\` | Executes queries in parallel to simulate multiple users. | Sequential execution takes longer. | Spawns ThreadPoolExecutor pool. |\n`;
+        md += `| **Total Requests** | \`${total}\` | Determines the sample size for latency stats. | Small samples may hide latency spikes. | Submits requests to executor pool. |\n`;
+        md += `| **Timeout** | \`${timeout} seconds\` | Times out slow requests to prevent thread hangs. | Threads hang on slow endpoints. | Passes timeout parameters to requests.get. |\n\n`;
+      } else if (purpose === 'sys_monitor') {
+        const cpuLimit = $('cpu_threshold').value;
+        const ramLimit = $('ram_threshold').value;
+        const diskLimit = $('disk_threshold').value;
+        const interval = $('monitor_interval').value;
+        const daemonMode = $('monitor_daemon').checked;
+
+        md += `### System Resource Monitor Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **CPU Threshold** | \`${cpuLimit}%\` | Flags system processor overloads early. | High CPU causes service degradation undetected. | Calls psutil.cpu_percent with interval. |\n`;
+        md += `| **RAM Threshold** | \`${ramLimit}%\` | Flags system memory exhausts before OOMKiller triggers. | OS kills critical database/java daemons. | Queries psutil.virtual_memory percent. |\n`;
+        md += `| **Disk Threshold** | \`${diskLimit}%\` | Warns before partition capacity hits 100%. | Disk write failures cause instant DB corruptions. | Queries psutil.disk_usage root partition. |\n`;
+        md += `| **Sampling Interval** | \`${interval} seconds\` | Interval between resource checks to save CPU. | Scan runs too fast (high CPU) or too slow (misses spikes). | Suspends main thread execution via time.sleep. |\n`;
+        md += `| **Daemon Mode** | \`${daemonMode}\` | Runs continuously in a monitoring loop. | Script runs once and exits, missing real-time issues. | Wraps resource check in infinite while loop. |\n\n`;
+      } else if (purpose === 'log_analyzer') {
+        const filePath = $('log_filepath').value;
+        const statusFilter = $('log_status_filter').value;
+        const outliersLimit = $('log_outliers_limit').value;
+
+        md += `### Log Analyzer Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **Log Filepath** | \`${filePath}\` | Target path of Nginx/Apache logs. | Log scans cannot run. | Streams log lines in read-only mode. |\n`;
+        md += `| **Status Filter** | \`${statusFilter}\` | Focuses on specific HTTP code errors (e.g. 500). | Generates spam alert notifications. | Filters code values using regex match group. |\n`;
+        md += `| **Outliers Limit** | \`${outliersLimit}\` | Limits number of offending IP addresses in reports. | Output lists hundreds of IPs, reducing legibility. | Utilizes collections.Counter.most_common(). |\n\n`;
+      } else if (purpose === 'disk_cleanup') {
+        const targetDir = $('cleanup_target_dir').value;
+        const retentionDays = $('cleanup_retention_days').value;
+        const extensions = $('cleanup_extensions').value;
+        const dryRun = $('cleanup_dry_run').checked;
+
+        md += `### Disk Cleanup Parameters\n\n`;
+        md += `| Parameter | Configured Value | Why Use This | What Happens if Disabled / Unused | Runtime Behavior & SRE Tips |\n`;
+        md += `|---|---|---|---|---|\n`;
+        md += `| **Target Directory** | \`${targetDir}\` | Limits deletion sweep to a safe folder hierarchy. | Risk deleting operating system files. | Recursively walks directory tree via os.walk. |\n`;
+        md += `| **Retention Days** | \`${retentionDays} days\` | Retains fresh files, purging files older than limit. | Purges active files currently written to. | Compares file st_mtime with delta seconds. |\n`;
+        md += `| **File Extensions** | \`${extensions}\` | Deletes matching files only (e.g. logs/tmp). | Deletes scripts, config files, or binaries. | Filters basenames with os.path.splitext. |\n`;
+        md += `| **Dry Run Mode** | \`${dryRun}\` | Log-only verification mode. | Deletes files instantly without validation. | Bypasses call to os.remove. |\n\n`;
+      }
+
+      md += `## SRE Safeguards & Best Practices\n\n`;
+      md += `- **Standard Logging**: \`${configureLogging ? 'Enabled' : 'Disabled'}\`. Enforces structured formats with timestamp, loglevel, and standard output streaming (sys.stdout).\n`;
+      md += `- **Exception Handling**: \`${gracefulExceptions ? 'Enabled' : 'Disabled'}\`. Catches all operational and connection failures gracefully to print diagnostic logs and prevent unhandled process exit codes.\n`;
+      if (webhook) {
+        md += `- **Alert Dispatches**: Active alerts send POST webhooks to \`${webhook}\` with custom payloads.\n`;
+      } else {
+        md += `- **Alert Dispatches**: Alerts write warnings directly to standard error output stream.\n`;
+      }
+
+      md += `\n## Operational Troubleshooting & SRE Runbook Tips\n\n`;
+      md += `1. **Incident Response**: When an alert webhook fires, open the corresponding runbook section above and identify the metrics threshold that triggered the failure.\n`;
+      md += `2. **Cron Scheduler Configuration**: It is recommended to configure this script to execute regularly via system crontabs. For example, add \`*/10 * * * * python /path/to/sre_utility.py\` to execute checks every 10 minutes.\n`;
+      md += `3. **Dependency Maintenance**: Regularly update dependency package requirements in \`requirements.txt\` using \`pip install -U -r requirements.txt\` to ensure security updates are applied.\n`;
+
+      compiledCode.runbook = md;
     }
 
     function showToast(message) {
@@ -1190,6 +1722,30 @@
           'practices': ['Pin dependency versions for production stability.', 'Use virtual environments.'],
           'ai_mlops': 'Defines python environment dependencies for SRE automations.',
           'flow': '[requirements.txt] ➔ [pip install] ➔ [Dependencies Configured]'
+        };
+      } else if (activeTab === 'runbook') {
+        explanation = {
+          'title': 'SRE Runbook Documentation',
+          'filename': 'sre_runbook.md',
+          'why': 'Provides operational guidelines, configuration meanings, and runbook triage tips for production alerts.',
+          'when': 'Always include in your script repository to document script features, dependencies, and troubleshooting flows.',
+          'where': 'Save alongside the main python execution script.',
+          'command': '# Open in markdown viewer',
+          'practices': ['Maintain clear impact matrices.', 'Provide troubleshooting steps.', 'Link to webhook configurations.'],
+          'ai_mlops': 'Used by AI SRE agents to read operational parameters and resolve incident alerts.',
+          'flow': '[sre_runbook.md] ➔ [Ops Triage Reference Guide]'
+        };
+      } else if (activeTab === 'flow') {
+        explanation = {
+          'title': 'Execution Flowchart',
+          'filename': 'flow.mermaid',
+          'why': 'Visually maps out the code execution flow, showing decision points, loops, and external notifications.',
+          'when': 'Use during reviews to walk through system checks, warning triggers, and webhook alerting paths.',
+          'where': 'Rendered dynamically in the IDE viewport.',
+          'command': '# Render in Mermaid viewer',
+          'practices': ['Map all API checkpoints.', 'Visualize alert notification logic.', 'Indicate loop frequencies.'],
+          'ai_mlops': 'Assists in auditing code behavior and structural validation for automated DevOps agents.',
+          'flow': '[Mermaid Chart Code] ➔ [Live SVG Flowchart Rendering]'
         };
       }
 
