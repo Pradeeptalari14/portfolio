@@ -314,29 +314,7 @@ Relaunch K8s deployments to pull updated Sealed Secrets / Secret Provider mappin
 }
 
 function compileMermaidFlow() {
-  const platform = $('secrets_platform').value;
-  let chart = 'graph TD\n';
-
-  if (platform === 'vault') {
-    chart += `  App[App Pod] -->|1. Authenticate| Vault[Vault Server]\n`;
-    chart += `  Vault -->|2. Check Policy| PolicyCheck{Capabilities Allowed?}\n`;
-    chart += `  PolicyCheck -->|No| Fail[Return 403 Forbidden]\n`;
-    chart += `  PolicyCheck -->|Yes| ReadSecret[3. Retrieve Encrypted KV Data]\n`;
-    chart += `  ReadSecret --> Decrypt[4. Decrypt in Memory]\n`;
-    chart += `  Decrypt --> App\n`;
-  } else if (platform === 'aws') {
-    chart += `  App[App Pod] -->|1. Assume IAM Role| AWSSTS[AWS Security Token Service]\n`;
-    chart += `  AWSSTS -->|2. Retrieve Temp Credentials| App\n`;
-    chart += `  App -->|3. GetSecretValue| ASM[AWS Secrets Manager]\n`;
-    chart += `  ASM -->|4. Decrypt KMS Key| App\n`;
-  } else {
-    chart += `  Kubectl[Cluster Operator] -->|1. Seal Secret| Kubeseal[kubeseal CLI]\n`;
-    chart += `  Kubeseal -->|2. Encrypt with PubKey| SealedManifest[SealedSecret Manifest]\n`;
-    chart += `  SealedManifest -->|3. Deploy| K8s[K8s API Server]\n`;
-    chart += `  K8s -->|4. Decrypt with PrivKey| Controller[SealedSecret Controller]\n`;
-    chart += `  Controller -->|5. Populate Standard Secret| Pod[App Container]\n`;
-  }
-
+  let chart = 'graph TD\n  App[🚀 Application container] -->|Dynamic request| Fetch[⚙️ fetch_secrets.py]\n  Fetch -->|Authenticate| Vault[🔐 HashiCorp Vault / AWS Secrets Manager]\n  Vault -->|Decrypt keys| Decrypted[(🔑 Decrypted Database Creds)]\n  Decrypted -->|Inject| Process[⚙️ Running App memory]';
   compiledCode.flow = chart;
 }
 

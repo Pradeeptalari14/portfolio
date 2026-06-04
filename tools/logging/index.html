@@ -27,7 +27,8 @@
       --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
   </style>
-</head>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer integrity="sha512-KKb898fDTUAhIOLvWw6MD6NwYDcEIHkBfvrZ33m1wA4c9VMlhf6tCzaP4O+F/gsOXguiKLPoHLg+szP+OL4Q4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
   <!-- NAVBAR -->
@@ -149,10 +150,12 @@
               <button onclick="switchTab('install')" id="tab-install" class="tab-btn active">install.sh</button>
               <button onclick="switchTab('config')" id="tab-config" class="tab-btn">promtail-config.yml</button>
               <button onclick="switchTab('service')" id="tab-service" class="tab-btn">logging.service</button>
-            </div>
+            
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button></div>
           </div>
 
           <pre id="output-box" class="ide-viewport"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
         </div>
 
         <div class="studio-card">

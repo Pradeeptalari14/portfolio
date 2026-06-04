@@ -252,17 +252,7 @@ If validator processes lock up:
 }
 
 function compileMermaidFlow() {
-  const protocol = $('protocol_type').value;
-  const metric = $('metric_target').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Node[${protocol.toUpperCase()} Daemon Node] -->|Swarm Gossip| Net[P2P Network Swarm]\n`;
-  chart += `  Node -->|Scrape API| Monitor[Health Checker: node_health.sh]\n`;
-  chart += `  Monitor -->|Check: ${metric.toUpperCase()}| Validate{Metric Breached?}\n`;
-  chart += `  Validate -->|Yes| Alert[Dispatch SRE alert logs]\n`;
-  chart += `  Validate -->|No| Safe[Consensus OK: Sleep 30s]\n`;
-  chart += `  Alert --> Action[Trigger peer discovery re-route / restarts]\n`;
-
+  let chart = 'graph TD\n  Node[🖥️ Decentralized Daemon Node] -->|Swarm Gossip| Net[P2P Network Swarm]\n  Node -->|Scrape API| Monitor[Health Checker: node_health.sh]\n  Monitor -->|Check Metrics| Validate{{Metric Breached?}}\n  Validate -->|Yes| Alert[🚨 Dispatch SRE alert logs]\n  Validate -->|No| Safe[Consensus OK: Sleep 30s]\n  Alert --> Action[Trigger peer discovery re-route / restarts]';
   compiledCode.flow = chart;
 }
 

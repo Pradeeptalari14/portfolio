@@ -197,17 +197,7 @@ If automated certbot cron jobs failed due to lock issues:
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  Client[ACME Client (Certbot)] -->|1. Request cert| Let[Let's Encrypt CA]\n`;
-  chart += `  Let -->|2. Issue Challenge| Client\n`;
-  chart += `  Client -->|3. Create TXT record| DNS[DNS Provider (Route53/Cloudflare)]\n`;
-  chart += `  Let -->|4. Resolve TXT record lookup| DNS\n`;
-  chart += `  DNS -->|Record verified| Let\n`;
-  chart += `  Let -->|5. Sign & issue SSL| Client\n`;
-  chart += `  Client -->|6. Deploy Pem files| Proxy[Reverse Proxy (Nginx/HAProxy)]\n`;
-  chart += `  Proxy -->|7. Reload service| Finish[Uptime secured with valid TLS]\n`;
-
+  let chart = 'graph TD\n  Cron[🕒 Certbot Cron Trigger] -->|DNS Challenge| DNS[🌐 Route53 / Cloudflare]\n  DNS -->|Verify Ownership| ACME[🛡️ Let\'s Encrypt ACME API]\n  ACME -->|Issue Cert| Keystore[🔑 Renewed SSL Certificate]\n  Keystore -->|Reload| Proxy[🚦 Nginx / Traefik Proxy]';
   compiledCode.flow = chart;
 }
 

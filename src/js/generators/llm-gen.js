@@ -87,10 +87,14 @@ const $ = (id) => document.getElementById(id);
       ingress: '',
       prometheus: '',
       readme: ''
-    };
+    ,
+  flow: ''
+};
 
     const tabConfigs = {
-      deployment: { label: 'deployment.yaml', filename: 'deployment', ext: '.yaml' },
+      deployment: { label: 'deployment.yaml', filename: 'deployment', ext: '.yaml' ,
+  flow: { label: '📊 Visual Flowchart', filename: 'flow', ext: '.mermaid' }
+},
       service: { label: 'service.yaml', filename: 'service', ext: '.yaml' },
       ingress: { label: 'ingress.yaml', filename: 'ingress', ext: '.yaml' },
       prometheus: { label: 'prometheus.yml', filename: 'prometheus', ext: '.yml' },
@@ -115,7 +119,8 @@ const $ = (id) => document.getElementById(id);
       compileIngress();
       compilePrometheus();
       compileReadme();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     function compileDeployment() {
@@ -351,7 +356,13 @@ curl http://localhost:8000/v1/chat/completions \\
       compiledCode.readme = code;
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Request[🚦 Client Traffic] -->|Load Balancer| Ingress[🚦 K8s Ingress]\n  Ingress -->|Token Streams| vLLM[🧠 vLLM GPU Server]\n  vLLM -->|Metrics| Prom[📈 Prometheus GPU Logs]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
@@ -364,9 +375,27 @@ curl http://localhost:8000/v1/chat/completions \\
     }
 
     function updateViewportContent() {
-      const content = compiledCode[activeTab];
-      $('output-box').textContent = content || '';
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function copyActiveTabContent() {
       const content = compiledCode[activeTab];

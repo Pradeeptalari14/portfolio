@@ -257,23 +257,7 @@ If 429 Too Many Requests spike:
 }
 
 function compileMermaidFlow() {
-  const type = $('gateway_type').value;
-  const auth = $('gateway_auth').value;
-
-  let chart = 'graph TD\n';
-
-  chart += `  Client[External Client] -->|1. HTTP Request| GW[${type.toUpperCase()} API Gateway]\n`;
-  if (auth === 'yes') {
-    chart += `  GW -->|2. Validate apikey / token| Auth[Auth microservice]\n`;
-    chart += `  Auth -->|Valid response| GW\n`;
-  }
-  chart += `  GW -->|3. Check rate limits| Limit{Rate Limit Exceeded?}\n`;
-  chart += `  Limit -->|Yes| HTTP429[HTTP 429 Alert & Abort]\n`;
-  chart += `  Limit -->|No| Proxy[4. Proxy Pass Request]\n`;
-  chart += `  Proxy -->|5. Forward request| Backend[Internal Backend service]\n`;
-  chart += `  Backend -->|6. Return response| GW\n`;
-  chart += `  GW -->|7. Add telemetry headers| Client\n`;
-
+  let chart = 'graph TD\n  Traffic[🚦 Client Traffic] -->|Route| Nginx[🚦 Nginx Ingress / Traefik]\n  Nginx -->|Rate Limiter| Limit{{Rate Limit Exceeded?}}\n  Limit -->|Yes| Block[🚫 429 Too Many Requests]\n  Limit -->|No| Service[🚀 Backend Microservices]';
   compiledCode.flow = chart;
 }
 

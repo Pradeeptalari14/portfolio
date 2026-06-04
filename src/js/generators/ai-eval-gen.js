@@ -205,21 +205,7 @@ python eval_pipeline.py
 }
 
 function compileMermaidFlow() {
-  const framework = $('eval_framework').value;
-  let chart = 'graph TD\n';
-
-  chart += `  Input[Adversarial Prompt Dataset] --> Generate[Execute RAG Pipeline]\n`;
-  chart += `  Generate --> Output[Collect Contexts & Model responses]\n`;
-  chart += `  Output --> Eval[Trigger ${framework.toUpperCase()} Evaluation]\n`;
-  chart += `  Eval --> Metric1[Compute Faithfulness score]\n`;
-  chart += `  Eval --> Metric2[Compute Answer Relevance]\n`;
-  chart += `  Eval --> Metric3[Compute Context Recall]\n`;
-  chart += `  Metric1 --> Validate{Scores > Threshold?}\n`;
-  chart += `  Metric2 --> Validate\n`;
-  chart += `  Metric3 --> Validate\n`;
-  chart += `  Validate -->|Yes| Push[Push logs to tracker & Publish Release]\n`;
-  chart += `  Validate -->|No| Alert[Trigger SRE Alert & Abort Release]\n`;
-
+  let chart = 'graph TD\n  Dataset[📄 Evaluation Dataset] -->|Run Pipelines| Ragas[🧪 Ragas/TruLens Evaluator]\n  Ragas -->|Validate Accuracy| Check{{Accuracy Threshold?}}\n  Check -->|Pass| Deploy[🚀 Deploy Model to Prod]\n  Check -->|Fail| Rollback[🚨 Starve GPU / Trigger SRE Alert]\n  Deploy --> Registry[(🗄️ Model Registry)]';
   compiledCode.flow = chart;
 }
 

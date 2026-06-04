@@ -375,25 +375,7 @@ If custom eBPF filters crash the kernel scheduler:
 }
 
 function compileMermaidFlow() {
-  const engine = $('ebpf_engine').value;
-  let chart = 'graph TD\n';
-
-  if (engine === 'cilium') {
-    chart += `  PodA[Frontend Pod] -->|HTTP Request| Hook[Hubble/Cilium Socket Filter]\n`;
-    chart += `  Hook -->|Check L7 Policy Rules| Decision{Allowed?}\n`;
-    chart += `  Decision -->|Yes| PodB[Secure API Pod]\n`;
-    chart += `  Decision -->|No| Drop[Drop Packet & Log to Hubble Telemetry]\n`;
-    chart += `  Drop --> Hubble[Prometheus Metrics Scraping]\n`;
-  } else {
-    chart += `  Syscall[Syscall Trigger: socket/clone] -->|Trapped by eBPF| Kernel[Kernel Ring Buffer]\n`;
-    chart += `  Kernel -->|Trace Entry Timestamp| Map[BPF_HASH Start Map]\n`;
-    chart += `  SyscallReturn[Syscall Return] -->|Trace Exit| Calc[Calculate Delta Latency]\n`;
-    chart += `  Calc --> Map\n`;
-    chart += `  Calc --> Validate{Exceeds Threshold?}\n`;
-    chart += `  Validate -->|Yes| Alert[Printk Log to Userspace Daemon]\n`;
-    chart += `  Validate -->|No| Hist[Increment Histogram Matrix]\n`;
-  }
-
+  let chart = 'graph TD\n  App[🚀 User Application] -->|Syscalls| Kernel[🐧 Linux Kernel]\n  Kernel -->|Tracepoint/kprobe| eBPF[🐝 eBPF Program running in VM]\n  eBPF -->|Ring Buffer| Userspace[⚙️ userspace collector: Hubble]\n  Userspace -->|Metrics| Dashboard[📊 Observability Dashboard]';
   compiledCode.flow = chart;
 }
 

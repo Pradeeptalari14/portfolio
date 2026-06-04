@@ -193,19 +193,7 @@ If automatic sync is stuck:
 }
 
 function compileMermaidFlow() {
-  const kind = $('idp_kind').value;
-  const lang = $('idp_lang').value;
-
-  let chart = 'graph TD\n';
-
-  chart += `  Dev[Developer] -->|1. Request Scaffold| Portal[Backstage IDP Portal]\n`;
-  chart += `  Portal -->|2. Load Template| Spec[Template Spec: ${lang}-${kind}]\n`;
-  chart += `  Portal -->|3. Fetch skeleton| Skeleton[Code Skeleton Repository]\n`;
-  chart += `  Portal -->|4. Push Code| Git[Git Provider (GitHub/GitLab)]\n`;
-  chart += `  Portal -->|5. Register Metadata| Catalog[Developer Catalog Info]\n`;
-  chart += `  Git -->|6. Trigger Pipeline| CI[CI/CD Pipelines (Build & Scans)]\n`;
-  chart += `  CI -->|7. Deploy Dev env| Live[Operational Dev Endpoint]\n`;
-
+  let chart = 'graph TD\n  Catalog[📦 Backstage Software Catalog] -->|Scaffold template| IDP[⚙️ Developer Portal]\n  IDP -->|Trigger Repository| Git[🐱 Generate GitHub Repo]\n  Git -->|Configure Pipeline| CI[🏭 Bootstrap CI/CD Actions]\n  CI -->|Deploy Starter| Cluster[☸️ Kubernetes Deployment]';
   compiledCode.flow = chart;
 }
 

@@ -234,16 +234,7 @@ If the collector buffer fills up under traffic bursts:
 }
 
 function compileMermaidFlow() {
-  const lang = $('tracing_lang').value;
-  let chart = 'graph TD\n';
-
-  chart += `  Client[User Client] -->|1. HTTP Request with Traceparent Header| Gateway[API Ingress Gateway]\n`;
-  chart += `  Gateway -->|2. Propagate Context| ServiceA[Service A (SDK Instrument)]\n`;
-  chart += `  ServiceA -->|3. Create Span| ServiceB[Service B (SDK Instrument)]\n`;
-  chart += `  ServiceA -->|4. Push OTLP Spans| Collector[OTel Collector daemon]\n`;
-  chart += `  ServiceB -->|4. Push OTLP Spans| Collector\n`;
-  chart += `  Collector -->|5. Export metrics| APM[Jaeger / Prometheus Visualization]\n`;
-
+  let chart = 'graph TD\n  Request[🚦 Client request] -->|Auto Instrument| Trace[🕵️ OTel Tracing handler]\n  Trace -->|Span contexts| Collector[⚙️ OpenTelemetry Collector]\n  Collector -->|Index spans| Jaeger[(🗄️ Jaeger / Zipkin Storage)]\n  Jaeger -->|Latency Analysis| Dashboard[📊 Observability Dashboard]';
   compiledCode.flow = chart;
 }
 

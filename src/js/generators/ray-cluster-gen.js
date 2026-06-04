@@ -256,25 +256,7 @@ bash train_autoscaler.sh
 }
 
 function compileMermaidFlow() {
-  const strategy = $('scale_strategy').value;
-  let chart = 'graph TD\n';
-
-  chart += `  Submit[Submit ML Training Job] --> Resource{GPU Memory available?}\n`;
-  chart += `  Resource -->|Yes| Run[Execute training step]\n`;
-  chart += `  Resource -->|No| Trigger[Autoscaler triggers Node scale-up]\n`;
-  chart += `  Trigger --> Provision[Provision GPU Node instance]\n`;
-  chart += `  Provision --> Join[Join Ray Worker pool]\n`;
-  chart += `  Join --> Run\n`;
-  chart += `  Run --> Verify{Loss Metrics healthy?}\n`;
-  chart += `  Verify -->|Yes| CheckEnd{Training finished?}\n`;
-  chart += `  Verify -->|No| Terminate[Terminate Job & Alert SRE]\n`;
-  chart += `  CheckEnd -->|No| Run\n`;
-  if (strategy === 'aggressive') {
-    chart += `  CheckEnd -->|Yes| PreWarm[Keep nodes pre-warmed for next pipeline step]\n`;
-  } else {
-    chart += `  CheckEnd -->|Yes| ScaleDown[Graceful Node Scale-down to 0]\n`;
-  }
-
+  let chart = 'graph TD\n  Job[🐍 Distributed Training Job] -->|Submit| Head[🧠 Ray Head Node]\n  Head -->|Schedule Tasks| Worker[🖥️ GPU Worker nodes]\n  Worker -->|Autoscaler| Scaling{{Resource Starvation?}}\n  Scaling -->|Yes| AddNode[☸️ Provision new GPU replicas]\n  Scaling -->|No| Train[⚡ Train Model]';
   compiledCode.flow = chart;
 }
 

@@ -282,18 +282,7 @@ Depending on the client selected, trigger the restore sequence:
 }
 
 function compileMermaidFlow() {
-  const provider = $('backup_provider').value;
-  const target = $('backup_target').value;
-
-  let chart = 'graph TD\n';
-
-  chart += `  Trigger[Backup Scheduler] -->|1. Trigger backup| Agent[${provider.toUpperCase()} Agent]\n`;
-  chart += `  Agent -->|2. Query data / state| Data[Production Source]\n`;
-  chart += `  Agent -->|3. Generate snapshot| Snapshot[Local Snapshot / Temp File]\n`;
-  chart += `  Agent -->|4. Push backup| TargetStorage[${target.toUpperCase()} Bucket]\n`;
-  chart += `  TargetStorage -->|5. Apply lifecycle rule| Retention[Retention Policy Purge]\n`;
-  chart += `  TargetStorage -.->|6. Disaster Recovery Restore| Recovery[Restored Live Cluster]\n`;
-
+  let chart = 'graph TD\n  Cluster[☸️ Active Cluster] -->|Scheduled Job| Velero[💾 Velero / Snapshot Backup]\n  Velero -->|Export| Storage[(🗄️ S3 / Cloud Bucket)]\n  Storage -->|Lifecycle Policy| Expiry[🕒 Retain 30 Days & Expire]\n  Storage -->|Disaster Recovery| Restore[🛠️ Restore Cluster Namespace]';
   compiledCode.flow = chart;
 }
 

@@ -10,7 +10,9 @@ const $ = (id) => document.getElementById(id);
       install: '',
       prometheus: '',
       service: ''
-    };
+    ,
+  flow: ''
+};
 
     const installTypesConfig = {
       system: {
@@ -107,7 +109,8 @@ const $ = (id) => document.getElementById(id);
       compileInstallScript();
       compilePromConfig();
       compileServiceConfig();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     // Compile install.sh (tab1)
@@ -386,7 +389,13 @@ const $ = (id) => document.getElementById(id);
       }
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Exporter[📦 Node Exporter] -->|Scrapes Metrics| Prom[📈 Prometheus Server]\n  Prom -->|Visualize| Grafana[📊 Grafana Dashboards]\n  Prom -->|Alert rules| Alertmanager[🚨 Alert Dispatcher]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
@@ -407,8 +416,27 @@ const $ = (id) => document.getElementById(id);
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab === 'install' ? 'install' : (activeTab === 'prometheus' ? 'prometheus' : 'service')];
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function copyActiveTabContent() {
       const type = $('install_type').value;

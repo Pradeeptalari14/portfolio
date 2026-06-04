@@ -192,16 +192,7 @@ If critical batch pipelines are blocked during a prolonged carbon peak:
 }
 
 function compileMermaidFlow() {
-  const source = $('carbon_source').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Cron[Interval Cron Trigger] -->|Query| API[${source.toUpperCase()} API]\n`;
-  chart += `  API -->|Fetch carbon index| Check{Exceeds Threshold?}\n`;
-  chart += `  Check -->|Yes| ScaleDown[Trigger scaling rules: Scale down non-prod workloads]\n`;
-  chart += `  Check -->|No| ScaleUp[Standard Ops: Restore workloads replica scales]\n`;
-  chart += `  ScaleDown --> Kepler[Monitor CPU/Mem energy via Kepler dashboard]\n`;
-  chart += `  ScaleUp --> Kepler\n`;
-
+  let chart = 'graph TD\n  Metrics[📊 Kepler Energy Metrics] -->|Scrape| Prometheus[📈 Prometheus Server]\n  Prometheus -->|Carbon Intensity| Intensity{{Grid Carbon Peak?}}\n  Intensity -->|Yes| ScaleDown[🌱 Scale Down Replicas / Reschedule Jobs]\n  Intensity -->|No| Normal[Run Normal Workloads]';
   compiledCode.flow = chart;
 }
 

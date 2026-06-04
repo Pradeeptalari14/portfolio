@@ -255,16 +255,7 @@ If services return \`503 Service Unavailable\` due to circuit breaker trip:
 }
 
 function compileMermaidFlow() {
-  const strategy = $('mesh_strategy').value;
-  let chart = 'graph TD\n';
-
-  chart += `  Client[External Client] -->|1. HTTP Request| Gateway[Ingress Gateway]\n`;
-  chart += `  Gateway -->|2. Sidecar Proxy Routing| ProxyA[Envoy Sidecar A]\n`;
-  chart += `  ProxyA -->|3. Evaluate Rules| StrategyCheck{${strategy.toUpperCase()} check}\n`;
-  chart += `  StrategyCheck -->|Allowed / Pass| ProxyB[Envoy Sidecar B]\n`;
-  chart += `  StrategyCheck -->|Tripped / Fail| Fail[Return HTTP 503 / 403]\n`;
-  chart += `  ProxyB -->|4. Forward| App[Target Pod App]\n`;
-
+  let chart = 'graph TD\n  Traffic[🚦 External Request] -->|Gateway| Ingress[🕸️ Istio Ingress Gateway]\n  Ingress -->|Sidecar Proxy| Envoy[🕸️ Envoy Proxy Sidecar]\n  Envoy -->|mTLS Handshake| Target[🚀 Target Microservices]\n  Envoy -->|SLA Telemetry| Prom[📈 Prometheus Metrics]';
   compiledCode.flow = chart;
 }
 

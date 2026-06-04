@@ -208,16 +208,7 @@ If ${onlineStore.toUpperCase()} returns read timeouts:
 }
 
 function compileMermaidFlow() {
-  const onlineStore = $('online_store').value;
-  const offlineStore = $('offline_store').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Source[Operational Raw Events] -->|Ingestion Worker| Offline[Offline Store: ${offlineStore.toUpperCase()}]\n`;
-  chart += `  Offline -->|feast apply| Registry[Feast SQLite/GCS Registry]\n`;
-  chart += `  Offline -->|feast materialize| Online[Online Database: ${onlineStore.toUpperCase()}]\n`;
-  chart += `  App[ML Model Inference App] -->|Request Real-time features| Online\n`;
-  chart += `  App -->|Failover request| Offline\n`;
-
+  let chart = 'graph TD\n  Raw[📥 Raw Data Events] -->|Feature Engineering| Feast[⚙️ Feast Feature Registry]\n  Feast -->|Write Online| Redis[(🗄️ Redis Online Store)]\n  Feast -->|Write Offline| Parquet[(🗄️ Parquet Offline Store)]\n  Redis -->|Low Latency| Inference[🧠 AI Online Inference]';
   compiledCode.flow = chart;
 }
 

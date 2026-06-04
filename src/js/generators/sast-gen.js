@@ -177,17 +177,7 @@ If it is a confirmed false positive and cannot be easily refactored:
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  Developer[Developer pushes code] -->|1. git push| Repo[Git Workspace Repository]\n`;
-  chart += `  Repo -->|2. Trigger Pipeline| Runner[CI/CD Runner Node]\n`;
-  chart += `  Runner -->|3. Run SAST analysis| Scan[Semgrep / Trivy Scanner]\n`;
-  chart += `  Scan -->|4. Read configuration| Config[\`semgrep_rules.yaml\` / \`trivy.yaml\`]\n`;
-  chart += `  Scan -->|Evaluate Results| Violations{Security Violations found?}\n`;
-  chart += `  Violations -->|Yes & exit-code=1| Reject[5. Fail Pipeline & block build]\n`;
-  chart += `  Violations -->|No| Accept[5. Accept code & proceed deployment]\n`;
-  chart += `  Reject --> SREAlert[Notify developer & security teams]\n`;
-
+  let chart = 'graph TD\n  Code[📄 Source Code] -->|Static Scan| Semgrep[🛡️ Semgrep / Trivy rules]\n  Semgrep -->|Match Vulnerability| Check{{Security Leak?}}\n  Check -->|Yes| Block[🚫 Block CI Pipeline Build]\n  Check -->|No| Pass[✅ Quality Gate Passed]';
   compiledCode.flow = chart;
 }
 

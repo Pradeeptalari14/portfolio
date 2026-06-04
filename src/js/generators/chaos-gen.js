@@ -288,15 +288,7 @@ If the application crashes completely or cascading failure occurs:
 }
 
 function compileMermaidFlow() {
-  const target = $('chaos_target').value;
-  let chart = 'graph TD\n';
-
-  chart += `  SteadyState[1. System in Steady State] -->|2. Trigger Experiment| Injector[Inject ${target} Chaos]\n`;
-  chart += `  Injector --> MetricAudits{3. Monitoring Telemetry Check}\n`;
-  chart += `  MetricAudits -->|Healthy / Scaled| Success[Resilience Validated - Experiment Complete]\n`;
-  chart += `  MetricAudits -->|Degraded / Outage| Rollback[4. Trigger Emergency Rollback]\n`;
-  chart += `  Rollback --> Restore[5. Steady State Restored]\n`;
-
+  let chart = 'graph TD\n  Target[☸️ Target Pods] -->|Inject Chaos| Experiment[💥 Chaos Mesh / CPU Stress]\n  Experiment -->|Verify Health| SLA{{SLA Met?}}\n  SLA -->|Yes| Success[✅ Resilience Validated]\n  SLA -->|No| Recovery[🚨 Trigger SRE Emergency Rollback]';
   compiledCode.flow = chart;
 }
 

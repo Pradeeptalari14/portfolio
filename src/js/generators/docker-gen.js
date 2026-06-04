@@ -18,7 +18,9 @@ const $ = (id) => document.getElementById(id);
       ignore: '',
       entrypoint: '',
       trivy: ''
-    };
+    ,
+  flow: ''
+};
 
     window.addEventListener('DOMContentLoaded', () => {
       renderComposeTable();
@@ -74,7 +76,8 @@ const $ = (id) => document.getElementById(id);
       compileIgnore();
       compileEntrypoint();
       compileTrivy();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     // Compile Dockerfile
@@ -315,7 +318,13 @@ const $ = (id) => document.getElementById(id);
       compiledCode.trivy = code;
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Dockerfile[📄 Dockerfile] -->|docker build| Image[🐳 Container Image]\n  Image -->|trivy scan| SecuredImage[🛡️ Secured Image]\n  SecuredImage -->|docker run| Container[🚀 Active Container]\n  Container -->|logs| Systemd[📈 System Monitoring]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
@@ -323,7 +332,10 @@ const $ = (id) => document.getElementById(id);
       const nameBox = $('download-name-input');
       const extTag = $('file-extension-tag');
 
-      if (tabId === 'dockerfile') {
+      if (tabId === 'flow') {
+    nameBox.value = 'flow';
+    extTag.textContent = '.mermaid';
+  } else if (tabId === 'dockerfile') {
         nameBox.value = 'Dockerfile';
         extTag.textContent = '';
       } else if (tabId === 'compose') {
@@ -344,8 +356,27 @@ const $ = (id) => document.getElementById(id);
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab];
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function copyActiveTabContent() {
       const content = compiledCode[activeTab];

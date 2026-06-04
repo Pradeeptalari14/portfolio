@@ -191,15 +191,7 @@ If the deployment requires elevated privileges (e.g. storage provisioners):
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  Dev[Developer / pipeline] -->|1. kubectl apply manifest| K8s[K8s API Server]\n`;
-  chart += `  K8s -->|2. Mutating Webhook| Webhook[Admission Webhook Controller]\n`;
-  chart += `  Webhook -->|3. Evaluate Policy| PolicyCheck{OPA / Kyverno check}\n`;
-  chart += `  PolicyCheck -->|Rule Violated & Deny| Reject[4. Return HTTP 400 Reject Deployment]\n`;
-  chart += `  PolicyCheck -->|Pass / Warn| Allow[4. Accept Resource into Cluster]\n`;
-  chart += `  Allow --> Pods[5. Pods scheduled on Node]\n`;
-
+  let chart = 'graph TD\n  Manifest[📄 Kubernetes Manifest] -->|Check Rules| Gate[🛡️ OPA Gatekeeper / Kyverno]\n  Gate -->|Validate| Compliance{{Compliant?}}\n  Compliance -->|Yes| Deploy[🚀 Deploy to Cluster]\n  Compliance -->|No| Block[🚫 Block Admission & Log Violation]';
   compiledCode.flow = chart;
 }
 

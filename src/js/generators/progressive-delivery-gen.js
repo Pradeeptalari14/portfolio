@@ -273,30 +273,7 @@ If the bug is gated behind a feature flag, switch the default variant to \`legac
 }
 
 function compileMermaidFlow() {
-  const type = $('delivery_type').value;
-  let chart = 'graph TD\n';
-
-  if (type === 'canary') {
-    chart += `  Start[Commit Code & Push Image] --> Build[CI/CD Build & Scan]\n`;
-    chart += `  Build --> Apply[Apply rollout.yaml]\n`;
-    chart += `  Apply --> Step1[Canary Step 1: Route 10% Traffic]\n`;
-    chart += `  Step1 --> Assess{Analysis Success?}\n`;
-    chart += `  Assess -->|Yes| Step2[Route 50% Traffic]\n`;
-    chart += `  Assess -->|No| Abort[Abort & Auto-Rollback to Stable]\n`;
-    chart += `  Step2 --> Assess2{Metrics Healthy?}\n`;
-    chart += `  Assess2 -->|Yes| Step3[Route 100% Traffic & Complete]\n`;
-    chart += `  Assess2 -->|No| Abort\n`;
-  } else {
-    chart += `  Start[Commit Code] --> Build[CI/CD Build]\n`;
-    chart += `  Build --> DeployPreview[Deploy Active to Preview Pods]\n`;
-    chart += `  DeployPreview --> SmokeTest{Run Smoke Tests}\n`;
-    chart += `  SmokeTest -->|Pass| Promote[Promote Preview to Active Service]\n`;
-    chart += `  SmokeTest -->|Fail| KeepStable[Keep Active on Legacy Stable]\n`;
-    chart += `  Promote --> PostTest{Post-Promotion Tests}\n`;
-    chart += `  PostTest -->|Pass| Complete[Release Finished]\n`;
-    chart += `  PostTest -->|Fail| Rollback[Rollback Traffic to Stable Service]\n`;
-  }
-
+  let chart = 'graph TD\n  Version[🚀 New Service Image] -->|Deploy| Rollout[⚙️ Argo Rollouts Deploy]\n  Rollout -->|Route 10% traffic| Canary[🕸️ Canary Replica set]\n  Canary -->|Query Prometheus| Analyze{{Error rate < 1%?}}\n  Analyze -->|Yes| Promote[🚀 Promote to 100% stable]\n  Analyze -->|No| Rollback[🚨 Automatically Rollback to Stable]';
   compiledCode.flow = chart;
 }
 

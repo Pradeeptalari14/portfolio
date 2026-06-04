@@ -231,19 +231,7 @@ bash cluster_health.sh
 }
 
 function compileMermaidFlow() {
-  const engine = $('cluster_engine').value;
-  let chart = 'graph TD\n';
-
-  chart += `  Primary[Primary Node handles Writes] -->|Replicate WAL/Logs| Replica[Replica Nodes query reads]\n`;
-  chart += `  DCS[DCS/Sentinel monitors Primary Node] -->|Health check ping| Primary\n`;
-  chart += `  Primary -->|Outage event| Offline[Primary goes offline]\n`;
-  chart += `  DCS -->|TTL Expired/Heartbeat Loss| Detect[Detect Node Offline]\n`;
-  chart += `  Detect --> Quorum{Quorum consensus met?}\n`;
-  chart += `  Quorum -->|Yes| Elect[Elect healthiest Replica with minimal lag]\n`;
-  chart += `  Quorum -->|No| Block[Block automatic failover to prevent split-brain]\n`;
-  chart += `  Elect --> Promote[Promote Replica to new Primary]\n`;
-  chart += `  Promote --> Route[Update cluster DNS/Proxy routes to new Primary]\n`;
-
+  let chart = 'graph TD\n  Primary[🗄️ Primary DB Node] -->|Replicate| Replica[(🗄️ Replica DB Node)]\n  Primary -->|Heartbeat| Patroni[⚙️ Patroni Failover Coordinator]\n  Patroni -->|Detect Node Outage| Failover[🚨 Primary Offline - Promote Replica]\n  Failover --> Promote[(🗄️ New Primary DB Node)]';
   compiledCode.flow = chart;
 }
 

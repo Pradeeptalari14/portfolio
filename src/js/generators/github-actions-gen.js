@@ -10,7 +10,9 @@ const $ = (id) => document.getElementById(id);
       pipeline: '',
       sonar: '',
       readme: ''
-    };
+    ,
+  flow: ''
+};
 
     window.addEventListener('DOMContentLoaded', () => {
       setupInteractiveListeners();
@@ -25,7 +27,8 @@ const $ = (id) => document.getElementById(id);
       compilePipeline();
       compileSonar();
       compileReadme();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     function compilePipeline() {
@@ -156,7 +159,13 @@ const $ = (id) => document.getElementById(id);
       compiledCode.readme = code;
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Commit[🐱 Git Checkout] -->|Run Actions| Runner[⚙️ GitHub Runner]\n  Runner -->|Quality Scans| Sonar[🛡️ SonarCloud Audit]\n  Runner -->|Containerize| Docker[🐳 Docker Build & Push]\n  Docker -->|Deploy| Staging[🚀 Environment Host]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
@@ -164,7 +173,10 @@ const $ = (id) => document.getElementById(id);
       const nameBox = $('download-name-input');
       const extTag = $('file-extension-tag');
 
-      if (tabId === 'pipeline') {
+      if (tabId === 'flow') {
+    nameBox.value = 'flow';
+    extTag.textContent = '.mermaid';
+  } else if (tabId === 'pipeline') {
         nameBox.value = 'ci';
         extTag.textContent = '.yml';
       } else if (tabId === 'sonar') {
@@ -178,8 +190,27 @@ const $ = (id) => document.getElementById(id);
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab];
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function copyActiveTabContent() {
       const content = compiledCode[activeTab];

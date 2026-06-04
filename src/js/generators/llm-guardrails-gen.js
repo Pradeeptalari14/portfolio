@@ -241,30 +241,7 @@ Once the rule matching patterns are refined, switch the audit mode back to \`act
 }
 
 function compileMermaidFlow() {
-  const action = $('policy_action').value;
-  let chart = 'graph TD\n';
-
-  chart += `  User[User Prompt Query] --> Guard[Guardrail Webhook Audit]\n`;
-  chart += `  Guard --> CheckInjection{Prompt Injection?}\n`;
-  chart += `  CheckInjection -->|Yes| Policy1{Policy Action}\n`;
-  if (action === 'block') {
-    chart += `  Policy1 -->|Block| Terminate[Reject Request & Log Threat]\n`;
-  } else {
-    chart += `  Policy1 -->|Sanitize| Sanitize[Redact Prompt & Continue]\n`;
-    chart += `  Sanitize --> CheckPII{Secrets/PII Leak?}\n`;
-  }
-  chart += `  CheckInjection -->|No| CheckPII{Secrets/PII Leak?}\n`;
-  chart += `  CheckPII -->|Yes| Policy2{Policy Action}\n`;
-  if (action === 'block') {
-    chart += `  Policy2 -->|Block| Terminate\n`;
-  } else {
-    chart += `  Policy2 -->|Sanitize| Sanitize2[Redact Secret & Continue]\n`;
-    chart += `  Sanitize2 --> Model[Forward query to LLM Model]\n`;
-  }
-  chart += `  CheckPII -->|No| Model\n`;
-  chart += `  Model --> OutputGuard[Filter output compliance]\n`;
-  chart += `  OutputGuard --> Result[Return response to User]\n`;
-
+  let chart = 'graph TD\n  Input[👤 User Prompt] -->|Validate| Shield[🛡️ Guardrails: NeMo/LlamaGuard]\n  Shield -->|Jailbreak/PII| Block[🚫 403 Blocked Prompt]\n  Shield -->|Valid| LLM[🧠 LLM Inference Engine]\n  LLM -->|Validate Output| ShieldOut[🛡️ Compliance Check]\n  ShieldOut -->|Pass| Response[💬 User Answer]';
   compiledCode.flow = chart;
 }
 

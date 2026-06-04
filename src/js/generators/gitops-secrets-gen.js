@@ -194,18 +194,7 @@ cat new_key.txt | grep 'public key'
 }
 
 function compileMermaidFlow() {
-  const provider = $('sops_provider').value;
-
-  let chart = 'graph TD\n';
-
-  chart += `  Raw[Raw secrets.yaml] -->|1. Run sops --encrypt| SOPS[SOPS Engine]\n`;
-  chart += `  SOPS -->|2. Request key| Key[${provider.toUpperCase()} Key / KMS]\n`;
-  chart += `  Key -->|3. Return encrypted envelope| SOPS\n`;
-  chart += `  SOPS -->|4. Save| Enc[Encrypted secrets.yaml]\n`;
-  chart += `  Enc -->|5. Push changes| Git[Git Repository (GitOps)]\n`;
-  chart += `  Git -->|6. Sync manifests| Argo[GitOps Engine (ArgoCD)]\n`;
-  chart += `  Argo -->|7. Decrypt locally| Secret[Kubernetes Secret object]\n`;
-
+  let chart = 'graph TD\n  Secrets[🔑 Plain Secrets] -->|SOPS Encrypt| Encrypted[🔐 SOPS Encrypted Secrets YAML]\n  Encrypted -->|Commit| Git[🐱 Git Repository]\n  Git -->|Detect change| Flux[🐙 FluxCD / ArgoCD decryptor]\n  Flux -->|Inject| Pods[🚀 Pod Environments]';
   compiledCode.flow = chart;
 }
 

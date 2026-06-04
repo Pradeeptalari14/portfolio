@@ -269,18 +269,7 @@ If the enclave throws Out-Of-Memory (OOM) or Kernel panic events:
 }
 
 function compileMermaidFlow() {
-  const enclaveType = $('enclave_type').value;
-  const protocol = $('attest_protocol').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Host[EC2 / Untrusted Host] -->|Spawn| Enclave[Secure Enclave: ${enclaveType.toUpperCase()}]\n`;
-  chart += `  Enclave -->|Measure binary hashes| PCR[Generate Cryptographic Measurement: PCR/MRENCLAVE]\n`;
-  chart += `  Enclave -->|Generate document signed by CPU HSM| Doc[Signed Attestation Document]\n`;
-  chart += `  Enclave -->|Send document via VSock| Verifier[Attestation Authority: ${protocol.toUpperCase()}]\n`;
-  chart += `  Verifier -->|Verify against CPU Root Certs| Decrypt{Signature OK?}\n`;
-  chart += `  Decrypt -->|Yes| Key[Return Decrypted Data Key / Secrets]\n`;
-  chart += `  Decrypt -->|No| Reject[Raise SRE Security Alert & Terminate session]\n`;
-
+  let chart = 'graph TD\n  Host[🖥️ Host OS] -->|Provision Resource| Enclave[🔒 AMD SEV / AWS Nitro Enclave]\n  Enclave -->|Hardware Attestation| PCR[🔑 Cryptographic Attestation Verification]\n  PCR -->|Pass| KMS[🔓 Fetch Decryption Keys from KMS]\n  PCR -->|Fail| Terminate[🚫 Terminate Enclave Execution]';
   compiledCode.flow = chart;
 }
 

@@ -173,17 +173,7 @@ If dry-run outputs verify safety compliance:
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  Cron[Billing Cron / Schedule] -->|1. Trigger sweep| Sweeper[FinOps Sweeper Engine]\n`;
-  chart += `  Sweeper -->|2. Check Resource states| Cloud[AWS / GCP Cloud API]\n`;
-  chart += `  Cloud -->|3. Return detached assets| Sweeper\n`;
-  chart += `  Sweeper -->|4. Filter criteria| Filters{Is Idle / Orphaned?}\n`;
-  chart += `  Filters -->|No| Safe[Leave resource untouched]\n`;
-  chart += `  Filters -->|Yes| Action{Action Strategy}\n`;
-  chart += `  Action -->|Notify| Slack[Send Alert & request owner cleanup]\n`;
-  chart += `  Action -->|Delete| Purge[Purge Resource & update Billing ledger]\n`;
-
+  let chart = 'graph TD\n  AWS[☁️ AWS/GCP resources] -->|Scheduled Sweep| Custodian[💰 Cloud Custodian sweeps]\n  Custodian -->|Identify Orphaned volumes| Verify{{Orphaned?}}\n  Verify -->|Yes| Delete[🗑️ Terminate & Delete Resource]\n  Verify -->|No| Keep[Keep Active]\n  Delete --> Alert[🚨 Dispatch billing alert notification]';
   compiledCode.flow = chart;
 }
 

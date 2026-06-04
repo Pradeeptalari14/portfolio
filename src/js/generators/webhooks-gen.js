@@ -737,53 +737,7 @@ When rate limits are triggered on client hosts:
 }
 
 function compileMermaidFlow() {
-  const type = $('webhook_type').value;
-  let chart = 'graph TD\n';
-
-  if (type === 'github_push') {
-    chart += `  Client[GitHub Webhook Event] -->|1. Post Payload| SignatureHeader{Has X-Hub-Signature-256?}\n`;
-    chart += `  SignatureHeader -->|No| Fail401[Return HTTP 401 Unauthorized]\n`;
-    chart += `  SignatureHeader -->|Yes| ReadBody[2. Read Raw Request Body]\n`;
-    chart += `  ReadBody --> ComputeHMAC[3. Compute SHA256 HMAC with Secret]\n`;
-    chart += `  ComputeHMAC --> CompareDigest{Signatures Match?}\n`;
-    chart += `  CompareDigest -->|No| Fail401\n`;
-    chart += `  CompareDigest -->|Yes| RateLimitCheck{Rate Limit OK?}\n`;
-    chart += `  RateLimitCheck -->|No| Fail429[Return HTTP 429 Too Many Requests]\n`;
-    chart += `  RateLimitCheck -->|Yes| ProcessData[4. Process Webhook Event]\n`;
-    chart += `  ProcessData --> Success200[Return HTTP 200 OK]\n`;
-  } else if (type === 'slack_dispatch') {
-    chart += `  Client[Slack Client Dispatcher] -->|1. Post Payload| HeadersCheck{Has X-Slack-Signature?}\n`;
-    chart += `  HeadersCheck -->|No| Fail401[Return HTTP 401 Unauthorized]\n`;
-    chart += `  HeadersCheck -->|Yes| TimestampCheck{Timestamp < 5 min?}\n`;
-    chart += `  TimestampCheck -->|No| Fail401\n`;
-    chart += `  TimestampCheck -->|Yes| BuildBase[2. Form Basestring 'v0:timestamp:body']\n`;
-    chart += `  BuildBase --> ComputeHMAC[3. Compute SHA256 HMAC with Secret]\n`;
-    chart += `  ComputeHMAC --> CompareDigest{Signatures Match?}\n`;
-    chart += `  CompareDigest -->|No| Fail401\n`;
-    chart += `  CompareDigest -->|Yes| ProcessData[4. Process Event]\n`;
-    chart += `  ProcessData --> Success200[Return HTTP 200 OK]\n`;
-  } else if (type === 'teams_adaptive') {
-    chart += `  Client[MS Teams Webhook Connector] -->|1. Post Payload| AuthHeader{Has Authorization: HMAC?}\n`;
-    chart += `  AuthHeader -->|No| Fail401[Return HTTP 401 Unauthorized]\n`;
-    chart += `  AuthHeader -->|Yes| ReadBody[2. Read Raw Body Bytes]\n`;
-    chart += `  ReadBody --> DecodeSecret[3. Decode Base64 Secret]\n`;
-    chart += `  DecodeSecret --> ComputeHMAC[4. Compute HMAC-SHA256]\n`;
-    chart += `  ComputeHMAC --> EncodeBase64[5. Base64 Encode Signature]\n`;
-    chart += `  EncodeBase64 --> CompareDigest{Signatures Match?}\n`;
-    chart += `  CompareDigest -->|No| Fail401\n`;
-    chart += `  CompareDigest -->|Yes| ProcessData[6. Process Alert Card]\n`;
-    chart += `  ProcessData --> Success200[Return HTTP 200 OK]\n`;
-  } else if (type === 'pagerduty_alert') {
-    chart += `  Client[PagerDuty Events API] -->|1. Post Alert| HeadersCheck{Has X-PagerDuty-Signature?}\n`;
-    chart += `  HeadersCheck -->|No| Fail401[Return HTTP 401 Unauthorized]\n`;
-    chart += `  HeadersCheck -->|Yes| ReadBody[2. Read Raw Body]\n`;
-    chart += `  ReadBody --> ComputeHMAC[3. Compute SHA256 HMAC with Secret]\n`;
-    chart += `  ComputeHMAC --> MatchList{Match Any in Signature List?}\n`;
-    chart += `  MatchList -->|No| Fail401\n`;
-    chart += `  MatchList -->|Yes| ProcessData[4. Process Incident Event]\n`;
-    chart += `  ProcessData --> Success200[Return HTTP 200 OK]\n`;
-  }
-
+  let chart = 'graph TD\n  Client[🌍 Webhook Client Dispatcher] -->|POST signed payload| Receiver[🚦 FastAPI Webhook Receiver]\n  Receiver -->|Extract Header signature| Verify{{HMAC Signature matches?}}\n  Verify -->|Yes| Process[✅ Run automation playbook]\n  Verify -->|No| Reject[🚫 401 Unauthorized Block]';
   compiledCode.flow = chart;
 }
 

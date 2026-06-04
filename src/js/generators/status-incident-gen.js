@@ -202,19 +202,7 @@ Acknowledge the incident immediately to notify users:
 }
 
 function compileMermaidFlow() {
-  const provider = $('incident_provider').value;
-  const integration = $('incident_integration').value;
-
-  let chart = 'graph TD\n';
-
-  chart += `  Alert[Alert Source / Prometheus] -->|1. Trigger Alert| Router[${provider.toUpperCase()} Router]\n`;
-  chart += `  Router -->|2. Route incident| OnCall[On-Call Primary SRE]\n`;
-  chart += `  Router -->|3. Publish status| StatusPage[Public Status Dashboard]\n`;
-  chart += `  OnCall -->|4. Acknowledge alert| Router\n`;
-  chart += `  Router -->|5. Push workspace feed| Integrations[${integration.toUpperCase()} Channel]\n`;
-  chart += `  OnCall -->|6. Resolve incident| Router\n`;
-  chart += `  Router -->|7. Set operational status| StatusPage\n`;
-
+  let chart = 'graph TD\n  Alarm[🚨 System Outage Alert] -->|Route| Pager[☎️ PagerDuty / Opsgenie]\n  Pager -->|Escalate| SRE[🛠️ On-Call SRE engineer]\n  SRE -->|Declare Incident| Bridge[💬 Open Incident Slack Bridge]\n  Bridge -->|Resolve| Status[🟢 Update Public Status Page]';
   compiledCode.flow = chart;
 }
 

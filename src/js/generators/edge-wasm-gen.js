@@ -238,16 +238,7 @@ If edge zones drop availability:
 }
 
 function compileMermaidFlow() {
-  const framework = $('wasm_framework').value;
-  const provider = $('edge_provider').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Client[Global Client Request] -->|Route to Edge| Edge[CDN / Edge Provider: ${provider.toUpperCase()}]\n`;
-  chart += `  Edge -->|Lookup WASM Registry| Load[Instantiate WASM sandbox]\n`;
-  chart += `  Load -->|Cold Start < 1ms| Exec[Run handler code: ${framework.toUpperCase()}]\n`;
-  chart += `  Exec -->|Query backend| DB[Production Database API]\n`;
-  chart += `  Exec -->|Response payload| Client\n`;
-
+  let chart = 'graph TD\n  Traffic[🚦 Client Traffic] -->|Route| Edge[🌐 Edge WebAssembly Sandbox]\n  Edge -->|Rust/Go handlers| Exec[⚙️ WASI Serverless Runtime]\n  Exec -->|Fast Query| Database[(🗄️ Edge KV Storage)]\n  Exec -->|SLA Latency check| Alert[🚨 SLA Outlier Alert]';
   compiledCode.flow = chart;
 }
 

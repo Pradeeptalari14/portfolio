@@ -17,7 +17,9 @@ const $ = (id) => document.getElementById(id);
       variables: '',
       outputs: '',
       providers: ''
-    };
+    ,
+  flow: ''
+};
 
     window.addEventListener('DOMContentLoaded', () => {
       populateRegions('aws');
@@ -52,7 +54,8 @@ const $ = (id) => document.getElementById(id);
       compileVariablesTf();
       compileOutputsTf();
       compileProvidersTf();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     // Compile main.tf
@@ -289,7 +292,13 @@ const $ = (id) => document.getElementById(id);
       compiledCode.providers = code;
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  HCL[📄 Terraform files] -->|terraform init| Init[⚙️ Init Plugins]\n  Init -->|terraform plan| Plan[🔍 Spec Dryrun]\n  Plan -->|terraform apply| Cloud[☁️ Cloud Provisioning]\n  Cloud -->|Status Audit| Telemetry[📊 Cloud Resources]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
@@ -304,8 +313,27 @@ const $ = (id) => document.getElementById(id);
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab];
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function copyActiveTabContent() {
       const content = compiledCode[activeTab];

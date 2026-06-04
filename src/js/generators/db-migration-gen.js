@@ -228,16 +228,7 @@ If a partially applied DDL statement corrupted the target schema:
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  CI[CI/CD Pipeline] -->|1. Run database migration| Migrate[Migration Runner (Liquibase/Flyway)]\n`;
-  chart += `  Migrate -->|2. Check Schema Lock| LockCheck{Is Database Locked?}\n`;
-  chart += `  LockCheck -->|Yes| Fail[Abort deployment & alert SRE]\n`;
-  chart += `  LockCheck -->|No| LockDB[3. Set database lock]\n`;
-  chart += `  LockDB -->|4. Apply DDL migration| DB[(Target Database: Postgres/MySQL)]\n`;
-  chart += `  DB -->|5. Record in schema history| DBHistory[Save changelog state]\n`;
-  chart += `  DBHistory -->|6. Release lock| Finish[Deployment Completed Successfully]\n`;
-
+  let chart = 'graph TD\n  Migration[📄 SQL DDL / Liquibase XML] -->|Execute| Database[(🗄️ Target Database)]\n  Database -->|Verify Integrity| Audit{{Migration Succeeded?}}\n  Audit -->|Yes| Success[✅ Schema Version Upgraded]\n  Audit -->|No| Rollback[🚨 Run Rollback script & Restore Backup]';
   compiledCode.flow = chart;
 }
 

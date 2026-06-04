@@ -179,16 +179,7 @@ If the burn rate spike is associated with a recent deployment release:
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  User[User Traffic] -->|1. Generate HTTP requests| API[Ingress / API Gateway]\n`;
-  chart += `  API -->|2. Scrape metric endpoints| Prom[Prometheus Server]\n`;
-  chart += `  Prom -->|3. Evaluate alert rules| BurnRate{Burn Rate > Threshold?}\n`;
-  chart += `  BurnRate -->|Yes| Alert[4. Trigger AlertManager notification]\n`;
-  chart += `  Alert -->|Page SRE| Pager[PagerDuty / Slack Alert]\n`;
-  chart += `  Pager -->|5. SRE Action| Runbook[Follow SLO Triage Runbook]\n`;
-  chart += `  Runbook -->|Fix & Rollback| Recover[Uptime Restored & Error Budget recovers]\n`;
-
+  let chart = 'graph TD\n  Metrics[📊 Prometheus Scraped metrics] -->|Calculate| BurnRate[📈 Error Budget Burn Rate]\n  BurnRate -->|Evaluate SLO| SLA{{SLO rules breached?}}\n  SLA -->|Yes| Page[🚨 Page SRE Triage Team]\n  SLA -->|No| Safe[Run normally]';
   compiledCode.flow = chart;
 }
 

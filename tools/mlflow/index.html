@@ -31,7 +31,8 @@
       --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
   </style>
-</head>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer integrity="sha512-KKb898fDTUAhIOLvWw6MD6NwYDcEIHkBfvrZ33m1wA4c9VMlhf6tCzaP4O+F/gsOXguiKLPoHLg+szP+OL4Q4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
   <!-- ══ NAVBAR ══ -->
@@ -188,11 +189,13 @@
               <button onclick="switchTab('k8s')" id="tab-k8s" class="tab-btn">mlflow-k8s.yaml</button>
               <button onclick="switchTab('tracker')" id="tab-tracker" class="tab-btn">train_tracker.py</button>
               <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
-            </div>
+            
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button></div>
           </div>
 
           <!-- Output Viewport -->
           <pre id="output-box" class="ide-viewport"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
         </div>
 
         <!-- Global Actions -->

@@ -244,14 +244,7 @@ If anomaly correlates with traffic burst:
 }
 
 function compileMermaidFlow() {
-  const target = $('detect_target').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Scrape[Metric Scraper] -->|Fetch metrics| Detector[${target.toUpperCase()} Anomaly Tagger]\n`;
-  chart += `  Detector -->|No drift| Monitor[Normal Monitoring Dashboard]\n`;
-  chart += `  Detector -->|Drift identified| Classify[Isolation Forest Classifier]\n`;
-  chart += `  Classify -->|Anomaly confirmed| Alert[Trigger AIOps SRE Pager Alert]\n`;
-
+  let chart = 'graph TD\n  Logs[📄 Application Logs] -->|Ingestion| Scraper[⚙️ Prometheus Scraper]\n  Scraper -->|Holt-Winters| Detection[🧠 ML Anomaly Detector]\n  Detection -->|Drift/Anomaly| Alert[🚨 Trigger SRE Webhook Alert]\n  Alert --> Solver[🤖 Automated Runbook Triage]';
   compiledCode.flow = chart;
 }
 

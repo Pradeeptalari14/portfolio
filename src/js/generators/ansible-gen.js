@@ -57,7 +57,9 @@ const SCRIPT_VERSION = '2.1.0';
       inventory: '',
       site: '',
       cfg: ''
-    };
+    ,
+  flow: ''
+};
 
     // Initialize triggers on window load
     window.addEventListener('DOMContentLoaded', () => {
@@ -303,7 +305,8 @@ const SCRIPT_VERSION = '2.1.0';
       compileAnsibleCfg();
       
       // Update active view
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     // Compile core Playbook configuration
@@ -633,7 +636,13 @@ const SCRIPT_VERSION = '2.1.0';
     }
 
     // Switch between files in the emulator UI
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Playbook[📄 Ansible Playbook] -->|Runs on| Target[🖥️ Target Hosts]\n  Target -->|Update Package| Package[📦 System Packages]\n  Target -->|Apply Config| Config[⚙️ Services Configuration]\n  Target -->|Status Audit| Audit[📊 Health Check Reports]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       
       // Update tab buttons style
@@ -644,7 +653,10 @@ const SCRIPT_VERSION = '2.1.0';
       const nameBox = $('download-name-input');
       const extTag = $('file-extension-tag');
 
-      if (tabId === 'playbook') {
+      if (tabId === 'flow') {
+    nameBox.value = 'flow';
+    extTag.textContent = '.mermaid';
+  } else if (tabId === 'playbook') {
         nameBox.value = 'playbook';
         extTag.textContent = '.yml';
       } else if (tabId === 'inventory') {
@@ -663,9 +675,27 @@ const SCRIPT_VERSION = '2.1.0';
 
     // Refresh code displayed inside IDE emulator
     function updateViewportContent() {
-      const output = $('output-box');
-      output.textContent = compiledCode[activeTab];
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     // Global copy function
     function copyActiveTabContent() {

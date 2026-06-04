@@ -223,24 +223,7 @@ If a critical production hotfix is blocked:
 }
 
 function compileMermaidFlow() {
-  const action = $('vuln_action').value;
-  let chart = 'graph TD\n';
-
-  chart += `  Push[CI Push Image to Registry] --> Scan[Trigger Vulnerability Scan]\n`;
-  chart += `  Scan --> CheckVuln{Vulnerability Severity?}\n`;
-  if (action === 'block') {
-    chart += `  CheckVuln -->|High/Critical| Block[Block Pull & Reject Deploy]\n`;
-    chart += `  CheckVuln -->|Low/Medium| Sign[Sign Image with Cosign]\n`;
-  } else {
-    chart += `  CheckVuln -->|High/Critical| Warn[Warn Operator & Allow Pull]\n`;
-    chart += `  CheckVuln -->|Low/Medium| Sign[Sign Image with Cosign]\n`;
-    chart += `  Warn --> Sign\n`;
-  }
-  chart += `  Sign --> Deploy[Apply to Kubernetes Cluster]\n`;
-  chart += `  Deploy --> Validate[K8s Admission Webhook verify signature]\n`;
-  chart += `  Validate -->|Valid| Run[Run Pod Container]\n`;
-  chart += `  Validate -->|Invalid| Terminate[Block Scheduling & Throw Error]\n`;
-
+  let chart = 'graph TD\n  Build[🏭 CI Build Image] -->|Sign Image| Cosign[🔑 Cosign Signing]\n  Cosign -->|Push| Registry[(🐳 Container Registry)]\n  Registry -->|Image Scan| Vulnerability{{Vulnerabilities Found?}}\n  Vulnerability -->|Yes| Block[🚫 Block Deploy & Quarantine]\n  Vulnerability -->|No| Deploy[🚀 Deploy Image to Prod]';
   compiledCode.flow = chart;
 }
 

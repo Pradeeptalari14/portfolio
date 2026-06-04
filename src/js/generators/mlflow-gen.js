@@ -71,10 +71,14 @@ const $ = (id) => document.getElementById(id);
       k8s: '',
       tracker: '',
       readme: ''
-    };
+    ,
+  flow: ''
+};
 
     const tabConfigs = {
-      compose: { label: 'docker-compose.yml', filename: 'docker-compose', ext: '.yml' },
+      compose: { label: 'docker-compose.yml', filename: 'docker-compose', ext: '.yml' ,
+  flow: { label: '📊 Visual Flowchart', filename: 'flow', ext: '.mermaid' }
+},
       k8s: { label: 'mlflow-k8s.yaml', filename: 'mlflow-k8s', ext: '.yaml' },
       tracker: { label: 'train_tracker.py', filename: 'train_tracker', ext: '.py' },
       readme: { label: 'README.md', filename: 'README', ext: '.md' }
@@ -94,7 +98,8 @@ const $ = (id) => document.getElementById(id);
       compileK8s();
       compileTracker();
       compileReadme();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     function compileCompose() {
@@ -378,7 +383,13 @@ This workspace deploys the centralized MLflow tracking server and exposes the ex
       compiledCode.readme = code;
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Train[🐍 Python training script] -->|Log metrics| Tracker[📈 MLflow tracking server]\n  Tracker -->|Store weights| S3[(🗄️ S3 Artifacts Bucket)]\n  Tracker -->|Register| Registry[📦 MLflow Model Registry]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
       $('tab-' + tabId).classList.add('active');
@@ -391,9 +402,27 @@ This workspace deploys the centralized MLflow tracking server and exposes the ex
     }
 
     function updateViewportContent() {
-      const content = compiledCode[activeTab];
-      $('output-box').textContent = content || '';
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function copyActiveTabContent() {
       const content = compiledCode[activeTab];

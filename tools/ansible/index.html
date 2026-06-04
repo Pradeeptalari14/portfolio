@@ -125,7 +125,8 @@
       border-bottom: none;
     }
   </style>
-</head>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer integrity="sha512-KKb898fDTUAhIOLvWw6MD6NwYDcEIHkBfvrZ33m1wA4c9VMlhf6tCzaP4O+F/gsOXguiKLPoHLg+szP+OL4Q4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
   <!-- ══ NAVBAR ══ -->
@@ -568,11 +569,13 @@
               <button onclick="switchTab('inventory')" id="tab-inventory" class="tab-btn">inventory.ini</button>
               <button onclick="switchTab('site')" id="tab-site" class="tab-btn">site.yml</button>
               <button onclick="switchTab('cfg')" id="tab-cfg" class="tab-btn">ansible.cfg</button>
-            </div>
+            
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button></div>
           </div>
 
           <!-- Output Viewport -->
           <pre id="output-box" class="ide-viewport"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
         </div>
 
         <!-- Global Trigger Actions Card -->

@@ -171,11 +171,15 @@ const $ = (id) => document.getElementById(id);
       prometheus: '',
       grafana: '',
       readme: ''
-    };
+    ,
+  flow: ''
+};
 
     // Tab files mapping metadata
     const tabConfigs = {
-      app: { label: 'app.py', filename: 'app', ext: '.py' },
+      app: { label: 'app.py', filename: 'app', ext: '.py' ,
+  flow: { label: '📊 Visual Flowchart', filename: 'flow', ext: '.mermaid' }
+},
       main: { label: 'main.py', filename: 'main', ext: '.py' },
       rag_engine: { label: 'rag_engine.py', filename: 'rag_engine', ext: '.py' },
       dockerfile: { label: 'Dockerfile', filename: 'Dockerfile', ext: '' },
@@ -238,7 +242,13 @@ const $ = (id) => document.getElementById(id);
       if (model.includes('phi3')) diagLlm.textContent = 'Phi 3';
     }
 
-    function switchTab(tabId) {
+    
+function compileMermaidFlow() {
+  let chart = 'graph TD\n  Query[👤 User Query] -->|Embed| Vector[(🗄️ ChromaDB VectorStore)]\n  Vector -->|Context| Prompt[📝 Augmented Prompt]\n  Prompt -->|Inference| LLM[🧠 Local LLM/Streamlit]\n  LLM -->|Response| Answer[💬 Dynamic Answer]';
+  compiledCode.flow = chart;
+}
+
+function switchTab(tabId) {
       activeTab = tabId;
       
       // Update UI active buttons
@@ -255,8 +265,27 @@ const $ = (id) => document.getElementById(id);
     }
 
     function updateViewportContent() {
-      $('output-box').textContent = compiledCode[activeTab] || `# File is disabled / empty`;
+  if (activeTab === 'flow') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.remove('hidden');
+
+    const container = $('mermaid-container');
+    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+
+    try {
+      mermaid.run({
+        nodes: [container.querySelector('.mermaid')]
+      });
+    } catch (e) {
+      console.error("Mermaid render error:", e);
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
     }
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
+}
 
     function triggerCompileAll() {
       compileApp();
@@ -269,7 +298,8 @@ const $ = (id) => document.getElementById(id);
       compilePrometheus();
       compileGrafana();
       compileReadme();
-      updateViewportContent();
+      compileMermaidFlow();
+  updateViewportContent();
     }
 
     /* ═══════════════════════════════════════════════

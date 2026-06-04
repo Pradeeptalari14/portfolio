@@ -297,17 +297,7 @@ If performance degrades to a state causing cascading down-times:
 }
 
 function compileMermaidFlow() {
-  let chart = 'graph TD\n';
-
-  chart += `  Runner[Performance Runner] -->|1. Generate Concurrency| VUs[Virtual Users Pool]\n`;
-  chart += `  VUs -->|2. Send concurrent queries| Target[Target Ingress / Gateway]\n`;
-  chart += `  Target -->|3. Route requests| Microservices[App Service layer]\n`;
-  chart += `  Microservices -->|4. Query DB/Cache| Datastore[(Database / Redis)]\n`;
-  chart += `  Target -->|5. Record Latency & Code| Runner\n`;
-  chart += `  Runner -->|6. Audit compliance| Thresholds{Verify SRE SLO thresholds}\n`;
-  chart += `  Thresholds -->|Passed| Pass[Mark Build Successful]\n`;
-  chart += `  Thresholds -->|Failed| Alert[Trigger SRE Escalation & Alert]\n`;
-
+  let chart = 'graph TD\n  VirtualUsers[👥 k6 / Locust users] -->|Inject Traffic| Host[🖥️ Target Application]\n  Host -->|Latency Stats| Collector[⚙️ Performance Metrics collector]\n  Collector -->|Assess Metrics| Validate{{SLA Breached?}}\n  Validate -->|Yes| Abort[🚨 Abort Load Test & Alert SRE]\n  Validate -->|No| Complete[✅ Performance sweep OK]';
   compiledCode.flow = chart;
 }
 

@@ -264,16 +264,7 @@ If data sync needs manual reconciliation:
 }
 
 function compileMermaidFlow() {
-  const protocol = $('protocol_type').value;
-  const suite = $('quality_suite').value;
-
-  let chart = 'graph TD\n';
-  chart += `  Src[Source Events] -->|Ingestion| Ingest[${protocol.toUpperCase()} Ingest Task]\n`;
-  chart += `  Ingest -->|Load Staging| DB[(Database Staging)]\n`;
-  chart += `  DB -->|Audit| Validate[${suite.toUpperCase()} Checks]\n`;
-  chart += `  Validate -->|Pass| Target[(Production Data Warehouse)]\n`;
-  chart += `  Validate -->|Fail| Alert[Trigger SRE Data Quality Alert]\n`;
-
+  let chart = 'graph TD\n  Src[📥 Source Events] -->|Ingestion| Ingest[⚙️ Airflow/Prefect Ingest Task]\n  Ingest -->|Load Staging| DB[(🗄️ Database Staging)]\n  DB -->|Audit| Validate[🔍 Great Expectations Checks]\n  Validate -->|Pass| Target[(📊 Production Data Warehouse)]\n  Validate -->|Fail| Alert[🚨 Trigger SRE Data Quality Alert]';
   compiledCode.flow = chart;
 }
 
