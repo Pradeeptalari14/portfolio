@@ -485,31 +485,62 @@
     },
     {
       keywords: ['tool', 'generator', 'scripts', 'list', 'studio', 'studios'],
-      answer: "🛠️ Pradeep has designed 19 interactive automation studios:<br><br>" +
+      answer: "🛠️ Pradeep has designed 50 interactive automation studios:<br><br>" +
              "**AI & MLOps Studios:**<br>" +
              "• [Enterprise LLM Studio](/tools/llm/)<br>" +
              "• [Local SLM Studio](/tools/slm/)<br>" +
              "• [MLflow Tracking Studio](/tools/mlflow/)<br>" +
              "• [Strands SRE Agent Studio](/tools/strands/)<br>" +
-             "• [DevOps AI RAG Studio](/tools/ai/)<br><br>" +
+             "• [DevOps AI RAG Studio](/tools/ai/)<br>" +
+             "• [LLM Guardrails Studio](/tools/llm-guardrails/)<br>" +
+             "• [Ray Cluster Studio](/tools/ray-cluster/)<br>" +
+             "• [AI Evaluation Studio](/tools/ai-eval/)<br>" +
+             "• [Feature Store Studio](/tools/feature-store/)<br>" +
+             "• [AIOps Studio](/tools/aiops/)<br><br>" +
              "**Cloud & Orchestration:**<br>" +
              "• [k8s Script Generator](/tools/kubernetes/)<br>" +
              "• [Helm Chart Studio](/tools/helm/)<br>" +
              "• [ArgoCD Studio](/tools/argocd/)<br>" +
-             "• [Terraform Architect](/tools/terraform/)<br><br>" +
+             "• [Terraform Architect](/tools/terraform/)<br>" +
+             "• [Service Mesh Studio](/tools/mesh/)<br>" +
+             "• [API Gateway Studio](/tools/api-gateway/)<br>" +
+             "• [Progressive Delivery Studio](/tools/progressive-delivery/)<br>" +
+             "• [Edge WASM Studio](/tools/edge-wasm/)<br>" +
+             "• [Confidential Enclave Studio](/tools/confidential-enclave/)<br><br>" +
              "**CI/CD Pipelines:**<br>" +
              "• [GitHub Actions Studio](/tools/github-actions/)<br>" +
              "• [GitLab CI/CD Studio](/tools/gitlab/)<br>" +
-             "• [Jenkins Pipeline Studio](/tools/jenkins/)<br><br>" +
+             "• [Jenkins Pipeline Studio](/tools/jenkins/)<br>" +
+             "• [Webhooks Studio](/tools/webhooks/)<br><br>" +
              "**Configuration & Automation:**<br>" +
              "• [Ansible Playbook Builder](/tools/ansible/)<br>" +
-             "• [Docker Manager](/tools/docker/)<br><br>" +
+             "• [Docker Manager](/tools/docker/)<br>" +
+             "• [Secret Management Studio](/tools/secrets/)<br>" +
+             "• [GitOps Secrets Studio](/tools/gitops-secrets/)<br>" +
+             "• [Database Migration Studio](/tools/db-migration/)<br>" +
+             "• [FinOps Studio](/tools/finops/)<br>" +
+             "• [DNS & SSL PKI Studio](/tools/dns-ssl/)<br>" +
+             "• [Backup & DR Studio](/tools/backup-dr/)<br>" +
+             "• [Status & Incident Studio](/tools/status-incident/)<br>" +
+             "• [IDP Template Studio](/tools/idp-template/)<br>" +
+             "• [Container Registry Studio](/tools/container-registry/)<br>" +
+             "• [Database Clustering Studio](/tools/db-clustering/)<br><br>" +
              "**Observability & Scripting:**<br>" +
              "• [Monitoring Telemetry](/tools/monitoring/)<br>" +
              "• [Logging Studio](/tools/logging/)<br>" +
              "• [Linux Sysadmin Studio](/tools/linux/)<br>" +
              "• [Shell Script Studio](/tools/shellscript/)<br>" +
-             "• [Python Studio](/tools/python/)<br><br>" +
+             "• [Python Studio](/tools/python/)<br>" +
+             "• [Chaos Engineering Studio](/tools/chaos/)<br>" +
+             "• [Distributed Tracing Studio](/tools/tracing/)<br>" +
+             "• [Policy-as-Code Studio](/tools/compliance/)<br>" +
+             "• [Performance Studio](/tools/performance/)<br>" +
+             "• [SLO & Error Budget Studio](/tools/slo/)<br>" +
+             "• [SAST Security Studio](/tools/sast/)<br>" +
+             "• [eBPF Tracing Studio](/tools/ebpf-tracing/)<br>" +
+             "• [GreenOps Studio](/tools/greenops/)<br>" +
+             "• [Decentralized Infrastructure Studio](/tools/decentralized-infra/)<br>" +
+             "• [DataOps Studio](/tools/dataops/)<br><br>" +
              "Click any link to launch the studio!"
     },
     {
@@ -700,6 +731,130 @@
     {
       keywords: ['self-healing infrastructure', 'self-healing', 'remediation', 'disk cleanup', 'ansible cleanup'],
       answer: "⚡ **Self-Healing Infrastructure Platform**: An automated SRE system that detects high-priority alerts (like disk space exhaustion or node memory pressure) and executes pre-defined Ansible playbooks or shell scripts to remediate the issue automatically without human intervention.<br><br>🚀 Ask the chatbot: **'disk usage 95%'** to trigger the self-healing playbook automation simulator! Generate automation recipes at the **[Ansible Playbook Builder](/tools/ansible/)** or **[Shell Script Studio](/tools/shellscript/)**."
+    },
+    {
+      keywords: ['webhook', 'webhooks', 'slack webhook', 'teams webhook', 'hmac', 'pagerduty webhook'],
+      answer: "🔗 **Webhooks Studio**: Configure and generate secure HMAC-verified webhook receivers (FastAPI Python), event dispatchers (Slack, Teams, PagerDuty), reference JSON payloads, and SRE runbooks.<br><br>Easily secure your webhook integrations and generate all necessary code using Pradeep's **[Webhooks Studio](/tools/webhooks/)**!"
+    },
+    {
+      keywords: ['secrets', 'vault', 'secrets manager', 'sealed secrets', 'encryption'],
+      answer: "🔑 **Secret Management Studio**: Generate secure policies for HashiCorp Vault, Python secrets retrieval utilities, and Kubernetes Sealed Secrets manifests.<br><br>Learn more and scaffold configurations at the **[Secret Management Studio](/tools/secrets/)**!"
+    },
+    {
+      keywords: ['chaos', 'chaos mesh', 'resilience', 'chaos engineering', 'rollback'],
+      answer: "💥 **Chaos Engineering Studio**: Scaffold Chaos Mesh experiments, container resource stressors, and automated rollback/recovery runbooks.<br><br>Simulate outages and prepare defenses at the **[Chaos Engineering Studio](/tools/chaos/)**!"
+    },
+    {
+      keywords: ['service mesh', 'istio', 'linkerd', 'virtualservice', 'circuit breaker', 'mtls'],
+      answer: "🕸️ **Service Mesh Studio**: Configure Istio/Linkerd canary traffic routing rules, Envoy circuit breakers, and egress gateway mTLS rules.<br><br>Manage microservice mesh architectures at the **[Service Mesh Studio](/tools/mesh/)**!"
+    },
+    {
+      keywords: ['tracing', 'opentelemetry', 'otel', 'jaeger', 'apm', 'spans'],
+      answer: "🕵️ **Distributed Tracing Studio**: Generate OpenTelemetry collector configurations, dynamic tracer scripts (Python, Go, Node.js), and latency incident troubleshooting guides.<br><br>Instrument your workloads and track metrics at the **[Distributed Tracing Studio](/tools/tracing/)**!"
+    },
+    {
+      keywords: ['compliance', 'policy as code', 'opa', 'rego', 'kyverno', 'admission control'],
+      answer: "🛡️ **Policy-as-Code Studio**: Scaffold OPA Rego security policies, Kyverno admission controller rules, and compliance pipeline scan runners.<br><br>Enforce guardrails and audit resources at the **[Policy-as-Code Studio](/tools/compliance/)**!"
+    },
+    {
+      keywords: ['migration', 'liquibase', 'flyway', 'schema', 'rollback sql'],
+      answer: "🗄️ **Database Migration Studio**: Generate Liquibase YAML changesets, Flyway DDL migrations, and automated schema rollback recovery scripts.<br><br>Manage database upgrades safely at the **[Database Migration Studio](/tools/db-migration/)**!"
+    },
+    {
+      keywords: ['performance', 'load test', 'k6', 'locust', 'benchmarking'],
+      answer: "📈 **Performance Studio**: Generate k6 load testing scripts, Locust Python task definition scripts, automated execution shell scripts, and performance runbooks.<br><br>Test and benchmark your infrastructure at the **[Performance Studio](/tools/performance/)**!"
+    },
+    {
+      keywords: ['slo', 'sli', 'sla', 'error budget', 'burn rate'],
+      answer: "🎯 **SLO & Error Budget Studio**: Scaffold Prometheus alerting rules, ServiceLevelObjective Kubernetes manifest CRDs, and error-budget burn rate triage runbooks.<br><br>Define and audit your SLOs at the **[SLO & Error Budget Studio](/tools/slo/)**!"
+    },
+    {
+      keywords: ['sast', 'semgrep', 'trivy', 'security scan', 'dependency scan'],
+      answer: "🛡️ **SAST Security Studio**: Generate custom Semgrep rules, Trivy ignore settings, and automated CI security scanning workflows.<br><br>Audit your code and configuration compliance at the **[SAST Security Studio](/tools/sast/)**!"
+    },
+    {
+      keywords: ['finops', 'cost optimization', 'cloud custodian', 'lambda cleanup'],
+      answer: "💰 **FinOps & Cost Optimization Studio**: Scaffold Cloud Custodian compliance rules, AWS/GCP dynamic cleanup Python/Bash scripts, and cost budget alert thresholds.<br><br>Monitor and optimize your cloud hosting footprint at the **[FinOps Studio](/tools/finops/)**!"
+    },
+    {
+      keywords: ['dns', 'ssl', 'certificate', 'pki', 'certbot', 'lets encrypt'],
+      answer: "🌐 **DNS & SSL PKI Studio**: Scaffold ACME Certbot certificate renewal schedules, Cloudflare/Route53 DNS record sets JSON rules, and SRE cert expiry cron checks.<br><br>Manage domains and SSL certificates at the **[DNS & SSL PKI Studio](/tools/dns-ssl/)**!"
+    },
+    {
+      keywords: ['backup', 'disaster recovery', 'dr', 'velero', 'snapshot'],
+      answer: "💾 **Backup & Disaster Recovery Studio**: Generate Kubernetes Velero backup schedules, Postgres/MySQL cron snapshot dump rules, and SRE failover restore recovery playbooks.<br><br>Verify and run cluster backup policies at the **[Backup & DR Studio](/tools/backup-dr/)**!"
+    },
+    {
+      keywords: ['incident', 'status page', 'pagerduty', 'opsgenie', 'escalation'],
+      answer: "🚨 **Status Page & Incident Response Studio**: Scaffold PagerDuty/Opsgenie escalation rules, status page components configuration maps, and incident communication runbooks.<br><br>Setup incident escalation pathways at the **[Status & Incident Studio](/tools/status-incident/)**!"
+    },
+    {
+      keywords: ['api gateway', 'reverse proxy', 'nginx', 'traefik', 'rate limit'],
+      answer: "🚦 **API Gateway Studio**: Scaffold Nginx reverse proxy configs, Traefik ingress routes, Kong routing rules, and rate limit headers.<br><br>Manage gateway access at the **[API Gateway Studio](/tools/api-gateway/)**!"
+    },
+    {
+      keywords: ['sops', 'age', 'gitops secrets', 'decryption'],
+      answer: "🔐 **GitOps Secrets Studio**: Generate Mozilla SOPS configs, Age encrypted keys, and GitOps decryption runners.<br><br>Encrypt/decrypt configurations at the **[GitOps Secrets Studio](/tools/gitops-secrets/)**!"
+    },
+    {
+      keywords: ['idp', 'backstage', 'developer portal', 'software template'],
+      answer: "📦 **IDP Software Template Studio**: Scaffold Backstage service catalog metadata and developer software scaffolding templates.<br><br>Automate onboarding at the **[IDP Template Studio](/tools/idp-template/)**!"
+    },
+    {
+      keywords: ['progressive delivery', 'canary', 'argo rollouts', 'feature flags', 'openfeature'],
+      answer: "🚦 **Progressive Delivery Studio**: Scaffold Argo Rollouts canary releases, metrics analysis templates, and OpenFeature flag schemas.<br><br>Manage progressive delivery strategies at the **[Progressive Delivery Studio](/tools/progressive-delivery/)**!"
+    },
+    {
+      keywords: ['cosign', 'harbor', 'image signing', 'container registry'],
+      answer: "🏷️ **Container Registry Studio**: Generate Cosign image signing scripts, Harbor tag retention rules, and registry configurations.<br><br>Configure secure container registries at the **[Container Registry Studio](/tools/container-registry/)**!"
+    },
+    {
+      keywords: ['patroni', 'sentinel', 'db replication', 'database cluster', 'database ha'],
+      answer: "🗄️ **Database Clustering Studio**: Scaffold Postgres Patroni failover configurations, Redis Sentinel topologies, and cluster sync guides.<br><br>Set up high availability database clusters at the **[Database Clustering Studio](/tools/db-clustering/)**!"
+    },
+    {
+      keywords: ['llm guardrails', 'llama guard', 'prompt injection', 'input validation', 'safety guardrails'],
+      answer: "🛡️ **LLM Guardrails Studio**: Configure input/output validation, prompt injection shields, and SRE safety rules (NeMo/Llama Guard).<br><br>Manage LLM security guardrails at the **[LLM Guardrails Studio](/tools/llm-guardrails/)**!"
+    },
+    {
+      keywords: ['ray cluster', 'distributed training', 'kubeflow', 'gpu scale', 'autoscaling ray'],
+      answer: "⚡ **Ray Cluster Studio**: Orchestrate multi-node distributed training jobs, Ray clusters, and GPU autoscaling policies.<br><br>Configure distributed Ray clusters at the **[Ray Cluster Studio](/tools/ray-cluster/)**!"
+    },
+    {
+      keywords: ['ai eval', 'ragas', 'benchmarking ai', 'hallucination metric', 'trulens'],
+      answer: "📊 **AI Evaluation Studio**: Scaffold automated Ragas pipelines, model accuracy tests, and hallucination metrics logs.<br><br>Manage AI evaluation pipelines at the **[AI Evaluation Studio](/tools/ai-eval/)**!"
+    },
+    {
+      keywords: ['ebpf', 'ebpf tracing', 'cilium', 'kernel tracing', 'bpftrace'],
+      answer: "🐝 **eBPF Network Observability & Kernel Tracing Studio**: Generate kernel-level socket filters, Cilium network policies, and bpftrace performance scripts.<br><br>Configure eBPF tracing tools at the **[eBPF Tracing Studio](/tools/ebpf-tracing/)**!"
+    },
+    {
+      keywords: ['feature store', 'feast', 'offline store', 'online store', 'features registry'],
+      answer: "🗄️ **MLOps Feature Store Studio**: Generate Feast feature registries, offline/online database configurations, and feature definition scripts.<br><br>Manage feature stores at the **[Feature Store Studio](/tools/feature-store/)**!"
+    },
+    {
+      keywords: ['wasm', 'webassembly', 'edge wasm', 'spin', 'serverless edge'],
+      answer: "🌐 **Edge WASM & Serverless Orchestration Studio**: Orchestrate WebAssembly edge functions, Fermyon Spin configurations, and lightweight serverless runtimes.<br><br>Build serverless edge functions at the **[Edge WASM Studio](/tools/edge-wasm/)**!"
+    },
+    {
+      keywords: ['greenops', 'carbon', 'kepler', 'sustainability', 'green cloud'],
+      answer: "🌱 **GreenOps & Carbon-Aware Cloud Scheduler Studio**: Generate Kepler telemetry rules, carbon-intensity scheduling crons, and cost/carbon-offset SRE runbooks.<br><br>Audit your carbon footprint at the **[GreenOps Studio](/tools/greenops/)**!"
+    },
+    {
+      keywords: ['enclave', 'sgx', 'sev', 'nitro', 'confidential computing'],
+      answer: "🔒 **Confidential Computing & Secure Enclave Studio**: Orchestrate Intel SGX, AMD SEV, and AWS Nitro Enclaves. Generate attestation scripts and key-rotation pipelines.<br><br>Configure confidential enclaves at the **[Confidential Enclave Studio](/tools/confidential-enclave/)**!"
+    },
+    {
+      keywords: ['web3', 'decentralized', 'ipfs', 'blockchain', 'validator node'],
+      answer: "⛓️ **Web3 & Decentralized Infrastructure Node Monitoring Studio**: Monitor IPFS and blockchain nodes. Generate validator check scripts, peer discovery rules, and status alerts.<br><br>Manage decentralized nodes at the **[Decentralized Infrastructure Studio](/tools/decentralized-infra/)**!"
+    },
+    {
+      keywords: ['dataops', 'airflow', 'prefect', 'dag', 'dre', 'data reliability'],
+      answer: "🔀 **DataOps & Data Reliability Engineering (DRE) Studio**: Configure Airflow/Prefect pipelines, Great Expectations data verification tests, and runbooks.<br><br>Set up automated pipelines at the **[DataOps Studio](/tools/dataops/)**!"
+    },
+    {
+      keywords: ['aiops', 'anomaly', 'anomaly detection', 'holt winters', 'isolation forest'],
+      answer: "🧠 **AIOps & Telemetry Anomaly Detector Studio**: Generate PromQL anomaly detection queries, Isolation Forest python anomaly checks, and Logstash filters.<br><br>Manage anomalies at the **[AIOps Studio](/tools/aiops/)**!"
     }
   ];
 

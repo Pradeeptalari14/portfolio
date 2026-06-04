@@ -23,7 +23,27 @@ describe('Python SRE Utility Studio Compiler', () => {
       run: () => {}
     };
 
-    // JSDOM runs inline scripts. Let's make sure the compiler has finished initial compile
+    // Mock setupCompilerTriggers for JSDOM context
+    window.setupCompilerTriggers = (compileCallback, excludeIds = ['download-name-input']) => {
+      const inputs = window.document.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        if (!excludeIds.includes(input.id)) {
+          input.addEventListener('input', compileCallback);
+          input.addEventListener('change', compileCallback);
+        }
+      });
+    };
+
+    // Load and evaluate python-gen.js manually in JSDOM context
+    const jsPath = path.resolve(__dirname, '../src/js/generators/python-gen.js');
+    let jsCode = fs.readFileSync(jsPath, 'utf8');
+    
+    // Remove ES6 import statements so window.eval compiles it as a classic script
+    jsCode = jsCode.replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, '');
+    
+    window.eval(jsCode);
+
+    // Ensure the compiler has finished initial compile
     if (typeof window.triggerCompileAll === 'function') {
       window.triggerCompileAll();
     }

@@ -65,7 +65,7 @@
       z-index: 100;
     }
     .nav-container {
-      max-width: 1140px;
+      max-width: 1320px;
       margin: 0 auto;
       height: 100%;
       display: flex;
@@ -121,7 +121,7 @@
     /* ── Main Container ── */
     .main-content {
       flex: 1;
-      max-width: 1140px;
+      max-width: 1320px;
       margin: 0 auto;
       width: 100%;
       padding: 5rem 2rem;
@@ -173,22 +173,186 @@
     /* ── Tools Grid ── */
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2.25rem;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1.5rem;
       width: 100%;
-      max-width: 900px;
+      max-width: 1280px;
+      transition: opacity 0.2s ease;
+    }
+    @media (min-width: 640px) {
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (min-width: 1280px) {
+      .tools-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* ── Controls & Filter Panel ── */
+    .controls-container {
+      width: 100%;
+      max-width: 1280px;
+      margin-bottom: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .search-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.8rem 1.25rem 0.8rem 2.75rem;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .search-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1), var(--shadow-md);
+    }
+    .search-icon {
+      position: absolute;
+      left: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+    }
+    .filter-btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .filter-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: var(--bg-surface);
+      transform: translateY(-1px);
+    }
+    .filter-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+    .filter-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      opacity: 0.85;
+      background: rgba(0, 0, 0, 0.08);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+    }
+    .filter-btn.active .filter-count {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* ── No Results State ── */
+    .no-results-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 2rem;
+      text-align: center;
+      width: 100%;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--bg-surface);
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+    .no-results-state.visible {
+      display: flex;
+    }
+    .no-results-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .no-results-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+    .no-results-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
     }
 
     .tool-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 2.5rem;
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
       display: flex;
       flex-direction: column;
-      transition: var(--transition);
+      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
       position: relative;
       box-shadow: var(--shadow-sm);
+      opacity: 1;
+      transform: scale(1);
+    }
+    .tool-card.hidden {
+      display: none !important;
+    }
+    .tool-category-badge {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 50px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      pointer-events: none;
+      transition: var(--transition);
+    }
+    .tool-card:hover .tool-category-badge {
+      background: #ffffff;
+      border-color: var(--border-accent);
+      color: var(--accent-primary);
     }
 
     .tool-card:hover {
@@ -220,10 +384,11 @@
 
     .tool-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.35rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 0.5rem;
+      padding-right: 2.25rem; /* prevent overlap with category badge */
     }
 
     .tool-desc {
@@ -304,7 +469,7 @@
       padding: 2.25rem 0;
     }
     .footer-container {
-      max-width: 1140px;
+      max-width: 1320px;
       margin: 0 auto;
       padding: 0 2rem;
       display: flex;
@@ -325,7 +490,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       padding: 3rem;
-      max-width: 1140px;
+      max-width: 1320px;
       width: 100%;
       box-shadow: var(--shadow-lg);
       text-align: left;
@@ -538,9 +703,57 @@
     <h1 class="page-title">DevOps & SRE <span class="gradient-text">Script Tools</span></h1>
     <p class="page-subtitle">A collection of custom, highly interactive code template generators designed to instantly provision, manage, and scale secure cloud infrastructure with SRE safety guardrails.</p>
 
+    <!-- Search & Filter Controls -->
+    <div class="controls-container">
+      <!-- Search Input -->
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="tools-search" class="search-input" placeholder="Search 50 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" />
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">
+          <span>All Studios</span>
+          <span class="filter-count">50</span>
+        </button>
+        <button class="filter-btn" data-filter="ai">
+          <span>AI & MLOps</span>
+          <span class="filter-count">10</span>
+        </button>
+        <button class="filter-btn" data-filter="cloud">
+          <span>Cloud & Infra</span>
+          <span class="filter-count">9</span>
+        </button>
+        <button class="filter-btn" data-filter="cicd">
+          <span>CI/CD Pipelines</span>
+          <span class="filter-count">4</span>
+        </button>
+        <button class="filter-btn" data-filter="automation">
+          <span>Config & Auto</span>
+          <span class="filter-count">12</span>
+        </button>
+        <button class="filter-btn" data-filter="observability">
+          <span>Observability</span>
+          <span class="filter-count">15</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- No Results Placeholder -->
+    <div id="no-results" class="no-results-state">
+      <div class="no-results-icon">🔍</div>
+      <h4 class="no-results-title">No Studios Found</h4>
+      <p class="no-results-text">No automation studios matched your query. Try clearing the search or choosing another category.</p>
+    </div>
+
     <div class="tools-grid">
       <!-- AI RAG Architect Studio -->
-      <div class="tool-card border-indigo-200 bg-indigo-50/10">
+      <div class="tool-card border-indigo-200 bg-indigo-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
         <div class="tool-icon-wrap" style="color: #6366f1;">🤖</div>
         <h3 class="tool-title">DevOps AI RAG Studio</h3>
         <p class="tool-desc">Build private enterprise knowledge bases. Customize and generate a Streamlit ChatGPT client, FastAPI backend, Langchain/ChromaDB indexing pipelines, and local LLM configurations.</p>
@@ -554,7 +767,8 @@
       </div>
 
       <!-- Enterprise LLM Deployment Studio -->
-      <div class="tool-card border-violet-200 bg-violet-50/10">
+      <div class="tool-card border-violet-200 bg-violet-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
         <div class="tool-icon-wrap" style="color: #7c3aed;">☸️</div>
         <h3 class="tool-title">Enterprise LLM Studio</h3>
         <p class="tool-desc">Orchestrate scalable, GPU-accelerated environments for Large Models. Generate production Kubernetes manifests, high-performance vLLM configurations, and Prometheus telemetry dashboards.</p>
@@ -568,7 +782,8 @@
       </div>
 
       <!-- SLM Local Deployment Studio -->
-      <div class="tool-card border-pink-200 bg-pink-50/10">
+      <div class="tool-card border-pink-200 bg-pink-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
         <div class="tool-icon-wrap" style="color: #ec4899;">🖥️</div>
         <h3 class="tool-title">Local SLM Studio</h3>
         <p class="tool-desc">Build high-performance, containerized or edge environments for Small Models. Generate customized Ollama Modelfiles, systemd service units, and edge bootstrapping scripts.</p>
@@ -582,7 +797,8 @@
       </div>
 
       <!-- MLflow Model Registry & Tracking Studio -->
-      <div class="tool-card border-indigo-200 bg-indigo-50/10">
+      <div class="tool-card border-indigo-200 bg-indigo-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
         <div class="tool-icon-wrap" style="color: #6366f1;">📈</div>
         <h3 class="tool-title">MLflow Tracking Studio</h3>
         <p class="tool-desc">Deploy centralized model training registries. Generate database-backed experiment trackers, Docker Compose service meshes, Kubernetes manifests, and Python metrics logs.</p>
@@ -596,7 +812,8 @@
       </div>
 
       <!-- Strands SRE AI Agent Studio -->
-      <div class="tool-card border-violet-200 bg-violet-50/10">
+      <div class="tool-card border-violet-200 bg-violet-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
         <div class="tool-icon-wrap" style="color: #8b5cf6;">🤖</div>
         <h3 class="tool-title">Strands SRE Agent Studio</h3>
         <p class="tool-desc">Orchestrate autonomous SRE troubleshooters. Generate single-agent or swarm workflows, Model Context Protocol (MCP) integrations, and OpenTelemetry logging traces using the Strands SDK.</p>
@@ -609,8 +826,69 @@
         </div>
       </div>
 
+      <!-- LLM Guardrails & Safety Studio -->
+      <div class="tool-card border-pink-200 bg-pink-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
+        <div class="tool-icon-wrap" style="color: #ec4899;">🛡️</div>
+        <h3 class="tool-title">LLM Guardrails Studio</h3>
+        <p class="tool-desc">Configure input/output validation, prompt injection shields, and SRE safety rules (NeMo/Llama Guard).</p>
+        <div class="tool-footer">
+          <span class="tool-tag">config.yaml</span>
+          <a href="llm-guardrails/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Distributed Training & Ray Cluster Studio -->
+      <div class="tool-card border-indigo-200 bg-indigo-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">⚡</div>
+        <h3 class="tool-title">Ray Cluster Studio</h3>
+        <p class="tool-desc">Orchestrate multi-node distributed training jobs, Ray clusters, and GPU autoscaling policies.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">ray_cluster.yaml</span>
+          <a href="ray-cluster/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- AI Evaluation & Benchmarking Studio -->
+      <div class="tool-card border-violet-200 bg-violet-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
+        <div class="tool-icon-wrap" style="color: #7c3aed;">📊</div>
+        <h3 class="tool-title">AI Evaluation Studio</h3>
+        <p class="tool-desc">Scaffold automated Ragas pipelines, model accuracy tests, and hallucination metrics logs.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">eval_pipeline.py</span>
+          <a href="ai-eval/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- MLOps Feature Store Studio -->
+      <div class="tool-card border-indigo-200 bg-indigo-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">🗄️</div>
+        <h3 class="tool-title">Feature Store Studio</h3>
+        <p class="tool-desc">Generate Feast feature registries, offline/online database configurations, and feature definition scripts.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">feature_store.yaml</span>
+          <a href="feature-store/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
       <!-- Ansible -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
         <div class="tool-icon-wrap" style="color: #ea1b25;">🤖</div>
         <h3 class="tool-title">Ansible Playbook Builder</h3>
         <p class="tool-desc">Deploy applications instantly. Generate highly structured system updates, secure installation recipes, and customized role parameters in YAML syntax.</p>
@@ -624,7 +902,8 @@
       </div>
 
       <!-- Docker -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
         <div class="tool-icon-wrap" style="color: #2496ed;">🐳</div>
         <h3 class="tool-title">Docker Manager</h3>
         <p class="tool-desc">Containerize workloads correctly. Build clean production-grade Dockerfiles with validation checks and automated configuration maps.</p>
@@ -638,7 +917,8 @@
       </div>
 
       <!-- Jenkins -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
         <div class="tool-icon-wrap" style="color: #d24939;">🏭</div>
         <h3 class="tool-title">Jenkins CI/CD Pipeline</h3>
         <p class="tool-desc">Standardize continuous integration cycles. Write automated multi-branch Jenkins pipelines with integrated static scanning triggers.</p>
@@ -652,7 +932,8 @@
       </div>
 
       <!-- Terraform -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
         <div class="tool-icon-wrap" style="color: #7b42bc;">🏗️</div>
         <h3 class="tool-title">Terraform Architect</h3>
         <p class="tool-desc">Automate multi-tier environment setups. Provision VPC layers, server infrastructure scales, and bucket access configurations dynamically in HCL syntax.</p>
@@ -666,7 +947,8 @@
       </div>
 
       <!-- Kubernetes -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
         <div class="tool-icon-wrap" style="color: #326ce5;">☸️</div>
         <h3 class="tool-title">Advanced k8s Script Generator</h3>
         <p class="tool-desc">Deploy scalable container workloads. Orchestrate deployment sets, load-balancing discovery service rules, ingress path routes, and pod autoscaling configurations dynamically in YAML manifests.</p>
@@ -680,7 +962,8 @@
       </div>
 
       <!-- Monitoring -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
         <div class="tool-icon-wrap" style="color: #e6522c;">📈</div>
         <h3 class="tool-title">Advanced Monitoring Script Generator</h3>
         <p class="tool-desc">Deploy secure telemetry layers. Generate production-ready bash installation recipes for Prometheus, node_exporter daemon metrics, and Grafana dashboard charts.</p>
@@ -694,7 +977,8 @@
       </div>
 
       <!-- GitHub Actions -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
         <div class="tool-icon-wrap" style="color: #ea4aaa;">⚡</div>
         <h3 class="tool-title">GitHub Actions Workflow Studio</h3>
         <p class="tool-desc">Generate high-level, production-ready CI/CD pipelines with integrated Snyk/Trivy scans and secure multi-platform container pushes.</p>
@@ -708,7 +992,8 @@
       </div>
 
       <!-- Helm Chart -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
         <div class="tool-icon-wrap" style="color: #0c9ae5;">⛵</div>
         <h3 class="tool-title">Helm Chart Scaffold Studio</h3>
         <p class="tool-desc">Generate full package structures including Charts definitions, custom overrides values files, dynamic template deployments and ingresses.</p>
@@ -722,7 +1007,8 @@
       </div>
 
       <!-- ArgoCD -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
         <div class="tool-icon-wrap" style="color: #ef3c3e;">🚀</div>
         <h3 class="tool-title">ArgoCD GitOps App Studio</h3>
         <p class="tool-desc">Orchestrate automated continuous GitOps synchronizations. Generate declarative Application manifests, secure projects wrappers, and CLI setups.</p>
@@ -736,7 +1022,8 @@
       </div>
 
       <!-- Logging -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
         <div class="tool-icon-wrap" style="color: #0ba37f;">🔍</div>
         <h3 class="tool-title">ELK & Loki Logging Studio</h3>
         <p class="tool-desc">Deploy secure system aggregators. Compile customized Logstash filtering configs, Loki scrapers, and automated installer pipelines.</p>
@@ -750,7 +1037,8 @@
       </div>
 
       <!-- Linux & PowerShell -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
         <div class="tool-icon-wrap" style="color: #007acc;">🐚</div>
         <h3 class="tool-title">Linux & PowerShell Studio</h3>
         <p class="tool-desc">Orchestrate raw infrastructure tasks. Generate robust Linux Bash script files or Windows PowerShell cmdlets with built-in telemetry, logging, and cron/scheduler setups.</p>
@@ -764,7 +1052,8 @@
       </div>
 
       <!-- Python SRE -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
         <div class="tool-icon-wrap" style="color: #ffd43b;">🐍</div>
         <h3 class="tool-title">Python SRE Utility Studio</h3>
         <p class="tool-desc">Deploy script tasks with SDK integrations. Generate automated Python scripts for AWS FinOps sweeps, Kubernetes health APIs, SSL certificate audits, or API load pings.</p>
@@ -778,7 +1067,8 @@
       </div>
 
       <!-- ShellScript -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
         <div class="tool-icon-wrap" style="color: #4eb82a;">💲</div>
         <h3 class="tool-title">ShellScript SRE Studio</h3>
         <p class="tool-desc">Deploy production Bash automation scripts. Generate robust shell commands, automated health audits, logs rotations, and alert notifications.</p>
@@ -792,13 +1082,418 @@
       </div>
 
       <!-- GitLab -->
-      <div class="tool-card">
+      <div class="tool-card" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
         <div class="tool-icon-wrap" style="color: #fc6d26;">🦊</div>
         <h3 class="tool-title">GitLab CI/CD Pipeline Studio</h3>
         <p class="tool-desc">Generate robust GitLab CI/CD pipelines (.gitlab-ci.yml) with SRE stages, dependency caching, container builds, and security scans.</p>
         <div class="tool-footer">
           <span class="tool-tag">.gitlab-ci.yml</span>
           <a href="gitlab/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <!-- Webhooks Studio -->
+      <div class="tool-card" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
+        <div class="tool-icon-wrap" style="color: #4f46e5;">🪝</div>
+        <h3 class="tool-title">Webhooks Studio</h3>
+        <p class="tool-desc">Generate secure HMAC-verified webhook receivers, Slack/Teams notification layouts, and automated PagerDuty alerting triggers.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">receiver.py</span>
+          <a href="webhooks/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Secret Management Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">🔑</div>
+        <h3 class="tool-title">Secret Management Studio</h3>
+        <p class="tool-desc">Generate secure HashiCorp Vault policies, dynamic Python secrets retrieval utilities, and Kubernetes Sealed Secrets.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">policy.hcl</span>
+          <a href="secrets/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Chaos Engineering Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #ef4444;">💥</div>
+        <h3 class="tool-title">Chaos Engineering Studio</h3>
+        <p class="tool-desc">Scaffold Chaos Mesh experiment definitions, container stress simulations, and resilience validation runbooks.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">experiment.yaml</span>
+          <a href="chaos/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Service Mesh Studio -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">🕸️</div>
+        <h3 class="tool-title">Service Mesh Studio</h3>
+        <p class="tool-desc">Configure Istio/Linkerd canary traffic rules, Envoy circuit breakers, and mutual TLS (mTLS) egress gateways.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">routing.yaml</span>
+          <a href="mesh/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Distributed Tracing Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🕵️</div>
+        <h3 class="tool-title">Distributed Tracing Studio</h3>
+        <p class="tool-desc">Generate OpenTelemetry collector configs, dynamic Python/Go/Node instrumentation scripts, and span latency guides.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">otel_config.yaml</span>
+          <a href="tracing/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Policy-as-Code Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #7c3aed;">🛡️</div>
+        <h3 class="tool-title">Policy-as-Code Studio</h3>
+        <p class="tool-desc">Scaffold OPA Rego security policies, Kyverno Kubernetes validation rules, and automated compliance scan runners.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">policy.rego</span>
+          <a href="compliance/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Database Migration Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #f59e0b;">🗄️</div>
+        <h3 class="tool-title">Database Migration Studio</h3>
+        <p class="tool-desc">Scaffold Liquibase YAML changesets, Flyway SQL DDL migrations, and automated schema rollback recovery scripts.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">migration.sql</span>
+          <a href="db-migration/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Performance Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">📈</div>
+        <h3 class="tool-title">Performance Studio</h3>
+        <p class="tool-desc">Generate k6 Javascript loads, Locust Python tasks, and execution runbooks for system scalability benchmarking.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">load_test.js</span>
+          <a href="performance/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- SLO & Error Budget Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #ec4899;">🎯</div>
+        <h3 class="tool-title">SLO & Error Budget Studio</h3>
+        <p class="tool-desc">Scaffold Prometheus alert rules, ServiceLevelObjective Kubernetes CRDs, and SRE incident response rules.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">slo_rules.yaml</span>
+          <a href="slo/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- SAST Security Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #ef4444;">🛡️</div>
+        <h3 class="tool-title">SAST Security Studio</h3>
+        <p class="tool-desc">Generate custom Semgrep rules, Trivy ignores, and automated CI security scanning workflows.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">rules.yaml</span>
+          <a href="sast/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- FinOps Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">💰</div>
+        <h3 class="tool-title">FinOps Studio</h3>
+        <p class="tool-desc">Generate Cloud Custodian sweep policies, AWS/GCP resource cleaner scripts, and cost anomaly alerts.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">cleanup.py</span>
+          <a href="finops/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- DNS & SSL PKI Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🌐</div>
+        <h3 class="tool-title">DNS & SSL PKI Studio</h3>
+        <p class="tool-desc">Scaffold Certbot Let's Encrypt cron renewal scripts, Route53/Cloudflare record templates, and domain expiry checks.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">renew_certs.sh</span>
+          <a href="dns-ssl/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Backup & DR Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">💾</div>
+        <h3 class="tool-title">Backup & DR Studio</h3>
+        <p class="tool-desc">Generate Velero Kubernetes backup policies, database snapshot automation, and disaster recovery restore runbooks.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">backup_job.yaml</span>
+          <a href="backup-dr/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Status Page & Incident Response Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #ef4444;">🚨</div>
+        <h3 class="tool-title">Status & Incident Studio</h3>
+        <p class="tool-desc">Scaffold PagerDuty/Opsgenie escalation chains, status dashboard config schemas, and incident triage runbooks.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">status_page.json</span>
+          <a href="status-incident/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- API Gateway & Reverse Proxy Studio -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🚦</div>
+        <h3 class="tool-title">API Gateway Studio</h3>
+        <p class="tool-desc">Scaffold Nginx ingress, Traefik routes, rate limit headers, and routing proxies.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">nginx.conf</span>
+          <a href="api-gateway/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- GitOps Secrets Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #8b5cf6;">🔐</div>
+        <h3 class="tool-title">GitOps Secrets Studio</h3>
+        <p class="tool-desc">Generate Mozilla SOPS configs, Age encrypted keys, and GitOps decryption runners.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">.sops.yaml</span>
+          <a href="gitops-secrets/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Developer Portal / IDP Software Template Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #ec4899;">📦</div>
+        <h3 class="tool-title">IDP Template Studio</h3>
+        <p class="tool-desc">Scaffold Backstage service catalog metadata and developer software scaffolding templates.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">template.yaml</span>
+          <a href="idp-template/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Feature Flags & Progressive Delivery Studio -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #4f46e5;">🚦</div>
+        <h3 class="tool-title">Progressive Delivery Studio</h3>
+        <p class="tool-desc">Generate Argo Rollouts canary releases, metrics analysis templates, and OpenFeature flag schemas.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">rollout.yaml</span>
+          <a href="progressive-delivery/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Edge WASM & Serverless Orchestration Studio -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🌐</div>
+        <h3 class="tool-title">Edge WASM Studio</h3>
+        <p class="tool-desc">Orchestrate WebAssembly edge functions, Fermyon Spin configurations, and lightweight serverless runtimes.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">spin.toml</span>
+          <a href="edge-wasm/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Container Registry & Image Signing Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🏷️</div>
+        <h3 class="tool-title">Container Registry Studio</h3>
+        <p class="tool-desc">Generate Cosign image signing scripts, Harbor tag retention rules, and registry configurations.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">sign_image.sh</span>
+          <a href="container-registry/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Database High Availability & Clustering Studio -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #f59e0b;">🗄️</div>
+        <h3 class="tool-title">Database Clustering Studio</h3>
+        <p class="tool-desc">Scaffold Postgres Patroni failover configurations, Redis Sentinel topologies, and cluster sync guides.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">patroni.yaml</span>
+          <a href="db-clustering/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- eBPF Network Observability & Kernel Tracing Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">🐝</div>
+        <h3 class="tool-title">eBPF Tracing Studio</h3>
+        <p class="tool-desc">Generate kernel-level socket filters, Cilium network policies, and bpftrace performance scripts.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">ebpf_program.c</span>
+          <a href="ebpf-tracing/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- GreenOps & Carbon-Aware Cloud Scheduler Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #059669;">🌱</div>
+        <h3 class="tool-title">GreenOps Studio</h3>
+        <p class="tool-desc">Generate Kepler telemetry rules, carbon-intensity scheduling crons, and cost/carbon-offset SRE runbooks.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">kepler_policy.yaml</span>
+          <a href="greenops/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Confidential Computing & Secure Enclave Studio -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #7c3aed;">🔒</div>
+        <h3 class="tool-title">Confidential Enclave Studio</h3>
+        <p class="tool-desc">Orchestrate Intel SGX, AMD SEV, and AWS Nitro Enclaves. Generate attestation scripts and key-rotation pipelines.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">enclave_config.json</span>
+          <a href="confidential-enclave/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Web3 & Decentralized Infrastructure Node Monitoring Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">⛓️</div>
+        <h3 class="tool-title">Decentralized Infrastructure Studio</h3>
+        <p class="tool-desc">Monitor IPFS and blockchain nodes. Generate validator check scripts, peer discovery rules, and status alerts.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">ipfs_daemon.json</span>
+          <a href="decentralized-infra/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- DataOps & Data Reliability Engineering (DRE) Studio -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #f59e0b;">🔀</div>
+        <h3 class="tool-title">DataOps Studio</h3>
+        <p class="tool-desc">Scaffold Apache Airflow / Prefect pipeline DAGs, Great Expectations data quality test schemas, and database sync verification.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">airflow_dag.py</span>
+          <a href="dataops/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- AIOps & Telemetry Anomaly Detector Studio -->
+      <div class="tool-card" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">🧠</div>
+        <h3 class="tool-title">AIOps Studio</h3>
+        <p class="tool-desc">Generate Prometheus PromQL anomaly detection rules (double exponential smoothing, z-scores), Logstash filters, and Python anomaly checkers.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">prometheus_anomaly.yaml</span>
+          <a href="aiops/" class="tool-link">
             Launch Tool
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
@@ -1027,11 +1722,87 @@
       updateCalculator();
     }
 
+    // Dynamic Tools Search and Filtering
+    function filterTools() {
+      const query = $('tools-search').value.toLowerCase().trim();
+      const activeBtn = document.querySelector('.filter-btn.active');
+      const category = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+      
+      let matchCount = 0;
+      const cards = document.querySelectorAll('.tool-card');
+      
+      cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        const title = card.querySelector('.tool-title').textContent.toLowerCase();
+        const desc = card.querySelector('.tool-desc').textContent.toLowerCase();
+        const tag = card.querySelector('.tool-tag') ? card.querySelector('.tool-tag').textContent.toLowerCase() : '';
+        
+        const matchesCategory = (category === 'all' || cardCategory === category);
+        const matchesSearch = (!query || title.includes(query) || desc.includes(query) || tag.includes(query));
+        
+        if (matchesCategory && matchesSearch) {
+          card.classList.remove('hidden');
+          matchCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      
+      const noResults = $('no-results');
+      if (matchCount === 0) {
+        noResults.classList.add('visible');
+      } else {
+        noResults.classList.remove('visible');
+      }
+    }
+
+    function initToolsFilter() {
+      const searchInput = $('tools-search');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      
+      if (!searchInput) return;
+      
+      // Calculate dynamic counts on page load
+      const cards = document.querySelectorAll('.tool-card');
+      const counts = {
+        all: cards.length,
+        ai: 0,
+        cloud: 0,
+        cicd: 0,
+        automation: 0,
+        observability: 0
+      };
+      
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (counts[cat] !== undefined) {
+          counts[cat]++;
+        }
+      });
+      
+      filterBtns.forEach(btn => {
+        const filter = btn.getAttribute('data-filter');
+        const countSpan = btn.querySelector('.filter-count');
+        if (countSpan && counts[filter] !== undefined) {
+          countSpan.textContent = counts[filter];
+        }
+        
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          filterTools();
+        });
+      });
+      
+      searchInput.addEventListener('input', filterTools);
+    }
+
     // Initialize all
     document.addEventListener('DOMContentLoaded', () => {
       initDynamicYear();
       initLatencyTracker();
       initFinOpsCalculator();
+      initToolsFilter();
     });
   </script>
 
