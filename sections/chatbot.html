@@ -9,14 +9,14 @@
   </button>
 
   <!-- Chat Window -->
-  <div class="chat-window" id="chatWindow" aria-hidden="true">
+  <div class="chat-window" id="chatWindow" role="dialog" aria-labelledby="chatPartnerTitle" aria-hidden="true">
     
     <!-- Window Header -->
     <div class="chat-header">
       <div class="chat-header-info">
         <div class="chat-avatar">🤖</div>
         <div>
-          <h4 class="chat-title">TP. DevOps AI Partner</h4>
+          <h4 class="chat-title" id="chatPartnerTitle">TP. DevOps AI Partner</h4>
           <p class="chat-status"><span class="status-dot"></span> Online SRE Assistant</p>
         </div>
       </div>
@@ -46,7 +46,7 @@
 
     <!-- Input Bar -->
     <form class="chat-input-area" id="chatInputForm">
-      <input type="text" id="chatInputField" placeholder="Ask about DevOps, AI, or Pradeep's tools..." required autocomplete="off" />
+      <input type="text" id="chatInputField" placeholder="Ask about DevOps, AI, or Pradeep's tools..." required autocomplete="off" aria-label="Ask about DevOps, AI, or Pradeep's tools" />
       <button type="submit" class="chat-send-btn" aria-label="Send message">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
