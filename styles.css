@@ -15,6 +15,7 @@
   --accent-dark:    #3730a3;
   --accent-cyan:    #0ea5e9;
   --accent-green:   #059669;
+  --accent-green-dark: #047857;
   --accent-orange:  #d97706;
   --accent-purple:  #7c3aed;
 
@@ -377,7 +378,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 0.5rem;
   background: rgba(5,150,105,0.08);
   border: 1px solid rgba(5,150,105,0.2);
-  color: var(--accent-green);
+  color: var(--accent-green-dark);
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.36rem 1rem;
@@ -596,7 +597,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 0.5rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--accent-green);
+  color: var(--accent-green-dark);
   background: rgba(5,150,105,0.07);
   border: 1px solid rgba(5,150,105,0.18);
   padding: 0.6rem 1rem;
@@ -1262,7 +1263,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .cert-verify {
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--accent-green);
+  color: var(--accent-green-dark);
   background: rgba(5,150,105,0.07);
   border: 1px solid rgba(5,150,105,0.16);
   padding: 0.22rem 0.65rem;
@@ -1318,7 +1319,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border: 1px solid rgba(79,70,229,0.12);
 }
 
-.contact-card h4 {
+.contact-card h3 {
   font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -1684,12 +1685,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
 .project-modal.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
 
 .pm-overlay {
@@ -2274,7 +2277,7 @@ body.modal-open {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent-green);
+  color: var(--accent-green-dark);
   background: rgba(5,150,105,0.1);
   border: 1px solid rgba(5,150,105,0.25);
   padding: 0.18rem 0.65rem;
@@ -2456,7 +2459,7 @@ body.modal-open {
 .cert-row-verify {
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--accent-green);
+  color: var(--accent-green-dark);
   background: rgba(5,150,105,0.08);
   border: 1px solid rgba(5,150,105,0.2);
   padding: 0.18rem 0.6rem;
