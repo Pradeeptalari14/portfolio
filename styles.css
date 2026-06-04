@@ -1179,6 +1179,37 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   flex: 1;
 }
 
+.project-title-link {
+  transition: var(--transition);
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-title-link:hover {
+  color: var(--accent-primary);
+}
+
+.project-details-link {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.project-details-link:hover {
+  color: var(--accent-cyan);
+}
+
+.project-details-link svg {
+  width: 12px;
+  height: 12px;
+}
+
 .project-tech {
   display: flex;
   flex-wrap: wrap;
