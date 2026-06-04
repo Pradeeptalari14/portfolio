@@ -1,0 +1,1153 @@
+<!-- Copyright (c) 2026 Talari Pradeep. All Rights Reserved. Proprietary License. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Strands Agent DevOps Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready autonomous SRE troubleshooting agents, multi-agent swarms, Model Context Protocol (MCP) server endpoints, and OpenTelemetry logs configs using Strands SDK." />
+  <link rel="icon" type="image/png" href="../../Favicon.png?v=3" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <style>
+    :root {
+      --accent-primary: #8b5cf6; /* violet theme for Strands */
+      --accent-cyan:    #0ea5e9;
+      --accent-fuchsia: #d946ef;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fbfbfd;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .studio-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .studio-card:hover {
+      border-color: rgba(139, 92, 246, 0.2);
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .ide-dot-red { background-color: #ef4444; }
+    .ide-dot-yellow { background-color: #f59e0b; }
+    .ide-dot-green { background-color: #10b981; }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 480px;
+      max-height: 720px;
+      white-space: pre;
+      word-break: break-all;
+    }
+
+    .navbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .diagram-container {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      color: #e2e8f0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .diagram-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .diagram-step {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.72rem;
+      text-align: center;
+      min-width: 100px;
+      transition: all 0.3s ease;
+    }
+    
+    .diagram-step.active {
+      background: rgba(139, 92, 246, 0.15);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+    }
+    
+    .diagram-arrow {
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+
+    /* Terminal Simulation styles */
+    .terminal-mode {
+      background-color: #000000 !important;
+      color: #38bdf8 !important; /* sky blue code output */
+      font-family: 'JetBrains Mono', monospace !important;
+    }
+    .term-stdout { color: #10b981; }
+    .term-thought { color: #a78bfa; font-style: italic; }
+    .term-error { color: #f43f5e; font-weight: bold; }
+    .term-cmd { color: #fbbf24; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-violet-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-violet-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-violet-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ARCHITECT STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-violet-600 bg-violet-50 border border-violet-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Autonomous Agentic SRE</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Strands Agent DevOps Studio</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl leading-normal">
+        Orchestrate autonomous SRE agents to troubleshoot, triage, and self-heal production systems. Generate python execution codes powered by the model-driven Strands Agents SDK.
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Agent & Model Setup -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🤖 Agent &amp; Model Configuration</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="agent_arch" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Agent Architecture</label>
+              <select id="agent_arch" class="form-select w-full p-2.5 text-xs">
+                <option value="single">Single Agent (Autonomous Troubleshooter)</option>
+                <option value="swarm">Multi-Agent Swarm (Triage + Solver Handshake)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="agent_task" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target SRE Task</label>
+              <select id="agent_task" class="form-select w-full p-2.5 text-xs">
+                <option value="k8s">Kubernetes Pod CrashLoopBackOff Triage</option>
+                <option value="disk">High Disk Storage Alarm Cleanup</option>
+                <option value="memory">Server Memory Leak Process Restart</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="agent_model" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">LLM Model Provider</label>
+              <select id="agent_model" class="form-select w-full p-2.5 text-xs">
+                <option value="ollama">Ollama Local (Gemma 2 / Llama 3)</option>
+                <option value="bedrock">AWS Bedrock (Claude 3.5 Sonnet)</option>
+                <option value="openai">OpenAI (GPT-4o / GPT-4o-mini)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="integration_mode" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Integration Endpoint Mode</label>
+              <select id="integration_mode" class="form-select w-full p-2.5 text-xs">
+                <option value="standard">Standalone Python CLI</option>
+                <option value="mcp">Model Context Protocol (MCP) Server</option>
+                <option value="telemetry">OpenTelemetry (Phoenix Observability)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Agent Tool Bindings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🛠️ Tool Permissions &amp; API Scope</h3>
+          
+          <div class="space-y-4 text-xs font-semibold text-gray-700">
+            <!-- Kubectl Log -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="tool_k8s" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="tool_k8s" class="font-bold text-gray-900 block cursor-pointer">Kubernetes API Tools (`kubectl logs/describe`)</label>
+                <span class="text-[10px] text-gray-400 font-normal">Allows the agent to fetch cluster namespaces, pod logs, and inspect crash histories.</span>
+              </div>
+            </div>
+
+            <!-- Shell Command Executor -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="tool_shell" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="tool_shell" class="font-bold text-gray-900 block cursor-pointer">Host System Diagnostics (`df`, `free`, `ps`)</label>
+                <span class="text-[10px] text-gray-400 font-normal">Binds system utilities as tools to analyze disk free blocks, total RAM, and process trees.</span>
+              </div>
+            </div>
+
+            <!-- Self-Healing actions -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="tool_heal" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="tool_heal" class="font-bold text-gray-900 block cursor-pointer">Self-Healing Execution (`docker prune`, `kill -9`)</label>
+                <span class="text-[10px] text-gray-400 font-normal">Gives permission to execute cleanup and process termination scripts automatically when anomalies are detected.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Agentic Topology Diagram -->
+        <div class="diagram-container">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-2">💡 Interactive Agent Topology</h4>
+          <p class="text-[10px] text-slate-400 mb-4">Pipeline representing how your custom agent processes, plans, and executes tools.</p>
+          
+          <div class="diagram-flow">
+            <div class="diagram-step active" id="diag-trigger">System Alarm (Triage)</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-agent1">SRE Triage Agent</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-tools">Tool Selection</div>
+          </div>
+          
+          <div class="diagram-flow mt-3" id="swarm-flow-row">
+            <!-- Swarm dynamic layout nodes get injected or styled here -->
+            <div class="diagram-step active" id="diag-agent2">Resolver Agent</div>
+            <div class="diagram-arrow" id="diag-arrow-swarm">➔</div>
+            <div class="diagram-step active" id="diag-action">Remediation Script</div>
+            <div class="diagram-arrow">➔</div>
+            <div class="diagram-step active" id="diag-done">Incident Resolved</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <!-- IDE Header Row -->
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="agent" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.py</span>
+              </div>
+            </div>
+            
+            <!-- File Tabs Navigation -->
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable" id="viewport-tabs">
+              <button onclick="switchTab('agent')" id="tab-agent" class="tab-btn active">agent.py</button>
+              <button onclick="switchTab('swarm')" id="tab-swarm" class="tab-btn">swarm_orchestrator.py</button>
+              <button onclick="switchTab('run')" id="tab-run" class="tab-btn">run.sh</button>
+              <button onclick="switchTab('readme')" id="tab-readme" class="tab-btn">README.md</button>
+            </div>
+          </div>
+
+          <!-- Output Viewport -->
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll(); showToast('⚡ Strands Agent assets compiled successfully!');" class="col-span-3 py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-violet-100 flex items-center justify-center gap-2">
+              <span>🔄 Recompile Agent Assets</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear</span>
+            </button>
+          </div>
+
+          <button onclick="simulateAgentRun()" class="w-full mb-2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+            <span>🚀 Run Agent Simulator (Live Logs)</span>
+          </button>
+
+          <button onclick="downloadWorkspaceZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Agent Project (.zip)</span>
+          </button>
+        </div>
+
+        <!-- CLI Diagnostics tips -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-violet-400">⚡</span> Strands Agent Testing CLI
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Verify SDK installation status:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">pip show strands-agents</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Run agent program with tracing console active:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">python agent.py --trace</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">agent.py</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Visual Flow -->
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
+          <!-- Injected -->
+        </pre>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Wrapper -->
+  <div id="toast-wrapper" class="fixed bottom-5 right-5 z-50 transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none">
+    <div id="toast-content" class="bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2">
+      <!-- Injected -->
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    let activeTab = 'agent';
+    let simulationRunning = false;
+
+    // SRE Code Explanations Database
+    const tabExplanations = {
+      agent: {
+        title: "Autonomous SRE Agent",
+        filename: "agent.py",
+        why: "Defines the core Strands agent containing custom-decorated python tool permissions (like kubectl and shell operations). It binds the target LLM and initiates the reasoning execution loops.",
+        when: "Use to launch autonomous diagnostic scripts on local developer machines or private cluster namespaces.",
+        where: "Deploy to your SRE server environment as a system application.",
+        command: "python agent.py",
+        practices: [
+          "Wrap tool processes inside try-except blocks to return clear error outputs to the LLM.",
+          "Restrict write permissions (remediation commands) unless active human approval is configured."
+        ],
+        ai_mlops: "Lays down the basic foundation for the **Kubernetes Troubleshooting Agent** using the Strands SDK.",
+        flow: "[Agent loop] ➔ [Evaluates alarm input] ➔ [Invokes python tool] ➔ [Parses diagnostic output]"
+      },
+      swarm: {
+        title: "Swarm Orchestrator",
+        filename: "swarm_orchestrator.py",
+        why: "Constructs a multi-agent network featuring a Triage Agent and a Resolver Agent. Triage reads anomaly inputs and passes structured incident alerts to the Resolver agent for cleanups.",
+        when: "Deploy when incident logs require separation of concerns between diagnostic checks and action implementations.",
+        where: "Deploy to SRE task executors running inside your private nodes.",
+        command: "python swarm_orchestrator.py",
+        practices: [
+          "Establish peer communication schemas to log agent-to-agent delegation statements.",
+          "Enforce timeout limits to avoid infinite looping queries in collaborative reasoning."
+        ],
+        ai_mlops: "Represents the implementation structure of the **Self-Healing Infrastructure Platform**.",
+        flow: "[Triage Agent] ➔ [Locates Error Pattern] ➔ [Delegates Task] ➔ [Resolver Agent resolves]"
+      },
+      run: {
+        title: "Bootstrap Execution Script",
+        filename: "run.sh",
+        why: "Automates SDK dependency installations, loads required API credentials, and launches the custom agent server or standalone CLI.",
+        when: "Run during initially provisioning agent scripts on system clusters.",
+        where: "Execute inside the agent workspace directory.",
+        command: "bash run.sh",
+        practices: [
+          "Load API secrets strictly via environment configs rather than committing raw strings.",
+          "Configure Python virtual environments (venv) to prevent system package collisions."
+        ],
+        ai_mlops: "Provisioning automation scripts for agent deployment.",
+        flow: "[Execute run.sh] ➔ [Installs strands-agents] ➔ [Exports model secrets] ➔ [Launches agent]"
+      },
+      readme: {
+        title: "Agent Setup & Runbook",
+        filename: "README.md",
+        why: "Documents library prerequisites, MCP server settings, OpenTelemetry configurations, and terminal execution commands.",
+        when: "Include inside your developer repository to guide engineers on running SRE agents.",
+        where: "Save in the root of the workspace directory.",
+        command: "# View in markdown viewer",
+        practices: [
+          "Document mandatory environment variables (e.g. OPENAI_API_KEY, OLLAMA_HOST).",
+          "Include step-by-step verification commands."
+        ],
+        ai_mlops: "Detailed operator walkthroughs for managing and tracing agent metrics.",
+        flow: "[README.md Guide] ➔ [Provides setup instructions]"
+      }
+    };
+
+    let compiledCode = {
+      agent: '',
+      swarm: '',
+      run: '',
+      readme: ''
+    };
+
+    const tabConfigs = {
+      agent: { label: 'agent.py', filename: 'agent', ext: '.py' },
+      swarm: { label: 'swarm_orchestrator.py', filename: 'swarm_orchestrator', ext: '.py' },
+      run: { label: 'run.sh', filename: 'run', ext: '.sh' },
+      readme: { label: 'README.md', filename: 'README', ext: '.md' }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInteractiveListeners();
+      triggerCompileAll();
+    });
+
+    function setupInteractiveListeners() {
+      $$('input, select, textarea').forEach(input => {
+        if (input.id !== 'download-name-input') {
+          input.addEventListener('input', triggerCompileAll);
+          input.addEventListener('change', triggerCompileAll);
+        }
+      });
+      $('agent_arch').addEventListener('change', toggleSwarmUI);
+    }
+
+    function toggleSwarmUI() {
+      const arch = $('agent_arch').value;
+      const swarmTab = $('tab-swarm');
+      const swarmRow = $('swarm-flow-row');
+
+      if (arch === 'swarm') {
+        swarmTab.style.display = 'inline-block';
+        swarmRow.style.opacity = '1';
+        swarmRow.style.pointerEvents = 'auto';
+      } else {
+        swarmTab.style.display = 'none';
+        swarmRow.style.opacity = '0.15';
+        swarmRow.style.pointerEvents = 'none';
+        if (activeTab === 'swarm') {
+          switchTab('agent');
+        }
+      }
+      triggerCompileAll();
+    }
+
+    function triggerCompileAll() {
+      compileAgent();
+      compileSwarm();
+      compileRun();
+      compileReadme();
+      updateViewportContent();
+    }
+
+    function compileAgent() {
+      const task = $('agent_task').value;
+      const model = $('agent_model').value;
+      const mode = $('integration_mode').value;
+      const tk8s = $('tool_k8s').checked;
+      const tshell = $('tool_shell').checked;
+      const theal = $('tool_heal').checked;
+
+      let modelSetup = '';
+      if (model === 'bedrock') {
+        modelSetup = `agent = Agent(\n    model="us.amazon.nova-pro-v1:0",\n    provider="bedrock"\n)`;
+      } else if (model === 'openai') {
+        modelSetup = `agent = Agent(\n    model="gpt-4o",\n    provider="openai"\n)`;
+      } else {
+        modelSetup = `agent = Agent(\n    model="llama3:8b",\n    provider="ollama",\n    api_base="http://localhost:11434"\n)`;
+      }
+
+      let toolsCode = '';
+      let toolsList = [];
+
+      if (tk8s) {
+        toolsCode += `@tool\ndef check_kubernetes_pod_logs(pod_name: str, namespace: str = "default") -> str:
+    """Fetches diagnostic stderr/stdout logs for a specific pod inside a Kubernetes namespace."""
+    cmd = f"kubectl logs {pod_name} -n {namespace} --tail=100"
+    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    return res.stdout or res.stderr\n\n`;
+        toolsList.push('check_kubernetes_pod_logs');
+      }
+
+      if (tshell) {
+        toolsCode += `@tool\ndef execute_system_diagnostics(metric_type: str) -> str:
+    """Runs local shell status checks (metric_type can be 'disk', 'memory', or 'cpu')."""
+    cmd = "df -h /" if metric_type == "disk" else ("free -m" if metric_type == "memory" else "uptime")
+    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    return res.stdout or res.stderr\n\n`;
+        toolsList.push('execute_system_diagnostics');
+      }
+
+      if (theal) {
+        toolsCode += `@tool\ndef execute_remediation_action(action_name: str) -> str:
+    """Executes a system recovery action (e.g. 'docker_prune', 'restart_service')."""
+    cmd = "docker system prune -af" if action_name == "docker_prune" else "systemctl restart payment-app"
+    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    return f"Remediation success: {res.stdout or res.stderr}"\n\n`;
+        toolsList.push('execute_remediation_action');
+      }
+
+      let mcpWrapper = '';
+      if (mode === 'mcp') {
+        mcpWrapper = `\n# Exposing Agent as an MCP Server
+from strands.mcp import MCPServer
+
+mcp_server = MCPServer(agent, name="sre-agent-mcp")
+
+if __name__ == "__main__":
+    mcp_server.start()`
+      } else if (mode === 'telemetry') {
+        mcpWrapper = `\n# OpenTelemetry Tracing enabled
+from strands.observability import trace_agent
+
+trace_agent(agent, endpoint="http://localhost:4317")
+
+if __name__ == "__main__":
+    task_prompt = "Find why the payment-app is crashing and fix it."
+    result = agent(task_prompt)
+    print(f"Agent Output: {result}")`
+      } else {
+        mcpWrapper = `\nif __name__ == "__main__":
+    task_prompt = "Find why the payment-app is crashing and fix it."
+    result = agent(task_prompt)
+    print(f"Agent Output: {result}")`
+      }
+
+      let code = `from strands import Agent, tool
+import subprocess
+
+# Define custom tools for the agentic loop
+${toolsCode}
+# Initialize the SRE agent
+agent = Agent(
+    tools=[${toolsList.join(', ')}],
+    system_prompt="You are an autonomous SRE Troubleshooter. Actively invoke tools to diagnose errors."
+)
+
+${modelSetup}
+${mcpWrapper}
+`;
+      compiledCode.agent = code;
+    }
+
+    function compileSwarm() {
+      const model = $('agent_model').value;
+      let modelArg = model === 'openai' ? 'model="gpt-4o"' : (model === 'bedrock' ? 'model="us.amazon.nova-pro-v1:0"' : 'model="llama3:8b"');
+
+      let code = `from strands import Swarm, Agent, tool
+import subprocess
+
+@tool
+def fetch_pod_logs(pod: str) -> str:
+    """Gets logs for a target pod."""
+    res = subprocess.run(f"kubectl logs {pod} --tail=50", shell=True, capture_output=True, text=True)
+    return res.stdout or res.stderr
+
+@tool
+def restart_failing_service(pod: str) -> str:
+    """Restarts target workload pod."""
+    res = subprocess.run(f"kubectl delete pod {pod}", shell=True, capture_output=True, text=True)
+    return "Service deletion triggered successfully."
+
+# Define collaborative SRE swarm agents
+triage_agent = Agent(
+    name="TriageAgent",
+    tools=[fetch_pod_logs],
+    system_prompt="You examine cluster failures and diagnose the root error. Delegate fix actions.",
+    ${modelArg}
+)
+
+resolver_agent = Agent(
+    name="ResolverAgent",
+    tools=[restart_failing_service],
+    system_prompt="You execute healing actions (deletions, restarts) once an error is triaged.",
+    ${modelArg}
+)
+
+# Connect agents into Swarm
+swarm = Swarm(
+    agents=[triage_agent, resolver_agent],
+    entrypoint="TriageAgent"
+)
+
+if __name__ == "__main__":
+    print("Launching Multi-Agent Swarm execution loop...")
+    remediation_log = swarm.run("Identify and resolve pod anomalies in the cluster.")
+    print(f"Swarm Output: {remediation_log}")
+`;
+      compiledCode.swarm = code;
+    }
+
+    function compileRun() {
+      const mode = $('integration_mode').value;
+      const model = $('agent_model').value;
+
+      let keyExports = '';
+      if (model === 'openai') {
+        keyExports = 'export OPENAI_API_KEY="your-openai-api-key-here"';
+      } else if (model === 'bedrock') {
+        keyExports = 'export AWS_ACCESS_KEY_ID="your-aws-access-key-here"\nexport AWS_SECRET_ACCESS_KEY="your-aws-secret-here"';
+      } else {
+        keyExports = 'export OLLAMA_HOST="http://localhost:11434"';
+      }
+
+      let runCmd = 'python agent.py';
+      if (mode === 'mcp') {
+        runCmd = '# Run as stdin/stdout transport server\npython agent.py --mcp-transport=stdio';
+      }
+
+      let code = `#!/bin/bash
+# Strands Agent Bootstrapper
+set -e
+
+echo "=== 🚀 Installing SRE Agent Dependencies ==="
+pip install -r requirements.txt
+
+echo "=== ⚙️ Injecting Model Engine Keys ==="
+${keyExports}
+
+echo "=== 🏃 Executing SRE Agent Workspace ==="
+${runCmd}
+`;
+      compiledCode.run = code;
+    }
+
+    function compileReadme() {
+      const task = $('agent_task').value;
+      const arch = $('agent_arch').value;
+      const mode = $('integration_mode').value;
+
+      let code = `# Strands SRE Troubleshooting Agent
+
+This workspace spins up an autonomous site reliability troubleshooting agent powered by the **Strands Agents SDK**.
+
+## Setup instructions
+
+1.  **Configure environment credentials**:
+    Ensure your target model keys (OpenAI keys, AWS keys, or Ollama hosts) are set in your execution terminal.
+2.  **Run bootstrap loader**:
+    \`\`\`bash
+    chmod +x run.sh
+    ./run.sh
+    \`\`\`
+
+## Architecture & Workflow Details
+- **Architecture**: \`${arch.toUpperCase()}\`
+- **Target incident**: \`${task.toUpperCase()}\`
+- **Integration**: \`${mode.toUpperCase()}\`
+
+### Agentic Loop Cycle:
+1.  **Read input alarm**: The agent parses the target logs or resource alarm.
+2.  **Tool Reasoning**: Evaluates whether tool invocations (like \`check_kubernetes_pod_logs\`) are required to locate the error.
+3.  **Command Execution**: Invokes custom system commands securely.
+4.  **Triage / Delegation**: (Swarm mode) Triage agent communicates the error diagnostics to the Resolver agent.
+5.  **Self-Healing Actions**: Executes remediations (e.g. restarting workloads, cleanups) to resolve the outage.
+`;
+      compiledCode.readme = code;
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      $('tab-' + tabId).classList.add('active');
+
+      const config = tabConfigs[tabId];
+      $('download-name-input').value = config.filename;
+      $('file-extension-tag').textContent = config.ext;
+
+      updateViewportContent();
+    }
+
+    function updateViewportContent() {
+      if (simulationRunning) return;
+      const content = compiledCode[activeTab];
+      $('output-box').textContent = content || '';
+    }
+
+    function copyActiveTabContent() {
+      if (simulationRunning) return;
+      const content = compiledCode[activeTab];
+      if (!content) {
+        showToast("⚠️ Active tab is empty!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(content).then(() => {
+        showToast("📋 Copied to clipboard!");
+      }).catch(err => {
+        showToast("❌ Failed to copy to clipboard.");
+      });
+    }
+
+    function clearAllFields() {
+      if (simulationRunning) return;
+      compiledCode[activeTab] = '';
+      updateViewportContent();
+      showToast("🗑️ Viewport cleared.");
+    }
+
+    function downloadWorkspaceZip() {
+      if (simulationRunning) return;
+      const zip = new JSZip();
+      zip.file("README.md", compiledCode.readme);
+      zip.file("agent.py", compiledCode.agent);
+      zip.file("run.sh", compiledCode.run);
+
+      // requirements.txt
+      let reqs = "strands-agents>=0.2.0\n";
+      const model = $('agent_model').value;
+      if (model === 'openai') reqs += "openai\n";
+      if (model === 'bedrock') reqs += "boto3\n";
+      const mode = $('integration_mode').value;
+      if (mode === 'mcp') reqs += "fastapi\nuvicorn\nmcp\n";
+      if (mode === 'telemetry') reqs += "opentelemetry-api\nopentelemetry-sdk\n";
+      zip.file("requirements.txt", reqs);
+
+      if ($('agent_arch').value === 'swarm') {
+        zip.file("swarm_orchestrator.py", compiledCode.swarm);
+      }
+
+      zip.generateAsync({ type: "blob" }).then(function (content) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "strands-agent-project.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast("⬇️ Strands Agent Workspace zip downloaded!");
+      });
+    }
+
+    function explainActiveTabCode() {
+      if (simulationRunning) return;
+      const explanation = tabExplanations[activeTab];
+      if (!explanation) {
+        showToast("⚠️ No explanation available for this tab.");
+        return;
+      }
+
+      $('drawer-title').textContent = explanation.title;
+      $('drawer-filename').textContent = explanation.filename;
+      $('explain-why').innerHTML = explanation.why;
+      $('explain-when').innerHTML = explanation.when;
+      $('explain-where').innerHTML = explanation.where;
+      $('explain-command').textContent = explanation.command;
+
+      const practicesBox = $('explain-practices');
+      practicesBox.innerHTML = '';
+      explanation.practices.forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+
+      $('explain-ai-mlops').innerHTML = explanation.ai_mlops || 'Integrated with MLOps pipelines and SRE AI workloads.';
+      $('explain-flow').textContent = explanation.flow;
+
+      const drawer = $('explanation-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeExplanationDrawer() {
+      const drawer = $('explanation-drawer');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+
+    // Terminal Simulator Logic
+    function simulateAgentRun() {
+      if (simulationRunning) return;
+      simulationRunning = true;
+
+      const viewport = $('output-box');
+      viewport.classList.add('terminal-mode');
+      viewport.innerHTML = '';
+
+      const task = $('agent_task').value;
+      const arch = $('agent_arch').value;
+      const mode = $('integration_mode').value;
+
+      let logSteps = [];
+
+      // Build simulated logs based on configs
+      if (arch === 'swarm') {
+        logSteps.push({ type: 'thought', text: "Swarm initialized with agents [TriageAgent, ResolverAgent]. Entrypoint: TriageAgent" });
+      } else {
+        logSteps.push({ type: 'thought', text: "Agent initialized with SRE tools list. Beginning diagnostics loop..." });
+      }
+
+      if (mode === 'telemetry') {
+        logSteps.push({ type: 'stdout', text: "Exporter: Exposing OpenTelemetry metrics tracing endpoints on port 4317." });
+      }
+      if (mode === 'mcp') {
+        logSteps.push({ type: 'stdout', text: "MCP Server: Initialized stdin/stdout communication transport channel." });
+      }
+
+      if (task === 'k8s') {
+        logSteps.push({ type: 'cmd', text: "User Anomaly Answering Query: 'Check liveness and inspect payment-api crashes.'" });
+        logSteps.push({ type: 'thought', text: "TriageAgent thinking: I need to check Kubernetes container logs. Invoking 'check_kubernetes_pod_logs'..." });
+        logSteps.push({ type: 'stdout', text: "Executing: kubectl logs payment-api-8c74bd97-2n9lw -n default --tail=100" });
+        logSteps.push({ type: 'error', text: "Container Log Output:\n  2026-06-04 10:42:01 ERROR: Database connection failed (timeout on postgres-db:5432)\n  2026-06-04 10:42:05 FATAL: payment-api terminated with code 1. Restarting..." });
+        
+        if (arch === 'swarm') {
+          logSteps.push({ type: 'thought', text: "TriageAgent thinking: Diagnosed CrashLoopBackOff due to postgres-db timeout. Handing off to ResolverAgent for socket remediation..." });
+          logSteps.push({ type: 'thought', text: "ResolverAgent thinking: Database port is unreachable. Checking networking rules and triggering service restarts..." });
+        } else {
+          logSteps.push({ type: 'thought', text: "Agent thinking: Diagnosed CrashLoopBackOff due to postgres-db timeout. Checking networking configurations..." });
+        }
+        
+        logSteps.push({ type: 'stdout', text: "Executing: kubectl describe networkpolicy db-policy -n default" });
+        logSteps.push({ type: 'error', text: "NetworkPolicy db-policy ingress: Deny-All (port 5432 is blocked)" });
+        logSteps.push({ type: 'thought', text: "SRE thinking: Port 5432 is blocked by db-policy. Applying remediating manifests..." });
+        logSteps.push({ type: 'stdout', text: "Executing: kubectl apply -f remediate_policy.yaml" });
+        logSteps.push({ type: 'stdout', text: "Remediation applied success: networkpolicy.networking.k8s.io/db-policy configured." });
+        logSteps.push({ type: 'thought', text: "SRE thinking: Network policies fixed. Verifying liveness health checks..." });
+        logSteps.push({ type: 'stdout', text: "Executing: kubectl get pods payment-api-8c74bd97-2n9lw" });
+        logSteps.push({ type: 'stdout', text: "payment-api-8c74bd97-2n9lw   1/1   Running   0   12s" });
+        logSteps.push({ type: 'stdout', text: "Final SRE Resolution: Incident resolved successfully! Network policy ingress rules corrected, pod restarted, status is healthy (1/1 Running)." });
+      } 
+      else if (task === 'disk') {
+        logSteps.push({ type: 'cmd', text: "User Anomaly Answering Query: 'Disk space warning on node worker-03.'" });
+        logSteps.push({ type: 'thought', text: "TriageAgent thinking: I must inspect total disk metrics first. Invoking 'execute_system_diagnostics'..." });
+        logSteps.push({ type: 'stdout', text: "Executing: df -h /" });
+        logSteps.push({ type: 'error', text: "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        100G   96G  4.0G  96% /" });
+        logSteps.push({ type: 'thought', text: "TriageAgent thinking: Anomaly confirmed. Disk space is at critical 96%. Locating large log directories and cache spaces..." });
+        
+        if (arch === 'swarm') {
+          logSteps.push({ type: 'thought', text: "TriageAgent thinking: Outage verified. delegating disk pruning cleanups to ResolverAgent..." });
+          logSteps.push({ type: 'thought', text: "ResolverAgent thinking: Starting cleanups. Invoking 'execute_remediation_action' to prune docker cache objects..." });
+        } else {
+          logSteps.push({ type: 'thought', text: "Agent thinking: Outage verified. Running container system prune..." });
+        }
+        
+        logSteps.push({ type: 'stdout', text: "Executing: docker system prune -af" });
+        logSteps.push({ type: 'stdout', text: "Deleted Containers: 12\nDeleted Images: 45\nDeleted Caches: 24GB\nRemediation success: Total 28.5GB space reclaimed." });
+        logSteps.push({ type: 'thought', text: "SRE thinking: Space cleaned. Verifying final disk boundaries..." });
+        logSteps.push({ type: 'stdout', text: "Executing: df -h /" });
+        logSteps.push({ type: 'stdout', text: "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        100G   67.5G  32.5G  68% /" });
+        logSteps.push({ type: 'stdout', text: "Final SRE Resolution: Incident resolved automatically! Pruned unused container resources and reclaimed 28.5GB. Usage is stable at 68%." });
+      } 
+      else {
+        logSteps.push({ type: 'cmd', text: "User Anomaly Answering Query: 'Inspect CPU/Memory overload alert on host server.'" });
+        logSteps.push({ type: 'thought', text: "TriageAgent thinking: I will fetch memory stats metrics first. Invoking 'execute_system_diagnostics'..." });
+        logSteps.push({ type: 'stdout', text: "Executing: free -m" });
+        logSteps.push({ type: 'error', text: "              total        used        free      shared  buff/cache   available\nMem:          16000       15320         210           4         470         320\nSwap:          4096        3800         296" });
+        logSteps.push({ type: 'thought', text: "TriageAgent thinking: Memory capacity is critically low. Inspecting active process hierarchies to locate resource leaks..." });
+        logSteps.push({ type: 'stdout', text: "Executing: ps aux --sort=-%mem | head -n 5" });
+        logSteps.push({ type: 'error', text: "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\nroot     24102 98.2 82.5 892012 1320480 ?      Sl   10:12   2:14 java -jar payment-app.jar\nroot     24211  0.2  1.1  45012  17600 ?        S    10:14   0:00 python3 daemon.py" });
+        
+        if (arch === 'swarm') {
+          logSteps.push({ type: 'thought', text: "TriageAgent thinking: Java process (PID 24102) is consuming 82.5% of host memory. Delegating service restart to ResolverAgent..." });
+          logSteps.push({ type: 'thought', text: "ResolverAgent thinking: Restarting the system service to recover host memory..." });
+        } else {
+          logSteps.push({ type: 'thought', text: "Agent thinking: Java process (PID 24102) is consuming 82.5% of memory. Restarting the system service..." });
+        }
+        
+        logSteps.push({ type: 'stdout', text: "Executing: systemctl restart payment-app" });
+        logSteps.push({ type: 'stdout', text: "Remediation success: payment-app service restarted successfully." });
+        logSteps.push({ type: 'thought', text: "SRE thinking: Service restarted. Auditing memory margins..." });
+        logSteps.push({ type: 'stdout', text: "Executing: free -m" });
+        logSteps.push({ type: 'stdout', text: "              total        used        free      shared  buff/cache   available\nMem:          16000        3450       12080           4         470       12120" });
+        logSteps.push({ type: 'stdout', text: "Final SRE Resolution: Incident resolved! Memory leak cleared. payment-app service restarted, reducing RAM usage back to 3.4GB (12GB available)." });
+      }
+
+      // Print step-by-step terminal simulator logs
+      let stepIndex = 0;
+      function printNextLog() {
+        if (stepIndex >= logSteps.length) {
+          simulationRunning = false;
+          showToast("✅ Simulation execution complete!");
+          // Add a reset button
+          const btn = document.createElement('button');
+          btn.className = "mt-4 px-3 py-1 bg-violet-600 hover:bg-violet-750 text-white font-mono text-[10px] rounded cursor-pointer";
+          btn.textContent = "Exit Terminal Simulator";
+          btn.onclick = () => {
+            viewport.classList.remove('terminal-mode');
+            simulationRunning = false;
+            updateViewportContent();
+          };
+          viewport.appendChild(document.createElement('br'));
+          viewport.appendChild(btn);
+          return;
+        }
+
+        const step = logSteps[stepIndex];
+        const span = document.createElement('span');
+        
+        if (step.type === 'thought') {
+          span.className = 'term-thought';
+          span.textContent = `[Thought] ${step.text}\n`;
+        } else if (step.type === 'error') {
+          span.className = 'term-error';
+          span.textContent = `${step.text}\n`;
+        } else if (step.type === 'cmd') {
+          span.className = 'term-cmd';
+          span.textContent = `$ ${step.text}\n`;
+        } else {
+          span.className = 'term-stdout';
+          span.textContent = `${step.text}\n`;
+        }
+
+        viewport.appendChild(span);
+        viewport.scrollTop = viewport.scrollHeight;
+        stepIndex++;
+        setTimeout(printNextLog, 1200 + Math.random() * 800);
+      }
+
+      printNextLog();
+    }
+
+    function showToast(message) {
+      const wrapper = $('toast-wrapper');
+      const content = $('toast-content');
+      content.innerHTML = `<span>⚡</span> ${message}`;
+      
+      wrapper.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+      wrapper.classList.add('opacity-100', 'translate-y-0');
+      
+      setTimeout(() => {
+        wrapper.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+        wrapper.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+  </script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

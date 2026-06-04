@@ -31,6 +31,7 @@ export default defineConfig({
         llm: resolve(__dirname, 'tools/llm/index.html'),
         slm: resolve(__dirname, 'tools/slm/index.html'),
         mlflow: resolve(__dirname, 'tools/mlflow/index.html'),
+        strands: resolve(__dirname, 'tools/strands/index.html'),
       }
     }
   }
