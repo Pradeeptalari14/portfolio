@@ -1,0 +1,23 @@
+{
+  "name": "SRE & DevOps Studio Suite",
+  "short_name": "SRE Studios",
+  "description": "Enterprise SRE & DevOps automation sandbox with 50 interactive code generators, dynamic visual flowcharts, and local AI MLOps integrations.",
+  "start_url": "/tools/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/Favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Photo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

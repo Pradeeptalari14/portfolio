@@ -7,6 +7,7 @@
   <title>DevOps & SRE Script Tools | Talari Pradeep</title>
   <meta name="description" content="Interactive DevOps & SRE Script Generators for cloud infrastructure, automation, CI/CD pipelines, and telemetry observability. Generate playbooks, dockerfiles, manifest configurations." />
   <link rel="icon" type="image/png" href="../Favicon.png?v=3" />
+  <link rel="manifest" href="/manifest.json" />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -693,7 +694,10 @@
         <li><a href="./" class="nav-link active">Tools</a></li>
         <li><a href="../#contact" class="nav-link">Contact</a></li>
       </ul>
-      <a href="../#contact" class="nav-cta">Hire Me</a>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="pwa-install-btn" class="nav-cta" style="display: none; background: #059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2); cursor: pointer; border: none; font-family: inherit;">📲 Install App</button>
+        <a href="../#contact" class="nav-cta">Hire Me</a>
+      </div>
     </div>
   </nav>
 
@@ -1797,12 +1801,40 @@
       searchInput.addEventListener('input', filterTools);
     }
 
+    let deferredPrompt;
+
+    function initPwaInstall() {
+      const installBtn = $('pwa-install-btn');
+      if (!installBtn) return;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'inline-block';
+      });
+
+      installBtn.addEventListener('click', () => {
+        if (!deferredPrompt) return;
+        installBtn.style.display = 'none';
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the PWA install prompt');
+          } else {
+            console.log('User dismissed the PWA install prompt');
+          }
+          deferredPrompt = null;
+        });
+      });
+    }
+
     // Initialize all
     document.addEventListener('DOMContentLoaded', () => {
       initDynamicYear();
       initLatencyTracker();
       initFinOpsCalculator();
       initToolsFilter();
+      initPwaInstall();
     });
   </script>
 

@@ -9,7 +9,8 @@ const PRECACHE_ASSETS = [
   '/Favicon.png',
   '/Photo.jpeg',
   '/tools/',
-  '/tools/index.html'
+  '/tools/index.html',
+  '/manifest.json'
 ];
 
 // Third-party scripts and styles to cache dynamically on request
