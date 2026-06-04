@@ -213,6 +213,9 @@
               <option value="k8s_monitor">Kubernetes Monitor: Alert on Pod CrashLoopBackOff & OOMKilled</option>
               <option value="ssl_expiry">SSL Expiry Audit: Multi-domain Cert Expiry Warnings Checker</option>
               <option value="api_ping">API Latency Telemetry: Latency distribution metrics (CSV logger)</option>
+              <option value="sys_monitor">Local System Monitor: CPU, RAM & Disk Alert Warnings (psutil)</option>
+              <option value="log_analyzer">Nginx Log Analyzer: Counter & Outliers Reporter (Pure Python)</option>
+              <option value="disk_cleanup">Disk Cleanup: Temporary Log & File Retention Purger</option>
             </select>
           </div>
 
@@ -326,6 +329,89 @@
           </div>
         </div>
 
+        <!-- System Resource Monitor settings -->
+        <div class="studio-card hidden" id="sys_monitor-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">📊 Local System Resource Monitor</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label for="cpu_threshold" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">CPU Warning Limit (%)</label>
+              <input type="number" id="cpu_threshold" class="form-input w-full p-2.5 text-xs" value="80" />
+            </div>
+            <div>
+              <label for="ram_threshold" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">RAM Warning Limit (%)</label>
+              <input type="number" id="ram_threshold" class="form-input w-full p-2.5 text-xs" value="85" />
+            </div>
+            <div>
+              <label for="disk_threshold" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Disk Warning Limit (%)</label>
+              <input type="number" id="disk_threshold" class="form-input w-full p-2.5 text-xs" value="90" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="monitor_interval" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Monitor Interval (seconds)</label>
+              <input type="number" id="monitor_interval" class="form-input w-full p-2.5 text-xs" value="60" />
+            </div>
+            <div class="flex items-center pt-5">
+              <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+                <input type="checkbox" id="monitor_daemon" class="custom-checkbox" checked />
+                <span>Run continuously as daemon loop</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nginx Log Analyzer settings -->
+        <div class="studio-card hidden" id="log_analyzer-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">📝 Log Analyzer Parameters</h3>
+          
+          <div class="mb-4">
+            <label for="log_filepath" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Access Log File Path</label>
+            <input type="text" id="log_filepath" class="form-input w-full p-2.5 text-xs" value="/var/log/nginx/access.log" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="log_status_filter" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Filter Status Codes (comma-separated)</label>
+              <input type="text" id="log_status_filter" class="form-input w-full p-2.5 text-xs" value="500,502,503,504,401,403" />
+            </div>
+            <div>
+              <label for="log_outliers_limit" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Max Top IP Outliers to Report</label>
+              <input type="number" id="log_outliers_limit" class="form-input w-full p-2.5 text-xs" value="5" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Disk Cleanup settings -->
+        <div class="studio-card hidden" id="disk_cleanup-options">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🧹 Disk Space Cleanup Utility</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="cleanup_target_dir" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Folder to Sweep</label>
+              <input type="text" id="cleanup_target_dir" class="form-input w-full p-2.5 text-xs" value="/var/log/nginx" />
+            </div>
+            <div>
+              <label for="cleanup_retention_days" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Retention Expiry Days</label>
+              <input type="number" id="cleanup_retention_days" class="form-input w-full p-2.5 text-xs" value="7" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="cleanup_extensions" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">File Extensions (comma-separated)</label>
+              <input type="text" id="cleanup_extensions" class="form-input w-full p-2.5 text-xs" value=".log, .tmp, .gz" />
+            </div>
+            <div class="flex items-center pt-5">
+              <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+                <input type="checkbox" id="cleanup_dry_run" class="custom-checkbox" checked />
+                <span>Dry Run mode (safe mode, log only)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <!-- Safeguards Options -->
         <div class="studio-card border-rose-200 bg-rose-50/10">
           <h3 class="studio-title text-base font-bold text-rose-900 mb-2 flex items-center gap-2">🛡️ Python Script Safeguards</h3>
@@ -428,7 +514,7 @@
       // Show/Hide relevant options based on script purpose
       $('script_purpose').addEventListener('change', function() {
         const val = this.value;
-        ['aws_finops', 'k8s_monitor', 'ssl_expiry', 'api_ping'].forEach(category => {
+        ['aws_finops', 'k8s_monitor', 'ssl_expiry', 'api_ping', 'sys_monitor', 'log_analyzer', 'disk_cleanup'].forEach(category => {
           const el = $(category + '-options');
           if (el) {
             if (val === category) {
@@ -686,6 +772,201 @@
         code += `        dispatch_alert(f"High latency warning for {target_url}! P95 latency is {p95_lat:.2f}ms")\n\n`;
         code += `if __name__ == "__main__":\n`;
         code += `    ping_endpoint()\n`;
+      } else if (purpose === 'sys_monitor') {
+        const cpuLimit = $('cpu_threshold').value;
+        const ramLimit = $('ram_threshold').value;
+        const diskLimit = $('disk_threshold').value;
+        const interval = $('monitor_interval').value;
+        const daemonMode = $('monitor_daemon').checked;
+
+        code += `import psutil\n\n`;
+        code += `def check_system_resources():\n`;
+        code += `    cpu_limit = ${cpuLimit}\n`;
+        code += `    ram_limit = ${ramLimit}\n`;
+        code += `    disk_limit = ${diskLimit}\n\n`;
+        
+        code += `    # CPU Check\n`;
+        code += `    cpu_usage = psutil.cpu_percent(interval=1)\n`;
+        code += `    logger.info(f"System CPU Usage: {cpu_usage}% (Limit: {cpu_limit}%)")\n`;
+        code += `    if cpu_usage > cpu_limit:\n`;
+        code += `        dispatch_alert(f"CPU usage limit exceeded on host: {cpu_usage}% (Warning limit: {cpu_limit}%)")\n\n`;
+
+        code += `    # RAM Memory Check\n`;
+        code += `    mem = psutil.virtual_memory()\n`;
+        code += `    ram_usage = mem.percent\n`;
+        code += `    logger.info(f"System RAM Usage: {ram_usage}% (Limit: {ram_limit}%)")\n`;
+        code += `    if ram_usage > ram_limit:\n`;
+        code += `        dispatch_alert(f"RAM usage limit exceeded on host: {ram_usage}% (Warning limit: {ram_limit}%)")\n\n`;
+
+        code += `    # Disk Space Check\n`;
+        code += `    disk = psutil.disk_usage('/')\n`;
+        code += `    disk_usage = disk.percent\n`;
+        code += `    logger.info(f"Root Disk Storage Usage: {disk_usage}% (Limit: {disk_limit}%)")\n`;
+        code += `    if disk_usage > disk_limit:\n`;
+        code += `        dispatch_alert(f"Disk storage usage exceeded on root partition: {disk_usage}% (Warning limit: {disk_limit}%)")\n\n`;
+
+        if (daemonMode) {
+          code += `def start_monitoring():\n`;
+          code += `    interval = ${interval}\n`;
+          code += `    logger.info(f"Starting resource monitor daemon loop. Sampling interval: {interval}s")\n`;
+          code += `    try:\n`;
+          code += `        while True:\n`;
+          code += `            check_system_resources()\n`;
+          code += `            time.sleep(interval)\n`;
+          code += `    except KeyboardInterrupt:\n`;
+          code += `        logger.info("Resource monitor daemon stopped by operator.")\n\n`;
+        }
+
+        code += `if __name__ == "__main__":\n`;
+        if (daemonMode) {
+          if (gracefulExceptions) {
+            code += `    try:\n        start_monitoring()\n    except Exception as err:\n        logger.critical(f"System monitor daemon failure: {err}")\n        sys.exit(1)\n`;
+          } else {
+            code += `    start_monitoring()\n`;
+          }
+        } else {
+          if (gracefulExceptions) {
+            code += `    try:\n        check_system_resources()\n    except Exception as err:\n        logger.critical(f"System monitor execution failure: {err}")\n        sys.exit(1)\n`;
+          } else {
+            code += `    check_system_resources()\n`;
+          }
+        }
+      } else if (purpose === 'log_analyzer') {
+        const filePath = $('log_filepath').value;
+        const statusFilter = $('log_status_filter').value;
+        const outliersLimit = $('log_outliers_limit').value;
+
+        code += `import re\nfrom collections import Counter\n\n`;
+        code += `def analyze_access_log():\n`;
+        code += `    log_file_path = "${filePath}"\n`;
+        code += `    target_statuses = [s.strip() for s in "${statusFilter}".split(",") if s.strip()]\n`;
+        code += `    outliers_limit = ${outliersLimit}\n\n`;
+        
+        code += `    logger.info(f"Starting parse of access logs located at: {log_file_path}")\n`;
+        code += `    if not os.path.exists(log_file_path):\n`;
+        code += `        logger.error(f"Target log file does not exist: {log_file_path}")\n`;
+        code += `        dispatch_alert(f"Log Analyzer failed: File not found at {log_file_path}")\n`;
+        code += `        return\n\n`;
+
+        code += `    # Regex pattern matching Combined Log Format (IP - - [date] "req" status bytes)\n`;
+        code += `    log_pattern = re.compile(\n`;
+        code += `        r'(?P<ip>\\S+)\\s+\\S+\\s+\\S+\\s+\\[(?P<date>.*?)\\]\\s+"(?P<request>.*?)"\\s+(?P<status>\\d{3})\\s+(?P<bytes>\\S+)'\n`;
+        code += `    )\n\n`;
+
+        code += `    total_lines = 0\n`;
+        code += `    parsed_lines = 0\n`;
+        code += `    status_counter = Counter()\n`;
+        code += `    error_ips = Counter()\n`;
+        code += `    error_lines_matched = 0\n\n`;
+
+        code += `    with open(log_file_path, "r", encoding="utf-8", errors="ignore") as f:\n`;
+        code += `        for line in f:\n`;
+        code += `            total_lines += 1\n`;
+        code += `            match = log_pattern.match(line)\n`;
+        code += `            if not match:\n`;
+        code += `                continue\n`;
+        code += `            parsed_lines += 1\n`;
+        code += `            status = match.group("status")\n`;
+        code += `            ip = match.group("ip")\n\n`;
+        
+        code += `            status_counter[status] += 1\n\n`;
+        
+        code += `            # Check status code filters\n`;
+        code += `            is_error = False\n`;
+        code += `            for target in target_statuses:\n`;
+        code += `                if target.endswith("xx"):\n`;
+        code += `                    prefix = target[0]\n`;
+        code += `                    if status.startswith(prefix):\n`;
+        code += `                        is_error = True\n`;
+        code += `                        break\n`;
+        code += `                elif status == target:\n`;
+        code += `                    is_error = True\n`;
+        code += `                    break\n\n`;
+        
+        code += `            if is_error:\n`;
+        code += `                error_lines_matched += 1\n`;
+        code += `                error_ips[ip] += 1\n\n`;
+
+        code += `    logger.info(f"Log scanning complete. Read {total_lines} lines ({parsed_lines} parsed successfully).")\n`;
+        code += `    logger.info("--- Status Code Frequencies ---")\n`;
+        code += `    for status, count in status_counter.most_common():\n`;
+        code += `        logger.info(f"Status {status}: {count} occurrence(s)")\n\n`;
+
+        code += `    if error_lines_matched > 0:\n`;
+        code += `        msg = f"Detected {error_lines_matched} error log occurrences matching status filters {target_statuses}.\\n"\n`;
+        code += `        msg += f"Top outlier IP addresses:\\n"\n`;
+        code += `        for ip, count in error_ips.most_common(outliers_limit):\n`;
+        code += `            msg += f" - IP {ip}: {count} error(s)\\n"\n`;
+        code += `        dispatch_alert(msg)\n`;
+        code += `    else:\n`;
+        code += `        logger.info("✅ No HTTP status code errors matched the current filter.")\n\n`;
+
+        code += `if __name__ == "__main__":\n`;
+        if (gracefulExceptions) {
+          code += `    try:\n        analyze_access_log()\n    except Exception as err:\n        logger.critical(f"Log analyzer failed: {err}")\n        sys.exit(1)\n`;
+        } else {
+          code += `    analyze_access_log()\n`;
+        }
+      } else if (purpose === 'disk_cleanup') {
+        const targetDir = $('cleanup_target_dir').value;
+        const retentionDays = $('cleanup_retention_days').value;
+        const extensions = $('cleanup_extensions').value;
+        const dryRun = $('cleanup_dry_run').checked;
+
+        code += `import shutil\n\n`;
+        code += `def run_log_cleanup():\n`;
+        code += `    target_dir = "${targetDir}"\n`;
+        code += `    retention_days = ${retentionDays}\n`;
+        code += `    dry_run = ${dryRun ? 'True' : 'False'}\n`;
+        code += `    target_exts = [ext.strip().lower() for ext in "${extensions}".split(",") if ext.strip()]\n\n`;
+        
+        code += `    logger.info(f"Starting directory cleanup sweep in: {target_dir} (Dry Run = {dry_run})")\n`;
+        code += `    if not os.path.exists(target_dir):\n`;
+        code += `        logger.error(f"Cleanup folder target does not exist: {target_dir}")\n`;
+        code += `        dispatch_alert(f"Cleanup failed: Target directory {target_dir} not found.")\n`;
+        code += `        return\n\n`;
+
+        code += `    now = time.time()\n`;
+        code += `    expiry_seconds = now - (retention_days * 86400)\n`;
+        code += `    deleted_files_count = 0\n`;
+        code += `    reclaimed_bytes = 0\n\n`;
+
+        code += `    for root, dirs, files in os.walk(target_dir):\n`;
+        code += `        for filename in files:\n`;
+        code += `            file_path = os.path.join(root, filename)\n`;
+        code += `            # Check file extensions\n`;
+        code += `            _, ext = os.path.splitext(filename)\n`;
+        code += `            if target_exts and (ext.lower() not in target_exts):\n`;
+        code += `                continue\n\n`;
+
+        code += `            try:\n`;
+        code += `                stat = os.stat(file_path)\n`;
+        code += `                # Check last modified date\n`;
+        code += `                if stat.st_mtime < expiry_seconds:\n`;
+        code += `                    file_size = stat.st_size\n`;
+        code += `                    logger.info(f"Found expired file: {file_path} ({file_size / 1024 / 1024:.2f} MB)")\n`;
+        code += `                    if not dry_run:\n`;
+        code += `                        os.remove(file_path)\n`;
+        code += `                    deleted_files_count += 1\n`;
+        code += `                    reclaimed_bytes += file_size\n`;
+        code += `            except Exception as e:\n`;
+        code += `                logger.error(f"Failed to inspect/delete file {file_path}: {e}")\n\n`;
+
+        code += `    reclaimed_mb = reclaimed_bytes / 1024 / 1024\n`;
+        code += `    logger.info(f"Sweep complete. Found {deleted_files_count} expired files.")\n`;
+        code += `    if dry_run:\n`;
+        code += `        logger.info(f"[DRY RUN] Would have deleted {deleted_files_count} files, reclaiming {reclaimed_mb:.2f} MB.")\n`;
+        code += `    else:\n`;
+        code += `        logger.info(f"Permanently purged {deleted_files_count} files, reclaiming {reclaimed_mb:.2f} MB.")\n`;
+        code += `        if deleted_files_count > 0:\n`;
+        code += `            dispatch_alert(f"Directory cleanup sweep completed in {target_dir}. Purged {deleted_files_count} file(s), reclaiming {reclaimed_mb:.2f} MB.")\n\n`;
+
+        code += `if __name__ == "__main__":\n`;
+        if (gracefulExceptions) {
+          code += `    try:\n        run_log_cleanup()\n    except Exception as err:\n        logger.critical(f"Cleanup utility error: {err}")\n        sys.exit(1)\n`;
+        } else {
+          code += `    run_log_cleanup()\n`;
+        }
       }
 
       compiledCode.script = code;
@@ -699,6 +980,8 @@
         req += 'boto3>=1.34.0\n';
       } else if (purpose === 'k8s_monitor') {
         req += 'kubernetes>=29.0.0\n';
+      } else if (purpose === 'sys_monitor') {
+        req += 'psutil>=5.9.0\n';
       }
 
       compiledCode.requirements = req;
@@ -724,6 +1007,24 @@
         md += `\`\`\`\n`;
       } else if (purpose === 'k8s_monitor') {
         md += `Ensure you have configured a valid connection namespace context in \`~/.kube/config\` before execution.\n`;
+        md += `\`\`\`bash\n`;
+        md += `python sre_utility.py\n`;
+        md += `\`\`\`\n`;
+      } else if (purpose === 'sys_monitor') {
+        md += `Ensure the script is executed in an environment with access to system metrics. Elevated permissions may be required for some disk metrics.\n`;
+        md += `Run the system resource monitor:\n`;
+        md += `\`\`\`bash\n`;
+        md += `python sre_utility.py\n`;
+        md += `\`\`\`\n`;
+      } else if (purpose === 'log_analyzer') {
+        md += `Configure target access log filepath and status filter lists. Make sure the file exists and is readable.\n`;
+        md += `Execute the log scan and analyze outliers:\n`;
+        md += `\`\`\`bash\n`;
+        md += `python sre_utility.py\n`;
+        md += `\`\`\`\n`;
+      } else if (purpose === 'disk_cleanup') {
+        md += `Configure target cleanup directories and expiry metrics. By default, it operates in Safe (Dry Run) mode.\n`;
+        md += `Run the directory sweep:\n`;
         md += `\`\`\`bash\n`;
         md += `python sre_utility.py\n`;
         md += `\`\`\`\n`;
@@ -795,11 +1096,32 @@
       $('aws_eip').checked = true;
       $('aws_dry').checked = true;
 
+      // Reset sys_monitor
+      $('cpu_threshold').value = '80';
+      $('ram_threshold').value = '85';
+      $('disk_threshold').value = '90';
+      $('monitor_interval').value = '60';
+      $('monitor_daemon').checked = true;
+
+      // Reset log_analyzer
+      $('log_filepath').value = '/var/log/nginx/access.log';
+      $('log_status_filter').value = '500,502,503,504,401,403';
+      $('log_outliers_limit').value = '5';
+
+      // Reset disk_cleanup
+      $('cleanup_target_dir').value = '/var/log/nginx';
+      $('cleanup_retention_days').value = '7';
+      $('cleanup_extensions').value = '.log, .tmp, .gz';
+      $('cleanup_dry_run').checked = true;
+
       // trigger category element visibility
       $('aws_finops-options').classList.remove('hidden');
       $('k8s_monitor-options').classList.add('hidden');
       $('ssl_expiry-options').classList.add('hidden');
       $('api_ping-options').classList.add('hidden');
+      $('sys_monitor-options').classList.add('hidden');
+      $('log_analyzer-options').classList.add('hidden');
+      $('disk_cleanup-options').classList.add('hidden');
 
       triggerCompileAll();
       showToast('🗑️ Defaults configurations successfully restored!');
@@ -816,10 +1138,61 @@
       }, 3000);
     }
   
-    const tabExplanations = {'script': {'title': 'Python SRE Automation Script', 'filename': 'sre_utility.py', 'why': 'Builds custom automation tools (API checks, directory sweeps, reports) leveraging Python libraries.', 'when': 'Use when shell scripting is not expressive enough for complex data processing, HTTP calls, or DB queries.', 'where': 'Execute in any python environment containing package requirements.', 'command': 'python sre_utility.py', 'practices': ['Write modular classes and functions.', 'Use virtual environments to isolate requirements.', 'Log errors using the logging module.'], 'ai_mlops': 'Implements active check scripts and API connections for the **SRE GenAI Copilot**.', 'flow': '[Python runner] ➔ [Processes automation tasks] ➔ [Outputs metrics logs]'}, 'readme': {'title': 'Python Tool Guide', 'filename': 'README.md', 'why': 'Outlines prerequisites, installation, and environment variables for the Python utility script.', 'when': 'Include in the script repository to help operators run the automation tool.', 'where': 'Save in the root of the python script folder.', 'command': '# View in markdown reader', 'practices': ['List pip install instructions.', 'Document environment configurations.', 'Detail script parameters.'], 'ai_mlops': 'Outlines installation parameters for local python-based AI assistants.', 'flow': '[README.md Guide] ➔ [Guides Python Script Setup]'}};
+    const tabExplanations = {'readme': {'title': 'Python Tool Guide', 'filename': 'README.md', 'why': 'Outlines prerequisites, installation, and environment variables for the Python utility script.', 'when': 'Include in the script repository to help operators run the automation tool.', 'where': 'Save in the root of the python script folder.', 'command': '# View in markdown reader', 'practices': ['List pip install instructions.', 'Document environment configurations.', 'Detail script parameters.'], 'ai_mlops': 'Outlines installation parameters for local python-based AI assistants.', 'flow': '[README.md Guide] ➔ [Guides Python Script Setup]'}};
 
     function explainActiveTabCode() {
-      const explanation = tabExplanations[activeTab];
+      const purpose = $('script_purpose').value;
+      let explanation = null;
+
+      if (activeTab === 'script') {
+        explanation = {
+          'title': 'Python SRE Automation Script',
+          'filename': 'sre_utility.py',
+          'why': 'Builds custom SRE automation tools leveraging Python libraries to automate common checks.',
+          'when': 'Use when native shell scripts are too complex or when structured logging/object-oriented scripts are needed.',
+          'where': 'Execute on any target VM, bare-metal server, or container containing Python 3.',
+          'command': 'python sre_utility.py',
+          'practices': [
+            'Log all operations using standard logging instead of raw prints.',
+            'Wrap system and network operations in try-except statements.',
+            'Implement alert dispatches/webhooks for high-priority failures.'
+          ],
+          'ai_mlops': 'Serves as modular script actions for AI agents or MLOps alerting setups.',
+          'flow': '[Script Run] ➔ [Metrics/Resource Checks] ➔ [Dispatch webhook alerts if error]'
+        };
+
+        if (purpose === 'sys_monitor') {
+          explanation.why = 'Monitors host CPU, RAM, and disk storage usage dynamically using <code>psutil</code>.';
+          explanation.when = 'Use as a lightweight local system monitor daemon or cron agent on critical target hosts.';
+          explanation.practices.push('Configure proper warning limits to avoid page spamming.');
+          explanation.flow = '[sys_monitor] ➔ [Query psutil system state] ➔ [Compare thresholds] ➔ [Alert if exceeded]';
+        } else if (purpose === 'log_analyzer') {
+          explanation.why = 'Parses Nginx or Apache access log files using regex patterns to find HTTP status outliers and count error status frequencies.';
+          explanation.when = 'Use to parse access logs during incidents to extract offending IP addresses and request paths.';
+          explanation.practices.push('Use collections.Counter for fast frequency aggregation.');
+          explanation.flow = '[log_analyzer] ➔ [Read access.log] ➔ [Match regex pattern] ➔ [Count status code outliers]';
+        } else if (purpose === 'disk_cleanup') {
+          explanation.why = 'Cleans up target directories by purging files older than X days matching specified extensions.';
+          explanation.when = 'Use in cron jobs to rotate custom logs, remove tmp files, and prevent disk capacity alarms.';
+          explanation.practices.push('Run in dry run mode first to verify which files will be deleted.');
+          explanation.flow = '[disk_cleanup] ➔ [Scan directory tree] ➔ [Check file dates & sizes] ➔ [Purge expired files]';
+        }
+      } else if (activeTab === 'readme') {
+        explanation = tabExplanations['readme'];
+      } else if (activeTab === 'requirements') {
+        explanation = {
+          'title': 'Requirements Configuration',
+          'filename': 'requirements.txt',
+          'why': 'Lists necessary pip packages to execute the generated SRE script.',
+          'when': 'Run before executing the script to download dependencies.',
+          'where': 'Save in the root of the python script folder.',
+          'command': 'pip install -r requirements.txt',
+          'practices': ['Pin dependency versions for production stability.', 'Use virtual environments.'],
+          'ai_mlops': 'Defines python environment dependencies for SRE automations.',
+          'flow': '[requirements.txt] ➔ [pip install] ➔ [Dependencies Configured]'
+        };
+      }
+
       if (!explanation) {
         showToast("⚠️ No explanation available for this tab.");
         return;
