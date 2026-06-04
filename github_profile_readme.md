@@ -10,7 +10,20 @@
 
 ## 🧑‍💻 About Me
 
-I am a passionate **Cloud & DevOps Engineer** specializing in designing and provisioning scalable, secure, and highly reliable cloud infrastructure. 
+I am a passionate **Cloud & DevOps Engineer** specializing in designing and provisioning scalable, secure, and highly reliable cloud infrastructure.
+
+🚀 Cloud & DevOps Engineer | SRE Practitioner | Infrastructure as Code (IaC) | Terraform | Kubernetes | Docker | Jenkins | GitHub Actions | GitLab CI | GitOps | ArgoCD | AWS Cloud | GCP | ELK Stack | Prometheus | Grafana | Trivy | SonarQube | Linux | Bash | Python | Go | CI/CD | Monitoring | Alerting | Slack | Email Notifications
+
+<p align="left">
+  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=Profile%20views&color=007ec6&style=flat-square" alt="Profile views" />
+</p>
+
+- 🌐 Built multiple personal DevOps & SRE tools - **[🚀 DevOps & SRE Projects](https://talaripradeep.info/projects)**
+<p align="left">
+  <a href="https://talaripradeep.info/projects" target="_blank">
+    <img src="https://img.shields.io/badge/DEVOPS_&_SRE_PROJECTS-VISIT-007ec6?style=for-the-badge&logo=github&logoColor=white" alt="DevOps & SRE Projects" />
+  </a>
+</p>
 
 - 📍 Based in **India**
 - 💼 Working on enterprise cloud reliability, infrastructure automation, and automated deployment architectures
