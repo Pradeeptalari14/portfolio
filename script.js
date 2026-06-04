@@ -24,7 +24,6 @@ window.addEventListener('scroll', () => {
     navbar.classList.remove('scrolled');
     $('backToTop').classList.remove('visible');
   }
-  updateActiveNav();
 }, { passive: true });
 
 hamburger.addEventListener('click', () => {
@@ -41,21 +40,39 @@ navLinks.addEventListener('click', (e) => {
   }
 });
 
-// Active nav highlighting
-function updateActiveNav() {
+// Active nav highlighting via IntersectionObserver
+function initActiveNav() {
   const sections = $$('section[id]');
-  let current = '';
-  sections.forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 140) {
-      current = sec.id;
+  const navLinks = $$('.nav-link');
+  
+  const activeSections = new Map();
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      activeSections.set(entry.target.id, entry.isIntersecting);
+    });
+    
+    let currentActive = '';
+    for (const [id, isIntersecting] of activeSections.entries()) {
+      if (isIntersecting) {
+        currentActive = id;
+        break;
+      }
     }
-  });
-  $$('.nav-link').forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) {
-      link.classList.add('active');
+    
+    if (currentActive) {
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === `#${currentActive}`) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
     }
+  }, {
+    rootMargin: '-140px 0px -60% 0px'
   });
+
+  sections.forEach(sec => navObserver.observe(sec));
 }
 
 /* ══════════════
@@ -181,16 +198,11 @@ function animateDecimalCounter(el, target, suffix = '') {
 
 function startCounters() {
   if (countersStarted) return;
-  const hero = document.querySelector('.hero');
-  if (!hero) return;
-  const rect = hero.getBoundingClientRect();
-  if (rect.top < window.innerHeight * 0.9) {
-    countersStarted = true;
-    animateCounter($('stat-exp'),      2,  '+');
-    animateCounter($('stat-projects'), 15, '+');
-    animateCounter($('stat-certs'),    5);
-    animateDecimalCounter($('stat-uptime'), 99.9, '%');
-  }
+  countersStarted = true;
+  animateCounter($('stat-exp'),      2,  '+');
+  animateCounter($('stat-projects'), 15, '+');
+  animateCounter($('stat-certs'),    5);
+  animateDecimalCounter($('stat-uptime'), 99.9, '%');
 }
 
 /* ══════════════
@@ -213,38 +225,53 @@ function setupReveal() {
       el.style.transitionDelay = `${i * 0.07}s`;
     });
   });
-}
 
-function checkReveal() {
-  $$('.reveal').forEach(el => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.9) {
-      el.classList.add('visible');
-    }
+  // Set up IntersectionObserver for reveal elements
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    rootMargin: '0px 0px -10% 0px'
   });
 
-  // Skill bars
-  $$('.skill-fill').forEach(bar => {
-    const rect = bar.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.93) {
-      bar.classList.add('animated');
-    }
+  $$('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Set up IntersectionObserver for skill bars
+  const skillObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animated');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    rootMargin: '0px 0px -7% 0px'
   });
 
-  // Timeline items
-  $$('.timeline-item').forEach(item => {
-    const rect = item.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.9) {
-      item.classList.add('visible');
-    }
-  });
+  $$('.skill-fill').forEach(bar => skillObserver.observe(bar));
 
-  startCounters();
+  // Set up IntersectionObserver for stats counter triggering
+  const statsEl = document.querySelector('.hero-stats');
+  if (statsEl) {
+    const statsObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startCounters();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -10% 0px'
+    });
+    statsObserver.observe(statsEl);
+  }
 }
 
 setupReveal();
-window.addEventListener('scroll', checkReveal, { passive: true });
-setTimeout(checkReveal, 250);
 
 /* ══════════════
    CONTACT FORM  (Formspree)
@@ -708,8 +735,7 @@ function initSRETerminal() {
 /* ══════════════
    INITIAL CHECK
  ══════════════ */
-updateActiveNav();
-checkReveal();
+initActiveNav();
 initProjectModal();
 initDynamicYear();
 initLatencyTracker();
