@@ -36,6 +36,9 @@ jobs:
       - name: Run dependency security audit
         run: npm audit --audit-level=critical
 
+      - name: Run unit tests
+        run: npm test
+
       - name: Build site
         run: npm run build
 
