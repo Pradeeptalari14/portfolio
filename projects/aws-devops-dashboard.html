@@ -11,6 +11,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <!-- Structured JSON-LD Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "AWS DevOps & SRE Control Center",
+    "description": "Real-time AWS infrastructure telemetry, metrics, and CI/CD simulation dashboard.",
+    "programmingLanguage": "Node.js",
+    "codeRepository": "https://github.com/Pradeeptalari14/aws-devops-dashboard",
+    "targetProduct": {
+      "@type": "SoftwareApplication",
+      "name": "AWS DevOps Control Center",
+      "applicationCategory": "DevOpsTool"
+    }
+  }
+  </script>
+
   <style>
     :root {
       --bg-base: #ffffff;
@@ -200,6 +218,13 @@
       line-height: 1.2;
     }
 
+    .project-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .guide-btn {
       display: inline-flex;
       align-items: center;
@@ -224,6 +249,27 @@
     .guide-btn svg {
       width: 18px;
       height: 18px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: 2px solid var(--text-primary);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .download-btn:hover {
+      background: var(--text-primary);
+      color: #fff;
+      transform: translateY(-2px);
     }
 
     /* Grid Layout */
@@ -554,10 +600,16 @@
           <div class="project-badge">SRE dashboard</div>
           <h1 class="project-title">AWS DevOps &amp; SRE Control Center</h1>
         </div>
-        <a href="https://github.com/Pradeeptalari14/aws-devops-dashboard" target="_blank" rel="noopener noreferrer" class="guide-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-          Refer: GUIDE URL
-        </a>
+        <div class="project-actions">
+          <a href="https://github.com/Pradeeptalari14/aws-devops-dashboard" target="_blank" rel="noopener noreferrer" class="guide-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+            Refer: GUIDE URL
+          </a>
+          <a href="https://github.com/Pradeeptalari14/aws-devops-dashboard/archive/refs/heads/main.zip" class="download-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download ZIP
+          </a>
+        </div>
       </div>
       <p style="color: var(--text-secondary); max-width: 800px; font-size: 1.05rem;">
         An SRE-inspired cloud monitoring control center. Real-time telemetry monitoring for AWS server resources (EC2, Lambda, S3, RDS, CloudWatch), paired with a mock CI/CD pipeline emulator and visual GitHub integrations.
