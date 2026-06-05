@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Rules Customizer | Talari Pradeep</title>
+  <meta name="description" content="Design custom guardrails and instructions for AI agents. Generate .cursorrules, .github/copilot-instructions.md, and system prompts." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #6366f1;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">AI Engineering</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">AI Coding Rules <span class="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">Customizer</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Design custom instruction sets and guardrails for coding assistants. Generate config files, system prompts, and compare AI code outputs side-by-side.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Target Editor Options -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🤖 Target & Stack</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="assistant_type" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Coding Assistant</label>
+              <select id="assistant_type" class="form-select w-full p-2.5 text-xs">
+                <option value="cursor">Cursor (.cursorrules)</option>
+                <option value="copilot">GitHub Copilot (.github/copilot-instructions.md)</option>
+                <option value="system">Generic System Prompt</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="tech_stack" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Primary Tech Stack</label>
+              <select id="tech_stack" class="form-select w-full p-2.5 text-xs">
+                <option value="nextjs">Next.js & TypeScript</option>
+                <option value="fastapi">Python & FastAPI</option>
+                <option value="nodejs">Node.js & Express</option>
+                <option value="docker_sre">Docker, Kubernetes & SRE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+            <div>
+              <label for="coding_style" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Coding Style Paradigm</label>
+              <select id="coding_style" class="form-select w-full p-2.5 text-xs">
+                <option value="functional">Functional & Modular</option>
+                <option value="oop">Object-Oriented (OOP)</option>
+                <option value="minimalist">Minimalist & clean</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="comment_style" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Commenting & Docs</label>
+              <select id="comment_style" class="form-select w-full p-2.5 text-xs">
+                <option value="documented">JSDoc / Detailed docstrings</option>
+                <option value="minimal">Minimal inline comments</option>
+                <option value="self_documenting">Self-documenting code only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strict Constraints -->
+        <div class="studio-card">
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Strict Guardrails & Constraints</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-700 font-medium">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="guard_no_placeholders" class="w-4 h-4 text-indigo-600 rounded" checked />
+              <span>No placeholder code / fully functional</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="guard_no_any" class="w-4 h-4 text-indigo-600 rounded" checked />
+              <span>No generic 'any' types in TypeScript</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="guard_unit_tests" class="w-4 h-4 text-indigo-600 rounded" checked />
+              <span>Always generate companion unit tests</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="guard_owasp" class="w-4 h-4 text-indigo-600 rounded" checked />
+              <span>Enforce OWASP security guardrails</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Additional Instructions -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2">📝 Custom Instructions</h3>
+          <p class="text-xs text-gray-500 mb-3">Add any additional custom rules or directives to embed in your prompts.</p>
+          <textarea id="custom_rules" class="form-textarea w-full p-2.5 font-mono text-xs" rows="4" placeholder="Follow strict DRY principles. Use dynamic imports where appropriate. Keep function sizes under 30 lines."></textarea>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-32 focus:outline-none" value=".cursorrules" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('config')" id="tab-config" class="tab-btn active">Rules Config</button>
+              <button onclick="switchTab('system')" id="tab-system" class="tab-btn">System Prompt</button>
+              <button onclick="switchTab('simulator')" id="tab-simulator" class="tab-btn">💬 Live Agent Simulator</button>
+            </div>
+          </div>
+
+          <!-- Code View -->
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 380px; max-height: 480px;"></pre>
+
+          <!-- Chat Agent Simulator -->
+          <div id="simulator-viewport" class="hidden ide-viewport flex flex-col bg-slate-950 p-4 border border-slate-800" style="min-height: 380px; max-height: 480px;">
+            <div class="flex flex-col gap-3 mb-3">
+              <label for="prompt_input" class="text-[10px] font-bold text-slate-400 font-mono uppercase">Coding Request Prompt</label>
+              <div class="flex gap-2">
+                <input type="text" id="prompt_input" class="bg-slate-900 text-xs text-white border border-slate-800 p-2 rounded flex-1 focus:outline-none focus:border-indigo-500" value="Write a fetch function to retrieve user data" />
+                <button id="run-sim-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3 py-2 rounded transition">Generate</button>
+              </div>
+            </div>
+
+            <!-- Side-by-Side Outputs -->
+            <div class="flex-1 flex flex-col gap-4 overflow-y-auto pr-1">
+              <div>
+                <span class="text-[9px] font-bold text-red-400 font-mono uppercase bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20 block mb-1">Standard AI (No Rules)</span>
+                <pre id="sim-standard-output" class="bg-slate-900 border border-slate-800 p-3 rounded text-[10px] text-slate-400 font-mono overflow-x-auto whitespace-pre-wrap"></pre>
+              </div>
+              <div>
+                <span class="text-[9px] font-bold text-emerald-400 font-mono uppercase bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 block mb-1">Constrained AI (With Custom Rules)</span>
+                <pre id="sim-constrained-output" class="bg-slate-900 border border-slate-800 p-3 rounded text-[10px] text-slate-200 font-mono overflow-x-auto whitespace-pre-wrap"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Utility Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Content</span>
+            </button>
+            <button onclick="downloadActiveFile()" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>⬇️ Download Spec</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../../src/js/generators/ai-rules-customizer-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

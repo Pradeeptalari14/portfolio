@@ -952,7 +952,7 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="tools-search" class="search-input" placeholder="Search 56 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+        <input type="text" id="tools-search" class="search-input" placeholder="Search 63 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
         <span class="search-shortcut-badge">Ctrl + K</span>
       </div>
 
@@ -960,19 +960,19 @@
       <div class="filter-tabs">
         <button class="filter-btn active" data-filter="all">
           <span>All Studios</span>
-          <span class="filter-count">56</span>
+          <span class="filter-count">63</span>
         </button>
         <button class="filter-btn" data-filter="ai">
           <span>AI & MLOps</span>
-          <span class="filter-count">10</span>
+          <span class="filter-count">11</span>
         </button>
         <button class="filter-btn" data-filter="cloud">
           <span>Cloud & Infra</span>
-          <span class="filter-count">11</span>
+          <span class="filter-count">13</span>
         </button>
         <button class="filter-btn" data-filter="cicd">
           <span>CI/CD Pipelines</span>
-          <span class="filter-count">5</span>
+          <span class="filter-count">6</span>
         </button>
         <button class="filter-btn" data-filter="automation">
           <span>Config & Auto</span>
@@ -980,7 +980,7 @@
         </button>
         <button class="filter-btn" data-filter="observability">
           <span>Observability</span>
-          <span class="filter-count">17</span>
+          <span class="filter-count">20</span>
         </button>
       </div>
     </div>
@@ -1856,6 +1856,111 @@
         <div class="tool-footer">
           <span class="tool-tag">trivy.yaml</span>
           <a href="trivy/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- AI Coding Rules & Guardrails Customizer -->
+      <div class="tool-card border-indigo-200 bg-indigo-50/10" data-category="ai">
+        <span class="tool-category-badge">AI & MLOps</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">🤖</div>
+        <h3 class="tool-title">AI Rules Customizer</h3>
+        <p class="tool-desc">Design custom guardrails and instructions for AI agents. Customize Next.js/FastAPI framework directives, strict styles, and simulate output modifications.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">.cursorrules</span>
+          <a href="ai-rules-customizer/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Falco Runtime Security Policy Auditor -->
+      <div class="tool-card border-rose-200 bg-rose-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #f43f5e;">🛡️</div>
+        <h3 class="tool-title">Falco Security Auditor</h3>
+        <p class="tool-desc">Build real-time container threat detection rules. Configure syscall conditions, rules macros, alert macros, and simulate runtime violation alerts.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">falco_rules.yaml</span>
+          <a href="falco-auditor/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Prometheus Alertmanager Routing Visualizer -->
+      <div class="tool-card border-orange-200 bg-orange-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #ea580c;">🕸️</div>
+        <h3 class="tool-title">Alertmanager Visualizer</h3>
+        <p class="tool-desc">Design nested alert dispatch trees. Map matching labels, PagerDuty receivers, grouping windows, and visualize alert escalation paths in real-time.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">alertmanager.yaml</span>
+          <a href="alertmanager-visualizer/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Dagger Containerized Pipelines Studio -->
+      <div class="tool-card border-sky-200 bg-sky-50/10" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🔀</div>
+        <h3 class="tool-title">Dagger Pipelines Studio</h3>
+        <p class="tool-desc">Construct container-based pipelines running on local docker engines. Generate Go/Python build SDKs, and simulate stages execution workflows.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">dagger.go</span>
+          <a href="dagger-pipelines/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- eBPF Kernel Tracing & Kprobe Generator -->
+      <div class="tool-card border-violet-200 bg-violet-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #8b5cf6;">🐝</div>
+        <h3 class="tool-title">eBPF Tracing Generator</h3>
+        <p class="tool-desc">Generate eBPF C program filters and Python/Go loader scripts. Monitor kprobes and tracepoints, and view live tracing logs output simulations.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">kprobe.bpf.c</span>
+          <a href="ebpf-generator/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Crossplane Multi-Cloud Platform Studio -->
+      <div class="tool-card border-cyan-200 bg-cyan-50/10" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #06b6d4;">🌐</div>
+        <h3 class="tool-title">Crossplane Cloud Studio</h3>
+        <p class="tool-desc">Build compostable cloud resources. Generate composite resource definitions (XRDs), cross-cloud compositions, and claims maps visualizer.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">composition.yaml</span>
+          <a href="crossplane-studio/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Knative Serverless Routing Studio -->
+      <div class="tool-card border-emerald-200 bg-emerald-50/10" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">⚡</div>
+        <h3 class="tool-title">Knative Serverless Studio</h3>
+        <p class="tool-desc">Configure serverless knative services with scale-to-zero thresholds. Map event-driven broker triggers and simulate live scaling container logs.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">service.yaml</span>
+          <a href="knative-routing/" class="tool-link">
             Launch Tool
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

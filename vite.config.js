@@ -76,6 +76,13 @@ export default defineConfig({
         nginxconfig: resolve(__dirname, 'tools/nginx-config/index.html'),
         k8scrd: resolve(__dirname, 'tools/k8s-crd/index.html'),
         trivystudio: resolve(__dirname, 'tools/trivy/index.html'),
+        airulescustomizer: resolve(__dirname, 'tools/ai-rules-customizer/index.html'),
+        falcoauditor: resolve(__dirname, 'tools/falco-auditor/index.html'),
+        alertmanagervisualizer: resolve(__dirname, 'tools/alertmanager-visualizer/index.html'),
+        daggerpipelines: resolve(__dirname, 'tools/dagger-pipelines/index.html'),
+        ebpfgenerator: resolve(__dirname, 'tools/ebpf-generator/index.html'),
+        crossplanestudio: resolve(__dirname, 'tools/crossplane-studio/index.html'),
+        knativerouting: resolve(__dirname, 'tools/knative-routing/index.html'),
       }
     }
   }

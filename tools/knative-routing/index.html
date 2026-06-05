@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Knative Serverless Studio | Talari Pradeep</title>
+  <meta name="description" content="Configure serverless knative services with scale-to-zero thresholds. Map event-driven broker triggers and simulate live scaling container logs." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #10b981;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .pod-box {
+      width: 14px;
+      height: 14px;
+      background: #10b981;
+      border-radius: 3px;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+      animation: pulsePod 1.5s infinite ease-in-out;
+    }
+    @keyframes pulsePod {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Serverless Containers</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Knative Serverless <span class="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Deploy autoscaling, event-driven microservices. Configure scale-to-zero cooldowns, target request concurrency, and simulate live pods scaling.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Scaling boundaries options -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">⚡ Scaling Boundaries</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="min_scale" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Minimum Pod Scale (minScale)</label>
+              <select id="min_scale" class="form-select w-full p-2.5 text-xs">
+                <option value="0">0 (Scale to zero - Serverless)</option>
+                <option value="1">1 (Keep single pod warm)</option>
+                <option value="5">5 (Warm worker pool)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="max_scale" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Maximum Scale Boundary</label>
+              <input type="number" id="max_scale" class="form-input w-full p-2.5 text-xs font-mono" value="20" min="1" max="100" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+            <div>
+              <label for="target_concurrency" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Target Concurrency (Requests/Pod)</label>
+              <input type="number" id="target_concurrency" class="form-input w-full p-2.5 text-xs font-mono" value="10" min="1" max="500" />
+            </div>
+
+            <div>
+              <label for="cooldown_period" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Scale-to-zero Grace Cooldown</label>
+              <select id="cooldown_period" class="form-select w-full p-2.5 text-xs">
+                <option value="30s">30 seconds</option>
+                <option value="60s">60 seconds (Default)</option>
+                <option value="300s">5 minutes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Event Broker -->
+        <div class="studio-card">
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Knative Event Trigger Filtering</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-700 font-semibold mt-2">
+                <input type="checkbox" id="enable_eventing" class="w-4 h-4 text-emerald-600 rounded" checked />
+                <span>Bind broker event trigger</span>
+              </label>
+            </div>
+            <div>
+              <label for="trigger_type" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">CloudEvent Filter Type</label>
+              <input type="text" id="trigger_type" class="form-input w-full p-2.5 text-xs font-mono" value="dev.talari.orders" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-32 focus:outline-none" value="service.yaml" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+              <button onclick="switchTab('config')" id="tab-config" class="tab-btn active">service.yaml (Knative)</button>
+              <button onclick="switchTab('system')" id="tab-system" class="tab-btn">trigger.yaml</button>
+              <button onclick="switchTab('simulator')" id="tab-simulator" class="tab-btn">🖥️ Scale Simulator</button>
+            </div>
+          </div>
+
+          <!-- Code View -->
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 380px; max-height: 480px;"></pre>
+
+          <!-- Serverless Scale Simulator -->
+          <div id="simulator-viewport" class="hidden ide-viewport flex flex-col bg-slate-950 p-4 border border-slate-800" style="min-height: 380px; max-height: 480px;">
+            <div class="flex flex-col gap-2 mb-3">
+              <div class="flex justify-between text-[9px] font-bold text-slate-400 uppercase font-mono">
+                <span>Request Load Rate</span>
+                <span><span id="sim-rate-val">0</span> Requests/sec</span>
+              </div>
+              <input type="range" id="sim_request_rate" min="0" max="250" value="0" class="w-full h-1.5 bg-slate-850 rounded-lg appearance-none cursor-pointer" />
+            </div>
+
+            <!-- Stats metric counts -->
+            <div class="grid grid-cols-2 gap-2 mb-4 text-center font-mono">
+              <div class="bg-slate-900 border border-slate-800 p-2 rounded">
+                <div class="text-slate-400 text-[9px] uppercase">Calculated Pods</div>
+                <div id="sim-pods-val" class="text-sm font-bold text-white">0</div>
+              </div>
+              <div class="bg-slate-900 border border-slate-800 p-2 rounded">
+                <div class="text-slate-400 text-[9px] uppercase">Service Status</div>
+                <div id="sim-status-val" class="text-sm font-bold text-slate-500">INACTIVE</div>
+              </div>
+            </div>
+
+            <!-- Pods grid mapping -->
+            <div class="flex-1 bg-slate-950 border border-slate-900 rounded p-4 flex flex-wrap gap-2 content-start overflow-y-auto" id="pods-render-grid">
+              <!-- Dynamically mapped pods -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Service</span>
+            </button>
+            <button onclick="downloadActiveFile()" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>⬇️ Download Spec</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../../src/js/generators/knative-routing-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>
