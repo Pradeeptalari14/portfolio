@@ -952,7 +952,7 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="tools-search" class="search-input" placeholder="Search 67 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+        <input type="text" id="tools-search" class="search-input" placeholder="Search 71 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
         <span class="search-shortcut-badge">Ctrl + K</span>
       </div>
 
@@ -960,7 +960,7 @@
       <div class="filter-tabs">
         <button class="filter-btn active" data-filter="all">
           <span>All Studios</span>
-          <span class="filter-count">67</span>
+          <span class="filter-count">71</span>
         </button>
         <button class="filter-btn" data-filter="ai">
           <span>AI & MLOps</span>
@@ -972,11 +972,11 @@
         </button>
         <button class="filter-btn" data-filter="cicd">
           <span>CI/CD Pipelines</span>
-          <span class="filter-count">6</span>
+          <span class="filter-count">8</span>
         </button>
         <button class="filter-btn" data-filter="automation">
           <span>Config & Auto</span>
-          <span class="filter-count">13</span>
+          <span class="filter-count">15</span>
         </button>
         <button class="filter-btn" data-filter="observability">
           <span>Observability</span>
@@ -2022,6 +2022,66 @@
         <div class="tool-footer">
           <span class="tool-tag">vector.toml</span>
           <a href="vector-pipeline/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Kyverno Kubernetes Policy Studio -->
+      <div class="tool-card border-pink-200 bg-pink-50/10" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #db2777;">🛡️</div>
+        <h3 class="tool-title">Kyverno Policy Studio</h3>
+        <p class="tool-desc">Design Kubernetes-native policies. Configure validation rules for security contexts, labels, resource requests, and test pod compliance in real-time.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">policy.yaml</span>
+          <a href="kyverno-policy/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- GitHub ARC Runner Studio -->
+      <div class="tool-card border-purple-200 bg-purple-50/10" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
+        <div class="tool-icon-wrap" style="color: #7c3aed;">🏃</div>
+        <h3 class="tool-title">GitHub ARC Studio</h3>
+        <p class="tool-desc">Deploy event-driven horizontal actions runners using Actions Runner Controller (ARC). Define runner boundaries and simulate dynamic container scaling.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">runnerset.yaml</span>
+          <a href="github-arc/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Terraform Drift Auditor -->
+      <div class="tool-card border-amber-200 bg-amber-50/10" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #d97706;">🔍</div>
+        <h3 class="tool-title">Terraform Drift Auditor</h3>
+        <p class="tool-desc">Track cloud resource discrepancies. Generate scheduled CronJob auditors, custom drift checks, and trigger auto-reconciliation runbooks.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">drift_audit.sh</span>
+          <a href="terraform-drift/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- FluxCD GitOps Studio -->
+      <div class="tool-card border-cyan-200 bg-cyan-50/10" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
+        <div class="tool-icon-wrap" style="color: #06b6d4;">🔄</div>
+        <h3 class="tool-title">FluxCD GitOps Studio</h3>
+        <p class="tool-desc">Configure source controllers and GitOps reconciliation pipelines. Build Repository sources, Kustomizations, and simulate automated cluster sync loops.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">gitrepository.yaml</span>
+          <a href="fluxcd-gitops/" class="tool-link">
             Launch Tool
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

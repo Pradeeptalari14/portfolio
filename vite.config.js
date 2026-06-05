@@ -87,6 +87,10 @@ export default defineConfig({
         otelconfigurator: resolve(__dirname, 'tools/otel-configurator/index.html'),
         kedascaling: resolve(__dirname, 'tools/keda-scaling/index.html'),
         vectorpipeline: resolve(__dirname, 'tools/vector-pipeline/index.html'),
+        kyvernopolicy: resolve(__dirname, 'tools/kyverno-policy/index.html'),
+        githubarc: resolve(__dirname, 'tools/github-arc/index.html'),
+        terraformdrift: resolve(__dirname, 'tools/terraform-drift/index.html'),
+        fluxcdgitops: resolve(__dirname, 'tools/fluxcd-gitops/index.html'),
       }
     }
   }
