@@ -71,6 +71,11 @@ export default defineConfig({
         decentralizedinfra: resolve(__dirname, 'tools/decentralized-infra/index.html'),
         dataops: resolve(__dirname, 'tools/dataops/index.html'),
         aiops: resolve(__dirname, 'tools/aiops/index.html'),
+        systemdbuilder: resolve(__dirname, 'tools/systemd-builder/index.html'),
+        vpcsubnetter: resolve(__dirname, 'tools/vpc-subnetter/index.html'),
+        nginxconfig: resolve(__dirname, 'tools/nginx-config/index.html'),
+        k8scrd: resolve(__dirname, 'tools/k8s-crd/index.html'),
+        trivystudio: resolve(__dirname, 'tools/trivy/index.html'),
       }
     }
   }

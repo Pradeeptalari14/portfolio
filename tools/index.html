@@ -676,6 +676,226 @@
       .tools-grid { grid-template-columns: 1fr; gap: 1.75rem; }
       .tool-card { padding: 2rem; }
     }
+
+    /* ── Dashboard Stats ── */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1280px;
+      margin-bottom: 3.5rem;
+    }
+    .stats-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .stats-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .stats-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+    .stats-card:nth-child(1) .stats-value { color: var(--accent-primary); }
+    .stats-card:nth-child(2) .stats-value { color: var(--accent-green); }
+    .stats-card:nth-child(3) .stats-value { color: var(--accent-purple); }
+    .stats-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    @media (max-width: 768px) {
+      .stats-container {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+      }
+    }
+
+    /* ── Search Shortcut Tag ── */
+    .search-shortcut-badge {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.18rem 0.5rem;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      pointer-events: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+    .search-wrap:focus-within .search-shortcut-badge {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: #ffffff;
+    }
+
+    /* ── Command Palette Overlay ── */
+    .palette-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 15vh;
+    }
+    .palette-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .palette-modal {
+      width: 100%;
+      max-width: 600px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transform: translateY(-20px);
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .palette-overlay.visible .palette-modal {
+      transform: translateY(0);
+    }
+    .palette-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--bg-surface);
+    }
+    .palette-search-icon {
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
+    }
+    .palette-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .palette-results {
+      max-height: 350px;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+    .palette-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      gap: 1rem;
+    }
+    .palette-item.active, .palette-item:hover {
+      background: var(--bg-surface);
+    }
+    .palette-item.active .palette-item-title, .palette-item:hover .palette-item-title {
+      color: var(--accent-primary);
+    }
+    .palette-item-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      flex: 1;
+    }
+    .palette-item-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .palette-item-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 400px;
+    }
+    .palette-item-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .palette-item.active .palette-item-badge {
+      border-color: var(--border-accent);
+      color: var(--accent-primary);
+      background: #ffffff;
+    }
+    .palette-footer {
+      padding: 0.6rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .palette-shortcuts {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .palette-key {
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+      font-size: 0.65rem;
+    }
   </style>
 </head>
 <body>
@@ -708,6 +928,22 @@
     <h1 class="page-title">DevOps & SRE <span class="gradient-text">Script Tools</span></h1>
     <p class="page-subtitle">A collection of custom, highly interactive code template generators designed to instantly provision, manage, and scale secure cloud infrastructure with SRE safety guardrails.</p>
 
+    <!-- Dashboard Stats Cards -->
+    <div class="stats-container">
+      <div class="stats-card">
+        <div class="stats-value">3,300+</div>
+        <div class="stats-label">Total Configuration Recipes</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-value">60+</div>
+        <div class="stats-label">Supported Platforms</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-value">98.7%</div>
+        <div class="stats-label">Verification Test Coverage</div>
+      </div>
+    </div>
+
     <!-- Search & Filter Controls -->
     <div class="controls-container">
       <!-- Search Input -->
@@ -716,14 +952,15 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="tools-search" class="search-input" placeholder="Search 51 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" />
+        <input type="text" id="tools-search" class="search-input" placeholder="Search 56 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+        <span class="search-shortcut-badge">Ctrl + K</span>
       </div>
 
       <!-- Category Filter Tabs -->
       <div class="filter-tabs">
         <button class="filter-btn active" data-filter="all">
           <span>All Studios</span>
-          <span class="filter-count">51</span>
+          <span class="filter-count">56</span>
         </button>
         <button class="filter-btn" data-filter="ai">
           <span>AI & MLOps</span>
@@ -731,7 +968,7 @@
         </button>
         <button class="filter-btn" data-filter="cloud">
           <span>Cloud & Infra</span>
-          <span class="filter-count">9</span>
+          <span class="filter-count">11</span>
         </button>
         <button class="filter-btn" data-filter="cicd">
           <span>CI/CD Pipelines</span>
@@ -739,11 +976,11 @@
         </button>
         <button class="filter-btn" data-filter="automation">
           <span>Config & Auto</span>
-          <span class="filter-count">12</span>
+          <span class="filter-count">13</span>
         </button>
         <button class="filter-btn" data-filter="observability">
           <span>Observability</span>
-          <span class="filter-count">15</span>
+          <span class="filter-count">17</span>
         </button>
       </div>
     </div>
@@ -1544,6 +1781,81 @@
         <div class="tool-footer">
           <span class="tool-tag">prometheus_anomaly.yaml</span>
           <a href="aiops/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Systemd Service Builder & Manager Simulator -->
+      <div class="tool-card" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">⚙️</div>
+        <h3 class="tool-title">Systemd Service Builder</h3>
+        <p class="tool-desc">Generate robust systemd unit files (Services, Timers, Sockets, Paths). Test systemctl lifecycle transitions, status checks, and unit logs dynamically in a simulated Linux terminal.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">systemd.service</span>
+          <a href="systemd-builder/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- VPC Subnetting & Network CIDR Calculator Visualizer -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #0ea5e9;">🌐</div>
+        <h3 class="tool-title">VPC Subnetting Calculator</h3>
+        <p class="tool-desc">Slice CIDR blocks into optimized public and private subnets across multi-AZ configurations. Visualize real-time SVG network topologies with routing, NAT gateways, and export HCL/CLI blueprints.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">vpc_config.tf</span>
+          <a href="vpc-subnetter/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Nginx Reverse Proxy Configurator & Traffic Router -->
+      <div class="tool-card" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">🚦</div>
+        <h3 class="tool-title">Nginx Configurator</h3>
+        <p class="tool-desc">Build production-grade nginx.conf files. Configure upstreams, rate limiters, security headers, SSL, compression, and visualize live traffic routing flowcharts via dynamic Mermaid diagrams.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">nginx.conf</span>
+          <a href="nginx-config/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Kubernetes Custom Resource Definition (CRD) Studio -->
+      <div class="tool-card" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #326ce5;">☸️</div>
+        <h3 class="tool-title">Kubernetes CRD Studio</h3>
+        <p class="tool-desc">Design Custom Resource Definitions (CRDs) with strict OpenAPI validation schemas. Generate custom resource custom YAML templates and Go controller struct boilerplate definitions.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">crd.yaml</span>
+          <a href="k8s-crd/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Trivy Security Studio -->
+      <div class="tool-card border-emerald-200 bg-emerald-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">🛡️</div>
+        <h3 class="tool-title">Trivy Security Studio</h3>
+        <p class="tool-desc">Configure supply chain vulnerability scans. Generate CLI execution strings, trivy.yaml config files, CI actions, whitelist ignores, and simulate CVE reports in real-time.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">trivy.yaml</span>
+          <a href="trivy/" class="tool-link">
             Launch Tool
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

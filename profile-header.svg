@@ -1,0 +1,57 @@
+<svg width="854" height="120" viewBox="0 0 854 120" xmlns="http://www.w3.org/2000/svg">
+  <style type="text/css">
+  <![CDATA[
+    /* Default Colors and Font Rules (Light Mode) */
+    .text {
+      font-size: 50px;
+      font-weight: 700;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+      fill: #d83a7c;
+      animation: slideUpTitle 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .desc {
+      font-size: 18px;
+      font-weight: 500;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+      fill: #111827; /* Maximum visibility dark charcoal for light backgrounds */
+      opacity: 0;
+      animation: slideUpDesc 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    /* Dark Mode Override Colors */
+    @media (prefers-color-scheme: dark) {
+      .text {
+        fill: #ff5a79; /* Vibrant pink for dark mode */
+      }
+      .desc {
+        fill: #a9fef7; /* Light cyan for dark mode */
+      }
+    }
+
+    /* Motion Animations */
+    @keyframes slideUpTitle {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes slideUpDesc {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  ]]>
+  </style>
+  <text text-anchor="middle" alignment-baseline="middle" x="50%" y="45%" class="text" stroke="none" stroke-width="1">Hello! I'm Pradeep Talari</text>
+  <text text-anchor="middle" alignment-baseline="middle" x="50%" y="85%" class="desc" stroke="none" stroke-width="1">Cloud &amp; DevOps Engineer | SRE Practitioner</text>
+</svg>
