@@ -288,10 +288,33 @@
               <button onclick="switchTab('cheatsheet')" id="tab-cheatsheet" class="tab-btn">⚡ Cheat Sheet</button>
               <button onclick="switchTab('qa_scenarios')" id="tab-qa_scenarios" class="tab-btn">❓ Scenarios & FAQ</button>
               <button onclick="switchTab('cicd')" id="tab-cicd" class="tab-btn">⚙️ CI/CD Workflow</button>
+              <button onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn">💻 Sandbox Terminal</button>
             </div>
           </div>
 
           <pre id="output-box" class="ide-viewport"></pre>
+
+          <div id="terminal-container" class="hidden ide-viewport bg-slate-950 p-4 flex flex-col gap-4" style="min-height: 520px; max-height: 760px;">
+            <!-- Split View: Top is Graph Visualizer, Bottom is CLI Screen -->
+            <div class="flex-1 border border-slate-800 rounded-lg p-3 bg-slate-900 overflow-auto flex flex-col">
+              <div class="text-[10px] text-slate-500 uppercase tracking-wider font-bold border-b border-slate-800 pb-1 mb-2">🌳 Live Git Graph Visualizer</div>
+              <div id="terminal-graph" class="flex-1 flex items-center justify-center min-h-[220px] rounded p-2" style="background-color: #0c1017;">
+                <!-- Dynamically drawn SVG commit tree -->
+                <span class="text-slate-600 font-mono text-xs">Run "git init" to begin repository visualization</span>
+              </div>
+            </div>
+            
+            <div class="h-48 border border-slate-800 rounded-lg p-3 bg-slate-900 flex flex-col shrink-0">
+              <div class="text-[10px] text-slate-500 uppercase tracking-wider font-bold border-b border-slate-800 pb-1 mb-1">💻 Simulated Git CLI</div>
+              <div id="terminal-history" class="flex-1 overflow-y-auto font-mono text-emerald-400 space-y-1 text-xs mb-2 pr-1">
+                <div>Welcome to the SRE Git Simulator Sandbox! Type <span class="text-white">help</span> to list active commands.</div>
+              </div>
+              <div class="flex items-center gap-1.5 font-mono text-xs text-slate-300 border-t border-slate-800/60 pt-1.5">
+                <span class="text-orange-500 shrink-0">visitor@sre-portfolio:~/git-sandbox$</span>
+                <input type="text" id="terminal-input" class="bg-transparent border-none outline-none text-white w-full focus:ring-0 focus:border-none p-0 font-mono" placeholder="Type git init..." autocomplete="off" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Download Action -->

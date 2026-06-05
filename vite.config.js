@@ -19,6 +19,7 @@ export default defineConfig({
         experience: resolve(__dirname, 'experience/index.html'),
         tools: resolve(__dirname, 'tools/index.html'),
         git: resolve(__dirname, 'tools/git/index.html'),
+        sresimulator: resolve(__dirname, 'tools/sre-simulator/index.html'),
         ai: resolve(__dirname, 'tools/ai/index.html'),
         ansible: resolve(__dirname, 'tools/ansible/index.html'),
         docker: resolve(__dirname, 'tools/docker/index.html'),

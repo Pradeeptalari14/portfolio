@@ -630,6 +630,7 @@ const commonErrors = [
 window.addEventListener('DOMContentLoaded', () => {
   setupInteractiveListeners();
   triggerCompileAll();
+  initTerminalSandbox();
 });
 
 function setupInteractiveListeners() {
@@ -969,13 +970,24 @@ function switchTab(tabId) {
       nameBox.value = 'azure-pipelines';
       extTag.textContent = '.yml';
     }
+  } else if (tabId === 'terminal') {
+    nameBox.value = 'git_sandbox';
+    extTag.textContent = '.sh';
   }
 
   updateViewportContent();
 }
 
 function updateViewportContent() {
-  $('output-box').textContent = compiledCode[activeTab];
+  if (activeTab === 'terminal') {
+    $('output-box').classList.add('hidden');
+    $('terminal-container').classList.remove('hidden');
+    drawGitGraph();
+  } else {
+    $('output-box').classList.remove('hidden');
+    $('terminal-container').classList.add('hidden');
+    $('output-box').textContent = compiledCode[activeTab];
+  }
 }
 
 function copyActiveTabContent() {
@@ -1112,8 +1124,421 @@ const tabExplanations = {
     ],
     ai_mlops: 'Scans prompt catalogs and validates configuration formats before pipeline deployment.',
     flow: '[Code Push] ➔ [Pipeline Execution] ➔ [Secrets Check] ➔ [Format Lint] ➔ [Build/Test Success]'
+  },
+  'terminal': {
+    title: 'Git Sandbox Terminal',
+    filename: 'git_sandbox.sh',
+    why: 'Provides an interactive terminal simulator for typing Git commands and visualizing the local branching trees via vector graphics.',
+    when: 'Use to safely practice and test command outcomes without modifying live production repositories.',
+    where: 'Runs directly in the browser using client-side SVG drawing structures.',
+    command: 'git init',
+    practices: [
+      'Experiment with branches and checkouts in a sandbox before live console runs.',
+      'Check commit parent mappings visually to understand history graphs.',
+      'Practice rebase commands to visualize commit head movements.'
+    ],
+    ai_mlops: 'Simulates checkpoint branches and prompt commits version cycles.',
+    flow: '[Command Input] ➔ [CLI Parsing] ➔ [Tree Update] ➔ [SVG Graph Redraw]'
   }
 };
+
+// ── Simulated Terminal Sandbox Engine ──
+let gitInitialized = false;
+let commits = [];
+let branches = { 'main': null };
+let activeBranch = 'main';
+
+function printTerminal(msg, isInput = false) {
+  const history = $('terminal-history');
+  if (!history) return;
+  const line = document.createElement('div');
+  if (isInput) {
+    line.innerHTML = `<span class="text-orange-500">visitor@sre-portfolio:~/git-sandbox$</span> <span class="text-white">${escapeHtml(msg)}</span>`;
+  } else {
+    line.innerHTML = msg;
+  }
+  history.appendChild(line);
+  history.scrollTop = history.scrollHeight;
+}
+
+function generateHash() {
+  return Math.random().toString(16).substring(2, 9);
+}
+
+function processTerminalCommand(cmdRaw) {
+  const cmd = cmdRaw.trim();
+  printTerminal(cmd, true);
+
+  if (!cmd) return;
+
+  const tokens = cmd.split(/\s+/);
+  const base = tokens[0].toLowerCase();
+
+  if (base === 'help') {
+    printTerminal('Available simulated commands:<br>' +
+                  '- <span class="text-white">git init</span>: Initialize local repository<br>' +
+                  '- <span class="text-white">git branch</span>: List or create branch<br>' +
+                  '- <span class="text-white">git switch &lt;branch&gt;</span> / <span class="text-white">checkout &lt;branch&gt;</span>: Switch branch<br>' +
+                  '- <span class="text-white">git checkout -b &lt;branch&gt;</span>: Create and switch branch<br>' +
+                  '- <span class="text-white">git commit -m \"&lt;msg&gt;\"</span>: Save changes in commit snapshot<br>' +
+                  '- <span class="text-white">git merge &lt;branch&gt;</span>: Merge a branch into active branch<br>' +
+                  '- <span class="text-white">git rebase &lt;branch&gt;</span>: Rebase commits on top of another branch<br>' +
+                  '- <span class="text-white">git reset --hard HEAD~1</span>: Reset local changes by 1 commit<br>' +
+                  '- <span class="text-white">git log</span>: Print commit log tree history<br>' +
+                  '- <span class="text-white">clear</span>: Clear terminal screen output');
+    return;
+  }
+
+  if (base === 'clear') {
+    const history = $('terminal-history');
+    if (history) history.innerHTML = '';
+    return;
+  }
+
+  if (base !== 'git') {
+    printTerminal(`<span class="text-rose-500">bash: command not found: ${escapeHtml(base)}</span>`);
+    return;
+  }
+
+  if (tokens.length < 2) {
+    printTerminal('<span class="text-rose-500">git: missing argument. Type "help" for a list of commands.</span>');
+    return;
+  }
+
+  const sub = tokens[1].toLowerCase();
+
+  if (sub === 'init') {
+    if (gitInitialized) {
+      printTerminal('<span class="text-amber-500">Reinitialized existing Git repository in /home/visitor/git-sandbox/.git/</span>');
+      return;
+    }
+    gitInitialized = true;
+    commits = [];
+    branches = { 'main': null };
+    activeBranch = 'main';
+    printTerminal('<span class="text-emerald-400">Initialized empty Git repository in /home/visitor/git-sandbox/.git/</span>');
+    drawGitGraph();
+    return;
+  }
+
+  if (!gitInitialized) {
+    printTerminal('<span class="text-rose-500">fatal: not a git repository (or any of the parent directories): .git</span>');
+    return;
+  }
+
+  if (sub === 'branch') {
+    if (tokens.length === 2) {
+      let out = '';
+      Object.keys(branches).forEach(bName => {
+        if (bName === activeBranch) {
+          out += `<span class="text-emerald-400 font-bold">* ${escapeHtml(bName)}</span><br>`;
+        } else {
+          out += `  ${escapeHtml(bName)}<br>`;
+        }
+      });
+      printTerminal(out);
+      return;
+    }
+    
+    const bName = tokens[2];
+    if (branches[bName] !== undefined) {
+      printTerminal(`<span class="text-rose-500">fatal: A branch named '${escapeHtml(bName)}' already exists.</span>`);
+      return;
+    }
+    branches[bName] = branches[activeBranch];
+    printTerminal(`Created branch pointer: <span class="text-white">${escapeHtml(bName)}</span> pointing to ${branches[activeBranch] || 'NULL'}`);
+    drawGitGraph();
+    return;
+  }
+
+  if (sub === 'checkout' || sub === 'switch') {
+    if (tokens.length < 3) {
+      printTerminal('<span class="text-rose-500">git: missing branch argument.</span>');
+      return;
+    }
+
+    if (sub === 'checkout' && tokens[2] === '-b') {
+      const bName = tokens[3];
+      if (!bName) {
+        printTerminal('<span class="text-rose-500">fatal: Missing new branch name.</span>');
+        return;
+      }
+      if (branches[bName] !== undefined) {
+        printTerminal(`<span class="text-rose-500">fatal: A branch named '${escapeHtml(bName)}' already exists.</span>`);
+        return;
+      }
+      branches[bName] = branches[activeBranch];
+      activeBranch = bName;
+      printTerminal(`Switched to a new branch '<span class="text-white">${escapeHtml(bName)}</span>'`);
+      drawGitGraph();
+      return;
+    }
+
+    let bName = tokens[2];
+    if (sub === 'switch' && bName === '-c') {
+      bName = tokens[3];
+      if (!bName) {
+        printTerminal('<span class="text-rose-500">fatal: Missing new branch name.</span>');
+        return;
+      }
+      if (branches[bName] !== undefined) {
+        printTerminal(`<span class="text-rose-500">fatal: A branch named '${escapeHtml(bName)}' already exists.</span>`);
+        return;
+      }
+      branches[bName] = branches[activeBranch];
+      activeBranch = bName;
+      printTerminal(`Switched to a new branch '<span class="text-white">${escapeHtml(bName)}</span>'`);
+      drawGitGraph();
+      return;
+    }
+
+    if (branches[bName] === undefined) {
+      printTerminal(`<span class="text-rose-500">error: pathspec '${escapeHtml(bName)}' did not match any file(s) known to git</span>`);
+      return;
+    }
+
+    activeBranch = bName;
+    printTerminal(`Switched to branch '<span class="text-white">${escapeHtml(bName)}</span>'`);
+    drawGitGraph();
+    return;
+  }
+
+  if (sub === 'commit') {
+    const msgMatch = cmd.match(/-m\s+["'](.*?)["']/);
+    if (!msgMatch) {
+      printTerminal('<span class="text-rose-500">error: switch -m requires a commit message argument.</span>');
+      return;
+    }
+    const msg = msgMatch[1];
+    const hash = generateHash();
+    const parent = branches[activeBranch];
+
+    const newCommit = {
+      hash: hash,
+      msg: msg,
+      parent: parent,
+      branch: activeBranch,
+      timestamp: new Date().toLocaleTimeString()
+    };
+
+    commits.push(newCommit);
+    branches[activeBranch] = hash;
+    printTerminal(`[${escapeHtml(activeBranch)} ${hash}] ${escapeHtml(msg)}<br>1 file changed, 1 insertion(+)`);
+    drawGitGraph();
+    return;
+  }
+
+  if (sub === 'log') {
+    if (commits.length === 0) {
+      printTerminal('<span class="text-amber-500">No commits recorded yet. Add modifications and commit!</span>');
+      return;
+    }
+    
+    let out = '';
+    let curr = branches[activeBranch];
+    while (curr) {
+      const commit = commits.find(c => c.hash === curr);
+      if (!commit) break;
+      out += `<span class="text-yellow-400">commit ${commit.hash}</span> (HEAD -> <span class="text-emerald-400">${commit.branch}</span>)<br>`;
+      out += `Author: visitor &lt;visitor@sre-portfolio&gt;<br>`;
+      out += `Date:   ${commit.timestamp}<br><br>`;
+      out += `    ${escapeHtml(commit.msg)}<br><br>`;
+      curr = commit.parent;
+    }
+    printTerminal(out || 'Empty log history');
+    return;
+  }
+
+  if (sub === 'reset') {
+    const isHard = cmd.includes('--hard');
+    const hasHeadRef = cmd.includes('HEAD~1');
+
+    if (isHard && hasHeadRef) {
+      const activeHash = branches[activeBranch];
+      if (!activeHash) {
+        printTerminal('<span class="text-rose-500">fatal: Cannot reset, branch has no commits.</span>');
+        return;
+      }
+      const activeCommit = commits.find(c => c.hash === activeHash);
+      if (activeCommit) {
+        branches[activeBranch] = activeCommit.parent;
+        printTerminal(`HEAD is now at ${activeCommit.parent || 'root state'}`);
+        drawGitGraph();
+      }
+      return;
+    }
+    printTerminal('<span class="text-rose-500">git reset: syntax parameter mismatch. Try: "git reset --hard HEAD~1"</span>');
+    return;
+  }
+
+  if (sub === 'merge') {
+    if (tokens.length < 3) {
+      printTerminal('<span class="text-rose-500">git merge: missing target merge branch.</span>');
+      return;
+    }
+    const target = tokens[2];
+    if (branches[target] === undefined) {
+      printTerminal(`<span class="text-rose-500">fatal: '${escapeHtml(target)}' is not a branch name.</span>`);
+      return;
+    }
+
+    if (branches[target] === branches[activeBranch]) {
+      printTerminal('Already up to date.');
+      return;
+    }
+
+    const currentHash = branches[activeBranch];
+    const targetHash = branches[target];
+
+    const hash = generateHash();
+    const newCommit = {
+      hash: hash,
+      msg: `Merge branch '${target}' into ${activeBranch}`,
+      parent: currentHash,
+      mergeParent: targetHash,
+      branch: activeBranch,
+      timestamp: new Date().toLocaleTimeString()
+    };
+    commits.push(newCommit);
+    branches[activeBranch] = hash;
+    printTerminal(`Updating ${currentHash || 'root'}..${targetHash}<br>Fast-forward merge or merge commit simulated.`);
+    drawGitGraph();
+    return;
+  }
+
+  if (sub === 'rebase') {
+    if (tokens.length < 3) {
+      printTerminal('<span class="text-rose-500">git rebase: missing target base branch.</span>');
+      return;
+    }
+    const target = tokens[2];
+    if (branches[target] === undefined) {
+      printTerminal(`<span class="text-rose-500">fatal: '${escapeHtml(target)}' is not a branch name.</span>`);
+      return;
+    }
+
+    branches[activeBranch] = branches[target];
+    printTerminal(`Successfully rebased and updated refs/heads/${escapeHtml(activeBranch)} on top of ${escapeHtml(target)}`);
+    drawGitGraph();
+    return;
+  }
+
+  printTerminal(`<span class="text-rose-500">git: "${escapeHtml(sub)}" is not a simulated command. Type "help" to see allowed commands.</span>`);
+}
+
+function drawGitGraph() {
+  const graphContainer = $('terminal-graph');
+  if (!graphContainer) return;
+
+  if (!gitInitialized) {
+    graphContainer.innerHTML = '<span class="text-slate-600 font-mono text-xs">Run "git init" to begin repository visualization</span>';
+    return;
+  }
+
+  if (commits.length === 0) {
+    graphContainer.innerHTML = '<span class="text-slate-500 font-mono text-xs">Initialized repository. Create your first commit using: <span class="text-emerald-400">git commit -m "commit msg"</span></span>';
+    return;
+  }
+
+  const width = graphContainer.clientWidth || 550;
+  const height = 220;
+
+  const branchRows = {};
+  let rowCount = 0;
+  branchRows['main'] = 70;
+  
+  Object.keys(branches).forEach(bName => {
+    if (bName !== 'main') {
+      rowCount++;
+      branchRows[bName] = 70 + (rowCount * 50);
+    }
+  });
+
+  const svgHeight = Math.max(height, 70 + (rowCount * 50) + 40);
+  const commitCoords = {};
+  const stepX = 75;
+  const startX = 40;
+
+  commits.forEach((commit, index) => {
+    const x = startX + (index * stepX);
+    const y = branchRows[commit.branch] || 70;
+    commitCoords[commit.hash] = { x, y };
+  });
+
+  let svgHtml = `<svg width="100%" height="${svgHeight}" style="background-color: #0c1017;" xmlns="http://www.w3.org/2000/svg">`;
+
+  commits.forEach((commit) => {
+    const coord = commitCoords[commit.hash];
+    if (commit.parent && commitCoords[commit.parent]) {
+      const parentCoord = commitCoords[commit.parent];
+      svgHtml += `<line x1="${parentCoord.x}" y1="${parentCoord.y}" x2="${coord.x}" y2="${coord.y}" stroke="#4f46e5" stroke-width="2.5" />`;
+    }
+    if (commit.mergeParent && commitCoords[commit.mergeParent]) {
+      const mergeCoord = commitCoords[commit.mergeParent];
+      svgHtml += `<line x1="${mergeCoord.x}" y1="${mergeCoord.y}" x2="${coord.x}" y2="${coord.y}" stroke="#f05032" stroke-width="2.5" stroke-dasharray="3,3" />`;
+    }
+  });
+
+  commits.forEach((commit) => {
+    const coord = commitCoords[commit.hash];
+    const isTip = Object.values(branches).includes(commit.hash);
+    const color = commit.branch === 'main' ? '#f05032' : '#7c3aed';
+
+    svgHtml += `
+      <g>
+        <circle cx="${coord.x}" cy="${coord.y}" r="${isTip ? '8' : '6'}" fill="${color}" stroke="#ffffff" stroke-width="1.5" cursor="pointer" />
+        <title>Hash: ${commit.hash}\nBranch: ${commit.branch}\nMessage: ${commit.msg}</title>
+        <text x="${coord.x}" y="${coord.y - 12}" fill="#cbd5e1" font-family="monospace" font-size="8px" text-anchor="middle">${commit.hash}</text>
+      </g>
+    `;
+  });
+
+  Object.entries(branches).forEach(([bName, hash]) => {
+    if (hash && commitCoords[hash]) {
+      const coord = commitCoords[hash];
+      const isActive = bName === activeBranch;
+      const bgColor = isActive ? '#10b981' : '#475569';
+      
+      const sharedCount = Object.entries(branches).filter(([b, h]) => h === hash).indexOf([bName, hash]);
+      const offsetY = 20 + (sharedCount * 18);
+
+      svgHtml += `
+        <g>
+          <polygon points="${coord.x},${coord.y + offsetY - 4} ${coord.x - 4},${coord.y + offsetY + 2} ${coord.x + 4},${coord.y + offsetY + 2}" fill="${bgColor}" />
+          <rect x="${coord.x - 30}" y="${coord.y + offsetY + 2}" width="60" height="15" rx="3" fill="${bgColor}" />
+          <text x="${coord.x}" y="${coord.y + offsetY + 12}" fill="#ffffff" font-family="sans-serif" font-size="9px" font-weight="bold" text-anchor="middle">${bName}</text>
+        </g>
+      `;
+    } else if (!hash && bName === activeBranch) {
+      svgHtml += `
+        <text x="40" y="45" fill="#10b981" font-family="monospace" font-size="10px">* ${bName} (empty repository)</text>
+      `;
+    }
+  });
+
+  svgHtml += `</svg>`;
+  graphContainer.innerHTML = svgHtml;
+}
+
+function initTerminalSandbox() {
+  const terminalInput = $('terminal-input');
+  if (terminalInput) {
+    terminalInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = terminalInput.value;
+        terminalInput.value = '';
+        processTerminalCommand(val);
+      }
+    });
+  }
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
 
 function explainActiveTabCode() {
   const explanation = tabExplanations[activeTab];
