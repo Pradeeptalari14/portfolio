@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model Context Protocol (MCP) Studio | Talari Pradeep</title>
+  <meta name="description" content="Configure production-grade MCP ecosystems. Generate server profiles, safety constraints, and download DevOps/SRE incident automation recipes." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer integrity="sha512-BEXQRdYl2QYWiF3037nnxTZPpMSYQcrml3LuX3C3QUd31Utd/U+PyF6mXh90TovBnTY7lv8lXCdjNuG3ZM/wfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #a855f7; /* MCP Purple */
+      --accent-violet:  #a855f7;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-select, .form-input {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus {
+      border-color: var(--accent-violet) !important;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15) !important;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-violet);
+      border-bottom-color: var(--accent-violet);
+      font-weight: 600;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.8rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 485px;
+      max-height: 640px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer integrity="sha512-KKb898fDTUAhIOLvWw6MD6NwYDcEIHkBfvrZ33m1wA4c9VMlhf6tCzaP4O+F/gsOXguiKLPoHLg+szP+OL4Q4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-violet-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-violet)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-violet-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-violet-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN VIEW -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-8 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-violet-600 bg-violet-50 border border-violet-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Agent Context Layer</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Model Context Protocol <span class="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Configure and deploy production-grade MCP Server connections. Bind your LLMs directly to databases, cloud platforms, Kubernetes resources, and incident logs with custom safety guards.</p>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Server Selector / Stacks (4 Cols) -->
+      <div class="lg:col-span-4 flex flex-col gap-6">
+        
+        <!-- Platform Selector -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span>🔌</span> Server Registry
+          </h3>
+          
+          <div class="flex flex-col gap-4">
+            <div>
+              <label for="server_category" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ecosystem Category</label>
+              <select id="server_category" class="form-select w-full p-2.5 text-xs">
+                <option value="source_control">Source Control</option>
+                <option value="cloud">Cloud Infrastructure</option>
+                <option value="containers">Containers & Registries</option>
+                <option value="kubernetes">Kubernetes Platforms</option>
+                <option value="iac">Infrastructure as Code</option>
+                <option value="monitoring">Monitoring Stack</option>
+                <option value="observability">Observability Layer</option>
+                <option value="cicd">CI/CD Pipelines</option>
+                <option value="databases">Databases</option>
+                <option value="messaging">Messaging & Queues</option>
+                <option value="incident_management">Incident & Project Management</option>
+                <option value="security">Security & Enclaves</option>
+                <option value="networking">Network Devices</option>
+                <option value="storage">Hardware Storage</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="server_select" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target MCP Server</label>
+              <select id="server_select" class="form-select w-full p-2.5 text-xs">
+                <!-- Injected Dynamically -->
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Parameter Bindings -->
+        <div class="studio-card" id="params-container">
+          <h3 class="studio-title text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span>⚙️</span> Connection Parameters
+          </h3>
+          <div class="space-y-3" id="dynamic-params-fields">
+            <!-- Parameter inputs injected here -->
+          </div>
+        </div>
+
+        <!-- Stacks & Roles Matrix -->
+        <div class="studio-card">
+          <h3 class="studio-title text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span>👤</span> Recommended Role Stacks
+          </h3>
+          <div class="flex flex-col gap-2">
+            <div>
+              <label for="role_select" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Select Engineering Role</label>
+              <select id="role_select" class="form-select w-full p-2 text-xs">
+                <option value="devops">DevOps Engineer</option>
+                <option value="sre">SRE Engineer</option>
+                <option value="platform">Platform Engineer</option>
+                <option value="cloud">Cloud Engineer</option>
+                <option value="k8s">Kubernetes Administrator</option>
+                <option value="terraform">Terraform IaC Engineer</option>
+                <option value="monitoring">Monitoring Engineer</option>
+                <option value="aiops">AI Operations Engineer</option>
+              </select>
+            </div>
+            
+            <div class="mt-2 text-[10px] font-mono leading-relaxed text-slate-500 bg-slate-50 border border-slate-100 p-2.5 rounded-lg" id="role-desc">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions panel -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="copyTabContent()" class="py-2.5 px-3 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy active config</span>
+            </button>
+            <button onclick="openDrawer()" class="py-2.5 px-3 bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🛡️ Security Audit</span>
+            </button>
+            <button onclick="downloadMCPKit()" class="py-3 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition col-span-2 flex items-center justify-center gap-2 shadow-sm">
+              <span>⬇️ Download complete Ecosystem-Kit.zip</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Multi-tab IDE Viewports (8 Cols) -->
+      <div class="lg:col-span-8 flex flex-col gap-6 sticky top-24">
+        
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="file-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-44 focus:outline-none" value="aws_mcp_guide" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-ext-tag">.md</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable">
+              <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn active">📖 Connection Guide</button>
+              <button onclick="switchTab('config')" id="tab-config" class="tab-btn">⚡ client config</button>
+              <button onclick="switchTab('operations')" id="tab-operations" class="tab-btn">🔒 Operations & Guards</button>
+              <button onclick="switchTab('diagram')" id="tab-diagram" class="tab-btn">📊 Architecture diagram</button>
+              <button onclick="switchTab('recipes')" id="tab-recipes" class="tab-btn">📂 Automation Recipes</button>
+              <button onclick="switchTab('deploy')" id="tab-deploy" class="tab-btn">🏗️ Production Scalability</button>
+            </div>
+          </div>
+
+          <!-- Plain Markdown Viewport -->
+          <pre id="output-box" class="ide-viewport"></pre>
+
+          <!-- Interactive Recipes Browser (Tab specific overlay layout) -->
+          <div id="recipes-viewport" class="ide-viewport hidden flex flex-col gap-4 bg-[#0f172a]">
+            <div class="flex items-center gap-2 border-b border-slate-800 pb-3 shrink-0">
+              <input type="text" id="recipe-search" class="bg-slate-800 text-xs text-white border border-slate-700 rounded px-3 py-1.5 w-full focus:outline-none" placeholder="Search 300+ automation recipes (e.g. OOM, deadlock, scale, rollout)..." />
+              <select id="recipe-filter" class="bg-slate-800 text-xs text-slate-300 border border-slate-700 rounded px-2 py-1.5 focus:outline-none w-48">
+                <option value="all">All Recipes</option>
+                <option value="devops">DevOps Automation (50)</option>
+                <option value="sre">SRE Incident Response (50)</option>
+                <option value="kubernetes">Kubernetes Troubleshooting (50)</option>
+                <option value="terraform">Terraform Automation (30)</option>
+                <option value="grafana">Grafana Monitoring (30)</option>
+                <option value="prometheus">Prometheus Queries (30)</option>
+                <option value="jenkins">Jenkins Pipelines (30)</option>
+                <option value="aws">AWS Automation (30)</option>
+              </select>
+            </div>
+            <div id="recipes-list" class="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
+              <!-- Recipes loaded dynamically -->
+            </div>
+          </div>
+          
+          <!-- Renders visual graphics -->
+          <div id="mermaid-viewport" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center text-xs text-gray-400">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- MODULE LOADING SCRIPTS -->
+  <script type="module" src="../../src/js/generators/mcp-studio-gen.js"></script>
+
+  <!-- EXPLANATORY AUDIT DRAWER -->
+  <div id="audit-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🛡️</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider">Ecosystem Security Audit</h3>
+          <p class="text-[10px] text-slate-400 font-mono">operational_safety_boundaries.md</p>
+        </div>
+      </div>
+      <button onclick="closeDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      <div>
+        <h4 class="text-violet-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> WHAT THE AGENT CAN DO
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="drawer-can-do">
+          Read metrics, scan directories, validate configurations, build deployment templates, and diagnose failures based on structured logs.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>⚠️</span> WHAT THE AGENT SHOULD NOT DO
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="drawer-cannot-do">
+          Delete master databases, push force branch changes, modify IAM root permission credentials, or clean production backup clusters without manual approval gates.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> HUMAN-IN-THE-LOOP APPROVAL WORKFLOWS
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60">
+          Implement webhook locks or proxy checks requiring developers to run approval tasks via messaging channels before dangerous write commands execute.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📝</span> AUDIT LOGGING STANDARDS
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60">
+          Stream syslog agent payloads (prompt strings, tool called, response arrays) to Elasticsearch or syslog endpoints for compliance checks.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>
