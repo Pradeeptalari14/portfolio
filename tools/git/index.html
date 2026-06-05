@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Git Learning Studio | Talari Pradeep</title>
+  <meta name="description" content="Master Git version control from beginner to advanced/SRE levels. Customize guides, interactive rebase, and CI/CD pipelines." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer integrity="sha512-BEXQRdYl2QYWiF3037nnxTZPpMSYQcrml3LuX3C3QUd31Utd/U+PyF6mXh90TovBnTY7lv8lXCdjNuG3ZM/wfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    /* ── Design Tokens & Studio Styles ── */
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-orange:  #f05032; /* Git Orange */
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-orange) !important;
+      box-shadow: 0 0 0 3px rgba(240, 80, 50, 0.15) !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background-color: var(--accent-orange) !important;
+      border-color: var(--accent-orange) !important;
+    }
+
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-orange);
+      border-bottom-color: var(--accent-orange);
+      font-weight: 600;
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-viewport {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.8rem !important;
+      line-height: 1.6 !important;
+      overflow: auto;
+      padding: 1.5rem !important;
+      min-height: 520px;
+      max-height: 760px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer integrity="sha512-KKb898fDTUAhIOLvWw6MD6NwYDcEIHkBfvrZ33m1wA4c9VMlhf6tCzaP4O+F/gsOXguiKLPoHLg+szP+OL4Q4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-orange)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-orange-600 bg-orange-50 border border-orange-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Version Control Core</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Git <span class="bg-gradient-to-r from-orange-600 to-indigo-600 bg-clip-text text-transparent">Learning Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Master Git workflow orchestration. Generate step-by-step guides, rich ASCII flowcharts, best practices, interview prep, and production-ready CI/CD build scripts dynamically.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Parameters Console (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Base Configuration -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="text-orange-500">⚙️</span> Studio Settings
+          </h3>
+          
+          <div class="flex flex-col gap-4">
+            <div>
+              <label for="target_audience" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Audience / Persona</label>
+              <select id="target_audience" class="form-select w-full p-2.5 text-xs">
+                <option value="devops">DevOps Engineer (Focuses on Automation & GitOps)</option>
+                <option value="developer">Software Developer (Focuses on Collaboration & Code Flow)</option>
+                <option value="ai_engineer">AI Engineer (Focuses on Model code, Weights, & Notebook sync)</option>
+                <option value="ai_studio">AI Studio User (Focuses on prompt history, pipelines, & datasets)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="git_workflow" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Branching Workflow Pattern</label>
+              <select id="git_workflow" class="form-select w-full p-2.5 text-xs">
+                <option value="feature">Feature Branch Workflow (Short-lived branches, PR reviews)</option>
+                <option value="gitflow">GitFlow Workflow (Develop, Main, Releases, Hotfixes)</option>
+                <option value="trunk">Trunk Based Development (Frequent main merges, feature flags)</option>
+                <option value="fork">Forking Workflow (Open-source model, fork + sync repo)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="git_platform" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Remote Git Provider & Platform</label>
+              <select id="git_platform" class="form-select w-full p-2.5 text-xs">
+                <option value="github">GitHub (Uses GitHub Actions pipelines)</option>
+                <option value="gitlab">GitLab (Uses GitLab CI YAML pipelines)</option>
+                <option value="azure">Azure Repos (Uses Azure DevOps Pipelines YAML)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="detail_level" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Command View Detail Level</label>
+              <select id="detail_level" class="form-select w-full p-2.5 text-xs">
+                <option value="beginner">Beginner (Detailed Command Breakdown & Core Setup)</option>
+                <option value="intermediate">Intermediate (Focus on Merge, Rebase, Tags, Conflict fixes)</option>
+                <option value="advanced">Advanced (Interactive Rebase, Reset details, Reflog, Hooks)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Safety & Security Filters -->
+        <div class="studio-card border-orange-200 bg-orange-50/20">
+          <h3 class="studio-title text-base font-bold text-orange-900 mb-2 flex items-center gap-2">🛡️ Security & Enterprise Policies</h3>
+          <p class="text-xs text-gray-500 mb-4">Inject SRE security rules directly into the compiled resources and CI/CD pipelines.</p>
+          
+          <div class="flex flex-col gap-3">
+            <label class="flex items-start gap-2.5 cursor-pointer font-bold text-xs text-orange-950">
+              <input type="checkbox" id="secret_scanning" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <span>Secrets & Credentials Scanning</span>
+                <p class="text-[10px] text-gray-500 font-normal mt-0.5">Appends gitleaks / Trufflehunter scans into workflows to block pushing credentials.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-2.5 cursor-pointer font-bold text-xs text-orange-950">
+              <input type="checkbox" id="linting_policies" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <span>Standardized Commit Linting</span>
+                <p class="text-[10px] text-gray-500 font-normal mt-0.5">Enforces Conventional Commits rules in scripts and CI build step blocks.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-2.5 cursor-pointer font-bold text-xs text-orange-950">
+              <input type="checkbox" id="interactive_scenarios" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <span>Interactive Troubleshooting Mode</span>
+                <p class="text-[10px] text-gray-500 font-normal mt-0.5">Appends step-by-step conflict merge resolutions and interactive rebase practice commands.</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Quick Commands Box -->
+        <div class="studio-card">
+          <h3 class="studio-title text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span>⚡</span> Visual Interactive Actions
+          </h3>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="copyActiveTabContent()" class="py-2 px-3 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Current File</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2 px-3 bg-orange-50 hover:bg-orange-100 text-orange-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 SRE Explain</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center col-span-2">
+              <span>🗑️ Reset Studio Settings</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="git_guide" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.md</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable">
+              <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn active">📘 Git Guide</button>
+              <button onclick="switchTab('diagrams')" id="tab-diagrams" class="tab-btn">📊 ASCII Diagrams</button>
+              <button onclick="switchTab('cheatsheet')" id="tab-cheatsheet" class="tab-btn">⚡ Cheat Sheet</button>
+              <button onclick="switchTab('qa_scenarios')" id="tab-qa_scenarios" class="tab-btn">❓ Scenarios & FAQ</button>
+              <button onclick="switchTab('cicd')" id="tab-cicd" class="tab-btn">⚙️ CI/CD Workflow</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+        </div>
+
+        <!-- Download Action -->
+        <div>
+          <button onclick="downloadGitZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇️ Download Comprehensive Git-Studio.zip</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script type="module" src="../../src/js/generators/git-gen.js"></script>
+
+  <!-- ══ EXPLANATION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">Git SRE Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">git_guide.md</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      
+      <!-- Section: Why -->
+      <div>
+        <h4 class="text-orange-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: When -->
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
+          <!-- Injected -->
+        </p>
+      </div>
+
+      <!-- Section: Where & How -->
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> KEY GIT OPERATIONS
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Production Best Practices -->
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE SECURITY BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
+          <!-- Injected -->
+        </ul>
+      </div>
+
+      <!-- Section: AI/MLOps Integration -->
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS & GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
+          <!-- Injected -->
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

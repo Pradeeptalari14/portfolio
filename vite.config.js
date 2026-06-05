@@ -18,6 +18,7 @@ export default defineConfig({
         awsCostOptimizer: resolve(__dirname, 'projects/aws-cost-optimizer.html'),
         experience: resolve(__dirname, 'experience/index.html'),
         tools: resolve(__dirname, 'tools/index.html'),
+        git: resolve(__dirname, 'tools/git/index.html'),
         ai: resolve(__dirname, 'tools/ai/index.html'),
         ansible: resolve(__dirname, 'tools/ansible/index.html'),
         docker: resolve(__dirname, 'tools/docker/index.html'),
