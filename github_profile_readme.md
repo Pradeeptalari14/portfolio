@@ -4,9 +4,7 @@
   profile repository: https://github.com/Pradeeptalari14/Pradeeptalari14
 -->
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=7c3aed&height=220&section=header&text=Hi,%20I'm%20Pradeep%20Talari&subtitle=Cloud%20%26%20DevOps%20Engineer&fontSize=40&subtitleSize=18&fontColor=ffffff&fontAlignY=45" alt="Talari Pradeep Banner" />
-</p>
+![Talari Pradeep Banner](https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/profile-header.svg)
 
 ## 🧑‍💻 About Me
 
@@ -88,7 +86,7 @@ I am a passionate **Cloud & DevOps Engineer** specializing in designing and prov
 <table align="center" border="0" cellpadding="10">
   <tr>
     <td valign="top" width="50%">
-      <img src="https://github-readme-stats.vercel.app/api?username=Pradeeptalari14&show_icons=true&theme=radical&hide_border=true" alt="Pradeep's GitHub Stats" width="100%" />
+      <img src="https://github-stats-alpha.vercel.app/api?username=Pradeeptalari14&show_icons=true&theme=radical&hide_border=true" alt="Pradeep's GitHub Stats" width="100%" />
     </td>
     <td valign="top" width="50%">
       <img src="https://github-readme-streak-stats.herokuapp.com/?user=Pradeeptalari14&theme=radical&hide_border=true" alt="Pradeep's GitHub Streak" width="100%" />
@@ -97,7 +95,7 @@ I am a passionate **Cloud & DevOps Engineer** specializing in designing and prov
 </table>
 
 <p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Pradeeptalari14&theme=radical" alt="Pradeep's GitHub Activity Overview" />
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Pradeeptalari14&theme=radical" alt="Pradeep's GitHub Activity Overview" width="100%" />
 </p>
 
 ---
