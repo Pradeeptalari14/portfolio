@@ -952,7 +952,7 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="tools-search" class="search-input" placeholder="Search 63 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+        <input type="text" id="tools-search" class="search-input" placeholder="Search 67 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
         <span class="search-shortcut-badge">Ctrl + K</span>
       </div>
 
@@ -960,7 +960,7 @@
       <div class="filter-tabs">
         <button class="filter-btn active" data-filter="all">
           <span>All Studios</span>
-          <span class="filter-count">63</span>
+          <span class="filter-count">67</span>
         </button>
         <button class="filter-btn" data-filter="ai">
           <span>AI & MLOps</span>
@@ -968,7 +968,7 @@
         </button>
         <button class="filter-btn" data-filter="cloud">
           <span>Cloud & Infra</span>
-          <span class="filter-count">13</span>
+          <span class="filter-count">15</span>
         </button>
         <button class="filter-btn" data-filter="cicd">
           <span>CI/CD Pipelines</span>
@@ -980,7 +980,7 @@
         </button>
         <button class="filter-btn" data-filter="observability">
           <span>Observability</span>
-          <span class="filter-count">20</span>
+          <span class="filter-count">22</span>
         </button>
       </div>
     </div>
@@ -1962,6 +1962,66 @@
         <div class="tool-footer">
           <span class="tool-tag">service.yaml</span>
           <a href="knative-routing/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Karpenter Node Autoscaler Studio -->
+      <div class="tool-card border-indigo-200 bg-indigo-50/10" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #6366f1;">🏎️</div>
+        <h3 class="tool-title">Karpenter Node Autoscaler</h3>
+        <p class="tool-desc">Provision rapid Kubernetes nodes based on pending workload constraints. Pack pods dynamically by GPU, architecture, spot/on-demand ratios, and simulate EKS costs.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">nodepool.yaml</span>
+          <a href="karpenter-autoscaler/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- KEDA Autoscaling Studio -->
+      <div class="tool-card border-cyan-200 bg-cyan-50/10" data-category="cloud">
+        <span class="tool-category-badge">Cloud & Infra</span>
+        <div class="tool-icon-wrap" style="color: #06b6d4;">⚖️</div>
+        <h3 class="tool-title">KEDA Autoscaling Studio</h3>
+        <p class="tool-desc">Deploy event-driven horizontal pod autoscaling. Configure scaling bounds from zero based on active queue lag, db tables count, or Prometheus metrics triggers.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">scaledobject.yaml</span>
+          <a href="keda-scaling/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- OpenTelemetry Collector Configurator -->
+      <div class="tool-card border-orange-200 bg-orange-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #ea580c;">🎛️</div>
+        <h3 class="tool-title">OpenTelemetry Collector</h3>
+        <p class="tool-desc">Design high-performance telemetry pipelines. Build nested configurations for traces/metrics processors, custom exporter endpoints, and verify logs routes.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">otel-collector.yaml</span>
+          <a href="otel-configurator/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Vector Observability Pipeline Studio -->
+      <div class="tool-card border-emerald-200 bg-emerald-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #10b981;">🪵</div>
+        <h3 class="tool-title">Vector Log Pipeline Studio</h3>
+        <p class="tool-desc">Build Rust-powered, high-throughput log routing streams. Write Vector Remap Language (VRL) rules, mask sensitive PII/IP fields, and verify JSON transforms.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">vector.toml</span>
+          <a href="vector-pipeline/" class="tool-link">
             Launch Tool
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

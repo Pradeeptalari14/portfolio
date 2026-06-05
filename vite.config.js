@@ -83,6 +83,10 @@ export default defineConfig({
         ebpfgenerator: resolve(__dirname, 'tools/ebpf-generator/index.html'),
         crossplanestudio: resolve(__dirname, 'tools/crossplane-studio/index.html'),
         knativerouting: resolve(__dirname, 'tools/knative-routing/index.html'),
+        karpenterautoscaler: resolve(__dirname, 'tools/karpenter-autoscaler/index.html'),
+        otelconfigurator: resolve(__dirname, 'tools/otel-configurator/index.html'),
+        kedascaling: resolve(__dirname, 'tools/keda-scaling/index.html'),
+        vectorpipeline: resolve(__dirname, 'tools/vector-pipeline/index.html'),
       }
     }
   }
