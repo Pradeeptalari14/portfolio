@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AWS IAM Policy & Boundary Analyzer | Talari Pradeep</title>
+  <meta name="description" content="Build secure IAM identity-based policies and permission boundaries. Evaluate API call permissions through a step-by-step evaluation logic flow simulator." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #ea580c;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-orange-600 bg-orange-50 border border-orange-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">IAM & Access Control</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">AWS IAM Policy <span class="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Analyzer</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Build secure IAM identity-based policies and permission boundaries. Evaluate API call permissions through a step-by-step evaluation logic flow simulator.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- AWS IAM configuration options -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🔑 AWS IAM Configuration</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="aws_role_type" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Target IAM Role Template</label>
+              <select id="aws_role_type" class="form-select w-full p-2.5 text-xs">
+                <option value="s3-reader">EC2 S3 Data Read-Only Role</option>
+                <option value="db-dev">DynamoDB Application Developer Role</option>
+                <option value="iam-admin">IAM Sub-User Admin Role</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="aws_boundary_enabled" class="block text-[10px] font-bold text-gray-400 tracking-wider mb-1">Enforce Permission Boundary</label>
+              <select id="aws_boundary_enabled" class="form-select w-full p-2.5 text-xs">
+                <option value="no">Disabled (Full Role capabilities active)</option>
+                <option value="yes">Enabled (Restrict all actions to S3/DB access only)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container bg-slate-950">
+          <div class="ide-header flex flex-col items-stretch p-0 border-b border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="iam-policy.json" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2">
+              <button onclick="switchTab('policy')" id="tab-policy" class="tab-btn active">iam-policy.json</button>
+              <button onclick="switchTab('trust')" id="tab-trust" class="tab-btn">trust-policy.json</button>
+              <button onclick="switchTab('simulator')" id="tab-simulator" class="tab-btn text-orange-400">🖥️ IAM Evaluator</button>
+            </div>
+          </div>
+
+          <!-- Code View -->
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 380px; max-height: 480px;"></pre>
+
+          <!-- IAM Evaluator Simulator -->
+          <div id="simulator-viewport" class="hidden ide-viewport flex flex-col bg-slate-950 p-4 border border-slate-800" style="min-height: 380px; max-height: 480px;">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-[9px] font-bold text-slate-400 uppercase font-mono">Mock AWS Request Evaluation</span>
+            </div>
+
+            <!-- Simulator Input parameters -->
+            <div class="flex flex-col gap-2 mb-3 text-[9px] font-mono text-slate-300">
+              <div>
+                <label for="sim_iam_action" class="block text-[8px] font-bold text-slate-500 mb-1">AWS API Action</label>
+                <select id="sim_iam_action" class="form-select w-full p-2 bg-slate-900 border border-slate-800 text-slate-300 text-xs">
+                  <option value="s3:GetObject">s3:GetObject</option>
+                  <option value="s3:PutObject">s3:PutObject</option>
+                  <option value="dynamodb:PutItem">dynamodb:PutItem</option>
+                  <option value="iam:CreateUser">iam:CreateUser</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="sim_iam_resource" class="block text-[8px] font-bold text-slate-500 mb-1">AWS Target Resource ARN</label>
+                <input type="text" id="sim_iam_resource" class="form-input w-full p-2 bg-slate-900 border border-slate-800 text-slate-300 text-xs" value="arn:aws:s3:::production-assets/*" />
+              </div>
+
+              <button id="btn_evaluate_iam" class="bg-orange-600 hover:bg-orange-500 text-white font-bold text-[9px] py-1.5 rounded transition uppercase font-mono tracking-wider">
+                Evaluate Policy permission
+              </button>
+            </div>
+
+            <!-- Verdict stats -->
+            <div class="bg-slate-900 border border-slate-800 p-2 rounded text-center mb-3">
+              <div class="text-slate-400 text-[8px] uppercase">Policy Assessment Verdict</div>
+              <div id="eval-verdict-status" class="text-xs font-bold text-slate-500">AWAITING EVALUATION</div>
+            </div>
+
+            <!-- Logs trace console -->
+            <div class="flex flex-col gap-1 flex-1 font-mono text-[9px]">
+              <span class="text-slate-400 uppercase font-bold text-[8px]">Evaluation logic trace:</span>
+              <pre id="eval-logs-output" class="flex-1 p-2 bg-slate-900 border border-slate-800 rounded text-slate-400 overflow-y-auto" style="min-height: 80px; max-height: 100px;"></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button onclick="navigator.clipboard.writeText(document.getElementById('output-box').textContent)" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Policy</span>
+            </button>
+            <button onclick="const a = document.createElement('a'); a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(document.getElementById('output-box').textContent); a.download = document.getElementById('download-name-input').value; a.click();" class="py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>⬇️ Download JSON</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../../src/js/generators/aws-iam-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

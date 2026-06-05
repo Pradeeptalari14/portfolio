@@ -952,7 +952,7 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="tools-search" class="search-input" placeholder="Search 71 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+        <input type="text" id="tools-search" class="search-input" placeholder="Search 75 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
         <span class="search-shortcut-badge">Ctrl + K</span>
       </div>
 
@@ -960,7 +960,7 @@
       <div class="filter-tabs">
         <button class="filter-btn active" data-filter="all">
           <span>All Studios</span>
-          <span class="filter-count">71</span>
+          <span class="filter-count">75</span>
         </button>
         <button class="filter-btn" data-filter="ai">
           <span>AI & MLOps</span>
@@ -972,15 +972,15 @@
         </button>
         <button class="filter-btn" data-filter="cicd">
           <span>CI/CD Pipelines</span>
-          <span class="filter-count">8</span>
+          <span class="filter-count">9</span>
         </button>
         <button class="filter-btn" data-filter="automation">
           <span>Config & Auto</span>
-          <span class="filter-count">15</span>
+          <span class="filter-count">17</span>
         </button>
         <button class="filter-btn" data-filter="observability">
           <span>Observability</span>
-          <span class="filter-count">22</span>
+          <span class="filter-count">23</span>
         </button>
       </div>
     </div>
@@ -2082,6 +2082,66 @@
         <div class="tool-footer">
           <span class="tool-tag">gitrepository.yaml</span>
           <a href="fluxcd-gitops/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Cilium Policy Studio -->
+      <div class="tool-card border-teal-200 bg-teal-50/10" data-category="observability">
+        <span class="tool-category-badge">Observability</span>
+        <div class="tool-icon-wrap" style="color: #0d9488;">🐝</div>
+        <h3 class="tool-title">Cilium Policy Studio</h3>
+        <p class="tool-desc">Design secure L3-L7 Kubernetes container networking rules. Scaffold CiliumNetworkPolicies, inspect live traffic flows, and debug DNS blocks using Hubble flow telemetry.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">cilium-policy.yaml</span>
+          <a href="cilium-policy/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- AWS IAM Policy Analyzer -->
+      <div class="tool-card border-orange-200 bg-orange-50/10" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #ea580c;">🔑</div>
+        <h3 class="tool-title">AWS IAM Policy Analyzer</h3>
+        <p class="tool-desc">Build secure IAM identity-based policies and permission boundaries. Evaluate API call permissions through a step-by-step evaluation logic flow simulator.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">iam-policy.json</span>
+          <a href="aws-iam/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Vault Secrets Studio -->
+      <div class="tool-card border-red-200 bg-red-50/10" data-category="automation">
+        <span class="tool-category-badge">Config & Auto</span>
+        <div class="tool-icon-wrap" style="color: #dc2626;">🔒</div>
+        <h3 class="tool-title">Vault Secrets Studio</h3>
+        <p class="tool-desc">Configure dynamic secrets engines and PKI certificate authorities. Manage dynamic credentials databases roles, and simulate automated lease TTL countdowns.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">vault-policy.hcl</span>
+          <a href="vault-secrets/" class="tool-link">
+            Launch Tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tekton Pipeline Studio -->
+      <div class="tool-card border-violet-200 bg-violet-50/10" data-category="cicd">
+        <span class="tool-category-badge">CI/CD Pipelines</span>
+        <div class="tool-icon-wrap" style="color: #7c3aed;">🏗️</div>
+        <h3 class="tool-title">Tekton Pipeline Studio</h3>
+        <p class="tool-desc">Author declarative Kubernetes-native CI/CD build definitions. Scaffold Tekton Tasks, Pipelines, and PipelineRuns, and execute interactive DAG steps runs.</p>
+        <div class="tool-footer">
+          <span class="tool-tag">pipeline.yaml</span>
+          <a href="tekton-pipeline/" class="tool-link">
             Launch Tool
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

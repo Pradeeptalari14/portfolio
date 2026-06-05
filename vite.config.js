@@ -91,6 +91,10 @@ export default defineConfig({
         githubarc: resolve(__dirname, 'tools/github-arc/index.html'),
         terraformdrift: resolve(__dirname, 'tools/terraform-drift/index.html'),
         fluxcdgitops: resolve(__dirname, 'tools/fluxcd-gitops/index.html'),
+        ciliumpolicy: resolve(__dirname, 'tools/cilium-policy/index.html'),
+        awsiam: resolve(__dirname, 'tools/aws-iam/index.html'),
+        vaultsecrets: resolve(__dirname, 'tools/vault-secrets/index.html'),
+        tektonpipeline: resolve(__dirname, 'tools/tekton-pipeline/index.html'),
       }
     }
   }
