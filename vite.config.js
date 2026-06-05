@@ -17,7 +17,6 @@ export default defineConfig({
         terraformAwsModules: resolve(__dirname, 'projects/terraform-aws-modules.html'),
         awsCostOptimizer: resolve(__dirname, 'projects/aws-cost-optimizer.html'),
         experience: resolve(__dirname, 'experience/index.html'),
-        certifications: resolve(__dirname, 'certifications/index.html'),
         tools: resolve(__dirname, 'tools/index.html'),
         ai: resolve(__dirname, 'tools/ai/index.html'),
         ansible: resolve(__dirname, 'tools/ansible/index.html'),
