@@ -22,6 +22,12 @@ spec:
         app: portfolio-website
         tier: frontend
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: portfolio-container
           image: ghcr.io/pradeeptalari14/portfolio:latest
