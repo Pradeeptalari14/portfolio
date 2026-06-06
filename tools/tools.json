@@ -845,5 +845,16 @@
     "bgClass": "bg-violet-50/10",
     "tag": "pipeline.yaml",
     "link": "tekton-pipeline/"
+  },
+  {
+    "title": "Go SRE Utility Studio",
+    "desc": "Deploy high-performance Golang script tasks. Generate parallel HTTP health checkers, log parsing engines, or system metrics exporters with concurrent channels, Dockerfiles, and Makefiles.",
+    "category": "observability",
+    "icon": "🐹",
+    "color": "rgb(0, 173, 216)",
+    "borderClass": "border-sky-200",
+    "bgClass": "bg-sky-50/10",
+    "tag": "main.go",
+    "link": "go-utility/"
   }
 ]

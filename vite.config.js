@@ -95,6 +95,7 @@ export default defineConfig({
         awsiam: resolve(__dirname, 'tools/aws-iam/index.html'),
         vaultsecrets: resolve(__dirname, 'tools/vault-secrets/index.html'),
         tektonpipeline: resolve(__dirname, 'tools/tekton-pipeline/index.html'),
+        goutility: resolve(__dirname, 'tools/go-utility/index.html'),
       }
     }
   }
