@@ -304,9 +304,14 @@ function switchTab(tabId) {
     }
 
     function updateViewportContent() {
-  if (activeTab === 'flow') {
+  if (activeTab === 'sandbox') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('sandbox-viewport').classList.remove('hidden');
+  } else if (activeTab === 'flow') {
     $('output-box').classList.add('hidden');
     $('mermaid-container').classList.remove('hidden');
+    $('sandbox-viewport').classList.add('hidden');
 
     const container = $('mermaid-container');
     container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
@@ -326,6 +331,7 @@ function switchTab(tabId) {
   } else {
     $('output-box').classList.remove('hidden');
     $('mermaid-container').classList.add('hidden');
+    $('sandbox-viewport').classList.add('hidden');
     $('output-box').textContent = compiledCode[activeTab];
   }
 }
@@ -448,6 +454,125 @@ function switchTab(tabId) {
       drawer.classList.add('translate-x-full');
     }
 
+let sandboxElements = [];
+const GRID_SIZE = 5; // 5x5 grid cells
+const CELL_WIDTH = 45; // 45px per cell
+
+function addSandboxElement(type) {
+  // Find the first empty cell
+  let foundCell = null;
+  for (let r = 0; r < GRID_SIZE; r++) {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      const occupied = sandboxElements.some(el => el.row === r && el.col === c);
+      if (!occupied) {
+        foundCell = { row: r, col: c };
+        break;
+      }
+    }
+    if (foundCell) break;
+  }
+
+  if (!foundCell) {
+    showToast("⚠️ The 3D grid is full! Clear it to add more resources.");
+    return;
+  }
+
+  const { row, col } = foundCell;
+  const left = col * CELL_WIDTH + 20;
+  const top = row * CELL_WIDTH + 20;
+  const id = `el-${Date.now()}`;
+
+  // Create the cube DOM element
+  const cube = document.createElement('div');
+  cube.id = id;
+  cube.className = `cube-3d cube-${type}`;
+  cube.style.left = `${left}px`;
+  cube.style.top = `${top}px`;
+  
+  // Create faces
+  const faces = ['top', 'bottom', 'left', 'right', 'front', 'back'];
+  faces.forEach(face => {
+    const faceEl = document.createElement('div');
+    faceEl.className = `cube-face cube-face-${face}`;
+    if (face === 'top') {
+      faceEl.textContent = type.substring(0, 3).toUpperCase();
+    }
+    cube.appendChild(faceEl);
+  });
+
+  // Add click handler
+  cube.onclick = (e) => {
+    e.stopPropagation();
+    inspectSandboxElement(id);
+  };
+
+  // Append to the 3D grid
+  $('grid-3d').appendChild(cube);
+
+  const elementInfo = {
+    id,
+    type,
+    row,
+    col,
+    left,
+    top,
+    status: 'Running',
+    ip: `10.244.${col}.${row + 10}`,
+    timestamp: new Date().toLocaleTimeString()
+  };
+
+  sandboxElements.push(elementInfo);
+  inspectSandboxElement(id);
+  showToast(`🚀 Deployed ${type} to isometric coordinate (${col}, ${row})`);
+}
+
+function clearSandbox() {
+  const grid = $('grid-3d');
+  if (grid) {
+    grid.innerHTML = '<div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 20px 20px;"></div>';
+  }
+  sandboxElements = [];
+  const inspector = $('sandbox-inspector');
+  if (inspector) {
+    inspector.textContent = 'Select an element or click buttons to deploy resources onto the 3D grid.';
+  }
+  showToast("🧹 3D sandbox cleared.");
+}
+
+function inspectSandboxElement(id) {
+  const el = sandboxElements.find(item => item.id === id);
+  if (!el) return;
+
+  // Add selection styles
+  sandboxElements.forEach(item => {
+    const domEl = document.getElementById(item.id);
+    if (domEl) {
+      if (item.id === id) {
+        domEl.style.transform = 'translateZ(10px) scale(1.15)';
+        domEl.style.boxShadow = '0 0 10px rgba(255,255,255,0.4)';
+      } else {
+        domEl.style.transform = 'translateZ(0) scale(1)';
+        domEl.style.boxShadow = 'none';
+      }
+    }
+  });
+
+  const inspector = $('sandbox-inspector');
+  if (inspector) {
+    let typeColor = 'text-indigo-400';
+    if (el.type === 'pod') typeColor = 'text-violet-400';
+    if (el.type === 'service') typeColor = 'text-emerald-400';
+
+    inspector.innerHTML = `
+      <span class="font-bold uppercase ${typeColor}">${el.type}</span> | 
+      Coordinates: <span class="text-white">(${el.col}, ${el.row})</span> | 
+      IP: <span class="text-white">${el.ip}</span> | 
+      Status: <span class="text-emerald-400 font-bold">${el.status}</span> | 
+      Deployed: <span class="text-slate-300">${el.timestamp}</span>
+    `;
+  }
+}
+
 // Expose functions globally for HTML inline event handlers
 window.clearAllFields = clearAllFields;
 window.closeExplanationDrawer = closeExplanationDrawer;
@@ -458,3 +583,6 @@ window.explainActiveTabCode = explainActiveTabCode;
 window.setWizardStep = setWizardStep;
 window.switchTab = switchTab;
 window.triggerCompileAll = triggerCompileAll;
+window.addSandboxElement = addSandboxElement;
+window.clearSandbox = clearSandbox;
+window.inspectSandboxElement = inspectSandboxElement;

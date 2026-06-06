@@ -107,6 +107,74 @@
       color: var(--accent-primary);
       border-bottom-color: var(--accent-primary);
     }
+
+    /* ── 3D Isometric Sandbox styles ── */
+    .stage-3d {
+      perspective: 1000px;
+    }
+    
+    .cube-3d {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      transform-style: preserve-3d;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      animation: dropBounce 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
+    @keyframes dropBounce {
+      0% { transform: translateZ(200px) scale(0.1); opacity: 0; }
+      70% { transform: translateZ(-10px) scale(1.1); opacity: 1; }
+      100% { transform: translateZ(0) scale(1); opacity: 1; }
+    }
+    
+    .cube-face {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: #ffffff;
+      backface-visibility: hidden;
+    }
+    
+    .cube-face-top    { transform: rotateX(0deg) translateZ(15px); }
+    .cube-face-bottom { transform: rotateX(180deg) translateZ(15px); }
+    .cube-face-left   { transform: rotateY(-90deg) translateZ(15px); }
+    .cube-face-right  { transform: rotateY(90deg) translateZ(15px); }
+    .cube-face-front  { transform: rotateX(-90deg) translateZ(15px); }
+    .cube-face-back   { transform: rotateX(90deg) translateZ(15px); }
+
+    /* Node Style (Indigo) */
+    .cube-node .cube-face-top    { background: rgba(99, 102, 241, 0.9); }
+    .cube-node .cube-face-left   { background: rgba(79, 70, 229, 0.9); }
+    .cube-node .cube-face-right  { background: rgba(67, 56, 202, 0.9); }
+    .cube-node .cube-face-front  { background: rgba(79, 70, 229, 0.9); }
+    .cube-node .cube-face-back   { background: rgba(67, 56, 202, 0.9); }
+
+    /* Pod Style (Violet) */
+    .cube-pod .cube-face-top    { background: rgba(167, 139, 250, 0.9); }
+    .cube-pod .cube-face-left   { background: rgba(139, 92, 246, 0.9); }
+    .cube-pod .cube-face-right  { background: rgba(124, 58, 237, 0.9); }
+    .cube-pod .cube-face-front  { background: rgba(139, 92, 246, 0.9); }
+    .cube-pod .cube-face-back   { background: rgba(124, 58, 237, 0.9); }
+
+    /* Service Style (Emerald) */
+    .cube-service .cube-face-top    { background: rgba(52, 211, 153, 0.9); }
+    .cube-service .cube-face-left   { background: rgba(16, 185, 129, 0.9); }
+    .cube-service .cube-face-right  { background: rgba(5, 150, 105, 0.9); }
+    .cube-service .cube-face-front  { background: rgba(16, 185, 129, 0.9); }
+    .cube-service .cube-face-back   { background: rgba(5, 150, 105, 0.9); }
+    
+    .cube-3d:hover {
+      transform: translateZ(10px) scale(1.1);
+      filter: brightness(1.2);
+    }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script></head>
@@ -413,17 +481,50 @@
               </div>
             </div>
             
-            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable">
               <button onclick="switchTab('deployment')" id="tab-deployment" class="tab-btn active">deployment.yaml</button>
               <button onclick="switchTab('service')" id="tab-service" class="tab-btn">service.yaml</button>
               <button onclick="switchTab('ingress')" id="tab-ingress" class="tab-btn">ingress.yaml</button>
               <button onclick="switchTab('hpa')" id="tab-hpa" class="tab-btn">hpa.yaml</button>
-            
-              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button></div>
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button>
+              <button onclick="switchTab('sandbox')" id="tab-sandbox" class="tab-btn">🎮 3D Sandbox</button>
+            </div>
           </div>
 
           <pre id="output-box" class="ide-viewport"></pre>
           <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+          
+          <!-- 3D Sandbox Viewport -->
+          <div id="sandbox-viewport" class="hidden ide-viewport bg-slate-950 p-6 overflow-hidden flex flex-col items-center justify-between" style="min-height: 480px; max-height: 640px; position: relative;">
+            <!-- Controls overlay -->
+            <div class="absolute top-3 left-3 flex gap-2 z-10">
+              <button onclick="addSandboxElement('node')" class="px-2 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow transition">
+                <span>➕ Node</span>
+              </button>
+              <button onclick="addSandboxElement('pod')" class="px-2 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow transition">
+                <span>➕ Pod</span>
+              </button>
+              <button onclick="addSandboxElement('service')" class="px-2 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow transition">
+                <span>➕ Service</span>
+              </button>
+              <button onclick="clearSandbox()" class="px-2 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow transition">
+                <span>🧹 Clear</span>
+              </button>
+            </div>
+            
+            <!-- 3D Grid Stage -->
+            <div class="stage-3d w-full flex-1 flex items-center justify-center overflow-hidden" style="perspective: 800px; min-height: 350px;">
+              <div id="grid-3d" class="relative w-64 h-64 border border-slate-800 bg-slate-900/40 rounded-lg" style="transform: rotateX(60deg) rotateZ(-45deg); transform-style: preserve-3d; transition: transform 0.5s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <!-- Grid background pattern -->
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 20px 20px;"></div>
+              </div>
+            </div>
+            
+            <!-- Element Inspector footer -->
+            <div class="w-full text-center border-t border-slate-800/60 pt-2 text-[10px] text-slate-400 font-mono" id="sandbox-inspector">
+              Select an element or click buttons to deploy resources onto the 3D grid.
+            </div>
+          </div>
         </div>
 
         <!-- Global Actions -->
