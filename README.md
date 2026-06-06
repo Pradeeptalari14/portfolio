@@ -1,84 +1,84 @@
-# Talari Pradeep · Portfolio Website
+# Talari Pradeep · Cloud & SRE Script Tools Portfolio
 ### 🌐 [talaripradeep.info](https://talaripradeep.info)
 
-A personal portfolio website for **Talari Pradeep** — Cloud & DevOps Engineer.
+A personal portfolio website and interactive DevOps & SRE console hub for **Talari Pradeep** — Cloud & DevOps Engineer. 
 
-**Tech Stack:** Pure HTML · Vanilla CSS · Vanilla JavaScript  
-**Hosting:** GitHub Pages (Free)  
-**SSL:** Let's Encrypt via GitHub Pages (Free)  
-**Domain:** talaripradeep.info (GoDaddy)
+Features **77 interactive code generators** (SRE, pipelines, infrastructure provisioning, and container setups) served dynamically from a client-side JSON database.
 
 ---
 
-## 🚀 Quick Deploy to GitHub Pages
+## 🏗️ Architectural Framework
 
-### Step 1 — Push this repo to GitHub
-```bash
-git init
-git add .
-git commit -m "🚀 Initial portfolio launch"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
-```
+The platform is designed around zero runtime server overhead:
+* **Core Logic:** HTML5, Vanilla JavaScript, and Vanilla CSS design tokens.
+* **Central Card Database:** [tools/tools.json](file:///d:/Domain/tools/tools.json) holds the schema configurations for all interactive cards, compiled at DOM load.
+* **Shared UI Core:** [src/js/core-tool.js](file:///d:/Domain/src/js/core-tool.js) handles sandboxed logging, visual tabs, and clipboard write handlers.
 
-### Step 2 — Enable GitHub Pages
-1. Go to your repo → **Settings** → **Pages**
-2. Under **Source**, select **GitHub Actions**
-3. The `deploy.yml` workflow will automatically deploy
-
-### Step 3 — Add Custom Domain (talaripradeep.info)
-1. In **Settings → Pages**, enter `talaripradeep.info` in the Custom domain box
-2. Click **Save** — GitHub will verify DNS
+Detailed information can be found in the [ARCHITECTURE.md](file:///d:/Domain/ARCHITECTURE.md) document.
 
 ---
 
-## 🔒 Free SSL Fix (GoDaddy DNS → GitHub Pages)
+## 📁 Repository Directory Map
 
-### GoDaddy DNS Records Required
-
-Log into GoDaddy → DNS Management → Add/Edit these records:
-
-| Type  | Name | Value                   | TTL |
-|-------|------|-------------------------|-----|
-| A     | @    | 185.199.108.153         | 600 |
-| A     | @    | 185.199.109.153         | 600 |
-| A     | @    | 185.199.110.153         | 600 |
-| A     | @    | 185.199.111.153         | 600 |
-| CNAME | www  | pradeeptalari14.github.io | 600 |
-
-### SSL Certificate Steps
-1. In GitHub Settings → Pages → delete domain → save → wait 60s → re-add domain → save
-2. Wait 10–30 minutes for "TLS certificate is being provisioned" to show green ✓
-3. Check **Enforce HTTPS** once the certificate is ready
-
----
-
-## 📁 Project Structure
 ```
 Domain/
-├── index.html          # Main portfolio page
-├── styles.css          # Premium CSS design system  
-├── script.js           # Animations & interactions
-├── CNAME               # Custom domain config
-├── resume.pdf          # Your resume (add this!)
-└── .github/
-    └── workflows/
-        └── deploy.yml  # Auto-deploy GitHub Actions
+├── .github/workflows/       # CI/CD pipelines
+│   ├── deploy.yml           # GitHub Pages auto-deploy
+│   └── security-scan.yml    # Gitleaks, Trivy, and npm audit scans
+├── infra/                   # Infrastructure as Code (IaC) configurations
+│   ├── terraform/           # AWS S3 and CloudFront hosting tf configs
+│   ├── k8s/                 # Kubernetes Deployment, Service, Ingress, HPA
+│   ├── helm/portfolio/      # Parameterized Helm deployment chart
+│   └── monitoring/          # Prometheus targets & Grafana dashboards
+├── src/js/                  # Frontend core script directories
+│   ├── core-tool.js         # Shared SRE UI helpers library
+│   └── generators/          # Individual tool generator scripts
+├── tests/                   # JSDOM unit test scripts
+├── tools/                   # Interactive console studio layouts
+│   ├── tools.json           # Unified card database schema
+│   └── index.html           # Main tools grid dashboard launcher
+├── Dockerfile               # Multi-stage production container setup
+├── nginx.conf               # Production Nginx reverse proxy settings
+├── vite.config.js           # Rollup and HTML bundler settings
+├── README.md                # Project guideline entrypoint
+└── CNAME                    # DNS routing identifier
 ```
 
 ---
 
-## ✏️ Customization
+## 🛠️ Local Setup & Commands
 
-Update these in `index.html`:
-- Your name, bio, and description
-- Experience entries (company names, dates, bullets)
-- Project cards (titles, descriptions, GitHub links)
-- Certifications (names, years)
-- Contact info (email, LinkedIn, GitHub)
-- Add your actual `resume.pdf`
+### Prerequisites
+* Node.js v20+ and NPM v10+
+
+### Install Packages
+```bash
+npm install
+```
+
+### Start Development Mode
+```bash
+npm run dev
+```
+
+### Compile Production Build
+```bash
+npm run build
+```
+
+### Run Automated Unit Tests
+```bash
+npm test
+```
 
 ---
 
-*Built with ❤️ · Hosted free on GitHub Pages · SSL by Let's Encrypt*
+## 🐋 Production Operations
+
+For complete step-by-step guidance on running, upgrading, and maintaining the platform, refer to these operational references:
+* **[DEPLOYMENT.md](file:///d:/Domain/DEPLOYMENT.md):** Guides detailing GitHub Pages, Docker runs, Kubernetes, Helm rollouts, and AWS pipelines.
+* **[RUNBOOK.md](file:///d:/Domain/RUNBOOK.md):** SLA/SLO metrics checklists, fallback recovery steps, alert runbooks, and rollback procedures.
+* **[TROUBLESHOOTING.md](file:///d:/Domain/TROUBLESHOOTING.md):** Diagnostics logs check for local browsers, CORS errors, Docker ports, and Kubernetes Pod crashes.
+* **[SECURITY.md](file:///d:/Domain/SECURITY.md):** Vuln disclosure policies, client-side XSS standards, and secrets management.
+* **[ONBOARDING.md](file:///d:/Domain/ONBOARDING.md):** Developer setup instructions for building new studios.
+* **[API_DOCUMENTATION.md](file:///d:/Domain/API_DOCUMENTATION.md):** Reference documentation mapping SreCore framework methods and parameters.

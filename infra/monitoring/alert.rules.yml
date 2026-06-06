@@ -1,0 +1,52 @@
+groups:
+  - name: portfolio-alerts
+    rules:
+      - alert: FrontendSlaBreached
+        expr: (sum(rate(nginx_http_requests_total{status=~"5.."}[5m])) / sum(rate(nginx_http_requests_total[5m]))) * 100 > 0.01
+        for: 2m
+        labels:
+          severity: critical
+          tier: frontend
+        annotations:
+          summary: "Frontend SLA target violated (99.99% target)"
+          description: "Nginx response code 5xx error rate has exceeded 0.01% in the last 5 minutes. Active HTTP SLA SLA target is breached."
+
+      - alert: HighResponseLatency
+        expr: histogram_quantile(0.99, sum(rate(nginx_http_request_duration_seconds_bucket[5m])) by (le)) > 0.500
+        for: 5m
+        labels:
+          severity: warning
+          tier: frontend
+        annotations:
+          summary: "High Response Latency (p99 > 500ms)"
+          description: "The 99th percentile response latency has exceeded 500ms for more than 5 minutes."
+
+      - alert: PodInstanceDown
+        expr: kube_deployment_status_replicas_available{deployment="portfolio-deployment"} < kube_deployment_spec_replicas{deployment="portfolio-deployment"}
+        for: 1m
+        labels:
+          severity: critical
+          tier: orchestration
+        annotations:
+          summary: "Pod Replicas Unavailable"
+          description: "One or more expected pods for the portfolio deployment are unavailable or crashing."
+
+      - alert: HighCpuUsage
+        expr: container_cpu_usage_seconds_total{container="portfolio-container"} / container_spec_cpu_shares{container="portfolio-container"} * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          tier: container
+        annotations:
+          summary: "High Container CPU Utilization (>85%)"
+          description: "Pod container CPU consumption has exceeded 85% for more than 5 minutes."
+
+      - alert: HighMemoryUsage
+        expr: container_memory_working_set_bytes{container="portfolio-container"} / container_spec_memory_limit_bytes{container="portfolio-container"} * 100 > 90
+        for: 3m
+        labels:
+          severity: warning
+          tier: container
+        annotations:
+          summary: "High Container Memory Utilization (>90%)"
+          description: "Pod container Memory consumption has exceeded 90% for more than 3 minutes."
