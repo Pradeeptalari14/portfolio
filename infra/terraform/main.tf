@@ -25,6 +25,25 @@ resource "aws_s3_bucket" "website_bucket" {
   )
 }
 
+# Server-side encryption configuration for the S3 bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "website_bucket_encryption" {
+  bucket = aws_s3_bucket.website_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+# Enable versioning on the S3 bucket
+resource "aws_s3_bucket_versioning" "website_bucket_versioning" {
+  bucket = aws_s3_bucket.website_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 # Block all public access at the S3 bucket level
 resource "aws_s3_bucket_public_access_block" "public_access" {
   bucket = aws_s3_bucket.website_bucket.id

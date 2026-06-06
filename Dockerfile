@@ -24,8 +24,18 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy custom production Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Support non-root execution
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /var/run && \
+    touch /var/run/nginx.pid && \
+    chown nginx:nginx /var/run/nginx.pid
+
 # Expose HTTP port
-EXPOSE 80
+EXPOSE 8080
+
+USER nginx
 
 # Run Nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
