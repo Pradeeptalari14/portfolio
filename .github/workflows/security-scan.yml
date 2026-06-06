@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Gitleaks Secret Detector Scan
-        uses: gitleaks/gitleaks-action@4f177fb797c271cf2063ff0d603a16f9f3032b45 # v2.3.2
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trivy Vulnerability Scanner (IaC Configs Check)
-        uses: aquasecurity/trivy-action@18f2894172d167fd1f140130973a6ab97c11f3ac # v0.28.0
+        uses: aquasecurity/trivy-action@v0.29.0
         with:
           scan-type: 'config'
           exit-code: '1'
