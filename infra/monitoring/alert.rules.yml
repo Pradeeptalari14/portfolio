@@ -32,7 +32,7 @@ groups:
           description: "One or more expected pods for the portfolio deployment are unavailable or crashing."
 
       - alert: HighCpuUsage
-        expr: container_cpu_usage_seconds_total{container="portfolio-container"} / container_spec_cpu_shares{container="portfolio-container"} * 100 > 85
+        expr: sum(rate(container_cpu_usage_seconds_total{container="portfolio-container"}[5m])) by (pod) / sum(kube_pod_container_resource_limits{resource="cpu", container="portfolio-container"}) by (pod) * 100 > 85
         for: 5m
         labels:
           severity: warning
@@ -42,7 +42,7 @@ groups:
           description: "Pod container CPU consumption has exceeded 85% for more than 5 minutes."
 
       - alert: HighMemoryUsage
-        expr: container_memory_working_set_bytes{container="portfolio-container"} / container_spec_memory_limit_bytes{container="portfolio-container"} * 100 > 90
+        expr: sum(container_memory_working_set_bytes{container="portfolio-container"}) by (pod) / sum(kube_pod_container_resource_limits{resource="memory", container="portfolio-container"}) by (pod) * 100 > 90
         for: 3m
         labels:
           severity: warning

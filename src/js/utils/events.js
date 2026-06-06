@@ -150,7 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const toastContent = $('toast-content');
       const toastWrapper = $('toast-wrapper');
       if (toastContent && toastWrapper) {
-        toastContent.innerHTML = `<span>⚡</span> ${msg}`;
+        toastContent.replaceChildren();
+        const iconSpan = document.createElement('span');
+        iconSpan.textContent = '⚡';
+        toastContent.appendChild(iconSpan);
+        toastContent.appendChild(document.createTextNode(' ' + msg));
         toastWrapper.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
         toastWrapper.classList.add('opacity-100', 'translate-y-0');
         setTimeout(() => {
