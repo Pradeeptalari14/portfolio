@@ -272,11 +272,14 @@
               <button onclick="switchTab('prometheus')" id="tab-prometheus" class="tab-btn">prometheus.yml</button>
               <button onclick="switchTab('service')" id="tab-service" class="tab-btn">node-exporter.service</button>
             
-              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button></div>
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button>
+              <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn">📈 Live GUI Dashboard</button>
+            </div>
           </div>
 
           <pre id="output-box" class="ide-viewport"></pre>
           <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+          <div id="dashboard-container" class="hidden ide-viewport bg-[#0b0f19] p-5 overflow-y-auto space-y-5 flex flex-col scrollbar-thin" style="min-height: 480px; max-height: 640px; color: #e2e8f0; font-family: 'Inter', sans-serif;"></div>
         </div>
 
         <!-- Global Actions -->

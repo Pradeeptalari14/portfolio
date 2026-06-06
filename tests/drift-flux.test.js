@@ -84,7 +84,7 @@ describe('Terraform Drift Auditor Studio', () => {
     reconcileCheckbox.dispatchEvent(new window.Event('change'));
 
     btnRunAudit.dispatchEvent(new window.Event('click'));
-    await new Promise(resolve => setTimeout(resolve, 1000)); // wait for both settimeouts (150ms + 800ms)
+    await new Promise(resolve => setTimeout(resolve, 2000)); // wait for both settimeouts (150ms + 800ms)
 
     expect(auditLogs.textContent).toContain('Auto-remediation is ACTIVE');
     expect(auditLogs.textContent).toContain('Remediation: manual edits overwritten successfully');
