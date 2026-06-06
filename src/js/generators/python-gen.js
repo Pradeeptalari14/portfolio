@@ -584,14 +584,18 @@ function setupInteractiveListeners() {
         const container = $('mermaid-container');
         container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
         
-        try {
-          mermaid.run({
-            nodes: [container.querySelector('.mermaid')]
-          });
-        } catch (e) {
-          console.error("Mermaid run error:", e);
-          container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
-        }
+        if (typeof mermaid === 'undefined') {
+      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid library is not loaded. Please check your internet connection or reload the page.\n\nCode:\n${compiledCode.flow}</pre>`;
+    } else {
+      try {
+        mermaid.run({
+          nodes: [container.querySelector('.mermaid')]
+        });
+      } catch (e) {
+        console.error("Mermaid render error:", e);
+        container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
+      }
+    }
       } else {
         $('output-box').classList.remove('hidden');
         $('mermaid-container').classList.add('hidden');

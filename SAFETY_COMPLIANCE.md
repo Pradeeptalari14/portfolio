@@ -1,6 +1,6 @@
 # Portfolio Security & Safety Compliance Guidelines
 
-This document details the licensing status, security standards, and legal compliance structures implemented across all **18 interactive DevOps & SRE automation studios** hosted in this workspace.
+This document details the licensing status, security standards, and legal compliance structures implemented across all **77 interactive DevOps & SRE automation studios** hosted in this workspace.
 
 ---
 

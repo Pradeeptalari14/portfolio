@@ -300,6 +300,171 @@
       .timeline-dot { left: 2px; width: 16px; height: 16px; }
       .exp-acc-right { flex-direction: column; align-items: flex-end; gap: 0.4rem; }
     }
+
+    /* CI/CD Pipeline Simulator Widget */
+    .pipeline-container {
+      margin-top: 1.5rem;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 0.75rem;
+    }
+    .pipeline-header span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .pipeline-status-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      background: rgba(14,165,233,0.1);
+      border: 1px solid rgba(14,165,233,0.25);
+      color: var(--accent-cyan);
+      padding: 0.15rem 0.5rem;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pipeline-flow-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
+      margin: 1.25rem 0;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .pipeline-flow-wrapper::-webkit-scrollbar {
+      height: 4px;
+    }
+    .pipeline-flow-wrapper::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 2px;
+    }
+    .pipeline-step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      min-width: 90px;
+      cursor: pointer;
+      position: relative;
+      transition: transform var(--transition);
+    }
+    .pipeline-step-node:hover {
+      transform: translateY(-2px);
+    }
+    .node-icon-wrapper {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 0px rgba(79,70,229,0.4);
+    }
+    .pipeline-step-node.active .node-icon-wrapper {
+      background: rgba(79,70,229,0.2);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 4px rgba(79,70,229,0.3);
+    }
+    .node-step-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      color: #94a3b8;
+      transition: color var(--transition);
+    }
+    .pipeline-step-node.active .node-step-name {
+      color: #fff;
+    }
+    .node-step-status {
+      font-size: 0.62rem;
+      color: #64748b;
+      margin-top: 0.1rem;
+    }
+    .pipeline-step-connector {
+      flex: 1.5;
+      height: 2px;
+      background: #334155;
+      position: relative;
+      margin-top: -1.75rem;
+      min-width: 25px;
+    }
+    .pipeline-step-connector.active {
+      background: var(--accent-primary);
+    }
+    .connector-line {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .pipeline-step-connector.active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 20%;
+      background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+      animation: flow-pulse 1.8s infinite linear;
+    }
+    @keyframes flow-pulse {
+      0% { left: -20%; }
+      100% { left: 120%; }
+    }
+    .pipeline-details-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      min-height: 72px;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .details-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      background: rgba(255,255,255,0.05);
+      padding: 0.35rem;
+      border-radius: 6px;
+    }
+    .details-text-content {
+      flex: 1;
+    }
+    .details-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.84rem;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+    .details-desc {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
@@ -350,7 +515,7 @@
                 <h2 class="exp-role">DevOps Engineer</h2>
                 <span class="exp-status-badge">Current</span>
               </div>
-              <p class="exp-company">🏢 Accenture · Sutter Health Project · Full-time</p>
+              <p class="exp-company">🏢 Accenture · Enterprise Healthcare Project · Full-time</p>
             </div>
             <div class="exp-acc-right">
               <span class="exp-date">Mar 2024 – Present</span>
@@ -365,8 +530,82 @@
           <div class="exp-acc-body" id="exp-body-1" role="region">
             <div class="exp-acc-body-inner">
               <p class="exp-summary">
-                Leading infrastructure automation and CI/CD operations for Sutter Health's enterprise healthcare applications. Designing resilient, secure, and highly scalable cloud architectures on AWS while promoting DevOps best practices across cross-functional engineering teams.
+                Leading infrastructure automation and CI/CD operations for enterprise healthcare applications. Designing resilient, secure, and highly scalable cloud architectures on AWS while promoting DevOps best practices across cross-functional engineering teams.
               </p>
+
+              <!-- Interactive CI/CD Pipeline Flow Widget -->
+              <div class="pipeline-container">
+                <div class="pipeline-header">
+                  <span>🛠️ Live Interactive Enterprise CI/CD Pipeline Flow</span>
+                  <span class="pipeline-status-badge">Active Simulator</span>
+                </div>
+                <div class="pipeline-flow-wrapper">
+                  <!-- Node 1 -->
+                  <div class="pipeline-step-node active" data-step="1">
+                    <div class="node-icon-wrapper">
+                      <span class="node-step-icon">📦</span>
+                    </div>
+                    <div class="node-step-name">Code Push</div>
+                    <div class="node-step-status">Triggers build</div>
+                  </div>
+                  <!-- Connector -->
+                  <div class="pipeline-step-connector active">
+                    <div class="connector-line"></div>
+                  </div>
+                  <!-- Node 2 -->
+                  <div class="pipeline-step-node" data-step="2">
+                    <div class="node-icon-wrapper">
+                      <span class="node-step-icon">⚙️</span>
+                    </div>
+                    <div class="node-step-name">Jenkins Build</div>
+                    <div class="node-step-status">Checkout & compile</div>
+                  </div>
+                  <!-- Connector -->
+                  <div class="pipeline-step-connector">
+                    <div class="connector-line"></div>
+                  </div>
+                  <!-- Node 3 -->
+                  <div class="pipeline-step-node" data-step="3">
+                    <div class="node-icon-wrapper">
+                      <span class="node-step-icon">🛡️</span>
+                    </div>
+                    <div class="node-step-name">Security Scan</div>
+                    <div class="node-step-status">Trivy & SonarQube</div>
+                  </div>
+                  <!-- Connector -->
+                  <div class="pipeline-step-connector">
+                    <div class="connector-line"></div>
+                  </div>
+                  <!-- Node 4 -->
+                  <div class="pipeline-step-node" data-step="4">
+                    <div class="node-icon-wrapper">
+                      <span class="node-step-icon">🐳</span>
+                    </div>
+                    <div class="node-step-name">Docker Build</div>
+                    <div class="node-step-status">Package image</div>
+                  </div>
+                  <!-- Connector -->
+                  <div class="pipeline-step-connector">
+                    <div class="connector-line"></div>
+                  </div>
+                  <!-- Node 5 -->
+                  <div class="pipeline-step-node" data-step="5">
+                    <div class="node-icon-wrapper">
+                      <span class="node-step-icon">☸️</span>
+                    </div>
+                    <div class="node-step-name">EKS Deploy</div>
+                    <div class="node-step-status">Helm rollout</div>
+                  </div>
+                </div>
+                <!-- Details Box -->
+                <div class="pipeline-details-box">
+                  <div class="details-icon">📦</div>
+                  <div class="details-text-content">
+                    <h4 class="details-title">Step 1: Code Push (Trigger)</h4>
+                    <p class="details-desc">A code push to the main branch initiates the multi-branch pipeline workflow via an automated GitHub webhook.</p>
+                  </div>
+                </div>
+              </div>
 
               <div class="exp-subheading">// Core Achievements</div>
 
@@ -416,6 +655,84 @@
       card.setAttribute('aria-expanded', String(!open));
       header.setAttribute('aria-expanded', String(!open));
     }
+
+    // Pipeline Simulator Code
+    const stepsData = {
+      1: {
+        icon: '📦',
+        title: 'Step 1: Code Push (Trigger)',
+        desc: 'A git push to the main branch initiates the multi-branch pipeline workflow via an automated GitHub webhook.'
+      },
+      2: {
+        icon: '⚙️',
+        title: 'Step 2: Jenkins Build',
+        desc: 'Jenkins pulls repository sources, spins up agent nodes, executes unit tests, and prepares bundle compilations.'
+      },
+      3: {
+        icon: '🛡️',
+        title: 'Step 3: Trivy & SonarQube Scans',
+        desc: 'Vulnerability scanners audit container base layers and secrets, while SonarQube acts as a quality gate for coding standards.'
+      },
+      4: {
+        icon: '🐳',
+        title: 'Step 4: Dockerization & Push',
+        desc: 'Assets are packaged inside a lightweight production Nginx container and pushed securely to the AWS ECR registry.'
+      },
+      5: {
+        icon: '☸️',
+        title: 'Step 5: EKS Helm Rollout',
+        desc: 'Helm charts deploy container revisions to EKS pod replication layers, validating health checks before old pods exit.'
+      }
+    };
+
+    const nodes = document.querySelectorAll('.pipeline-step-node');
+    const connectors = document.querySelectorAll('.pipeline-step-connector');
+    const detailsIcon = document.querySelector('.details-icon');
+    const detailsTitle = document.querySelector('.details-title');
+    const detailsDesc = document.querySelector('.details-desc');
+
+    let currentStep = 1;
+    let autoPlayInterval = setInterval(nextStep, 3500);
+
+    function nextStep() {
+      currentStep = currentStep === 5 ? 1 : currentStep + 1;
+      updatePipelineUI(currentStep);
+    }
+
+    function updatePipelineUI(stepId) {
+      nodes.forEach(node => {
+        const id = parseInt(node.getAttribute('data-step'));
+        if (id <= stepId) {
+          node.classList.add('active');
+        } else {
+          node.classList.remove('active');
+        }
+      });
+
+      connectors.forEach((conn, index) => {
+        if (index + 1 < stepId) {
+          conn.classList.add('active');
+        } else {
+          conn.classList.remove('active');
+        }
+      });
+
+      // Update details box
+      const data = stepsData[stepId];
+      if (data) {
+        detailsIcon.textContent = data.icon;
+        detailsTitle.textContent = data.title;
+        detailsDesc.textContent = data.desc;
+      }
+    }
+
+    nodes.forEach(node => {
+      node.addEventListener('click', () => {
+        clearInterval(autoPlayInterval); // Stop autoplay on user interaction
+        currentStep = parseInt(node.getAttribute('data-step'));
+        updatePipelineUI(currentStep);
+      });
+    });
   </script>
   <load src="../sections/chatbot.html" />
 </body>
