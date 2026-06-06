@@ -43,10 +43,9 @@ describe('Git Learning Studio Compiler', () => {
     
     window.eval(jsCode);
 
-    // Ensure the compiler has finished initial compile
-    if (typeof window.triggerCompileAll === 'function') {
-      window.triggerCompileAll();
-    }
+    // Dispatch DOMContentLoaded to trigger compiler and initialize terminal sandbox
+    const event = new window.Event('DOMContentLoaded');
+    window.dispatchEvent(event);
   });
 
   it('should initialize and compile default Git Guide configuration', () => {
@@ -109,5 +108,41 @@ describe('Git Learning Studio Compiler', () => {
     const cicdText = window.document.getElementById('output-box').textContent;
     expect(cicdText).toContain('GitLab CI: Git Pipeline Security Verification');
     expect(cicdText).not.toContain('GitHub Actions');
+  });
+
+  it('should support simulated terminal command execution and arrow key history', () => {
+    // Switch to terminal tab
+    window.switchTab('terminal');
+
+    const input = window.document.getElementById('terminal-input');
+    const history = window.document.getElementById('terminal-history');
+    expect(input).not.toBeNull();
+    expect(history).not.toBeNull();
+
+    // Type a command and press Enter
+    input.value = 'git init';
+    const enterEvent = new window.KeyboardEvent('keydown', { key: 'Enter' });
+    input.dispatchEvent(enterEvent);
+
+    // Verify command got added to output
+    expect(history.innerHTML).toContain('Initialized empty Git repository');
+
+    // Type a commit command and press Enter
+    input.value = 'git commit -m "first commit"';
+    input.dispatchEvent(enterEvent);
+    expect(history.innerHTML).toContain('first commit');
+
+    // Test ArrowUp key to recall command history
+    const arrowUpEvent = new window.KeyboardEvent('keydown', { key: 'ArrowUp' });
+    input.dispatchEvent(arrowUpEvent);
+    expect(input.value).toBe('git commit -m "first commit"');
+
+    input.dispatchEvent(arrowUpEvent);
+    expect(input.value).toBe('git init');
+
+    // Test ArrowDown key
+    const arrowDownEvent = new window.KeyboardEvent('keydown', { key: 'ArrowDown' });
+    input.dispatchEvent(arrowDownEvent);
+    expect(input.value).toBe('git commit -m "first commit"');
   });
 });

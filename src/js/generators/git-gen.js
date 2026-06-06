@@ -1147,6 +1147,8 @@ let gitInitialized = false;
 let commits = [];
 let branches = { 'main': null };
 let activeBranch = 'main';
+let commandHistory = [];
+let historyIndex = -1;
 
 function printTerminal(msg, isInput = false) {
   const history = $('terminal-history');
@@ -1499,7 +1501,7 @@ function drawGitGraph() {
       const isActive = bName === activeBranch;
       const bgColor = isActive ? '#10b981' : '#475569';
       
-      const sharedCount = Object.entries(branches).filter(([b, h]) => h === hash).indexOf([bName, hash]);
+      const sharedCount = Object.entries(branches).filter(([b, h]) => h === hash).findIndex(([b]) => b === bName);
       const offsetY = 20 + (sharedCount * 18);
 
       svgHtml += `
@@ -1523,11 +1525,33 @@ function drawGitGraph() {
 function initTerminalSandbox() {
   const terminalInput = $('terminal-input');
   if (terminalInput) {
+    if (terminalInput.__initialized) return;
+    terminalInput.__initialized = true;
+
     terminalInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const val = terminalInput.value;
+        if (val.trim()) {
+          commandHistory.push(val);
+          historyIndex = commandHistory.length;
+        }
         terminalInput.value = '';
         processTerminalCommand(val);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (commandHistory.length > 0 && historyIndex > 0) {
+          historyIndex--;
+          terminalInput.value = commandHistory[historyIndex];
+        }
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (historyIndex < commandHistory.length - 1) {
+          historyIndex++;
+          terminalInput.value = commandHistory[historyIndex];
+        } else if (historyIndex === commandHistory.length - 1) {
+          historyIndex = commandHistory.length;
+          terminalInput.value = '';
+        }
       }
     });
   }
