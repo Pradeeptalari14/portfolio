@@ -360,6 +360,117 @@ ssh -o ConnectTimeout=5 -q localhost exit && echo "SSH test successful!"`,
   annotations:
     summary: "System partition running out of space"`,
     "flow": "graph TD\n  Logs[🔥 Unmanaged Log files] --> DiskExhaust[⚠️ Root partition 100% full]\n  DiskExhaust --> SshWrite[🚫 sshd cannot write log/pty files]\n  SshWrite --> Drop[❌ New SSH handshakes dropped / Refused]"
+  },
+  "crashloop_backoff": {
+    "title": "ConfigMap Mount Reference Failure (CrashLoopBackOff)",
+    "filename": "crashloop_backoff_triage",
+    "logs": [
+      { type: "info", text: "Initializing Kubernetes Pod Triaging Engine..." },
+      { type: "tool", text: "Running command: kubectl get pods -n production" },
+      { type: "error", text: "CRITICAL: pod payment-processor-78d4f-x2m4 is in CrashLoopBackOff state" },
+      { type: "tool", text: "Fetching pod container logs: kubectl logs payment-processor-78d4f-x2m4 --previous" },
+      { type: "error", text: "Fatal: configuration file '/etc/config/app.env' not found. Exiting with status code 1" },
+      { type: "tool", text: "Checking pod deployment configuration: kubectl get deployment payment-processor -o yaml" },
+      { type: "error", text: "CONFIG ANOMALY: volume 'config-volume' references ConfigMap 'app-config-env' which does not exist in namespace" },
+      { type: "success", text: "Root cause found: application container crashes due to missing dependency configmap metadata." }
+    ],
+    "rca": `# Root Cause Analysis: ConfigMap Mount Reference Failure (CrashLoopBackOff)\n\n## Incident Summary\nThe \`payment-processor\` application crashed continuously upon boot. The Kubernetes scheduler flagged it as \`CrashLoopBackOff\` after multiple unsuccessful automatic container restarts.\n\n## Diagnostic Investigation\n1. **Container Stderr Logs**: Accessing container logs revealed the error: \`Fatal: configuration file '/etc/config/app.env' not found\`.\n2. **Resource References Inspection**: Inspecting the pod volume spec revealed that the volume named \`config-volume\` maps to a ConfigMap named \`app-config-env\`.\n3. **Namespace Verification**: Querying the namespace confirmed that \`app-config-env\` was deleted or never successfully deployed, causing container startup routines to fail.`,
+    "playbook": `#!/bin/bash
+# restore_configmap_mount.sh - Recreate missing configmap resource
+set -e
+
+echo "Verifying ConfigMap existence..."
+if ! kubectl get configmap app-config-env -n production &>/dev/null; then
+  echo "Re-creating the missing ConfigMap app-config-env..."
+  kubectl create configmap app-config-env -n production --from-literal=app.env="app.port=8080\\napp.mode=production"
+fi
+
+echo "Verifying deployment status..."
+kubectl rollout restart deployment/payment-processor -n production
+kubectl rollout status deployment/payment-processor -n production --timeout=90s
+echo "✅ Configuration mount restored. Payment-processor is running!"`,
+    "prevention": `apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-configmap-references
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+  - name: check-configmap-volume-mounts
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Pods must not reference undefined or missing ConfigMaps in their volume parameters."
+      pattern:
+        spec:
+          volumes:
+          - name: "*"
+            configMap:
+              name: "?*"`,
+    "flow": "graph TD\n  Kubelet[⚙️ Kubelet Controller] -->|Mount Volumes| Vol[📁 config-volume]\n  Vol -->|Read ConfigMap app-config-env| CM[❌ ConfigMap Missing]\n  CM -->|Mount fails| Fail[🚫 Container boot error]\n  Fail -->|Exit status 1| Crash[⚠️ CrashLoopBackOff]"
+  },
+  "image_pull_backoff": {
+    "title": "Private Registry Access Unauthorized (ImagePullBackOff)",
+    "filename": "image_pull_backoff_triage",
+    "logs": [
+      { type: "info", text: "Initializing Kubernetes Deployment Audit..." },
+      { type: "tool", text: "Running command: kubectl get events -n production --sort-by='.metadata.creationTimestamp'" },
+      { type: "error", text: "EVENT: Pulling image 'secure-registry.io/auth-service:v2.1.0' failed: unauthorized" },
+      { type: "error", text: "STATUS: Pod auth-service-9f4a2-l78b9 is stuck in ImagePullBackOff status" },
+      { type: "tool", text: "Checking pod image pull configurations..." },
+      { type: "error", text: "SPEC ERROR: deployment does not reference an imagePullSecrets registry key in template" },
+      { type: "tool", text: "Verifying secret presence: kubectl get secret registry-key-auth -n production" },
+      { type: "success", text: "Triage complete: registry credentials exist but are not referenced in the deployment specification." }
+    ],
+    "rca": `# Root Cause Analysis: Private Registry Unauthorized (ImagePullBackOff)\n\n## Incident Summary\nA rolling upgrade deployment of \`auth-service\` stalled with pods stuck in \`ImagePullBackOff\` state, preventing new container image replicas from spinning up.\n\n## Diagnostic Investigation\n- **Kubelet Events Log**: Events log records: \`Failed to pull image secure-registry.io/auth-service:v2.1.0: RPC error: code = Unknown desc = failed to pull and unpack image: failed to resolve reference: pull access denied, repository does not exist or may require authorization\`.\n- **Root Cause**: The container registry demands TLS authentication tokens. While the credentials secret exists in the cluster namespace, the deployment manifest template lacked an \`imagePullSecrets\` block targeting it.`,
+    "playbook": `#!/bin/bash
+# patch_image_pull_secret.sh - Attach registry secret references
+set -e
+
+echo "Ensuring registry secret is present..."
+kubectl get secret registry-key-auth -n production
+
+echo "Injecting imagePullSecrets credentials to deployment spec..."
+kubectl patch deployment auth-service -n production --type='json' -p='[
+  {
+    "op": "add",
+    "path": "/spec/template/spec/imagePullSecrets",
+    "value": [{"name": "registry-key-auth"}]
+  }
+]'
+
+echo "Monitoring image pulls recovery..."
+kubectl rollout status deployment/auth-service -n production --timeout=120s
+echo "✅ ImagePullBackOff cleared. Deployment completed successfully!"`,
+    "prevention": `apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-pull-secrets
+spec:
+  validationFailureAction: Audit
+  rules:
+  - name: validate-pull-secrets-for-private-images
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Images pulled from secure-registry.io must declare imagePullSecrets authentication key."
+      preconditions:
+        any:
+        - key: "{{request.object.spec.containers[?contains(image, 'secure-registry.io')].image | length(@)}}"
+          operator: GreaterThan
+          value: 0
+      pattern:
+        spec:
+          imagePullSecrets:
+          - name: "?*"`,
+    "flow": "graph TD\n  Pull[📦 kubelet Pull Image] -->|Request TLS token| Registry[🔒 secure-registry.io]\n  Registry -->|No credential provided| Deny[❌ 401 Unauthorized]\n  Deny -->|Pull Failure| Err[⚠️ ErrImagePull]\n  Err -->|Exponential backoff| BackOff[🚫 ImagePullBackOff]"
   }
 };
 

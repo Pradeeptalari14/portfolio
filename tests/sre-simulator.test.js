@@ -116,4 +116,40 @@ describe('SRE Incident Triaging Simulator Compiler', () => {
     window.switchTab('playbook');
     expect(window.document.getElementById('output-box').textContent).toContain('docker system prune');
   });
+
+  it('should compile CrashLoopBackOff configuration outputs and playbooks', () => {
+    const incSelect = window.document.getElementById('incident_type');
+    expect(incSelect).not.toBeNull();
+
+    // Select CrashLoopBackOff incident
+    incSelect.value = 'crashloop_backoff';
+    incSelect.dispatchEvent(new window.Event('change'));
+
+    // Switch to rca tab
+    window.switchTab('rca');
+    expect(window.document.getElementById('output-box').textContent).toContain('Root Cause Analysis: ConfigMap Mount Reference Failure');
+    expect(window.document.getElementById('output-box').textContent).toContain('app-config-env');
+
+    // Switch to playbook tab
+    window.switchTab('playbook');
+    expect(window.document.getElementById('output-box').textContent).toContain('restore_configmap_mount.sh');
+  });
+
+  it('should compile ImagePullBackOff configuration outputs and playbooks', () => {
+    const incSelect = window.document.getElementById('incident_type');
+    expect(incSelect).not.toBeNull();
+
+    // Select ImagePullBackOff incident
+    incSelect.value = 'image_pull_backoff';
+    incSelect.dispatchEvent(new window.Event('change'));
+
+    // Switch to rca tab
+    window.switchTab('rca');
+    expect(window.document.getElementById('output-box').textContent).toContain('Root Cause Analysis: Private Registry Unauthorized');
+    expect(window.document.getElementById('output-box').textContent).toContain('secure-registry.io');
+
+    // Switch to playbook tab
+    window.switchTab('playbook');
+    expect(window.document.getElementById('output-box').textContent).toContain('patch_image_pull_secret.sh');
+  });
 });
