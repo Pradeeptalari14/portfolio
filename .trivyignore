@@ -14,3 +14,9 @@ AVD-AWS-0011
 
 # Ignore CloudFront minimum protocol version (default cloudfront certificate forces TLSv1)
 AVD-AWS-0013
+
+# Ignore CloudFront default certificate warning (default *.cloudfront.net certificate is sufficient for portfolio hosting)
+AVD-AWS-0034
+
+# Ignore CloudFront origin shielding warning (origin shielding is not necessary for low-traffic static site origin protection)
+AVD-AWS-0104
