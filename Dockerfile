@@ -16,7 +16,7 @@ RUN npm run build
 # ==========================================
 # Stage 2: Production environment
 # ==========================================
-FROM nginx:1.25-alpine
+FROM nginx:1.27-alpine
 
 # Copy built static files to default nginx html path
 COPY --from=builder /app/dist /usr/share/nginx/html
