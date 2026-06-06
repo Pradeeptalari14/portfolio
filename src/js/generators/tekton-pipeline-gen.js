@@ -140,58 +140,51 @@ spec:
     });
   }
 
-  function addLog(msg, type = 'info') {
-    if (!elements.logs) return;
-    const el = document.createElement('div');
-    el.className = type === 'error' ? 'text-rose-500' : (type === 'warn' ? 'text-amber-500' : 'text-slate-300');
-    el.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-    elements.logs.appendChild(el);
-    elements.logs.scrollTop = elements.logs.scrollHeight;
-  }
+  const logger = window.SreCore.createLogger(elements.logs);
 
   async function executePipelineRun() {
     if (isRunning) return;
     isRunning = true;
 
-    if (elements.logs) elements.logs.innerHTML = '';
+    logger.clear();
     if (elements.simStatus) {
       elements.simStatus.textContent = 'RUNNING...';
       elements.simStatus.className = 'text-xs font-bold text-purple-500';
     }
 
-    addLog("Tekton PipelineRun: initializing workspace claim PVC binding...");
-    addLog(`Workspace volume configured: size=${elements.pvc ? elements.pvc.value : '10Gi'}`);
+    logger.info("Tekton PipelineRun: initializing workspace claim PVC binding...");
+    logger.info(`Workspace volume configured: size=${elements.pvc ? elements.pvc.value : '10Gi'}`);
 
     const tasks = getTasksList();
 
     for (let i = 0; i < tasks.length; i++) {
       renderDagGraph(i);
-      addLog(`Task '${tasks[i]}': starting execution step container...`, "info");
+      logger.info(`Task '${tasks[i]}': starting execution step container...`);
       
       await new Promise(resolve => setTimeout(resolve, 600));
 
       if (tasks[i] === 'lint-code') {
-        addLog("Task: running syntax linter rules check...");
-        addLog("linter checks: 0 security errors, all files formatted successfully.", "info");
+        logger.info("Task: running syntax linter rules check...");
+        logger.info("linter checks: 0 security errors, all files formatted successfully.");
       } else if (tasks[i] === 'run-tests') {
-        addLog("Task: launching vitest tests run suite...");
-        addLog("Vitest tests: 64 unit tests run, 64 tests passed successfully.", "info");
+        logger.info("Task: launching vitest tests run suite...");
+        logger.info("Vitest tests: 64 unit tests run, 64 tests passed successfully.");
       } else if (tasks[i] === 'docker-build') {
-        addLog("Task: executing dynamic docker container build...");
-        addLog("docker-build: image tagged ghcr.io/app:v1.0.0 compiled.", "info");
-        addLog("docker-push: successfully uploaded assets to container registry.", "info");
+        logger.info("Task: executing dynamic docker container build...");
+        logger.info("docker-build: image tagged ghcr.io/app:v1.0.0 compiled.");
+        logger.info("docker-push: successfully uploaded assets to container registry.");
       } else if (tasks[i] === 'trivy-scan') {
-        addLog("Task: launching container vulnerabilities scanner...");
-        addLog("trivy-scan: 0 High, 2 Low vulnerabilities reported. Scan audit passed.", "info");
+        logger.info("Task: launching container vulnerabilities scanner...");
+        logger.info("trivy-scan: 0 High, 2 Low vulnerabilities reported. Scan audit passed.");
       } else if (tasks[i] === 'helm-deploy' || tasks[i] === 'kustomize-deploy') {
-        addLog("Task: launching Kubernetes deploy controller apply...");
-        addLog("k8s deploy: workload configurations patched successfully.", "info");
+        logger.info("Task: launching Kubernetes deploy controller apply...");
+        logger.info("k8s deploy: workload configurations patched successfully.");
       }
     }
 
     isRunning = false;
     renderDagGraph(tasks.length);
-    addLog("PipelineRun successfully executed in all tasks stages.", "info");
+    logger.info("PipelineRun successfully executed in all tasks stages.");
 
     if (elements.simStatus) {
       elements.simStatus.textContent = 'SUCCESS';
@@ -200,33 +193,19 @@ spec:
   }
 
   // Setup tab routing
-  window.switchTab = function(tabName) {
-    activeTab = tabName;
-    
-    ['pipeline', 'pipelinerun', 'simulator'].forEach(tab => {
-      const btn = document.getElementById(`tab-${tab}`);
-      if (btn) {
-        if (tab === tabName) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+  window.SreCore.setupStudioTabs(
+    ['pipeline', 'pipelinerun', 'simulator'],
+    'pipeline',
+    { outputBox: elements.outputBox },
+    (tabName) => {
+      activeTab = tabName;
+      if (tabName === 'simulator') {
+        renderDagGraph();
+      } else {
+        updateOutput();
       }
-    });
-
-    const outputBox = elements.outputBox;
-    const simViewport = document.getElementById('simulator-viewport');
-
-    if (tabName === 'simulator') {
-      if (outputBox) outputBox.classList.add('hidden');
-      if (simViewport) simViewport.classList.remove('hidden');
-      renderDagGraph();
-    } else {
-      if (simViewport) simViewport.classList.add('hidden');
-      if (outputBox) outputBox.classList.remove('hidden');
-      updateOutput();
     }
-  };
+  );
 
   // Bind controls listeners
   [elements.trigger, elements.tasks, elements.pvc].forEach(ctrl => {

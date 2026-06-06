@@ -122,103 +122,82 @@ hubble observe --namespace ${ns} --follow
     }
   }
 
-  function addLog(msg, type = 'info') {
-    if (!elements.hubbleLogs) return;
-    const el = document.createElement('div');
-    el.className = type === 'error' ? 'text-rose-500' : (type === 'warn' ? 'text-amber-500' : 'text-slate-300');
-    el.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-    elements.hubbleLogs.appendChild(el);
-    elements.hubbleLogs.scrollTop = elements.hubbleLogs.scrollHeight;
-  }
+  const logger = window.SreCore.createLogger(elements.hubbleLogs);
 
   function testNormalConnection() {
     if (!elements.hubbleLogs) return;
-    elements.hubbleLogs.innerHTML = '';
+    logger.clear();
     const traffic = elements.trafficType ? elements.trafficType.value : 'ingress-frontend';
     const portVal = elements.port ? elements.port.value : '80';
 
-    addLog("Hubble: eBPF probe mapping initialized.");
-    addLog(`observing namespace: ${elements.namespace ? elements.namespace.value : 'production'}`);
+    logger.info("Hubble: eBPF probe mapping initialized.");
+    logger.info(`observing namespace: ${elements.namespace ? elements.namespace.value : 'production'}`);
 
     setTimeout(() => {
-      addLog("Hubble Flow: frontend-pod (10.244.1.5) ➡️ backend-pod (10.244.1.12) SYN");
+      logger.info("Hubble Flow: frontend-pod (10.244.1.5) ➡️ backend-pod (10.244.1.12) SYN");
 
       if (traffic === 'ingress-frontend') {
-        addLog(`Hubble Verdict: ALLOWED (L4 Connection matched ingress filter on port ${portVal})`, "info");
-        addLog("Hubble Flow: backend-pod (10.244.1.12) ➡️ db-pod (10.244.2.33) SYN");
-        addLog("Hubble Verdict: ALLOWED (L3 default forwarding approved)", "info");
+        logger.info(`Hubble Verdict: ALLOWED (L4 Connection matched ingress filter on port ${portVal})`);
+        logger.info("Hubble Flow: backend-pod (10.244.1.12) ➡️ db-pod (10.244.2.33) SYN");
+        logger.info("Hubble Verdict: ALLOWED (L3 default forwarding approved)");
       } else {
-        addLog("Hubble Verdict: DROPPED (No matching ingress rule from frontend-pod. Packet dropped by kernel eBPF probe)", "error");
+        logger.error("Hubble Verdict: DROPPED (No matching ingress rule from frontend-pod. Packet dropped by kernel eBPF probe)");
       }
     }, 150);
   }
 
   function simulateDnsBlock() {
     if (!elements.hubbleLogs) return;
-    elements.hubbleLogs.innerHTML = '';
+    logger.clear();
     
-    addLog("Hubble: eBPF monitoring active for external domain resolving queries.");
+    logger.info("Hubble: eBPF monitoring active for external domain resolving queries.");
 
     setTimeout(() => {
-      addLog("Hubble Flow: backend-pod (10.244.1.12) ➡️ kube-dns.kube-system.svc UDP/53 (query: suspicious-c2-server.com)");
+      logger.info("Hubble Flow: backend-pod (10.244.1.12) ➡️ kube-dns.kube-system.svc UDP/53 (query: suspicious-c2-server.com)");
       
       const traffic = elements.trafficType ? elements.trafficType.value : 'ingress-frontend';
       if (traffic === 'egress-dns') {
-        addLog("Hubble Verdict: ALLOWED (DNS traffic permitted, mapping DNS pattern matches...)", "warn");
-        addLog("Suspicious DNS match failed: raw packet dropped by eBPF egress domain filter.", "error");
+        logger.warn("Hubble Verdict: ALLOWED (DNS traffic permitted, mapping DNS pattern matches...)");
+        logger.error("Suspicious DNS match failed: raw packet dropped by eBPF egress domain filter.");
       } else {
-        addLog("Hubble Verdict: DROPPED (No egress DNS mapping rule configured)", "error");
+        logger.error("Hubble Verdict: DROPPED (No egress DNS mapping rule configured)");
       }
     }, 150);
   }
 
   function injectHttpHack() {
     if (!elements.hubbleLogs) return;
-    elements.hubbleLogs.innerHTML = '';
+    logger.clear();
 
-    addLog("Hubble L7 Parser: starting proxy listener for HTTP payload tracing.");
+    logger.info("Hubble L7 Parser: starting proxy listener for HTTP payload tracing.");
 
     setTimeout(() => {
-      addLog("Hubble Flow: frontend-pod (10.244.1.5) ➡️ backend-pod (10.244.1.12) HTTP/1.1 POST /api/v1/auth/admin");
+      logger.info("Hubble Flow: frontend-pod (10.244.1.5) ➡️ backend-pod (10.244.1.12) HTTP/1.1 POST /api/v1/auth/admin");
       
       const traffic = elements.trafficType ? elements.trafficType.value : 'ingress-frontend';
       if (traffic === 'l7-http') {
-        addLog("Hubble L7 Parser: payload security check failed. Path /api/v1/auth/admin forbidden.", "error");
-        addLog("Hubble Verdict: DENIED (L7 HTTP Rule mismatch: expected GET /api/v1/health)", "error");
+        logger.error("Hubble L7 Parser: payload security check failed. Path /api/v1/auth/admin forbidden.");
+        logger.error("Hubble Verdict: DENIED (L7 HTTP Rule mismatch: expected GET /api/v1/health)");
       } else {
-        addLog("Hubble Verdict: ALLOWED (Port level only enabled, raw payload passed without L7 filtering inspection)", "warn");
+        logger.warn("Hubble Verdict: ALLOWED (Port level only enabled, raw payload passed without L7 filtering inspection)");
       }
     }, 150);
   }
 
   // Setup tab routing
-  window.switchTab = function(tabName) {
-    activeTab = tabName;
-    
-    ['policy', 'cli', 'simulator'].forEach(tab => {
-      const btn = document.getElementById(`tab-${tab}`);
-      if (btn) {
-        if (tab === tabName) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+  window.SreCore.setupStudioTabs(
+    ['policy', 'cli', 'simulator'],
+    'policy',
+    { outputBox: elements.outputBox },
+    (tabName) => {
+      activeTab = tabName;
+      if (tabName === 'simulator') {
+        testNormalConnection();
+      } else {
+        updateOutput();
       }
-    });
-
-    const outputBox = elements.outputBox;
-    const simViewport = document.getElementById('simulator-viewport');
-
-    if (tabName === 'simulator') {
-      if (outputBox) outputBox.classList.add('hidden');
-      if (simViewport) simViewport.classList.remove('hidden');
-      testNormalConnection();
-    } else {
-      if (simViewport) simViewport.classList.add('hidden');
-      if (outputBox) outputBox.classList.remove('hidden');
-      updateOutput();
     }
-  };
+  );
 
   // Bind controls listeners
   [elements.namespace, elements.trafficType, elements.port].forEach(ctrl => {

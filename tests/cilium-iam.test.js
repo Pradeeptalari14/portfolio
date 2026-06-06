@@ -14,6 +14,12 @@ function loadToolDom(htmlRelativePath, jsRelativePath) {
     writeText: () => Promise.resolve()
   };
 
+  const corePath = path.resolve(__dirname, '../src/js/core-tool.js');
+  if (fs.existsSync(corePath)) {
+    const coreCode = fs.readFileSync(corePath, 'utf8');
+    window.eval(coreCode);
+  }
+
   const jsPath = path.resolve(__dirname, jsRelativePath);
   let jsCode = fs.readFileSync(jsPath, 'utf8');
   jsCode = jsCode.replace(/^import\s+.*?\s+from\s+['"].*?['"];?/gm, '');

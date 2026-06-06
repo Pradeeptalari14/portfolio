@@ -93,45 +93,38 @@ function initAwsIamStudio() {
     const role = elements.roleType ? elements.roleType.value : 's3-reader';
     const boundary = elements.boundaryEnabled ? elements.boundaryEnabled.value : 'no';
 
-    elements.evalLogs.innerHTML = '';
-    
-    const addLog = (msg, type = 'info') => {
-      const el = document.createElement('div');
-      el.className = type === 'error' ? 'text-rose-500' : (type === 'warn' ? 'text-amber-500' : 'text-slate-300');
-      el.textContent = `[IAM ENGINE] ${msg}`;
-      elements.evalLogs.appendChild(el);
-      elements.evalLogs.scrollTop = elements.evalLogs.scrollHeight;
-    };
+    const logger = window.SreCore.createLogger(elements.evalLogs);
+    logger.clear();
 
-    addLog(`Evaluating policy capabilities for request context...`);
-    addLog(`Requested Action: ${action}`);
-    addLog(`Target Resource: ${resource}`);
+    logger.info(`Evaluating policy capabilities for request context...`);
+    logger.info(`Requested Action: ${action}`);
+    logger.info(`Target Resource: ${resource}`);
 
     setTimeout(() => {
-      addLog("Step 1: Check Explicit Deny mappings in Policy Statements...");
-      addLog("No explicit Deny rules matched. Proceeding...", "info");
+      logger.info("Step 1: Check Explicit Deny mappings in Policy Statements...");
+      logger.info("No explicit Deny rules matched. Proceeding...");
 
-      addLog("Step 2: Assessing permissions boundary limits...");
+      logger.info("Step 2: Assessing permissions boundary limits...");
       let boundaryAllowed = true;
       if (boundary === 'yes') {
         if (!action.startsWith('s3:') && !action.startsWith('dynamodb:')) {
           boundaryAllowed = false;
-          addLog("Permission Boundary Alert: Boundary policy does NOT permit non-storage services!", "error");
+          logger.error("Permission Boundary Alert: Boundary policy does NOT permit non-storage services!");
         } else {
-          addLog("Action matched Permitted Boundary range (S3/DynamoDB access authorized).", "info");
+          logger.info("Action matched Permitted Boundary range (S3/DynamoDB access authorized).");
         }
       } else {
-        addLog("No permission boundaries active. Skipping check.", "info");
+        logger.info("No permission boundaries active. Skipping check.");
       }
 
-      addLog("Step 3: Checking identity-based inline/managed policies...");
+      logger.info("Step 3: Checking identity-based inline/managed policies...");
       let roleAllowed = false;
 
       if (role === 's3-reader') {
         if (action.startsWith('s3:GetObject') && resource.includes('arn:aws:s3:::production-assets')) {
           roleAllowed = true;
         } else if (action === 's3:PutObject') {
-          addLog("Action Blocked: S3 Read-Only template does not permit s3:PutObject actions.", "error");
+          logger.error("Action Blocked: S3 Read-Only template does not permit s3:PutObject actions.");
         }
       } else if (role === 'db-dev') {
         if (action === 'dynamodb:PutItem') {
@@ -144,11 +137,11 @@ function initAwsIamStudio() {
       }
 
       if (roleAllowed && boundaryAllowed) {
-        addLog("Verdict: Permission check successfully resolved to ALLOW.", "info");
+        logger.info("Verdict: Permission check successfully resolved to ALLOW.");
         elements.verdictStatus.textContent = 'ACCESS ALLOWED';
         elements.verdictStatus.className = 'text-xs font-bold text-emerald-500';
       } else {
-        addLog("Verdict: Permission check resolved to implicit DENY.", "error");
+        logger.error("Verdict: Permission check resolved to implicit DENY.");
         elements.verdictStatus.textContent = 'ACCESS DENIED';
         elements.verdictStatus.className = 'text-xs font-bold text-rose-500';
       }
@@ -156,33 +149,19 @@ function initAwsIamStudio() {
   }
 
   // Setup tab routing
-  window.switchTab = function(tabName) {
-    activeTab = tabName;
-    
-    ['policy', 'trust', 'simulator'].forEach(tab => {
-      const btn = document.getElementById(`tab-${tab}`);
-      if (btn) {
-        if (tab === tabName) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+  window.SreCore.setupStudioTabs(
+    ['policy', 'trust', 'simulator'],
+    'policy',
+    { outputBox: elements.outputBox },
+    (tabName) => {
+      activeTab = tabName;
+      if (tabName === 'simulator') {
+        evaluatePermissions();
+      } else {
+        updateOutput();
       }
-    });
-
-    const outputBox = elements.outputBox;
-    const simViewport = document.getElementById('simulator-viewport');
-
-    if (tabName === 'simulator') {
-      if (outputBox) outputBox.classList.add('hidden');
-      if (simViewport) simViewport.classList.remove('hidden');
-      evaluatePermissions();
-    } else {
-      if (simViewport) simViewport.classList.add('hidden');
-      if (outputBox) outputBox.classList.remove('hidden');
-      updateOutput();
     }
-  };
+  );
 
   // Bind controls listeners
   [elements.roleType, elements.boundaryEnabled].forEach(ctrl => {

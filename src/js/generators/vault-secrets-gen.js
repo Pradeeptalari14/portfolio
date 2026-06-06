@@ -203,33 +203,19 @@ path "secret/data/production/app-config" {
   }
 
   // Setup tab routing
-  window.switchTab = function(tabName) {
-    activeTab = tabName;
-    
-    ['policy', 'config', 'simulator'].forEach(tab => {
-      const btn = document.getElementById(`tab-${tab}`);
-      if (btn) {
-        if (tab === tabName) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+  window.SreCore.setupStudioTabs(
+    ['policy', 'config', 'simulator'],
+    'policy',
+    { outputBox: elements.outputBox },
+    (tabName) => {
+      activeTab = tabName;
+      if (tabName === 'simulator') {
+        renderLeases();
+      } else {
+        updateOutput();
       }
-    });
-
-    const outputBox = elements.outputBox;
-    const simViewport = document.getElementById('simulator-viewport');
-
-    if (tabName === 'simulator') {
-      if (outputBox) outputBox.classList.add('hidden');
-      if (simViewport) simViewport.classList.remove('hidden');
-      renderLeases();
-    } else {
-      if (simViewport) simViewport.classList.add('hidden');
-      if (outputBox) outputBox.classList.remove('hidden');
-      updateOutput();
     }
-  };
+  );
 
   // Bind controls listeners
   [elements.engineType, elements.ttl, elements.k8sRole].forEach(ctrl => {
