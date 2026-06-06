@@ -1,0 +1,5 @@
+# Ignore S3 bucket KMS encryption using Customer Managed Keys (default SSE-S3 AES256 is used and sufficient)
+AVD-AWS-0132
+
+# Ignore S3 bucket access logging (since static assets hosting bucket does not require a separate logging bucket in this simple infra setup)
+AVD-AWS-0089

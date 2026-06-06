@@ -57,7 +57,6 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'config'
-          hide-discovered-list: true
           exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
