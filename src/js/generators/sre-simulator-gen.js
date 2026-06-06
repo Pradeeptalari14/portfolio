@@ -287,7 +287,79 @@ alert: DbPoolSaturationAlert
   for: 5m
   labels:
     severity: warning`,
-    "flow": "graph TD\n  Requests[🌐 Clients] --> App[💻 Java App API]\n  App -->|Wait for database connection| Pool[❌ Hikari Connection Pool max=10]\n  Pool -->|Queue Starvation| Saturation[⚠️ Thread Saturation]\n  Saturation -->|Spikes Latency| Timeout[❌ Gateway Timeout 504]"
+    "flow": "graph TD\n  Requests[🌐 Clients] --> App[💻 Java App API]\n  App -->|Wait for database connection| Pool[❌ Hikari Connection Pool max=10]\n  Pool -->|Queue Saturation| Saturation[⚠️ Thread Saturation]\n  Saturation -->|Spikes Latency| Timeout[❌ Gateway Timeout 504]"
+  },
+  "ssh_outage": {
+    "title": "Linux Host SSH Connection Refused",
+    "filename": "ssh_outage_triage",
+    "logs": [
+      { type: "info", text: "Initializing SSH Outage Diagnostics..." },
+      { type: "tool", text: "Checking SSH connectivity: ssh -o ConnectTimeout=5 pradeep@localhost" },
+      { type: "error", text: "CONNECTION REFUSED: ssh: connect to host localhost port 22: Connection refused" },
+      { type: "tool", text: "Querying local daemon service status: systemctl status sshd" },
+      { type: "success", text: "Daemon status: sshd.service is active (running) on PID 845" },
+      { type: "tool", text: "Checking filesystem space allocations: df -h" },
+      { type: "error", text: "CRITICAL: Root filesystem /dev/sda1 (mounted on /) is 100% full!" },
+      { type: "tool", text: "Scanning authorization logs: tail -n 20 /var/log/auth.log" },
+      { type: "error", text: "sshd[845]: error: Could not write ident string to client / failed to create session pty lock file" },
+      { type: "success", text: "Outage diagnosed: SSH sessions rejected due to disk space exhaustion. Preparing RCA and recovery logs..." }
+    ],
+    "rca": `# Root Cause Analysis: SSH Connection Refused
+Blockage to SSH access was identified on the system while the host itself remains fully operational.
+
+## Diagnostic Investigation
+1. **Daemon State check**: Running \`systemctl status sshd\` confirmed the service daemon is actively running and binding to port 22.
+2. **Disk space audit**: Running \`df -h\` isolated that the root partition (\`/\`) has reached **100% utilization** (0 bytes available).
+3. **Failure Mechanism**: sshd requires small disk writes to create session lockfiles, update log files, or allocate pseudoterminals (PTYs). When the filesystem is completely full, these lock allocations fail, causing sshd to drop incoming handshakes and refuse connections.`,
+    "playbook": `#!/bin/bash
+# resolve_ssh_outage.sh - Purge disk space logs and release locks
+set -e
+
+echo "Searching for obsolete logs and caches to release disk space..."
+# Clear system journal logs older than 2 days
+sudo journalctl --vacuum-time=2d
+
+# Clean APT/Yum package caches
+sudo apt-get clean || sudo yum clean all
+
+# Prune unused docker container caches
+if command -v docker &>/dev/null; then
+  echo "Pruning docker assets..."
+  docker system prune -af --volumes
+fi
+
+# Truncate bloated text logs safely
+find /var/log -type f -name "*.log" -exec truncate -s 0 {} +
+
+echo "Checking filesystem space availability..."
+df -h /
+
+echo "✅ Disk space recovered! Testing SSH connection..."
+ssh -o ConnectTimeout=5 -q localhost exit && echo "SSH test successful!"`,
+    "prevention": `# Configuration rule for logrotate to prevent disk exhaustion
+/var/log/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0660 root utmp
+    sharedscripts
+    postrotate
+        /usr/bin/systemctl reload syslog.service >/dev/null 2>&1 || true
+    endscript
+}
+
+# Prometheus alerts rule configuration
+- alert: DiskSpaceCriticallyLow
+  expr: (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 5
+  for: 5m
+  labels:
+    severity: critical
+  annotations:
+    summary: "System partition running out of space"`,
+    "flow": "graph TD\n  Logs[🔥 Unmanaged Log files] --> DiskExhaust[⚠️ Root partition 100% full]\n  DiskExhaust --> SshWrite[🚫 sshd cannot write log/pty files]\n  SshWrite --> Drop[❌ New SSH handshakes dropped / Refused]"
   }
 };
 
@@ -571,13 +643,30 @@ function explainActiveTabCode() {
     return;
   }
 
+  const incType = $('incident_type').value;
+  const dbEntry = incidentsDb[incType] || incidentsDb.memory_leak;
+
   $('drawer-title').textContent = explanation.title;
-  $('drawer-filename').textContent = explanation.filename;
+  
+  // Set filename and command dynamically based on chosen incident details
+  let dynamicFilename = explanation.filename;
+  let dynamicCommand = explanation.command;
+  if (activeTab === 'rca') {
+    dynamicFilename = dbEntry.filename + '_rca.md';
+  } else if (activeTab === 'playbook') {
+    dynamicFilename = dbEntry.filename + '_fix.sh';
+    dynamicCommand = 'bash ' + dbEntry.filename + '_fix.sh';
+  } else if (activeTab === 'prevention') {
+    dynamicFilename = dbEntry.filename + '_prevention.yaml';
+    dynamicCommand = 'kubectl apply -f ' + dbEntry.filename + '_prevention.yaml';
+  }
+
+  $('drawer-filename').textContent = dynamicFilename;
   $('explain-why').textContent = explanation.why;
   $('explain-when').textContent = explanation.when;
   
   $('explain-where').textContent = explanation.where;
-  $('explain-command').textContent = explanation.command;
+  $('explain-command').textContent = dynamicCommand;
 
   const practicesBox = $('explain-practices');
   practicesBox.innerHTML = '';

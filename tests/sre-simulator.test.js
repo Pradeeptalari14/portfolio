@@ -98,4 +98,22 @@ describe('SRE Incident Triaging Simulator Compiler', () => {
     window.switchTab('playbook');
     expect(window.document.getElementById('output-box').textContent).toContain('pg_cancel_backend');
   });
+
+  it('should compile SSH outage incident configurations and rca reports', () => {
+    const incSelect = window.document.getElementById('incident_type');
+    expect(incSelect).not.toBeNull();
+
+    // Select SSH outage incident
+    incSelect.value = 'ssh_outage';
+    incSelect.dispatchEvent(new window.Event('change'));
+
+    // Switch to rca tab
+    window.switchTab('rca');
+    expect(window.document.getElementById('output-box').textContent).toContain('Root Cause Analysis: SSH Connection Refused');
+    expect(window.document.getElementById('output-box').textContent).toContain('100% utilization');
+
+    // Switch to playbook tab
+    window.switchTab('playbook');
+    expect(window.document.getElementById('output-box').textContent).toContain('docker system prune');
+  });
 });
