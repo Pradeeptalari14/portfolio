@@ -11,6 +11,9 @@ const PRECACHE_ASSETS = [
   '/Photo.jpeg',
   '/tools/',
   '/tools/index.html',
+  '/tools/llm-gateway/',
+  '/tools/llm-tracing/',
+  '/tools/vector-db/',
   '/manifest.json'
 ];
 
