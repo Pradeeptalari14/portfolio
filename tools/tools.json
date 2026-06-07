@@ -429,6 +429,17 @@
     "link": "backup-dr/"
   },
   {
+    "title": "AWS Event-Driven & Messaging SRE Studio",
+    "desc": "Orchestrate enterprise event routing and queue networks. Generate secure SQS policies, EventBridge bus rules, event simulators, and visual topologies.",
+    "category": "cloud",
+    "icon": "⚡",
+    "color": "rgb(235, 94, 85)",
+    "borderClass": "",
+    "bgClass": "",
+    "tag": "sqs-policy.json",
+    "link": "event-sre/"
+  },
+  {
     "title": "Status & Incident Studio",
     "desc": "Scaffold PagerDuty/Opsgenie escalation chains, status dashboard config schemas, and incident triage runbooks.",
     "category": "automation",

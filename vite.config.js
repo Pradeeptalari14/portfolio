@@ -102,6 +102,7 @@ export default defineConfig({
         maven: resolve(__dirname, 'tools/maven/index.html'),
         sonarqube: resolve(__dirname, 'tools/sonarqube/index.html'),
         agileitsm: resolve(__dirname, 'tools/agile-itsm/index.html'),
+        eventsre: resolve(__dirname, 'tools/event-sre/index.html'),
       }
     }
   }
