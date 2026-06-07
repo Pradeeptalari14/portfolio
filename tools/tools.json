@@ -1102,5 +1102,41 @@
     "tag": "Pulumi.yaml",
     "link": "pulumi/",
     "repository": "Pradeeptalari14/tp-pulumi"
+  },
+  {
+    "title": "SLM Fine-Tuning & Quantization Studio",
+    "desc": "Design parameter-efficient fine-tuning pipelines. Generate PEFT QLoRA python scripts, select base models, configure quantization boundaries, and compile GGUF outputs.",
+    "category": "ai",
+    "icon": "🎛️",
+    "color": "rgb(155, 89, 182)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "finetune.py",
+    "link": "qlora-tuning/",
+    "repository": "Pradeeptalari14/tp-qlora-tuning"
+  },
+  {
+    "title": "Prompt Registry & Versioning Studio",
+    "desc": "Manage prompts as code. Generate prompt models yaml configurations, manage system and user templates versions, route models dynamically, and configure GitOps prompt integrations.",
+    "category": "ai",
+    "icon": "📝",
+    "color": "rgb(26, 188, 156)",
+    "borderClass": "border-teal-200",
+    "bgClass": "bg-teal-50/10",
+    "tag": "prompts.yaml",
+    "link": "promptops/",
+    "repository": "Pradeeptalari14/tp-promptops"
+  },
+  {
+    "title": "Hugging Face & GitLFS Sync Studio",
+    "desc": "Automate large models retrieval. Generate GitLFS sync scripts, Kubernetes model storage mount manifests, and checksum hash verification workflows for Hugging Face repositories.",
+    "category": "ai",
+    "icon": "🤗",
+    "color": "rgb(241, 196, 15)",
+    "borderClass": "border-yellow-200",
+    "bgClass": "bg-yellow-50/10",
+    "tag": "sync-model.sh",
+    "link": "modelops-gitops/",
+    "repository": "Pradeeptalari14/tp-modelops-gitops"
   }
 ]

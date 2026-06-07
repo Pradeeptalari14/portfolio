@@ -111,6 +111,9 @@ export default defineConfig({
         vectordb: resolve(__dirname, 'tools/vector-db/index.html'),
         githubprovisioningguide: resolve(__dirname, 'tools/github-provisioning-guide/index.html'),
         pulumi: resolve(__dirname, 'tools/pulumi/index.html'),
+        qloratuning: resolve(__dirname, 'tools/qlora-tuning/index.html'),
+        promptops: resolve(__dirname, 'tools/promptops/index.html'),
+        modelopsgitops: resolve(__dirname, 'tools/modelops-gitops/index.html'),
       }
     }
   }
