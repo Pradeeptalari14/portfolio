@@ -96,6 +96,8 @@ export default defineConfig({
         vaultsecrets: resolve(__dirname, 'tools/vault-secrets/index.html'),
         tektonpipeline: resolve(__dirname, 'tools/tekton-pipeline/index.html'),
         goutility: resolve(__dirname, 'tools/go-utility/index.html'),
+        cloudformation: resolve(__dirname, 'tools/cloudformation/index.html'),
+        bitbucket: resolve(__dirname, 'tools/bitbucket/index.html'),
       }
     }
   }

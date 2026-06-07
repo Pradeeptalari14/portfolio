@@ -856,5 +856,27 @@
     "bgClass": "bg-sky-50/10",
     "tag": "main.go",
     "link": "go-utility/"
+  },
+  {
+    "title": "AWS CloudFormation Studio",
+    "desc": "Orchestrate full AWS stacks dynamically. Generate YAML/JSON templates for VPCs, EC2 instances, ECS clusters, S3 buckets, IAM roles, ELB load balancers, CloudWatch metrics, and Route53 DNS records.",
+    "category": "cloud",
+    "icon": "☁️",
+    "color": "rgb(255, 153, 0)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "template.yaml",
+    "link": "cloudformation/"
+  },
+  {
+    "title": "Bitbucket Pipelines Studio",
+    "desc": "Design automated continuous integration workflows. Generate .bitbucket-pipelines.yml configs with parallel steps, build caching, Trivy security gates, and SonarQube quality checks.",
+    "category": "cicd",
+    "icon": "🪣",
+    "color": "rgb(0, 82, 204)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "bitbucket-pipelines.yml",
+    "link": "bitbucket/"
   }
 ]
