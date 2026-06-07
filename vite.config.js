@@ -106,6 +106,9 @@ export default defineConfig({
         githubgov: resolve(__dirname, 'tools/github-gov/index.html'),
         cloudflarezerotrust: resolve(__dirname, 'tools/cloudflare-zero-trust/index.html'),
         localstackdev: resolve(__dirname, 'tools/localstack-dev/index.html'),
+        llmgateway: resolve(__dirname, 'tools/llm-gateway/index.html'),
+        llmtracing: resolve(__dirname, 'tools/llm-tracing/index.html'),
+        vectordb: resolve(__dirname, 'tools/vector-db/index.html'),
       }
     }
   }

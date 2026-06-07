@@ -99,6 +99,39 @@
     "link": "feature-store/"
   },
   {
+    "title": "LLM Gateway & API Router Studio",
+    "desc": "Optimize model serving gateways. Scaffold LiteLLM routing configurations, semantic prompt caches, and client API scripts.",
+    "category": "ai",
+    "icon": "🚦",
+    "color": "rgb(155, 89, 182)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "litellm-config.yaml",
+    "link": "llm-gateway/"
+  },
+  {
+    "title": "LLM Observability & Tracing Studio",
+    "desc": "Scaffold self-hosted LLM tracing collectors. Generate Langfuse services deployments, PyOpenTelemetry instrumentation, and trace spans.",
+    "category": "ai",
+    "icon": "🔬",
+    "color": "rgb(46, 204, 113)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "langfuse-compose.yml",
+    "link": "llm-tracing/"
+  },
+  {
+    "title": "Vector Database Optimizer Studio",
+    "desc": "Optimize search accuracy and index latency. Generate custom pgvector SQL schemas and Qdrant segment tuning configurations.",
+    "category": "ai",
+    "icon": "🗄️",
+    "color": "rgb(230, 126, 34)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "qdrant-config.yaml",
+    "link": "vector-db/"
+  },
+  {
     "title": "SRE AI Agent Simulator",
     "desc": "Run autonomous incident response diagnostics. Trigger mock failures (memory leaks, deadlocks) and view the AI agent's reasoning traces and RCAs.",
     "category": "ai",
