@@ -878,5 +878,49 @@
     "bgClass": "bg-blue-50/10",
     "tag": "bitbucket-pipelines.yml",
     "link": "bitbucket/"
+  },
+  {
+    "title": "Apache Tomcat Tuning Studio",
+    "desc": "Tune and optimize Apache Tomcat middleware services. Generate server.xml connectors, JNDI database connection pools in context.xml, and JVM memory setenv.sh configurations.",
+    "category": "automation",
+    "icon": "😺",
+    "color": "rgb(243, 156, 18)",
+    "borderClass": "border-yellow-200",
+    "bgClass": "bg-yellow-50/10",
+    "tag": "server.xml",
+    "link": "tomcat/"
+  },
+  {
+    "title": "Maven Build Studio",
+    "desc": "Orchestrate standard Maven builds. Scaffold structured POM.xml configurations, settings.xml access credentials, compiler plugin rules, and dependency scanning gates.",
+    "category": "automation",
+    "icon": "📦",
+    "color": "rgb(192, 57, 43)",
+    "borderClass": "border-red-200",
+    "bgClass": "bg-red-50/10",
+    "tag": "pom.xml",
+    "link": "maven/"
+  },
+  {
+    "title": "SonarQube Quality Gate Studio",
+    "desc": "Configure automated static code quality analysis. Generate sonar-project.properties specifications, define directory exclusions, coverage minimum targets, and check gates.",
+    "category": "observability",
+    "icon": "🛡️",
+    "color": "rgb(52, 152, 219)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "sonar-project.properties",
+    "link": "sonarqube/"
+  },
+  {
+    "title": "Agile & ITSM Studio",
+    "desc": "Automate IT service management delivery. Generate REST API request payloads and scripts to automate ServiceNow changes, Jira issue trackers, and PagerDuty alert triggers.",
+    "category": "automation",
+    "icon": "🚨",
+    "color": "rgb(46, 204, 113)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "servicenow-change.json",
+    "link": "agile-itsm/"
   }
 ]

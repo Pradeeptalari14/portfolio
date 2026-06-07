@@ -98,6 +98,10 @@ export default defineConfig({
         goutility: resolve(__dirname, 'tools/go-utility/index.html'),
         cloudformation: resolve(__dirname, 'tools/cloudformation/index.html'),
         bitbucket: resolve(__dirname, 'tools/bitbucket/index.html'),
+        tomcat: resolve(__dirname, 'tools/tomcat/index.html'),
+        maven: resolve(__dirname, 'tools/maven/index.html'),
+        sonarqube: resolve(__dirname, 'tools/sonarqube/index.html'),
+        agileitsm: resolve(__dirname, 'tools/agile-itsm/index.html'),
       }
     }
   }
