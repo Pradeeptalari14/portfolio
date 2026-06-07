@@ -1,0 +1,445 @@
+<!-- Copyright (c) 2026 Talari Pradeep. All Rights Reserved. Proprietary License. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pulumi Infrastructure Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready Pulumi configurations in TypeScript, Python, or Go dynamically with SRE security parameters." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #8a3391;
+      --accent-cyan:    #0ea5e9;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Custom form elements */
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    /* Checkboxes */
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Custom card container */
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    /* IDE / Terminal Code Block */
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-purple-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-purple-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-purple-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-purple-600 bg-purple-50 border border-purple-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Pulumi Cloud IaC Core</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Pulumi <span class="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">Infrastructure Studio</span></h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Deploy modern infrastructure-as-code securely. Design public-private subnet topologies, RDS datastores, and compute VMs using TypeScript, Python, or Go SDKs.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Parameters Console (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Target Cloud & Runtime Settings -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">☁️ Cloud Provider & Runtime</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div>
+              <label for="provider" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target Cloud</label>
+              <select id="provider" class="form-select w-full p-2.5 text-xs">
+                <option value="aws">Amazon Web Services (AWS)</option>
+                <option value="azure">Microsoft Azure Cloud</option>
+                <option value="gcp">Google Cloud Platform (GCP)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="region" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Primary Region</label>
+              <select id="region" class="form-select w-full p-2.5 text-xs">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div>
+              <label for="language" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">SDK Language</label>
+              <select id="language" class="form-select w-full p-2.5 text-xs">
+                <option value="typescript">TypeScript</option>
+                <option value="python">Python</option>
+                <option value="go">Go (Golang)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="cidr" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Subnet CIDR Block</label>
+              <input type="text" id="cidr" class="form-input w-full p-2.5 text-xs" value="10.0.0.0/16" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Resources Selection Checklist -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-2 flex items-center gap-2"><span class="text-purple-500">⚡</span> Core Resources Checklist</h3>
+          <p class="text-xs text-gray-500 mb-4">Select target components to automatically compile into SDK deployment classes.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_vpc" class="custom-checkbox" checked />
+              <span>Core VPC Network (IGW, route tables, subnets)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_nat" class="custom-checkbox" checked />
+              <span>NAT Gateway (Private Subnet secure egress)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_sg" class="custom-checkbox" checked />
+              <span>Security Groups & Port Filtering rules</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_vm" class="custom-checkbox" checked />
+              <span>Virtual Compute Instances (VM/EC2)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_db" class="custom-checkbox" />
+              <span>Relational SQL RDS Datastore</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer p-2 border border-slate-100 rounded-lg hover:bg-slate-50">
+              <input type="checkbox" id="res_s3" class="custom-checkbox" checked />
+              <span>Secure Object Storage Bucket</span>
+            </label>
+          </div>
+
+          <!-- VM Sizing select -->
+          <div class="mt-4 border-t border-gray-100 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="vm-size-box">
+            <div>
+              <label for="vm_size" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Instance T-Shirt Size</label>
+              <select id="vm_size" class="form-select w-full p-2.5 text-xs">
+                <option value="micro">t3.micro (Micro operations, testing)</option>
+                <option value="small">t3.small (Development, small databases)</option>
+                <option value="medium">t3.medium (Staging, moderate workloads)</option>
+                <option value="large">t3.large (Production workloads)</option>
+              </select>
+            </div>
+            <div>
+              <label for="disk_size" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">System Storage Disk (GB)</label>
+              <input type="number" id="disk_size" class="form-input w-full p-2.5 text-xs" value="30" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: SRE Security & State Locking Toggles -->
+        <div class="studio-card border-purple-200 bg-purple-50/10">
+          <h3 class="studio-title text-base font-bold text-purple-900 mb-2 flex items-center gap-2">⚠️ SRE Enterprise Security & State Backend</h3>
+          <p class="text-xs text-gray-500 mb-4 font-normal">Enforce stack concurrency safety, custom encryption keys, and SRE audit metadata.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <!-- State Backend Selection -->
+            <div class="bg-white border border-purple-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-purple-900 mb-2">
+                  <input type="checkbox" id="backend_lock" class="custom-checkbox" checked />
+                  <span>Self-Hosted State Backend (S3/Blob)</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed">
+                  Stores `.json` state mapping inside secure private buckets instead of default Pulumi SaaS Service. Supports custom locking and IAM restrictions.
+                </p>
+              </div>
+            </div>
+
+            <!-- Encryption KMS -->
+            <div class="bg-white border border-purple-200 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-purple-900 mb-2">
+                  <input type="checkbox" id="kms_encrypt" class="custom-checkbox" checked />
+                  <span>Managed Secrets KMS Provider</span>
+                </label>
+                <p class="text-[10px] text-gray-500 leading-relaxed">
+                  Uses cloud envelope keys (AWS KMS / Azure Vault / GCP KMS) to encrypt sensitive configuration values before writing state maps.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SRE Billing Tags -->
+          <div class="border-t border-purple-200/50 pt-3">
+            <span class="block text-[10px] font-bold text-purple-900 uppercase tracking-wider mb-2">SRE Infrastructure Billing Tags</span>
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label for="tag_project" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Project Name</label>
+                <input type="text" id="tag_project" class="form-input w-full p-2 text-xs" value="pulumi-infrastructure" />
+              </div>
+              <div>
+                <label for="tag_owner" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Owner Tag</label>
+                <input type="text" id="tag_owner" class="form-input w-full p-2 text-xs" value="talari-pradeep" />
+              </div>
+              <div>
+                <label for="tag_env" class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Environment</label>
+                <select id="tag_env" class="form-select w-full p-2 text-xs">
+                  <option value="production">Production</option>
+                  <option value="staging">Staging</option>
+                  <option value="development">Development</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-28 focus:outline-none" value="Pulumi" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.yaml</span>
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50" id="studio-tabs-wrap">
+              <button onclick="switchTab('pulumi_yaml')" id="tab-pulumi_yaml" class="tab-btn active">Pulumi.yaml</button>
+              <button onclick="switchTab('program_code')" id="tab-program_code" class="tab-btn">index.ts</button>
+              <button onclick="switchTab('stack_config')" id="tab-stack_config" class="tab-btn">Pulumi.dev.yaml</button>
+              <button onclick="switchTab('readme_md')" id="tab-readme_md" class="tab-btn">README.md</button>
+              <button onclick="switchTab('flowchart')" id="tab-flowchart" class="tab-btn">📊 Visual Flow</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="triggerCompileAll()" class="col-span-3 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-purple-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate SDK Stack</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Active Tab</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear Output</span>
+            </button>
+          </div>
+
+          <button onclick="downloadPulumiZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇         Download Pulumi-Stack.Zip</span>
+          </button>
+        </div>
+
+        <!-- SRE Cheat Sheet -->
+        <div class="studio-card bg-slate-900 border-slate-800 text-slate-300">
+          <h4 class="studio-title text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+            <span class="text-purple-400">⚡</span> Pulumi CLI Cheat Sheet
+          </h4>
+          <div class="font-mono text-[10px] space-y-3 leading-relaxed">
+            <div>
+              <span class="text-slate-400"># Login to self-hosted state backends:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">pulumi login s3://my-tfstate-bucket</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Initialize new workspace stacks:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">pulumi stack init dev</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Run dry-run predictions:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">pulumi preview</pre>
+            </div>
+            <div>
+              <span class="text-slate-400"># Apply changes securely:</span>
+              <pre class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800 mt-1">pulumi up --yes</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script type="module" src="../../src/js/generators/pulumi-gen.js"></script>
+  
+  <!-- ══ EXPLANATION SIDE DRAWER ══ -->
+  <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.ts</p>
+        </div>
+      </div>
+      <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <!-- Content (Scrollable) -->
+    <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+      <div>
+        <h4 class="text-purple-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🎯</span> WHY & WHAT IT DOES
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why"></p>
+      </div>
+
+      <div>
+        <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🕒</span> WHEN TO USE IT
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when"></p>
+      </div>
+
+      <div>
+        <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🚀</span> WHERE & HOW TO DEPLOY
+        </h4>
+        <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+          <p id="explain-where"></p>
+          <div class="mt-2">
+            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+        </h4>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices"></ul>
+      </div>
+
+      <div>
+        <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+        </h4>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops"></p>
+      </div>
+
+      <div>
+        <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+          <span>📊</span> ARCHITECTURE DATA FLOW
+        </h4>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow"></pre>
+      </div>
+    </div>
+  </div>
+
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

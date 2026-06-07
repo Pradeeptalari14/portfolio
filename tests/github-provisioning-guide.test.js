@@ -38,7 +38,7 @@ function loadGuideDom() {
 }
 
 describe('GitHub Provisioning & SRE Execution Hub Page', () => {
-  it('should fetch tools.json and render 91 studio cards', async () => {
+  it('should fetch tools.json and render 92 studio cards', async () => {
     const window = loadGuideDom();
 
     // Manually dispatch DOMContentLoaded
@@ -49,7 +49,7 @@ describe('GitHub Provisioning & SRE Execution Hub Page', () => {
     await new Promise(resolve => setTimeout(resolve, 200));
 
     const cards = window.document.querySelectorAll('.repo-card');
-    expect(cards.length).toBe(91);
+    expect(cards.length).toBe(92);
 
     const firstCardTitle = cards[0].querySelector('h4').textContent;
     expect(firstCardTitle).toBe('DevOps AI RAG Studio');

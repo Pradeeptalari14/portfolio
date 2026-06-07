@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **91 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **92 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 91 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 92 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -88,7 +88,7 @@ Do **NOT** use the Studio Catalog in these 20+ anti-patterns:
 
 ## 5. Repository Mapping
 
-The following catalog registers all **91 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
+The following catalog registers all **92 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
 
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
@@ -183,6 +183,7 @@ The following catalog registers all **91 Developer Studios** to their team owner
 | 89 | Maven Build Studio | [maven/](file:///d:/Domain/tools/maven/index.html) | `tp-maven-build` | Platform Engineering | `main` | Java POM, Maven dependencies | Tomcat Tuning, Jenkins |
 | 90 | SonarQube Quality Gate Studio | [sonarqube/](file:///d:/Domain/tools/sonarqube/index.html) | `tp-sonarqube-quality-gate` | DevOps Team | `main` | SonarQube properties, YAML | Jenkins, SAST Security |
 | 91 | Agile & ITSM Studio | [agile-itsm/](file:///d:/Domain/tools/agile-itsm/index.html) | `tp-agile-itsm` | Platform Operations | `main` | ServiceNow JSON, JIRA | Status & Incident |
+| 92 | Pulumi Infrastructure Studio | [pulumi/](file:///d:/Domain/tools/pulumi/index.html) | `tp-pulumi` | Cloud Infrastructure | `main` | TypeScript, Python, Go, Pulumi | Terraform Architect, Crossplane |
 
 ---
 

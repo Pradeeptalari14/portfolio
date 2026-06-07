@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **91 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **92 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 91 Studios
+    loop For each of the 92 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -111,12 +111,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 91 target repositories have been processed!");
+console.log("🎉 All 92 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 91-Repository Execution Matrix
+## 3. Exhaustive 92-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -213,6 +213,7 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 89 | Maven Build Studio | `Pradeeptalari14/tp-maven` | `pom.xml` | `/` | `mvn clean install` | `mvn verify` |
 | 90 | SonarQube Quality Gate Studio | `Pradeeptalari14/tp-sonarqube` | `sonar-project.properties` | `/` | `sonar-scanner` | `curl -u token: localhost:9000/api/qualitygates/project_status` |
 | 91 | Agile & ITSM Studio | `Pradeeptalari14/tp-agile-itsm` | `servicenow-change.json` | `/config/itsm` | `curl -X POST -u user:pass -H "Content-Type: application/json" -d @servicenow-change.json http://itsm-api` | `curl http://itsm-api/change/status` |
+| 92 | Pulumi Infrastructure Studio | `Pradeeptalari14/tp-pulumi` | `Pulumi.yaml` | `/` | `pulumi up --yes` | `pulumi preview` |
 
 ---
 
@@ -242,10 +243,11 @@ Whenever a configuration needs an update:
 2. **Commit:** Replace the outdated config file in your local cloned git repository (following the *Commit Destination* in the matrix above).
 3. **Verify:** Commit and push the file to your `main` branch. Run the *Validation Command* locally or let your CI pipeline verify the output.
 
-### D. SRE Best Practices: Managing 91 Repositories at Scale
-As your platform scales to 91 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+### D. SRE Best Practices: Managing 92 Repositories at Scale
+
+As your platform scales to 92 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
-   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 91 repositories individually, define them at the **GitHub Organization level**.
+   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 92 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
 2. **Standard Repository Template:**
    - Create a base template repository (e.g., `tp-template-base`) pre-configured with the standard `.gitignore`, `LICENSE`, and default security linter workflows.

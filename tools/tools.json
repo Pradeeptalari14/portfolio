@@ -1090,5 +1090,17 @@
     "tag": "servicenow-change.json",
     "link": "agile-itsm/",
     "repository": "Pradeeptalari14/tp-agile-itsm"
+  },
+  {
+    "title": "Pulumi Infrastructure Studio",
+    "desc": "Compile cloud native infrastructure. Generate Pulumi stack configurations, write deployment scripts in TypeScript, Python, or Go, manage state backends, and configure deployment pipelines.",
+    "category": "cloud",
+    "icon": "🏗️",
+    "color": "rgb(138, 51, 145)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "Pulumi.yaml",
+    "link": "pulumi/",
+    "repository": "Pradeeptalari14/tp-pulumi"
   }
 ]
