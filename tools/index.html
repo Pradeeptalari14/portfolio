@@ -896,6 +896,11 @@
       border-radius: 4px;
       font-size: 0.65rem;
     }
+    .provisioning-hub-banner:hover {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08), var(--shadow-md);
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
@@ -942,6 +947,21 @@
         <div class="stats-value">98.7%</div>
         <div class="stats-label">Verification Test Coverage</div>
       </div>
+    </div>
+
+    <!-- Provisioning Hub CTA Banner -->
+    <div class="provisioning-hub-banner" style="width: 100%; max-width: 1280px; margin-bottom: 3.5rem; background: linear-gradient(135deg, rgba(79, 70, 229, 0.04) 0%, rgba(14, 165, 233, 0.04) 100%); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; transition: var(--transition);">
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="font-size: 2.25rem; display: flex; align-items: center; justify-content: center; background: rgba(79, 70, 229, 0.08); width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(79, 70, 229, 0.15); flex-shrink: 0;">📦</div>
+        <div>
+          <h4 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.12rem; color: var(--text-primary); margin-bottom: 0.15rem;">GitHub Provisioning & SRE Execution Hub</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">Batch provision Git repositories and execute compiled configurations for all 91 studios in the portfolio.</p>
+        </div>
+      </div>
+      <a href="github-provisioning-guide/" class="nav-cta" style="background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-cyan) 100%); border: none; display: inline-flex; align-items: center; gap: 8px; margin: 0; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); cursor: pointer; transition: var(--transition);">
+        <span>Launch Provisioning Hub</span>
+        <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
     </div>
 
     <!-- Search & Filter Controls -->
@@ -1125,6 +1145,12 @@
           <span class="tool-category-badge">${badgeName}</span>
           <div class="tool-icon-wrap" style="color: ${tool.color || 'inherit'};">${tool.icon || ''}</div>
           <h3 class="tool-title">${tool.title}</h3>
+          <div class="tool-repo-link" style="font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #64748b; margin-top: 2px; margin-bottom: 8px;">
+            <a href="https://github.com/${tool.repository}" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition flex items-center gap-1">
+              <svg style="width: 12px; height: 12px; display: inline;" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.197 22 16.44 22 12.017 22 6.484 17.522 2 12 2z"/></svg>
+              ${tool.repository}
+            </a>
+          </div>
           <p class="tool-desc">${tool.desc}</p>
           <div class="tool-footer">
             <span class="tool-tag">${tool.tag}</span>

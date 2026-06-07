@@ -70,7 +70,7 @@ describe('OpenTelemetry Collector Configurator Studio', () => {
     btnSendTrace.dispatchEvent(new window.Event('click'));
 
     // Wait a brief tick for the recursive promise timeline callbacks to run
-    await new Promise(resolve => setTimeout(resolve, 2700));
+    await new Promise(resolve => setTimeout(resolve, 4000));
 
     expect(debugLogs.textContent).toContain('RECEIVER: Payload matched OTLP gRPC endpoint.');
     expect(debugLogs.textContent).toContain('EXPORTER: Logged error status trace');

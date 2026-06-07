@@ -109,6 +109,7 @@ export default defineConfig({
         llmgateway: resolve(__dirname, 'tools/llm-gateway/index.html'),
         llmtracing: resolve(__dirname, 'tools/llm-tracing/index.html'),
         vectordb: resolve(__dirname, 'tools/vector-db/index.html'),
+        githubprovisioningguide: resolve(__dirname, 'tools/github-provisioning-guide/index.html'),
       }
     }
   }
