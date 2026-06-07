@@ -103,6 +103,9 @@ export default defineConfig({
         sonarqube: resolve(__dirname, 'tools/sonarqube/index.html'),
         agileitsm: resolve(__dirname, 'tools/agile-itsm/index.html'),
         eventsre: resolve(__dirname, 'tools/event-sre/index.html'),
+        githubgov: resolve(__dirname, 'tools/github-gov/index.html'),
+        cloudflarezerotrust: resolve(__dirname, 'tools/cloudflare-zero-trust/index.html'),
+        localstackdev: resolve(__dirname, 'tools/localstack-dev/index.html'),
       }
     }
   }

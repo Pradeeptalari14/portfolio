@@ -440,6 +440,39 @@
     "link": "event-sre/"
   },
   {
+    "title": "GitHub Org Governance & CodeOwners Studio",
+    "desc": "Automate repository configuration and review standards. Generate CODEOWNERS controls, branch protection API payloads, and pipeline security rules.",
+    "category": "automation",
+    "icon": "🛡️",
+    "color": "rgb(41, 128, 185)",
+    "borderClass": "",
+    "bgClass": "",
+    "tag": "CODEOWNERS",
+    "link": "github-gov/"
+  },
+  {
+    "title": "Cloudflare Zero Trust & Tunneling Studio",
+    "desc": "Design secure, VPN-less access to local and cloud resources. Generate cloudflared daemon settings, access authentication policies, and ingress mapping scripts.",
+    "category": "cloud",
+    "icon": "☁️",
+    "color": "rgb(230, 126, 34)",
+    "borderClass": "",
+    "bgClass": "",
+    "tag": "config.yml",
+    "link": "cloudflare-zero-trust/"
+  },
+  {
+    "title": "Docker Compose & LocalStack Dev Studio",
+    "desc": "Scaffold sandbox emulation networks for fast local development. Generate compose stacks with PostgreSQL, Redis, and bootstrap scripts for offline AWS S3/SQS/DynamoDB services.",
+    "category": "automation",
+    "icon": "🐳",
+    "color": "rgb(26, 188, 156)",
+    "borderClass": "",
+    "bgClass": "",
+    "tag": "docker-compose.yml",
+    "link": "localstack-dev/"
+  },
+  {
     "title": "Status & Incident Studio",
     "desc": "Scaffold PagerDuty/Opsgenie escalation chains, status dashboard config schemas, and incident triage runbooks.",
     "category": "automation",
