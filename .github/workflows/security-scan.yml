@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Gitleaks Secret Detector Scan
-        uses: gitleaks/gitleaks-action@30b4e1837604a11f271f28b4383188d3e2bdfc83 # v2.3.7
+        uses: gitleaks/gitleaks-action@dcedce43c6f43de0b836d1fe38946645c9c638dc # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Setup Node.js
-        uses: actions/setup-node@601291d996c6b7704b397f4a50b66bc28a11eb46 # v4.0.3
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version: 20
           cache: 'npm'
@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Run Trivy Vulnerability Scanner (IaC Configs Check)
-        uses: aquasecurity/trivy-action@8513284201a4db4e803c00234a9d701026027a3c # v0.36.0
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           scan-type: 'config'
           exit-code: '1'
