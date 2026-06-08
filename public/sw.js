@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tp-portfolio-cache-v1';
+const CACHE_NAME = 'tp-portfolio-cache-v2';
 
 // Assets to pre-cache immediately on service worker install
 const PRECACHE_ASSETS = [
@@ -50,6 +50,11 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
+
+  // Bypass Service Worker caching during local development (localhost / 127.0.0.1)
+  if (requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1') {
+    return;
+  }
 
   // Exclude non-GET requests (e.g. POST, PUT, file uploads)
   if (event.request.method !== 'GET') {

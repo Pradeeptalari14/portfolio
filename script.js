@@ -5,6 +5,25 @@
 
 'use strict';
 
+// Unregister service worker on localhost during development to prevent dev server caching issues
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) {
+        registration.unregister().then(success => {
+          if (success) {
+            console.log('[Dev] Unregistered service worker successfully');
+            // Clear cache storage
+            caches.keys().then(names => {
+              for (let name of names) caches.delete(name);
+            });
+          }
+        });
+      }
+    });
+  }
+}
+
 /* ── Utility ── */
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
