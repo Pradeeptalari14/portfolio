@@ -116,6 +116,8 @@ export default defineConfig({
         modelopsgitops: resolve(__dirname, 'tools/modelops-gitops/index.html'),
         llmredteaming: resolve(__dirname, 'tools/llm-redteaming/index.html'),
         syntheticdata: resolve(__dirname, 'tools/synthetic-data/index.html'),
+        gpuscheduler: resolve(__dirname, 'tools/gpu-scheduler/index.html'),
+        mcpserver: resolve(__dirname, 'tools/mcp-server/index.html'),
       }
     }
   }

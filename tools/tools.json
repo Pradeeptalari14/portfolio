@@ -1162,5 +1162,29 @@
     "tag": "generate-dataset.py",
     "link": "synthetic-data/",
     "repository": "Pradeeptalari14/tp-synthetic-data"
+  },
+  {
+    "title": "GPU Scheduler & K8s Allocator Studio",
+    "desc": "Optimize multi-instance GPU partitions, configure dynamic resource allocations, and customize Kueue fair-share batch scheduling policies in Kubernetes configurations.",
+    "category": "ai",
+    "icon": "🏎️",
+    "color": "rgb(46, 204, 113)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "gpu-policy.yaml",
+    "link": "gpu-scheduler/",
+    "repository": "Pradeeptalari14/tp-gpu-scheduler"
+  },
+  {
+    "title": "MCP Server Builder Studio",
+    "desc": "Build custom Model Context Protocol (MCP) servers. Register local execution tools, configure SRE metrics databases as resource schemas, and export runnable server scripts.",
+    "category": "ai",
+    "icon": "🔌",
+    "color": "rgb(230, 126, 34)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "mcp-server.py",
+    "link": "mcp-server/",
+    "repository": "Pradeeptalari14/tp-mcp-server"
   }
 ]

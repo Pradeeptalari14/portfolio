@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **97 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **99 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 97 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 99 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -88,7 +88,7 @@ Do **NOT** use the Studio Catalog in these 20+ anti-patterns:
 
 ## 5. Repository Mapping
 
-The following catalog registers all **97 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
+The following catalog registers all **99 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
 
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
@@ -189,6 +189,8 @@ The following catalog registers all **97 Developer Studios** to their team owner
 | 95 | Hugging Face & GitLFS Sync Studio | [modelops-gitops/](file:///d:/Domain/tools/modelops-gitops/index.html) | `tp-modelops-gitops` | AI Engineering | `main` | Bash, GitLFS, Kubernetes | Enterprise LLM, Vector DB |
 | 96 | LLM Red Teaming & Vulnerability Scanner Studio | [llm-redteaming/](file:///d:/Domain/tools/llm-redteaming/index.html) | `tp-llm-redteaming` | AI Security | `main` | Python, Garak, LLM | SAST Security, LLM Guardrails |
 | 97 | AI Synthetic Data Generator Studio | [synthetic-data/](file:///d:/Domain/tools/synthetic-data/index.html) | `tp-synthetic-data` | AI Engineering | `main` | Python, pandas, pip | DevOps AI RAG, MLflow Tracking |
+| 98 | GPU Scheduler & K8s Allocator Studio | [gpu-scheduler/](file:///d:/Domain/tools/gpu-scheduler/index.html) | `tp-gpu-scheduler` | AI Engineering | `main` | YAML, K8s, Kueue | Ray Cluster, Advanced k8s |
+| 99 | MCP Server Builder Studio | [mcp-server/](file:///d:/Domain/tools/mcp-server/index.html) | `tp-mcp-server` | AI Engineering | `main` | Python, MCP, pip | Strands SRE Agent, MCP Studio |
 
 ---
 

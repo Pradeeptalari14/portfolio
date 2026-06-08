@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **97 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **99 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 97 Studios
+    loop For each of the 99 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -111,12 +111,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 97 target repositories have been processed!");
+console.log("🎉 All 99 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 97-Repository Execution Matrix
+## 3. Exhaustive 99-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -219,6 +219,8 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 95 | Hugging Face & GitLFS Sync Studio | `Pradeeptalari14/tp-modelops-gitops` | `sync-model.sh` | `/scripts` | `bash sync-model.sh` | `bash sync-model.sh --dry-run` |
 | 96 | LLM Red Teaming & Vulnerability Scanner Studio | `Pradeeptalari14/tp-llm-redteaming` | `garak-config.yaml` | `/config` | `python3 -m garak --config garak-config.yaml` | `python3 -m garak --check` |
 | 97 | AI Synthetic Data Generator Studio | `Pradeeptalari14/tp-synthetic-data` | `generate-dataset.py` | `/scripts` | `python3 generate-dataset.py` | `python3 generate-dataset.py --dry-run` |
+| 98 | GPU Scheduler & K8s Allocator Studio | `Pradeeptalari14/tp-gpu-scheduler` | `gpu-policy.yaml` | `/config` | `kubectl apply -f gpu-policy.yaml` | `kubectl get clusterpolicy` |
+| 99 | MCP Server Builder Studio | `Pradeeptalari14/tp-mcp-server` | `mcp-server.py` | `/scripts` | `python3 mcp-server.py` | `python3 mcp-server.py --check` |
 
 ---
 
@@ -248,11 +250,11 @@ Whenever a configuration needs an update:
 2. **Commit:** Replace the outdated config file in your local cloned git repository (following the *Commit Destination* in the matrix above).
 3. **Verify:** Commit and push the file to your `main` branch. Run the *Validation Command* locally or let your CI pipeline verify the output.
 
-### D. SRE Best Practices: Managing 97 Repositories at Scale
+### D. SRE Best Practices: Managing 99 Repositories at Scale
 
-As your platform scales to 97 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+As your platform scales to 99 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
-   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 97 repositories individually, define them at the **GitHub Organization level**.
+   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 99 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
 2. **Standard Repository Template:**
    - Create a base template repository (e.g., `tp-template-base`) pre-configured with the standard `.gitignore`, `LICENSE`, and default security linter workflows.
