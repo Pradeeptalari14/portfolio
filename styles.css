@@ -2993,3 +2993,8 @@ body.modal-open {
 .certs-collapse-btn svg { width: 13px; height: 13px; }
 .certs-collapse-btn:hover { color: var(--accent-primary); border-color: var(--accent-primary); }
 
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.65; }
+}
+

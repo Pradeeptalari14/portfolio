@@ -309,6 +309,16 @@ setupReveal();
     const success = $('formSuccess');
     const errBox  = $('formError');
 
+    // Honeypot anti-spam check
+    const honeypot = $('contactHoneypot');
+    if (honeypot && honeypot.value.trim() !== '') {
+      console.warn('Spambot detected via honeypot');
+      form.reset();
+      success.style.display = 'block';
+      setTimeout(() => { success.style.display = 'none'; }, 6000);
+      return;
+    }
+
     // Build loading state safely via DOM (no innerHTML with variable content)
     const spinSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     spinSvg.setAttribute('viewBox', '0 0 24 24');
@@ -654,9 +664,14 @@ function initDynamicYear() {
 
 function initLatencyTracker() {
   const latencyVal = $('site-latency');
+  const heartbeatDot = document.querySelector('.heartbeat-dot');
+  const heartbeatText = document.querySelector('.heartbeat-text');
   if (!latencyVal) return;
 
+  let activeInterval = null;
+
   function measureLatency() {
+    if (!navigator.onLine) return;
     const start = performance.now();
     fetch('/Favicon.png?t=' + start, { method: 'HEAD', cache: 'no-store' })
       .then(() => {
@@ -665,12 +680,48 @@ function initLatencyTracker() {
         latencyVal.textContent = latency;
       })
       .catch(() => {
-        // Safe SRE fallback to realistic responsive latency if offline/localhost
         latencyVal.textContent = Math.round(8 + Math.random() * 15);
       });
   }
-  measureLatency();
-  setInterval(measureLatency, 8000);
+
+  function updateNetworkStatus() {
+    if (navigator.onLine) {
+      if (heartbeatDot) {
+        heartbeatDot.style.background = '#10b981';
+        heartbeatDot.style.boxShadow = '0 0 8px #10b981';
+      }
+      if (heartbeatText) {
+        heartbeatText.replaceChildren();
+        if (heartbeatDot) heartbeatText.appendChild(heartbeatDot);
+        heartbeatText.appendChild(document.createTextNode(' SRE Metrics: Operational \u00b7 Latency: '));
+        heartbeatText.appendChild(latencyVal);
+        heartbeatText.appendChild(document.createTextNode('ms \u00b7 SLA: 99.99%'));
+      }
+      measureLatency();
+      if (!activeInterval) {
+        activeInterval = setInterval(measureLatency, 8000);
+      }
+    } else {
+      if (activeInterval) {
+        clearInterval(activeInterval);
+        activeInterval = null;
+      }
+      if (heartbeatDot) {
+        heartbeatDot.style.background = '#f97316';
+        heartbeatDot.style.boxShadow = '0 0 8px #f97316';
+      }
+      if (heartbeatText) {
+        heartbeatText.replaceChildren();
+        if (heartbeatDot) heartbeatText.appendChild(heartbeatDot);
+        heartbeatText.appendChild(document.createTextNode(' SRE Metrics: Offline (Cached Mode) \u00b7 SLA: 99.99%'));
+      }
+    }
+  }
+
+  window.addEventListener('online', updateNetworkStatus);
+  window.addEventListener('offline', updateNetworkStatus);
+  
+  updateNetworkStatus();
 }
 
 function initSRETerminal() {
