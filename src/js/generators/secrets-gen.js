@@ -345,6 +345,9 @@ function switchTab(tabId) {
   } else if (tabId === 'flow') {
     nameBox.value = 'flow';
     extTag.textContent = '.mermaid';
+  } else if (tabId === 'scanner') {
+    nameBox.value = 'secret_scanner_audit';
+    extTag.textContent = '.log';
   }
   updateViewportContent();
 }
@@ -353,6 +356,7 @@ function updateViewportContent() {
   if (activeTab === 'flow') {
     $('output-box').classList.add('hidden');
     $('mermaid-container').classList.remove('hidden');
+    $('scanner-viewport').classList.add('hidden');
     
     const container = $('mermaid-container');
     container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
@@ -369,9 +373,14 @@ function updateViewportContent() {
         container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
       }
     }
+  } else if (activeTab === 'scanner') {
+    $('output-box').classList.add('hidden');
+    $('mermaid-container').classList.add('hidden');
+    $('scanner-viewport').classList.remove('hidden');
   } else {
     $('output-box').classList.remove('hidden');
     $('mermaid-container').classList.add('hidden');
+    $('scanner-viewport').classList.add('hidden');
     $('output-box').textContent = compiledCode[activeTab];
   }
 }
@@ -562,6 +571,18 @@ function explainActiveTabCode() {
       'ai_mlops': 'Visual check logic for SRE agent code validations.',
       'flow': '[Mermaid Chart Canvas Flowchart]'
     };
+  } else if (activeTab === 'scanner') {
+    explanation = {
+      'title': 'Secret Scanner Audit Report',
+      'filename': 'secret_scanner_audit.log',
+      'why': 'Scans input configs and code client-side to detect plaintext credential leaks before commit.',
+      'when': 'Run before checking in configuration manifests to git repositories.',
+      'where': 'Deploy as git pre-commit hooks or local SRE check scripts.',
+      'command': 'trivy fs --security-checks secret .',
+      'practices': ['Enforce scanning in all pre-commit hooks.', 'Rotate leaked credentials immediately.'],
+      'ai_mlops': 'Automated SRE agent scans source directories for API access token anomalies.',
+      'flow': '[Input Code] ➔ [Regex Signature Check] ➔ [Flag Violations] ➔ [Block Commit]'
+    };
   }
 
   if (!explanation) {
@@ -599,6 +620,205 @@ function closeExplanationDrawer() {
   drawer.classList.add('translate-x-full');
 }
 
+const SCAN_RULES = [
+  {
+    name: 'AWS Access Key ID',
+    regex: /AKIA[0-9A-Z]{16}/g,
+    severity: 'CRITICAL',
+    description: 'AWS access key identifiers expose cloud resources to unauthorized orchestration.',
+    remediation: 'Use AWS Secrets Manager JSON policies or HashiCorp Vault dynamic database roles.'
+  },
+  {
+    name: 'AWS Secret Access Key',
+    regex: /(?:secret|access|key|token)[a-zA-Z0-9_\-]*?\s*=\s*['"]([A-Za-z0-9/+=]{40})['"]/gi,
+    severity: 'CRITICAL',
+    description: 'AWS secret access keys are high-privilege credentials that should never be in plain-text code.',
+    remediation: 'Inject via environment variables or mount dynamically with K8s SecretProviderClass.'
+  },
+  {
+    name: 'GitHub Personal Access Token',
+    regex: /ghp_[a-zA-Z0-9]{36}/g,
+    severity: 'CRITICAL',
+    description: 'GitHub Personal Access Tokens grant repository read/write capabilities.',
+    remediation: 'Switch to temporary GitHub Actions repository tokens or retrieve via Vault GitHub engine.'
+  },
+  {
+    name: 'Private Encryption Key',
+    regex: /-----BEGIN [A-Z ]+ PRIVATE KEY-----/g,
+    severity: 'CRITICAL',
+    description: 'Private RSA/ECC cryptographic keys permit identity decryption and TLS interception.',
+    remediation: 'Use Kubernetes SealedSecrets to encrypt keys, decrypting them only inside pod RAM memory.'
+  },
+  {
+    name: 'Database Connection String',
+    regex: /(?:postgresql|mongodb(?:\+srv)?|mysql|redis):\/\/[a-zA-Z0-9_]+:[^@\s]+@[a-zA-Z0-9_\-\.]+(?::\d+)?\/[a-zA-Z0-9_\-]+/gi,
+    severity: 'CRITICAL',
+    description: 'Plain-text database connection URLs expose usernames, passwords, hostnames, and tables.',
+    remediation: 'Store credentials dynamically in Vault paths and fetch them using Python/Go SDK clients.'
+  },
+  {
+    name: 'Slack Incoming Webhook',
+    regex: /https:\/\/hooks\.slack\.com\/services\/T[A-Z0-9_]{7,12}\/B[A-Z0-9_]{7,12}\/[A-Za-z0-9_]{15,36}/g,
+    severity: 'HIGH',
+    description: 'Slack incoming webhook URLs allow unauthorized message broadcasting and alert spoofing.',
+    remediation: 'Externalize slack notifications URL parameter into environment configurations.'
+  },
+  {
+    name: 'Plain-text Password Configuration',
+    regex: /(?:password|passwd|pass|admin_pass)\s*:\s*['"]?([^'"]{4,})['"]?/gi,
+    severity: 'HIGH',
+    description: 'Cleartext hardcoded passwords detected in YAML/JSON configs.',
+    remediation: 'Encrypt credentials using Sealed Secrets or use Kubernetes CSI Secrets Store.'
+  }
+];
+
+const SAMPLES = {
+  aws: `# AWS config.py\nAWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"\nAWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"\nBUCKET_NAME = "prod-data-lake"\n`,
+  k8s: `apiVersion: v1\nkind: Secret\nmetadata:\n  name: database-credentials\ntype: Opaque\ndata:\n  password: supersecretpassword123\n  api_token: "ghp_1234567890abcdefghijklmnopqrstuvwxyz"\n`,
+  slack: `const config = {\n  databaseUrl: "postgresql://postgres:admin123@db.prod.talaripradeep.info:5432/main",\n  slackWebhook: "https://hooks.slack.com/services/T_MOCK_ID/B_MOCK_BOT/MOCK_SECRET_TOKEN",\n  privateKey: "-----BEGIN RSA PRIVATE KEY-----\\nMIIEowIBAAKCAQEA0Y3...\\n-----END RSA PRIVATE KEY-----"\n};\n`
+};
+
+function loadScannerSample(type) {
+  const input = $('scanner-input');
+  if (type === 'clear') {
+    input.value = '';
+    showToast('🗑️ Input cleared!');
+  } else if (SAMPLES[type]) {
+    input.value = SAMPLES[type];
+    showToast(`📝 Loaded ${type.toUpperCase()} credentials template!`);
+  }
+}
+
+function runSecretScan() {
+  const codeText = $('scanner-input').value.trim();
+  if (!codeText) {
+    showToast('⚠️ Input container is empty! Please paste code or configurations.');
+    return;
+  }
+
+  const progressContainer = $('scan-progress-container');
+  const progressBar = $('scan-progress-bar');
+  const progressLabel = $('scan-progress-label');
+  const resultsContainer = $('scan-results-container');
+
+  progressContainer.classList.remove('hidden');
+  resultsContainer.classList.add('hidden');
+  progressBar.style.width = '0%';
+  progressLabel.textContent = 'Parsing input buffers...';
+
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 25;
+    progressBar.style.width = progress + '%';
+    
+    if (progress === 25) {
+      progressLabel.textContent = 'Running pattern regex signature scans...';
+    } else if (progress === 75) {
+      progressLabel.textContent = 'Analyzing credential risk vectors...';
+    } else if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        progressContainer.classList.add('hidden');
+        displayScanResults(codeText);
+      }, 200);
+    }
+  }, 150);
+}
+
+function displayScanResults(codeText) {
+  const lines = codeText.split('\n');
+  const findings = [];
+  
+  lines.forEach((line, idx) => {
+    const lineNum = idx + 1;
+    SCAN_RULES.forEach(rule => {
+      const regex = new RegExp(rule.regex.source, 'i');
+      const match = regex.exec(line);
+      if (match) {
+        const matchedValue = match[0];
+        const masked = matchedValue.length > 8 ? 
+          matchedValue.substring(0, 4) + '...' + matchedValue.substring(matchedValue.length - 4) : 
+          '********';
+        const maskedLine = line.replace(matchedValue, masked);
+
+        findings.push({
+          line: lineNum,
+          ruleName: rule.name,
+          severity: rule.severity,
+          description: rule.description,
+          remediation: rule.remediation,
+          lineContent: maskedLine
+        });
+      }
+    });
+  });
+
+  const resultsContainer = $('scan-results-container');
+  resultsContainer.classList.remove('hidden');
+
+  const statusBadge = $('scanner-status-badge');
+  const totalCount = $('scanner-stat-total');
+  const critCount = $('scanner-stat-crit');
+  const highCount = $('scanner-stat-high');
+  const linesCount = $('scanner-stat-lines');
+  const findingsList = $('scan-findings-list');
+
+  linesCount.textContent = lines.length;
+  totalCount.textContent = findings.length;
+
+  const criticals = findings.filter(f => f.severity === 'CRITICAL').length;
+  const highs = findings.filter(f => f.severity === 'HIGH').length;
+
+  critCount.textContent = criticals;
+  highCount.textContent = highs;
+
+  if (findings.length > 0) {
+    statusBadge.className = 'px-3 py-1 text-xs font-mono rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 animate-pulse';
+    statusBadge.textContent = 'FAIL - DANGER DETECTED';
+  } else {
+    statusBadge.className = 'px-3 py-1 text-xs font-mono rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+    statusBadge.textContent = 'PASS - SECURE SECRETS';
+  }
+
+  findingsList.innerHTML = '';
+  if (findings.length === 0) {
+    findingsList.innerHTML = `
+      <div class="text-center py-6 text-slate-500 text-xs border border-dashed border-slate-800 rounded-lg">
+        🎉 No hardcoded credentials detected in the scanned text. Good job keeping configurations clean!
+      </div>
+    `;
+    return;
+  }
+
+  findings.forEach(finding => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-900/60 border border-slate-800/80 p-3 rounded-lg flex flex-col gap-2 transition hover:border-slate-700/80';
+    
+    const severityBadge = finding.severity === 'CRITICAL' ? 
+      `<span class="px-2 py-0.5 text-[10px] font-bold text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded">CRITICAL</span>` :
+      `<span class="px-2 py-0.5 text-[10px] font-bold text-amber-400 bg-amber-950/40 border border-amber-800/50 rounded">HIGH</span>`;
+
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          ${severityBadge}
+          <span class="text-xs font-bold text-white">${finding.ruleName}</span>
+        </div>
+        <span class="text-[10px] text-slate-500 font-mono">Line ${finding.line}</span>
+      </div>
+      <p class="text-[11px] text-slate-400 leading-normal">${finding.description}</p>
+      <div class="bg-slate-950 p-2 rounded border border-slate-850 font-mono text-[10px] text-slate-300 overflow-x-auto whitespace-pre">
+        <code>${finding.lineContent.trim()}</code>
+      </div>
+      <div class="text-[11px] text-indigo-400 flex items-start gap-1">
+        <span class="mt-0.5">💡</span>
+        <span><strong>Remediation:</strong> ${finding.remediation}</span>
+      </div>
+    `;
+    findingsList.appendChild(card);
+  });
+}
+
 window.switchTab = switchTab;
 window.triggerCompileAll = triggerCompileAll;
 window.copyActiveTabContent = copyActiveTabContent;
@@ -607,3 +827,5 @@ window.clearAllFields = clearAllFields;
 window.downloadScriptZip = downloadScriptZip;
 window.toggleManualItem = toggleManualItem;
 window.closeExplanationDrawer = closeExplanationDrawer;
+window.loadScannerSample = loadScannerSample;
+window.runSecretScan = runSecretScan;
