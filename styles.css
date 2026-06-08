@@ -361,10 +361,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .hero-inner {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 5rem;
+  text-align: center;
+  gap: 3rem;
   padding-top: 100px;
   padding-bottom: 60px;
   position: relative;
@@ -419,7 +421,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* left-align on desktop — prevents shift */
+  justify-content: center; /* center-align on desktop */
   gap: 4px;
   min-height: 1.8rem;
   font-weight: 500;
@@ -438,6 +440,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   line-height: 1.85;
   margin-bottom: 2.25rem;
   max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-actions {
@@ -445,6 +449,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 1rem;
   flex-wrap: wrap;
   margin-bottom: 3rem;
+  justify-content: center;
 }
 
 .hero-stats {
@@ -1307,10 +1312,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    CONTACT
 ══════════════════════════════ */
 .contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 4rem;
-  align-items: start;
+  display: flex;
+  justify-content: center;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .contact-info {
