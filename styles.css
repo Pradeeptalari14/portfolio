@@ -3352,6 +3352,34 @@ body.modal-open {
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
 }
+.clusters-wrapper {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.primary-cluster, .dr-cluster {
+  flex: 1;
+  min-width: 140px;
+  transition: all 0.3s ease;
+}
+.ingress-router-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+.dr-controls {
+  border-top: 1px solid var(--border);
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+}
 .pod-wrapper {
   text-align: center;
 }

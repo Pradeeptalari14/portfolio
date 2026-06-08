@@ -111,37 +111,83 @@
               </div>
             </div>
 
-            <!-- Pod replication cluster -->
-            <div class="cluster-container">
-              <h4 class="cluster-title">Kubernetes Cluster (Namespace: production)</h4>
-              <div class="pods-grid" id="podsGrid">
-                <div class="pod-wrapper" data-pod-index="0">
-                  <div class="pod-circle pod-running"></div>
-                  <div class="pod-name">pod-0</div>
+            <!-- Ingress Router Status -->
+            <div class="ingress-router-indicator" style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); border: 1px solid var(--border); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem;">
+              <span style="color: var(--text-secondary);">Ingress Route:</span>
+              <span id="ingress-target-route" class="status-badge status-green" style="font-family: 'JetBrains Mono', monospace;">us-east-1 (Primary)</span>
+            </div>
+
+            <!-- Side-by-side Clusters Wrapper -->
+            <div class="clusters-wrapper" style="display: flex; gap: 0.75rem; width: 100%; flex-wrap: wrap;">
+              <!-- Primary Cluster -->
+              <div class="cluster-container primary-cluster" id="cluster-primary" style="flex: 1; min-width: 140px; transition: all 0.3s ease;">
+                <h4 class="cluster-title" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; margin-bottom: 0.5rem;">
+                  <span>us-east-1 (Primary)</span>
+                  <span id="primary-cluster-status" class="status-badge status-green" style="padding: 1px 4px; font-size: 0.55rem;">Online</span>
+                </h4>
+                <div class="pods-grid" id="podsGrid">
+                  <div class="pod-wrapper" data-pod-index="0">
+                    <div class="pod-circle pod-running"></div>
+                    <div class="pod-name">pod-0</div>
+                  </div>
+                  <div class="pod-wrapper" data-pod-index="1">
+                    <div class="pod-circle pod-running"></div>
+                    <div class="pod-name">pod-1</div>
+                  </div>
+                  <div class="pod-wrapper" data-pod-index="2">
+                    <div class="pod-circle pod-running"></div>
+                    <div class="pod-name">pod-2</div>
+                  </div>
+                  <div class="pod-wrapper" data-pod-index="3">
+                    <div class="pod-circle pod-running"></div>
+                    <div class="pod-name">pod-3</div>
+                  </div>
                 </div>
-                <div class="pod-wrapper" data-pod-index="1">
-                  <div class="pod-circle pod-running"></div>
-                  <div class="pod-name">pod-1</div>
-                </div>
-                <div class="pod-wrapper" data-pod-index="2">
-                  <div class="pod-circle pod-running"></div>
-                  <div class="pod-name">pod-2</div>
-                </div>
-                <div class="pod-wrapper" data-pod-index="3">
-                  <div class="pod-circle pod-running"></div>
-                  <div class="pod-name">pod-3</div>
+              </div>
+
+              <!-- DR Cluster -->
+              <div class="cluster-container dr-cluster" id="cluster-dr" style="flex: 1; min-width: 140px; opacity: 0.5; transition: all 0.3s ease;">
+                <h4 class="cluster-title" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; margin-bottom: 0.5rem;">
+                  <span>eu-central-1 (DR)</span>
+                  <span id="dr-cluster-status" class="status-badge" style="padding: 1px 4px; font-size: 0.55rem; background: var(--border); color: var(--text-muted);">Standby</span>
+                </h4>
+                <div class="pods-grid" id="podsGridDR">
+                  <div class="pod-wrapper" data-pod-index="0">
+                    <div class="pod-circle"></div>
+                    <div class="pod-name">pod-dr-0</div>
+                  </div>
+                  <div class="pod-wrapper" data-pod-index="1">
+                    <div class="pod-circle"></div>
+                    <div class="pod-name">pod-dr-1</div>
+                  </div>
+                  <div class="pod-wrapper" data-pod-index="2">
+                    <div class="pod-circle"></div>
+                    <div class="pod-name">pod-dr-2</div>
+                  </div>
+                  <div class="pod-wrapper" data-pod-index="3">
+                    <div class="pod-circle"></div>
+                    <div class="pod-name">pod-dr-3</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="widget-controls">
-            <button id="btnGitCommit" class="btn-widget-action bg-indigo">
-              <span>💻 Git Push (Commit)</span>
-            </button>
-            <button id="btnArgoSync" class="btn-widget-action bg-emerald disabled" disabled>
-              <span>🔄 ArgoCD Sync (Rollout)</span>
-            </button>
+          <div class="widget-controls" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="btnGitCommit" class="btn-widget-action bg-indigo" style="flex: 1; margin: 0;">
+                <span>💻 Git Push (Commit)</span>
+              </button>
+              <button id="btnArgoSync" class="btn-widget-action bg-emerald disabled" disabled style="flex: 1; margin: 0;">
+                <span>🔄 ArgoCD Sync (Rollout)</span>
+              </button>
+            </div>
+            <div class="dr-controls" style="border-top: 1px solid var(--border); padding-top: 0.5rem; margin-top: 0.25rem;">
+              <label class="ebpf-toggle-lbl" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">
+                <input type="checkbox" id="toggleArgoFailover" style="width: 14px; height: 14px; accent-color: var(--accent-primary);" />
+                <span>Disaster Recovery (DR) Failover</span>
+              </label>
+            </div>
           </div>
         </div>
 

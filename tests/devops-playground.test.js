@@ -141,6 +141,65 @@ describe('DevOps & SRE Interactive Playground Widgets', () => {
         expect(c.className).toContain('pod-out-of-sync');
       });
     });
+
+    it('should route traffic to DR cluster and shut down primary on failover toggle', () => {
+      const toggleFailover = document.getElementById('toggleArgoFailover');
+      const ingressRoute = document.getElementById('ingress-target-route');
+      const statusPrimary = document.getElementById('primary-cluster-status');
+      const statusDr = document.getElementById('dr-cluster-status');
+      const podsGrid = document.getElementById('podsGrid');
+      const podsGridDR = document.getElementById('podsGridDR');
+
+      expect(toggleFailover).not.toBeNull();
+
+      // Toggle failover active
+      toggleFailover.checked = true;
+      toggleFailover.dispatchEvent(new window.Event('change'));
+
+      expect(ingressRoute.textContent).toBe('eu-central-1 (DR)');
+      expect(statusPrimary.textContent).toBe('Offline');
+      expect(statusDr.textContent).toBe('Active');
+
+      // Primary pods should be shutdown (no pod-running or pod-out-of-sync class)
+      const primaryCircles = podsGrid.querySelectorAll('.pod-circle');
+      primaryCircles.forEach(c => {
+        expect(c.className).toBe('pod-circle');
+      });
+
+      // DR pods should match current sync state (which is currently OutOfSync)
+      const drCircles = podsGridDR.querySelectorAll('.pod-circle');
+      drCircles.forEach(c => {
+        expect(c.className).toContain('pod-out-of-sync');
+      });
+
+      // Toggle failover inactive again
+      toggleFailover.checked = false;
+      toggleFailover.dispatchEvent(new window.Event('change'));
+
+      expect(ingressRoute.textContent).toBe('us-east-1 (Primary)');
+      expect(statusPrimary.textContent).toBe('Online');
+      expect(statusDr.textContent).toBe('Standby');
+    });
+
+    it('should run multi-cluster rollout sync animation correctly', async () => {
+      const syncBtn = document.getElementById('btnArgoSync');
+      const syncStatus = document.getElementById('argocd-sync-status');
+      const podsGrid = document.getElementById('podsGrid');
+
+      // Sync the commit
+      syncBtn.dispatchEvent(new window.Event('click'));
+      expect(syncStatus.textContent).toBe('Syncing...');
+
+      // Wait for the animation simulation (600ms * 4 pods = 2400ms)
+      await new Promise(r => setTimeout(r, 2600));
+
+      expect(syncStatus.textContent).toBe('Synced');
+      
+      const primaryCircles = podsGrid.querySelectorAll('.pod-circle');
+      primaryCircles.forEach(c => {
+        expect(c.className).toContain('pod-running');
+      });
+    }, 5000); // 5s timeout
   });
 
   describe('Chaos Injector & Auto-Healing Dashboard', () => {

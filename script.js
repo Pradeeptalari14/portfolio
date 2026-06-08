@@ -1015,11 +1015,120 @@ function initGitOpsSimulator() {
   const commitHash = $('git-commit-hash');
   const syncStatus = $('argocd-sync-status');
   const podsGrid = $('podsGrid');
+  const podsGridDR = $('podsGridDR');
+  const toggleFailover = $('toggleArgoFailover');
+  const ingressRoute = $('ingress-target-route');
+  const clusterPrimary = $('cluster-primary');
+  const clusterDr = $('cluster-dr');
+  const statusPrimary = $('primary-cluster-status');
+  const statusDr = $('dr-cluster-status');
 
   if (!btnCommit || !btnSync) return;
 
   let isOutOfSync = false;
   let nextVersion = 2.1;
+
+  function updatePodVisuals() {
+    const isFailoverActive = toggleFailover && toggleFailover.checked;
+    
+    if (isFailoverActive) {
+      if (ingressRoute) {
+        ingressRoute.textContent = 'eu-central-1 (DR)';
+        ingressRoute.className = 'status-badge status-orange';
+      }
+      if (clusterPrimary) clusterPrimary.style.opacity = '0.4';
+      if (clusterDr) clusterDr.style.opacity = '1.0';
+      
+      if (statusPrimary) {
+        statusPrimary.textContent = 'Offline';
+        statusPrimary.className = 'status-badge status-red';
+      }
+      if (statusDr) {
+        statusDr.textContent = 'Active';
+        statusDr.className = 'status-badge status-green';
+        statusDr.style.background = '';
+        statusDr.style.color = '';
+      }
+      
+      // Degrade/shutdown primary pods
+      if (podsGrid) {
+        const primaryCircles = podsGrid.querySelectorAll('.pod-circle');
+        primaryCircles.forEach(c => {
+          c.className = 'pod-circle';
+        });
+      }
+      
+      // DR pods match current sync state
+      if (podsGridDR) {
+        const drCircles = podsGridDR.querySelectorAll('.pod-circle');
+        drCircles.forEach(c => {
+          if (isOutOfSync) {
+            c.className = 'pod-circle pod-out-of-sync';
+          } else {
+            c.className = 'pod-circle pod-running';
+          }
+        });
+      }
+    } else {
+      if (ingressRoute) {
+        ingressRoute.textContent = 'us-east-1 (Primary)';
+        ingressRoute.className = 'status-badge status-green';
+      }
+      if (clusterPrimary) clusterPrimary.style.opacity = '1.0';
+      if (clusterDr) clusterDr.style.opacity = '0.4';
+      
+      if (statusPrimary) {
+        statusPrimary.textContent = 'Online';
+        statusPrimary.className = 'status-badge status-green';
+      }
+      if (statusDr) {
+        statusDr.textContent = 'Standby';
+        statusDr.className = 'status-badge';
+        statusDr.style.background = 'var(--border)';
+        statusDr.style.color = 'var(--text-muted)';
+      }
+      
+      // Primary pods match current sync status
+      if (podsGrid) {
+        const primaryCircles = podsGrid.querySelectorAll('.pod-circle');
+        primaryCircles.forEach(c => {
+          if (isOutOfSync) {
+            c.className = 'pod-circle pod-out-of-sync';
+          } else {
+            c.className = 'pod-circle pod-running';
+          }
+        });
+      }
+      
+      // DR pods standby (grey/offline)
+      if (podsGridDR) {
+        const drCircles = podsGridDR.querySelectorAll('.pod-circle');
+        drCircles.forEach(c => {
+          c.className = 'pod-circle';
+        });
+      }
+    }
+  }
+
+  // Monitor DR Failover toggle change
+  if (toggleFailover) {
+    toggleFailover.addEventListener('change', () => {
+      updatePodVisuals();
+      
+      // Log routing target switches
+      const logBox = $('healerLogs');
+      if (logBox) {
+        const row = document.createElement('div');
+        if (toggleFailover.checked) {
+          row.textContent = `[TRAFFIC] Ingress routing failover active: Redirecting traffic target to eu-central-1 (DR). us-east-1 degraded.`;
+        } else {
+          row.textContent = `[TRAFFIC] Ingress routing failover resolved: Restored traffic target to us-east-1 (Primary).`;
+        }
+        logBox.appendChild(row);
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+    });
+  }
 
   btnCommit.addEventListener('click', () => {
     isOutOfSync = true;
@@ -1027,11 +1136,7 @@ function initGitOpsSimulator() {
     syncStatus.textContent = 'OutOfSync';
     syncStatus.className = 'status-badge status-orange';
     
-    // Set pods to OutOfSync status
-    const circles = podsGrid.querySelectorAll('.pod-circle');
-    circles.forEach(circle => {
-      circle.className = 'pod-circle pod-out-of-sync';
-    });
+    updatePodVisuals();
 
     btnCommit.disabled = true;
     btnCommit.classList.add('disabled');
@@ -1045,22 +1150,34 @@ function initGitOpsSimulator() {
     syncStatus.textContent = 'Syncing...';
     syncStatus.className = 'status-badge status-blue';
 
-    const circles = podsGrid.querySelectorAll('.pod-circle');
+    const primaryCircles = podsGrid ? podsGrid.querySelectorAll('.pod-circle') : [];
+    const drCircles = podsGridDR ? podsGridDR.querySelectorAll('.pod-circle') : [];
+    const maxPods = Math.max(primaryCircles.length, drCircles.length);
     
-    // Rolling update simulator: roll pods one by one
-    for (let i = 0; i < circles.length; i++) {
-      circles[i].className = 'pod-circle pod-pending';
+    // Rolling update simulator: roll pods across both clusters during sync
+    for (let i = 0; i < maxPods; i++) {
+      if (primaryCircles[i]) primaryCircles[i].className = 'pod-circle pod-pending';
+      if (drCircles[i]) drCircles[i].className = 'pod-circle pod-pending';
+      
       await new Promise(r => setTimeout(r, 600));
-      circles[i].className = 'pod-circle pod-running';
+      
+      if (primaryCircles[i]) primaryCircles[i].className = 'pod-circle pod-running';
+      if (drCircles[i]) drCircles[i].className = 'pod-circle pod-running';
     }
 
+    isOutOfSync = false;
     syncStatus.textContent = 'Synced';
     syncStatus.className = 'status-badge status-green';
     nextVersion += 0.1;
 
     btnCommit.disabled = false;
     btnCommit.classList.remove('disabled');
+    
+    updatePodVisuals();
   });
+
+  // Initial display setup
+  updatePodVisuals();
 }
 
 /* ══════════════════════════════════════════
