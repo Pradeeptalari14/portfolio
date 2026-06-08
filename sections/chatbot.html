@@ -20,7 +20,7 @@
           <p class="chat-status"><span class="status-dot"></span> Online SRE Assistant</p>
         </div>
       </div>
-      <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close Chat">
+      <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close Chat" tabindex="-1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
@@ -32,21 +32,21 @@
 
     <!-- Suggestions Panel -->
     <div class="chat-suggestions" id="chatSuggestions">
-      <button class="suggestion-chip" data-query="Who is Pradeep?">👤 About Pradeep</button>
-      <button class="suggestion-chip" data-query="List all SRE Tools">🛠️ List SRE Tools</button>
-      <button class="suggestion-chip" data-query="Explain RAG Knowledge Chatbot">🧠 RAG Chatbot (Vector DB)</button>
-      <button class="suggestion-chip" data-query="Tell me about Kubernetes Troubleshooting Agent">⚓ K8s Troubleshooting Agent</button>
-      <button class="suggestion-chip" data-query="Explain AI-Powered Log Analyzer">🪵 AI Log Analyzer</button>
-      <button class="suggestion-chip" data-query="What is SRE GenAI Copilot?">🛡️ SRE GenAI Copilot</button>
-      <button class="suggestion-chip" data-query="Show Self-Healing Infrastructure Platform">⚡ Self-Healing Platform</button>
-      <button class="suggestion-chip" data-query="What is DevOps Copilot?">🤖 DevOps Copilot (LLM)</button>
-      <button class="suggestion-chip" data-query="How can I contact you?">📧 Get in Touch</button>
+      <button class="suggestion-chip" data-query="Who is Pradeep?" tabindex="-1">👤 About Pradeep</button>
+      <button class="suggestion-chip" data-query="List all SRE Tools" tabindex="-1">🛠️ List SRE Tools</button>
+      <button class="suggestion-chip" data-query="Explain RAG Knowledge Chatbot" tabindex="-1">🧠 RAG Chatbot (Vector DB)</button>
+      <button class="suggestion-chip" data-query="Tell me about Kubernetes Troubleshooting Agent" tabindex="-1">⚓ K8s Troubleshooting Agent</button>
+      <button class="suggestion-chip" data-query="Explain AI-Powered Log Analyzer" tabindex="-1">🪵 AI Log Analyzer</button>
+      <button class="suggestion-chip" data-query="What is SRE GenAI Copilot?" tabindex="-1">🛡️ SRE GenAI Copilot</button>
+      <button class="suggestion-chip" data-query="Show Self-Healing Infrastructure Platform" tabindex="-1">⚡ Self-Healing Platform</button>
+      <button class="suggestion-chip" data-query="What is DevOps Copilot?" tabindex="-1">🤖 DevOps Copilot (LLM)</button>
+      <button class="suggestion-chip" data-query="How can I contact you?" tabindex="-1">📧 Get in Touch</button>
     </div>
 
     <!-- Input Bar -->
     <form class="chat-input-area" id="chatInputForm">
-      <input type="text" id="chatInputField" placeholder="Ask about DevOps, AI, or Pradeep's tools..." required autocomplete="off" aria-label="Ask about DevOps, AI, or Pradeep's tools" />
-      <button type="submit" class="chat-send-btn" aria-label="Send message">
+      <input type="text" id="chatInputField" placeholder="Ask about DevOps, AI, or Pradeep's tools..." required autocomplete="off" aria-label="Ask about DevOps, AI, or Pradeep's tools" tabindex="-1" />
+      <button type="submit" class="chat-send-btn" aria-label="Send message" tabindex="-1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </form>
@@ -370,14 +370,25 @@
   const inputForm = document.getElementById('chatInputForm');
   const inputField = document.getElementById('chatInputField');
   const suggestionChips = document.querySelectorAll('.suggestion-chip');
+  const chatFocusableEls = chatWindow.querySelectorAll('button, input');
+
+  function setChatFocusable(focusable) {
+    chatFocusableEls.forEach(el => {
+      el.setAttribute('tabindex', focusable ? '0' : '-1');
+    });
+  }
 
   // Load state and toggle view
   toggleBtn.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', closeChat);
 
+  // Initialize focus state
+  setChatFocusable(false);
+
   function toggleChat() {
     const isOpen = chatWindow.classList.toggle('open');
     chatWindow.setAttribute('aria-hidden', String(!isOpen));
+    setChatFocusable(isOpen);
     if (isOpen) {
       // Clear alert badge
       const badge = toggleBtn.querySelector('.toggle-badge');
@@ -394,6 +405,7 @@
   function closeChat() {
     chatWindow.classList.remove('open');
     chatWindow.setAttribute('aria-hidden', 'true');
+    setChatFocusable(false);
   }
 
   // Handle suggestion chips

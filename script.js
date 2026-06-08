@@ -610,12 +610,14 @@ function initProjectModal() {
     // Show modal and lock scroll
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
+    closeBtn.setAttribute('tabindex', '0');
     document.body.classList.add('modal-open');
   }
 
   function closeModal() {
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
+    closeBtn.setAttribute('tabindex', '-1');
     document.body.classList.remove('modal-open');
   }
 
