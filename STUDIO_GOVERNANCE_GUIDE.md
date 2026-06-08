@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **100 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **120 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 100 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 120 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -88,7 +88,7 @@ Do **NOT** use the Studio Catalog in these 20+ anti-patterns:
 
 ## 5. Repository Mapping
 
-The following catalog registers all **100 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
+The following catalog registers all **120 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
 
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
@@ -192,6 +192,26 @@ The following catalog registers all **100 Developer Studios** to their team owne
 | 98 | GPU Scheduler & K8s Allocator Studio | [gpu-scheduler/](file:///d:/Domain/tools/gpu-scheduler/index.html) | `tp-gpu-scheduler` | AI Engineering | `main` | YAML, K8s, Kueue | Ray Cluster, Advanced k8s |
 | 99 | MCP Server Builder Studio | [mcp-server/](file:///d:/Domain/tools/mcp-server/index.html) | `tp-mcp-server` | AI Engineering | `main` | Python, MCP, pip | Strands SRE Agent, MCP Studio |
 | 100 | AI Agentic Workflow Compiler Studio | [agent-workflow/](file:///d:/Domain/tools/agent-workflow/index.html) | `tp-agent-workflow` | AI Engineering | `main` | Python, LangGraph, pip | Strands SRE Agent, MCP Server |
+| 101 | Azure Cognitive Search AI Studio | [azure-search-ai/](file:///d:/Domain/tools/azure-search-ai/index.html) | `tp-azure-search-ai` | AI Engineering | `main` | Python, Azure Search SDK | Enterprise LLM, Vector DB |
+| 102 | GCP Vertex AI Model Registry Studio | [gcp-vertex-ai/](file:///d:/Domain/tools/gcp-vertex-ai/index.html) | `tp-gcp-vertex-ai` | AI Engineering | `main` | Python, google-cloud-aiplatform | MLflow Tracking, DataOps Studio |
+| 103 | Azure AKS Cluster Studio | [azure-aks/](file:///d:/Domain/tools/azure-aks/index.html) | `tp-azure-aks` | Cloud Infrastructure | `main` | HCL, Terraform, Kubernetes | Advanced k8s, Terraform Architect |
+| 104 | Azure App Service Deployer | [azure-app-service/](file:///d:/Domain/tools/azure-app-service/index.html) | `tp-azure-app-service` | Cloud Infrastructure | `main` | HCL, Terraform, Azure CLI | Terraform Architect, DNS & SSL PKI |
+| 105 | Azure Arc Hybrid Management Studio | [azure-arc/](file:///d:/Domain/tools/azure-arc/index.html) | `tp-azure-arc` | Cloud Infrastructure | `main` | Bash, Azure Connected Machine | Advanced k8s, Kyverno Policy |
+| 106 | GCP GKE Autopilot Cluster Studio | [gcp-gke-autopilot/](file:///d:/Domain/tools/gcp-gke-autopilot/index.html) | `tp-gcp-gke-autopilot` | Cloud Infrastructure | `main` | HCL, Terraform, Kubernetes | Advanced k8s, Terraform Architect |
+| 107 | GCP Cloud Run Serverless Studio | [gcp-cloud-run/](file:///d:/Domain/tools/gcp-cloud-run/index.html) | `tp-gcp-cloud-run` | Cloud Infrastructure | `main` | HCL, Terraform, GCP SDK | Knative Serverless, Terraform Architect |
+| 108 | GCP Anthos Service Mesh Studio | [gcp-anthos/](file:///d:/Domain/tools/gcp-anthos/index.html) | `tp-gcp-anthos` | Cloud Infrastructure | `main` | Istio ASM, YAML, Kubernetes | Service Mesh Studio, Kubernetes |
+| 109 | Azure DevOps Pipelines Studio | [azure-devops-pipelines/](file:///d:/Domain/tools/azure-devops-pipelines/index.html) | `tp-azure-devops-pipelines` | DevOps Team | `main` | YAML, Azure Pipelines | GitHub Actions, Gitlab Studio |
+| 110 | GCP Cloud Build Studio | [gcp-cloud-build/](file:///d:/Domain/tools/gcp-cloud-build/index.html) | `tp-gcp-cloud-build` | DevOps Team | `main` | YAML, Google Cloud Build | Dagger Pipelines, GitHub Actions |
+| 111 | Azure Bicep/ARM Studio | [azure-bicep-arm/](file:///d:/Domain/tools/azure-bicep-arm/index.html) | `tp-azure-bicep-arm` | Platform Engineering | `main` | Bicep, ARM Templates | Terraform Architect, IDP Template |
+| 112 | Azure ACR Security Guardrails | [azure-acr-secure/](file:///d:/Domain/tools/azure-acr-secure/index.html) | `tp-azure-acr-secure` | Security Team | `main` | HCL, Terraform, Cosign | Container Registry, Kyverno Policy |
+| 113 | Azure Key Vault Secret Manager | [azure-key-vault/](file:///d:/Domain/tools/azure-key-vault/index.html) | `tp-azure-key-vault` | Security Team | `main` | HCL, Terraform, Vault | Secret Management, Vault Secrets |
+| 114 | Azure Functions Studio | [azure-functions/](file:///d:/Domain/tools/azure-functions/index.html) | `tp-azure-functions` | Platform Engineering | `main` | Node.js, Python, Host JSON | Linux Studio, Python SRE |
+| 115 | GCP Deployment Manager Studio | [gcp-deployment-manager/](file:///d:/Domain/tools/gcp-deployment-manager/index.html) | `tp-gcp-deployment-manager` | Platform Engineering | `main` | Python, YAML, GCP DM | Terraform Architect, IDP Template |
+| 116 | GCP Secret Manager Studio | [gcp-secret-manager/](file:///d:/Domain/tools/gcp-secret-manager/index.html) | `tp-gcp-secret-manager` | Security Team | `main` | HCL, Terraform, GCP Secrets | Secret Management, Vault Secrets |
+| 117 | GCP Cloud Functions Studio | [gcp-cloud-functions/](file:///d:/Domain/tools/gcp-cloud-functions/index.html) | `tp-gcp-cloud-functions` | Platform Engineering | `main` | Python, Node.js, Pub/Sub | Linux Studio, Python SRE |
+| 118 | GCP Cloud Spanner Studio | [gcp-cloud-spanner/](file:///d:/Domain/tools/gcp-cloud-spanner/index.html) | `tp-gcp-cloud-spanner` | Database Ops | `main` | SQL, DDL, gcloud CLI | Database Clustering, Vector DB |
+| 119 | Azure Monitor & Log Analytics Studio | [azure-monitor/](file:///d:/Domain/tools/azure-monitor/index.html) | `tp-azure-monitor` | SRE Team | `main` | HCL, Kusto Query Language | OpenTelemetry Collector, Logging |
+| 120 | GCP Cloud Operations Monitoring Studio | [gcp-cloud-operations/](file:///d:/Domain/tools/gcp-cloud-operations/index.html) | `tp-gcp-cloud-operations` | SRE Team | `main` | JSON, MQL, Stackdriver | OpenTelemetry Collector, Logging |
 
 ---
 

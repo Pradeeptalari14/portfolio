@@ -811,10 +811,10 @@ graph TD
         end
         
         subgraph EKS Control Plane
-            Master[K8s API Server] <-->|OIDC Auth| IAM[AWS IAM Roles]
+            Master[K8s API Server] ---|OIDC Auth| IAM[AWS IAM Roles]
         end
         
-        Nodes <-->|Managed by| Master
+        Nodes ---|Managed by| Master
     end
             </pre>
           </div>

@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **100 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **120 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 100 Studios
+    loop For each of the 120 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -68,7 +68,7 @@ graph TD
 
 ## 2. Batch Repository Creation Automation Script
 
-You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 91 public repositories under your profile:
+You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 120 public repositories under your profile:
 
 ```javascript
 // File: scratch/create-github-repos.js
@@ -111,12 +111,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 99 target repositories have been processed!");
+console.log("🎉 All 120 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 99-Repository Execution Matrix
+## 3. Exhaustive 120-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -222,6 +222,26 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 98 | GPU Scheduler & K8s Allocator Studio | `Pradeeptalari14/tp-gpu-scheduler` | `gpu-policy.yaml` | `/config` | `kubectl apply -f gpu-policy.yaml` | `kubectl get clusterpolicy` |
 | 99 | MCP Server Builder Studio | `Pradeeptalari14/tp-mcp-server` | `mcp-server.py` | `/scripts` | `python3 mcp-server.py` | `python3 mcp-server.py --check` |
 | 100 | AI Agentic Workflow Compiler Studio | `Pradeeptalari14/tp-agent-workflow` | `agent-workflow.py` | `/workflows` | `python3 agent-workflow.py` | `python3 agent-workflow.py --check` |
+| 101 | Azure Cognitive Search AI Studio | `Pradeeptalari14/tp-azure-search-ai` | `search_config.json` | `/config` | `curl -X PUT "https://service.search.windows.net/indexes/index?api-version=2023-11-01" -H "Content-Type: application/json" -d @search_config.json` | `az search index show --name index --service-name service` |
+| 102 | GCP Vertex AI Model Registry Studio | `Pradeeptalari14/tp-gcp-vertex-ai` | `vertex_deploy.py` | `/scripts` | `python3 vertex_deploy.py` | `python3 vertex_deploy.py --check` |
+| 103 | Azure AKS Cluster Studio | `Pradeeptalari14/tp-azure-aks` | `aks_cluster.tf` | `/infra/aks` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 104 | Azure App Service Deployer | `Pradeeptalari14/tp-azure-app-service` | `webapp_config.tf` | `/infra/appservice` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 105 | Azure Arc Hybrid Management Studio | `Pradeeptalari14/tp-azure-arc` | `arc_onboard.sh` | `/scripts` | `bash arc_onboard.sh` | `azcmagent show` |
+| 106 | GCP GKE Autopilot Cluster Studio | `Pradeeptalari14/tp-gcp-gke-autopilot` | `gke_autopilot.tf` | `/infra/gke` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 107 | GCP Cloud Run Serverless Studio | `Pradeeptalari14/tp-gcp-cloud-run` | `cloud_run.tf` | `/infra/run` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 108 | GCP Anthos Service Mesh Studio | `Pradeeptalari14/tp-gcp-anthos` | `asm_policy.yaml` | `/deploy/asm` | `kubectl apply -f asm_policy.yaml` | `kubectl get peerauthentication` |
+| 109 | Azure DevOps Pipelines Studio | `Pradeeptalari14/tp-azure-devops-pipelines` | `azure-pipelines.yml` | `/` | `az pipelines run --name pipeline` | `az pipelines build list` |
+| 110 | GCP Cloud Build Studio | `Pradeeptalari14/tp-gcp-cloud-build` | `cloudbuild.yaml` | `/` | `gcloud builds submit --config=cloudbuild.yaml` | `gcloud builds list` |
+| 111 | Azure Bicep/ARM Studio | `Pradeeptalari14/tp-azure-bicep-arm` | `main.bicep` | `/infra/bicep` | `az deployment group create --resource-group rg --template-file main.bicep` | `az deployment group list --resource-group rg` |
+| 112 | Azure ACR Security Guardrails | `Pradeeptalari14/tp-azure-acr-secure` | `acr_policy.tf` | `/infra/acr` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 113 | Azure Key Vault Secret Manager | `Pradeeptalari14/tp-azure-key-vault` | `keyvault.tf` | `/infra/keyvault` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 114 | Azure Functions Studio | `Pradeeptalari14/tp-azure-functions` | `function.json` | `/deploy/functions` | `func azure functionapp publish app` | `func azure functionapp list` |
+| 115 | GCP Deployment Manager Studio | `Pradeeptalari14/tp-gcp-deployment-manager` | `deployment.yaml` | `/deploy/dm` | `gcloud deployment-manager deployments create dep --config=deployment.yaml` | `gcloud deployment-manager deployments list` |
+| 116 | GCP Secret Manager Studio | `Pradeeptalari14/tp-gcp-secret-manager` | `secret_config.tf` | `/infra/secrets` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 117 | GCP Cloud Functions Studio | `Pradeeptalari14/tp-gcp-cloud-functions` | `main.py` | `/deploy/functions` | `gcloud functions deploy func --runtime python39 --trigger-http` | `gcloud functions describe func` |
+| 118 | GCP Cloud Spanner Studio | `Pradeeptalari14/tp-gcp-cloud-spanner` | `spanner_ddl.sql` | `/db/spanner` | `gcloud spanner databases ddl update db --instance=inst --ddl-file=spanner_ddl.sql` | `gcloud spanner databases ddl describe db --instance=inst` |
+| 119 | Azure Monitor & Log Analytics Studio | `Pradeeptalari14/tp-azure-monitor` | `monitor_rules.tf` | `/infra/monitor` | `terraform init && terraform apply -auto-approve` | `terraform show` |
+| 120 | GCP Cloud Operations Monitoring Studio | `Pradeeptalari14/tp-gcp-cloud-operations` | `metrics_dashboard.json` | `/deploy/dashboards` | `gcloud monitoring dashboards create --config-from-file=metrics_dashboard.json` | `gcloud monitoring dashboards list` |
 
 ---
 
@@ -253,9 +273,9 @@ Whenever a configuration needs an update:
 
 ### D. SRE Best Practices: Managing 99 Repositories at Scale
 
-As your platform scales to 100 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+As your platform scales to 120 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
-   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 99 repositories individually, define them at the **GitHub Organization level**.
+   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 120 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
 2. **Standard Repository Template:**
    - Create a base template repository (e.g., `tp-template-base`) pre-configured with the standard `.gitignore`, `LICENSE`, and default security linter workflows.
