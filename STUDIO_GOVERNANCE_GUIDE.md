@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **99 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **100 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 99 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 100 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -88,7 +88,7 @@ Do **NOT** use the Studio Catalog in these 20+ anti-patterns:
 
 ## 5. Repository Mapping
 
-The following catalog registers all **99 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
+The following catalog registers all **100 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
 
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
@@ -191,6 +191,7 @@ The following catalog registers all **99 Developer Studios** to their team owner
 | 97 | AI Synthetic Data Generator Studio | [synthetic-data/](file:///d:/Domain/tools/synthetic-data/index.html) | `tp-synthetic-data` | AI Engineering | `main` | Python, pandas, pip | DevOps AI RAG, MLflow Tracking |
 | 98 | GPU Scheduler & K8s Allocator Studio | [gpu-scheduler/](file:///d:/Domain/tools/gpu-scheduler/index.html) | `tp-gpu-scheduler` | AI Engineering | `main` | YAML, K8s, Kueue | Ray Cluster, Advanced k8s |
 | 99 | MCP Server Builder Studio | [mcp-server/](file:///d:/Domain/tools/mcp-server/index.html) | `tp-mcp-server` | AI Engineering | `main` | Python, MCP, pip | Strands SRE Agent, MCP Studio |
+| 100 | AI Agentic Workflow Compiler Studio | [agent-workflow/](file:///d:/Domain/tools/agent-workflow/index.html) | `tp-agent-workflow` | AI Engineering | `main` | Python, LangGraph, pip | Strands SRE Agent, MCP Server |
 
 ---
 

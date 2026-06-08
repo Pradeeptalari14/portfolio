@@ -1186,5 +1186,17 @@
     "tag": "mcp-server.py",
     "link": "mcp-server/",
     "repository": "Pradeeptalari14/tp-mcp-server"
+  },
+  {
+    "title": "AI Agentic Workflow Compiler Studio",
+    "desc": "Design robust multi-agent orchestration frameworks. Generate workflow graph execution files, define agent persona capabilities, select communication protocols, and register tools hooks.",
+    "category": "ai",
+    "icon": "🤖",
+    "color": "rgb(142, 68, 173)",
+    "borderClass": "border-fuchsia-200",
+    "bgClass": "bg-fuchsia-50/10",
+    "tag": "agent-workflow.py",
+    "link": "agent-workflow/",
+    "repository": "Pradeeptalari14/tp-agent-workflow"
   }
 ]

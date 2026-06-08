@@ -118,6 +118,7 @@ export default defineConfig({
         syntheticdata: resolve(__dirname, 'tools/synthetic-data/index.html'),
         gpuscheduler: resolve(__dirname, 'tools/gpu-scheduler/index.html'),
         mcpserver: resolve(__dirname, 'tools/mcp-server/index.html'),
+        agentworkflow: resolve(__dirname, 'tools/agent-workflow/index.html'),
       }
     }
   }

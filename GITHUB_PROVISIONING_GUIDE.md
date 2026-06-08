@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **99 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **100 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 99 Studios
+    loop For each of the 100 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -221,6 +221,7 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 97 | AI Synthetic Data Generator Studio | `Pradeeptalari14/tp-synthetic-data` | `generate-dataset.py` | `/scripts` | `python3 generate-dataset.py` | `python3 generate-dataset.py --dry-run` |
 | 98 | GPU Scheduler & K8s Allocator Studio | `Pradeeptalari14/tp-gpu-scheduler` | `gpu-policy.yaml` | `/config` | `kubectl apply -f gpu-policy.yaml` | `kubectl get clusterpolicy` |
 | 99 | MCP Server Builder Studio | `Pradeeptalari14/tp-mcp-server` | `mcp-server.py` | `/scripts` | `python3 mcp-server.py` | `python3 mcp-server.py --check` |
+| 100 | AI Agentic Workflow Compiler Studio | `Pradeeptalari14/tp-agent-workflow` | `agent-workflow.py` | `/workflows` | `python3 agent-workflow.py` | `python3 agent-workflow.py --check` |
 
 ---
 
@@ -252,7 +253,7 @@ Whenever a configuration needs an update:
 
 ### D. SRE Best Practices: Managing 99 Repositories at Scale
 
-As your platform scales to 99 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+As your platform scales to 100 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
    - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 99 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
