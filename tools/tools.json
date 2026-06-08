@@ -1138,5 +1138,29 @@
     "tag": "sync-model.sh",
     "link": "modelops-gitops/",
     "repository": "Pradeeptalari14/tp-modelops-gitops"
+  },
+  {
+    "title": "LLM Red Teaming & Vulnerability Scanner Studio",
+    "desc": "Design automated red-teaming pipelines for LLM security audits. Generate Garak vulnerability scan configs, select security probe targets, and verify alignment thresholds.",
+    "category": "ai",
+    "icon": "🎯",
+    "color": "rgb(231, 76, 60)",
+    "borderClass": "border-red-200",
+    "bgClass": "bg-red-50/10",
+    "tag": "garak-config.yaml",
+    "link": "llm-redteaming/",
+    "repository": "Pradeeptalari14/tp-llm-redteaming"
+  },
+  {
+    "title": "AI Synthetic Data Generator Studio",
+    "desc": "Design synthetic training datasets pipelines. Generate python scripts for programmatic data synthesis, select pipeline topologies, configure schemas, and format output streams.",
+    "category": "ai",
+    "icon": "🧪",
+    "color": "rgb(52, 152, 219)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "generate-dataset.py",
+    "link": "synthetic-data/",
+    "repository": "Pradeeptalari14/tp-synthetic-data"
   }
 ]

@@ -114,6 +114,8 @@ export default defineConfig({
         qloratuning: resolve(__dirname, 'tools/qlora-tuning/index.html'),
         promptops: resolve(__dirname, 'tools/promptops/index.html'),
         modelopsgitops: resolve(__dirname, 'tools/modelops-gitops/index.html'),
+        llmredteaming: resolve(__dirname, 'tools/llm-redteaming/index.html'),
+        syntheticdata: resolve(__dirname, 'tools/synthetic-data/index.html'),
       }
     }
   }
