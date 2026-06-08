@@ -454,10 +454,16 @@
     }
 
     /* Customization list */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 1rem;
+    }
+
     .replace-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
     }
 
     .replace-table th, .replace-table td {
@@ -526,6 +532,7 @@
       background: #fff;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+      overflow-x: auto;
     }
 
     /* Footer */
@@ -563,6 +570,48 @@
     .toast.show {
       transform: translateY(0);
       opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta {
+        display: none;
+      }
+      .page-wrap {
+        padding: 2rem 1rem 4rem;
+      }
+      .project-header-card {
+        padding: 1.75rem 1.25rem;
+      }
+      .detail-card {
+        padding: 1.75rem 1.25rem;
+      }
+      .project-title {
+        font-size: 1.8rem;
+      }
+      .project-header-top {
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .project-title {
+        font-size: 1.5rem;
+      }
+      .project-actions {
+        width: 100%;
+        flex-direction: column;
+      }
+      .guide-btn, .download-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .project-header-card, .detail-card {
+        padding: 1.25rem 1rem;
+      }
+      .step-body {
+        padding-left: 0;
+        margin-top: 0.5rem;
+      }
     }
   </style>
 </head>
@@ -769,6 +818,7 @@ cd aws-cost-optimizer</code></pre>
           <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
             Configure these parameters inside your Python handler to adjust resource targeting filters:
           </p>
+          <div class="table-responsive">
           <table class="replace-table">
             <thead>
               <tr>
@@ -800,6 +850,7 @@ cd aws-cost-optimizer</code></pre>
               </tr>
             </tbody>
           </table>
+        </div>
         </section>
       </div>
 

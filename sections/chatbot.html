@@ -4,7 +4,10 @@
   <!-- Pulsing Chat Toggle Button -->
   <button class="chat-toggle-btn" id="chatToggleBtn" aria-label="Open AI Assistant">
     <div class="toggle-pulse"></div>
-    <span class="toggle-icon">🤖</span>
+    <div class="neural-core">
+      <div class="core-ring"></div>
+      <div class="core-dot"></div>
+    </div>
     <span class="toggle-badge">AI</span>
   </button>
 
@@ -14,15 +17,25 @@
     <!-- Window Header -->
     <div class="chat-header">
       <div class="chat-header-info">
-        <div class="chat-avatar">🤖</div>
+        <div class="chat-avatar">
+          <div class="neural-core" style="width:26px; height:26px;">
+            <div class="core-ring" style="border-width:1.5px; animation-duration: 6s;"></div>
+            <div class="core-dot" style="width:10px; height:10px; box-shadow: 0 0 6px #00f2fe;"></div>
+          </div>
+        </div>
         <div>
-          <h4 class="chat-title" id="chatPartnerTitle">TP. DevOps AI Partner</h4>
+          <h4 class="chat-title" id="chatPartnerTitle"><span class="gradient-glow-text">TP. DevOps AI Partner</span></h4>
           <p class="chat-status"><span class="status-dot"></span> Online SRE Assistant</p>
         </div>
       </div>
-      <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close Chat" tabindex="-1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button class="chat-reset-btn" id="chatResetBtn" aria-label="Reset Conversation" tabindex="-1" title="Reset Session">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        </button>
+        <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close Chat" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
     </div>
 
     <!-- Messages Container -->
@@ -32,20 +45,20 @@
 
     <!-- Suggestions Panel -->
     <div class="chat-suggestions" id="chatSuggestions">
+      <button class="suggestion-chip" data-query="What is DevOps?" tabindex="-1">⚙️ What is DevOps?</button>
+      <button class="suggestion-chip" data-query="What is SRE?" tabindex="-1">🛡️ What is SRE?</button>
+      <button class="suggestion-chip" data-query="What is AI & MLOps?" tabindex="-1">🧠 What is AI & MLOps?</button>
       <button class="suggestion-chip" data-query="Who is Pradeep?" tabindex="-1">👤 About Pradeep</button>
-      <button class="suggestion-chip" data-query="List all SRE Tools" tabindex="-1">🛠️ List SRE Tools</button>
-      <button class="suggestion-chip" data-query="Explain RAG Knowledge Chatbot" tabindex="-1">🧠 RAG Chatbot (Vector DB)</button>
-      <button class="suggestion-chip" data-query="Tell me about Kubernetes Troubleshooting Agent" tabindex="-1">⚓ K8s Troubleshooting Agent</button>
-      <button class="suggestion-chip" data-query="Explain AI-Powered Log Analyzer" tabindex="-1">🪵 AI Log Analyzer</button>
-      <button class="suggestion-chip" data-query="What is SRE GenAI Copilot?" tabindex="-1">🛡️ SRE GenAI Copilot</button>
-      <button class="suggestion-chip" data-query="Show Self-Healing Infrastructure Platform" tabindex="-1">⚡ Self-Healing Platform</button>
-      <button class="suggestion-chip" data-query="What is DevOps Copilot?" tabindex="-1">🤖 DevOps Copilot (LLM)</button>
+      <button class="suggestion-chip" data-query="List all interactive studios" tabindex="-1">🛠️ List SRE Tools</button>
+      <button class="suggestion-chip" data-query="Show core repositories" tabindex="-1">🐙 Code Repositories</button>
+      <button class="suggestion-chip" data-query="How to set up locally?" tabindex="-1">💻 Onboarding Setup guide</button>
+      <button class="suggestion-chip" data-query="Tell me about platform architecture" tabindex="-1">🏗️ Platform Architecture</button>
       <button class="suggestion-chip" data-query="How can I contact you?" tabindex="-1">📧 Get in Touch</button>
     </div>
 
     <!-- Input Bar -->
     <form class="chat-input-area" id="chatInputForm">
-      <input type="text" id="chatInputField" placeholder="Ask about DevOps, AI, or Pradeep's tools..." required autocomplete="off" aria-label="Ask about DevOps, AI, or Pradeep's tools" tabindex="-1" />
+      <input type="text" id="chatInputField" placeholder="Ask about DevOps, SRE, AI, or tools..." required autocomplete="off" aria-label="Ask about DevOps, SRE, AI, or tools" tabindex="-1" />
       <button type="submit" class="chat-send-btn" aria-label="Send message" tabindex="-1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
@@ -64,41 +77,76 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
 
-  /* Toggle button with pulse glow */
+  /* Pulsing Chat Toggle Button with Cyber Neural Core */
   .chat-toggle-btn {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
-    border: none;
+    background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
+    border: 1px solid rgba(0, 242, 254, 0.3);
     color: #ffffff;
-    font-size: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 4px 24px rgba(0, 242, 254, 0.25), 0 0 0 1px rgba(79, 70, 229, 0.15);
     position: relative;
-    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .chat-toggle-btn:hover {
-    transform: scale(1.08);
+    transform: scale(1.1) translateY(-2px);
+    border-color: #00f2fe;
+    box-shadow: 0 6px 30px rgba(0, 242, 254, 0.4), 0 0 12px rgba(79, 70, 229, 0.3);
+  }
+
+  /* Core design system */
+  .neural-core {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .core-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #00f2fe;
+    border-radius: 50%;
+    animation: coreRotate 8s linear infinite;
+  }
+  .core-dot {
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #00f2fe 0%, #4f46e5 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f2fe;
+    animation: corePulse 2s infinite ease-in-out;
+  }
+  @keyframes coreRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes corePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 10px #00f2fe; }
+    50% { transform: scale(1.25); box-shadow: 0 0 18px #00f2fe, 0 0 8px #4f46e5; }
   }
 
   .toggle-pulse {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     border-radius: 50%;
-    border: 2px solid #0ea5e9;
+    border: 2px solid #00f2fe;
     opacity: 0;
-    animation: buttonPulse 2s infinite;
+    animation: buttonPulse 2.2s infinite;
     pointer-events: none;
   }
 
   @keyframes buttonPulse {
     0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(1.4); opacity: 0; }
+    100% { transform: scale(1.45); opacity: 0; }
   }
 
   .toggle-badge {
@@ -111,20 +159,20 @@
     font-weight: 800;
     padding: 0.15rem 0.4rem;
     border-radius: 50px;
-    border: 2px solid #ffffff;
+    border: 2px solid #0f172a;
     letter-spacing: 0.05em;
   }
 
-  /* Chat window structure */
+  /* Glassmorphic Cyber-Window */
   .chat-window {
     width: 380px;
     height: 520px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    background: rgba(10, 15, 26, 0.88);
+    border: 1px solid rgba(0, 242, 254, 0.25);
     border-radius: var(--radius-lg);
-    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 16px 40px rgba(0, 242, 254, 0.15), 0 0 20px rgba(79, 70, 229, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     position: absolute;
     bottom: 80px;
     right: 0;
@@ -147,12 +195,13 @@
 
   /* Header details */
   .chat-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: linear-gradient(135deg, #090d16 0%, #111827 100%);
     padding: 1.1rem 1.4rem;
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .chat-header-info {
@@ -165,17 +214,24 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.15rem;
+    border: 1px solid rgba(0, 242, 254, 0.2);
   }
 
   .chat-title {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
+  }
+
+  .gradient-glow-text {
+    background: linear-gradient(90deg, #00f2fe, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .chat-status {
@@ -190,25 +246,35 @@
   .status-dot {
     width: 6px;
     height: 6px;
-    background: #10b981;
+    background: #00f2fe;
     border-radius: 50%;
     display: inline-block;
+    box-shadow: 0 0 6px #00f2fe;
+    animation: corePulse 1.5s infinite ease-in-out;
   }
 
-  .chat-close-btn {
+  .chat-close-btn, .chat-reset-btn {
     background: none;
     border: none;
     color: #94a3b8;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
     padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .chat-close-btn:hover {
-    color: white;
+    color: #ef4444;
   }
 
-  .chat-close-btn svg {
+  .chat-reset-btn:hover {
+    color: #00f2fe;
+    transform: rotate(45deg);
+  }
+
+  .chat-close-btn svg, .chat-reset-btn svg {
     width: 16px;
     height: 16px;
   }
@@ -221,130 +287,187 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: #f8f9fc/30;
+    background: rgba(9, 13, 22, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 254, 0.15) transparent;
+  }
+
+  .chat-messages::-webkit-scrollbar {
+    width: 5px;
+  }
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.15);
+    border-radius: 3px;
   }
 
   .chat-bubble {
-    max-width: 82%;
-    padding: 0.75rem 1rem;
-    border-radius: 14px;
+    max-width: 85%;
+    padding: 0.8rem 1.1rem;
+    border-radius: 16px;
     font-size: 0.84rem;
-    line-height: 1.5;
+    line-height: 1.55;
     word-wrap: break-word;
   }
 
   .chat-bubble.bot {
-    background: #ffffff;
-    color: var(--text-primary);
-    border: 1px solid var(--border);
+    background: rgba(23, 28, 41, 0.8);
+    color: #e2e8f0;
+    border: 1px solid rgba(0, 242, 254, 0.15);
     border-top-left-radius: 2px;
     align-self: flex-start;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 12px rgba(0, 242, 254, 0.05);
   }
 
   .chat-bubble.user {
-    background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     color: #ffffff;
     border-top-right-radius: 2px;
     align-self: flex-end;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
   }
 
   /* Suggestion badges */
   .chat-suggestions {
     display: flex;
-    gap: 0.4rem;
-    padding: 0.6rem 1rem;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
     overflow-x: auto;
-    border-top: 1px solid var(--border);
-    background: #ffffff;
-    scrollbar-width: none; /* Firefox */
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(9, 13, 22, 0.9);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 254, 0.2) transparent;
   }
 
   .chat-suggestions::-webkit-scrollbar {
-    display: none; /* Chrome */
+    height: 4px;
+  }
+  .chat-suggestions::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.2);
+    border-radius: 2px;
   }
 
   .suggestion-chip {
-    padding: 0.4rem 0.85rem;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
+    padding: 0.45rem 0.95rem;
+    background: rgba(23, 28, 41, 0.85);
+    border: 1px solid rgba(0, 242, 254, 0.15);
     border-radius: 50px;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: #94a3b8;
     white-space: nowrap;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .suggestion-chip:hover {
-    border-color: var(--accent-primary);
-    color: var(--accent-primary);
-    background: rgba(79, 70, 229, 0.05);
+    border-color: #00f2fe;
+    color: #00f2fe;
+    background: rgba(0, 242, 254, 0.06);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 242, 254, 0.15);
   }
 
   /* Message input field */
   .chat-input-area {
-    padding: 0.85rem 1rem;
-    border-top: 1px solid var(--border);
-    background: #ffffff;
+    padding: 0.9rem 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(9, 13, 22, 0.95);
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
 
   .chat-input-area input {
     flex: 1;
-    border: 1px solid var(--border);
+    background: rgba(23, 28, 41, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50px;
-    padding: 0.55rem 1.1rem;
-    font-size: 0.82rem;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.84rem;
+    color: #ffffff;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .chat-input-area input:focus {
-    border-color: var(--accent-primary);
+    border-color: #00f2fe;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
   }
 
   .chat-send-btn {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: var(--accent-primary);
+    background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
     border: none;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     flex-shrink: 0;
   }
 
   .chat-send-btn:hover {
-    background: #4338ca;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
   }
 
   .chat-send-btn svg {
     width: 14px;
     height: 14px;
-    transform: rotate(0deg);
   }
 
-  /* Markdown layout overrides inside chatbot links */
-  .chat-bubble a {
-    color: #4f46e5;
+  /* Formatting element overrides inside chat bubble */
+  .chat-bubble.bot a {
+    color: #00f2fe;
     font-weight: 600;
-    text-decoration: underline;
+    text-decoration: none;
+    border-bottom: 1.5px dashed rgba(0, 242, 254, 0.4);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .chat-bubble.bot a:hover {
+    color: #4f46e5;
+    border-bottom-color: #4f46e5;
   }
 
-  .chat-bubble ul, .chat-bubble ol {
-    margin-top: 0.4rem;
-    padding-left: 1.1rem;
+  .chat-bubble.bot code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(0, 242, 254, 0.08);
+    color: #00f2fe;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(0, 242, 254, 0.12);
   }
-  .chat-bubble li {
-    margin-bottom: 0.2rem;
+
+  .chat-bubble.bot pre {
+    background: #090d16;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+  }
+
+  .chat-bubble.bot pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #e2e8f0;
+    font-size: 0.76rem;
+  }
+
+  .typing-indicator span {
+    color: #94a3b8;
+    font-style: italic;
+    opacity: 0.7;
+    animation: blinkText 1.5s infinite;
+  }
+
+  @keyframes blinkText {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
   }
 
   @media (max-width: 480px) {
@@ -366,6 +489,7 @@
   const toggleBtn = document.getElementById('chatToggleBtn');
   const chatWindow = document.getElementById('chatWindow');
   const closeBtn = document.getElementById('chatCloseBtn');
+  const resetBtn = document.getElementById('chatResetBtn');
   const messagesBox = document.getElementById('chatMessages');
   const inputForm = document.getElementById('chatInputForm');
   const inputField = document.getElementById('chatInputField');
@@ -381,6 +505,9 @@
   // Load state and toggle view
   toggleBtn.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', closeChat);
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetChat);
+  }
 
   // Initialize focus state
   setChatFocusable(false);
@@ -396,7 +523,7 @@
       
       // Auto-greeting
       if (messagesBox.children.length === 0) {
-        addBotMessage("👋 Hello SRE Engineer! I am **TP DevOps AI Partner** – a localized agent specialized in cloud operations, DevOps architectures, and SRE tools.<br><br>Ask me anything about Talari Pradeep's skills, qualifications, or click the chips below to test my automation launchers!");
+        addBotMessage("👋 Hello SRE Engineer! I am **TP DevOps AI Partner** – a futuristic, localized agent specialized in cloud operations, DevOps architectures, and SRE tools.<br><br>Ask me about **DevOps workflow loops**, **SRE reliability runbooks**, **AI/MLOps pipelines**, or click the suggestion chips below to query specific details!");
       }
       setTimeout(() => inputField.focus(), 150);
     }
@@ -406,6 +533,20 @@
     chatWindow.classList.remove('open');
     chatWindow.setAttribute('aria-hidden', 'true');
     setChatFocusable(false);
+  }
+
+  function resetChat() {
+    messagesBox.style.opacity = '0';
+    messagesBox.style.transform = 'translateY(10px)';
+    messagesBox.style.transition = 'all 0.25s ease';
+    
+    setTimeout(() => {
+      messagesBox.innerHTML = '';
+      messagesBox.style.opacity = '1';
+      messagesBox.style.transform = 'translateY(0)';
+      addBotMessage("👋 Cyber Session re-initialized! I am **TP DevOps AI Partner** – SRE digital agent active.<br><br>Ask me about **DevOps workflow loops**, **SRE reliability runbooks**, or **AI/MLOps pipelines**!");
+      scrollToBottom();
+    }, 250);
   }
 
   // Handle suggestion chips
@@ -427,22 +568,17 @@
 
   function submitQuery(query) {
     addUserMessage(query);
-    
-    // Scroll to bottom
     scrollToBottom();
 
     // Trigger typing simulation
     const typingIndicator = addTypingIndicator();
     
     setTimeout(() => {
-      // Remove typing indicator
       typingIndicator.remove();
-      
-      // Process response
       const answer = generateAnswer(query);
       addBotMessage(answer);
       scrollToBottom();
-    }, 600 + Math.random() * 600);
+    }, 500 + Math.random() * 500);
   }
 
   function addUserMessage(text) {
@@ -462,7 +598,7 @@
   function addTypingIndicator() {
     const bubble = document.createElement('div');
     bubble.className = 'chat-bubble bot typing-indicator';
-    bubble.innerHTML = '<span style="opacity:0.6;font-style:italic;">AI is analyzing metrics...</span>';
+    bubble.innerHTML = '<span>AI is analyzing telemetry...</span>';
     messagesBox.appendChild(bubble);
     return bubble;
   }
@@ -475,6 +611,72 @@
     {
       keywords: ['pradeep', 'who is', 'profile', 'about', 'accenture', 'healthcare', 'resume', 'cv'],
       answer: "👤 **Talari Pradeep** is a DevOps & Cloud Engineer specializing in AWS, Kubernetes, Terraform, and CI/CD operations. He has experience working on enterprise healthcare projects at Accenture. You can view his skills under [Skills](/skills/) or view his projects under [Projects](/projects/)."
+    },
+    {
+      keywords: ['devops', 'development', 'operations', 'cicd', 'deployment flow'],
+      answer: "⚡ **DevOps (Development & Operations)** is a software engineering methodology that integrates development and operations teams to automate the build, test, scan, and release cycle.<br><br>" +
+              "• **Where it is used**: In the portfolio, DevOps principles guide target delivery pipelines (declarative Jenkinsfiles, GitLab CI, and GitHub Actions) to compile code and roll out containerized services.<br>" +
+              "• **What tools are used**: Jenkins, GitHub Actions, GitLab CI/CD, and Docker.<br>" +
+              "• **How it helps**: By orchestrating automated stages (such as SonarQube static analysis, Trivy vulnerability audits, and ECR packaging), DevOps slashes build-to-release latency, guarantees build stability, and secures deployment flows."
+    },
+    {
+      keywords: ['sre', 'site reliability', 'reliability', 'slo', 'sli', 'error budget', 'uptime', 'health check'],
+      answer: "🛡️ **SRE (Site Reliability Engineering)** is a discipline that applies software engineering practices to infrastructure operations to build highly reliable, scalable, and self-healing systems.<br><br>" +
+              "• **Where it is used**: SRE techniques are configured across monitoring telemetry dashboards, centralized logging systems, and incident response automation modules.<br>" +
+              "• **What tools are used**: Prometheus, Grafana, Alertmanager, Loki, ELK Stack, Ansible, and Shell/Bash scripting.<br>" +
+              "• **How it helps**: SRE defines concrete Service Level Objectives (SLOs), triggers instant Slack alerts on disk/memory shortages, parses stack logs dynamically, and invokes self-healing playbooks (e.g. purging host caches) to eliminate production downtime."
+    },
+    {
+      keywords: ['ai', 'artificial intelligence', 'mlops', 'rag', 'llm', 'slm', 'agent', 'vector db', 'ollama', 'chroma'],
+      answer: "🧠 **AI & MLOps** represents the integration of machine learning pipelines, autonomous agents, and Large Language Models (LLMs) with standard DevOps operations.<br><br>" +
+              "• **Where it is used**: Detailed inside Pradeep's MLOps initiatives:<ul>" +
+              "<li>**[DevOps AI RAG Studio](/tools/ai/)**: Queries private documentation files using ChromaDB vector database and local embeddings.</li>" +
+              "<li>**[K8s Troubleshooting Agent](/tools/kubernetes/)**: Diagnoses pod CrashLoopBackOffs using LLM analysis.</li>" +
+              "<li>**[MLflow Tracking Studio](/tools/mlflow/)**: Registers model weights and tracks runs.</li>" +
+              "<li>**[Strands SRE Agent](/tools/strands/)**: Visualizes autonomous agentic loops.</li>" +
+              "<li>**[Enterprise LLM Studio](/tools/llm/)**: Provisions vLLM/Triton GPU scaling pipelines.</li>" +
+              "<li>**[SLM Local Studio](/tools/slm/)**: Generates local Ollama Modelfiles.</li>" +
+              "</ul>" +
+              "• **How it helps**: AI automates root-cause checks on application log streams, audits Terraform deployment files for scale policies, and designs diagnostic shell templates in real-time."
+    },
+    {
+      keywords: ['studios', 'studios list', 'all tools', 'generator', 'launchers', 'categories'],
+      answer: "🛠️ **Interactive Automation Studios**: Pradeep has designed 77+ specialized studios categorized under `/tools/` to automate DevOps workflows:<br><br>" +
+              "• **AI & MLOps**: [Enterprise LLM Studio](/tools/llm/), [Local SLM Studio](/tools/slm/), [MLflow Tracking](/tools/mlflow/), [Strands SRE Agent](/tools/strands/), [DevOps AI RAG](/tools/ai/) for configuring models.<br>" +
+              "• **Cloud & Orchestration**: [k8s Script Generator](/tools/kubernetes/), [Helm Chart Studio](/tools/helm/), [ArgoCD GitOps](/tools/argocd/), [Terraform Architect](/tools/terraform/), [Service Mesh](/tools/mesh/) for cluster operations.<br>" +
+              "• **CI/CD Pipelines**: [GitHub Actions](/tools/github-actions/), [GitLab CI/CD](/tools/gitlab/), [Jenkins Shared Library](/tools/jenkins/) for automating builds.<br>" +
+              "• **Config & Automation**: [Ansible Playbook Builder](/tools/ansible/), [Docker Manager](/tools/docker/), [Secret Management](/tools/secrets/), [FinOps Studio](/tools/finops/) for configuration state management.<br>" +
+              "• **Observability & Scripting**: [Monitoring Telemetry](/tools/monitoring/), [Logging Studio](/tools/logging/), [Linux Sysadmin](/tools/linux/), [Chaos Engineering](/tools/chaos/) for performance logs.<br><br>" +
+              "Click any links inside the main portal directory to launch the desired automation dashboard!"
+    },
+    {
+      keywords: ['repos', 'repositories', 'code bases', 'github', 'source code'],
+      answer: "🐙 **GitHub Repositories**: Pradeep's DevOps projects are hosted under his GitHub space (`Pradeeptalari14`):<br><br>" +
+              "1. **[AWS DevOps Control Center](https://github.com/Pradeeptalari14/aws-devops-dashboard)**: Node/Express telemetry control center with real-time AWS CloudWatch integration. Details under [DevOps Dashboard Project](/projects/aws-devops-dashboard.html).<br>" +
+              "2. **[Enterprise AWS EKS Deployment](https://github.com/Pradeeptalari14/aws-eks-deployment)**: Multi-subnet Kubernetes infrastructure provisioned via Terraform modules. Details under [EKS Deployment Project](/projects/aws-eks-deployment.html).<br>" +
+              "3. **[Jenkins Shared Library](https://github.com/Pradeeptalari14/jenkins-shared-library)**: Reusable Groovy shared classes standardizing build/security/deploy gates. Details under [Jenkins Shared Library Project](/projects/jenkins-shared-library.html).<br>" +
+              "4. **[SRE Monitoring System](https://github.com/Pradeeptalari14/sre-monitoring-system)**: Observability stack configuring Prometheus servers and Grafana alert targets. Details under [SRE Monitoring Project](/projects/sre-monitoring-system.html).<br>" +
+              "5. **[Terraform AWS Modules](https://github.com/Pradeeptalari14/terraform-aws-modules)**: Declarative VPC, EC2, and S3 modules utilizing remote DynamoDB state locking. Details under [Terraform Modules Project](/projects/terraform-aws-modules.html).<br>" +
+              "6. **[AWS Cost Optimizer Bot](https://github.com/Pradeeptalari14/aws-cost-optimizer)**: Serverless Python Lambda pruner deleting orphaned resources daily. Details under [Cost Optimizer Project](/projects/aws-cost-optimizer.html)."
+    },
+    {
+      keywords: ['onboarding', 'developer guide', 'setup local', 'npm run dev', 'npm test', 'contribution'],
+      answer: "💻 **Developer Onboarding & Setup**:<br>Follow these steps to contribute to the portfolio repository or deploy it locally:<br><br>" +
+              "• **Prerequisites**: Ensure Node.js (v20.x+) and npm (v10.x+) are installed on your OS environment.<br>" +
+              "• **Clone & Install**: Run `git clone https://github.com/Pradeeptalari14/portfolio.git && npm install` in your shell.<br>" +
+              "• **Start Dev Server**: Launch `npm run dev` to boot the Vite server at `http://localhost:5173`. Updates hot-reload instantly.<br>" +
+              "• **Run Quality Tests**: Run `npm test` to trigger the Vitest + JSDOM testing suite checking DOM routing actions.<br>" +
+              "• **Compile Build**: Run `npm run build` to verify tree-shaking compiler bundle output in `dist/` folder.<br>" +
+              "• **Add Custom Studio**: Register metadata config block in `tools/tools.json`, create index page under `tools/`, and add input key mappings to `vite.config.js`."
+    },
+    {
+      keywords: ['architecture', 'deployment', 'nginx', 'kubernetes', 'helm'],
+      answer: "🏗️ **Architecture & Deployment Options**:<br><br>" +
+              "• **Platform Architecture**: Designed as a static Single Page App (SPA) served via Nginx containers. Relies on ES Modules, vanilla CSS, and dynamic client-side templating using the `SreCore` library.<br>" +
+              "• **GitHub Pages**: Pushes to `main` auto-compile and deploy static assets using GitHub Actions workflows.<br>" +
+              "• **Docker Container**: Build and spin up locally: `docker build -t portfolio . && docker run -d -p 8080:80 portfolio`.<br>" +
+              "• **Kubernetes & Helm**: Rollout service manifests using `kubectl apply -f infra/k8s/` or trigger structured upgrades: `helm upgrade --install portfolio infra/helm/portfolio`.<br>" +
+              "• **AWS CDN S3 (Terraform)**: Initialize backend and deploy CloudFront cache distributions: `terraform init && terraform apply`."
     },
     {
       keywords: ['rag', 'vector db', 'embedding', 'chroma', 'nomic', 'retrieval', 'knowledge chatbot'],
@@ -497,100 +699,12 @@
       answer: "🤖 **Strands SRE AI Agent**: The Strands Agents SDK is a model-driven framework for building autonomous AI agents that can run plans, execute shell tools, and orchestrate multi-agent triage workflows to resolve production outages offline.<br><br>Scaffold custom python SRE agents, multi-agent swarms, Model Context Protocol (MCP) servers, and OpenTelemetry logging traces using Pradeep's **[Strands SRE Agent Studio](/tools/strands/)**!"
     },
     {
-      keywords: ['tool', 'generator', 'scripts', 'list', 'studio', 'studios'],
-      answer: "🛠️ Pradeep has designed 50 interactive automation studios:<br><br>" +
-             "**AI & MLOps Studios:**<br>" +
-             "• [Enterprise LLM Studio](/tools/llm/)<br>" +
-             "• [Local SLM Studio](/tools/slm/)<br>" +
-             "• [MLflow Tracking Studio](/tools/mlflow/)<br>" +
-             "• [Strands SRE Agent Studio](/tools/strands/)<br>" +
-             "• [DevOps AI RAG Studio](/tools/ai/)<br>" +
-             "• [LLM Guardrails Studio](/tools/llm-guardrails/)<br>" +
-             "• [Ray Cluster Studio](/tools/ray-cluster/)<br>" +
-             "• [AI Evaluation Studio](/tools/ai-eval/)<br>" +
-             "• [Feature Store Studio](/tools/feature-store/)<br>" +
-             "• [AIOps Studio](/tools/aiops/)<br><br>" +
-             "**Cloud & Orchestration:**<br>" +
-             "• [k8s Script Generator](/tools/kubernetes/)<br>" +
-             "• [Helm Chart Studio](/tools/helm/)<br>" +
-             "• [ArgoCD Studio](/tools/argocd/)<br>" +
-             "• [Terraform Architect](/tools/terraform/)<br>" +
-             "• [Service Mesh Studio](/tools/mesh/)<br>" +
-             "• [API Gateway Studio](/tools/api-gateway/)<br>" +
-             "• [Progressive Delivery Studio](/tools/progressive-delivery/)<br>" +
-             "• [Edge WASM Studio](/tools/edge-wasm/)<br>" +
-             "• [Confidential Enclave Studio](/tools/confidential-enclave/)<br><br>" +
-             "**CI/CD Pipelines:**<br>" +
-             "• [GitHub Actions Studio](/tools/github-actions/)<br>" +
-             "• [GitLab CI/CD Studio](/tools/gitlab/)<br>" +
-             "• [Jenkins Pipeline Studio](/tools/jenkins/)<br>" +
-             "• [Webhooks Studio](/tools/webhooks/)<br><br>" +
-             "**Configuration & Automation:**<br>" +
-             "• [Ansible Playbook Builder](/tools/ansible/)<br>" +
-             "• [Docker Manager](/tools/docker/)<br>" +
-             "• [Secret Management Studio](/tools/secrets/)<br>" +
-             "• [GitOps Secrets Studio](/tools/gitops-secrets/)<br>" +
-             "• [Database Migration Studio](/tools/db-migration/)<br>" +
-             "• [FinOps Studio](/tools/finops/)<br>" +
-             "• [DNS & SSL PKI Studio](/tools/dns-ssl/)<br>" +
-             "• [Backup & DR Studio](/tools/backup-dr/)<br>" +
-             "• [Status & Incident Studio](/tools/status-incident/)<br>" +
-             "• [IDP Template Studio](/tools/idp-template/)<br>" +
-             "• [Container Registry Studio](/tools/container-registry/)<br>" +
-             "• [Database Clustering Studio](/tools/db-clustering/)<br><br>" +
-             "**Observability & Scripting:**<br>" +
-             "• [Monitoring Telemetry](/tools/monitoring/)<br>" +
-             "• [Logging Studio](/tools/logging/)<br>" +
-             "• [Linux Sysadmin Studio](/tools/linux/)<br>" +
-             "• [Shell Script Studio](/tools/shellscript/)<br>" +
-             "• [Python Studio](/tools/python/)<br>" +
-             "• [Chaos Engineering Studio](/tools/chaos/)<br>" +
-             "• [Distributed Tracing Studio](/tools/tracing/)<br>" +
-             "• [Policy-as-Code Studio](/tools/compliance/)<br>" +
-             "• [Performance Studio](/tools/performance/)<br>" +
-             "• [SLO & Error Budget Studio](/tools/slo/)<br>" +
-             "• [SAST Security Studio](/tools/sast/)<br>" +
-             "• [eBPF Tracing Studio](/tools/ebpf-tracing/)<br>" +
-             "• [GreenOps Studio](/tools/greenops/)<br>" +
-             "• [Decentralized Infrastructure Studio](/tools/decentralized-infra/)<br>" +
-             "• [DataOps Studio](/tools/dataops/)<br><br>" +
-             "Click any link to launch the studio!"
-    },
-    {
-      keywords: ['kubernetes', 'k8s', 'kube', 'kubectl', 'pod', 'deployment', 'cluster', 'orchestration', 'ingress', 'replica'],
-      answer: "⚓ **Kubernetes (K8s)**: An open-source container orchestration platform for automating deployment, scaling, and management of containerized applications. Pradeep is a **Certified Kubernetes Administrator (CKA)** and experienced in setting up EKS, Helm charts, ingress controllers, and network policies. You can generate custom manifests at the [Kubernetes Studio](/tools/kubernetes/)!"
-    },
-    {
-      keywords: ['terraform', 'iac', 'infrastructure as code', 'terraform associate', 'hcl'],
-      answer: "🔧 **Terraform (IaC)**: An open-source Infrastructure as Code tool by HashiCorp used to define and provision cloud resources safely using declarative configuration files (HCL). Pradeep is a **HashiCorp Certified Terraform Associate** and builds automated, dry-run templates for AWS environments. Scaffold your IaC using the [Terraform Architect Studio](/tools/terraform/)!"
-    },
-    {
-      keywords: ['ansible', 'playbook', 'yaml', 'inventory', 'configuration management', 'adhoc'],
-      answer: "🤖 **Ansible**: An agentless IT automation tool used for configuration management, application deployment, and task automation. Pradeep uses Ansible to automate server provisioning and application deployments. Check out the [Ansible Playbook Builder](/tools/ansible/) to generate playbooks and inventories!"
-    },
-    {
-      keywords: ['prometheus', 'grafana', 'monitor', 'alert', 'observability', 'metrics', 'telemetry'],
-      answer: "📈 **Observability (Prometheus & Grafana)**: Prometheus is an open-source monitoring and alerting toolkit that collects metrics as time-series data. Grafana is a visualization platform that maps these metrics into real-time dashboards. Pradeep builds robust telemetry systems to ensure 99.9% uptime. Configure yours at the [Monitoring Telemetry Studio](/tools/monitoring/)!"
-    },
-    {
-      keywords: ['ci/cd', 'pipeline', 'automation pipeline', 'continuous integration'],
-      answer: "⚡ **CI/CD (Continuous Integration / Continuous Delivery)**: Automates the process of building, testing, scanning, and deploying code. Pradeep designs secure pipelines containing static analysis (SonarQube) and container vulnerability scanning (Trivy). Try his pipeline builders:<ul><li>[GitHub Actions Studio](/tools/github-actions/)</li><li>[GitLab CI/CD Studio](/tools/gitlab/)</li><li>[Jenkins Pipeline Studio](/tools/jenkins/)</li></ul>"
-    },
-    {
       keywords: ['cert', 'credential', 'certification', 'achievement', 'qualification', 'cka', 'aws cert'],
       answer: "🎓 **Pradeep's Certifications**:<ul><li>AWS Certified DevOps Engineer – Professional</li><li>Certified Kubernetes Administrator (CKA)</li><li>AWS Certified Solutions Architect – Associate</li><li>HashiCorp Certified Terraform Associate</li><li>Linux Foundation Certified System Administrator (LFCS)</li></ul>"
     },
     {
       keywords: ['contact', 'hire', 'email', 'phone', 'linkedin', 'reach'],
       answer: "📧 **Contact Talari Pradeep**: You can email him at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com) or connect on [LinkedIn](https://linkedin.com/in/pradeep-talari). He is currently available for DevOps/SRE roles!"
-    },
-    {
-      keywords: ['skills', 'tech', 'stack', 'languages', 'go', 'shell'],
-      answer: "🚀 **Core Tech Stack**: AWS, Google Cloud, Azure, Kubernetes (EKS), Docker, Helm, ArgoCD, Terraform, Ansible, Prometheus, Grafana, GitHub Actions, Jenkins, Python, Bash/Shell, and Go. Details are on the [Skills Page](/skills/)."
-    },
-    {
-      keywords: ['devops', 'sre', 'site reliability', 'operations', 'devops engineer', 'reliability'],
-      answer: "💡 **DevOps & Site Reliability Engineering (SRE)**: DevOps bridges software development and system operations, while Site Reliability Engineering (SRE) applies software engineering practices to operations to build highly reliable, automated cloud infrastructures. Pradeep specializes in implementing these via CI/CD, IaC, and Kubernetes! View his dashboard at [/tools/](/tools/)."
     },
     {
       keywords: ['argocd', 'gitops', 'git ops', 'continuous deployment'],
@@ -615,10 +729,6 @@
     {
       keywords: ['aws', 'amazon', 'cloud', 'gcp', 'azure', 'vpc', 's3', 'ec2', 'iam', 'route53'],
       answer: "☁️ **Cloud Infrastructure (AWS/GCP/Azure)**: Pradeep is an **AWS Certified Solutions Architect** and **AWS Certified DevOps Engineer – Professional**. He configures secure VPCs, IAM policies, auto-scaling groups, and load balancers to ensure cloud reliability."
-    },
-    {
-      keywords: ['git', 'version control', 'repo', 'repository'],
-      answer: "🐙 **Git & Version Control**: Git is essential for version control and collaborating on codebase deployments. Pradeep implements trunk-based development and branch protection rules."
     },
     {
       keywords: ['docker', 'container', 'dockerfile', 'compose', 'docker-compose', 'image'],
@@ -648,255 +758,19 @@
               "2. **Check Events**: Run `kubectl describe pod <pod-name>` to look at the scheduling and container restart events.<br>" +
               "3. **Check Readiness & Liveness Probes**: Verify if failure thresholds are set too low or paths are misconfigured.<br>" +
               "4. **Check Resource Limits**: Verify if the pod exceeded memory limits and was killed by OOMKilled (Out-of-Memory).<br><br>" +
-              "*Source: Kubernetes Runbook v2*"
-    },
-    {
-      keywords: ['payment-api', 'database connection timeout', 'timeout error', 'unreachable'],
-      answer: "🔍 **DevOps AI Incident Analyzer (Level 2)**:<br><br>" +
-              "**Root Cause Analysis:**<br>" +
-              "• **Likely Cause:** Database unreachable (Database connection timeout)<br>" +
-              "• **Confidence:** 85%<br><br>" +
-              "**Recommended Actions:**<br>" +
-              "1. **Verify Database Service**: Ensure database instances/pods are running and listening on target ports.<br>" +
-              "2. **Check Network Policies**: Ensure the firewall/K8s NetworkPolicy allows traffic from `payment-api` namespace to the database namespace.<br>" +
-              "3. **Test DNS Resolution**: Check internal coreDNS resolution by executing `nslookup <database-service>`.<br><br>" +
-              "*Powered by Local LLM (Qwen3)*"
-    },
-    {
-      keywords: ['analyze cluster', 'analyze my cluster', 'cluster status', 'cluster health'],
-      answer: "⚓ **Kubernetes Copilot Diagnostics (Level 3)**:<br><br>" +
-              "Running cluster audits... Executing: `kubectl get pods -A`, `kubectl get events -A`, `kubectl top nodes`<br><br>" +
-              "🚨 **SRE Issues Summary:**<br>" +
-              "1. **payment-api** Pod is actively restarting (CrashLoopBackOff due to DB timeout).<br>" +
-              "2. Node **worker-03** Memory capacity is at **92%** utilization.<br>" +
-              "3. **Pending Pods** identified due to cluster-wide CPU shortages.<br><br>" +
-              "• **Priority:** <span style='color:#ef4444;font-weight:700;'>HIGH</span><br>" +
-              "• **Action Plan:** Initiate scale limits, inspect DB connectivity, and provision a new node."
-    },
-    {
-      keywords: ['cpu > 90%', 'cpu alert', 'grafana alert', 'prometheus alert', 'cpu high'],
-      answer: "📈 **Grafana Alert Analyzer (Level 4)**:<br><br>" +
-              "**Alert Received:** Node CPU High (> 90% Threshold)<br><br>" +
-              "⚠️ **Potential Root Causes:**<br>" +
-              "1. **Traffic Spike**: Check network connections rate counts.<br>" +
-              "2. **Infinite Loop Process**: Inspect top system processes using `htop`.<br>" +
-              "3. **Resource Misconfiguration**: Verify CPU request limits are set correctly.<br><br>" +
-              "**Suggested Actions:** Run `top -b -n 1 -o %CPU` to locate resource leaks. If necessary, trigger horizontal pod auto-scaling (HPA)."
-    },
-    {
-      keywords: ['jenkins log', 'maven dependency failed', 'pipeline failed', 'jenkins failure'],
-      answer: "👷 **Jenkins Pipeline Failure Analyzer (Level 5)**:<br><br>" +
-              "**Pipeline Log Audit:** Maven dependency download failed.<br><br>" +
-              "• **Root Cause:** Artifact repository (Nexus/Artifactory) is currently unavailable or network-blocked.<br>" +
-              "• **Fix Recommendation:** Check Nexus server availability on the internal network. Verify credentials inside Maven `settings.xml` settings."
-    },
-    {
-      keywords: ['deploy version', 'risk assessment', 'release risk'],
-      answer: "🛡️ **AI Change Risk Assessment (Level 6)**:<br><br>" +
-              "Analyzing release package... (Previous incidents, change history, DB schemas)<br><br>" +
-              "• **Risk Level:** <span style='color:#f59e0b;font-weight:700;'>MEDIUM</span><br>" +
-              "• **Reasons:**<br>" +
-              "  1. A similar microservice release failed last month due to memory leak configurations.<br>" +
-              "  2. Database schema modifications are detected in this deployment release.<br>" +
-              "• **Recommendation:** Deploy during the designated maintenance window with active telemetry scrapers enabled."
-    },
-    {
-      keywords: ['disk usage 95%', 'disk alert', 'cleanup.yml', 'self-healing', 'disk clean'],
-      answer: "⚡ **Self-Healing Automation Agent (Level 7)**:<br><br>" +
-              "**Alert:** Disk usage reached 95% on host server node.<br><br>" +
-              "• **Triggered Action:** Running automated cleanup playbook `ansible-playbook cleanup.yml`...<br>" +
-              "• **Cleanup Steps Executed:** Pruned unused Docker containers, cleared journald log caches, and archived temp dumps.<br>" +
-              "• **Result:** Disk usage successfully reduced to **55%**. Incident resolved automatically! ✅"
-    },
-    {
-      keywords: ['database', 'postgres', 'mysql', 'db connection', 'redis', 'mongodb', 'database connection', 'replication', 'backup'],
-      answer: "🗄️ **SRE Database & Storage Operations**:<br><br>" +
-              "**Common DB Troubleshooting Scenarios:**<br>" +
-              "1. **Connection Timeouts & Pools**: Verify database connection limits and pool configurations (`max_connections`). Check if the app is leaking active connection contexts.<br>" +
-              "2. **Replication & Lag**: For PostgreSQL/MySQL replica nodes, run `SELECT pg_last_wal_receive_lsn() - pg_last_wal_replay_lsn();` to audit replication lag.<br>" +
-              "3. **Backup & Recovery**: Automate dumps (e.g. `pg_dump`) via Kubernetes CronJobs, and store backups securely in AWS S3 buckets with lifecycle rules.<br>" +
-              "4. **Vector Databases (AI/RAG)**: For AI applications, Pradeep uses **ChromaDB** and **pgvector** to manage high-dimensional vector embeddings.<br><br>" +
-              "💡 **SRE Commands:**<br>" +
-              "• Test DB socket port connectivity: `nc -zv <db-host> <db-port>` (e.g., `5432` for Postgres, `3306` for MySQL).<br>" +
-              "• View active Postgres connections: `SELECT count(*), state FROM pg_stat_activity GROUP BY state;`<br><br>" +
-              "Scaffold clean environment setups and migrations using Pradeep's **[Terraform Architect](/tools/terraform/)** or the **[k8s Script Generator](/tools/kubernetes/)**!"
-    },
-    {
-      keywords: ['devops copilot', 'llm integration', 'llm copilot', 'copilot'],
-      answer: "🤖 **DevOps Copilot (LLM Integration)**: An AI-powered companion designed to integrate directly with LLMs (like Ollama, GPT-4, Llama 3, or Qwen) to assist in parsing terminal commands, writing scripts, and explaining configuration files. In Pradeep's workspace, this copilot capability is built directly into all 15 tool studios via the **🧠 Explain** drawer, allowing engineers to get instant, localized, and security-aware breakdowns of infrastructure-as-code files."
-    },
-    {
-      keywords: ['rag knowledge chatbot', 'rag chatbot', 'vector db', 'vector database', 'chromadb', 'qdrant', 'pgvector'],
-      answer: "🧠 **RAG Knowledge Chatbot (Vector DB)**: A private, localized chatbot that uses Retrieval-Augmented Generation (RAG) to search through internal SOPs, Kubernetes manuals, and runbooks. It stores document embeddings in a vector database (like ChromaDB, Qdrant, or pgvector) and queries them locally to eliminate LLM hallucinations.<br><br>💡 *Transition to MLOps*: This represents the entry point for DevOps engineers into MLOps, demonstrating how to containerize vector indices, set up embedding search microservices, and orchestrate private AI interfaces. Try generating a full setup at the **[DevOps AI RAG Studio](/tools/ai/)**!"
-    },
-    {
-      keywords: ['kubernetes troubleshooting agent', 'k8s troubleshooting', 'k8s agent', 'k8s troubleshooter', 'troubleshooting agent'],
-      answer: "⚓ **Kubernetes Troubleshooting Agent**: A smart AI agent capable of scanning active Kubernetes clusters, fetching logs, analyzing events, and suggesting step-by-step remediation plans for pod failures (such as `CrashLoopBackOff`, `ImagePullBackOff`, or `OOMKilled`). It combines cluster API telemetry with a fine-tuned DevOps LLM to perform automated root-cause analysis.<br><br>🚀 Try asking the chatbot to: **'analyze cluster'** or **'CrashLoopBackOff'** to see the Troubleshooting Agent's runbook diagnostics in action! Generate clean K8s specs at the **[Kubernetes Studio](/tools/kubernetes/)**."
-    },
-    {
-      keywords: ['ai-powered log analyzer', 'log analyzer', 'ai log', 'analyze logs', 'logstash', 'loki'],
-      answer: "🪵 **AI-Powered Log Analyzer**: An intelligent log parser that hooks into centralized logging streams (like ELK Stack, Promtail, or Grafana Loki). It monitors microservices log stdout, highlights stack traces, classifies error patterns, and uses generative AI to explain Maven build issues, Nginx routing errors, or DB socket exceptions.<br><br>🚀 Try asking this chatbot: **'jenkins log'** or **'payment-api db timeout'** to view the Log Analyzer's root-cause reports! Scaffold logging stacks at the **[Logging Studio](/tools/logging/)**."
-    },
-    {
-      keywords: ['sre genai copilot', 'sre copilot', 'risk assessment', 'release risk'],
-      answer: "🛡️ **SRE GenAI Copilot**: An advanced AI tool that performs risk assessment of CI/CD releases and infrastructure drift before deployment. It checks configuration changes (like Terraform plans or Kubernetes values) against past incidents, alerts, and schema changes to flag potential reliability hazards.<br><br>🚀 Ask the chatbot: **'deploy version risk'** to trigger a mock SRE risk audit! Learn more about pipeline scripts at the **[GitHub Actions Studio](/tools/github-actions/)** or **[Jenkins Studio](/tools/jenkins/)**."
-    },
-    {
-      keywords: ['self-healing infrastructure', 'self-healing', 'remediation', 'disk cleanup', 'ansible cleanup'],
-      answer: "⚡ **Self-Healing Infrastructure Platform**: An automated SRE system that detects high-priority alerts (like disk space exhaustion or node memory pressure) and executes pre-defined Ansible playbooks or shell scripts to remediate the issue automatically without human intervention.<br><br>🚀 Ask the chatbot: **'disk usage 95%'** to trigger the self-healing playbook automation simulator! Generate automation recipes at the **[Ansible Playbook Builder](/tools/ansible/)** or **[Shell Script Studio](/tools/shellscript/)**."
-    },
-    {
-      keywords: ['webhook', 'webhooks', 'slack webhook', 'teams webhook', 'hmac', 'pagerduty webhook'],
-      answer: "🔗 **Webhooks Studio**: Configure and generate secure HMAC-verified webhook receivers (FastAPI Python), event dispatchers (Slack, Teams, PagerDuty), reference JSON payloads, and SRE runbooks.<br><br>Easily secure your webhook integrations and generate all necessary code using Pradeep's **[Webhooks Studio](/tools/webhooks/)**!"
-    },
-    {
-      keywords: ['secrets', 'vault', 'secrets manager', 'sealed secrets', 'encryption'],
-      answer: "🔑 **Secret Management Studio**: Generate secure policies for HashiCorp Vault, Python secrets retrieval utilities, and Kubernetes Sealed Secrets manifests.<br><br>Learn more and scaffold configurations at the **[Secret Management Studio](/tools/secrets/)**!"
-    },
-    {
-      keywords: ['chaos', 'chaos mesh', 'resilience', 'chaos engineering', 'rollback'],
-      answer: "💥 **Chaos Engineering Studio**: Scaffold Chaos Mesh experiments, container resource stressors, and automated rollback/recovery runbooks.<br><br>Simulate outages and prepare defenses at the **[Chaos Engineering Studio](/tools/chaos/)**!"
-    },
-    {
-      keywords: ['service mesh', 'istio', 'linkerd', 'virtualservice', 'circuit breaker', 'mtls'],
-      answer: "🕸️ **Service Mesh Studio**: Configure Istio/Linkerd canary traffic routing rules, Envoy circuit breakers, and egress gateway mTLS rules.<br><br>Manage microservice mesh architectures at the **[Service Mesh Studio](/tools/mesh/)**!"
-    },
-    {
-      keywords: ['tracing', 'opentelemetry', 'otel', 'jaeger', 'apm', 'spans'],
-      answer: "🕵️ **Distributed Tracing Studio**: Generate OpenTelemetry collector configurations, dynamic tracer scripts (Python, Go, Node.js), and latency incident troubleshooting guides.<br><br>Instrument your workloads and track metrics at the **[Distributed Tracing Studio](/tools/tracing/)**!"
-    },
-    {
-      keywords: ['compliance', 'policy as code', 'opa', 'rego', 'kyverno', 'admission control'],
-      answer: "🛡️ **Policy-as-Code Studio**: Scaffold OPA Rego security policies, Kyverno admission controller rules, and compliance pipeline scan runners.<br><br>Enforce guardrails and audit resources at the **[Policy-as-Code Studio](/tools/compliance/)**!"
-    },
-    {
-      keywords: ['migration', 'liquibase', 'flyway', 'schema', 'rollback sql'],
-      answer: "🗄️ **Database Migration Studio**: Generate Liquibase YAML changesets, Flyway DDL migrations, and automated schema rollback recovery scripts.<br><br>Manage database upgrades safely at the **[Database Migration Studio](/tools/db-migration/)**!"
-    },
-    {
-      keywords: ['performance', 'load test', 'k6', 'locust', 'benchmarking'],
-      answer: "📈 **Performance Studio**: Generate k6 load testing scripts, Locust Python task definition scripts, automated execution shell scripts, and performance runbooks.<br><br>Test and benchmark your infrastructure at the **[Performance Studio](/tools/performance/)**!"
-    },
-    {
-      keywords: ['slo', 'sli', 'sla', 'error budget', 'burn rate'],
-      answer: "🎯 **SLO & Error Budget Studio**: Scaffold Prometheus alerting rules, ServiceLevelObjective Kubernetes manifest CRDs, and error-budget burn rate triage runbooks.<br><br>Define and audit your SLOs at the **[SLO & Error Budget Studio](/tools/slo/)**!"
-    },
-    {
-      keywords: ['sast', 'semgrep', 'trivy', 'security scan', 'dependency scan'],
-      answer: "🛡️ **SAST Security Studio**: Generate custom Semgrep rules, Trivy ignore settings, and automated CI security scanning workflows.<br><br>Audit your code and configuration compliance at the **[SAST Security Studio](/tools/sast/)**!"
-    },
-    {
-      keywords: ['finops', 'cost optimization', 'cloud custodian', 'lambda cleanup'],
-      answer: "💰 **FinOps & Cost Optimization Studio**: Scaffold Cloud Custodian compliance rules, AWS/GCP dynamic cleanup Python/Bash scripts, and cost budget alert thresholds.<br><br>Monitor and optimize your cloud hosting footprint at the **[FinOps Studio](/tools/finops/)**!"
-    },
-    {
-      keywords: ['dns', 'ssl', 'certificate', 'pki', 'certbot', 'lets encrypt'],
-      answer: "🌐 **DNS & SSL PKI Studio**: Scaffold ACME Certbot certificate renewal schedules, Cloudflare/Route53 DNS record sets JSON rules, and SRE cert expiry cron checks.<br><br>Manage domains and SSL certificates at the **[DNS & SSL PKI Studio](/tools/dns-ssl/)**!"
-    },
-    {
-      keywords: ['backup', 'disaster recovery', 'dr', 'velero', 'snapshot'],
-      answer: "💾 **Backup & Disaster Recovery Studio**: Generate Kubernetes Velero backup schedules, Postgres/MySQL cron snapshot dump rules, and SRE failover restore recovery playbooks.<br><br>Verify and run cluster backup policies at the **[Backup & DR Studio](/tools/backup-dr/)**!"
-    },
-    {
-      keywords: ['incident', 'status page', 'pagerduty', 'opsgenie', 'escalation'],
-      answer: "🚨 **Status Page & Incident Response Studio**: Scaffold PagerDuty/Opsgenie escalation rules, status page components configuration maps, and incident communication runbooks.<br><br>Setup incident escalation pathways at the **[Status & Incident Studio](/tools/status-incident/)**!"
-    },
-    {
-      keywords: ['api gateway', 'reverse proxy', 'nginx', 'traefik', 'rate limit'],
-      answer: "🚦 **API Gateway Studio**: Scaffold Nginx reverse proxy configs, Traefik ingress routes, Kong routing rules, and rate limit headers.<br><br>Manage gateway access at the **[API Gateway Studio](/tools/api-gateway/)**!"
-    },
-    {
-      keywords: ['sops', 'age', 'gitops secrets', 'decryption'],
-      answer: "🔐 **GitOps Secrets Studio**: Generate Mozilla SOPS configs, Age encrypted keys, and GitOps decryption runners.<br><br>Encrypt/decrypt configurations at the **[GitOps Secrets Studio](/tools/gitops-secrets/)**!"
-    },
-    {
-      keywords: ['idp', 'backstage', 'developer portal', 'software template'],
-      answer: "📦 **IDP Software Template Studio**: Scaffold Backstage service catalog metadata and developer software scaffolding templates.<br><br>Automate onboarding at the **[IDP Template Studio](/tools/idp-template/)**!"
-    },
-    {
-      keywords: ['progressive delivery', 'canary', 'argo rollouts', 'feature flags', 'openfeature'],
-      answer: "🚦 **Progressive Delivery Studio**: Scaffold Argo Rollouts canary releases, metrics analysis templates, and OpenFeature flag schemas.<br><br>Manage progressive delivery strategies at the **[Progressive Delivery Studio](/tools/progressive-delivery/)**!"
-    },
-    {
-      keywords: ['cosign', 'harbor', 'image signing', 'container registry'],
-      answer: "🏷️ **Container Registry Studio**: Generate Cosign image signing scripts, Harbor tag retention rules, and registry configurations.<br><br>Configure secure container registries at the **[Container Registry Studio](/tools/container-registry/)**!"
-    },
-    {
-      keywords: ['patroni', 'sentinel', 'db replication', 'database cluster', 'database ha'],
-      answer: "🗄️ **Database Clustering Studio**: Scaffold Postgres Patroni failover configurations, Redis Sentinel topologies, and cluster sync guides.<br><br>Set up high availability database clusters at the **[Database Clustering Studio](/tools/db-clustering/)**!"
-    },
-    {
-      keywords: ['llm guardrails', 'llama guard', 'prompt injection', 'input validation', 'safety guardrails'],
-      answer: "🛡️ **LLM Guardrails Studio**: Configure input/output validation, prompt injection shields, and SRE safety rules (NeMo/Llama Guard).<br><br>Manage LLM security guardrails at the **[LLM Guardrails Studio](/tools/llm-guardrails/)**!"
-    },
-    {
-      keywords: ['ray cluster', 'distributed training', 'kubeflow', 'gpu scale', 'autoscaling ray'],
-      answer: "⚡ **Ray Cluster Studio**: Orchestrate multi-node distributed training jobs, Ray clusters, and GPU autoscaling policies.<br><br>Configure distributed Ray clusters at the **[Ray Cluster Studio](/tools/ray-cluster/)**!"
-    },
-    {
-      keywords: ['ai eval', 'ragas', 'benchmarking ai', 'hallucination metric', 'trulens'],
-      answer: "📊 **AI Evaluation Studio**: Scaffold automated Ragas pipelines, model accuracy tests, and hallucination metrics logs.<br><br>Manage AI evaluation pipelines at the **[AI Evaluation Studio](/tools/ai-eval/)**!"
-    },
-    {
-      keywords: ['ebpf', 'ebpf tracing', 'cilium', 'kernel tracing', 'bpftrace'],
-      answer: "🐝 **eBPF Network Observability & Kernel Tracing Studio**: Generate kernel-level socket filters, Cilium network policies, and bpftrace performance scripts.<br><br>Configure eBPF tracing tools at the **[eBPF Tracing Studio](/tools/ebpf-tracing/)**!"
-    },
-    {
-      keywords: ['feature store', 'feast', 'offline store', 'online store', 'features registry'],
-      answer: "🗄️ **MLOps Feature Store Studio**: Generate Feast feature registries, offline/online database configurations, and feature definition scripts.<br><br>Manage feature stores at the **[Feature Store Studio](/tools/feature-store/)**!"
-    },
-    {
-      keywords: ['wasm', 'webassembly', 'edge wasm', 'spin', 'serverless edge'],
-      answer: "🌐 **Edge WASM & Serverless Orchestration Studio**: Orchestrate WebAssembly edge functions, Fermyon Spin configurations, and lightweight serverless runtimes.<br><br>Build serverless edge functions at the **[Edge WASM Studio](/tools/edge-wasm/)**!"
-    },
-    {
-      keywords: ['greenops', 'carbon', 'kepler', 'sustainability', 'green cloud'],
-      answer: "🌱 **GreenOps & Carbon-Aware Cloud Scheduler Studio**: Generate Kepler telemetry rules, carbon-intensity scheduling crons, and cost/carbon-offset SRE runbooks.<br><br>Audit your carbon footprint at the **[GreenOps Studio](/tools/greenops/)**!"
-    },
-    {
-      keywords: ['enclave', 'sgx', 'sev', 'nitro', 'confidential computing'],
-      answer: "🔒 **Confidential Computing & Secure Enclave Studio**: Orchestrate Intel SGX, AMD SEV, and AWS Nitro Enclaves. Generate attestation scripts and key-rotation pipelines.<br><br>Configure confidential enclaves at the **[Confidential Enclave Studio](/tools/confidential-enclave/)**!"
-    },
-    {
-      keywords: ['web3', 'decentralized', 'ipfs', 'blockchain', 'validator node'],
-      answer: "⛓️ **Web3 & Decentralized Infrastructure Node Monitoring Studio**: Monitor IPFS and blockchain nodes. Generate validator check scripts, peer discovery rules, and status alerts.<br><br>Manage decentralized nodes at the **[Decentralized Infrastructure Studio](/tools/decentralized-infra/)**!"
-    },
-    {
-      keywords: ['dataops', 'airflow', 'prefect', 'dag', 'dre', 'data reliability'],
-      answer: "🔀 **DataOps & Data Reliability Engineering (DRE) Studio**: Configure Airflow/Prefect pipelines, Great Expectations data verification tests, and runbooks.<br><br>Set up automated pipelines at the **[DataOps Studio](/tools/dataops/)**!"
-    },
-    {
-      keywords: ['aiops', 'anomaly', 'anomaly detection', 'holt winters', 'isolation forest'],
-      answer: "🧠 **AIOps & Telemetry Anomaly Detector Studio**: Generate PromQL anomaly detection queries, Isolation Forest python anomaly checks, and Logstash filters.<br><br>Manage anomalies at the **[AIOps Studio](/tools/aiops/)**!"
+              "*Tip: Try using [Kubernetes Troubleshooting Agent](/tools/kubernetes/) to generate detailed analysis scripts!*"
     }
   ];
 
   function generateAnswer(query) {
-    const q = query.toLowerCase().trim();
+    const q = query.toLowerCase();
     
-    // Check if query is a simple greeting
-    if (q === 'hi' || q === 'hello' || q === 'hey' || q === 'yo' || q === 'greetings') {
-      return "👋 Hello! I am **TP DevOps AI Partner** – a client-side SRE assistant. Ask me anything about Talari Pradeep's background, DevOps tools, or technical concepts (e.g. 'What is Kubernetes?', 'Tell me about RAG').";
-    }
-
-    // Check for SRE Shell Commands
+    // Check for direct command strings
     const commandsFound = [];
-    if (q.includes('df ') || q.includes('df\n') || q.includes('df -') || q === 'df') {
-      commandsFound.push("• `df` (Disk Free): Checks filesystem disk space usage. The `-h` flag prints size in human-readable gigabytes/megabytes, and `/` targets the root filesystem storage volume.");
+    if (q.includes('df -h') || q.includes('free -m') || q.includes('uptime') || q.includes('top ')) {
+      commandsFound.push("• `df -h` / `free -m` / `uptime` / `top`: Disk, Memory, and Load assessments. SREs check these to identify disk space shortages, swap leaks, or host execution overruns.");
     }
-    if (q.includes('free ') || q.includes('free\n') || q.includes('free -') || q === 'free') {
-      commandsFound.push("• `free` (Free Memory): Displays total, used, and available system RAM. The `-m` flag displays the statistics in megabytes (MB), and `-g` displays them in gigabytes (GB).");
-    }
-    if (q.includes('uptime')) {
-      commandsFound.push("• `uptime`: Shows how long the server has been running, active user sessions count, and load averages over the last 1, 5, and 15 minutes (crucial for checking CPU congestion).");
-    }
-    if (q.includes('systemctl') || q.includes('service ')) {
-      commandsFound.push("• `systemctl` / `service`: Used by sysadmins to manage systemd daemons (start, stop, enable, restart, and status checks of services like Nginx or Docker).");
-    }
-    if (q.includes('journalctl') || q.includes('tail ') || q.includes('cat ') || q.includes('grep ')) {
-      commandsFound.push("• `journalctl` / `tail` / `cat` / `grep`: Standard utility tools for viewing, searching, and tailing system logs and application files to troubleshoot SRE runtime issues.");
-    }
-    if (q.includes('curl') || q.includes('wget')) {
+    if (q.includes('curl ') || q.includes('wget ')) {
       commandsFound.push("• `curl` / `wget`: Command-line tools to transfer data from or to a server. Commonly used in SRE to perform API calls, validate endpoint status, and pull configuration sheets.");
     }
     if (q.includes('ping') || q.includes('nslookup') || q.includes('dig') || q.includes('traceroute')) {
@@ -909,7 +783,7 @@
       commandsFound.push("• `ps` / `kill` / `top` / `htop`: Processes management. Run to identify running processes, trace high CPU spikes, and terminate unresponsive jobs.");
     }
     if (q.includes('docker run') || q.includes('docker ps') || q.includes('docker build') || q.includes('docker exec') || q.includes('docker compose') || q.includes('docker-compose') || q.includes('docker images')) {
-      commandsFound.push("• `docker` CLI: Used to build, run, and manage isolated container instances. For example, `docker run` starts a container, `docker build` compiles a Dockerfile, and `docker-compose up` orchestrates multi-container workspaces. Scaffold container configurations at the **[Docker Manager](/tools/docker/)**!");
+      commandsFound.push("• `docker` CLI: Used to build, run, and manage container instances. For example, `docker run` starts a container, `docker build` compiles a Dockerfile, and `docker-compose up` orchestrates multi-container workspaces. Scaffold container configurations at the **[Docker Manager](/tools/docker/)**!");
     }
     if (q.includes('kubectl ') || q === 'kubectl') {
       commandsFound.push("• `kubectl` CLI: The command-line utility for communicating with Kubernetes cluster API gateways. Common tasks include: `kubectl apply -f` to deploy manifests, `kubectl get pods` to view container statuses, and `kubectl logs` to pull container logs. Scaffold manifest resources at the **[k8s Script Generator](/tools/kubernetes/)**!");
@@ -979,7 +853,7 @@
     const techWords = words.map(w => `*${w}*`).join(', ');
     
     return `🧠 **SRE Intelligent Assistant**: I analyzed your query keywords: ${techWords || 'your query'}.<br><br>` +
-           `While I don't have a direct answer pre-loaded for this exact phrase, you can ask about **Kubernetes**, **Terraform**, **Docker**, **Ansible**, **CI/CD**, or **RAG AI**. <br><br>` +
+           `While I don't have a direct answer pre-loaded for this exact phrase, you can ask about **DevOps workflow loops**, **SRE reliability runbooks**, or **AI/MLOps pipelines**.<br><br>` +
            `Feel free to check out Pradeep's work under the [Skills](/skills/) page, his [Projects](/projects/), or email him directly at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com).`;
   }
 
