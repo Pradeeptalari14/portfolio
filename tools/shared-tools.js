@@ -67,6 +67,92 @@
     }
   }
 
+  let lastCompiledCode = '';
+
+  function runSecurityAudit(code) {
+    const findings = [];
+    const lowercaseCode = code.toLowerCase();
+
+    // Rule 1: Open CIDR
+    if (code.includes('0.0.0.0/0')) {
+      findings.push({
+        rule: 'Open CIDR Block (0.0.0.0/0)',
+        severity: 'Critical',
+        desc: 'Traffic is allowed from any source IP address. This exposes resources directly to the internet.',
+        remediation: 'Restrict ingress rules to specific IP ranges or target security groups.'
+      });
+    } else {
+      findings.push({
+        rule: 'Restrictive CIDR Blocks',
+        severity: 'Passed',
+        desc: 'No wide-open CIDR blocks (0.0.0.0/0) detected in configuration.',
+        remediation: 'None'
+      });
+    }
+
+    // Rule 2: Unencrypted S3 Bucket
+    if (code.includes('aws_s3_bucket') && !code.includes('aws_s3_bucket_server_side_encryption_configuration') && !code.includes('sse_algorithm')) {
+      findings.push({
+        rule: 'Unencrypted S3 Bucket',
+        severity: 'Critical',
+        desc: 'S3 bucket resources should enforce server-side encryption to protect data at rest.',
+        remediation: 'Define aws_s3_bucket_server_side_encryption_configuration resource linking to the bucket.'
+      });
+    } else if (code.includes('aws_s3_bucket')) {
+      findings.push({
+        rule: 'Encrypted S3 Bucket',
+        severity: 'Passed',
+        desc: 'S3 bucket configurations enforce server-side encryption.',
+        remediation: 'None'
+      });
+    }
+
+    // Rule 3: Root User Accounts
+    if (lowercaseCode.includes('user: "root"') || lowercaseCode.includes('user: root') || lowercaseCode.includes('runasuser: 0') || lowercaseCode.includes('runasnonroot: false')) {
+      findings.push({
+        rule: 'Container Running as Root',
+        severity: 'Critical',
+        desc: 'Containers running as root can gain host-level privilege access during container escape exploits.',
+        remediation: 'Set runAsNonRoot: true, runAsUser: 1000 under securityContext, or configure non-root user in Dockerfile.'
+      });
+    } else {
+      findings.push({
+        rule: 'Non-Root Container Config',
+        severity: 'Passed',
+        desc: 'No active container run-as-root configurations detected.',
+        remediation: 'None'
+      });
+    }
+
+    // Rule 4: Missing healthchecks
+    const isK8s = lowercaseCode.includes('kind: deployment') || lowercaseCode.includes('kind: statefulset');
+    const isCompose = lowercaseCode.includes('version: "3') || lowercaseCode.includes('services:');
+    if (isK8s && !lowercaseCode.includes('livenessprobe') && !lowercaseCode.includes('readinessprobe')) {
+      findings.push({
+        rule: 'Missing Kubernetes Probes',
+        severity: 'Warning',
+        desc: 'Deployments should define liveness and readiness probes to enable zero-downtime rollouts and detect crash states.',
+        remediation: 'Add livenessProbe and readinessProbe spec settings under the container definition.'
+      });
+    } else if (isCompose && !lowercaseCode.includes('healthcheck:')) {
+      findings.push({
+        rule: 'Missing Docker Healthcheck',
+        severity: 'Warning',
+        desc: 'Compose microservices should specify a healthcheck block for cluster status routing.',
+        remediation: 'Add a healthcheck command block under the microservice config.'
+      });
+    } else if (isK8s || isCompose) {
+      findings.push({
+        rule: 'Healthchecks & Probes Configured',
+        severity: 'Passed',
+        desc: 'Container health probes or checks are explicitly defined in configuration.',
+        remediation: 'None'
+      });
+    }
+
+    return findings;
+  }
+
   // 2. Inject webhooks.json tab in the IDE file navbar
   function injectWebhookTab() {
     const tabContainer = document.querySelector('.tabs-scrollable') ||
@@ -131,6 +217,87 @@
       if (fileNameInput) fileNameInput.value = 'webhooks';
       const fileExtensionTag = $('file-extension-tag');
       if (fileExtensionTag) fileExtensionTag.textContent = '.json';
+    };
+
+    tabContainer.appendChild(btn);
+  }
+
+  // Inject linter tab
+  function injectLinterTab() {
+    const tabContainer = document.querySelector('.tabs-scrollable') ||
+                         (document.querySelector('.tab-btn') ? document.querySelector('.tab-btn').parentElement : null);
+    if (!tabContainer) return;
+    if ($('tab-linter')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'tab-linter';
+    btn.className = 'tab-btn';
+    btn.type = 'button';
+    btn.innerHTML = '🛡️ security.audit';
+
+    btn.onclick = () => {
+      // Deactivate all other tabs
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Hide custom visualization views if present
+      const flowContainer = $('mermaid-container');
+      if (flowContainer) flowContainer.classList.add('hidden');
+      const sandboxContainer = $('sandbox-viewport');
+      if (sandboxContainer) sandboxContainer.classList.add('hidden');
+
+      const outputBox = $('output-box');
+      if (outputBox) {
+        outputBox.classList.remove('hidden');
+
+        // Audit the cached compiled code
+        const codeToAudit = lastCompiledCode || outputBox.textContent || '';
+        const findings = runSecurityAudit(codeToAudit);
+
+        // Build HTML report with styling and dark mode harmony
+        const findingsHtml = findings.map(f => {
+          let badgeColor = '';
+          if (f.severity === 'Critical') badgeColor = 'bg-rose-500/20 text-rose-400 border border-rose-500/30';
+          else if (f.severity === 'Warning') badgeColor = 'bg-amber-500/20 text-amber-400 border border-amber-500/30';
+          else badgeColor = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+
+          return `
+            <div style="margin-bottom: 1rem; padding: 1rem; background: #020617; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.75rem; font-weight: bold; color: #f8fafc;">${f.rule}</span>
+                <span class="${badgeColor}" style="font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">${f.severity.toUpperCase()}</span>
+              </div>
+              <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 0.5rem;">${f.desc}</p>
+              ${f.remediation !== 'None' ? `
+                <div style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 0.5rem; margin-top: 0.5rem;">
+                  <span style="font-size: 9px; color: #64748b; font-weight: bold; text-transform: uppercase;">Remediation:</span>
+                  <pre style="background: #090d16; color: #34d399; font-family: monospace; font-size: 10px; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.2); overflow-x: auto; margin-top: 0.25rem;">${f.remediation}</pre>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+
+        outputBox.innerHTML = `
+          <div style="padding: 1.5rem; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); font-family: sans-serif; color: #cbd5e1; white-space: normal;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+              <h3 style="font-size: 0.9rem; font-weight: bold; color: #ffffff; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                <span>🛡️</span> IaC Security Guardrail Report
+              </h3>
+              <span style="font-size: 9px; font-family: monospace; color: #818cf8; background: rgba(129, 140, 248, 0.1); border: 1px solid rgba(129, 140, 248, 0.2); padding: 2px 6px; border-radius: 4px;">v1.0.0</span>
+            </div>
+            <div>
+              ${findingsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      // Update IDE file header labels
+      const fileNameInput = $('download-name-input');
+      if (fileNameInput) fileNameInput.value = 'security-audit-report';
+      const fileExtensionTag = $('file-extension-tag');
+      if (fileExtensionTag) fileExtensionTag.textContent = '.html';
     };
 
     tabContainer.appendChild(btn);
@@ -250,8 +417,11 @@
         const pdTab = $('tab-webhooks');
         if (pdTab) pdTab.classList.remove('active');
 
+        const linterTab = $('tab-linter');
+        if (linterTab) linterTab.classList.remove('active');
+
         const fileExtensionTag = $('file-extension-tag');
-        if (fileExtensionTag && tabId !== 'webhooks') {
+        if (fileExtensionTag && tabId !== 'webhooks' && tabId !== 'linter') {
           if (tabId === 'flow' || tabId === 'sandbox') {
             fileExtensionTag.textContent = '';
           } else if (tabId === 'script' || tabId === 'bash') {
@@ -273,6 +443,16 @@
           }
         }
 
+        // Cache the compiled code if switching to a code tab
+        if (tabId !== 'webhooks' && tabId !== 'linter') {
+          setTimeout(() => {
+            const outputBox = $('output-box');
+            if (outputBox) {
+              lastCompiledCode = outputBox.textContent;
+            }
+          }, 50);
+        }
+
         original(tabId);
       };
       window.switchTab.__wrapped = true;
@@ -283,6 +463,7 @@
   function init() {
     injectPagerDutyUI();
     injectWebhookTab();
+    injectLinterTab();
     injectNetworkStatusBadge();
 
     // Listen to changes for caching
@@ -293,6 +474,14 @@
         field.addEventListener('change', saveState);
       }
     });
+
+    // Cache initial code load
+    setTimeout(() => {
+      const outputBox = $('output-box');
+      if (outputBox) {
+        lastCompiledCode = outputBox.textContent;
+      }
+    }, 500);
 
     // Restore state and hook switchTab
     setTimeout(() => {

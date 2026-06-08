@@ -4346,4 +4346,36 @@ body.modal-open {
   to { transform: scale(1); opacity: 1; }
 }
 
+/* Custom GitOps Traffic Split & Pod Crash styling */
+.pod-circle.flash-traffic {
+  box-shadow: 0 0 12px var(--accent-primary);
+  transform: scale(1.15);
+}
+.pod-circle.pod-canary-active {
+  background: var(--accent-cyan) !important;
+  box-shadow: 0 0 12px var(--accent-cyan);
+}
+.pod-circle.pod-canary-active::after {
+  content: 'C';
+  font-size: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+.pod-circle.pod-crash-oomkilled {
+  background: #ef4444 !important;
+  box-shadow: 0 0 10px #ef4444;
+}
+.pod-circle.pod-crash-crashloopbackoff {
+  background: #f59e0b !important;
+  box-shadow: 0 0 10px #f59e0b;
+}
+.gitops-traffic-particle {
+  transition: all 0.6s linear;
+}
+
 

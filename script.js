@@ -1023,13 +1023,44 @@ function initGitOpsSimulator() {
   const statusPrimary = $('primary-cluster-status');
   const statusDr = $('dr-cluster-status');
 
+  const btnStrategyRolling = $('btnStrategyRolling');
+  const btnStrategyCanary = $('btnStrategyCanary');
+  const btnPromote = $('btnArgoPromote');
+
   if (!btnCommit || !btnSync) return;
 
   let isOutOfSync = false;
   let nextVersion = 2.1;
+  let rolloutStrategy = 'rolling'; // 'rolling' or 'canary'
+  let canaryStage = 'idle'; // 'idle', 'active', 'promoted'
+
+  if (btnStrategyRolling && btnStrategyCanary) {
+    btnStrategyRolling.addEventListener('click', () => {
+      rolloutStrategy = 'rolling';
+      btnStrategyRolling.classList.add('active');
+      btnStrategyCanary.classList.remove('active');
+      if (btnPromote) btnPromote.classList.add('hidden');
+      if (canaryStage === 'active') {
+        canaryStage = 'idle';
+        syncStatus.textContent = isOutOfSync ? 'OutOfSync' : 'Synced';
+        syncStatus.className = isOutOfSync ? 'status-badge status-orange' : 'status-badge status-green';
+        updatePodVisuals();
+      }
+    });
+    btnStrategyCanary.addEventListener('click', () => {
+      rolloutStrategy = 'canary';
+      btnStrategyCanary.classList.add('active');
+      btnStrategyRolling.classList.remove('active');
+      if (canaryStage === 'active' && btnPromote) {
+        btnPromote.classList.remove('hidden');
+      }
+    });
+  }
 
   function updatePodVisuals() {
     const isFailoverActive = toggleFailover && toggleFailover.checked;
+    const targetGrid = isFailoverActive ? podsGridDR : podsGrid;
+    const otherGrid = isFailoverActive ? podsGrid : podsGridDR;
     
     if (isFailoverActive) {
       if (ingressRoute) {
@@ -1049,26 +1080,6 @@ function initGitOpsSimulator() {
         statusDr.style.background = '';
         statusDr.style.color = '';
       }
-      
-      // Degrade/shutdown primary pods
-      if (podsGrid) {
-        const primaryCircles = podsGrid.querySelectorAll('.pod-circle');
-        primaryCircles.forEach(c => {
-          c.className = 'pod-circle';
-        });
-      }
-      
-      // DR pods match current sync state
-      if (podsGridDR) {
-        const drCircles = podsGridDR.querySelectorAll('.pod-circle');
-        drCircles.forEach(c => {
-          if (isOutOfSync) {
-            c.className = 'pod-circle pod-out-of-sync';
-          } else {
-            c.className = 'pod-circle pod-running';
-          }
-        });
-      }
     } else {
       if (ingressRoute) {
         ingressRoute.textContent = 'us-east-1 (Primary)';
@@ -1087,35 +1098,38 @@ function initGitOpsSimulator() {
         statusDr.style.background = 'var(--border)';
         statusDr.style.color = 'var(--text-muted)';
       }
-      
-      // Primary pods match current sync status
-      if (podsGrid) {
-        const primaryCircles = podsGrid.querySelectorAll('.pod-circle');
-        primaryCircles.forEach(c => {
+    }
+
+    if (otherGrid) {
+      otherGrid.querySelectorAll('.pod-circle').forEach(c => {
+        c.className = 'pod-circle';
+      });
+    }
+
+    if (targetGrid) {
+      const circles = targetGrid.querySelectorAll('.pod-circle');
+      circles.forEach((c, idx) => {
+        if (rolloutStrategy === 'canary' && canaryStage === 'active') {
+          if (idx === 0) {
+            c.className = 'pod-circle pod-running pod-canary-active';
+          } else {
+            c.className = isOutOfSync ? 'pod-circle pod-out-of-sync' : 'pod-circle pod-running';
+          }
+        } else {
           if (isOutOfSync) {
             c.className = 'pod-circle pod-out-of-sync';
           } else {
             c.className = 'pod-circle pod-running';
           }
-        });
-      }
-      
-      // DR pods standby (grey/offline)
-      if (podsGridDR) {
-        const drCircles = podsGridDR.querySelectorAll('.pod-circle');
-        drCircles.forEach(c => {
-          c.className = 'pod-circle';
-        });
-      }
+        }
+      });
     }
   }
 
-  // Monitor DR Failover toggle change
   if (toggleFailover) {
     toggleFailover.addEventListener('change', () => {
       updatePodVisuals();
       
-      // Log routing target switches
       const logBox = $('healerLogs');
       if (logBox) {
         const row = document.createElement('div');
@@ -1132,6 +1146,7 @@ function initGitOpsSimulator() {
 
   btnCommit.addEventListener('click', () => {
     isOutOfSync = true;
+    canaryStage = 'idle';
     commitHash.textContent = 'v' + nextVersion.toFixed(1) + '.' + Math.floor(Math.random() * 100);
     syncStatus.textContent = 'OutOfSync';
     syncStatus.className = 'status-badge status-orange';
@@ -1142,6 +1157,7 @@ function initGitOpsSimulator() {
     btnCommit.classList.add('disabled');
     btnSync.disabled = false;
     btnSync.classList.remove('disabled');
+    if (btnPromote) btnPromote.classList.add('hidden');
   });
 
   btnSync.addEventListener('click', async () => {
@@ -1150,34 +1166,160 @@ function initGitOpsSimulator() {
     syncStatus.textContent = 'Syncing...';
     syncStatus.className = 'status-badge status-blue';
 
-    const primaryCircles = podsGrid ? podsGrid.querySelectorAll('.pod-circle') : [];
-    const drCircles = podsGridDR ? podsGridDR.querySelectorAll('.pod-circle') : [];
-    const maxPods = Math.max(primaryCircles.length, drCircles.length);
-    
-    // Rolling update simulator: roll pods across both clusters during sync
-    for (let i = 0; i < maxPods; i++) {
-      if (primaryCircles[i]) primaryCircles[i].className = 'pod-circle pod-pending';
-      if (drCircles[i]) drCircles[i].className = 'pod-circle pod-pending';
+    const isFailoverActive = toggleFailover && toggleFailover.checked;
+    const targetGrid = isFailoverActive ? podsGridDR : podsGrid;
+    const targetCircles = targetGrid ? targetGrid.querySelectorAll('.pod-circle') : [];
+
+    if (rolloutStrategy === 'canary') {
+      canaryStage = 'active';
+      if (targetCircles[0]) {
+        targetCircles[0].className = 'pod-circle pod-pending';
+        await new Promise(r => setTimeout(r, 600));
+        targetCircles[0].className = 'pod-circle pod-running pod-canary-active';
+      }
       
-      await new Promise(r => setTimeout(r, 600));
+      syncStatus.textContent = 'Canary Active (90/10 Traffic Split)';
+      syncStatus.className = 'status-badge status-blue';
       
-      if (primaryCircles[i]) primaryCircles[i].className = 'pod-circle pod-running';
-      if (drCircles[i]) drCircles[i].className = 'pod-circle pod-running';
+      if (btnPromote) {
+        btnPromote.classList.remove('hidden');
+      }
+    } else {
+      const maxPods = targetCircles.length;
+      for (let i = 0; i < maxPods; i++) {
+        if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-pending';
+        await new Promise(r => setTimeout(r, 600));
+        if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-running';
+      }
+
+      isOutOfSync = false;
+      syncStatus.textContent = 'Synced';
+      syncStatus.className = 'status-badge status-green';
+      nextVersion += 0.1;
+
+      btnCommit.disabled = false;
+      btnCommit.classList.remove('disabled');
+      
+      updatePodVisuals();
     }
-
-    isOutOfSync = false;
-    syncStatus.textContent = 'Synced';
-    syncStatus.className = 'status-badge status-green';
-    nextVersion += 0.1;
-
-    btnCommit.disabled = false;
-    btnCommit.classList.remove('disabled');
-    
-    updatePodVisuals();
   });
 
-  // Initial display setup
+  if (btnPromote) {
+    btnPromote.addEventListener('click', async () => {
+      btnPromote.classList.add('hidden');
+      syncStatus.textContent = 'Syncing...';
+      syncStatus.className = 'status-badge status-blue';
+      
+      const isFailoverActive = toggleFailover && toggleFailover.checked;
+      const targetGrid = isFailoverActive ? podsGridDR : podsGrid;
+      const targetCircles = targetGrid ? targetGrid.querySelectorAll('.pod-circle') : [];
+      
+      for (let i = 1; i < targetCircles.length; i++) {
+        if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-pending';
+        await new Promise(r => setTimeout(r, 600));
+        if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-running';
+      }
+      
+      if (targetCircles[0]) {
+        targetCircles[0].className = 'pod-circle pod-running';
+      }
+      
+      canaryStage = 'promoted';
+      isOutOfSync = false;
+      syncStatus.textContent = 'Synced';
+      syncStatus.className = 'status-badge status-green';
+      nextVersion += 0.1;
+      
+      btnCommit.disabled = false;
+      btnCommit.classList.remove('disabled');
+      
+      updatePodVisuals();
+    });
+  }
+
+  // Stream simulation request particles
+  function startGitOpsTrafficSimulation() {
+    if (window.gitopsTrafficInterval) {
+      clearInterval(window.gitopsTrafficInterval);
+    }
+    
+    window.gitopsTrafficInterval = setInterval(() => {
+      if (!document.getElementById('playground')) return;
+      
+      const source = $('node-argocd');
+      if (!source) return;
+      
+      const isFailoverActive = toggleFailover && toggleFailover.checked;
+      const grid = isFailoverActive ? podsGridDR : podsGrid;
+      if (!grid) return;
+      
+      const pods = grid.querySelectorAll('.pod-wrapper');
+      if (!pods.length) return;
+      
+      let targetPod;
+      if (rolloutStrategy === 'canary' && canaryStage === 'active') {
+        if (Math.random() < 0.1) {
+          targetPod = pods[0];
+        } else {
+          const stableIndex = 1 + Math.floor(Math.random() * (pods.length - 1));
+          targetPod = pods[stableIndex];
+        }
+      } else {
+        const runningPods = Array.from(pods).filter(p => p.querySelector('.pod-circle').classList.contains('pod-running'));
+        if (!runningPods.length) return;
+        targetPod = runningPods[Math.floor(Math.random() * runningPods.length)];
+      }
+      
+      if (!targetPod) return;
+      
+      const circle = targetPod.querySelector('.pod-circle');
+      if (!circle || !circle.classList.contains('pod-running')) return;
+      
+      const particle = document.createElement('div');
+      particle.className = 'gitops-traffic-particle';
+      particle.style.cssText = `
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: ${circle.classList.contains('pod-canary-active') ? '#22d3ee' : '#6366f1'};
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10;
+        transition: all 0.6s linear;
+        box-shadow: 0 0 6px rgba(99, 102, 241, 0.8);
+      `;
+      
+      document.body.appendChild(particle);
+      
+      const srcRect = source.getBoundingClientRect();
+      const destRect = circle.getBoundingClientRect();
+      
+      const startX = srcRect.left + srcRect.width / 2 + window.scrollX;
+      const startY = srcRect.top + srcRect.height / 2 + window.scrollY;
+      
+      const endX = destRect.left + destRect.width / 2 + window.scrollX;
+      const endY = destRect.top + destRect.height / 2 + window.scrollY;
+      
+      particle.style.left = `${startX}px`;
+      particle.style.top = `${startY}px`;
+      
+      setTimeout(() => {
+        particle.style.left = `${endX}px`;
+        particle.style.top = `${endY}px`;
+        particle.style.opacity = '0';
+      }, 20);
+      
+      setTimeout(() => {
+        particle.remove();
+        circle.classList.add('flash-traffic');
+        setTimeout(() => circle.classList.remove('flash-traffic'), 200);
+      }, 620);
+    }, 400);
+  }
+
+  // Initial display setup & traffic simulation
   updatePodVisuals();
+  startGitOpsTrafficSimulation();
 }
 
 /* ══════════════════════════════════════════
@@ -1202,6 +1344,45 @@ function initChaosHealingDashboard() {
   if (!logBox || !cpuVal || !btnCpu) return;
 
   let activeAnomaly = null;
+  const cpuHistory = Array(10).fill(28);
+  const ramHistory = Array(10).fill(45);
+  const latencyHistory = Array(10).fill(120);
+  const errorsHistory = Array(10).fill(0.0);
+
+  function drawSparkline(canvasId, data) {
+    const canvas = $(canvasId);
+    if (!canvas) return;
+    const ctx = typeof canvas.getContext === 'function' ? canvas.getContext('2d') : null;
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (data.length < 2) return;
+
+    ctx.beginPath();
+    const step = canvas.width / (data.length - 1);
+    let min = Math.min(...data);
+    let max = Math.max(...data);
+    if (max === min) {
+      max = min + 1;
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      const x = i * step;
+      const y = canvas.height - 2 - ((data[i] - min) / (max - min)) * (canvas.height - 4);
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    grad.addColorStop(0, '#6366f1'); // Indigo
+    grad.addColorStop(1, '#22d3ee'); // Teal
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
 
   function appendLog(msg) {
     const row = document.createElement('div');
@@ -1227,6 +1408,16 @@ function initChaosHealingDashboard() {
     latencyBar.style.width = Math.min(100, latency / 10) + '%';
     errorsVal.textContent = errors.toFixed(1);
     errorsBar.style.width = '0%';
+
+    cpuHistory.push(cpu); cpuHistory.shift();
+    ramHistory.push(ram); ramHistory.shift();
+    latencyHistory.push(latency); latencyHistory.shift();
+    errorsHistory.push(errors); errorsHistory.shift();
+
+    drawSparkline('sparkline-cpu', cpuHistory);
+    drawSparkline('sparkline-ram', ramHistory);
+    drawSparkline('sparkline-latency', latencyHistory);
+    drawSparkline('sparkline-errors', errorsHistory);
   }, 1500);
 
   function disableChaosButtons(disabled) {
@@ -1242,10 +1433,17 @@ function initChaosHealingDashboard() {
     disableChaosButtons(true);
 
     if (anomalyType === 'cpu') {
-      cpuVal.textContent = '98';
+      const cpu = 98;
+      const errors = 1.2;
+      cpuVal.textContent = cpu;
       cpuBar.style.width = '98%';
-      errorsVal.textContent = '1.2';
+      errorsVal.textContent = errors.toFixed(1);
       errorsBar.style.width = '12%';
+
+      cpuHistory.push(cpu); cpuHistory.shift();
+      errorsHistory.push(errors); errorsHistory.shift();
+      drawSparkline('sparkline-cpu', cpuHistory);
+      drawSparkline('sparkline-errors', errorsHistory);
 
       appendLog('[ALERT] Anomaly: CPU load exceeded 95% threshold on ingress-controller.');
       await new Promise(r => setTimeout(r, 1200));
@@ -1254,10 +1452,17 @@ function initChaosHealingDashboard() {
       appendLog('[HEALER] Replica-set scaled successfully to 5 pods. Load balanced.');
     } 
     else if (anomalyType === 'leak') {
-      ramVal.textContent = '96';
+      const ram = 96;
+      const errors = 8.5;
+      ramVal.textContent = ram;
       ramBar.style.width = '96%';
-      errorsVal.textContent = '8.5';
+      errorsVal.textContent = errors.toFixed(1);
       errorsBar.style.width = '85%';
+
+      ramHistory.push(ram); ramHistory.shift();
+      errorsHistory.push(errors); errorsHistory.shift();
+      drawSparkline('sparkline-ram', ramHistory);
+      drawSparkline('sparkline-errors', errorsHistory);
 
       appendLog('[ALERT] Anomaly: JVM / Node container memory exhaustion detected.');
       await new Promise(r => setTimeout(r, 1200));
@@ -1266,10 +1471,17 @@ function initChaosHealingDashboard() {
       appendLog('[HEALER] Container restarted successfully. Heap evicted. Health check green.');
     } 
     else if (anomalyType === 'latency') {
-      latencyVal.textContent = '1980';
+      const latency = 1980;
+      const errors = 4.0;
+      latencyVal.textContent = latency;
       latencyBar.style.width = '99%';
-      errorsVal.textContent = '4.0';
+      errorsVal.textContent = errors.toFixed(1);
       errorsBar.style.width = '40%';
+
+      latencyHistory.push(latency); latencyHistory.shift();
+      errorsHistory.push(errors); errorsHistory.shift();
+      drawSparkline('sparkline-latency', latencyHistory);
+      drawSparkline('sparkline-errors', errorsHistory);
 
       appendLog('[ALERT] Anomaly: High packet drop rate detected on us-east-1 ingress.');
       await new Promise(r => setTimeout(r, 1200));
@@ -1280,15 +1492,29 @@ function initChaosHealingDashboard() {
 
     // Gracefully normalize dashboard values
     await new Promise(r => setTimeout(r, 800));
-    cpuVal.textContent = '24';
+    const normCpu = 24;
+    const normRam = 42;
+    const normLatency = 105;
+    const normErrors = 0.0;
+    cpuVal.textContent = normCpu;
     cpuBar.style.width = '24%';
-    ramVal.textContent = '42';
+    ramVal.textContent = normRam;
     ramBar.style.width = '42%';
-    latencyVal.textContent = '105';
+    latencyVal.textContent = normLatency;
     latencyBar.style.width = '10%';
-    errorsVal.textContent = '0.0';
+    errorsVal.textContent = normErrors.toFixed(1);
     errorsBar.style.width = '0%';
     
+    cpuHistory.push(normCpu); cpuHistory.shift();
+    ramHistory.push(normRam); ramHistory.shift();
+    latencyHistory.push(normLatency); latencyHistory.shift();
+    errorsHistory.push(normErrors); errorsHistory.shift();
+    
+    drawSparkline('sparkline-cpu', cpuHistory);
+    drawSparkline('sparkline-ram', ramHistory);
+    drawSparkline('sparkline-latency', latencyHistory);
+    drawSparkline('sparkline-errors', errorsHistory);
+
     activeAnomaly = null;
     disableChaosButtons(false);
   }
@@ -1296,6 +1522,12 @@ function initChaosHealingDashboard() {
   btnCpu.addEventListener('click', () => triggerAutoHealing('cpu'));
   btnLeak.addEventListener('click', () => triggerAutoHealing('leak'));
   btnLatency.addEventListener('click', () => triggerAutoHealing('latency'));
+
+  // Initial draw of sparklines
+  drawSparkline('sparkline-cpu', cpuHistory);
+  drawSparkline('sparkline-ram', ramHistory);
+  drawSparkline('sparkline-latency', latencyHistory);
+  drawSparkline('sparkline-errors', errorsHistory);
 }
 
 /* ══════════════════════════════════════════
@@ -1373,24 +1605,22 @@ function initEbpfSniffer() {
     // eBPF Hook node inspection at 50% time mark (500ms)
     await new Promise(r => setTimeout(r, 500));
     
-    if (type === 'ssh' && togglePort && togglePort.checked) {
-      appendLog('[ALERT] eBPF XDP_DROP hook matched rule: SSH traffic blocked at kernel level.');
-      xdpHook.classList.add('flash-alert');
-      packetDot.classList.add('hidden');
-      packetDot.className = 'ebpf-packet';
+    const filterQuery = $('ebpfFilterInput')?.value.trim().toLowerCase() || '';
+    const portBlocked = (type === 'ssh' && (togglePort.checked || filterQuery.includes('port 22') || filterQuery.includes('ssh')));
+    const dropBlocked = (toggleDrop.checked || filterQuery.includes('drop') || (type === 'http' && (filterQuery.includes('port 80') || filterQuery.includes('http'))));
+    
+    if (portBlocked || dropBlocked) {
+      let blockReason = 'XDP_DROP rule matched';
+      if (filterQuery) {
+        blockReason = `eBPF filter match: "${filterQuery}"`;
+      } else if (portBlocked) {
+        blockReason = 'XDP_DROP: Port 22 SSH Blocked';
+      } else if (dropBlocked) {
+        blockReason = 'XDP_DROP: TCP Handshake Dropped';
+      }
       
-      await new Promise(r => setTimeout(r, 1000));
-      xdpHook.classList.remove('flash-alert');
-      isAnimating = false;
-      btnHttp.disabled = false;
-      btnSsh.disabled = false;
-      btnHttp.classList.remove('disabled');
-      btnSsh.classList.remove('disabled');
-      return;
-    }
-
-    if (toggleDrop && toggleDrop.checked) {
-      appendLog('[ALERT] eBPF XDP_DROP matched: TCP handshake drop rule triggered.');
+      const label = type === 'ssh' ? 'SSH' : 'TCP';
+      appendLog(`[ALERT] eBPF XDP_DROP hook matched: ${label} traffic blocked at kernel level (${blockReason}).`);
       xdpHook.classList.add('flash-alert');
       packetDot.classList.add('hidden');
       packetDot.className = 'ebpf-packet';
@@ -1882,6 +2112,125 @@ function initChaosMultiAz() {
       btn.textContent = 'Partition us-east-1a Zone';
     }
   });
+
+  // Chaos Monkey Drag and Drop Injector logic
+  function initChaosMonkeyDragDrop() {
+    const monkey = $('chaos-monkey-grab');
+    if (!monkey) return;
+
+    monkey.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', 'chaos-monkey');
+      monkey.style.opacity = '0.5';
+    });
+
+    monkey.addEventListener('dragend', () => {
+      monkey.style.opacity = '1';
+    });
+
+    const azCards = [cardA, cardB, cardC];
+    azCards.forEach(card => {
+      if (!card) return;
+      card.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        card.style.border = '2px dashed var(--accent-primary)';
+      });
+      card.addEventListener('dragleave', () => {
+        card.style.border = '';
+      });
+      card.addEventListener('drop', (e) => {
+        e.preventDefault();
+        card.style.border = '';
+        const data = e.dataTransfer.getData('text/plain');
+        if (data === 'chaos-monkey') {
+          card.classList.add('az-offline');
+          
+          const logBox = $('healerLogs');
+          if (logBox) {
+            const row = document.createElement('div');
+            row.textContent = `[CHAOS] Chaos Monkey isolated zone: ${card.querySelector('.az-title').textContent}. Network route partitioned.`;
+            logBox.appendChild(row);
+            logBox.scrollTop = logBox.scrollHeight;
+          }
+          
+          let offlineCount = 0;
+          azCards.forEach(c => {
+            if (c && c.classList.contains('az-offline')) {
+              offlineCount++;
+            }
+          });
+          status.textContent = `${3 - offlineCount} / 3 Active`;
+          status.className = offlineCount > 0 ? 'status-badge status-orange' : 'status-badge status-green';
+          btn.textContent = 'Rebuild us-east-1a Network Route';
+          isPartitioned = true;
+        }
+      });
+    });
+
+    const setupPodDropzones = () => {
+      const podWrappers = document.querySelectorAll('.pod-wrapper');
+      podWrappers.forEach(pod => {
+        if (pod.dataset.dragListening) return;
+        pod.dataset.dragListening = 'true';
+
+        pod.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          pod.style.transform = 'scale(1.2)';
+        });
+        pod.addEventListener('dragleave', () => {
+          pod.style.transform = '';
+        });
+        pod.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          pod.style.transform = '';
+          const data = e.dataTransfer.getData('text/plain');
+          if (data === 'chaos-monkey') {
+            const circle = pod.querySelector('.pod-circle');
+            const podName = pod.querySelector('.pod-name')?.textContent || 'pod';
+            if (!circle) return;
+
+            const prevClass = circle.className;
+            const crashType = Math.random() < 0.5 ? 'OOMKilled' : 'CrashLoopBackOff';
+            circle.className = `pod-circle pod-crash-${crashType.toLowerCase()}`;
+            
+            const logBox = $('healerLogs');
+            if (logBox) {
+              const row1 = document.createElement('div');
+              row1.textContent = `[CHAOS] Chaos Monkey terminated ${podName}: status changed to ${crashType}.`;
+              logBox.appendChild(row1);
+              
+              await new Promise(r => setTimeout(r, 1200));
+              const row2 = document.createElement('div');
+              row2.textContent = `[SRE] Self-Healing: Restarting failed container ${podName}. Restoring healthy probe status.`;
+              logBox.appendChild(row2);
+              
+              await new Promise(r => setTimeout(r, 1500));
+              circle.className = prevClass;
+              const row3 = document.createElement('div');
+              row3.textContent = `[HEALER] Container ${podName} back to online. Health check green.`;
+              logBox.appendChild(row3);
+              logBox.scrollTop = logBox.scrollHeight;
+            }
+          }
+        });
+      });
+    };
+
+    setupPodDropzones();
+    // Observe podsGrid and podsGridDR mutations to attach drop listeners to new pods dynamically
+    const observerCallback = () => {
+      setupPodDropzones();
+    };
+    const podsGridEl = $('podsGrid');
+    const podsGridDREl = $('podsGridDR');
+    if (podsGridEl) {
+      new MutationObserver(observerCallback).observe(podsGridEl, { childList: true });
+    }
+    if (podsGridDREl) {
+      new MutationObserver(observerCallback).observe(podsGridDREl, { childList: true });
+    }
+  }
+
+  setTimeout(initChaosMonkeyDragDrop, 100);
 }
 
 /* ══════════════

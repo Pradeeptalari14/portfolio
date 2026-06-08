@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 describe('Shared Tools Utility', () => {
-  it('should inject SRE health badge, PagerDuty UI, and webhooks tab', () => {
+  it('should inject SRE health badge, PagerDuty UI, and webhooks tab', async () => {
     const htmlPath = path.resolve(__dirname, '../tools/kubernetes/index.html');
     const htmlText = fs.readFileSync(htmlPath, 'utf8');
     
@@ -50,5 +50,42 @@ describe('Shared Tools Utility', () => {
     const outputBox = window.document.getElementById('output-box');
     expect(outputBox.textContent).toContain('"service": "kubernetes"');
     expect(outputBox.textContent).toContain('"integration_key": "pd-service-key-prod-0129"');
+
+    // 5. Verify security.audit tab button is injected
+    const linterTab = window.document.getElementById('tab-linter');
+    expect(linterTab).not.toBeNull();
+
+    // Mock window.switchTab to simulate caching lastCompiledCode
+    if (typeof window.switchTab === 'function') {
+      window.switchTab('script');
+    }
+
+    // 6. Test clicking security.audit tab button with clean output
+    outputBox.textContent = 'resource "aws_security_group" "web" { ingress { cidr_blocks = ["10.0.0.0/16"] } }';
+    if (typeof window.switchTab === 'function') {
+      window.switchTab('script');
+      // Wait for setTimeout to execute caching
+      await new Promise(r => setTimeout(r, 100));
+    }
+
+    linterTab.dispatchEvent(new window.Event('click'));
+    expect(linterTab.className).toContain('active');
+    expect(outputBox.innerHTML).toContain('IaC Security Guardrail Report');
+    expect(outputBox.innerHTML).toContain('Restrictive CIDR Blocks');
+    expect(outputBox.innerHTML).toContain('PASSED');
+
+    // 7. Test clicking linter with vulnerable configuration (Open CIDR 0.0.0.0/0)
+    if (typeof window.switchTab === 'function') {
+      window.switchTab('script');
+    }
+    outputBox.textContent = 'ingress { cidr_blocks = ["0.0.0.0/0"] }';
+    if (typeof window.switchTab === 'function') {
+      window.switchTab('script');
+      await new Promise(r => setTimeout(r, 100));
+    }
+
+    linterTab.dispatchEvent(new window.Event('click'));
+    expect(outputBox.innerHTML).toContain('Open CIDR Block (0.0.0.0/0)');
+    expect(outputBox.innerHTML).toContain('CRITICAL');
   });
 });

@@ -477,4 +477,107 @@ describe('DevOps & SRE Interactive Playground Widgets', () => {
       expect(status.textContent).toBe('3 / 3 Active');
     });
   });
+
+  describe('Chaos Monkey Drag-and-Drop Fault Injection', () => {
+    it('should drag monkey and drop on AZ card to isolate the zone', () => {
+      const monkey = document.getElementById('chaos-monkey-grab');
+      const cardB = document.getElementById('az-card-b');
+      const status = document.getElementById('multiaz-zones-status');
+
+      expect(cardB.classList.contains('az-offline')).toBe(false);
+
+      const dragStartEvent = new window.Event('dragstart');
+      dragStartEvent.dataTransfer = {
+        setData: (type, val) => { dragStartEvent.data = val; },
+        getData: () => 'chaos-monkey'
+      };
+      monkey.dispatchEvent(dragStartEvent);
+
+      const dropEvent = new window.Event('drop');
+      dropEvent.dataTransfer = dragStartEvent.dataTransfer;
+      cardB.dispatchEvent(dropEvent);
+
+      expect(cardB.classList.contains('az-offline')).toBe(true);
+      expect(status.textContent).toContain('Active');
+    });
+
+    it('should drag monkey and drop on a pod to trigger simulated OOMKilled/CrashLoopBackOff crash', async () => {
+      const monkey = document.getElementById('chaos-monkey-grab');
+      const podsGrid = document.getElementById('podsGrid');
+      const podWrapper = podsGrid.querySelector('.pod-wrapper');
+      const circle = podWrapper.querySelector('.pod-circle');
+
+      const dragStartEvent = new window.Event('dragstart');
+      dragStartEvent.dataTransfer = {
+        setData: () => {},
+        getData: () => 'chaos-monkey'
+      };
+      monkey.dispatchEvent(dragStartEvent);
+
+      const dropEvent = new window.Event('drop');
+      dropEvent.dataTransfer = dragStartEvent.dataTransfer;
+      podWrapper.dispatchEvent(dropEvent);
+
+      expect(circle.className).toMatch(/pod-crash-oomkilled|pod-crash-crashloopbackoff/);
+    });
+  });
+
+  describe('ArgoCD Canary Rollout Strategy & Promotions', () => {
+    it('should sync only the first pod when Canary strategy is selected', async () => {
+      const btnCanary = document.getElementById('btnStrategyCanary');
+      const btnSync = document.getElementById('btnArgoSync');
+      const syncStatus = document.getElementById('argocd-sync-status');
+      const podsGrid = document.getElementById('podsGrid');
+      const circles = podsGrid.querySelectorAll('.pod-circle');
+
+      btnCanary.dispatchEvent(new window.Event('click'));
+      btnSync.dispatchEvent(new window.Event('click'));
+
+      expect(syncStatus.textContent).toBe('Syncing...');
+      await new Promise(r => setTimeout(r, 700));
+
+      expect(syncStatus.textContent).toBe('Canary Active (90/10 Traffic Split)');
+      expect(circles[0].className).toContain('pod-canary-active');
+      expect(circles[1].className).not.toContain('pod-canary-active');
+    });
+
+    it('should promote canary to complete sync rollout on remaining pods', async () => {
+      const btnPromote = document.getElementById('btnArgoPromote');
+      const syncStatus = document.getElementById('argocd-sync-status');
+      const podsGrid = document.getElementById('podsGrid');
+      const circles = podsGrid.querySelectorAll('.pod-circle');
+
+      btnPromote.dispatchEvent(new window.Event('click'));
+
+      expect(syncStatus.textContent).toBe('Syncing...');
+      await new Promise(r => setTimeout(r, 2000));
+
+      expect(syncStatus.textContent).toBe('Synced');
+      circles.forEach(c => {
+        expect(c.className).toContain('pod-running');
+        expect(c.className).not.toContain('pod-canary-active');
+      });
+    });
+  });
+
+  describe('eBPF Custom Query Filter Evaluations', () => {
+    it('should drop HTTP traffic when filter input matches drop query', async () => {
+      const input = document.getElementById('ebpfFilterInput');
+      const btnHttp = document.getElementById('btnEbpfHttp');
+      const xdpHook = document.getElementById('ebpf-xdp-hook');
+      const consoleLog = document.getElementById('ebpfConsole');
+
+      input.value = 'drop';
+      input.dispatchEvent(new window.Event('input'));
+
+      btnHttp.dispatchEvent(new window.Event('click'));
+      await new Promise(r => setTimeout(r, 600));
+
+      expect(xdpHook.classList.contains('flash-alert')).toBe(true);
+      expect(consoleLog.textContent).toContain('traffic blocked at kernel level');
+
+      input.value = '';
+      input.dispatchEvent(new window.Event('input'));
+    });
+  });
 });
