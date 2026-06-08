@@ -188,3 +188,108 @@ body {
   background: rgba(0,0,0,0.1);
   border-radius: 4px;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-base:        #0f172a !important;
+    --bg-surface:     #1e293b !important;
+    --bg-card:        #1e293b !important;
+    --bg-card-hover:  #1e2b4d !important;
+    --text-primary:   #f8fafc !important;
+    --text-secondary: #cbd5e1 !important;
+    --text-muted:     #64748b !important;
+    --border:         #334155 !important;
+  }
+
+  body {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+  }
+
+  .studio-card {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+  }
+  .studio-card:hover {
+    border-color: var(--accent-primary) !important;
+  }
+
+  .form-select, .form-input, .form-textarea {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+  }
+
+  .custom-checkbox {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+  }
+
+  .navbar {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border-bottom-color: #334155 !important;
+  }
+  
+  .navbar a {
+    color: #f8fafc !important;
+  }
+  
+  .navbar div {
+    color: #cbd5e1 !important;
+  }
+
+  footer {
+    background-color: #0f172a !important;
+    border-top-color: #334155 !important;
+    color: #cbd5e1 !important;
+  }
+
+  .tab-btn {
+    color: #cbd5e1 !important;
+  }
+
+  .tab-btn.active {
+    color: #818cf8 !important;
+    border-bottom-color: #818cf8 !important;
+  }
+
+  .diagram-step {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  .diagram-step.active {
+    background: rgba(99, 102, 241, 0.15) !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.3) !important;
+  }
+
+  /* Tailwind CSS override fallbacks */
+  .bg-white {
+    background-color: #1e293b !important;
+  }
+  
+  .bg-gray-50 {
+    background-color: #0f172a !important;
+  }
+  
+  .text-gray-900 {
+    color: #f8fafc !important;
+  }
+
+  .text-gray-500 {
+    color: #94a3b8 !important;
+  }
+
+  .text-gray-400 {
+    color: #64748b !important;
+  }
+  
+  .border-gray-100 {
+    border-color: #334155 !important;
+  }
+
+  .border-slate-100 {
+    border-color: #334155 !important;
+  }
+}
+

@@ -67,7 +67,18 @@
             </div>
           </div>
           <div class="terminal-body" id="heroTerminalContent">
-            <!-- Typist engine will populate SRE logs here -->
+            <div class="terminal-history" id="terminalHistory"></div>
+            <div class="terminal-input-line">
+              <span class="terminal-prompt">visitor@tp-shell:~$</span>
+              <input type="text" id="terminalInput" class="terminal-input" placeholder="Type help..." autocomplete="off" spellcheck="false" aria-label="Terminal command input" />
+            </div>
+            <div class="terminal-chips" id="terminalChips">
+              <button class="term-chip" data-cmd="help">help</button>
+              <button class="term-chip" data-cmd="about">about</button>
+              <button class="term-chip" data-cmd="skills">skills</button>
+              <button class="term-chip" data-cmd="neofetch">neofetch</button>
+              <button class="term-chip" data-cmd="clear">clear</button>
+            </div>
           </div>
         </div>
 

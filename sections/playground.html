@@ -1,0 +1,606 @@
+<!-- ══ DEVOPS & SRE INTERACTIVE PLAYGROUND ══ -->
+<section class="section section-alt" id="playground">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Playground</span>
+      <h2 class="section-title">DevOps & SRE <span class="gradient-text">Interactive Sandbox</span></h2>
+      <p class="section-subtitle" style="margin-top:0.5rem; color:var(--text-secondary); max-width:600px;">
+        Experiment with live infrastructure reliability parameters, trace packets at kernel level, scale clusters, and audit IaC drift.
+      </p>
+    </div>
+
+    <!-- Playground Category Tab Bar -->
+    <div class="playground-tabs-container">
+      <button id="btn-play-core" class="play-tab-btn active" onclick="switchPlaygroundTab('core')">🛠️ SRE &amp; Pipelines</button>
+      <button id="btn-play-kernel" class="play-tab-btn" onclick="switchPlaygroundTab('kernel')">⚡ Kernel &amp; IaC</button>
+      <button id="btn-play-delivery" class="play-tab-btn" onclick="switchPlaygroundTab('delivery')">☸️ Autoscaling &amp; Delivery</button>
+    </div>
+
+    <!-- Group 1: Core SRE & Pipelines -->
+    <div class="playground-group" id="group-play-core">
+      <div class="playground-grid">
+        <!-- WIDGET 1: SLA & Error Budget Calculator -->
+        <div class="playground-card" id="widget-sla">
+          <div class="widget-header">
+            <div class="widget-icon">⏱️</div>
+            <h3 class="widget-title">SLA & Error Budget</h3>
+          </div>
+          <p class="widget-desc">Configure a Service Level Agreement (SLA) to calculate allowed downtime budgets, and test your reaction speed when chaos hits.</p>
+          
+          <div class="sla-calculator">
+            <div class="sla-slider-container">
+              <div class="sla-label-val">
+                <span>Target SLA:</span>
+                <span id="sla-target-val" class="sla-highlight">99.9%</span>
+              </div>
+              <input type="range" id="slaSlider" min="1" max="4" step="1" value="2" class="sla-slider" aria-label="SLA Target Slider" />
+              <div class="sla-ticks">
+                <span>99.0%</span>
+                <span>99.9%</span>
+                <span>99.99%</span>
+                <span>99.999%</span>
+              </div>
+            </div>
+
+            <div class="sla-results">
+              <div class="sla-result-item">
+                <span class="res-lbl">Weekly Budget</span>
+                <span id="downtime-weekly" class="res-val">1.68 hrs</span>
+              </div>
+              <div class="sla-result-item">
+                <span class="res-lbl">Monthly Budget</span>
+                <span id="downtime-monthly" class="res-val">7.31 hrs</span>
+              </div>
+              <div class="sla-result-item">
+                <span class="res-lbl">Yearly Budget</span>
+                <span id="downtime-yearly" class="res-val">3.65 days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="outage-game-container">
+            <div class="game-status-bar">
+              <span class="game-status-lbl">System:</span>
+              <span id="game-system-status" class="status-badge status-green">OPERATIONAL</span>
+            </div>
+            <div class="game-budget-bar-wrap">
+              <div class="game-budget-bar-lbl">
+                <span>Error Budget Remaining:</span>
+                <span id="game-budget-percent">100%</span>
+              </div>
+              <div class="game-budget-progress-track">
+                <div id="game-budget-progress-bar" class="game-budget-fill" style="width: 100%"></div>
+              </div>
+            </div>
+            
+            <div id="game-active-incident" class="game-incident-box hidden">
+              <div class="incident-alert-title">🚨 CRITICAL INCIDENT TRIGGERED</div>
+              <div id="game-incident-desc" class="incident-desc">Loading incident...</div>
+              <div class="incident-choices" id="game-incident-choices">
+                <!-- Choices dynamically generated -->
+              </div>
+            </div>
+
+            <button id="btnStartChaosGame" class="btn-widget-action bg-rose">
+              <span>🔥 Simulate Chaos Outage</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- WIDGET 2: ArgoCD GitOps Deployment Simulator -->
+        <div class="playground-card" id="widget-gitops">
+          <div class="widget-header">
+            <div class="widget-icon">⛵</div>
+            <h3 class="widget-title">ArgoCD GitOps Rollout</h3>
+          </div>
+          <p class="widget-desc">Simulate a GitOps continuous deployment pipeline. Push a commit and watch ArgoCD synchronize container pods in real time.</p>
+          
+          <div class="gitops-visualizer">
+            <!-- Flow nodes -->
+            <div class="gitops-nodes">
+              <div class="gitops-node" id="node-git">
+                <div class="node-icon">💻</div>
+                <div class="node-name">Git Repo</div>
+                <div class="node-meta" id="git-commit-hash">v1.2.0</div>
+              </div>
+              <div class="gitops-arrow">➜</div>
+              <div class="gitops-node" id="node-argocd">
+                <div class="node-icon">⚓</div>
+                <div class="node-name">ArgoCD</div>
+                <div class="node-meta status-badge status-green" id="argocd-sync-status">Synced</div>
+              </div>
+            </div>
+
+            <!-- Pod replication cluster -->
+            <div class="cluster-container">
+              <h4 class="cluster-title">Kubernetes Cluster (Namespace: production)</h4>
+              <div class="pods-grid" id="podsGrid">
+                <div class="pod-wrapper" data-pod-index="0">
+                  <div class="pod-circle pod-running"></div>
+                  <div class="pod-name">pod-0</div>
+                </div>
+                <div class="pod-wrapper" data-pod-index="1">
+                  <div class="pod-circle pod-running"></div>
+                  <div class="pod-name">pod-1</div>
+                </div>
+                <div class="pod-wrapper" data-pod-index="2">
+                  <div class="pod-circle pod-running"></div>
+                  <div class="pod-name">pod-2</div>
+                </div>
+                <div class="pod-wrapper" data-pod-index="3">
+                  <div class="pod-circle pod-running"></div>
+                  <div class="pod-name">pod-3</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget-controls">
+            <button id="btnGitCommit" class="btn-widget-action bg-indigo">
+              <span>💻 Git Push (Commit)</span>
+            </button>
+            <button id="btnArgoSync" class="btn-widget-action bg-emerald disabled" disabled>
+              <span>🔄 ArgoCD Sync (Rollout)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- WIDGET 3: Chaos Injector & Auto-Healing Dashboard -->
+        <div class="playground-card" id="widget-chaos">
+          <div class="widget-header">
+            <div class="widget-icon">⚡</div>
+            <h3 class="widget-title">Chaos & Auto-Healing</h3>
+          </div>
+          <p class="widget-desc">Inject live infrastructure faults into the metrics dashboard and observe the autonomous SRE control loop restore operations.</p>
+          
+          <div class="metrics-dashboard">
+            <div class="metrics-grid">
+              <div class="metric-item">
+                <div class="metric-lbl">CPU Usage</div>
+                <div class="metric-bar-container">
+                  <div id="metric-cpu-bar" class="metric-bar" style="width: 28%"></div>
+                </div>
+                <div class="metric-val"><span id="metric-cpu-val">28</span>%</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-lbl">RAM Usage</div>
+                <div class="metric-bar-container">
+                  <div id="metric-ram-bar" class="metric-bar" style="width: 45%"></div>
+                </div>
+                <div class="metric-val"><span id="metric-ram-val">45</span>%</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-lbl">API Latency</div>
+                <div class="metric-bar-container">
+                  <div id="metric-latency-bar" class="metric-bar" style="width: 15%"></div>
+                </div>
+                <div class="metric-val"><span id="metric-latency-val">120</span>ms</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-lbl">Error Rate</div>
+                <div class="metric-bar-container">
+                  <div id="metric-errors-bar" class="metric-bar bg-rose" style="width: 0%"></div>
+                </div>
+                <div class="metric-val"><span id="metric-errors-val">0.0</span>%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="healer-telemetry-console">
+            <div class="console-title">SRE Automation Log (Live Stream)</div>
+            <div class="console-logs" id="healerLogs">
+              <div>[HEALER] Health check active - all probes OK.</div>
+            </div>
+          </div>
+
+          <div class="chaos-buttons">
+            <button id="btnChaosCPU" class="btn-widget-action bg-orange">
+              <span>🔥 Spike CPU</span>
+            </button>
+            <button id="btnChaosLeak" class="btn-widget-action bg-orange">
+              <span>💾 Memory Leak</span>
+            </button>
+            <button id="btnChaosLatency" class="btn-widget-action bg-orange">
+              <span>⏱️ Latency Spike</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 2: Kernel & IaC -->
+    <div class="playground-group hidden" id="group-play-kernel">
+      <div class="playground-grid">
+        <!-- WIDGET 4: eBPF Network Packet Sniffer -->
+        <div class="playground-card" id="widget-ebpf">
+          <div class="widget-header">
+            <div class="widget-icon">🐝</div>
+            <h3 class="widget-title">eBPF Kernel Sniffer</h3>
+          </div>
+          <p class="widget-desc">Trace network request frames down to the Linux kernel. Inject filters to inspect payloads or drop unauthorized TCP handshakes.</p>
+          
+          <div class="ebpf-visualizer-box">
+            <div class="ebpf-space-wrapper">
+              <div class="ebpf-space-lbl">User Space</div>
+              <div class="ebpf-space-panel user-space">
+                <div class="ebpf-node" id="ebpf-node-server">
+                  <div class="ebpf-node-ico">🖥️</div>
+                  <div class="ebpf-node-lbl">HTTP Web Server</div>
+                  <div class="ebpf-node-state" id="ebpf-server-state">LISTEN</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ebpf-space-wrapper" style="margin-top:10px;">
+              <div class="ebpf-space-lbl">Kernel Space (eBPF Probes)</div>
+              <div class="ebpf-space-panel kernel-space">
+                <div class="ebpf-track-line"></div>
+                <!-- Animated packet dot runs on this track -->
+                <div id="ebpf-packet-dot" class="ebpf-packet hidden"></div>
+
+                <div class="ebpf-hook" id="ebpf-xdp-hook">
+                  <div class="hook-icon">⚡</div>
+                  <div class="hook-name">XDP Probe</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ebpf-controls-grid">
+            <div class="ebpf-toggles">
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleEbpfPort" />
+                <span>Block Port 22 (SSH)</span>
+              </label>
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleEbpfDrop" />
+                <span>Drop TCP Handshake</span>
+              </label>
+            </div>
+
+            <div class="ebpf-console-log" id="ebpfConsole">
+              <div>[SYSTEM] eBPF probes attached. Waiting for frames...</div>
+            </div>
+
+            <div class="ebpf-actions">
+              <button id="btnEbpfHttp" class="btn-widget-action bg-indigo">
+                <span>🌐 Send HTTP Frame</span>
+              </button>
+              <button id="btnEbpfSsh" class="btn-widget-action bg-orange">
+                <span>🔑 Send SSH Frame</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- WIDGET 5: Terraform Drift Reconciler -->
+        <div class="playground-card" id="widget-terraform">
+          <div class="widget-header">
+            <div class="widget-icon">🏗️</div>
+            <h3 class="widget-title">Terraform Drift Engine</h3>
+          </div>
+          <p class="widget-desc">Monitor infrastructure drift in version-controlled setups. Audit manual modifications and apply reconciliation plans.</p>
+          
+          <div class="tf-layout-box">
+            <div class="tf-code-view">
+              <div class="tf-code-header">main.tf</div>
+              <pre class="tf-code-lines"><code>resource "aws_security_group" "web" {
+  name = "web-sec-group"
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+  }
+}</code></pre>
+            </div>
+
+            <div class="tf-visual-graph">
+              <div class="tf-graph-lbl">Live Cloud Topology</div>
+              <div class="tf-resource-cards">
+                <div class="tf-res-card" id="tf-res-vpc">
+                  <div class="tf-res-ico">🌐</div>
+                  <div class="tf-res-name">VPC</div>
+                  <div class="tf-res-status">OK</div>
+                </div>
+                <div class="tf-res-card" id="tf-res-sg">
+                  <div class="tf-res-ico">🔒</div>
+                  <div class="tf-res-name">SG (Port 80)</div>
+                  <div class="tf-res-status" id="tf-sg-status">OK</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-controls-grid">
+            <div class="tf-diff-terminal" id="tfDiffTerminal">
+              <div>$ terraform plan</div>
+              <div style="color:#10b981">No changes. Infrastructure matches configuration.</div>
+            </div>
+
+            <div class="tf-buttons">
+              <button id="btnTfDrift" class="btn-widget-action bg-rose">
+                <span>⚠️ Inject Manual Drift</span>
+              </button>
+              <button id="btnTfPlan" class="btn-widget-action bg-indigo disabled" disabled>
+                <span>📋 Run TF Plan</span>
+              </button>
+              <button id="btnTfApply" class="btn-widget-action bg-emerald disabled" disabled>
+                <span>🔧 TF Apply (Reconcile)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- WIDGET 6: Alertmanager Routing Tree -->
+        <div class="playground-card" id="widget-alertmanager">
+          <div class="widget-header">
+            <div class="widget-icon">🔔</div>
+            <h3 class="widget-title">Alertmanager Routing</h3>
+          </div>
+          <p class="widget-desc">Route telemetry alerts through suppression rules, inhibition states, and receiver pathways based on label criteria.</p>
+          
+          <div class="am-routing-visualizer">
+            <div class="am-nodes-container">
+              <!-- Trigger Nodes -->
+              <div class="am-column">
+                <div class="am-node-box am-source" id="am-src-cpu">CPU Critical</div>
+                <div class="am-node-box am-source" id="am-src-disk">Disk Exhaustion</div>
+              </div>
+
+              <div class="am-flow-arrow">➜</div>
+
+              <!-- Rules Matcher -->
+              <div class="am-column">
+                <div class="am-node-box am-engine" id="am-engine-node">
+                  <div class="engine-title">Rules Engine</div>
+                  <div class="engine-rules" id="am-active-silence">Silences: None</div>
+                </div>
+              </div>
+
+              <div class="am-flow-arrow">➜</div>
+
+              <!-- Receivers -->
+              <div class="am-column">
+                <div class="am-node-box am-target" id="am-dest-slack">
+                  <span>Slack</span>
+                  <span class="am-badge" id="am-count-slack">0</span>
+                </div>
+                <div class="am-node-box am-target" id="am-dest-pager">
+                  <span>PagerDuty</span>
+                  <span class="am-badge" id="am-count-pager">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="am-controls-grid">
+            <div class="am-toggles">
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleSilenceCpu" />
+                <span>Silence CPU Warnings</span>
+              </label>
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleDiskCritical" />
+                <span>Route Disk to PagerDuty</span>
+              </label>
+            </div>
+
+            <div class="am-actions">
+              <button id="btnTriggerCpuAlert" class="btn-widget-action bg-rose">
+                <span>🚨 Fire CPU Alert</span>
+              </button>
+              <button id="btnTriggerDiskAlert" class="btn-widget-action bg-rose">
+                <span>🚨 Fire Disk Alert</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 3: Autoscaling & Delivery -->
+    <div class="playground-group hidden" id="group-play-delivery">
+      <div class="playground-grid">
+        <!-- WIDGET 7: CI/CD Pipeline DAG Visualizer -->
+        <div class="playground-card" id="widget-cicd">
+          <div class="widget-header">
+            <div class="widget-icon">🚀</div>
+            <h3 class="widget-title">CI/CD Pipeline Runner</h3>
+          </div>
+          <p class="widget-desc">Simulate a Git pipeline builder. Toggle check failures or security vulnerabilities and trigger builds to audit logs.</p>
+          
+          <div class="cicd-visualizer">
+            <div class="cicd-stages">
+              <div class="cicd-stage" id="cicd-stage-checkout">
+                <div class="cicd-stage-ico">📥</div>
+                <div class="cicd-stage-lbl">Checkout</div>
+              </div>
+              <div class="cicd-line"></div>
+              <div class="cicd-stage" id="cicd-stage-lint">
+                <div class="cicd-stage-ico">🧪</div>
+                <div class="cicd-stage-lbl">Lint &amp; Test</div>
+              </div>
+              <div class="cicd-line"></div>
+              <div class="cicd-stage" id="cicd-stage-security">
+                <div class="cicd-stage-ico">🛡️</div>
+                <div class="cicd-stage-lbl">Security</div>
+              </div>
+              <div class="cicd-line"></div>
+              <div class="cicd-stage" id="cicd-stage-build">
+                <div class="cicd-stage-ico">📦</div>
+                <div class="cicd-stage-lbl">Build</div>
+              </div>
+              <div class="cicd-line"></div>
+              <div class="cicd-stage" id="cicd-stage-deploy">
+                <div class="cicd-stage-ico">🚀</div>
+                <div class="cicd-stage-lbl">Deploy</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cicd-controls-grid">
+            <div class="ebpf-toggles">
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleCicdFailTest" />
+                <span>Fail Test Suite (Vitest)</span>
+              </label>
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleCicdVuln" />
+                <span>Inject CVE (Trivy Scan)</span>
+              </label>
+            </div>
+
+            <div class="ebpf-console-log" id="cicdConsole">
+              <div>[SYSTEM] Pipeline idle. Ready for execution...</div>
+            </div>
+
+            <button id="btnRunCicd" class="btn-widget-action bg-indigo">
+              <span>⚡ Run CI/CD Pipeline</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- WIDGET 8: Karpenter Autoscaler -->
+        <div class="playground-card" id="widget-karpenter">
+          <div class="widget-header">
+            <div class="widget-icon">☸️</div>
+            <h3 class="widget-title">Karpenter Autoscaler</h3>
+          </div>
+          <p class="widget-desc">Simulate cluster scale actions under load. Scale target replicas and watch Karpenter spin nodes dynamically.</p>
+          
+          <div class="karpenter-visualizer">
+            <div class="karpenter-stats-grid">
+              <div class="karpenter-stat">
+                <span class="stat-sub-lbl">Pods Target</span>
+                <span id="karpenter-pod-count" class="karpenter-stat-val">2</span>
+              </div>
+              <div class="karpenter-stat">
+                <span class="stat-sub-lbl">Nodes Count</span>
+                <span id="karpenter-node-count" class="karpenter-stat-val">1</span>
+              </div>
+              <div class="karpenter-stat">
+                <span class="stat-sub-lbl">Hourly Cost</span>
+                <span id="karpenter-cost-val" class="karpenter-stat-val">$0.24</span>
+              </div>
+            </div>
+
+            <div class="karpenter-slider-wrap">
+              <input type="range" id="karpenterSlider" min="2" max="12" step="1" value="2" class="sla-slider" aria-label="Karpenter pods slider" />
+            </div>
+
+            <div class="karpenter-cluster-view" id="karpenterCluster">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="karpenter-controls">
+            <label class="ebpf-toggle-lbl">
+              <input type="checkbox" id="toggleKarpenterSpot" />
+              <span>Prioritize Spot Instances (Cost Saving)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- WIDGET 9: Service Mesh Canary Traffic Splitter -->
+        <div class="playground-card" id="widget-canary">
+          <div class="widget-header">
+            <div class="widget-icon">🚦</div>
+            <h3 class="widget-title">Canary Traffic Splitter</h3>
+          </div>
+          <p class="widget-desc">Route real-time metrics traffic. Adjust weight sliders to split streams and observe auto-rollback telemetry on errors.</p>
+          
+          <div class="canary-visualizer">
+            <div class="canary-layout">
+              <div class="canary-column">
+                <div class="canary-node ingress">Ingress</div>
+              </div>
+              <div class="canary-column">
+                <div class="canary-node splitter">
+                  <div>Splitter</div>
+                  <div class="splitter-meta" id="canary-split-lbl">90/10</div>
+                </div>
+              </div>
+              <div class="canary-column flex-col" style="gap:10px;">
+                <div class="canary-node destination stable" id="canary-dest-stable">
+                  <span class="node-ver">v1.0 (Stable)</span>
+                  <span class="node-rate" id="canary-rate-stable">100% OK</span>
+                </div>
+                <div class="canary-node destination canary" id="canary-dest-canary">
+                  <span class="node-ver">v2.0 (Canary)</span>
+                  <span class="node-rate" id="canary-rate-canary">100% OK</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="canary-flow-container" class="canary-flow-box">
+              <!-- Animated request particles travel here -->
+            </div>
+          </div>
+
+          <div class="canary-controls-grid">
+            <div class="canary-slider-wrap">
+              <div class="sla-label-val">
+                <span>Canary Split:</span>
+                <span id="canary-slider-lbl" class="sla-highlight">10%</span>
+              </div>
+              <input type="range" id="canarySlider" min="0" max="100" step="5" value="10" class="sla-slider" aria-label="Canary traffic split slider" />
+            </div>
+
+            <div class="ebpf-toggles">
+              <label class="ebpf-toggle-lbl">
+                <input type="checkbox" id="toggleCanaryError" />
+                <span>Inject Canary Error Spike (Trigger Auto-Rollback)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- WIDGET 10: Chaos Monkey Multi-AZ Partition -->
+        <div class="playground-card" id="widget-multiaz">
+          <div class="widget-header">
+            <div class="widget-icon">🐒</div>
+            <h3 class="widget-title">Chaos Monkey Multi-AZ</h3>
+          </div>
+          <p class="widget-desc">Test infrastructure high-availability metrics. Inject a regional network partition and audit route redirection.</p>
+          
+          <div class="multiaz-visualizer">
+            <div class="multiaz-grid">
+              <div class="az-card" id="az-card-a">
+                <div class="az-title">us-east-1a</div>
+                <div class="az-nodes">
+                  <div class="az-node">App Node</div>
+                  <div class="az-node">DB Replica</div>
+                </div>
+              </div>
+              <div class="az-card" id="az-card-b">
+                <div class="az-title">us-east-1b</div>
+                <div class="az-nodes">
+                  <div class="az-node">App Node</div>
+                  <div class="az-node">DB Replica</div>
+                </div>
+              </div>
+              <div class="az-card" id="az-card-c">
+                <div class="az-title">us-east-1c</div>
+                <div class="az-nodes">
+                  <div class="az-node">App Node</div>
+                  <div class="az-node">DB Replica</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="multiaz-controls-grid">
+            <div class="game-status-bar">
+              <span>Uptime Zones:</span>
+              <span id="multiaz-zones-status" class="status-badge status-green">3 / 3 Active</span>
+            </div>
+
+            <button id="btnTriggerPartition" class="btn-widget-action bg-rose">
+              <span>🔥 Partition us-east-1a Zone</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -726,82 +726,1045 @@ function initLatencyTracker() {
 
 function initSRETerminal() {
   const term = $('heroTerminalContent');
-  if (!term) return;
+  const history = $('terminalHistory');
+  const input = $('terminalInput');
+  const chips = $('terminalChips');
+  if (!term || !history || !input) return;
 
-  const logs = [
-    { cmd: 'terraform init && terraform apply -auto-approve',
-      out: 'Initializing AWS backend configurations...\n[OK] Remote state storage locked via S3 & DynamoDB.\nApplying IaC plans: 4 resources created, 0 changed, 0 destroyed.\nApply complete! State saved in remote database.' },
-    { cmd: 'kubectl get service/frontend-app -n production',
-      out: 'NAME           TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)\nfrontend-app   LoadBalancer   10.96.0.45     talaripradeep.info   80:31456/TCP\n[STATUS] Active Pods replica limits scaled successfully.' },
-    { cmd: 'ansible-playbook SRE-uptime-audit.yml',
-      out: 'PLAY [Audit SLA & Latency Telemetry] *******************************\ntask: [Confirm Site Status Uptime] ********************************\nok: [localhost] => {"uptime_sla": "99.99%", "status": "Operational"}\nPLAY RECAP *********************************************************\nlocalhost                  : ok=3    changed=0    failed=0' }
+  // Print initial greeting
+  const initialLines = [
+    'Welcome to tp-shell v2.4 (type "help" for available commands)',
+    'Logged in as visitor@tp-shell. Status: Operational.',
+    ''
   ];
+  initialLines.forEach(line => {
+    const p = document.createElement('div');
+    p.textContent = line;
+    history.appendChild(p);
+  });
 
-  let logIndex = 0;
-  let charIndex = 0;
-  let lineBuffer = '';
+  // Focus input on terminal container click
+  term.addEventListener('click', () => {
+    input.focus();
+  });
 
-  function typeWriter() {
-    const current = logs[logIndex];
+  function handleCommand(rawCmd) {
+    const cmd = rawCmd.trim();
+    if (!cmd) return;
 
-    // Safe DOM builder — never assigns user/variable text to innerHTML
-    function rebuildTerm(typedSoFar, showCursor, outputHTML) {
-      term.replaceChildren();
+    // Create prompt history item
+    const lineEl = document.createElement('div');
+    lineEl.className = 'history-line';
+    
+    const promptSpan = document.createElement('span');
+    promptSpan.className = 'terminal-prompt';
+    promptSpan.style.color = '#38bdf8';
+    promptSpan.style.fontWeight = 'bold';
+    promptSpan.textContent = 'visitor@tp-shell:~$ ';
+    
+    const cmdText = document.createTextNode(cmd);
+    lineEl.append(promptSpan, cmdText);
+    history.appendChild(lineEl);
 
-      // Prompt span
-      const prompt = document.createElement('span');
-      prompt.style.color = '#38bdf8';
-      prompt.textContent = 'pradeep@sre-core:~$';
-      term.appendChild(prompt);
-      term.appendChild(document.createTextNode(' '));
+    // Create output container
+    const outputEl = document.createElement('div');
+    outputEl.className = 'terminal-output';
+    outputEl.style.color = '#a7f3d0';
+    outputEl.style.margin = '4px 0 12px 0';
 
-      // Typed command text (safe textContent)
-      term.appendChild(document.createTextNode(typedSoFar));
-
-      // Blinking cursor
-      if (showCursor) {
-        const cursor = document.createElement('span');
-        cursor.className = 'role-cursor';
-        cursor.textContent = '|';
-        term.appendChild(cursor);
-      }
-
-      // Output block — split on \n and insert real <br> nodes (no innerHTML)
-      if (outputHTML) {
-        term.appendChild(document.createElement('br'));
-        const out = document.createElement('span');
-        out.style.color = '#a7f3d0';
-        const lines = outputHTML.split('\n');
-        lines.forEach((line, i) => {
-          out.appendChild(document.createTextNode(line));
-          if (i < lines.length - 1) out.appendChild(document.createElement('br'));
-        });
-        term.appendChild(out);
-        term.appendChild(document.createElement('br'));
-        term.appendChild(document.createElement('br'));
-      }
+    const cleanCmd = cmd.toLowerCase().trim();
+    if (cleanCmd === 'clear') {
+      history.replaceChildren();
+      return;
     }
 
-    if (charIndex === 0) {
-      rebuildTerm('', true, null);
+    let outText = '';
+    switch (cleanCmd) {
+      case 'help':
+        outText = 'Available commands:\n' +
+                  '  help     - Show list of available commands\n' +
+                  '  about    - SRE credentials, role details, and target SLA\n' +
+                  '  skills   - List key tools and tech stack expertise\n' +
+                  '  neofetch - Display system info and cloud stats\n' +
+                  '  clear    - Clear terminal screen and history';
+        break;
+      case 'about':
+        outText = 'TALARI PRADEEP - CLOUD & DEVOPS ENGINEER\n' +
+                  '------------------------------------------------\n' +
+                  'Current Focus: AWS, Kubernetes, Terraform, SRE.\n' +
+                  'Enterprise Experience: Managed enterprise EKS workloads\n' +
+                  'with Helm, Karpenter, private network subnets, and IaC.\n' +
+                  'Studios & Repos: Automated secure deployments and GitOps\n' +
+                  'monitoring for 15+ microservice repositories.\n' +
+                  'Status: Operational (SLA target: 99.99%). Open to work.';
+        break;
+      case 'skills':
+        outText = 'KEY SKILLS & TOOLS:\n' +
+                  '------------------------------------------------\n' +
+                  '[Cloud Platforms]  AWS, GCP, Azure\n' +
+                  '[Containers/Orch]  Kubernetes (EKS, GKE), Docker, Helm\n' +
+                  '[IaC & GitOps]     Terraform, Ansible, Pulumi\n' +
+                  '[CI/CD Pipelines]  Jenkins, GitHub Actions, Git\n' +
+                  '[Observability]    Prometheus, Grafana, ELK Stack, Loki\n' +
+                  '[Development]      Python, Bash, Groovy, JavaScript';
+        break;
+      case 'neofetch':
+        outText = '     _.._       visitor@talaripradeep.info\n' +
+                  '   .\' .-\'`      --------------------------\n' +
+                  '  /  /          OS: TalariOS 2.0\n' +
+                  '  |  |          Host: talaripradeep.info (SLA: 99.99%)\n' +
+                  '  \\  \\__.-.     Kernel: Web Shell/v2.4\n' +
+                  '   \'._`  .\'     Uptime: 100% (Continuous Integration)\n' +
+                  '      ``        Shell: bash-tp-custom\n' +
+                  '                Location: India (Open to Work)\n' +
+                  '                Core Stack: AWS, Kubernetes, Terraform, SRE';
+        break;
+      default:
+        outText = 'bash: command not found: ' + cmd + '. Type "help" for available commands.';
+        outputEl.style.color = '#ef4444'; // Red color for errors
     }
 
-    if (charIndex < current.cmd.length) {
-      const typed = current.cmd.slice(0, charIndex + 1);
-      rebuildTerm(typed, true, null);
-      charIndex++;
-      setTimeout(typeWriter, 40 + Math.random() * 40);
-    } else {
-      setTimeout(() => {
-        rebuildTerm(current.cmd, false, current.out);
-        logIndex = (logIndex + 1) % logs.length;
-        charIndex = 0;
-        setTimeout(typeWriter, 5000);
-      }, 800);
+    const lines = outText.split('\n');
+    lines.forEach((line, idx) => {
+      outputEl.appendChild(document.createTextNode(line));
+      if (idx < lines.length - 1) {
+        outputEl.appendChild(document.createElement('br'));
+      }
+    });
+
+    history.appendChild(outputEl);
+    
+    // Auto scroll to bottom of the terminal container
+    term.scrollTop = term.scrollHeight;
+  }
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const val = input.value;
+      handleCommand(val);
+      input.value = '';
+    }
+  });
+
+  // Handle chips clicks
+  if (chips) {
+    chips.querySelectorAll('.term-chip').forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const cmd = chip.getAttribute('data-cmd');
+        if (cmd) {
+          input.value = cmd;
+          handleCommand(cmd);
+          input.value = '';
+          input.focus();
+        }
+      });
+    });
+  }
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 1: SLA & ERROR BUDGET GAME
+══════════════════════════════════════════ */
+function initSLACalculatorGame() {
+  const slider = $('slaSlider');
+  const targetVal = $('sla-target-val');
+  const weekly = $('downtime-weekly');
+  const monthly = $('downtime-monthly');
+  const yearly = $('downtime-yearly');
+  
+  const btnStart = $('btnStartChaosGame');
+  const systemStatus = $('game-system-status');
+  const budgetPercent = $('game-budget-percent');
+  const budgetProgress = $('game-budget-progress-bar');
+  const incidentBox = $('game-active-incident');
+  const incidentDesc = $('game-incident-desc');
+  const incidentChoices = $('game-incident-choices');
+
+  if (!slider || !targetVal || !btnStart) return;
+
+  const slaMap = {
+    1: { label: '99.0%',  w: '1.68 hrs',  m: '7.31 hrs',  y: '3.65 days' },
+    2: { label: '99.9%',  w: '10.08 min', m: '43.83 min', y: '8.77 hrs' },
+    3: { label: '99.99%', w: '1.01 min',  m: '4.38 min',  y: '52.60 min' },
+    4: { label: '99.999%',w: '6.05 sec',  m: '26.30 sec', y: '5.26 min' }
+  };
+
+  function updateSLADisplay() {
+    const val = slider.value;
+    const info = slaMap[val];
+    if (info) {
+      targetVal.textContent = info.label;
+      weekly.textContent = info.w;
+      monthly.textContent = info.m;
+      yearly.textContent = info.y;
     }
   }
 
-  typeWriter();
+  slider.addEventListener('input', updateSLADisplay);
+  updateSLADisplay(); // Initial call
+
+  // Game Logic variables
+  let gameInterval = null;
+  let remainingBudget = 100;
+  let isGameActive = false;
+
+  const incidents = [
+    {
+      desc: 'High CPU on postgresql database due to un-indexed query.',
+      choices: [
+        { text: 'A: Promote read-replica & build index', correct: true },
+        { text: 'B: Restart the database server', correct: false },
+        { text: 'C: Scale up web service container replicas', correct: false }
+      ]
+    },
+    {
+      desc: 'ConfigMap mount error causing CrashLoopBackOff in payment microservice.',
+      choices: [
+        { text: 'A: Trigger pod scale up', correct: false },
+        { text: 'B: Rebuild the container build cache', correct: false },
+        { text: 'C: Roll back deployment to v1.1.0 working configuration', correct: true }
+      ]
+    },
+    {
+      desc: 'AWS region network latency spike in us-east-1 ingress gateway.',
+      choices: [
+        { text: 'A: Reroute traffic via Route53 DNS failover to us-west-2', correct: true },
+        { text: 'B: Increase EC2 machine size to xlarge', correct: false },
+        { text: 'C: Evict container logs and prune cache', correct: false }
+      ]
+    }
+  ];
+
+  function startIncidentGame() {
+    if (isGameActive) return;
+    isGameActive = true;
+    remainingBudget = 100;
+    slider.disabled = true;
+    btnStart.disabled = true;
+    btnStart.classList.add('disabled');
+
+    systemStatus.textContent = 'INCIDENT ACTIVE';
+    systemStatus.className = 'status-badge status-red';
+    
+    // Choose random incident
+    const incident = incidents[Math.floor(Math.random() * incidents.length)];
+    incidentDesc.textContent = incident.desc;
+    
+    incidentChoices.replaceChildren();
+    incident.choices.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'term-chip game-choice-btn';
+      btn.style.margin = '4px';
+      btn.textContent = c.text;
+      btn.addEventListener('click', () => {
+        if (c.correct) {
+          endGame(true);
+        } else {
+          remainingBudget = Math.max(0, remainingBudget - 20);
+          btn.disabled = true;
+          btn.style.background = '#ef4444';
+          btn.style.borderColor = '#ef4444';
+          btn.style.color = '#ffffff';
+        }
+      });
+      incidentChoices.appendChild(btn);
+    });
+
+    incidentBox.classList.remove('hidden');
+
+    gameInterval = setInterval(() => {
+      remainingBudget -= 1.5;
+      if (remainingBudget <= 0) {
+        remainingBudget = 0;
+        endGame(false);
+      }
+      budgetPercent.textContent = Math.round(remainingBudget) + '%';
+      budgetProgress.style.width = remainingBudget + '%';
+    }, 150);
+  }
+
+  function endGame(isSuccess) {
+    clearInterval(gameInterval);
+    isGameActive = false;
+    slider.disabled = false;
+    btnStart.disabled = false;
+    btnStart.classList.remove('disabled');
+    incidentBox.classList.add('hidden');
+
+    if (isSuccess) {
+      systemStatus.textContent = 'RESOLVED';
+      systemStatus.className = 'status-badge status-green';
+    } else {
+      systemStatus.textContent = 'SLA BREACHED';
+      systemStatus.className = 'status-badge status-red';
+      budgetPercent.textContent = '0%';
+      budgetProgress.style.width = '0%';
+    }
+  }
+
+  btnStart.addEventListener('click', startIncidentGame);
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 2: ARGOCD CD ROLLOUT SIMULATOR
+══════════════════════════════════════════ */
+function initGitOpsSimulator() {
+  const btnCommit = $('btnGitCommit');
+  const btnSync = $('btnArgoSync');
+  const commitHash = $('git-commit-hash');
+  const syncStatus = $('argocd-sync-status');
+  const podsGrid = $('podsGrid');
+
+  if (!btnCommit || !btnSync) return;
+
+  let isOutOfSync = false;
+  let nextVersion = 2.1;
+
+  btnCommit.addEventListener('click', () => {
+    isOutOfSync = true;
+    commitHash.textContent = 'v' + nextVersion.toFixed(1) + '.' + Math.floor(Math.random() * 100);
+    syncStatus.textContent = 'OutOfSync';
+    syncStatus.className = 'status-badge status-orange';
+    
+    // Set pods to OutOfSync status
+    const circles = podsGrid.querySelectorAll('.pod-circle');
+    circles.forEach(circle => {
+      circle.className = 'pod-circle pod-out-of-sync';
+    });
+
+    btnCommit.disabled = true;
+    btnCommit.classList.add('disabled');
+    btnSync.disabled = false;
+    btnSync.classList.remove('disabled');
+  });
+
+  btnSync.addEventListener('click', async () => {
+    btnSync.disabled = true;
+    btnSync.classList.add('disabled');
+    syncStatus.textContent = 'Syncing...';
+    syncStatus.className = 'status-badge status-blue';
+
+    const circles = podsGrid.querySelectorAll('.pod-circle');
+    
+    // Rolling update simulator: roll pods one by one
+    for (let i = 0; i < circles.length; i++) {
+      circles[i].className = 'pod-circle pod-pending';
+      await new Promise(r => setTimeout(r, 600));
+      circles[i].className = 'pod-circle pod-running';
+    }
+
+    syncStatus.textContent = 'Synced';
+    syncStatus.className = 'status-badge status-green';
+    nextVersion += 0.1;
+
+    btnCommit.disabled = false;
+    btnCommit.classList.remove('disabled');
+  });
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 3: CHAOS AUTO-HEALING
+══════════════════════════════════════════ */
+function initChaosHealingDashboard() {
+  const logBox = $('healerLogs');
+  
+  const cpuVal = $('metric-cpu-val');
+  const cpuBar = $('metric-cpu-bar');
+  const ramVal = $('metric-ram-val');
+  const ramBar = $('metric-ram-bar');
+  const latencyVal = $('metric-latency-val');
+  const latencyBar = $('metric-latency-bar');
+  const errorsVal = $('metric-errors-val');
+  const errorsBar = $('metric-errors-bar');
+
+  const btnCpu = $('btnChaosCPU');
+  const btnLeak = $('btnChaosLeak');
+  const btnLatency = $('btnChaosLatency');
+
+  if (!logBox || !cpuVal || !btnCpu) return;
+
+  let activeAnomaly = null;
+
+  function appendLog(msg) {
+    const row = document.createElement('div');
+    row.textContent = msg;
+    logBox.appendChild(row);
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+
+  // Live noise simulation loop
+  setInterval(() => {
+    if (activeAnomaly) return;
+    
+    const cpu = 20 + Math.floor(Math.random() * 15);
+    const ram = 40 + Math.floor(Math.random() * 10);
+    const latency = 90 + Math.floor(Math.random() * 40);
+    const errors = 0.0;
+
+    cpuVal.textContent = cpu;
+    cpuBar.style.width = cpu + '%';
+    ramVal.textContent = ram;
+    ramBar.style.width = ram + '%';
+    latencyVal.textContent = latency;
+    latencyBar.style.width = Math.min(100, latency / 10) + '%';
+    errorsVal.textContent = errors.toFixed(1);
+    errorsBar.style.width = '0%';
+  }, 1500);
+
+  function disableChaosButtons(disabled) {
+    [btnCpu, btnLeak, btnLatency].forEach(b => {
+      b.disabled = disabled;
+      if (disabled) b.classList.add('disabled');
+      else b.classList.remove('disabled');
+    });
+  }
+
+  async function triggerAutoHealing(anomalyType) {
+    activeAnomaly = anomalyType;
+    disableChaosButtons(true);
+
+    if (anomalyType === 'cpu') {
+      cpuVal.textContent = '98';
+      cpuBar.style.width = '98%';
+      errorsVal.textContent = '1.2';
+      errorsBar.style.width = '12%';
+
+      appendLog('[ALERT] Anomaly: CPU load exceeded 95% threshold on ingress-controller.');
+      await new Promise(r => setTimeout(r, 1200));
+      appendLog('[SRE] Self-Healing: Autoscaler triggered horizontal pod scaling (HPA).');
+      await new Promise(r => setTimeout(r, 1500));
+      appendLog('[HEALER] Replica-set scaled successfully to 5 pods. Load balanced.');
+    } 
+    else if (anomalyType === 'leak') {
+      ramVal.textContent = '96';
+      ramBar.style.width = '96%';
+      errorsVal.textContent = '8.5';
+      errorsBar.style.width = '85%';
+
+      appendLog('[ALERT] Anomaly: JVM / Node container memory exhaustion detected.');
+      await new Promise(r => setTimeout(r, 1200));
+      appendLog('[SRE] Self-Healing: Evicting cache & triggering OOMKilled rescue reboot.');
+      await new Promise(r => setTimeout(r, 1500));
+      appendLog('[HEALER] Container restarted successfully. Heap evicted. Health check green.');
+    } 
+    else if (anomalyType === 'latency') {
+      latencyVal.textContent = '1980';
+      latencyBar.style.width = '99%';
+      errorsVal.textContent = '4.0';
+      errorsBar.style.width = '40%';
+
+      appendLog('[ALERT] Anomaly: High packet drop rate detected on us-east-1 ingress.');
+      await new Promise(r => setTimeout(r, 1200));
+      appendLog('[SRE] Self-Healing: Diverting ingress traffic stream via Route53.');
+      await new Promise(r => setTimeout(r, 1500));
+      appendLog('[HEALER] Traffic redirected to replica us-west-2 group. Latency resolved.');
+    }
+
+    // Gracefully normalize dashboard values
+    await new Promise(r => setTimeout(r, 800));
+    cpuVal.textContent = '24';
+    cpuBar.style.width = '24%';
+    ramVal.textContent = '42';
+    ramBar.style.width = '42%';
+    latencyVal.textContent = '105';
+    latencyBar.style.width = '10%';
+    errorsVal.textContent = '0.0';
+    errorsBar.style.width = '0%';
+    
+    activeAnomaly = null;
+    disableChaosButtons(false);
+  }
+
+  btnCpu.addEventListener('click', () => triggerAutoHealing('cpu'));
+  btnLeak.addEventListener('click', () => triggerAutoHealing('leak'));
+  btnLatency.addEventListener('click', () => triggerAutoHealing('latency'));
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND CATEGORY SWITCHER
+══════════════════════════════════════════ */
+window.switchPlaygroundTab = function(tab) {
+  const groupCore = $('group-play-core');
+  const groupKernel = $('group-play-kernel');
+  const groupDelivery = $('group-play-delivery');
+  
+  const btnCore = $('btn-play-core');
+  const btnKernel = $('btn-play-kernel');
+  const btnDelivery = $('btn-play-delivery');
+
+  if (!groupCore || !groupKernel || !groupDelivery || !btnCore || !btnKernel || !btnDelivery) return;
+
+  groupCore.classList.add('hidden');
+  groupKernel.classList.add('hidden');
+  groupDelivery.classList.add('hidden');
+
+  btnCore.classList.remove('active');
+  btnKernel.classList.remove('active');
+  btnDelivery.classList.remove('active');
+
+  if (tab === 'core') {
+    groupCore.classList.remove('hidden');
+    btnCore.classList.add('active');
+  } else if (tab === 'kernel') {
+    groupKernel.classList.remove('hidden');
+    btnKernel.classList.add('active');
+  } else if (tab === 'delivery') {
+    groupDelivery.classList.remove('hidden');
+    btnDelivery.classList.add('active');
+  }
+};
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 4: eBPF NETWORK PACKET SNIFFER
+══════════════════════════════════════════ */
+function initEbpfSniffer() {
+  const btnHttp = $('btnEbpfHttp');
+  const btnSsh = $('btnEbpfSsh');
+  const togglePort = $('toggleEbpfPort');
+  const toggleDrop = $('toggleEbpfDrop');
+  const consoleLog = $('ebpfConsole');
+  const packetDot = $('ebpf-packet-dot');
+  const serverNode = $('ebpf-node-server');
+  const xdpHook = $('ebpf-xdp-hook');
+
+  if (!btnHttp || !btnSsh || !packetDot || !consoleLog) return;
+
+  let isAnimating = false;
+
+  function appendLog(msg) {
+    const row = document.createElement('div');
+    row.textContent = msg;
+    consoleLog.appendChild(row);
+    consoleLog.scrollTop = consoleLog.scrollHeight;
+  }
+
+  async function triggerPacket(type) {
+    if (isAnimating) return;
+    isAnimating = true;
+    
+    btnHttp.disabled = true;
+    btnSsh.disabled = true;
+    btnHttp.classList.add('disabled');
+    btnSsh.classList.add('disabled');
+
+    packetDot.classList.remove('hidden');
+    packetDot.className = 'ebpf-packet ebpf-packet-animate';
+    
+    appendLog(`[SYSTEM] Instantiating TCP frame on Port ${type === 'http' ? '80' : '22'}...`);
+
+    // eBPF Hook node inspection at 50% time mark (500ms)
+    await new Promise(r => setTimeout(r, 500));
+    
+    if (type === 'ssh' && togglePort && togglePort.checked) {
+      appendLog('[ALERT] eBPF XDP_DROP hook matched rule: SSH traffic blocked at kernel level.');
+      xdpHook.classList.add('flash-alert');
+      packetDot.classList.add('hidden');
+      packetDot.className = 'ebpf-packet';
+      
+      await new Promise(r => setTimeout(r, 1000));
+      xdpHook.classList.remove('flash-alert');
+      isAnimating = false;
+      btnHttp.disabled = false;
+      btnSsh.disabled = false;
+      btnHttp.classList.remove('disabled');
+      btnSsh.classList.remove('disabled');
+      return;
+    }
+
+    if (toggleDrop && toggleDrop.checked) {
+      appendLog('[ALERT] eBPF XDP_DROP matched: TCP handshake drop rule triggered.');
+      xdpHook.classList.add('flash-alert');
+      packetDot.classList.add('hidden');
+      packetDot.className = 'ebpf-packet';
+      
+      await new Promise(r => setTimeout(r, 1000));
+      xdpHook.classList.remove('flash-alert');
+      isAnimating = false;
+      btnHttp.disabled = false;
+      btnSsh.disabled = false;
+      btnHttp.classList.remove('disabled');
+      btnSsh.classList.remove('disabled');
+      return;
+    }
+
+    // Packet continues to User Space Server (next 500ms)
+    await new Promise(r => setTimeout(r, 500));
+    packetDot.classList.add('hidden');
+    packetDot.className = 'ebpf-packet';
+
+    appendLog('[SERVER] Handshake succeeded. HTTP 200 OK Response sent.');
+    if (serverNode) {
+      serverNode.classList.add('flash-success');
+      setTimeout(() => {
+        serverNode.classList.remove('flash-success');
+      }, 1000);
+    }
+
+    isAnimating = false;
+    btnHttp.disabled = false;
+    btnSsh.disabled = false;
+    btnHttp.classList.remove('disabled');
+    btnSsh.classList.remove('disabled');
+  }
+
+  btnHttp.addEventListener('click', () => triggerPacket('http'));
+  btnSsh.addEventListener('click', () => triggerPacket('ssh'));
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 5: TERRAFORM DRIFT RECONCILER
+══════════════════════════════════════════ */
+function initTfDriftReconciler() {
+  const btnDrift = $('btnTfDrift');
+  const btnPlan = $('btnTfPlan');
+  const btnApply = $('btnTfApply');
+  const sgStatus = $('tf-sg-status');
+  const diffTerminal = $('tfDiffTerminal');
+
+  if (!btnDrift || !btnPlan || !btnApply || !diffTerminal) return;
+
+  function setTerminal(lines, isError = false) {
+    diffTerminal.replaceChildren();
+    lines.forEach(line => {
+      const div = document.createElement('div');
+      div.textContent = line;
+      if (isError) {
+        div.style.color = '#ef4444';
+      } else if (line.startsWith('+') || line.includes('No changes') || line.includes('Apply complete')) {
+        div.style.color = '#10b981';
+      } else if (line.startsWith('-') || line.startsWith('~')) {
+        div.style.color = '#f59e0b';
+      }
+      diffTerminal.appendChild(div);
+    });
+  }
+
+  btnDrift.addEventListener('click', () => {
+    sgStatus.textContent = 'DRIFT: Port 22 open';
+    sgStatus.style.color = '#f59e0b';
+    
+    setTerminal([
+      '[ALERT] State discrepancy detected.',
+      'Manual out-of-band changes applied to Security Group: web-sec-group.'
+    ], true);
+
+    btnDrift.disabled = true;
+    btnDrift.classList.add('disabled');
+    btnPlan.disabled = false;
+    btnPlan.classList.remove('disabled');
+  });
+
+  btnPlan.addEventListener('click', () => {
+    setTerminal([
+      '$ terraform plan',
+      'Refreshing state in S3 backend...',
+      'Terraform state matches configuration, but active resources differ:',
+      '',
+      '~ resource "aws_security_group" "web" {',
+      '    ~ ingress {',
+      '      - from_port = 22',
+      '      - to_port   = 22',
+      '      - protocol  = "tcp"',
+      '      }',
+      '    }',
+      '',
+      'Plan: 0 to add, 1 to change, 0 to destroy.'
+    ]);
+
+    btnPlan.disabled = true;
+    btnPlan.classList.add('disabled');
+    btnApply.disabled = false;
+    btnApply.classList.remove('disabled');
+  });
+
+  btnApply.addEventListener('click', async () => {
+    btnApply.disabled = true;
+    btnApply.classList.add('disabled');
+
+    setTerminal([
+      '$ terraform apply -auto-approve',
+      'Acquiring state lock via DynamoDB table...',
+      'aws_security_group.web: Modifying... [id=sg-0a12b4e]',
+      'Reconciling security group rules...'
+    ]);
+
+    await new Promise(r => setTimeout(r, 1200));
+
+    sgStatus.textContent = 'OK';
+    sgStatus.style.color = '';
+
+    setTerminal([
+      'aws_security_group.web: Modifications complete.',
+      'Reconciliation successful.',
+      '',
+      'Apply complete! Resources: 0 added, 1 changed, 0 destroyed.'
+    ]);
+
+    btnDrift.disabled = false;
+    btnDrift.classList.remove('disabled');
+  });
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 6: ALERTMANAGER ROUTING TREE
+══════════════════════════════════════════ */
+function initAlertmanagerRouting() {
+  const btnCpu = $('btnTriggerCpuAlert');
+  const btnDisk = $('btnTriggerDiskAlert');
+  const silenceCpu = $('toggleSilenceCpu');
+  const diskCritical = $('toggleDiskCritical');
+  const activeSilence = $('am-active-silence');
+  const countSlack = $('am-count-slack');
+  const countPager = $('am-count-pager');
+
+  const nodeCpu = $('am-src-cpu');
+  const nodeDisk = $('am-src-disk');
+  const nodeEngine = $('am-engine-node');
+  const destSlack = $('am-dest-slack');
+  const destPager = $('am-dest-pager');
+
+  if (!btnCpu || !btnDisk || !activeSilence) return;
+
+  let slackCount = 0;
+  let pagerCount = 0;
+  let running = false;
+
+  silenceCpu.addEventListener('change', () => {
+    activeSilence.textContent = silenceCpu.checked 
+      ? 'Silences: alertname="CPUUsage"' 
+      : 'Silences: None';
+  });
+
+  async function routeAlert(alertType) {
+    if (running) return;
+    running = true;
+
+    // Reset layouts
+    [nodeCpu, nodeDisk, nodeEngine, destSlack, destPager].forEach(n => {
+      n.classList.remove('am-active-red', 'am-active-grey');
+    });
+
+    const isCpu = alertType === 'cpu';
+    const sourceNode = isCpu ? nodeCpu : nodeDisk;
+    
+    // Step 1: Fire alert
+    sourceNode.classList.add('am-active-red');
+    await new Promise(r => setTimeout(r, 700));
+
+    // Step 2: Rules Engine
+    sourceNode.classList.remove('am-active-red');
+    nodeEngine.classList.add('am-active-red');
+    await new Promise(r => setTimeout(r, 700));
+
+    if (isCpu && silenceCpu.checked) {
+      nodeEngine.classList.remove('am-active-red');
+      nodeEngine.classList.add('am-active-grey');
+      await new Promise(r => setTimeout(r, 800));
+      nodeEngine.classList.remove('am-active-grey');
+      running = false;
+      return;
+    }
+
+    // Step 3: Route alert
+    nodeEngine.classList.remove('am-active-red');
+    
+    if (!isCpu && diskCritical.checked) {
+      destPager.classList.add('am-active-red');
+      pagerCount++;
+      countPager.textContent = pagerCount;
+    } else {
+      destSlack.classList.add('am-active-red');
+      slackCount++;
+      countSlack.textContent = slackCount;
+    }
+
+    running = false;
+  }
+
+  btnCpu.addEventListener('click', () => routeAlert('cpu'));
+  btnDisk.addEventListener('click', () => routeAlert('disk'));
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 7: CI/CD PIPELINE RUNNER
+══════════════════════════════════════════ */
+function initCicdPipelineRunner() {
+  const btnRun = $('btnRunCicd');
+  const toggleFailTest = $('toggleCicdFailTest');
+  const toggleVuln = $('toggleCicdVuln');
+  const consoleLog = $('cicdConsole');
+
+  const stageCheckout = $('cicd-stage-checkout');
+  const stageLint = $('cicd-stage-lint');
+  const stageSecurity = $('cicd-stage-security');
+  const stageBuild = $('cicd-stage-build');
+  const stageDeploy = $('cicd-stage-deploy');
+
+  if (!btnRun || !consoleLog || !stageCheckout) return;
+
+  let isRunning = false;
+
+  function appendLog(msg) {
+    const row = document.createElement('div');
+    row.textContent = msg;
+    consoleLog.appendChild(row);
+    consoleLog.scrollTop = consoleLog.scrollHeight;
+  }
+
+  btnRun.addEventListener('click', async () => {
+    if (isRunning) return;
+    isRunning = true;
+    
+    btnRun.disabled = true;
+    btnRun.classList.add('disabled');
+    
+    // Reset stages classes
+    [stageCheckout, stageLint, stageSecurity, stageBuild, stageDeploy].forEach(s => {
+      s.className = 'cicd-stage';
+    });
+
+    consoleLog.replaceChildren();
+    appendLog('[CI/CD] Triggering pipeline run #128. Author: visitor.');
+    
+    // 1. Checkout (400ms)
+    stageCheckout.classList.add('cicd-stage-active');
+    await new Promise(r => setTimeout(r, 400));
+    stageCheckout.classList.remove('cicd-stage-active');
+    stageCheckout.classList.add('cicd-stage-success');
+    appendLog('[CHECKOUT] SCM repository checked out successfully.');
+
+    // 2. Lint & Test (600ms)
+    stageLint.classList.add('cicd-stage-active');
+    await new Promise(r => setTimeout(r, 600));
+    stageLint.classList.remove('cicd-stage-active');
+
+    if (toggleFailTest && toggleFailTest.checked) {
+      stageLint.classList.add('cicd-stage-fail');
+      appendLog('[TEST] Error: 3 unit tests failed. Halted execution.');
+      isRunning = false;
+      btnRun.disabled = false;
+      btnRun.classList.remove('disabled');
+      return;
+    }
+
+    stageLint.classList.add('cicd-stage-success');
+    appendLog('[TEST] 181 unit tests passed. SonarQube quality gate: PASS.');
+
+    // 3. Security Scan (600ms)
+    stageSecurity.classList.add('cicd-stage-active');
+    await new Promise(r => setTimeout(r, 600));
+    stageSecurity.classList.remove('cicd-stage-active');
+
+    if (toggleVuln && toggleVuln.checked) {
+      stageSecurity.classList.add('cicd-stage-fail');
+      appendLog('[TRIVY] Anomaly: Critical CVE-2026-9045 found. Build blocked.');
+      isRunning = false;
+      btnRun.disabled = false;
+      btnRun.classList.remove('disabled');
+      return;
+    }
+
+    stageSecurity.classList.add('cicd-stage-success');
+    appendLog('[TRIVY] Vulnerability Scan complete. 0 critical vulnerabilities found.');
+
+    // 4. Build Container (500ms)
+    stageBuild.classList.add('cicd-stage-active');
+    await new Promise(r => setTimeout(r, 500));
+    stageBuild.classList.remove('cicd-stage-active');
+    stageBuild.classList.add('cicd-stage-success');
+    appendLog('[BUILD] Docker image compiled successfully. Tagged v1.2.8.');
+
+    // 5. Deploy Rollout (600ms)
+    stageDeploy.classList.add('cicd-stage-active');
+    await new Promise(r => setTimeout(r, 600));
+    stageDeploy.classList.remove('cicd-stage-active');
+    stageDeploy.classList.add('cicd-stage-success');
+    appendLog('[DEPLOY] Rollout completed. Pod container image deployed.');
+
+    isRunning = false;
+    btnRun.disabled = false;
+    btnRun.classList.remove('disabled');
+  });
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 8: KARPENTER AUTOSCALER
+══════════════════════════════════════════ */
+function initKarpenterAutoscaler() {
+  const slider = $('karpenterSlider');
+  const toggleSpot = $('toggleKarpenterSpot');
+  const podVal = $('karpenter-pod-count');
+  const nodeVal = $('karpenter-node-count');
+  const costVal = $('karpenter-cost-val');
+  const cluster = $('karpenterCluster');
+
+  if (!slider || !cluster || !podVal) return;
+
+  function updateCluster() {
+    const pods = parseInt(slider.value);
+    const spot = toggleSpot.checked;
+    const nodes = Math.ceil(pods / 4);
+    const cost = nodes * (spot ? 0.08 : 0.24);
+
+    podVal.textContent = pods;
+    nodeVal.textContent = nodes;
+    costVal.textContent = '$' + cost.toFixed(2);
+
+    cluster.replaceChildren();
+
+    let podsLeft = pods;
+    for (let i = 1; i <= nodes; i++) {
+      const nodeCard = document.createElement('div');
+      nodeCard.className = 'karpenter-node-card' + (spot ? ' spot-node' : '');
+      
+      const nodeTitle = document.createElement('div');
+      nodeTitle.className = 'node-title';
+      nodeTitle.textContent = `Node-${i} (${spot ? 'Spot' : 'On-Demand'})`;
+      nodeCard.appendChild(nodeTitle);
+
+      const podsWrap = document.createElement('div');
+      podsWrap.className = 'node-pods-container';
+
+      const podsInNode = Math.min(4, podsLeft);
+      for (let j = 0; j < podsInNode; j++) {
+        const pod = document.createElement('div');
+        pod.className = 'karpenter-pod-circle';
+        podsWrap.appendChild(pod);
+      }
+      nodeCard.appendChild(podsWrap);
+      cluster.appendChild(nodeCard);
+
+      podsLeft -= podsInNode;
+    }
+  }
+
+  slider.addEventListener('input', updateCluster);
+  toggleSpot.addEventListener('change', updateCluster);
+
+  updateCluster(); // Initial render
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 9: GEVOY SERVICE GANO CANARY Traffic Splitter
+══════════════════════════════════════════ */
+function initCanarySplitter() {
+  const slider = $('canarySlider');
+  const sliderLbl = $('canary-slider-lbl');
+  const splitLbl = $('canary-split-lbl');
+  const toggleError = $('toggleCanaryError');
+  const rateStable = $('canary-rate-stable');
+  const rateCanary = $('canary-rate-canary');
+  const flowBox = $('canary-flow-container');
+
+  const destStable = $('canary-dest-stable');
+  const destCanary = $('canary-dest-canary');
+
+  if (!slider || !flowBox || !rateStable) return;
+
+  slider.addEventListener('input', () => {
+    const val = slider.value;
+    sliderLbl.textContent = val + '%';
+    splitLbl.textContent = `${100 - val}/${val}`;
+  });
+
+  let failureCount = 0;
+
+  // Stream simulation request particles
+  setInterval(() => {
+    if (!document.getElementById('playground')) return;
+
+    const val = parseInt(slider.value);
+    const spotRand = Math.random() * 100;
+    const isCanary = spotRand < val;
+
+    const particle = document.createElement('div');
+    particle.className = 'canary-particle ' + (isCanary ? 'canary-anim-route' : 'stable-anim-route');
+    flowBox.appendChild(particle);
+
+    setTimeout(async () => {
+      particle.remove();
+
+      if (isCanary) {
+        if (toggleError.checked) {
+          destCanary.classList.add('flash-alert');
+          rateCanary.textContent = '64% OK';
+          rateCanary.style.color = '#ef4444';
+          failureCount++;
+
+          // Auto-rollback condition triggered on 3 consecutive failures
+          if (failureCount >= 3) {
+            toggleError.checked = false;
+            slider.value = 0;
+            slider.dispatchEvent(new Event('input'));
+            
+            rateCanary.textContent = '100% OK';
+            rateCanary.style.color = '';
+            
+            // Log alert output inside telemetry console or just display warning
+            const consoleBox = $('healerLogs');
+            if (consoleBox) {
+              const row = document.createElement('div');
+              row.textContent = '[PROMETHEUS] Alert: Canary HTTP 5xx errors spiked. Auto-rollback triggered. Weights reset to 100/0.';
+              consoleBox.appendChild(row);
+              consoleBox.scrollTop = consoleBox.scrollHeight;
+            }
+          }
+        } else {
+          destCanary.classList.add('flash-success');
+          rateCanary.textContent = '100% OK';
+          rateCanary.style.color = '';
+          failureCount = 0;
+        }
+      } else {
+        destStable.classList.add('flash-success');
+        rateStable.textContent = '100% OK';
+      }
+
+      await new Promise(r => setTimeout(r, 600));
+      destCanary.classList.remove('flash-alert', 'flash-success');
+      destStable.classList.remove('flash-success');
+    }, 980);
+  }, 1000);
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 10: CHAOS MONKEY MULTI-AZ
+══════════════════════════════════════════ */
+function initChaosMultiAz() {
+  const btn = $('btnTriggerPartition');
+  const status = $('multiaz-zones-status');
+  const cardA = $('az-card-a');
+  const cardB = $('az-card-b');
+  const cardC = $('az-card-c');
+
+  if (!btn || !status || !cardA) return;
+
+  let isPartitioned = false;
+
+  btn.addEventListener('click', () => {
+    if (!isPartitioned) {
+      isPartitioned = true;
+      cardA.classList.add('az-offline');
+      status.textContent = '2 / 3 Active';
+      status.className = 'status-badge status-orange';
+      btn.textContent = 'Rebuild us-east-1a Network Route';
+      
+      // Flash Zone B & C to represent traffic balance scaling
+      [cardB, cardC].forEach(card => {
+        card.classList.add('flash-success');
+        setTimeout(() => {
+          card.classList.remove('flash-success');
+        }, 1000);
+      });
+    } else {
+      isPartitioned = false;
+      cardA.classList.remove('az-offline');
+      status.textContent = '3 / 3 Active';
+      status.className = 'status-badge status-green';
+      btn.textContent = 'Partition us-east-1a Zone';
+    }
+  });
 }
 
 /* ══════════════
@@ -812,6 +1775,16 @@ initProjectModal();
 initDynamicYear();
 initLatencyTracker();
 initSRETerminal();
+initSLACalculatorGame();
+initGitOpsSimulator();
+initChaosHealingDashboard();
+initEbpfSniffer();
+initTfDriftReconciler();
+initAlertmanagerRouting();
+initCicdPipelineRunner();
+initKarpenterAutoscaler();
+initCanarySplitter();
+initChaosMultiAz();
 
 /* ══════════════════════════════════════════
    EXPERIENCE — ACCORDION
