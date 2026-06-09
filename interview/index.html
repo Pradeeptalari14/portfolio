@@ -1472,6 +1472,26 @@
                 expert: "Explains context propagation using headers (e.g. `traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`). Details collector architecture (Receivers, Processors, Exporters) and configuring tail-based sampling to save storage costs.",
                 leadership: "Establishes enterprise observability standards, deploying automated trace instrumentation across 500+ services using OpenTelemetry Operators and verifying alerting boundaries.",
                 coachTips: "Highlight context propagation details (e.g. inject/extract API patterns) to show you understand actual telemetry code execution."
+              },
+              {
+                q: "How do you design a Prometheus alerting strategy that avoids alert fatigue while ensuring critical incidents are always paged?",
+                intent: "Tests real-world experience with alert engineering, Alertmanager routing, and SLO-based alerting.",
+                hidden: "Looks for multi-window multi-burn-rate alerts, Alertmanager inhibition rules, routing trees, and silence policies.",
+                red: "Creating one alert per metric threshold, resulting in hundreds of alerts firing simultaneously during an outage.",
+                strong: "Groups related alerts in Alertmanager, uses inhibition rules to suppress symptom alerts when root cause alerts are firing.",
+                expert: "Details implementing multi-window burn-rate alerts: alert when the 1-hour error rate exceeds 14× the budget AND the 5-minute rate also exceeds 14×. This catches fast burns early and slow burns over time. Uses Alertmanager routing trees to send P0 alerts to PagerDuty and P1 alerts to Slack.",
+                leadership: "Builds a unified SLO alerting framework where all alerts are derived from the same Prometheus recording rules, ensuring consistent definitions across 50+ microservices.",
+                coachTips: "The Google SRE multi-window multi-burn-rate alert model is the gold standard. Mentioning it demonstrates you've read the SRE workbook, which impresses interviewers immediately."
+              },
+              {
+                q: "Explain how you would implement log correlation between Grafana Loki logs and Jaeger traces to diagnose a microservice latency spike.",
+                intent: "Tests practical observability integration skills, trace-log correlation, and multi-signal root cause analysis.",
+                hidden: "Expects knowledge of TraceID injection into log lines, Grafana Explore's correlations feature, and exemplars in Prometheus.",
+                red: "Checking logs in one tab and traces in another separately without linking them by Trace ID.",
+                strong: "Describes injecting the Trace ID into structured log lines so you can pivot from Jaeger spans to Loki log lines.",
+                expert: "Details injecting TraceID into each log entry via OTEL SDK (e.g., logrus fields: `trace_id=abc123`). In Grafana, uses the 'Derived Fields' feature in the Loki datasource to auto-link log lines containing TraceIDs to Jaeger. Can then click a TraceID in a log line and jump directly to the full distributed trace.",
+                leadership: "Deploys OpenTelemetry Collector with the `transform` processor to auto-inject trace context into all logs cluster-wide, eliminating manual instrumentation per service.",
+                coachTips: "Explain that correlated logs and traces dramatically reduce MTTR. Without it, engineers spend 40% of incident time just finding the right log file. Grafana Explore 'correlations' is the UX that makes it practical."
               }
             ],
             incident: {
@@ -1491,6 +1511,18 @@
                 options: ["X-Request-ID", "traceparent", "X-Forwarded-For", "Authorization"],
                 a: "traceparent",
                 explanation: "The W3C `traceparent` header is the industry standard header for propagating distributed tracing context (Trace ID, Parent Span ID, and Trace Flags) between microservices."
+              },
+              {
+                q: "Which sampling strategy in OpenTelemetry evaluates trace data AFTER the full trace is complete, making smarter decisions about what to keep?",
+                options: ["Head-based sampling", "Tail-based sampling", "Random sampling", "Rate limiting"],
+                a: "Tail-based sampling",
+                explanation: "Tail-based sampling waits until the entire distributed trace is complete before deciding whether to keep it, allowing retention of slow or error traces while dropping normal ones."
+              },
+              {
+                q: "Which Prometheus query function calculates the per-second rate of increase of a counter metric over a time range?",
+                options: ["increase()", "rate()", "delta()", "irate()"],
+                a: "rate()",
+                explanation: "`rate(metric[5m])` calculates the per-second average rate of increase of a counter over the last 5 minutes. It's the standard function for HTTP request rates and error rates in alerting rules."
               }
             ]
           },
@@ -1923,10 +1955,22 @@
             },
             quiz: [
               {
-                q: "Which dynamic autoscaling tool schedules container workloads directly on target cloud VMs, bypassing standard AWS Auto Scaling Groups?",
-                options: ["Cluster Autoscaler", "Karpenter", "KEDA", "HPA"],
-                a: "Karpenter",
-                explanation: "Karpenter is an open-source node autoscaler designed for Kubernetes that provisions host machines directly based on pod resource requirements, bypassing ASGs."
+                q: "Which deployment strategy best minimizes blast radius by routing only a small percentage of traffic to the new release version?",
+                options: ["Blue-Green", "Canary", "Recreate", "Rolling Update"],
+                a: "Canary",
+                explanation: "Canary deployments route a small traffic percentage (e.g., 5%) to the new version. If the canary shows elevated errors, rollback is triggered automatically with minimal user impact."
+              },
+              {
+                q: "Which Kubernetes custom resource in the Argo Rollouts controller replaces standard Deployments with metric-driven promotion?",
+                options: ["Rollout", "CanaryJob", "DeploymentRun", "ProgressiveRelease"],
+                a: "Rollout",
+                explanation: "The Argo Rollouts `Rollout` resource replaces `Deployment` objects. It defines canary steps, analysis templates, and metric thresholds that automate or gate traffic promotion decisions."
+              },
+              {
+                q: "In an AnalysisTemplate used by Argo Rollouts, which data source is most commonly queried to determine canary promotion success?",
+                options: ["Grafana", "CloudWatch", "Prometheus", "Elasticsearch"],
+                a: "Prometheus",
+                explanation: "Argo Rollouts AnalysisTemplates primarily query Prometheus to evaluate metrics like HTTP error rates, latency percentiles, and success rates against predefined thresholds."
               }
             ]
           },
@@ -2118,6 +2162,16 @@
                 expert: "Details Active-Passive failover: DB is asynchronously replicated to us-west-2. During failover, DNS is updated, the read-replica in us-west-2 is promoted to primary, and we verify the replica lag is zero to prevent data loss. Explains how split-brain is avoided by ensuring the old primary is fenced (shut down) before promoting the secondary.",
                 leadership: "Architects multi-region active-active distributed databases (e.g. Spanner or CockroachDB) utilizing Raft consensus across 3 regions to guarantee zero-RTO failovers.",
                 coachTips: "Always mention database fencing. Promoting a backup database while the primary is still alive is a classic way to corrupt database states."
+              },
+              {
+                q: "How do you implement and validate a Disaster Recovery plan for an EKS-based application using Velero and RDS read-replicas?",
+                intent: "Tests hands-on DR implementation, backup tooling, Kubernetes state recovery, and database promotion procedures.",
+                hidden: "Expects Velero backup schedules, PVC snapshot support (CSI), RDS read-replica promotion steps, Route53 DNS failover, and GameDay validation.",
+                red: "Assuming a DR plan is ready without ever testing it, or treating application code backup and database backup as the same thing.",
+                strong: "Describes scheduling Velero backups for Kubernetes resources and separately replicating RDS databases to another region.",
+                expert: "Details the full DR plan:<br>1. Velero scheduled backup (daily) captures K8s manifests, ConfigMaps, Secrets, and PVC snapshots to S3 in us-west-2.<br>2. RDS automated replication to a read-replica in us-west-2 with <5s lag.<br>3. During DR trigger: promote the replica to primary, apply Velero restore in us-west-2 cluster, update Route53 alias records.<br>4. Measure actual RTO (target <30 min). Validate application with smoke tests.",
+                leadership: "Runs bi-annual GameDay chaos exercises simulating regional outages, terminating entire EKS clusters and databases in staging to validate automated recovery procedures meet published RTO/RPO targets.",
+                coachTips: "Interviewers want to hear that you've *tested* your DR plan. Saying 'we have automated backups' is not enough — say 'we validated failover in 18 minutes during our last GameDay exercise.'"
               }
             ],
             incident: {
@@ -2137,6 +2191,18 @@
                 options: ["RTO", "RPO", "SLA", "MTTR"],
                 a: "RPO",
                 explanation: "RPO (Recovery Point Objective) defines the age of files that must be recovered from backup storage for normal operations to resume."
+              },
+              {
+                q: "Which tool is commonly used to back up and restore Kubernetes cluster resources and Persistent Volume Claim snapshots?",
+                options: ["Velero", "kubectl cp", "Helm rollback", "ArgoCD sync"],
+                a: "Velero",
+                explanation: "Velero is the industry-standard Kubernetes backup tool that captures cluster resources, configurations, and PVC snapshots to S3-compatible storage for DR restoration."
+              },
+              {
+                q: "In a database failover scenario, what technique prevents both the old primary and promoted secondary from accepting writes simultaneously?",
+                options: ["Replication Lag Check", "Database Fencing (STONITH)", "DNS TTL Flush", "Connection Draining"],
+                a: "Database Fencing (STONITH)",
+                explanation: "Database fencing (STONITH: Shoot The Other Node In The Head) forcibly shuts down or isolates the old primary before promoting the secondary, preventing split-brain write conflicts."
               }
             ]
           },
@@ -2258,6 +2324,26 @@
                 expert: "Details configuration steps: 1. Deploy NetworkPolicies enforcing default-deny. 2. Set Pod Security Standards: `securityContext: { runAsNonRoot: true, allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: { drop: ['ALL'] } }`. 3. Enable admission controllers (Kyverno) to reject containers that run as root.",
                 leadership: "Designs enterprise security guardrails, implementing eBPF-based runtime threat auditing (Tetragon) to intercept unauthorized kernel system calls dynamically.",
                 coachTips: "Remember to emphasize that namespaces do NOT provide security isolation. Without NetworkPolicies, a compromised pod can scan and attack any other pod in the cluster."
+              },
+              {
+                q: "How do you implement Kubernetes RBAC to enforce the principle of least privilege for application service accounts?",
+                intent: "Tests precise knowledge of RBAC role design, ClusterRole vs Role, and service account scoping.",
+                hidden: "Looks for verbs/resources scoping in Role definitions, RoleBinding vs ClusterRoleBinding, and automated RBAC auditing.",
+                red: "Binding every service account to ClusterRole:cluster-admin, or not creating service accounts at all.",
+                strong: "Creates dedicated ServiceAccounts per application and binds them to Roles with only the verbs needed (e.g., `get`, `list`, `watch`).",
+                expert: "Details creating a Role with specific resource/verb pairs: `rules: [{ apiGroups: [''], resources: ['pods', 'services'], verbs: ['get', 'list', 'watch'] }]` and binding it to the app's ServiceAccount with a RoleBinding scoped to the namespace. Uses `kubectl auth can-i` to audit effective permissions.",
+                leadership: "Deploys automated RBAC auditing using rbac-lookup or kubescape, generating weekly reports of over-privileged service accounts and automatically revoking unused permissions.",
+                coachTips: "Tip: The most common RBAC mistake is confusing RoleBinding (namespace-scoped) and ClusterRoleBinding (cluster-wide). A ClusterRoleBinding to a standard Role is invalid — you need a ClusterRoleBinding to a ClusterRole for cluster-wide access."
+              },
+              {
+                q: "How do you detect and respond to a runtime security incident where a compromised container attempts to access the Kubernetes API server?",
+                intent: "Tests runtime threat detection, incident response procedures, and cluster hardening.",
+                hidden: "Looks for Falco rules, API server audit logs, ServiceAccount token restrictions, and network policies blocking egress to the API server.",
+                red: "Relying purely on container image scanning and ignoring runtime behavior monitoring.",
+                strong: "Uses Falco to detect suspicious system calls and Kubernetes audit logs to trace API server access patterns.",
+                expert: "Details the detection chain: 1. Falco rule fires: pod exec'ing curl to kubernetes.default.svc (API server). 2. Kubernetes audit log shows API calls from compromised pod's ServiceAccount token. 3. Response: immediately delete the pod, revoke the ServiceAccount token, and tighten NetworkPolicy to block pod egress to 10.96.0.1/32 (API server).",
+                leadership: "Implements Tetragon (eBPF) policies that automatically terminate processes making unauthorized syscalls, providing sub-millisecond response to container escape attempts without requiring human intervention.",
+                coachTips: "Mention that Kubernetes ServiceAccount tokens by default have no expiry and are auto-mounted in all pods. Disabling auto-mounting (`automountServiceAccountToken: false`) on pods that don't need API access is a critical hardening step."
               }
             ],
             incident: {
@@ -2277,6 +2363,18 @@
                 options: ["Security Group", "NetworkPolicy", "Ingress", "ServiceAccount"],
                 a: "NetworkPolicy",
                 explanation: "Kubernetes NetworkPolicies let you configure ingress and egress traffic filtering rules at the pod level using selector labels."
+              },
+              {
+                q: "Which admission controller tool validates Kubernetes manifests against security policies and can block deployments running as root?",
+                options: ["RBAC", "Kyverno", "Falco", "Trivy"],
+                a: "Kyverno",
+                explanation: "Kyverno is a Kubernetes-native policy engine that validates, mutates, and generates manifests using admission webhook controllers before resources are persisted to etcd."
+              },
+              {
+                q: "Which open-source runtime security tool monitors Linux system calls in real-time to detect container escape attempts and privilege escalations?",
+                options: ["OPA Gatekeeper", "kube-bench", "Falco", "Trivy"],
+                a: "Falco",
+                explanation: "Falco uses eBPF or kernel modules to capture system calls at the OS level, matching them against security rules to detect suspicious container behavior in real time."
               }
             ]
           }
@@ -3012,6 +3110,26 @@
                 expert: "Details the reconciliation loop: ArgoCD compares target state (Git manifests) with live state (K8s API objects). If it detects a mismatch, it marks the app as OutOfSync. If Self-Heal is active, it applies the Git definition. If Prune is active, it deletes orphaned K8s objects not declared in Git.",
                 leadership: "Architects multi-tenant multi-cluster architectures, deploying ArgoCD ApplicationSets that auto-generate manifests dynamically for 100+ environments.",
                 coachTips: "Explain that GitOps provides an automatic audit trail: every change to production must be approved in a Git Pull Request first."
+              },
+              {
+                q: "How do you implement multi-cluster GitOps management using ArgoCD ApplicationSets, and what generators do you use?",
+                intent: "Tests advanced ArgoCD architecture, ApplicationSet generators, and scalable multi-environment management.",
+                hidden: "Expects knowledge of List, Cluster, Git, and Matrix generators, and how they parameterize application templates dynamically.",
+                red: "Manually duplicating ArgoCD Application manifests per cluster/environment, or not knowing what ApplicationSets are.",
+                strong: "Describes ApplicationSets as a way to auto-generate multiple ArgoCD Applications from a single template using generators.",
+                expert: "Details using the Cluster generator to deploy the same app to 50 clusters, the Git generator to deploy different apps per directory structure, and the Matrix generator to combine generators (e.g., deploy per cluster per environment). Each generated Application inherits the template's sync policies.",
+                leadership: "Architects a platform-level ApplicationSet repository that auto-onboards new teams by detecting new directories in Git, generating ArgoCD Applications and namespace provisioning automatically.",
+                coachTips: "The Matrix generator is the most powerful — it multiplies two generators (e.g., 5 apps × 10 clusters = 50 auto-generated Applications). Mentioning this impresses senior interviewers."
+              },
+              {
+                q: "Explain the difference between ArgoCD's Self-Heal and Prune options, and when you would disable each in a production environment.",
+                intent: "Tests precise understanding of ArgoCD sync behavior, risk management, and production safety toggles.",
+                hidden: "Looks for specific cases where Self-Heal can disrupt legitimate manual interventions, and where Prune can accidentally delete CRDs.",
+                red: "Enabling both blindly without understanding the risks, or not knowing that Prune deletes resources removed from Git.",
+                strong: "Defines Self-Heal as automatic correction of manual cluster edits, and Prune as automatic deletion of orphaned resources.",
+                expert: "Explains when to disable: Disable Self-Heal during emergency hotfixes where you need to manually patch a live pod. Disable Prune when migrating or removing CRDs that still have associated live resources, to prevent destroying data-holding custom objects.",
+                leadership: "Implements per-application sync policies via ArgoCD RBAC: only Ops leads can override self-heal during incidents, enforcing controlled exception management.",
+                coachTips: "A great real-world answer: 'I disable Prune on database-related applications because accidentally deleting a PVC or StatefulSet in production is not recoverable.'"
               }
             ],
             incident: {
@@ -3031,6 +3149,18 @@
                 options: ["Self-Heal", "Prune", "Auto-Sync", "Retry"],
                 a: "Prune",
                 explanation: "The Prune configuration tells the ArgoCD controller to delete active cluster resources that have been deleted from the source Git manifests."
+              },
+              {
+                q: "Which ArgoCD feature allows a single template to auto-generate Applications for multiple clusters or environments?",
+                options: ["ApplicationSets", "Argo Rollouts", "Helm Charts", "Sync Waves"],
+                a: "ApplicationSets",
+                explanation: "ApplicationSets use generators (List, Cluster, Git, Matrix) to dynamically produce multiple ArgoCD Application manifests from a single parameterized template."
+              },
+              {
+                q: "What ArgoCD feature prevents changes from being applied out of order when deploying interdependent resources?",
+                options: ["Prune", "Sync Windows", "Sync Waves", "Health Checks"],
+                a: "Sync Waves",
+                explanation: "Sync Waves (via the argocd.argoproj.io/sync-wave annotation) control the order in which resources are applied during a sync, ensuring CRDs and namespaces are created before dependent workloads."
               }
             ]
           },
@@ -3082,6 +3212,26 @@
                 expert: "Details the lock: TF creates an item in DynamoDB with a LockID. If a pipeline runs, it checks DynamoDB. If stuck (e.g. pipeline crashed), identify the Lock Info ID from logs, run `terraform force-unlock <ID>` after verifying the run is dead. To recover corrupted states, retrieve the previous S3 version from the bucket's versioning history.",
                 leadership: "Architects scale IaC pipelines using Terraform Cloud/Enterprise, implementing automated plan policies (Sentinel/OPA) to audit configurations in Git before execution.",
                 coachTips: "Warn that editing state files manually is highly risky. Always use `terraform state mv` or `terraform state rm` CLI commands instead."
+              },
+              {
+                q: "How do you manage Terraform across multiple environments (dev, staging, prod) while keeping state files isolated and configs DRY?",
+                intent: "Tests multi-environment IaC design, workspace vs. module patterns, and state isolation strategies.",
+                hidden: "Looks for terraform workspaces, separate backend configs per environment, Terragrunt for DRY configs, and remote state data sources.",
+                red: "Hardcoding environment names in main.tf files, or using a single shared state file for all environments.",
+                strong: "Proposes using Terraform workspaces or separate directories per environment with different backend configs and .tfvars files.",
+                expert: "Details using separate state backends per environment (e.g., s3://tf-state/prod/, s3://tf-state/staging/) and using `terraform_remote_state` data sources to share VPC or networking outputs between modules. Avoids workspace overuse for large teams due to naming conflicts.",
+                leadership: "Architects a Terragrunt-based mono-repo structure with auto-inherited backend configs, enforcing environment parity using shared modules and environment-specific override files.",
+                coachTips: "Mention the risk of workspaces: in Terraform, `terraform workspace select prod` then `terraform destroy` is a single command away from a production catastrophe. Prefer directory-based isolation for critical environments."
+              },
+              {
+                q: "How do you securely handle sensitive values (API keys, DB passwords) in Terraform without committing them to Git?",
+                intent: "Tests secrets management integration with IaC, particularly preventing plaintext exposure in state files or code.",
+                hidden: "Expects mention of AWS Secrets Manager, HashiCorp Vault provider, environment variables, and KMS encryption of state files.",
+                red: "Hardcoding secrets directly in .tf files or checking in .tfvars files containing credentials.",
+                strong: "Uses environment variables (TF_VAR_*) to inject sensitive values, keeping them out of version control.",
+                expert: "Details retrieving secrets at plan time using the `aws_secretsmanager_secret_version` data source, encrypting state at rest with KMS (via `encrypt = true` in S3 backend), and using sensitive = true on output variables to mask values in terminal logs.",
+                leadership: "Integrates Vault dynamic secrets provider, generating short-lived database credentials in Terraform resources that auto-expire, eliminating long-lived static secrets from infrastructure entirely.",
+                coachTips: "Always explain that even if you don't hardcode secrets, Terraform state files store all resource attributes — including passwords — in plaintext. Encrypting the S3 backend with KMS is mandatory in production."
               }
             ],
             incident: {
@@ -3101,6 +3251,18 @@
                 options: ["RDS", "DynamoDB", "ElastiCache", "Route53"],
                 a: "DynamoDB",
                 explanation: "DynamoDB is paired with S3 backends, providing state locking by storing lock indices in a primary key table during Terraform runs."
+              },
+              {
+                q: "Which Terraform command is used to safely remove a stuck state lock without modifying the infrastructure?",
+                options: ["terraform state rm", "terraform force-unlock", "terraform destroy", "terraform taint"],
+                a: "terraform force-unlock",
+                explanation: "`terraform force-unlock <LOCK_ID>` manually releases a stuck DynamoDB state lock. It requires the Lock ID from error logs and must only be run after confirming the original pipeline process is dead."
+              },
+              {
+                q: "What Terraform keyword marks an output variable to prevent its value from being displayed in CLI logs?",
+                options: ["private", "encrypted", "sensitive", "hidden"],
+                a: "sensitive",
+                explanation: "Setting `sensitive = true` on a Terraform output masks the value in CLI output and plan diffs, preventing accidental exposure of passwords or API keys."
               }
             ]
           },
@@ -3498,44 +3660,162 @@
       });
     };
 
-    // Incident Simulator Animation
+    // Active topic cache (shared across modal functions)
+    let activeTopicData = null;
+
+    // ─── Topic-aware flow node generator ───────────────────────────────────────
+    function generateFlowNodes(topic) {
+      if (!topic || !topic.incident) return ['Alert Triggered','Check Logs','Check Metrics','Check Network','Check Config','Check Deps','Apply Fix','Validate','Monitor'];
+      if (topic.incident.flowNodes) return topic.incident.flowNodes;
+      const t = topic.title || '';
+      if (t.includes('Kubernetes') || t.includes('K8s') || t.includes('HA Arch')) return ['Alert Fired','kubectl get pods','Describe Events','Check Logs','Query Metrics','Inspect Config','Apply Patch','Validate Health','Monitor Stability'];
+      if (t.includes('GitOps') || t.includes('ArgoCD'))             return ['Sync Failure','Check App Status','Inspect Diff','Review Git State','Fix Manifests','Re-Sync App','Validate Health','Monitor'];
+      if (t.includes('Terraform'))                                   return ['Pipeline Blocked','Check Lock State','Inspect DynamoDB','Identify Lock ID','Force Unlock','Retry Plan','Apply Config','Validate'];
+      if (t.includes('CI/CD') || t.includes('Pipeline'))            return ['Build Failed','Check Runner Logs','Inspect Dockerfile','Fix Code','Rebuild Image','Scan CVEs','Push Artifact','Deploy & Verify'];
+      if (t.includes('Observability') || t.includes('Telemetry'))   return ['Alert Triggered','Check Grafana','Query PromQL','Trace Spans','Identify Cause','Fix Config','Verify Metrics','Update Rules'];
+      if (t.includes('Canary') || t.includes('Blue') || t.includes('Rolling')) return ['Deploy Triggered','Check Rollout','Inspect Pod Health','Review Error Rate','Pause Rollout','Rollback Version','Validate Traffic','Monitor'];
+      if (t.includes('Security') || t.includes('RBAC'))             return ['Security Alert','Identify Threat','Isolate Container','Inspect Policies','Apply Patch','Harden Config','Scan Images','Audit Logs'];
+      if (t.includes('Disaster') || t.includes('Multi-Region'))     return ['Region Failure','Trigger Failover','Update DNS','Promote DB','Apply Manifests','Route Traffic','Validate RTO','Post-Mortem'];
+      if (t.includes('Cost') || t.includes('Karpenter'))            return ['Budget Alert','Check Node Usage','Identify Waste','Rightsize Pods','Enable Spot','Consolidate Nodes','Monitor Costs','Report'];
+      if (t.includes('Capacity') || t.includes('Load'))             return ['Latency Spike','Check Saturation','Identify Bottleneck','Scale Pods','Verify DB Pools','Run Load Test','Tune Config','Validate'];
+      if (t.includes('Network') || t.includes('AWS Network'))       return ['Network Error','Check DNS','Trace Route','Inspect SGs','Verify VPC Rules','Test Connectivity','Apply Fix','Monitor'];
+      if (t.includes('Git'))                                         return ['Pipeline Blocked','Check Remote','Inspect Branch','Fix Conflicts','Push Changes','Verify Pipeline','Notify Team','Monitor'];
+      if (t.includes('Incident') || t.includes('SRE'))              return ['Alert Received','Acknowledge','Assess Impact','Diagnose Root Cause','Apply Mitigation','Verify Resolution','Notify Stakeholders','Post-Mortem'];
+      if (t.includes('Cloud') || t.includes('EKS'))                 return ['Alert Fired','Check EC2 Health','Inspect ASG','Review Load Balancer','Check Pods','Scale Resources','Apply Fix','Validate'];
+      return ['Issue Occurs','Check Logs','Check Metrics','Check Network','Check Config','Check Deps','Apply Fix','Validate','Monitor'];
+    }
+
+    // ─── Topic-aware simulation log generator ──────────────────────────────────
+    function generateSimLogs(topic, count) {
+      const t = topic && topic.title ? topic.title : '';
+      if (topic && topic.incident && topic.incident.simLogs) return topic.incident.simLogs;
+      if (t.includes('Kubernetes') || t.includes('K8s')) return [
+        '> [ALERT] PagerDuty: CrashLoopBackOff detected in production namespace...',
+        '> [CHECK] kubectl get pods -n production — unhealthy pods identified...',
+        '> [EVENTS] kubectl describe pod — Exit Code 137 (OOMKilled) confirmed...',
+        '> [LOGS] kubectl logs --previous — java.lang.OutOfMemoryError traced...',
+        '> [METRICS] Prometheus: kube_pod_memory_working_set exceeds 512Mi limit...',
+        '> [CONFIG] Deployment resource limits identified as undersized...',
+        '> [FIX] Patching memory limit: 512Mi → 1Gi. Rollout triggered...',
+        '> [VALIDATE] kubectl rollout status deployment — all replicas healthy...',
+        '> [CLOSED] Memory stabilized. Incident resolved. Post-mortem scheduled.'
+      ].slice(0, count);
+      if (t.includes('GitOps') || t.includes('ArgoCD')) return [
+        '> [ALERT] ArgoCD: Application production-app stuck in OutOfSync state...',
+        '> [CHECK] argocd app get production-app — Status: OutOfSync detected...',
+        '> [DIFF] argocd app diff — Mutation webhook modified pod annotations at runtime...',
+        '> [REVIEW] Git manifests verified — source state is correct in repository...',
+        '> [FIX] Adding ignoreDifferences for webhook-mutated annotation keys...',
+        '> [SYNC] argocd app sync production-app — applying Git manifests to cluster...',
+        '> [VALIDATE] argocd app get — Status: Synced · Health: Healthy...',
+        '> [CLOSED] Sync loop resolved. Webhook compatibility verified.'
+      ].slice(0, count);
+      if (t.includes('Terraform')) return [
+        '> [ALERT] CI: terraform plan blocked — ConditionalCheckFailedException from DynamoDB...',
+        '> [CHECK] aws dynamodb scan --table-name terraform-locks — Lock record found...',
+        '> [IDENTIFY] Lock ID: e8f9a1b2-xxxx — Previous pipeline build crashed mid-apply...',
+        '> [UNLOCK] terraform force-unlock e8f9a1b2-xxxx — State lock released...',
+        '> [RETRY] terraform plan -out=tfplan — Plan generated. No errors...',
+        '> [APPLY] terraform apply tfplan — Infrastructure changes applied successfully...',
+        '> [VALIDATE] AWS console: all resources in desired state...',
+        '> [CLOSED] State unlocked. Pipeline resumed. Lock timeout added to CI config.'
+      ].slice(0, count);
+      if (t.includes('Security') || t.includes('RBAC')) return [
+        '> [ALERT] Falco: Container escape attempt — writing to /etc on host node...',
+        '> [THREAT] Process tree: shell exec detected from compromised-pod namespace...',
+        '> [ISOLATE] kubectl delete pod compromised-pod --grace-period=0 — Pod terminated...',
+        '> [INSPECT] securityContext: privileged=true hostPath mount to / confirmed...',
+        '> [PATCH] Removing privileged:true. Deploying restricted securityContext...',
+        '> [HARDEN] OPA Gatekeeper policy applied — deny privileged containers...',
+        '> [SCAN] trivy image — 0 CRITICAL CVEs in updated hardened image...',
+        '> [AUDIT] API audit logs: no further escalation attempts detected. Incident closed.'
+      ].slice(0, count);
+      if (t.includes('Disaster') || t.includes('Multi-Region')) return [
+        '> [ALERT] AWS: us-east-1 AZ partial outage — health checks failing...',
+        '> [FAILOVER] Executing scripts/failover.sh — DR procedure initiated...',
+        '> [DNS] Route53 health check flipped — traffic routing to us-west-2...',
+        '> [DB] RDS read-replica promotion to primary in us-west-2 — in progress...',
+        '> [APPLY] kubectl apply -f manifests/ -- Kubernetes resources deployed in backup region...',
+        '> [ROUTE] ALB in us-west-2 passing health checks — user traffic flowing...',
+        '> [VALIDATE] RTO measured: 4m22s — target <5min achieved...',
+        '> [POSTMORTEM] Incident log filed. GameDay DR drill improvements documented.'
+      ].slice(0, count);
+      if (t.includes('Observability') || t.includes('Telemetry')) return [
+        '> [ALERT] Grafana: Loki log ingestion rate = 0 for 5+ minutes...',
+        '> [CHECK] Grafana Explore: no log data after 14:32 UTC timestamp...',
+        '> [QUERY] PromQL: logcli series --analyze-labels — High cardinality metadata detected...',
+        '> [TRACE] kubectl logs loki-0 -n monitoring — ingester: disk space exhausted...',
+        '> [ROOT_CAUSE] Application debug flag left active — flooding Loki with high-volume logs...',
+        '> [FIX] Log level set to INFO — debug flooding halted. Log rate normalized...',
+        '> [VERIFY] Grafana Loki dashboard: log ingestion resuming. Cardinality normal...',
+        '> [CLOSED] Rate-limit filter applied in FluentBit. Incident resolved.'
+      ].slice(0, count);
+      if (t.includes('Canary') || t.includes('Blue') || t.includes('Rolling')) return [
+        '> [ALERT] HTTP 504 errors on 100% of endpoints — blue-green swap failed...',
+        '> [CHECK] kubectl describe service app-service — No Green pod endpoints registered...',
+        '> [EVENTS] kubectl describe pods -l app=green — Readiness probe: connection refused...',
+        '> [METRICS] Prometheus: DB connection pool at 100% saturation — green pods blocked...',
+        '> [PAUSE] Rolling back service selector to Blue environment — users stable...',
+        '> [FIX] Database max_connections increased. Readiness probe timeout extended...',
+        '> [ROUTE] kubectl patch service — traffic redirected to Green. Endpoints healthy...',
+        '> [VALIDATE] curl confirms 200 OK. Blue-green swap complete. Incident closed.'
+      ].slice(0, count);
+      if (t.includes('Cost') || t.includes('Karpenter')) return [
+        '> [ALERT] AWS Cost Anomaly: invoice 40% over budget threshold...',
+        '> [CHECK] kubectl get nodepool — idle nodes with 15% CPU utilization detected...',
+        '> [IDENTIFY] Karpenter: 8 over-provisioned m5.2xlarge nodes with no workloads...',
+        '> [RIGHTSIZE] kubectl set resources deployment — Pod requests aligned to actual usage...',
+        '> [SPOT] NodePool updated: capacity-type spot added for stateless services...',
+        '> [CONSOLIDATE] Karpenter consolidation: 5 nodes terminated. Workloads rescheduled...',
+        '> [MONITOR] AWS Cost Explorer: spending trend 35% lower week-over-week...',
+        '> [REPORT] FinOps savings documented. Karpenter consolidation policy enforced.'
+      ].slice(0, count);
+      if (t.includes('Capacity') || t.includes('Load')) return [
+        '> [ALERT] p99 latency spike: API response > 8 seconds. Database timeouts...',
+        '> [CHECK] Grafana saturation panel — DB CPU at 99%. Disk I/O queue full...',
+        '> [IDENTIFY] pg_stat_activity: 2,000+ open connections — max_connections exceeded...',
+        '> [SCALE] kubectl scale deployment app --replicas=20 — more pods added...',
+        '> [DB_FIX] PgBouncer pool_size set to 50. Database connections pooled...',
+        '> [LOAD_TEST] k6 run --vus 200 — p99 latency down from 8s to 220ms...',
+        '> [TUNE] HPA target CPU threshold updated from 80% to 60%...',
+        '> [VALIDATE] Load test passing. Capacity plan updated. Incident resolved.'
+      ].slice(0, count);
+      // Generic fallback
+      return Array.from({length: count}, (_, i) =>
+        `> Step ${i + 1}: Executing incident diagnostic step ${i + 1}...`
+      );
+    }
+
+    // ─── Incident Simulator Animation ──────────────────────────────────────────
     let simInterval = null;
+    let examTimerInterval = null;
+
     window.runIncidentSimulation = function() {
       const nodes = document.querySelectorAll('.flow-node');
-      const container = document.getElementById('sim-logs-console');
-      if (!nodes || !container) return;
+      const console_el = document.getElementById('sim-logs-console');
+      if (!nodes || !console_el) return;
 
       if (simInterval) clearInterval(simInterval);
-      
       nodes.forEach(n => n.classList.remove('active'));
-      container.innerHTML = '<span style="color:#64748b">> Initializing automated Incident Response analysis...</span>\n';
-      
+      console_el.innerHTML = '<span style="color:#64748b">> Initializing automated Incident Response workflow...</span>\n';
+
       let step = 0;
-      const logs = [
-        "> Event Alert received. Triggering diagnostic workflow...",
-        "> Step 1: Reading stdout container logs metrics...",
-        "> Step 2: Querying Prometheus CPU, Memory, and Disk allocations...",
-        "> Step 3: Pinging local gateways and verifying DNS address tables...",
-        "> Step 4: Comparing local build configurations against target Git state...",
-        "> Step 5: Auditing dependent database backends and vault variables...",
-        "> Step 6: Triggering remediating execution script...",
-        "> Step 7: Performing validation health check ping loops...",
-        "> Step 8: Recording post-incident review status logs. RCA Completed."
-      ];
+      const simLogs = generateSimLogs(activeTopicData, nodes.length);
 
       function nextStep() {
         if (step < nodes.length) {
           nodes[step].classList.add('active');
-          container.innerHTML += `<span style="color:#10b981">${logs[step]}</span>\n`;
-          container.scrollTop = container.scrollHeight;
+          const logMsg = simLogs[step] || `> Step ${step + 1}: Executing diagnostic check...`;
+          console_el.innerHTML += `<span style="color:#10b981">${logMsg}</span>\n`;
+          console_el.scrollTop = console_el.scrollHeight;
           step++;
         } else {
           clearInterval(simInterval);
-          container.innerHTML += `<span style="color:#38bdf8">> STATUS: System recovered. Metrics healthy.</span>\n`;
+          console_el.innerHTML += `<span style="color:#38bdf8">> ✓ STATUS: System recovered. All metrics healthy. Incident closed.</span>\n`;
         }
       }
       nextStep();
-      simInterval = setInterval(nextStep, 1000);
+      simInterval = setInterval(nextStep, 900);
     };
 
     // Dynamic View Renderer
@@ -3556,6 +3836,9 @@
           activeTopic = pillarData.topics[selectedTopicKey];
         }
       }
+
+      // Cache active topic for cross-function access (simulator, timer, etc.)
+      activeTopicData = activeTopic;
 
       if (!activeTopic) {
         container.innerHTML = '<p>Select a topic from the sidebar.</p>';
@@ -3813,59 +4096,77 @@
       } 
       
       else if (activeTab === 'troubleshooting') {
+        const incidentNodes = generateFlowNodes(activeTopic);
+        let flowNodesHtml = '';
+        incidentNodes.forEach((node, i) => {
+          flowNodesHtml += `<div class="flow-node">${node}</div>`;
+          if (i < incidentNodes.length - 1) flowNodesHtml += `<div class="flow-arrow-node">↓</div>`;
+        });
+
         container.innerHTML = `
           <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap">
-              <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary)">
-                🚨 Incident Simulator &amp; Support Runbooks
-              </h2>
-              <button onclick="window.runIncidentSimulation()" style="background:var(--accent-red); color:#fff; border:none; padding:0.45rem 1.1rem; border-radius:50px; font-weight:700; cursor:pointer; font-size:0.75rem; box-shadow:0 4px 12px rgba(239, 68, 68, 0.2)">
-                ⚡ Run Triage Path
-              </button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap; gap:0.75rem">
+              <div>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin:0">
+                  🚨 Incident Simulator &amp; Support Runbooks
+                </h2>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin:0.25rem 0 0 0">
+                  <strong>Active Scenario:</strong> <span style="color:#ef4444; font-weight:600">${activeTopic.incident.title}</span>
+                </p>
+              </div>
+              <div style="display:flex; gap:0.5rem; flex-wrap:wrap">
+                <button onclick="window.runIncidentSimulation()" style="background:linear-gradient(135deg,#ef4444,#b91c1c); color:#fff; border:none; padding:0.45rem 1.1rem; border-radius:50px; font-weight:700; cursor:pointer; font-size:0.75rem; box-shadow:0 4px 14px rgba(239,68,68,0.3)">
+                  ⚡ Run Triage Path
+                </button>
+                <button onclick="document.querySelectorAll('.flow-node').forEach(n=>n.classList.remove('active')); document.getElementById('sim-logs-console').innerHTML = '> Ready for diagnostics execution...'" style="background:var(--bg-surface); border:1px solid var(--border); color:var(--text-muted); padding:0.45rem 0.85rem; border-radius:50px; font-weight:600; cursor:pointer; font-size:0.73rem">
+                  ↺ Reset
+                </button>
+              </div>
             </div>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem">
-              <strong>Active Incident:</strong> <span style="color:#ef4444">${activeTopic.incident.title}</span>
-            </p>
 
+            <!-- Topic-specific visual flow diagram -->
+            <div style="margin:1.25rem 0 0.5rem; font-size:0.72rem; font-weight:700; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase">Diagnostic Flow Path (${incidentNodes.length} Steps)</div>
             <div class="flow-diagram-wrapper">
-              <div class="flow-node">Issue Occurs</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Check Logs</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Check Metrics</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Check Network</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Check Config</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Check Deps</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Apply Fix</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Validate</div>
-              <div class="flow-arrow-node">↓</div>
-              <div class="flow-node">Monitor</div>
+              ${flowNodesHtml}
             </div>
 
+            <!-- Simulation console -->
             <div class="simulator-console">
-              <pre id="sim-logs-console" style="margin:0; white-space:pre-wrap">> Ready for diagnostics execution. Click "Run Triage Path" above to start simulator...</pre>
+              <pre id="sim-logs-console" style="margin:0; white-space:pre-wrap; font-size:0.78rem; line-height:1.7">> Ready for diagnostics execution. Click "⚡ Run Triage Path" above to start...</pre>
             </div>
 
+            <!-- Incident Runbook accordion -->
             <div class="accordion-item" style="margin-top:1.5rem">
               <button class="accordion-header" onclick="window.toggleAccordion(this)">
-                <span>📖 View Incident Runbook Details</span>
+                <span>📖 Full Incident Runbook &amp; RCA Details</span>
                 <span class="accordion-chevron">▼</span>
               </button>
               <div class="accordion-body">
-                <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6">
-                  <strong>Symptoms:</strong> ${activeTopic.incident.symptoms}<br><br>
-                  <strong>Possible Causes:</strong> ${activeTopic.incident.causes}<br><br>
-                  <strong>How to Verify:</strong> ${activeTopic.incident.verify}<br><br>
-                  <strong>Diagnostics Commands:</strong> <code>${activeTopic.incident.commands}</code><br><br>
-                  <strong>Verification/Fix Procedure:</strong> ${activeTopic.incident.fix}<br><br>
-                  <strong>Validation:</strong> ${activeTopic.incident.validation}<br><br>
-                  <strong>Prevention Strategy:</strong> ${activeTopic.incident.prevention}
-                </p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; font-size:0.82rem; color:var(--text-secondary); line-height:1.6">
+                  <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; padding:0.85rem">
+                    <div style="font-weight:800; color:var(--text-primary); margin-bottom:0.4rem">🔴 Symptoms</div>
+                    ${activeTopic.incident.symptoms}
+                  </div>
+                  <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; padding:0.85rem">
+                    <div style="font-weight:800; color:var(--text-primary); margin-bottom:0.4rem">🔎 Root Cause</div>
+                    ${activeTopic.incident.causes}
+                  </div>
+                  <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; padding:0.85rem">
+                    <div style="font-weight:800; color:var(--text-primary); margin-bottom:0.4rem">🩺 How to Verify</div>
+                    ${activeTopic.incident.verify}
+                  </div>
+                  <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; padding:0.85rem">
+                    <div style="font-weight:800; color:var(--text-primary); margin-bottom:0.4rem">🛠 Fix &amp; Validation</div>
+                    ${activeTopic.incident.fix}<br><span style="color:var(--accent-green)">${activeTopic.incident.validation}</span>
+                  </div>
+                </div>
+                <div style="margin-top:0.85rem; background:rgba(56,189,248,0.07); border:1px solid rgba(56,189,248,0.25); border-radius:8px; padding:0.85rem; font-size:0.82rem">
+                  <strong style="color:var(--accent-cyan)">🔵 Diagnostic Commands:</strong><br>
+                  <code style="font-size:0.78rem; color:var(--accent-green)">${activeTopic.incident.commands}</code>
+                </div>
+                <div style="margin-top:0.75rem; background:rgba(168,85,247,0.07); border:1px solid rgba(168,85,247,0.2); border-radius:8px; padding:0.85rem; font-size:0.82rem">
+                  <strong style="color:#a855f7">🛡 Prevention Strategy:</strong> ${activeTopic.incident.prevention}
+                </div>
               </div>
             </div>
           </div>
@@ -3873,51 +4174,82 @@
       } 
       
       else if (activeTab === 'mockexam') {
+        // Reset scores for this topic session
+        quizScoreCorrect = 0;
+        quizTotalSubmitted = 0;
+        if (examTimerInterval) clearInterval(examTimerInterval);
+        const totalQ = Array.isArray(activeTopic.quiz) ? activeTopic.quiz.length : 1;
+
         let quizHtml = '';
-        activeTopic.quiz.forEach((q, idx) => {
+        const quizList = Array.isArray(activeTopic.quiz) ? activeTopic.quiz : [activeTopic.quiz];
+        quizList.forEach((q, idx) => {
           quizHtml += `
-            <div style="margin-bottom:1.5rem">
-              <p style="font-weight:700; color:var(--text-primary); margin-bottom:0.5rem">${idx + 1}. ${q.q}</p>
-              <div style="display:flex; flex-direction:column; gap:0.5rem">
-                ${q.options.map(opt => `
-                  <label style="font-size:0.84rem; display:flex; align-items:center; gap:8px; cursor:pointer">
-                    <input type="radio" name="quiz-q-${idx}" value="${opt}" style="cursor:pointer">
+            <div class="quiz-card" id="quiz-card-${idx}" style="background:var(--bg-surface); border:1.5px solid var(--border); border-radius:10px; padding:1.25rem 1.35rem; margin-bottom:1.1rem; transition:border-color 0.25s, box-shadow 0.25s">
+              <div style="display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:0.85rem">
+                <span style="flex-shrink:0; background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple)); color:#fff; font-size:0.68rem; font-weight:800; padding:0.22rem 0.55rem; border-radius:50px; margin-top:2px">Q${idx + 1}</span>
+                <p style="font-weight:700; color:var(--text-primary); margin:0; font-size:0.9rem; line-height:1.5">${q.q}</p>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:0.4rem">
+                ${(q.options || []).map(opt => `
+                  <label style="font-size:0.84rem; display:flex; align-items:center; gap:10px; cursor:pointer; padding:0.45rem 0.7rem; border-radius:7px; border:1px solid var(--border); background:var(--bg-card); transition:all 0.15s" onmouseover="this.style.borderColor='var(--accent-cyan)';this.style.background='rgba(0,212,255,0.05)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg-card)'">
+                    <input type="radio" name="quiz-q-${idx}" value="${opt}" style="cursor:pointer; accent-color:var(--accent-cyan)">
                     <span>${opt}</span>
                   </label>
                 `).join('')}
               </div>
-              <button onclick="window.submitQuizAnswer(this, '${q.a}', '${q.explanation.replace(/'/g, "\\'")}')" style="background:var(--bg-surface); border:1px solid var(--border); padding:0.35rem 0.85rem; border-radius:4px; font-size:0.72rem; font-weight:700; cursor:pointer; color:var(--text-primary); margin-top:0.75rem">
-                Submit Answer
+              <button onclick="window.submitQuizAnswer(this, '${(q.a || '').replace(/'/g, "\\'")}', '${(q.explanation || '').replace(/'/g, "\\'")}')" 
+                style="background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple)); color:#fff; border:none; padding:0.4rem 1rem; border-radius:20px; font-size:0.72rem; font-weight:700; cursor:pointer; margin-top:0.9rem; box-shadow:0 2px 10px rgba(0,212,255,0.2); transition:opacity 0.15s" 
+                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                Submit Answer ✓
               </button>
-              <div class="quiz-feedback" style="display:none; font-size:0.78rem; margin-top:0.5rem; padding:0.5rem; border-radius:4px"></div>
+              <div class="quiz-feedback" style="display:none; font-size:0.79rem; margin-top:0.6rem; padding:0.65rem 0.8rem; border-radius:7px; line-height:1.55"></div>
             </div>
           `;
         });
 
         container.innerHTML = `
           <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
-            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:1rem">
-              📝 Dynamic Assessment Mode
-            </h2>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.75rem">
-              Test your proficiency in ${activeTopic.title}. Each answer triggers immediate feedback, score tracking, and custom cheat-sheet cards.
-            </p>
-
-            <div id="quiz-block-wrapper">
-              ${quizHtml}
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem">
+              <div>
+                <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin:0 0 0.2rem">
+                  📝 Mock Interview Assessment
+                </h2>
+                <p style="font-size:0.84rem; color:var(--text-muted); margin:0">${activeTopic.title} &nbsp;·&nbsp; ${totalQ} question${totalQ !== 1 ? 's' : ''}</p>
+              </div>
+              <div style="text-align:right">
+                <div id="exam-timer-display" style="font-family:monospace; font-size:1.15rem; font-weight:800; color:var(--accent-cyan); background:var(--bg-surface); border:1px solid var(--border); padding:0.3rem 0.8rem; border-radius:8px; min-width:90px; text-align:center">⏱ 15:00</div>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:0.2rem">Exam Timer</div>
+              </div>
             </div>
 
-            <!-- Scorecard and Career Roadmap Panel -->
-            <div id="scorecard-panel" style="display:none; margin-top:2rem; border-top:1px solid var(--border); padding-top:1.5rem">
-              <h3 style="font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text-primary); margin-bottom:0.75rem">📊 Real-Time Scorecard</h3>
-              <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; font-size:0.84rem; line-height:1.6">
-                <strong>Current Status:</strong> <span id="score-status">Pending</span><br>
-                <strong>Correct Answers:</strong> <span id="score-correct">0</span> / <span id="score-total">0</span><br>
-                <strong>Recommended Next Topic:</strong> <span style="color:var(--accent-cyan); font-weight:700">${activeTopic.related}</span>
+            <!-- Progress bar -->
+            <div style="margin-bottom:1.5rem">
+              <div style="display:flex; justify-content:space-between; margin-bottom:0.35rem">
+                <span id="exam-progress-label" style="font-size:0.74rem; color:var(--text-muted); font-weight:600">0 / ${totalQ} answered</span>
+                <span id="exam-score-label" style="font-size:0.74rem; color:var(--accent-green); font-weight:700">Score: –</span>
               </div>
+              <div style="height:7px; background:var(--border); border-radius:50px; overflow:hidden">
+                <div id="exam-progress-bar" style="height:100%; width:0%; background:linear-gradient(90deg,var(--accent-cyan),var(--accent-purple)); transition:width 0.4s ease; border-radius:50px"></div>
+              </div>
+            </div>
+
+            <div id="quiz-block-wrapper">${quizHtml}</div>
+
+            <!-- Final Scorecard -->
+            <div id="scorecard-panel" style="display:none; margin-top:2rem; border-top:2px solid var(--border); padding-top:1.5rem">
+              <h3 style="font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text-primary); margin-bottom:0.75rem">📊 Session Results</h3>
+              <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; font-size:0.84rem; line-height:1.9">
+                <strong>Result:</strong> <span id="score-status">–</span><br>
+                <strong>Correct Answers:</strong> <span id="score-correct" style="font-weight:800; color:var(--accent-green)">0</span> / <span id="score-total">0</span> &nbsp;(<span id="score-pct">0%</span>)<br>
+                <strong>Next Recommended Topic:</strong> <span style="color:var(--accent-cyan); font-weight:700">${activeTopic.related}</span>
+              </div>
+              <button onclick="window.switchTab('mockexam', this)" style="margin-top:0.85rem; background:var(--bg-surface); border:1px solid var(--border); padding:0.4rem 1rem; border-radius:20px; font-size:0.75rem; font-weight:600; cursor:pointer; color:var(--text-primary)">
+                🔄 Retry This Assessment
+              </button>
             </div>
           </div>
         `;
+        window.startExamTimer();
       } 
       
       else if (activeTab === 'directory') {
@@ -3985,14 +4317,34 @@
       }
     }
 
-    // Submission Handler for Quizzes
+    // ─── Quiz Score State ───────────────────────────────────────────────────────
     let quizScoreCorrect = 0;
     let quizTotalSubmitted = 0;
+
+    // ─── Exam Countdown Timer ───────────────────────────────────────────────────
+    window.startExamTimer = function() {
+      if (examTimerInterval) clearInterval(examTimerInterval);
+      let seconds = 15 * 60;
+      const update = () => {
+        const timerEl = document.getElementById('exam-timer-display');
+        if (!timerEl) { clearInterval(examTimerInterval); return; }
+        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const s = String(seconds % 60).padStart(2, '0');
+        timerEl.textContent = `⏱ ${m}:${s}`;
+        if (seconds <= 60)  timerEl.style.color = '#f59e0b';
+        if (seconds <= 0)  { timerEl.textContent = '⏱ 00:00'; timerEl.style.color = '#ef4444'; clearInterval(examTimerInterval); }
+        seconds--;
+      };
+      update();
+      examTimerInterval = setInterval(update, 1000);
+    };
+
+    // ─── Quiz Answer Submission Handler ────────────────────────────────────────
     window.submitQuizAnswer = function(button, correctVal, explanation) {
       const parent = button.parentElement;
       const selectedInput = parent.querySelector('input[type="radio"]:checked');
       const feedbackDiv = parent.querySelector('.quiz-feedback');
-      
+
       if (!selectedInput) {
         alert('Please select an option before submitting.');
         return;
@@ -4002,29 +4354,52 @@
       parent.querySelectorAll('input').forEach(i => i.disabled = true);
       feedbackDiv.style.display = 'block';
 
-      if (selectedInput.value === correctVal) {
-        feedbackDiv.style.background = 'rgba(16, 185, 129, 0.1)';
-        feedbackDiv.style.border = '1px solid var(--accent-green)';
-        feedbackDiv.style.color = '#10b981';
-        feedbackDiv.innerHTML = `<strong>Correct!</strong> ${explanation}`;
+      const isCorrect = selectedInput.value === correctVal;
+      if (isCorrect) {
+        feedbackDiv.style.background = 'rgba(16,185,129,0.1)';
+        feedbackDiv.style.border   = '1px solid var(--accent-green)';
+        feedbackDiv.style.color    = '#10b981';
+        feedbackDiv.innerHTML      = `<strong>✓ Correct!</strong> ${explanation}`;
+        parent.style.borderColor   = 'var(--accent-green)';
+        parent.style.boxShadow     = '0 0 0 2px rgba(16,185,129,0.15)';
         quizScoreCorrect++;
       } else {
-        feedbackDiv.style.background = 'rgba(239, 68, 68, 0.1)';
-        feedbackDiv.style.border = '1px solid var(--accent-red)';
-        feedbackDiv.style.color = '#ef4444';
-        feedbackDiv.innerHTML = `<strong>Incorrect.</strong> Correct answer is: <em>${correctVal}</em>.<br>${explanation}`;
+        feedbackDiv.style.background = 'rgba(239,68,68,0.1)';
+        feedbackDiv.style.border   = '1px solid var(--accent-red)';
+        feedbackDiv.style.color    = '#ef4444';
+        feedbackDiv.innerHTML      = `<strong>✗ Incorrect.</strong> Correct answer: <em>${correctVal}</em>.<br>${explanation}`;
+        parent.style.borderColor   = 'var(--accent-red)';
+        parent.style.boxShadow     = '0 0 0 2px rgba(239,68,68,0.12)';
       }
 
       quizTotalSubmitted++;
-      
-      // Update scorecard
+
+      // Update live progress bar & score label
+      const totalCards = document.querySelectorAll('.quiz-card').length;
+      const fillPct    = totalCards ? Math.round((quizTotalSubmitted / totalCards) * 100) : 0;
+      const scorePct   = Math.round((quizScoreCorrect / quizTotalSubmitted) * 100);
+      const pb = document.getElementById('exam-progress-bar');
+      const pl = document.getElementById('exam-progress-label');
+      const sl = document.getElementById('exam-score-label');
+      if (pb) pb.style.width = fillPct + '%';
+      if (pl) pl.textContent = `${quizTotalSubmitted} / ${totalCards} answered`;
+      if (sl) {
+        sl.textContent = `Score: ${scorePct}%`;
+        sl.style.color = scorePct >= 75 ? 'var(--accent-green)' : '#f59e0b';
+      }
+
+      // Update scorecard panel
       const scorecard = document.getElementById('scorecard-panel');
       if (scorecard) {
         scorecard.style.display = 'block';
         document.getElementById('score-correct').textContent = quizScoreCorrect;
-        document.getElementById('score-total').textContent = quizTotalSubmitted;
-        const pct = Math.round((quizScoreCorrect / quizTotalSubmitted) * 100);
-        document.getElementById('score-status').innerHTML = `${pct}% Proficiency (${pct >= 75 ? '<span style="color:#10b981;font-weight:bold">Passed</span>' : '<span style="color:#ef4444;font-weight:bold">Needs Review</span>'})`;
+        document.getElementById('score-total').textContent   = quizTotalSubmitted;
+        const pctEl = document.getElementById('score-pct');
+        if (pctEl) pctEl.textContent = scorePct + '%';
+        document.getElementById('score-status').innerHTML =
+          scorePct >= 75
+            ? `<span style="color:#10b981;font-weight:800">✓ Passed</span> — ${scorePct}% proficiency`
+            : `<span style="color:#f59e0b;font-weight:800">⚠ Review Needed</span> — ${scorePct}% proficiency`;
       }
     };
 
