@@ -435,6 +435,90 @@
       padding: 0.6rem 0.85rem;
       border-bottom: 1px solid var(--border);
     }
+
+    /* Level Switcher Tabs styling */
+    .level-tab-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.25rem;
+      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .level-tab-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .level-tab-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+    .level-tab-btn.active {
+      background: var(--bg-base);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(14, 165, 233, 0.15);
+    }
+    .level-content {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      min-height: 80px;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(2px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .coach-delivery-tips-box {
+      background: rgba(16, 185, 129, 0.03);
+      border: 1px dashed var(--accent-green);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* Subtopic Selector Pills */
+    .subtopic-pill-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+    .subtopic-pill-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .subtopic-pill-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+    .subtopic-pill-btn.active {
+      background: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      color: #000;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -546,7 +630,8 @@
 
       <!-- Portfolio Pillar selector -->
       <div class="pillar-selector">
-        <button class="pillar-btn active" onclick="switchPillar('about', this)">👤 About</button>
+        <button class="pillar-btn active" onclick="switchPillar('all', this)">🌐 All Topics</button>
+        <button class="pillar-btn" onclick="switchPillar('about', this)">👤 About</button>
         <button class="pillar-btn" onclick="switchPillar('skills', this)">🎯 Skills</button>
         <button class="pillar-btn" onclick="switchPillar('experience', this)">💼 Experience</button>
         <button class="pillar-btn" onclick="switchPillar('projects', this)">🏗️ Projects</button>
@@ -609,7 +694,7 @@
     }
 
     // Interactive State Definitions
-    let activePillar = 'about';
+    let activePillar = 'all';
     let activeTab = 'coach';
     let selectedTopicKey = '';
 
@@ -791,6 +876,184 @@
               dr: "Lack of multi-region VPC Peering or Transit Gateway failovers, risking a complete regional network isolation.",
               improvements: "Implement multi-AZ NAT Gateways, enforce strict Kubernetes NetworkPolicies, allocate wide CIDRs (e.g. /16), enable VPC Flow Logs to CloudWatch, and write all VPC infra in Terraform."
             },
+            subtopics: {
+              osi_model: {
+                title: "OSI Model",
+                desc: "The Open Systems Interconnection model defines a conceptual framework for network communications in 7 logical layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application.",
+                command: "tcpdump -i eth0 -XX",
+                syntax: "tcpdump -i [interface] [options]",
+                args: "-i eth0: Sniffs traffic on eth0; -XX: Prints raw packet payload in hex and ASCII, showing Ethernet (L2), IP (L3), and TCP (L4) headers.",
+                output: "Hexadecimal packet dumps showing MAC addresses, IP headers, TCP flags, and HTTP payload payloads.",
+                fail: "Permission denied (requires sudo), or interface eth0 does not exist.",
+                prod: "Use tcpdump in production only for short, filtered captures (e.g. host port 80) to avoid disk exhaustion or CPU spikes.",
+                tips: "In SRE interviews, remember that routers work at L3 (IP), switches at L2 (MAC), firewalls at L3/L4 (sometimes L7), and apps/mesh at L7."
+              },
+              tcp_ip: {
+                title: "TCP/IP",
+                desc: "The real-world implementation of networking, collapsing the OSI model into 4 layers: Link, Internet, Transport, and Application. It governs standard internet communication.",
+                command: "ss -tulpn || netstat -tulpn",
+                syntax: "ss [options] || netstat [options]",
+                args: "-t: TCP sockets; -u: UDP sockets; -l: Listening; -p: Show process names; -n: Numeric port values.",
+                output: "List of listening sockets, active connections, and their binding IPs/Ports with associated PID/process names.",
+                fail: "Command not found on minimal container images; resolve by installing iproute2 or net-tools.",
+                prod: "Prefer `ss` over `netstat` on modern Linux machines as it queries socket information directly from kernel space (tcp_diag), which is faster.",
+                tips: "TCP/IP is stateless at L3 (IP) but stateful at L4 (TCP). Understanding this difference helps debug stateful firewalls."
+              },
+              ip_address: {
+                title: "IP Address",
+                desc: "A unique numerical address assigned to every device on an IP network. Divided into IPv4 (32-bit) and IPv6 (128-bit) to route packets across nodes.",
+                command: "ip addr show eth0",
+                syntax: "ip addr show [interface]",
+                args: "show eth0: Displays configuration details (IP, subnet mask, broadcast, MAC) of the eth0 network card.",
+                output: "Interface flags, MTU size, IPv4 address (inet), IPv6 address (inet6), and link/ether physical MAC address.",
+                fail: "Device eth0 not found (interface name could be enp0s3, eth1, etc.).",
+                prod: "Always check if link-local IP (169.254.x.x) is assigned, which indicates the node failed to obtain a DHCP lease.",
+                tips: "Understand private ranges (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. In SRE, VPC configurations must NEVER overlap with peer VPCs or on-premises networks."
+              },
+              ports: {
+                title: "Ports",
+                desc: "16-bit logical channels (0-65535) used by TCP and UDP to multiplex connections. Divided into Well-Known (0-1023), Registered (1024-49151), and Ephemeral (49152-65535).",
+                command: "nc -z -v -w5 database.internal 5432",
+                syntax: "nc -z -v -w[timeout] [host] [port]",
+                args: "-z: Zero-I/O mode (scanning only); -v: Verbose output; -w5: 5-second connection timeout.",
+                output: "Connection to database.internal port 5432 [tcp/postgresql] succeeded!",
+                fail: "Connection refused (service not listening) or Connection timed out (firewall/routing block).",
+                prod: "Avoid long-running port scans in production. Use netcat/telnet as surgical tools to verify target server ingress accessibility.",
+                tips: "Ephemeral port exhaustion occurs when a high-throughput proxy or client opens thousands of outward TCP connections rapidly without reusing sockets."
+              },
+              tcp_udp: {
+                title: "TCP/UDP",
+                desc: "TCP is a connection-oriented, reliable protocol providing flow control and error recovery. UDP is a connectionless, lightweight, fast protocol with no delivery guarantees.",
+                command: "sysctl -a | grep net.ipv4.tcp_keepalive",
+                syntax: "sysctl [options] [variable]",
+                args: "-a: List all system variables; grep tcp_keepalive: Filters TCP connection keepalive socket parameters.",
+                output: "net.ipv4.tcp_keepalive_time = 7200 (seconds before sending keepalive probes).",
+                fail: "Sysctl commands require root privileges to modify kernel settings.",
+                prod: "Tuning TCP variables like `tcp_tw_reuse` or tcp buffers under `/etc/sysctl.conf` is essential to handle high socket concurrency.",
+                tips: "Choose TCP for reliable web APIs (HTTP/HTTPS, databases). Choose UDP for real-time telemetry streaming, DNS, and HTTP/3 (QUIC)."
+              },
+              dns: {
+                title: "DNS",
+                desc: "Domain Name System translates human-readable domain names into IP addresses. Resolution proceeds hierarchically from local cache ➜ resolver ➜ root ➜ TLD ➜ authoritative servers.",
+                command: "dig +trace api.talaripradeep.info",
+                syntax: "dig [domain] [options]",
+                args: "+trace: Performs hierarchical iterative DNS lookups from root servers down to the authoritative name server.",
+                output: "Root NS referrals, TLD (.info) NS referrals, and final authoritative answers mapping the A record.",
+                fail: "Connection timed out (resolver down) or NXDOMAIN (domain does not exist).",
+                prod: "Leverage CoreDNS caches inside Kubernetes clusters and enforce external DNS CNAME caching to limit root query latency.",
+                tips: "Record types to memorize: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), TXT (metadata, SPF/DKIM), NS (name server)."
+              },
+              dhcp: {
+                title: "DHCP",
+                desc: "Dynamic Host Configuration Protocol automatically assigns IP addresses, subnet masks, default gateways, and DNS servers to hosts boot-strapping on a network.",
+                command: "dhclient -r && dhclient",
+                syntax: "dhclient [options] [interface]",
+                args: "-r: Releases current DHCP lease; dhclient: Solicits a fresh IP address configuration lease from local dhcp servers.",
+                output: "DHCPDISCOVER ➜ DHCPOFFER ➜ DHCPREQUEST ➜ DHCPACK transaction logs mapping a new lease.",
+                fail: "No DHCP servers responding (common in misconfigured physical subnets or missing network relay agents).",
+                prod: "Use static IP allocations or DHCP reservations for cloud servers and database nodes to prevent unexpected runtime IP migrations.",
+                tips: "DHCP operates using 4 basic steps: Discover, Offer, Request, Acknowledge (DORA)."
+              },
+              subnetting: {
+                title: "Subnetting",
+                desc: "Dividing a single large network into smaller logical IP groups. Governed by CIDR notation (Classless Inter-Domain Routing) and subnet masks.",
+                command: "ipcalc 10.0.0.0/22",
+                syntax: "ipcalc [IP/CIDR]",
+                args: "10.0.0.0/22: Calculates network details, netmask, host ranges, and total address space.",
+                output: "Address: 10.0.0.0, Netmask: 255.255.252.0 (/22), HostMin: 10.0.0.1, HostMax: 10.0.3.254, Hosts/Net: 1022.",
+                fail: "ipcalc command not installed (install via apt-get install ipcalc or yum install ipcalc).",
+                prod: "Reserve large subnets (at least /20) for Kubernetes clusters. pod network overlay namespaces exhaust IP spaces quickly.",
+                tips: "Remember: `2^(32-CIDR) - 2` yields total usable hosts in a subnet (subtracting network identifier and broadcast addresses)."
+              },
+              routing: {
+                title: "Routing",
+                desc: "The process of forwarding packets across networks, guided by local routing tables mapping destination IP prefixes to physical interface gateways.",
+                command: "route -n || ip route show",
+                syntax: "ip route show [options] || route [options]",
+                args: "-n: Numeric outputs (bypasses DNS reverse lookups on gateway IPs for faster listing).",
+                output: "Routing rows showing destination prefix, gateway IP, subnet mask, interface flags, and metric cost weights.",
+                fail: "Route command deprecated on modern systems; use the modern 'ip route' command.",
+                prod: "Audit default routes (0.0.0.0/0) in private subnets. They must point to a NAT Gateway or virtual private gateway, not an internet gateway.",
+                tips: "Longest Prefix Match (LPM) rule dictates that the router selects the route table entry that has the longest subnet mask match for the destination IP."
+              },
+              nat: {
+                title: "NAT",
+                desc: "Network Address Translation translates private internal IP addresses to a single public egress IP address. Port Address Translation (PAT) multiplexes connections using unique source ports.",
+                command: "iptables -t nat -L -n -v",
+                syntax: "iptables -t nat -L [chain] [options]",
+                args: "-t nat: Targets NAT address translation tables; -L: Lists all active rules; -n -v: Numeric and verbose logging.",
+                output: "PREROUTING, INPUT, OUTPUT, and POSTROUTING NAT chains mapping internal Docker/Kubernetes container IPs to host interfaces.",
+                fail: "Requires root permissions to query iptables configuration registers.",
+                prod: "Monitor NAT Gateway ports. Under heavy load, PAT allocations can exhaust source ports, causing connection failures to external APIs.",
+                tips: "SNAT (Source NAT) modifies source IP for outbound traffic. DNAT (Destination NAT) modifies destination IP for inbound traffic (e.g. port forwarding)."
+              },
+              load_balancer: {
+                title: "Load Balancer",
+                desc: "Distribute incoming application traffic across multiple backend target pools to ensure scaling, high availability, and fault tolerance.",
+                command: "curl -v https://api.talaripradeep.info",
+                syntax: "curl -v [URL]",
+                args: "-v: Verbose output showing HTTP handshake headers, SSL certificate chain, and load balancer backend signature IDs.",
+                output: "Server response containing HTTP status code, cookie markers, and edge server identifiers (e.g. AWS ALB ID).",
+                fail: "HTTP 502 Bad Gateway (backends unhealthy/down) or HTTP 503 Service Unavailable (no backends registered).",
+                prod: "Configure robust health check probes (HTTP path, success codes 200-399, timeout thresholds) to evict dead nodes instantly.",
+                tips: "Layer 4 NLB routes raw TCP connections (preserves IP, high throughput). Layer 7 ALB terminates TLS and inspects HTTP headers (path routing)."
+              },
+              firewall: {
+                title: "Firewall",
+                desc: "Stateful and stateless packet filtering mechanisms blocking unauthorized ingress or egress network traffic at node or boundary layers.",
+                command: "ufw status verbose || iptables -L -n",
+                syntax: "ufw status [options] || iptables -L -n",
+                args: "status verbose: Displays current rules, default policies (deny incoming/allow outgoing), and active profiles.",
+                output: "Active firewall rules: Port 22 (SSH) ALLOW from 10.0.0.0/8, Port 443 (HTTPS) ALLOW from Any.",
+                fail: "UFW service not running or missing permissions to read system firewall state databases.",
+                prod: "Apply firewalls as close to target resources as possible. Restrict SSH (port 22) ingress to trusted Bastion/VPN subnet ranges only.",
+                tips: "Security Groups in AWS are stateful firewalls at instance levels. Network ACLs (NACLs) are stateless firewalls at subnet boundary boundaries."
+              },
+              vpn: {
+                title: "VPN",
+                desc: "Virtual Private Networks establish encrypted overlay tunnels across public internet connections, linking clients or remote datacenters securely to private cloud subnets.",
+                command: "ip link show dev tun0",
+                syntax: "ip link show dev [interface]",
+                args: "dev tun0: Displays configuration status, MTU sizes, and packet metrics of the virtual tunnel interface.",
+                output: "Interface tun0 UP, mtu 1500, link/ipip virtual tunnel configuration details.",
+                fail: "Device tun0 does not exist (indicates VPN connection is offline or client daemon crashed).",
+                prod: "For enterprise site-to-site connectivity, configure secondary backup IPSec VPN tunnels over separate ISP links to failover dynamically.",
+                tips: "IPsec (Internet Protocol Security) is standard for site-to-site VPNs. OpenVPN and WireGuard are standard for client-to-site VPNs."
+              },
+              aws_vpc: {
+                title: "AWS VPC",
+                desc: "Amazon Virtual Private Cloud organizes isolated network partitions in AWS. Consists of Subnets, Route Tables, Internet Gateways, NAT Gateways, and Security Groups.",
+                command: "aws ec2 describe-route-tables --route-table-ids rtb-123456",
+                syntax: "aws ec2 describe-route-tables [options]",
+                args: "--route-table-ids: Selects specific routing matrix configuration arrays from the AWS API registers.",
+                output: "JSON block representing route associations: 0.0.0.0/0 mapping to nat-gateway, 10.0.0.0/16 mapping to local VPC routing.",
+                fail: "AWS credentials expired, region misconfigured, or Route Table ID rtb-123456 does not exist.",
+                prod: "Track all VPC assets via Infrastructure as Code (Terraform). Enable VPC Flow Logs to trace network connectivity during security incidents.",
+                tips: "VPC Peering connects two VPCs securely. Transit Gateway acts as a hub connecting hundreds of VPCs and on-premise networks."
+              },
+              k8s_networking: {
+                title: "Kubernetes Networking",
+                desc: "The pod-to-pod network design where every pod receives a unique, routable IP address. Managed by Container Network Interface (CNI) plugins like Calico or Cilium.",
+                command: "kubectl get pods -n kube-system -o wide | grep cni",
+                syntax: "kubectl get pods -n kube-system [options]",
+                args: "-o wide: Outputs pods along with their host Node IPs and virtual IP leases inside system namespaces.",
+                output: "Status logs detailing Cilium or Calico agents running as DaemonSets on every worker node host.",
+                fail: "Kubernetes API cluster unreachable, or token credentials expired.",
+                prod: "Use NetworkPolicies to enforce default-deny ingress/egress rules, allowing only explicit container communication lines.",
+                tips: "Kubernetes networking rules: 1. All pods can communicate with all other pods without NAT. 2. All nodes can communicate with all pods."
+              },
+              service_mesh: {
+                title: "Service Mesh",
+                desc: "A dedicated infrastructure layer managing service-to-service communication. Implements mutual TLS (mTLS), traffic shifting, routing policies, and observability.",
+                command: "istioctl analyze -n default",
+                syntax: "istioctl analyze [options]",
+                args: "-n default: Scans default namespace for Istio service mesh configuration faults or schema conflicts.",
+                output: "No validation issues found. Cluster configuration complies with service routing safety policies.",
+                fail: "Istioctl command not installed, or Istio control plane (istiod) not running.",
+                prod: "Transition to Ambient Mesh or optimize sidecar resource limits. Envoy proxies consume memory and add small latency (1-3ms) to requests.",
+                tips: "Control Plane (Istiod) manages configurations. Data Plane (Envoy proxies running as sidecars) intercepts and routes all network packets."
+              }
+            },
             interview: [
               {
                 q: "Trace a packet's journey starting from a DNS query up to establishing a TCP connection, explaining how the OSI layers and DHCP are involved.",
@@ -799,7 +1062,8 @@
                 red: "Confusing L4 protocols (TCP/UDP) with L7 protocols (HTTP/DNS), or neglecting to mention MAC address lookup via ARP.",
                 strong: "Explains how DHCP leases IPs at boot, how DNS resolves the domain name recursively, how TCP handles the three-way handshake, and how the packet is encapsulated/decapsulated across OSI layers.",
                 expert: "Describes the packet's journey with precise system calls: socket(), bind(), connect(). Explains layer encapsulation: HTTP payload at L7, TCP segment with ports at L4, IP packet with source/destination IPs at L3, and Ethernet frame with MAC addresses at L2, resolved via ARP table queries.",
-                leadership: "Designs global DNS architectures leveraging Anycast routing, active-active CoreDNS configurations, and DHCP option sets mapping custom DNS endpoints across VPCs to enforce network consistency."
+                leadership: "Designs global DNS architectures leveraging Anycast routing, active-active CoreDNS configurations, and DHCP option sets mapping custom DNS endpoints across VPCs to enforce network consistency.",
+                coachTips: "SREs should focus on the packet flow across both local physical stacks and container virtualized networks. Emphasize ARP/DHCP logic as it's the most common candidate blind spot."
               },
               {
                 q: "How do you design a secure subnet routing architecture within a VPC, and what is the difference between Security Groups and Network Access Control Lists (NACLs)?",
@@ -808,7 +1072,8 @@
                 red: "Confusing Security Groups (stateful, target instance level) with NACLs (stateless, subnet level), or routing public traffic without an Internet Gateway.",
                 strong: "Defines public subnets (routed to Internet Gateway) and private subnets (routed to NAT Gateway). Explains Security Groups filter at instance level (stateful) and NACLs filter at subnet boundaries (stateless).",
                 expert: "Details stateless NACL packet filtering (requires explicit rules for both ingress and ephemeral egress ports 1024-65535) versus stateful Security Groups (automatically allows response traffic). Designs VPCs with separate tiers: Public, Private, and Isolated Data subnets, keeping IPs reserved for scaling.",
-                leadership: "Establishes organization-wide VPC standards using Terraform module blueprints, enforcing automated NACL security compliance scanning and VPC Flow Logs validation in CI/CD pipeline runs."
+                leadership: "Establishes organization-wide VPC standards using Terraform module blueprints, enforcing automated NACL security compliance scanning and VPC Flow Logs validation in CI/CD pipeline runs.",
+                coachTips: "Remember to explain stateless NACL ephemeral port response ranges (1024-65535). Failing to mention outbound return rules is a major red flag in AWS interviews."
               },
               {
                 q: "What are the key differences between Layer 4 and Layer 7 load balancing, and how would you establish secure, high-throughput connectivity between on-premises datacenters and multiple VPCs?",
@@ -817,7 +1082,8 @@
                 red: "Recommending L7 load balancing for high-volume database replica clusters or choosing basic VPNs over Direct Connect for dedicated multi-gigabit workloads.",
                 strong: "Differentiates Layer 4 (routing packets based on IP/Port, high throughput) from Layer 7 (inspecting headers, cookies, URLs, path-based routing). Recommends AWS Site-to-Site VPN for backup and Direct Connect for primary high-speed connection, aggregated via Transit Gateway.",
                 expert: "Explains the mechanics: L4 (Network Load Balancer) does not terminate TCP connection, preserving client IP (using proxy protocol if needed). L7 (Application Load Balancer) terminates the TLS connection, performs inspection, and initiates a new TCP connection to targets. For hybrid connect, details AWS Transit Gateway routing, BGP session establishment, and IPsec VPN failover routing configurations.",
-                leadership: "Designs zero-trust hybrid routing networks utilizing Transit Gateway route domain tables to isolate test and production environments, using SD-WAN overlay fabrics to unify cloud and on-prem connectivity."
+                leadership: "Designs zero-trust hybrid routing networks utilizing Transit Gateway route domain tables to isolate test and production environments, using SD-WAN overlay fabrics to unify cloud and on-prem connectivity.",
+                coachTips: "Highlight proxy models and SSL termination overhead. For high-speed connections, explain dynamic routing (BGP) failovers via secondary IPsec VPN tunnels."
               },
               {
                 q: "Describe the flow of traffic from an external user to a pod in a Kubernetes cluster, and explain how a Container Network Interface (CNI) like Cilium differs from a Service Mesh like Istio.",
@@ -826,7 +1092,8 @@
                 red: "Confusing Kubernetes Service IP routing (which is virtual and handled by iptables/IPVS/eBPF) with physical pod IP routing, or treating CNI and Service Mesh as mutually exclusive.",
                 strong: "Explains that CNI (like Calico or Cilium) provides pod IP connectivity and L3/L4 routing, while Service Mesh (like Istio) manages L7 traffic control, mTLS, retry policies, and telemetry using sidecar proxies like Envoy.",
                 expert: "Traces ingress traffic: External Load Balancer maps to Ingress Pod NodePort, then Node routing maps service VIP using iptables/IPVS (or Cilium's eBPF). The CNI routes packets across hosts using VXLAN/Geneve overlay tunnels or direct BGP routes. The Service Mesh (Istio) injects Envoy sidecars that intercept pod traffic, establishing mutual TLS (mTLS) and enforcing path-based rate-limits.",
-                leadership: "Champions modern cloud-native networking architectures, upgrading legacy IPVS clusters to eBPF-based Cilium CNI to eliminate iptables latency, implementing Istio Ambient mesh to remove sidecar resource overhead."
+                leadership: "Champions modern cloud-native networking architectures, upgrading legacy IPVS clusters to eBPF-based Cilium CNI to eliminate iptables latency, implementing Istio Ambient mesh to remove sidecar resource overhead.",
+                coachTips: "Emphasize how iptables scaling bottlenecks led to eBPF-based Cilium. Connect this to Istio's sidecar-less Ambient Mesh to show you follow modern roadmap patterns."
               }
             ],
             incident: {
@@ -1179,7 +1446,7 @@
             },
             tips: "<strong>Production Value:</strong> Git is the interface for GitOps and Infrastructure as Code. Every SRE must know how to safely navigate histories, recover lost commits using reflog, resolve merge conflicts, and optimize repositories using worktrees.<br><br><strong>Interactivity Tips:</strong><br>• <strong>Reflog is your safety net:</strong> <code>git reflog</code> tracks every single update to references (commits, checkouts, merges). If you accidentially reset or delete a branch, reflog is the only way to recover the dangling commit hashes.<br>• <strong>Rebase vs Merge:</strong> Use <code>git rebase</code> to keep a clean, linear history for feature branches. Avoid rebasing shared public branches as it rewrites commit history, causing issues for other collaborators.<br>• <strong>Worktrees for multi-tasking:</strong> Instead of stashing or cloning a repo twice to work on two branches simultaneously, use <code>git worktree add</code> to checkout multiple branches in separate directories within the same repository footprint.",
             flow: {
-              learning: "git clone ➜ git fetch/pull ➜ git add/commit ➜ git push ➜ git stash/pop ➜ git merge/rebase ➜ git cherry-pick ➜ git reflog ➜ git reset/revert ➜ git blame/bisect ➜ git tag ➜ git worktree ➜ git log/show/diff",
+              learning: "git clone ➜ git fetch ➜ git pull ➜ git push ➜ git add ➜ git commit ➜ git stash ➜ git stash pop ➜ git merge ➜ git rebase ➜ git cherry-pick ➜ git reflog ➜ git reset ➜ git revert ➜ git blame ➜ git bisect ➜ git tag ➜ git worktree ➜ git log ➜ git show ➜ git diff",
               execution: "Working Directory (untracked/modified) ➜ Staging Area (indexed via git add) ➜ Local Repository (committed via git commit) ➜ Remote Repository (pushed via git push)",
               repo: "Pradeeptalari14/tp-github-actions ➜ scripts/sync.js ➜ .github/workflows/main.yml"
             },
@@ -1201,6 +1468,239 @@
               dr: "Failure of remote host services halting continuous deployment pipelines with no secondary source registry failover.",
               improvements: "Enforce pre-commit hooks (Trufflehog) to prevent secrets from being committed, enable shallow cloning (git clone --depth 1) in pipelines to scale build speeds, and set up secondary repository mirrors."
             },
+            subtopics: {
+              git_clone: {
+                title: "git clone",
+                desc: "Downloads an existing remote repository onto a local directory, creating remote-tracking branches and downloading all commit history.",
+                command: "git clone --depth 1 https://github.com/Pradeeptalari14/portfolio.git",
+                syntax: "git clone [options] [url]",
+                args: "--depth 1: Creates a shallow clone, truncating all historical commits to just the latest revision, optimizing download speeds.",
+                output: "Cloning into 'portfolio'... Receiving objects: 100%, Resolving deltas: 100%, Done.",
+                fail: "Authentication failed (invalid SSH keys or personal access tokens), or target repository not found.",
+                prod: "Enforce --depth 1 in automated build pipelines to save bandwidth and decrease container initialization speeds from minutes to seconds.",
+                tips: "Cloning copies the entire `.git` history database by default, unlike checkout which just downloads a single snapshot."
+              },
+              git_fetch: {
+                title: "git fetch",
+                desc: "Downloads remote references, branches, and tags from a remote registry to local storage, without merging them into your active branches.",
+                command: "git fetch --all --prune",
+                syntax: "git fetch [options] [remote]",
+                args: "--all: Fetch references for all remotes; --prune: Deletes local references to branches that have been deleted in the remote repository.",
+                output: "Fetching origin... From github.com:owner/repo * [new branch] dev -> origin/dev - [deleted] obsolete-branch.",
+                fail: "Network connection timed out, or remote repository is unreachable.",
+                prod: "Run git fetch regularly in automated cron monitors to keep track of upstream branch movements without modifying working code environments.",
+                tips: "Fetch is a completely safe command; it only updates remote tracking branches (like origin/main) and never alters your active local branch."
+              },
+              git_pull: {
+                title: "git pull",
+                desc: "Fetches upstream updates and immediately integrates them into the active local branch, combining 'git fetch' and 'git merge' in one step.",
+                command: "git pull --rebase origin main",
+                syntax: "git pull [options] [remote] [branch]",
+                args: "--rebase: Reapplies local unpushed commits on top of the remote fetched branch instead of creating a merge commit.",
+                output: "Successfully rebased and updated refs/heads/feature-a.",
+                fail: "Merge conflict errors (concurrent file changes). Git stops and requires editing conflict markers before finalizing the pull.",
+                prod: "Use `git pull --rebase` by default to avoid cluttering history with empty merge bubbles ('Merge branch main of ...').",
+                tips: "Configure rebase default: `git config --global pull.rebase true` to automatically rebase when running git pull."
+              },
+              git_push: {
+                title: "git push",
+                desc: "Publishes local repository branch commits to a remote hosting platform (GitHub/GitLab), updating remote-tracking branch references.",
+                command: "git push --force-with-lease origin feature-a",
+                syntax: "git push [options] [remote] [branch]",
+                args: "--force-with-lease: A safer force-push that checks if the remote branch has updated since your last fetch before overwriting.",
+                output: "To github.com:owner/repo.git * [new branch] feature-a -> feature-a.",
+                fail: "Rejected non-fast-forward push (remote contains commits you don't have locally). Must pull updates before pushing.",
+                prod: "NEVER run git push --force on shared production branches (main/release). Always prefer --force-with-lease to avoid overwriting coworkers' code.",
+                tips: "Use `git push -u origin <branch>` on first push to track remote branches, simplifying subsequent pushes to just `git push`."
+              },
+              git_add: {
+                title: "git add",
+                desc: "Stages modifications, files, and deletes in your working directory to the Git staging index area, preparing them for the next commit.",
+                command: "git add -p script.js",
+                syntax: "git add [options] [file]",
+                args: "-p: Interactive patch mode. Breaks changes into interactive hunks, letting you review and stage them block-by-block.",
+                output: "Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? (select y to stage, n to skip).",
+                fail: "Pathspec 'filename' did not match any files (file path is incorrect or file has been deleted).",
+                prod: "Avoid staging blind directories (`git add .`). Use `git status` and `git add -p` to prevent staging secret keys or configuration files.",
+                tips: "The staging area is a virtual index storing a snapshot of changes before they are packed into a commit."
+              },
+              git_commit: {
+                title: "git commit",
+                desc: "Saves the staged index snapshot into your local repository commit graph, assigning it a unique SHA-1 hash, author details, and message.",
+                command: "git commit -m 'feat(auth): add MFA login support'",
+                syntax: "git commit [options]",
+                args: "-m: Specifies the commit message directly in the CLI, bypassing the system's default text editor.",
+                output: "[main 4a2b9d3] feat(auth): add MFA login support 2 files changed, 24 insertions(+).",
+                fail: "Aborting commit due to empty commit message, or nothing staged to commit (run git add first).",
+                prod: "Enforce Conventional Commits patterns (e.g. feat:, fix:, chore:). Integrate pre-commit hooks to run linting and secret scanning.",
+                tips: "Write messages in the imperative mood (e.g., 'add feature' instead of 'added feature'), explaining WHAT changed and WHY."
+              },
+              git_stash: {
+                title: "git stash",
+                desc: "Temporarily saves your modified working directory files (both tracked and optionally untracked) into a stack, resetting your branch to clean state.",
+                command: "git stash -u -m 'wip database fix'",
+                syntax: "git stash [options]",
+                args: "-u: Includes untracked files in the stash; -m: Labels the stash with a custom description message.",
+                output: "Saved working directory and index state WIP on feature-a: wip database fix.",
+                fail: "No local changes detected in working directory to stash.",
+                prod: "Label stashes clearly. Avoid keeping old stashes. Use `git stash list` to audit and clean old stashed states.",
+                tips: "A stash is ideal when you need to switch branches quickly to handle a hotfix, without committing half-finished code."
+              },
+              git_stash_pop: {
+                title: "git stash pop",
+                desc: "Applies the latest saved stash configuration onto your current working directory and deletes it from the stash stack.",
+                command: "git stash pop",
+                syntax: "git stash pop [stash_index]",
+                args: "pops the top stash item (stash@{0}) by default; specify index (e.g. stash@{2}) to pop specific stashes.",
+                output: "On branch feature-a... Dropped refs/stash@{0} (commit-sha).",
+                fail: "Merge conflicts when applying stash. Git retains the stash in the stack list so no work is lost.",
+                prod: "If stash pop triggers conflicts, resolve them immediately and run git stash drop if you verified changes are restored.",
+                tips: "Use `git stash apply` if you want to restore stashed changes without deleting them from the stash stack."
+              },
+              git_merge: {
+                title: "git merge",
+                desc: "Integrates history from one branch into another, creating a merge commit if changes are divergent, or fast-forwarding if linear.",
+                command: "git merge --no-ff feature-a",
+                syntax: "git merge [options] [branch]",
+                args: "--no-ff: Forces Git to create a merge commit even if the merge could be resolved as a fast-forward, preserving branch history.",
+                output: "Merge made by the 'recursive' strategy. script.js | 10 ++.",
+                fail: "Merge conflicts. Git markers (<<<<<<<) are injected, and the merge halts until conflicts are resolved and committed.",
+                prod: "Use squash-merges (`git merge --squash`) in pull requests to collapse feature branches into a single clean commit on main.",
+                tips: "Fast-forward merges occur when target branch HEAD is a direct ancestor of source branch; no merge commit is needed."
+              },
+              git_rebase: {
+                title: "git rebase",
+                desc: "Reapplies local commits from one branch on top of another base branch, rewriting commit hashes to create a clean, linear history.",
+                command: "git rebase -i HEAD~3",
+                syntax: "git rebase [options] [newbase]",
+                args: "-i: Interactive mode. Opens editor to pick, squash, reword, drop, or fixup commits for the last 3 history points.",
+                output: "Successfully rebased and updated refs/heads/feature-a.",
+                fail: "Conflicts at commit N. Rebase pauses; resolve conflicts and run `git rebase --continue`, or `git rebase --abort` to cancel.",
+                prod: "NEVER rebase branches that have already been pushed to public repositories. You will rewrite history, breaking peer workspaces.",
+                tips: "Interactive rebase is an SRE's best tool to cleanup messy WIP local commits before submitting a pull request."
+              },
+              git_cherry_pick: {
+                title: "git cherry-pick",
+                desc: "Applies the changes introduced by an existing commit hash from another branch onto your current active branch HEAD.",
+                command: "git cherry-pick 4a2b9d3",
+                syntax: "git cherry-pick [commit-sha]",
+                args: "4a2b9d3: The specific commit hash to clone and apply as a new commit onto the active branch.",
+                output: "[feature-a c8e9f2a] feat(auth): add MFA login support... 2 files changed.",
+                fail: "Cherry-pick fails if changes collide with current files, causing conflicts. Resolve and run `git cherry-pick --continue`.",
+                prod: "Use cherry-picking to backport surgical hotfixes from development branches to release branches without merging unrelated code.",
+                tips: "Cherry-picking copies the changes, creating a new commit with a new SHA hash, even if metadata remains identical."
+              },
+              git_reflog: {
+                title: "git reflog",
+                desc: "Lists all movements of the local HEAD pointer and branch references, recording checkouts, commits, rebase steps, and hard resets.",
+                command: "git reflog",
+                syntax: "git reflog [options]",
+                args: "Displays the chronological list of references; HEAD@{0} is the current state, HEAD@{1} is the previous state.",
+                output: "4a2b9d3 HEAD@{0}: reset: moving to HEAD~1; c8e9f2a HEAD@{1}: commit: add test.",
+                fail: "Reflog only exists locally; it is not pushed to remote repositories and cannot be queried for remote servers.",
+                prod: "Reflog is an SRE's emergency recovery tool. If you accidentally run `git reset --hard` or delete a local branch, use reflog to find the commit hash.",
+                tips: "Dangling commits (not referenced by any branch/tag) are kept in local database for about 30 days before being garbage collected."
+              },
+              git_reset: {
+                title: "git reset",
+                desc: "Resets the current HEAD to a specified state, optionally updating the staging index and working directory.",
+                command: "git reset --hard HEAD~1",
+                syntax: "git reset [mode] [commit]",
+                args: "--hard: Resets HEAD, the staging area, AND discards all uncommitted modifications in the working directory.",
+                output: "HEAD is now at c8e9f2a feat: verify configurations.",
+                fail: "Fails if target commit SHA or shorthand pointer is invalid.",
+                prod: "Avoid git reset --hard on dirty trees. You will lose all uncommitted changes permanently. Use --soft to keep files.",
+                tips: "--soft keeps changes in staging; --mixed (default) keeps changes in working directory but unstaged; --hard discards all changes."
+              },
+              git_revert: {
+                title: "git revert",
+                desc: "Creates a new commit that applies the exact inverse changes of a target commit hash, safely reversing history without rewriting it.",
+                command: "git revert 4a2b9d3",
+                syntax: "git revert [commit-sha]",
+                args: "4a2b9d3: The commit SHA containing changes you want to safely undo.",
+                output: "[feature-a e2d3c4b] Revert 'feat(auth): add MFA login support'... 2 files changed.",
+                fail: "Fails with conflicts if subsequent commits modified the same lines. Resolve and commit the revert.",
+                prod: "Use `git revert` for shared public branches (main/release). It keeps history linear and doesn't break peer repositories.",
+                tips: "Because revert creates a new commit, it is the safest and most accountable way to rollback changes in production."
+              },
+              git_blame: {
+                title: "git blame",
+                desc: "Annotates each line in a file with the commit hash, author name, and timestamp of the last revision that modified that line.",
+                command: "git blame -L 45,55 script.js",
+                syntax: "git blame [options] [file]",
+                args: "-L 45,55: Restricts annotation to lines 45 through 55 of the target script.js file.",
+                output: "4a2b9d3a (Pradeep 2026-06-09 12:00:00) 45: function init() {",
+                fail: "File path does not exist, or line numbers exceed file bounds.",
+                prod: "Use blame to find the exact commit that introduced a line of code, helping trace context during root cause analysis.",
+                tips: "Use `-w` flag to ignore whitespace changes when running blame to see real code modifications."
+              },
+              git_bisect: {
+                title: "git bisect",
+                desc: "Uses binary search to find the specific commit that introduced a bug or regression in your repository history.",
+                command: "git bisect start && git bisect bad && git bisect good v1.0.0",
+                syntax: "git bisect [subcommand] [ref]",
+                args: "start: Begins bisect; bad: Marks current revision as buggy; good v1.0.0: Marks v1.0.0 release tag as clean.",
+                output: "Bisecting: 15 commits left to test after this (approx 4 steps). [commit-sha].",
+                fail: "Invalid refs, or conflicting history graphs preventing binary traversal paths.",
+                prod: "Automate debugging using `git bisect run npm test`. Git will run the test script on each bisect node automatically until it finds the culprit.",
+                tips: "Bisecting cuts debugging times exponentially, reducing search space from hundreds of commits to just log2(N) steps."
+              },
+              git_tag: {
+                title: "git tag",
+                desc: "Creates reference pointers to specific points in history, typically used to mark release versions (e.g. v1.0.0) following semantic versioning.",
+                command: "git tag -a v1.0.2 -m 'release patch v1.0.2'",
+                syntax: "git tag [options] [tagname]",
+                args: "-a: Creates an annotated tag containing author, date, and message; -m: Declares the description message.",
+                output: "Tag v1.0.2 created successfully.",
+                fail: "Tag name already exists (must delete or use force flag -f).",
+                prod: "Always use annotated tags (-a) for releases. Push them to remote servers using `git push origin v1.0.2` or `--tags`.",
+                tips: "Lightweight tags are just refs pointing to commits. Annotated tags are full objects in the Git database."
+              },
+              git_worktree: {
+                title: "git worktree",
+                desc: "Manages multiple concurrent working directories (worktrees) linked to a single Git repository database, allowing you to checkout multiple branches simultaneously.",
+                command: "git worktree add ../hotfix-dir hotfix-branch",
+                syntax: "git worktree add [path] [branch]",
+                args: "add ../hotfix-dir hotfix-branch: Checks out hotfix-branch into a new directory sibling to the current repository.",
+                output: "Preparing worktree (checking out 'hotfix-branch'). HEAD is now at 4a2b9d3.",
+                fail: "Branch is already checked out in another worktree (Git prohibits checking out the same active branch twice).",
+                prod: "Use worktrees to switch to production hotfixes without stashing, discarding, or double-cloning large codebases.",
+                tips: "When done, remove the worktree using `git worktree prune` or `git worktree remove <path>` to clean up directory mappings."
+              },
+              git_log: {
+                title: "git log",
+                desc: "Displays the commit history logs for active branches, showing authors, hashes, dates, and commit messages.",
+                command: "git log --oneline --graph --decorate --all -n 5",
+                syntax: "git log [options]",
+                args: "--oneline: Compresses commit info; --graph: Renders commit tree links; --decorate: Shows branch tags; -n 5: Limit to latest 5 entries.",
+                output: "* 4a2b9d3 (HEAD -> feature-a, origin/feature-a) feat: auth\n* c8e9f2a merge main",
+                fail: "No commits in repository (empty repo).",
+                prod: "Use custom git log alias commands in local profiles to quickly audit commit relationships and check linear release structures.",
+                tips: "Use filters like `--author='Name'` or `--grep='fix'` to search history for specific authors or commit messages."
+              },
+              git_show: {
+                title: "git show",
+                desc: "Displays detailed metadata and code difference content changes for a specific commit hash, reference, or file snapshot.",
+                command: "git show 4a2b9d3:script.js",
+                syntax: "git show [options] [commit:file]",
+                args: "4a2b9d3:script.js: Extracts and displays the raw content of script.js as it existed at the moment commit 4a2b9d3 was created.",
+                output: "Renders the full file code layout of script.js at that commit hash snapshot.",
+                fail: "Commit hash does not exist, or path is incorrect.",
+                prod: "Use `git show` to verify exact code payloads pushed in deployment failure alerts, inspecting lines without modifying local working copy.",
+                tips: "Running `git show <commit>` shows both commit details (author, date) and the diff patch of all files modified in that commit."
+              },
+              git_diff: {
+                title: "git diff",
+                desc: "Displays differences in file lines between your working directory, staging index, commits, or branches.",
+                command: "git diff --staged script.js",
+                syntax: "git diff [options] [file]",
+                args: "--staged (or --cached): Renders differences between files in the staging area and the latest commit snapshot.",
+                output: "Diff comparison lines showing deleted lines in red (-) and added lines in green (+).",
+                fail: "Target file not modified or untracked.",
+                prod: "Always run `git diff` or `git diff --staged` before running `git commit` to verify you aren't committing temporary print statements or debug flags.",
+                tips: "Use `git diff branch-a..branch-b` to inspect differences between two distinct branches before merging."
+              }
+            },
             interview: [
               {
                 q: "Explain the differences between git merge and git rebase, when you would use each, and how git stash and git cherry-pick fit into daily workflows.",
@@ -1209,7 +1709,8 @@
                 red: "Rebasing shared remote branches (like main), or failing to explain how cherry-pick extracts specific commits by hash.",
                 strong: "Uses merge to preserve history chronology and merge commits. Uses rebase on local feature branches to maintain a clean linear commit graph. Uses stash to temporarily save uncommitted changes, and cherry-pick to apply a specific commit from one branch to another.",
                 expert: "Explains that merge creates a new merge commit (non-destructive history), while rebase applies local commits sequentially on top of the target base branch (destructively rewriting commit IDs). Explains git stash saves dirty state in ref/stash, and cherry-pick copies commit payloads onto HEAD, generating a new commit ID.",
-                leadership: "Establishes organization-wide branching guidelines, enforcing squash-merge rules on main branches to ensure clear release tags while maintaining rebase requirements on active feature development."
+                leadership: "Establishes organization-wide branching guidelines, enforcing squash-merge rules on main branches to ensure clear release tags while maintaining rebase requirements on active feature development.",
+                coachTips: "Explain how rebase flattens the commit graph. Make sure to call out the golden rule: never rebase public shared branches."
               },
               {
                 q: "If you accidentally perform a hard reset (git reset --hard) and lose uncommitted/committed code, how do you recover? How does git revert differ from git reset?",
@@ -1218,7 +1719,8 @@
                 red: "Assuming that a git reset --hard is completely unrecoverable, or using git reset to modify pushed remote commits on shared branches.",
                 strong: "Uses git reflog to locate the commit hash before the reset, then runs git checkout or git reset to recover it. Explains git reset moves the HEAD pointer backward, while git revert creates a new commit that applies inverse changes.",
                 expert: "Details running 'git reflog' to inspect local reference movements, finding the dangling commit SHA, and running 'git reset --hard HEAD@{index}' to restore files. Explains that git revert is safe for public branches because it doesn't alter previous commits, whereas git reset rewrites history and requires force pushing (git push --force-with-lease) which breaks collaborators' local clones.",
-                leadership: "Enforces commit sig-verification and disables force-push permissions on main branches using repository rulesets, preventing accidental history overrides while establishing automated backups for commit graphs."
+                leadership: "Enforces commit sig-verification and disables force-push permissions on main branches using repository rulesets, preventing accidental history overrides while establishing automated backups for commit graphs.",
+                coachTips: "Highlight git reflog. It's the ultimate undo history. Explain that Git doesn't garbage collect dangling commits immediately, giving you a ~30-day safety net."
               },
               {
                 q: "How do you locate the commit that introduced a bug in a codebase with hundreds of commits? What is git worktree and how does it optimize developer operations?",
@@ -1227,7 +1729,8 @@
                 red: "Checking out commits manually in a sequential loop to locate a bug, or cloning a repository multiple times to work on different branches simultaneously.",
                 strong: "Uses git bisect to perform a binary search between a known good and bad commit. Uses git blame to find who modified specific lines. Uses git worktree to manage multiple active working directories from a single local repo.",
                 expert: "Explains git bisect start ➜ git bisect bad ➜ git bisect good. Details how 'git bisect run test-script.sh' automates the search via exit codes. Explains 'git worktree add ../feature-dir feat-branch' links separate working trees to a single .git database, saving storage and context-switching overhead.",
-                leadership: "Integrates git bisect scripts within automated testing pipelines to identify regression points, creating standardized worktree automation templates for local development environments."
+                leadership: "Integrates git bisect scripts within automated testing pipelines to identify regression points, creating standardized worktree automation templates for local development environments.",
+                coachTips: "Mention that git bisect run can automate debugging by running a unit test script. Emphasize how worktrees allow debugging without dirtying active workspaces."
               },
               {
                 q: "What is the difference between git fetch and git pull? How do you inspect differences between branches or specific commits using git diff and git show?",
@@ -1236,7 +1739,8 @@
                 red: "Running git pull blindly without understanding it can trigger unwanted merge commits, or confusing git diff with git log.",
                 strong: "Explains git fetch downloads remote tracking branches without changing local HEAD, while git pull fetches and merges. Uses git diff to see code changes and git show to inspect metadata and contents of a specific commit.",
                 expert: "Explains git pull runs git fetch and then git merge under the hood (or git rebase if configured). Details git diff options like --stat, comparing working directory to index, and using 'git show <commit-sha>:<file-path>' to view a file at a specific historical point.",
-                leadership: "Establishes developer sync schedules, configuring git pull --rebase as the organization default to prevent pull merge-bubbles, and integrating automated repository status checks in IDE modules."
+                leadership: "Establishes developer sync schedules, configuring git pull --rebase as the organization default to prevent pull merge-bubbles, and integrating automated repository status checks in IDE modules.",
+                coachTips: "A common pitfall is not understanding that pull is fetch + merge. Explain why pull --rebase is safer to prevent merge-bubble commits."
               },
               {
                 q: "Walk through the complete lifecycle of creating, staging, committing, tagging, and pushing a feature from local sandbox to production branch. What are the best practices for commit message formats?",
@@ -1245,7 +1749,8 @@
                 red: "Committing directly to main, staging files blindly using git add . without verifying contents, or not tagging production releases.",
                 strong: "Uses git add to stage, git commit to record locally, git tag to mark version, and git push to publish. Follows standard commit formats (e.g. feat:, fix:).",
                 expert: "Details staging specific hunks using 'git add -p', writing commits following Conventional Commits format (type(scope): message), creating an annotated tag (git tag -a v1.0.0 -m 'message'), and pushing with '--follow-tags' to remote hosts.",
-                leadership: "Automates release notes generation and semantic versioning triggers (such as semantic-release) driven entirely by Conventional Commits in merged pull requests."
+                leadership: "Automates release notes generation and semantic versioning triggers (such as semantic-release) driven entirely by Conventional Commits in merged pull requests.",
+                coachTips: "Use Conventional Commits syntax (e.g. feat:, fix:) to showcase professional code hygiene. Highlight annotated tags (-a) as official release boundaries."
               }
             ],
             incident: {
@@ -1366,16 +1871,39 @@
       }
     };
 
+    let selectedSubtopicKey = '';
+    window.switchSubtopic = function(subKey) {
+      selectedSubtopicKey = subKey;
+      renderView();
+    };
+
+    window.switchLevelTab = function(button, level, idx) {
+      const parent = button.parentElement.parentElement;
+      button.parentElement.querySelectorAll('.level-tab-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      parent.querySelectorAll('.level-content').forEach(div => div.style.display = 'none');
+      parent.querySelector(`.level-content.${level}`).style.display = 'block';
+    };
+
     // Populate Sidebar based on active pillar
     function populateSidebar() {
       const list = document.getElementById('topic-sidebar-list');
       list.innerHTML = '';
       
-      const pillarData = dataMatrix[activePillar];
-      if (!pillarData) return;
+      let topics = {};
+      if (activePillar === 'all') {
+        Object.keys(dataMatrix).forEach(pKey => {
+          Object.assign(topics, dataMatrix[pKey].topics);
+        });
+      } else {
+        const pillarData = dataMatrix[activePillar];
+        if (pillarData) {
+          topics = pillarData.topics;
+        }
+      }
 
-      const topics = pillarData.topics;
       const keys = Object.keys(topics);
+      if (keys.length === 0) return;
       
       // Set active topic to first if empty/not matching
       if (!selectedTopicKey || !topics[selectedTopicKey]) {
@@ -1394,6 +1922,7 @@
 
     function selectTopic(key) {
       selectedTopicKey = key;
+      selectedSubtopicKey = '';
       document.querySelectorAll('.sidebar-item-btn').forEach(btn => btn.classList.remove('active'));
       populateSidebar();
       renderView();
@@ -1404,6 +1933,7 @@
       document.querySelectorAll('.pillar-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       selectedTopicKey = '';
+      selectedSubtopicKey = '';
       populateSidebar();
       renderView();
     }
@@ -1489,13 +2019,22 @@
     // Dynamic View Renderer
     function renderView() {
       const container = document.getElementById('content-container');
-      const pillarData = dataMatrix[activePillar];
-      if (!pillarData) {
-        container.innerHTML = '<p>Select a pillar to begin.</p>';
-        return;
+      
+      let activeTopic = null;
+      if (activePillar === 'all') {
+        for (const pKey of Object.keys(dataMatrix)) {
+          if (dataMatrix[pKey].topics[selectedTopicKey]) {
+            activeTopic = dataMatrix[pKey].topics[selectedTopicKey];
+            break;
+          }
+        }
+      } else {
+        const pillarData = dataMatrix[activePillar];
+        if (pillarData) {
+          activeTopic = pillarData.topics[selectedTopicKey];
+        }
       }
 
-      const activeTopic = pillarData.topics[selectedTopicKey];
       if (!activeTopic) {
         container.innerHTML = '<p>Select a topic from the sidebar.</p>';
         return;
@@ -1510,12 +2049,83 @@
       document.getElementById('telemetry-yield').textContent = activeTopic.yield;
 
       if (activeTab === 'coach') {
-        container.innerHTML = `
-          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
-            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:1rem">
-              🎓 SRE Coaching Roadmap: ${activeTopic.title}
-            </h2>
+        let subtopicsHtml = '';
+        let currentPurposeHtml = '';
+        let currentFlowHtml = '';
+        let currentLabHtml = '';
+        let currentTipsHtml = '';
+
+        if (activeTopic.subtopics) {
+          const subKeys = Object.keys(activeTopic.subtopics);
+          if (!selectedSubtopicKey || !activeTopic.subtopics[selectedSubtopicKey]) {
+            selectedSubtopicKey = subKeys[0];
+          }
+          const sub = activeTopic.subtopics[selectedSubtopicKey];
+
+          // Subtopics Pill Bar
+          subtopicsHtml = `
+            <div class="subtopic-pill-bar">
+              ${subKeys.map(key => {
+                const s = activeTopic.subtopics[key];
+                return `<button class="subtopic-pill-btn ${key === selectedSubtopicKey ? 'active' : ''}" onclick="window.switchSubtopic('${key}')">${s.title}</button>`;
+              }).join('')}
+            </div>
+          `;
+
+          // Custom highlighted learning flow
+          const learningFlowParts = activeTopic.flow.learning.split(' ➜ ');
+          const highlightedFlow = learningFlowParts.map(part => {
+            if (part.toLowerCase().includes(sub.title.toLowerCase()) || sub.title.toLowerCase().includes(part.toLowerCase())) {
+              return `<span style="color:var(--accent-cyan); font-weight:800; border-bottom:2px solid var(--accent-cyan); padding-bottom:2px">${part}</span>`;
+            }
+            return part;
+          }).join(' ➜ ');
+
+          currentPurposeHtml = `
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-bottom:0.5rem">🌐 Subtopic Focus: ${sub.title}</h3>
+            <p style="font-size:0.875rem; color:var(--text-secondary); line-height:1.6; margin-bottom:1rem">
+              ${sub.desc}
+            </p>
+          `;
+
+          currentFlowHtml = `
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-top:1.5rem; margin-bottom:0.5rem">🗺️ Learning &amp; Execution Flow</h3>
+            <div style="background:var(--bg-surface); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border); margin-bottom:1.5rem; font-size:0.82rem; line-height:1.6">
+              <strong>Learning Path:</strong> ${highlightedFlow}<br>
+              <strong>Execution Flow:</strong> ${activeTopic.flow.execution}<br>
+              <strong>Repository Flow:</strong> ${activeTopic.flow.repo}
+            </div>
+          `;
+
+          currentLabHtml = `
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-top:1.5rem; margin-bottom:0.5rem">🧪 Hands-on Lab &amp; Command Breakdown</h3>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem">Execute the following command in your terminal setup:</p>
+            <pre style="background:#020617; padding:0.75rem; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.05); font-family:'JetBrains Mono',monospace; font-size:11px; color:#10b981; overflow-x:auto">${sub.command}</pre>
             
+            <div class="cmd-breakdown-box">
+              <div style="font-size:0.72rem; text-transform:uppercase; font-weight:800; color:var(--text-muted)">Command Breakdown</div>
+              <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.5; margin-top:0.25rem">
+                <strong>Syntax:</strong> <code>${sub.syntax || activeTopic.labs.syntax}</code><br>
+                <strong>Arguments/Parameters:</strong> ${sub.args || activeTopic.labs.args}<br>
+                <strong>Expected Output:</strong> ${sub.output || activeTopic.labs.output}<br>
+                <strong>Failure Scenarios:</strong> ${sub.fail || activeTopic.labs.fail}<br>
+                <strong>Production Best Practice:</strong> ${sub.prod || activeTopic.labs.prod}
+              </p>
+            </div>
+          `;
+
+          currentTipsHtml = `
+            <div style="margin-top:1.5rem; background:rgba(16, 185, 129, 0.05); border-left:3px solid var(--accent-green); padding:1rem; border-radius:0 var(--radius-md) var(--radius-md) 0">
+              <h4 style="font-size:0.88rem; font-weight:700; color:var(--accent-green); margin-bottom:0.5rem; display:flex; align-items:center; gap:6px">
+                💡 SRE Operational Tips (How it Helps)
+              </h4>
+              <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6; margin:0">
+                ${sub.tips}
+              </p>
+            </div>
+          `;
+        } else {
+          currentPurposeHtml = `
             <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-bottom:0.5rem">🌐 Real-World Purpose &amp; Case Studies</h3>
             <p style="font-size:0.875rem; color:var(--text-secondary); line-height:1.6; margin-bottom:1rem">
               <strong>What problem does it solve?</strong> ${activeTopic.purpose.solve}<br>
@@ -1525,14 +2135,18 @@
               <strong>Alternatives:</strong> ${activeTopic.purpose.alternatives}<br>
               <strong>Real-world Case Studies:</strong> ${activeTopic.purpose.examples}
             </p>
+          `;
 
+          currentFlowHtml = `
             <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-top:1.5rem; margin-bottom:0.5rem">🗺️ Learning &amp; Execution Flow</h3>
             <div style="background:var(--bg-surface); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border); margin-bottom:1.5rem; font-size:0.82rem; line-height:1.6">
               <strong>Learning Path:</strong> ${activeTopic.flow.learning}<br>
               <strong>Execution Flow:</strong> ${activeTopic.flow.execution}<br>
               <strong>Repository Flow:</strong> ${activeTopic.flow.repo}
             </div>
+          `;
 
+          currentLabHtml = `
             <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-top:1.5rem; margin-bottom:0.5rem">🧪 Hands-on Lab &amp; Command Breakdown</h3>
             <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem">Execute the following command in your terminal setup:</p>
             <pre style="background:#020617; padding:0.75rem; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.05); font-family:'JetBrains Mono',monospace; font-size:11px; color:#10b981; overflow-x:auto">${activeTopic.labs.command}</pre>
@@ -1547,8 +2161,9 @@
                 <strong>Production Best Practice:</strong> ${activeTopic.labs.prod}
               </p>
             </div>
+          `;
 
-            ${activeTopic.tips ? `
+          currentTipsHtml = activeTopic.tips ? `
             <div style="margin-top:1.5rem; background:rgba(16, 185, 129, 0.05); border-left:3px solid var(--accent-green); padding:1rem; border-radius:0 var(--radius-md) var(--radius-md) 0">
               <h4 style="font-size:0.88rem; font-weight:700; color:var(--accent-green); margin-bottom:0.5rem; display:flex; align-items:center; gap:6px">
                 💡 DevOps &amp; SRE Production Tips (How it Helps)
@@ -1557,7 +2172,20 @@
                 ${activeTopic.tips}
               </p>
             </div>
-            ` : ''}
+          ` : '';
+        }
+
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:1rem">
+              🎓 SRE Coaching Roadmap: ${activeTopic.title}
+            </h2>
+            
+            ${subtopicsHtml}
+            ${currentPurposeHtml}
+            ${currentFlowHtml}
+            ${currentLabHtml}
+            ${currentTipsHtml}
           </div>
         `;
       } 
@@ -1619,20 +2247,28 @@
                   <strong>🚩 Red Flags:</strong> <span style="color:var(--accent-red)">${qa.red}</span>
                 </div>
 
-                <div style="display:flex; flex-direction:column; gap:1rem; font-size:0.85rem; line-height:1.6">
-                  <div>
-                    <span style="font-weight:700; color:var(--text-primary)">🟢 Strong Answer:</span>
-                    <p style="color:var(--text-secondary)">${qa.strong}</p>
-                  </div>
-                  <div>
-                    <span style="font-weight:700; color:var(--accent-cyan)">🔵 Expert SRE Response:</span>
-                    <p style="color:var(--text-secondary)">${qa.expert}</p>
-                  </div>
-                  <div>
-                    <span style="font-weight:700; color:var(--accent-green)">👑 SRE Leadership Solution:</span>
-                    <p style="color:var(--text-secondary)">${qa.leadership}</p>
-                  </div>
+                <div class="level-tab-bar">
+                  <button class="level-tab-btn active" onclick="window.switchLevelTab(this, 'strong', ${idx})">🟢 Strong Answer</button>
+                  <button class="level-tab-btn" onclick="window.switchLevelTab(this, 'expert', ${idx})">🔵 Expert SRE Response</button>
+                  <button class="level-tab-btn" onclick="window.switchLevelTab(this, 'leadership', ${idx})">👑 SRE Leadership Solution</button>
                 </div>
+
+                <div class="level-content strong" style="display:block">
+                  <p style="color:var(--text-secondary); margin:0; line-height:1.6">${qa.strong}</p>
+                </div>
+                <div class="level-content expert" style="display:none">
+                  <p style="color:var(--text-secondary); margin:0; line-height:1.6">${qa.expert}</p>
+                </div>
+                <div class="level-content leadership" style="display:none">
+                  <p style="color:var(--text-secondary); margin:0; line-height:1.6">${qa.leadership}</p>
+                </div>
+
+                ${qa.coachTips ? `
+                <div class="coach-delivery-tips-box" style="margin-top:1.25rem">
+                  <strong style="color:var(--accent-green)">👑 SRE Coach Delivery Tips:</strong>
+                  <p style="margin:0.25rem 0 0 0; line-height:1.5">${qa.coachTips}</p>
+                </div>
+                ` : ''}
               </div>
             </div>
           `;
