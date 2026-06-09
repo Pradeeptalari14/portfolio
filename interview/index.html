@@ -534,27 +534,27 @@
       </p>
       
       <div class="onboarding-options">
-        <button class="onboarding-btn" onclick="setKnowledgeLevel('Beginner')">
+        <button class="onboarding-btn" onclick="window.setKnowledgeLevel('Beginner')">
           <span class="label">🟢 Beginner</span>
           <span class="desc">Fundamentals, core CLI commands, syntax basics.</span>
         </button>
-        <button class="onboarding-btn" onclick="setKnowledgeLevel('Intermediate')">
+        <button class="onboarding-btn" onclick="window.setKnowledgeLevel('Intermediate')">
           <span class="label">🟡 Intermediate</span>
           <span class="desc">Automation scripts, cloud deployment scaling rules.</span>
         </button>
-        <button class="onboarding-btn" onclick="setKnowledgeLevel('Advanced')">
+        <button class="onboarding-btn" onclick="window.setKnowledgeLevel('Advanced')">
           <span class="label">🔴 Advanced</span>
           <span class="desc">Multi-region clustering, service mesh, policy scopes.</span>
         </button>
-        <button class="onboarding-btn" onclick="setKnowledgeLevel('Interview Prep')">
+        <button class="onboarding-btn" onclick="window.setKnowledgeLevel('Interview Prep')">
           <span class="label">💼 Interview Preparation</span>
           <span class="desc">High-yield scenarios, mock exams, visual drift.</span>
         </button>
-        <button class="onboarding-btn" onclick="setKnowledgeLevel('Troubleshooting')">
+        <button class="onboarding-btn" onclick="window.setKnowledgeLevel('Troubleshooting')">
           <span class="label">🔧 Production Support</span>
           <span class="desc">Real-time incidents, diagnostic steps, logs triage.</span>
         </button>
-        <button class="onboarding-btn" onclick="setKnowledgeLevel('Architecture')">
+        <button class="onboarding-btn" onclick="window.setKnowledgeLevel('Architecture')">
           <span class="label">🏗️ Architecture Deep Dive</span>
           <span class="desc">System layouts, SPOFs, load limits, DR setups.</span>
         </button>
@@ -630,23 +630,23 @@
 
       <!-- Portfolio Pillar selector -->
       <div class="pillar-selector">
-        <button class="pillar-btn active" onclick="switchPillar('all', this)">🌐 All Topics</button>
-        <button class="pillar-btn" onclick="switchPillar('about', this)">👤 About</button>
-        <button class="pillar-btn" onclick="switchPillar('skills', this)">🎯 Skills</button>
-        <button class="pillar-btn" onclick="switchPillar('experience', this)">💼 Experience</button>
-        <button class="pillar-btn" onclick="switchPillar('projects', this)">🏗️ Projects</button>
-        <button class="pillar-btn" onclick="switchPillar('tools', this)">⚙️ Tools</button>
-        <button class="pillar-btn" onclick="switchPillar('contact', this)">🪝 Contact</button>
+        <button class="pillar-btn active" onclick="window.switchPillar('all', this)">🌐 All Topics</button>
+        <button class="pillar-btn" onclick="window.switchPillar('about', this)">👤 About</button>
+        <button class="pillar-btn" onclick="window.switchPillar('skills', this)">🎯 Skills</button>
+        <button class="pillar-btn" onclick="window.switchPillar('experience', this)">💼 Experience</button>
+        <button class="pillar-btn" onclick="window.switchPillar('projects', this)">🏗️ Projects</button>
+        <button class="pillar-btn" onclick="window.switchPillar('tools', this)">⚙️ Tools</button>
+        <button class="pillar-btn" onclick="window.switchPillar('contact', this)">🪝 Contact</button>
       </div>
 
       <!-- Tabs Bar -->
       <div class="mode-tab-bar">
-        <button class="mode-tab-btn active" onclick="switchTab('coach', this)">🎓 SRE Learn Coach</button>
-        <button class="mode-tab-btn" onclick="switchTab('architecture', this)">🛡️ Architecture Review</button>
-        <button class="mode-tab-btn" onclick="switchTab('interview', this)">🎙️ Interview Coach</button>
-        <button class="mode-tab-btn" onclick="switchTab('troubleshooting', this)">🚨 Incident Simulator</button>
-        <button class="mode-tab-btn" onclick="switchTab('mockexam', this)">📝 Mock Exam Pool</button>
-        <button class="mode-tab-btn" onclick="switchTab('directory', this)">📁 Studio Directory &amp; Repos</button>
+        <button class="mode-tab-btn active" onclick="window.switchTab('coach', this)">🎓 SRE Learn Coach</button>
+        <button class="mode-tab-btn" onclick="window.switchTab('architecture', this)">🛡️ Architecture Review</button>
+        <button class="mode-tab-btn" onclick="window.switchTab('interview', this)">🎙️ Interview Coach</button>
+        <button class="mode-tab-btn" onclick="window.switchTab('troubleshooting', this)">🚨 Incident Simulator</button>
+        <button class="mode-tab-btn" onclick="window.switchTab('mockexam', this)">📝 Mock Exam Pool</button>
+        <button class="mode-tab-btn" onclick="window.switchTab('directory', this)">📁 Studio Directory &amp; Repos</button>
       </div>
 
       <!-- Core Display Window -->
@@ -685,7 +685,7 @@
       document.getElementById('onboarding-modal').style.display = 'none';
     }
 
-    function setKnowledgeLevel(level) {
+    window.setKnowledgeLevel = function(level) {
       activeLevel = level;
       localStorage.setItem('sre_focus_level', level);
       document.getElementById('telemetry-focus').textContent = level;
@@ -3441,7 +3441,7 @@
       renderView();
     }
 
-    function switchPillar(pillar, btn) {
+    window.switchPillar = function(pillar, btn) {
       activePillar = pillar;
       document.querySelectorAll('.pillar-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -3451,7 +3451,7 @@
       renderView();
     }
 
-    function switchTab(tab, btn) {
+    window.switchTab = function(tab, btn) {
       activeTab = tab;
       document.querySelectorAll('.mode-tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
