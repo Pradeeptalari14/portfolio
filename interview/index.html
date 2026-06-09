@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevOps & SRE Interview Vault & Coach | Talari Pradeep</title>
+  <meta name="description" content="Master SRE interview prep, study real-world cloud diagnostics workflows, run hands-on labs, and explore visual architecture reviews." />
+  
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <link rel="stylesheet" href="../styles.css" />
+
+  <!-- Mermaid.js for visual rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true, htmlLabels: true }
+    });
+  </script>
+
+  <style>
+    /* Styling overrides for Vault Page */
+    :root {
+      --bg-base: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-card: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --border: #334155;
+      --border-accent: rgba(79, 70, 229, 0.3);
+      --accent-primary: #4f46e5;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #10b981;
+      --accent-orange: #f59e0b;
+      --accent-red: #ef4444;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .main-layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.25rem;
+    }
+
+    @media (max-width: 992px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        padding-top: 1.5rem;
+      }
+    }
+
+    /* Onboarding Overlay */
+    .onboarding-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.95);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+    .onboarding-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      text-align: center;
+      animation: zoomIn 0.3s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .onboarding-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 500px) {
+      .onboarding-options {
+        grid-template-columns: 1fr;
+      }
+    }
+    .onboarding-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .onboarding-btn:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    }
+    .onboarding-btn span.label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .onboarding-btn span.desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .sidebar-section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+    .sidebar-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-item-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: 1px solid transparent;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-item-btn:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-primary);
+    }
+    .sidebar-item-btn.active {
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: var(--accent-primary);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    }
+
+    /* Telemetry Overview Block */
+    .telemetry-status-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+    @media (max-width: 768px) {
+      .telemetry-status-container {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+    }
+    .telemetry-card {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-right: 1px solid var(--border);
+      padding-right: 0.5rem;
+    }
+    .telemetry-card:last-child {
+      border-right: none;
+    }
+    .telemetry-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+    .telemetry-value {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Pillar Selector Bar */
+    .pillar-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .pillar-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pillar-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    .pillar-btn.active {
+      background: #fff;
+      color: #0f172a;
+      border-color: #fff;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Mode Content Tabs & Inner Panels */
+    .mode-tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+    .mode-tab-btn {
+      background: none;
+      border: none;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .mode-tab-btn:hover {
+      color: var(--text-primary);
+    }
+    .mode-tab-btn.active {
+      color: var(--accent-cyan);
+    }
+    .mode-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    /* Accordions (Q&As, Runbooks) */
+    .accordion-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+      transition: border-color var(--transition);
+    }
+    .accordion-header {
+      width: 100%;
+      text-align: left;
+      padding: 1.15rem 1.4rem;
+      background: none;
+      border: none;
+      outline: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .accordion-chevron {
+      color: var(--text-muted);
+      transition: transform var(--transition);
+      font-size: 0.72rem;
+    }
+    .accordion-body {
+      display: none;
+      padding: 0 1.4rem 1.4rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    /* Diagnostics Simulator layout */
+    .simulator-console {
+      background: #020617;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+    
+    /* Flowchart CSS Animations */
+    .flow-diagram-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      justify-content: center;
+    }
+    .flow-node {
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+    .flow-node.active {
+      border-color: var(--accent-cyan);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+    }
+    .flow-arrow-node {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+    }
+
+    /* Command breakdown styling */
+    .cmd-breakdown-box {
+      border-left: 3px solid var(--accent-cyan);
+      padding-left: 0.85rem;
+      background: rgba(14,165,233,0.02);
+      border-radius: 0 4px 4px 0;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Search inputs */
+    .directory-search {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      margin-bottom: 1.25rem;
+      transition: var(--transition);
+    }
+    .directory-search:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(14,165,233,0.15);
+    }
+
+    /* Table styles */
+    .compact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      text-align: left;
+    }
+    .compact-table th {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 2px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+    }
+    .compact-table td {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Onboarding Overlay (Phase 1) -->
+  <div class="onboarding-overlay" id="onboarding-modal">
+    <div class="onboarding-card">
+      <h3 style="font-family:'Space Grotesk', sans-serif; font-size:1.6rem; font-weight:800; color:var(--text-primary)">
+        🔍 Phase 1: Identify Knowledge Level
+      </h3>
+      <p style="font-size:0.88rem; color:var(--text-secondary); margin-top:0.5rem">
+        Choose your current focus or experience level to dynamically configure your SRE &amp; DevOps coaching roadmap.
+      </p>
+      
+      <div class="onboarding-options">
+        <button class="onboarding-btn" onclick="setKnowledgeLevel('Beginner')">
+          <span class="label">🟢 Beginner</span>
+          <span class="desc">Fundamentals, core CLI commands, syntax basics.</span>
+        </button>
+        <button class="onboarding-btn" onclick="setKnowledgeLevel('Intermediate')">
+          <span class="label">🟡 Intermediate</span>
+          <span class="desc">Automation scripts, cloud deployment scaling rules.</span>
+        </button>
+        <button class="onboarding-btn" onclick="setKnowledgeLevel('Advanced')">
+          <span class="label">🔴 Advanced</span>
+          <span class="desc">Multi-region clustering, service mesh, policy scopes.</span>
+        </button>
+        <button class="onboarding-btn" onclick="setKnowledgeLevel('Interview Prep')">
+          <span class="label">💼 Interview Preparation</span>
+          <span class="desc">High-yield scenarios, mock exams, visual drift.</span>
+        </button>
+        <button class="onboarding-btn" onclick="setKnowledgeLevel('Troubleshooting')">
+          <span class="label">🔧 Production Support</span>
+          <span class="desc">Real-time incidents, diagnostic steps, logs triage.</span>
+        </button>
+        <button class="onboarding-btn" onclick="setKnowledgeLevel('Architecture')">
+          <span class="label">🏗️ Architecture Deep Dive</span>
+          <span class="desc">System layouts, SPOFs, load limits, DR setups.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../#home" class="nav-logo">
+        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" width="32" height="32" loading="lazy" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#about" class="nav-link">About</a></li>
+        <li><a href="../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../experience/" class="nav-link">Experience</a></li>
+        <li><a href="../projects/" class="nav-link">Projects</a></li>
+        <li><a href="../tools/" class="nav-link">Tools</a></li>
+        <li><a href="./" class="nav-link active">Interview</a></li>
+        <li><a href="../#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <a href="../#contact" class="nav-cta">Hire Me</a>
+    </div>
+  </nav>
+
+  <!-- MAIN PAGE WRAP -->
+  <main class="main-layout">
+    
+    <!-- Sidebar Selector -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-section-title" style="margin-bottom:0.5rem">Select Topic</div>
+        <ul class="sidebar-menu" id="topic-sidebar-list">
+          <!-- Populated by JS based on active pillar -->
+        </ul>
+      </div>
+
+      <div style="border-top:1px solid var(--border); padding-top:1.25rem">
+        <div class="sidebar-section-title" style="margin-bottom:0.5rem">Evaluator Options</div>
+        <button class="sidebar-item-btn" onclick="document.getElementById('onboarding-modal').style.display='flex'" style="font-size:0.75rem; border:1px dashed var(--border)">
+          🔄 Reset Focus Level
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Dynamic Content Panel -->
+    <section>
+      <!-- Telemetry Status Bar -->
+      <div class="telemetry-status-container">
+        <div class="telemetry-card">
+          <span class="telemetry-label">Focus Mode</span>
+          <span class="telemetry-value" id="telemetry-focus">--</span>
+        </div>
+        <div class="telemetry-card">
+          <span class="telemetry-label">Active Topic</span>
+          <span class="telemetry-value" id="telemetry-topic">--</span>
+        </div>
+        <div class="telemetry-card text-ellipsis">
+          <span class="telemetry-label">Prerequisites</span>
+          <span class="telemetry-value" id="telemetry-prereqs" title="">--</span>
+        </div>
+        <div class="telemetry-card text-ellipsis">
+          <span class="telemetry-label">Related Topic</span>
+          <span class="telemetry-value" id="telemetry-related">--</span>
+        </div>
+        <div class="telemetry-card">
+          <span class="telemetry-label">Yield Score</span>
+          <span class="telemetry-value" id="telemetry-yield">--</span>
+        </div>
+      </div>
+
+      <!-- Portfolio Pillar selector -->
+      <div class="pillar-selector">
+        <button class="pillar-btn active" onclick="switchPillar('about', this)">👤 About</button>
+        <button class="pillar-btn" onclick="switchPillar('skills', this)">🎯 Skills</button>
+        <button class="pillar-btn" onclick="switchPillar('experience', this)">💼 Experience</button>
+        <button class="pillar-btn" onclick="switchPillar('projects', this)">🏗️ Projects</button>
+        <button class="pillar-btn" onclick="switchPillar('tools', this)">⚙️ Tools</button>
+        <button class="pillar-btn" onclick="switchPillar('contact', this)">🪝 Contact</button>
+      </div>
+
+      <!-- Tabs Bar -->
+      <div class="mode-tab-bar">
+        <button class="mode-tab-btn active" onclick="switchTab('coach', this)">🎓 SRE Learn Coach</button>
+        <button class="mode-tab-btn" onclick="switchTab('architecture', this)">🛡️ Architecture Review</button>
+        <button class="mode-tab-btn" onclick="switchTab('interview', this)">🎙️ Interview Coach</button>
+        <button class="mode-tab-btn" onclick="switchTab('troubleshooting', this)">🚨 Incident Simulator</button>
+        <button class="mode-tab-btn" onclick="switchTab('mockexam', this)">📝 Mock Exam Pool</button>
+        <button class="mode-tab-btn" onclick="switchTab('directory', this)">📁 Studio Directory &amp; Repos</button>
+      </div>
+
+      <!-- Core Display Window -->
+      <div id="content-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="copyright-year">2026</span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a></p>
+  </footer>
+
+  <!-- SRE & DevOps Platforms Data Dictionary -->
+  <script>
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+    // Data Sync
+    let studiosData = [];
+    async function loadStudios() {
+      try {
+        const response = await fetch('../tools/tools.json');
+        if (response.ok) {
+          studiosData = await response.json();
+        }
+      } catch (err) {
+        console.warn('Dynamic tools.json load failed, using fallback configuration', err);
+      }
+    }
+
+    // Default Focus Level
+    let activeLevel = localStorage.getItem('sre_focus_level') || 'Interview Prep';
+    document.getElementById('telemetry-focus').textContent = activeLevel;
+    if (localStorage.getItem('sre_focus_level')) {
+      document.getElementById('onboarding-modal').style.display = 'none';
+    }
+
+    function setKnowledgeLevel(level) {
+      activeLevel = level;
+      localStorage.setItem('sre_focus_level', level);
+      document.getElementById('telemetry-focus').textContent = level;
+      document.getElementById('onboarding-modal').style.display = 'none';
+      renderView();
+    }
+
+    // Interactive State Definitions
+    let activePillar = 'about';
+    let activeTab = 'coach';
+    let selectedTopicKey = '';
+
+    // Extensive Content Matrix
+    const dataMatrix = {
+      about: {
+        topics: {
+          bio_portfolio: {
+            title: "SRE Portfolio Site Architecture",
+            prereqs: "HTML5, CSS3, Nginx proxy layers",
+            related: "Contact Webhooks",
+            advanced: "Global Edge Routing (Cloudflare Tunnels)",
+            yield: "8.5 / 10",
+            purpose: {
+              solve: "Builds a highly performant, visually interactive, search-optimized career showcase platform.",
+              why: "Created to replace traditional document resumes with a tangible, interactive proof-of-work SRE portfolio.",
+              before: "Generic MS Word files, PDF resumes, static hosting without client-side calculators.",
+              limits: "Client-side compilation means search metadata is static; requires static injection engines for full crawler SEO support.",
+              alternatives: "Next.js Static Export, GatsbyJS templates, standard HTML portfolios.",
+              examples: "Google Engineers sharing portfolio sandboxes, Netflix engineering blogs hosting dynamic telemetry demo boxes."
+            },
+            flow: {
+              learning: "1. Core HTML/CSS Foundations ➜ 2. Static Asset Hosting ➜ 3. Vite Build Optimization ➜ 4. Caching & CDNs",
+              execution: "Browser Request ➜ Cloudflare DNS ➜ Nginx Server Ingress ➜ Client-Side JS Execution ➜ Telemetry Pulse",
+              repo: "Pradeeptalari14/portfolio ➜ .github/workflows/deploy.yml ➜ S3 Web Bucket ➜ CloudFront Distribution"
+            },
+            labs: {
+              command: "curl -I https://talaripradeep.info",
+              syntax: "curl [options] [URL]",
+              args: "-I / --head: Fetch HTTP status headers only, suppressing diagnostic HTML output.",
+              output: "HTTP/2 200 OK headers representing content-type, cache-control, server configuration, and SSL handshake details.",
+              fail: "Connection timed out, cert validation error (self-signed/expired). Mitigate using -k flag if testing internal ports.",
+              prod: "Executing health check loops within deployment readiness shell hooks to confirm site server responds."
+            },
+            archGaps: {
+              mermaid: "graph TD\n  Client[Browser Client] -- HTTP/2 Request --> Cloudflare[Cloudflare CDN]\n  Cloudflare -- Cache Hit --> Client\n  Cloudflare -- Cache Miss --> Nginx[Nginx Web Ingress]\n  Nginx -- Serve Static Assets --> Client",
+              spof: "Nginx hosting on a single instance without target Auto Scaling Groups represents an absolute single point of failure.",
+              security: "Missing HTTP Security headers (Content-Security-Policy, HSTS, X-Frame-Options) exposing site to clickjacking.",
+              scaling: "High traffic spikes would exhaust Nginx open file descriptors if worker_connections is left at default 768.",
+              monitoring: "Client latency heartbeat checks lack a persistent backend collector for telemetry reporting.",
+              backup: "The repository build asset lacks automated point-in-time snapshots of the static package structure.",
+              dr: "No multi-region secondary fallback static bucket in place.",
+              improvements: "Establish AWS CloudFront distribution backed by an S3 bucket with OAC (Origin Access Control) and failover bucket configurations."
+            },
+            interview: {
+              q: "How do you secure a static portfolio site behind Nginx and optimize headers for SRE requirements?",
+              intent: "Checks candidate's practical familiarity with edge security, network performance optimization, and server hardening.",
+              hidden: "Wants to hear about specific security headers, TLS configuration directives, and caching scopes.",
+              red: "Failing to mention SSL/TLS protocol limitations or recommending older protocols like SSLv3.",
+              strong: "Suggests implementing HSTS, configuring Content-Security-Policy, disabling older TLS models in favor of TLS 1.3, and using gzip/brotli compression.",
+              expert: "Details complete nginx.conf configurations including Proxy Cache headers, Rate Limiting using shared zones, and automated cert renewal hooks.",
+              leadership: "Outlines programmatic edge-security governance via Terraform-managed Cloudflare firewall rule bindings, enforcing zero-trust scopes globally."
+            },
+            incident: {
+              title: "Portfolio Image Load Failure & SSL Expired Warning",
+              flow: "Static site returns 502 Bad Gateway / Connection Insecure warning on images.",
+              symptoms: "Browser warns page is insecure; assets fail to load.",
+              causes: "Let's Encrypt renewal script cron task failed; image folders mismatch root mapping.",
+              verify: "curl -Iv https://talaripradeep.info/Favicon.png",
+              commands: "systemctl status certbot.timer\ntail -n 50 /var/log/letsencrypt/letsencrypt.log",
+              fix: "sudo certbot renew --nginx && systemctl reload nginx",
+              validation: "openssl s_client -connect talaripradeep.info:443 -servername talaripradeep.info",
+              prevention: "Configure automated Prometheus cert_exporter probes monitoring certificate validity periods, triggering alerts 15 days before expiration."
+            },
+            quiz: [
+              {
+                q: "Which HTTP header protects the site against clickjacking attacks?",
+                options: ["Content-Security-Policy", "X-Frame-Options", "Strict-Transport-Security", "X-Content-Type-Options"],
+                a: "X-Frame-Options",
+                explanation: "X-Frame-Options restricts other domains from embedding your site inside frames, mitigating clickjacking vulnerabilities."
+              }
+            ]
+          }
+        }
+      },
+      skills: {
+        topics: {
+          skills_testing: {
+            title: "Automated Tech Stack Testing & Verification",
+            prereqs: "Unit Testing, Vitest/Jest, JavaScript Test Runners",
+            related: "Projects Security",
+            advanced: "Continuous Integration Security Scanning Gates",
+            yield: "9.0 / 10",
+            purpose: {
+              solve: "Validates portfolio technical configurations and code snippets automatically inside CI pipelines.",
+              why: "Created to ensure code components, playground widgets, and APIs are validated programmatically during every modification.",
+              before: "Manual web page inspections, console log debugging, untested UI widget components.",
+              limits: "Simulated mock components in Vitest may miss environmental differences in AWS/Kubernetes.",
+              alternatives: "Playwright End-to-End browser tests, Cypress UI automation runners.",
+              examples: "Netflix pipelines verifying service registry mappings, Google testing client UI layouts using automated testing clusters."
+            },
+            flow: {
+              learning: "1. Unit Testing Concepts ➜ 2. JavaScript DOM Mocking ➜ 3. Vitest Setup ➜ 4. Automated CI Actions Gates",
+              execution: "Git Push Trigger ➜ Github Actions Runner Boot ➜ Node Environment Init ➜ Vitest Run ➜ Test Assertions Checked",
+              repo: "Pradeeptalari14/portfolio ➜ tests/devops-playground.test.js ➜ tests/shared-tools.test.js"
+            },
+            labs: {
+              command: "npm test -- --run",
+              syntax: "npm test [script options]",
+              args: "-- --run: Executes Vitest test suites once and returns execution results immediately (non-watch mode).",
+              output: "Status log detailing the passed/failed test assertions for DOM, calculator, and routing components.",
+              fail: "Test failure stacktrace indicating mismatched DOM element expectations or API timeout errors.",
+              prod: "Executing non-blocking test runners during staging promotions to verify API payloads before final build packaging."
+            },
+            archGaps: {
+              mermaid: "graph TD\n  Dev[Developer Push] --> GitHub[GitHub Actions]\n  GitHub -- Runs tests/devops-playground.test.js --> Runner[Vitest Runner]\n  Runner -- Pass --> Package[Build Packaging]\n  Runner -- Fail --> FailBlock[Block Integration / Notify]",
+              spof: "The test environment runs inside a container runner without parallelized scaling, causing pipeline backlogs.",
+              security: "Mock tests reference plaintext variables instead of importing environment variables via secure vaults.",
+              scaling: "Single-threaded execution bottleneck when testing large JavaScript payloads.",
+              monitoring: "Unit test failures do not report metrics directly to Grafana dashboards.",
+              backup: "No archive retention strategy for historical Vitest coverage reports.",
+              dr: "Failure in GitHub Actions triggers halts deployment with no secondary runner fallback.",
+              improvements: "Establish dynamic, parallel test execution in GitHub Runners utilizing multi-container environments."
+            },
+            interview: {
+              q: "Explain how automated unit testing safeguards SRE playground configurations.",
+              intent: "Analyzes understanding of test-driven validation, pipeline automation integration, and code quality governance.",
+              hidden: "Expects details on test structures, mocking DOM objects, and preventing drift in configurations.",
+              red: "Failing to explain mocking mechanisms or ignoring failure responses in pipelines.",
+              strong: "Outlines testing methodologies using Vitest, validating schema JSON files dynamically, and setting pipeline gates.",
+              expert: "Explains configuring mock DOM testing environments in Node.js, mapping virtual environments, and monitoring quality gates.",
+              leadership: "Advocates for automated Test-Driven Infrastructure provisioning, enforcing policy checks and security gates before code compiles."
+            },
+            incident: {
+              title: "Broken Playground Verification Test Failure in Pipeline",
+              flow: "Pipeline fails during the testing stage, preventing changes from being deployed.",
+              symptoms: "GitHub Actions logs return error exit code 1 from Vitest.",
+              causes: "A change in `playground.html` modified target IDs, breaking expectations in `devops-playground.test.js`.",
+              verify: "npm run test",
+              commands: "vitest run --inspect-brk",
+              fix: "Update test assertion IDs or fix the element in playground markup to align with test metrics.",
+              validation: "Run local `npm test` and check for green indicators across all 46 test suites.",
+              prevention: "Implement pre-commit hooks executing tests locally before developers push modifications to GitHub."
+            },
+            quiz: [
+              {
+                q: "What testing framework is used in this repository for unit testing?",
+                options: ["Jest", "Vitest", "Mocha", "Cypress"],
+                a: "Vitest",
+                explanation: "Vitest is used for high-performance Unit and Integration testing in this Vite-configured portfolio repo."
+              }
+            ]
+          }
+        }
+      },
+      experience: {
+        topics: {
+          cloud_support: {
+            title: "Multi-Node Cloud Orchestration & Support",
+            prereqs: "AWS IAM, Linux kernel basics, Docker volumes",
+            related: "Kubernetes Deployments",
+            advanced: "Multi-Cloud Anthos Orchestrations",
+            yield: "9.5 / 10",
+            purpose: {
+              solve: "Deploys, monitors, and operates high-availability multi-node container environments for enterprise applications.",
+              why: "Created to support large-scale enterprise services with load-balanced node clusters, preventing single-node failures.",
+              before: "Single VM application deployments, manual server clustering, static virtual machines.",
+              limits: "Requires high network bandwidth and advanced orchestration control planes (EKS, AKS, GKE) to manage state sync.",
+              alternatives: "Serverless (AWS Lambda), Managed App Services (Azure App Service, ECS).",
+              examples: "Netflix deploying thousands of microservices on AWS, Uber managing active-active databases across multi-region configurations."
+            },
+            flow: {
+              learning: "1. Virtualization vs Containers ➜ 2. AWS EC2/Networking ➜ 3. Container Registries ➜ 4. Multi-Node Clusters",
+              execution: "Incoming Request ➜ Application Load Balancer ➜ Node Port Routing ➜ Target Pod Container Response",
+              repo: "Pradeeptalari14/tp-kubernetes ➜ infra/eks-cluster.tf ➜ manifests/web-deployment.yaml"
+            },
+            labs: {
+              command: "kubectl get nodes -o wide",
+              syntax: "kubectl get [resource] [options]",
+              args: "-o wide: Outputs extended details including external IPs, OS kernels, container runtimes, and system configurations.",
+              output: "A detailed matrix of running nodes in the EKS cluster, demonstrating their active status, roles, and resource addresses.",
+              fail: "Authentication timeout or context errors indicating outdated local kubeconfig keys.",
+              prod: "Run routinely inside deployment scripts to verify nodes are ready before applying schema configurations."
+            },
+            archGaps: {
+              mermaid: "graph TD\n  ALB[AWS Load Balancer] -- Port 80/443 --> Node1[EKS Node 1]\n  ALB -- Port 80/443 --> Node2[EKS Node 2]\n  Node1 -- Local Communication --> Pod1[App Pod]\n  Node2 -- Local Communication --> Pod2[App Pod]",
+              spof: "The EKS control plane lacks a multi-AZ API server endpoint backup, exposing the control layer.",
+              security: "IAM node profiles lack restrictive boundary permissions, risking privilege escalation.",
+              scaling: "No Karpenter or Cluster Autoscaler config deployed, risking node exhaustion under load spikes.",
+              monitoring: "Missing alert rules for node disk-pressure and node-not-ready states.",
+              backup: "Kubernetes configuration states lack Git-integrated back-up schedules.",
+              dr: "No secondary warm EKS failover cluster configured in separate AWS regions.",
+              improvements: "Enable AWS KMS envelope encryption for Kubernetes secrets and set up cross-region EKS clustering."
+            },
+            interview: {
+              q: "How do you isolate network traffic between tenant namespaces in a multi-node Kubernetes cluster?",
+              intent: "Assesses familiarity with container networking, security contexts, and network policies.",
+              hidden: "Expects discussion of Kubernetes NetworkPolicies, CNI plugins like Calico or Cilium, and ingress boundaries.",
+              red: "Recommending manual node security groups for internal pod-to-pod filtering.",
+              strong: "Recommends enforcing NetworkPolicies selecting labels and setting ingress/egress boundaries.",
+              expert: "Details eBPF-based policy rules using Cilium, explaining kernel-level performance gains over iptables configurations.",
+              leadership: "Outlines multi-tenant governance compliance, introducing automated network boundary auditing configurations."
+            },
+            incident: {
+              title: "Pod stuck in CrashLoopBackOff due to Memory Limit (OOMKilled)",
+              flow: "Container crashed with exit code 137, pod restarts repeatedly, SLA degraded.",
+              symptoms: "kubectl get pods returns CrashLoopBackOff status.",
+              causes: "The application exceeded its container memory limit configuration, triggering the kernel Out-of-Memory (OOM) killer.",
+              verify: "kubectl describe pod <pod-name> | grep -E 'OOMKilled|Exit Code'",
+              commands: "kubectl logs <pod-name> --previous",
+              fix: "Adjust resource limits inside deployment configurations to allocate higher memory thresholds (e.g. limit from 512Mi to 1Gi).",
+              validation: "Confirm pod remains running in Ready state for more than 5 minutes.",
+              prevention: "Configure container requests and limits with 20% margin, and set up Prometheus alert metrics checking memory usage percentage."
+            },
+            quiz: [
+              {
+                q: "What exit code is typically returned by the kernel when a container is terminated due to an OOM condition?",
+                options: ["0", "1", "137", "255"],
+                a: "137",
+                explanation: "Exit code 137 indicates that the container process was terminated by an external signal (SIGKILL, signal 9) sent by the OS kernel OOM killer (128 + 9 = 137)."
+              }
+            ]
+          }
+        }
+      },
+      projects: {
+        topics: {
+          secure_infra: {
+            title: "Securing Multi-Tier Containerized Infrastructures",
+            prereqs: "PKI certificates, network subnets, container vulnerability scans",
+            related: "Observability Telemetry",
+            advanced: "Dynamic Vault Key Rotation Pipelines",
+            yield: "9.0 / 10",
+            purpose: {
+              solve: "Protects application environments from attacks by securing network interfaces and scanning artifact packages.",
+              why: "Created to mitigate container vulnerabilities, credential leaks, and insecure data exposures in cloud environments.",
+              before: "Unencrypted cleartext configurations, monolithic database access, manual vulnerability review cycles.",
+              limits: "May introduce latency (e.g., during certificate validation, double encryption, proxy gateways).",
+              alternatives: "Legacy network firewall appliances, standard non-secured configurations.",
+              examples: "Google implementing BeyondCorp zero-trust network models, Amazon automating code scans across artifact storage layers."
+            },
+            flow: {
+              learning: "1. Network Layer Security ➜ 2. Container Scans ➜ 3. Secret Management ➜ 4. Dynamic Access Policies",
+              execution: "Git Push ➜ Scan Triggered ➜ Image Analyzed ➜ Secrets Injected ➜ Container Boot Securely",
+              repo: "Pradeeptalari14/tp-sast ➜ rules/semgrep-rules.yaml ➜ .github/workflows/security-scan.yml"
+            },
+            labs: {
+              command: "trivy image my-app:latest",
+              syntax: "trivy [target] [options]",
+              args: "image: Specifies target type is a container image archive to pull and analyze local packages.",
+              output: "Vulnerability analysis matrix listing CVE severity, affected library packages, and remediation fixes.",
+              fail: "Database update timeout errors or connection failure checks.",
+              prod: "Enforcing trivy exit-code gates in pipelines: block builds containing high or critical CVE classifications."
+            },
+            archGaps: {
+              mermaid: "graph TD\n  Client[User Client] -- HTTPS TLS 1.3 --> Ingress[Ingress Gateway]\n  Ingress -- mTLS --> App[App Container]\n  App -- Secret Retrieve --> Vault[HashiCorp Vault]\n  App -- Encrypted Query --> DB[(Database)]",
+              spof: "Single HashiCorp Vault instance serving secrets without cluster synchronization.",
+              security: "Secrets stored in plain text inside deployment manifests, exposing credentials.",
+              scaling: "Vulnerability scanning pipelines execute sequentially, slowing hotfix deployments.",
+              monitoring: "Missing audit logs tracking access queries to secrets.",
+              backup: "Database backups are stored in public storage classes without strict KMS keys.",
+              dr: "No warm failover for Vault storage backends across backup regions.",
+              improvements: "Establish AWS KMS automated key rotation, encrypt state files, and enforce mTLS within the service cluster."
+            },
+            interview: {
+              q: "How do you manage and rotate credentials in a production Kubernetes namespace without disrupting services?",
+              intent: "Verifies knowledge of secret management, secure injection models, and app lifecycle support.",
+              hidden: "Expects detail on Vault dynamic secrets, external secret operators, and rolling update strategies.",
+              red: "Suggesting manual environment file overrides or committing keys to git.",
+              strong: "Proposes utilizing HashiCorp Vault or AWS Secrets Manager coupled with External Secrets Operator.",
+              expert: "Explains configuring Vault sidecar injectors, mapping dynamic secrets lease-times, and configuring soft-reloads on process signals.",
+              leadership: "Outlines organizational cryptography governance, defining policies for automated credential expiration."
+            },
+            incident: {
+              title: "Critical Vulnerability (CVE) Detected in Release Image",
+              flow: "Production build blocked by pipeline security gate after Trivy alert.",
+              symptoms: "CI pipeline fails at Trivy security check stage; error logs report critical CVEs.",
+              causes: "The container base image (e.g. Node:18) utilizes outdated, vulnerable library packages.",
+              verify: "trivy image --severity HIGH,CRITICAL <image-name>",
+              commands: "docker history <image-name>",
+              fix: "Update the base image directive in the Dockerfile to point to a minimal alpine version or fixed tag.",
+              validation: "Re-run container vulnerability audit and confirm critical CVE report outputs zero violations.",
+              prevention: "Configure cron-triggered Trivy container scans auditing active registry images nightly, sending slack alerts on detections."
+            },
+            quiz: [
+              {
+                q: "Which security scanning tool is commonly used to inspect container images for OS package CVEs?",
+                options: ["SonarQube", "Trivy", "Prometheus", "Ansible"],
+                a: "Trivy",
+                explanation: "Trivy is a high-performance vulnerability scanner designed to search for security issues in container images, file systems, and Git repositories."
+              }
+            ]
+          }
+        }
+      },
+      tools: {
+        topics: {
+          studio_sync: {
+            title: "Studio Code Generation & Repository Sync",
+            prereqs: "Git CLI, Github Actions runner setups, Vite JSON parsers",
+            related: "Skills Testing",
+            advanced: "Continuous Deployment GitOps Integrations (ArgoCD)",
+            yield: "9.2 / 10",
+            purpose: {
+              solve: "Synchronizes generated templates from interactive studios directly to remote GitHub repositories.",
+              why: "Created to automate the transition of code templates from local browser sandboxes to version-controlled remote repositories.",
+              before: "Manual code copy-pasting, untracked templates, inconsistent configuration files.",
+              limits: "Requires write-scoped Git access tokens; client configurations must handle rate limits.",
+              alternatives: "Manual git operations, script-driven deployments.",
+              examples: "Netflix automated infrastructure templates synced to central repositories, Google developers utilizing internal code-gen tools."
+            },
+            flow: {
+              learning: "1. Git Protocols ➜ 2. API Tokens ➜ 3. Webhook Integration ➜ 4. Dynamic Data Parsing",
+              execution: "Studio Click ➜ Code Compiled ➜ Git Action Run ➜ Changes Pushed ➜ Target Verified",
+              repo: "Pradeeptalari14/tp-github-actions ➜ .github/workflows/main.yml ➜ scripts/sync.js"
+            },
+            labs: {
+              command: "git push origin main",
+              syntax: "git push [remote] [branch]",
+              args: "origin main: Transmits local branch commits to the remote origin server.",
+              output: "Transmission report detailing compression size, delta count, remote server verification, and new commit hash details.",
+              fail: "Authentication rejected or non-fast-forward updates blocked (mismatched commits). Resolve by running git pull first.",
+              prod: "Integrating Git sync within automated pipelines to push verified terraform configuration changes to cloud repositories."
+            },
+            archGaps: {
+              mermaid: "graph TD\n  Studio[Browser Studio] -- Generated Files --> Git[Local Git Commit]\n  Git -- API Push --> Remote[GitHub Repository]\n  Remote -- Workflow Hook --> Actions[GitHub Actions Runner]\n  Actions -- Deploy --> Target[Cloud Infra]",
+              spof: "The synchronization workflow depends on a single GitHub Personal Access Token (PAT) without rotation.",
+              security: "GitHub API tokens are exposed in browser client-side code blocks.",
+              scaling: "Heavy traffic concurrently executing code-pushes triggers API rate limit throttling.",
+              monitoring: "Missing telemetry triggers tracking synchronization errors.",
+              backup: "No backup archive containing generated configuration states outside Git history.",
+              dr: "No fallback secondary Git server (e.g., GitLab) in case of GitHub outages.",
+              improvements: "Establish secure token injection via backend JWT gateways, avoiding cleartext secrets storage on client-side modules."
+            },
+            interview: {
+              q: "How do you automate secure repository updates while avoiding merge conflicts in multi-user environments?",
+              intent: "Evaluates familiarity with version control workflows, synchronization automation, and pipeline concurrency.",
+              hidden: "Expects discussion of branching strategies, pull request verification gates, merge strategies, and conflict detection.",
+              red: "Recommending force-pushing modifications to bypass merge failures in pipelines.",
+              strong: "Proposes executing automated rebase workflows, utilizing branch locking mechanisms, and verifying states using pull request gates.",
+              expert: "Details configuring merge queues, utilizing automated commit status check APIs, and scripting rollback mechanisms.",
+              leadership: "Outlines strategic code-generation pipelines, defining automated standards for source control integrity."
+            },
+            incident: {
+              title: "GitHub Actions Nightly Maintenance Pipeline Failure",
+              flow: "Nightly cron workflow fails, triggering failure alerts without manual changes.",
+              symptoms: "GitHub repository shows failed status badge; alert emails report pipeline execution error.",
+              causes: "The workflow script attempts to pull dependencies from external registries that updated their APIs or became temporarily unreachable.",
+              verify: "Open GitHub Actions panel and review failed execution logs under the maintenance stage.",
+              commands: "git log -n 5 --oneline",
+              fix: "Pin dependency versions in package files, and adjust retry settings on network connections.",
+              validation: "Manually trigger the workflow runner and confirm all pipeline stages compile and execute.",
+              prevention: "Establish local mirror registries caching build packages, reducing external network dependency."
+            },
+            quiz: [
+              {
+                q: "Which file format is utilized to define GitHub Actions workflow pipelines?",
+                options: ["JSON", "XML", "YAML", "HCL"],
+                a: "YAML",
+                explanation: "GitHub Actions workflow pipelines are configured using YAML syntax inside the `.github/workflows` directory."
+              }
+            ]
+          }
+        }
+      },
+      contact: {
+        topics: {
+          webhook_sec: {
+            title: "Secure Webhook Receivers & Notifications",
+            prereqs: "HTTP protocols, HMAC cryptography, API gateway endpoints",
+            related: "Projects Security",
+            advanced: "Event-Driven SRE Messaging Topologies",
+            yield: "8.8 / 10",
+            purpose: {
+              solve: "Enables secure, event-driven communications between applications and alerting channels (Slack, Teams, PagerDuty).",
+              why: "Created to dispatch alerts and verify payload origins, preventing unauthorized network attacks.",
+              before: "Unencrypted polling systems, insecure HTTP endpoints, unauthenticated API calls.",
+              limits: "Webhooks are stateless; if the receiver is down during an alert dispatch, messages might be lost without retry queues.",
+              alternatives: "Message brokers (Kafka, RabbitMQ), persistent queue systems.",
+              examples: "PagerDuty dispatching alerts to SRE clusters, Uber routing real-time transaction updates via secure webhooks."
+            },
+            flow: {
+              learning: "1. Webhook Handshakes ➜ 2. HMAC Cryptographic Signatures 3. Endpoint Security 4. Notification Routing",
+              execution: "System Alert ➜ Generate Signed Payload ➜ Send Webhook ➜ Verify Signature ➜ Route Message",
+              repo: "Pradeeptalari14/tp-webhooks ➜ receiver.py ➜ config/alert_rules.json"
+            },
+            labs: {
+              command: "curl -X POST -H 'Content-Type: application/json' -d '{\"text\":\"alert\"}' https://talaripradeep.info/webhook",
+              syntax: "curl -X [HTTP_METHOD] -H [HEADERS] -d [DATA] [URL]",
+              args: "-X POST: Configures HTTP method as POST. -d: Declares payload details.",
+              output: "HTTP status 200/202 indicating webhook payload has been accepted by target receiver routing layer.",
+              fail: "Connection refused, invalid payload format errors, or HTTP 401/403 validation rejections.",
+              prod: "Configuring verified webhook receivers in alerting software to route automated Paging alerts to SRE support channels."
+            },
+            archGaps: {
+              mermaid: "graph TD\n  Alert[SRE Alert System] -- Webhook + Signature --> Gateway[API Gateway]\n  Gateway -- Verify HMAC --> Receiver[Webhook Receiver]\n  Receiver -- Route Message --> Slack[Slack Channel]",
+              spof: "The webhook receiver endpoint runs on a single host without backup instances, risking lost alerts.",
+              security: "API endpoints lack rate limiting, exposing servers to denial-of-service (DoS) payload floods.",
+              scaling: "Processing large volumes of concurrent webhook events blocks local threads.",
+              monitoring: "Missing log metrics parsing webhook delivery latencies and HTTP fail rates.",
+              backup: "No message queue fallback buffer protecting alert payloads during receiver down periods.",
+              dr: "No secondary redundant alerting channels configured in case of Slack network failures.",
+              improvements: "Establish secure AWS SQS buffers before the webhook receiver layer, and filter payloads using API Gateway rate limit limits."
+            },
+            interview: {
+              q: "How do you verify the authenticity of a webhook event payload received from a third-party application?",
+              intent: "Assesses cryptographic security, REST API knowledge, and message integrity verification techniques.",
+              hidden: "Expects explanation of HMAC signatures, shared secrets, payload hashing, and preventing replay attacks.",
+              red: "Accepting incoming POST payloads without signature verification checks.",
+              strong: "Proposes validating cryptographic signatures (like SHA256) sent in request headers matching local shared secrets.",
+              expert: "Details code verifying signatures, calculating hashes on raw request data blocks, and using time-insensitive comparisons.",
+              leadership: "Outlines organizational policy models enforcing secure webhooks configurations globally across systems."
+            },
+            incident: {
+              title: "Alert Message Loss Due to Webhook Endpoint Timeout",
+              flow: "Incident alerts fail to dispatch to team channels; critical system alerts lost.",
+              symptoms: "No alerts displayed in Slack during node failures; server logs indicate outgoing HTTP timeout errors.",
+              causes: "The webhook receiver process crashed or hung due to database connection pool exhaustions.",
+              verify: "curl -I https://talaripradeep.info/webhook-receiver",
+              commands: "netstat -tuln | grep 8080\ntail -n 50 /var/log/webhook-receiver.log",
+              fix: "Restart the receiver daemon, optimize connection pools, and configure supervisor autostart rules.",
+              validation: "Send mock alert payload and verify notification renders in destination Slack workspace.",
+              prevention: "Configure circuit-breaker gateways returning immediate HTTP 202, queuing tasks to secondary SQS layers for async processing."
+            },
+            quiz: [
+              {
+                q: "What mechanism is typically used to guarantee webhook payloads are not tampered with during transmission?",
+                options: ["OAuth 2.0", "HMAC Signatures", "SSL Pinning", "JWT tokens"],
+                a: "HMAC Signatures",
+                explanation: "HMAC signatures involve hashing payload data utilizing shared secrets, allowing receivers to verify origin and content integrity."
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    // Populate Sidebar based on active pillar
+    function populateSidebar() {
+      const list = document.getElementById('topic-sidebar-list');
+      list.innerHTML = '';
+      
+      const pillarData = dataMatrix[activePillar];
+      if (!pillarData) return;
+
+      const topics = pillarData.topics;
+      const keys = Object.keys(topics);
+      
+      // Set active topic to first if empty/not matching
+      if (!selectedTopicKey || !topics[selectedTopicKey]) {
+        selectedTopicKey = keys[0];
+      }
+
+      keys.forEach(key => {
+        const item = topics[key];
+        const btn = document.createElement('button');
+        btn.className = `sidebar-item-btn ${key === selectedTopicKey ? 'active' : ''}`;
+        btn.onclick = () => selectTopic(key);
+        btn.innerHTML = `<span>📖</span> <span>${item.title}</span>`;
+        list.appendChild(btn);
+      });
+    }
+
+    function selectTopic(key) {
+      selectedTopicKey = key;
+      document.querySelectorAll('.sidebar-item-btn').forEach(btn => btn.classList.remove('active'));
+      populateSidebar();
+      renderView();
+    }
+
+    function switchPillar(pillar, btn) {
+      activePillar = pillar;
+      document.querySelectorAll('.pillar-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedTopicKey = '';
+      populateSidebar();
+      renderView();
+    }
+
+    function switchTab(tab, btn) {
+      activeTab = tab;
+      document.querySelectorAll('.mode-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderView();
+    }
+
+    // Toggle accordion panels
+    window.toggleAccordion = function(button) {
+      const item = button.parentElement;
+      const body = item.querySelector('.accordion-body');
+      const chevron = item.querySelector('.accordion-chevron');
+      
+      if (body.style.display === 'block') {
+        body.style.display = 'none';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+        item.style.borderColor = 'var(--border)';
+      } else {
+        body.style.display = 'block';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+        item.style.borderColor = 'var(--accent-cyan)';
+      }
+    };
+
+    // Search directory filter
+    window.filterDirectory = function(input) {
+      const query = input.value.toLowerCase().trim();
+      const rows = document.querySelectorAll('#directory-table-body tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (text.includes(query)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    };
+
+    // Incident Simulator Animation
+    let simInterval = null;
+    window.runIncidentSimulation = function() {
+      const nodes = document.querySelectorAll('.flow-node');
+      const container = document.getElementById('sim-logs-console');
+      if (!nodes || !container) return;
+
+      if (simInterval) clearInterval(simInterval);
+      
+      nodes.forEach(n => n.classList.remove('active'));
+      container.innerHTML = '<span style="color:#64748b">> Initializing automated Incident Response analysis...</span>\n';
+      
+      let step = 0;
+      const logs = [
+        "> Event Alert received. Triggering diagnostic workflow...",
+        "> Step 1: Reading stdout container logs metrics...",
+        "> Step 2: Querying Prometheus CPU, Memory, and Disk allocations...",
+        "> Step 3: Pinging local gateways and verifying DNS address tables...",
+        "> Step 4: Comparing local build configurations against target Git state...",
+        "> Step 5: Auditing dependent database backends and vault variables...",
+        "> Step 6: Triggering remediating execution script...",
+        "> Step 7: Performing validation health check ping loops...",
+        "> Step 8: Recording post-incident review status logs. RCA Completed."
+      ];
+
+      function nextStep() {
+        if (step < nodes.length) {
+          nodes[step].classList.add('active');
+          container.innerHTML += `<span style="color:#10b981">${logs[step]}</span>\n`;
+          container.scrollTop = container.scrollHeight;
+          step++;
+        } else {
+          clearInterval(simInterval);
+          container.innerHTML += `<span style="color:#38bdf8">> STATUS: System recovered. Metrics healthy.</span>\n`;
+        }
+      }
+      nextStep();
+      simInterval = setInterval(nextStep, 1000);
+    };
+
+    // Dynamic View Renderer
+    function renderView() {
+      const container = document.getElementById('content-container');
+      const pillarData = dataMatrix[activePillar];
+      if (!pillarData) {
+        container.innerHTML = '<p>Select a pillar to begin.</p>';
+        return;
+      }
+
+      const activeTopic = pillarData.topics[selectedTopicKey];
+      if (!activeTopic) {
+        container.innerHTML = '<p>Select a topic from the sidebar.</p>';
+        return;
+      }
+
+      // Update Telemetry Bar
+      document.getElementById('telemetry-topic').textContent = activeTopic.title;
+      const prereqEl = document.getElementById('telemetry-prereqs');
+      prereqEl.textContent = activeTopic.prereqs;
+      prereqEl.title = activeTopic.prereqs;
+      document.getElementById('telemetry-related').textContent = activeTopic.related;
+      document.getElementById('telemetry-yield').textContent = activeTopic.yield;
+
+      if (activeTab === 'coach') {
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:1rem">
+              🎓 SRE Coaching Roadmap: ${activeTopic.title}
+            </h2>
+            
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-bottom:0.5rem">🌐 Real-World Purpose &amp; Case Studies</h3>
+            <p style="font-size:0.875rem; color:var(--text-secondary); line-height:1.6; margin-bottom:1rem">
+              <strong>What problem does it solve?</strong> ${activeTopic.purpose.solve}<br>
+              <strong>Why was it created?</strong> ${activeTopic.purpose.why}<br>
+              <strong>What existed before?</strong> ${activeTopic.purpose.before}<br>
+              <strong>Limitations:</strong> ${activeTopic.purpose.limits}<br>
+              <strong>Alternatives:</strong> ${activeTopic.purpose.alternatives}<br>
+              <strong>Real-world Case Studies:</strong> ${activeTopic.purpose.examples}
+            </p>
+
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-top:1.5rem; margin-bottom:0.5rem">🗺️ Learning &amp; Execution Flow</h3>
+            <div style="background:var(--bg-surface); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border); margin-bottom:1.5rem; font-size:0.82rem; line-height:1.6">
+              <strong>Learning Path:</strong> ${activeTopic.flow.learning}<br>
+              <strong>Execution Flow:</strong> ${activeTopic.flow.execution}<br>
+              <strong>Repository Flow:</strong> ${activeTopic.flow.repo}
+            </div>
+
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-cyan); margin-top:1.5rem; margin-bottom:0.5rem">🧪 Hands-on Lab &amp; Command Breakdown</h3>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem">Execute the following command in your terminal setup:</p>
+            <pre style="background:#020617; padding:0.75rem; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.05); font-family:'JetBrains Mono',monospace; font-size:11px; color:#10b981; overflow-x:auto">${activeTopic.labs.command}</pre>
+            
+            <div class="cmd-breakdown-box">
+              <div style="font-size:0.72rem; text-transform:uppercase; font-weight:800; color:var(--text-muted)">Command Breakdown</div>
+              <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.5; margin-top:0.25rem">
+                <strong>Syntax:</strong> <code>${activeTopic.labs.syntax}</code><br>
+                <strong>Arguments/Parameters:</strong> ${activeTopic.labs.args}<br>
+                <strong>Expected Output:</strong> ${activeTopic.labs.output}<br>
+                <strong>Failure Scenarios:</strong> ${activeTopic.labs.fail}<br>
+                <strong>Production Best Practice:</strong> ${activeTopic.labs.prod}
+              </p>
+            </div>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'architecture') {
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:1.5rem">
+              🛡️ Architecture Review: ${activeTopic.title}
+            </h2>
+
+            <div style="background:var(--bg-surface); padding:1.5rem; border-radius:var(--radius-md); border:1px solid var(--border); margin-bottom:1.75rem">
+              <div class="mermaid" id="arch-mermaid">${activeTopic.archGaps.mermaid}</div>
+            </div>
+
+            <h3 style="font-size:0.95rem; font-weight:700; color:var(--accent-orange); margin-bottom:0.75rem">🛑 Security &amp; Resiliency Audit Gaps</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; font-size:0.84rem; color:var(--text-secondary)">
+              <div>
+                <strong>⚠️ Single Points of Failure:</strong><br>${activeTopic.archGaps.spof}<br><br>
+                <strong>🔒 Security Risks:</strong><br>${activeTopic.archGaps.security}<br><br>
+                <strong>📈 Scaling Gaps:</strong><br>${activeTopic.archGaps.scaling}
+              </div>
+              <div>
+                <strong>📊 Monitoring Gaps:</strong><br>${activeTopic.archGaps.monitoring}<br><br>
+                <strong>💾 Backup Gaps:</strong><br>${activeTopic.archGaps.backup}<br><br>
+                <strong>🌪️ DR Fallbacks:</strong><br>${activeTopic.archGaps.dr}
+              </div>
+            </div>
+            
+            <div style="border-top:1px solid var(--border); margin-top:1.5rem; padding-top:1rem; font-size:0.84rem">
+              <strong>💡 Proposed Architectural Improvements:</strong> ${activeTopic.archGaps.improvements}
+            </div>
+          </div>
+        `;
+        try {
+          mermaid.contentLoaded();
+        } catch(e) { console.error('Mermaid render error', e); }
+      } 
+      
+      else if (activeTab === 'interview') {
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:0.5rem">
+              🎙️ SRE Interview Coach Mode
+            </h2>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem">
+              Explore candidate responses matching the active focus. Read interviewer insights before expanding the answers.
+            </p>
+
+            <div class="accordion-item" style="border-color:var(--border-accent)">
+              <button class="accordion-header" onclick="window.toggleAccordion(this)">
+                <span>Q: ${activeTopic.interview.q}</span>
+                <span class="accordion-chevron">▼</span>
+              </button>
+              <div class="accordion-body" style="display:block">
+                <div style="background:rgba(245, 158, 11, 0.05); border-left:3px solid var(--accent-orange); padding:0.75rem; border-radius:0 4px 4px 0; font-size:0.78rem; line-height:1.5; margin-bottom:1.25rem">
+                  <strong>🎯 Interviewer Intent:</strong> ${activeTopic.interview.intent}<br>
+                  <strong>💡 Hidden Expectation:</strong> ${activeTopic.interview.hidden}<br>
+                  <strong>🚩 Red Flags:</strong> <span style="color:var(--accent-red)">${activeTopic.interview.red}</span>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:1rem; font-size:0.85rem; line-height:1.6">
+                  <div>
+                    <span style="font-weight:700; color:var(--text-primary)">🟢 Strong Answer:</span>
+                    <p style="color:var(--text-secondary)">${activeTopic.interview.strong}</p>
+                  </div>
+                  <div>
+                    <span style="font-weight:700; color:var(--accent-cyan)">🔵 Expert SRE Response:</span>
+                    <p style="color:var(--text-secondary)">${activeTopic.interview.expert}</p>
+                  </div>
+                  <div>
+                    <span style="font-weight:700; color:var(--accent-green)">👑 SRE Leadership Solution:</span>
+                    <p style="color:var(--text-secondary)">${activeTopic.interview.leadership}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'troubleshooting') {
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap">
+              <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary)">
+                🚨 Incident Simulator &amp; Support Runbooks
+              </h2>
+              <button onclick="window.runIncidentSimulation()" style="background:var(--accent-red); color:#fff; border:none; padding:0.45rem 1.1rem; border-radius:50px; font-weight:700; cursor:pointer; font-size:0.75rem; box-shadow:0 4px 12px rgba(239, 68, 68, 0.2)">
+                ⚡ Run Triage Path
+              </button>
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem">
+              <strong>Active Incident:</strong> <span style="color:#ef4444">${activeTopic.incident.title}</span>
+            </p>
+
+            <div class="flow-diagram-wrapper">
+              <div class="flow-node">Issue Occurs</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Check Logs</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Check Metrics</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Check Network</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Check Config</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Check Deps</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Apply Fix</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Validate</div>
+              <div class="flow-arrow-node">↓</div>
+              <div class="flow-node">Monitor</div>
+            </div>
+
+            <div class="simulator-console">
+              <pre id="sim-logs-console" style="margin:0; white-space:pre-wrap">> Ready for diagnostics execution. Click "Run Triage Path" above to start simulator...</pre>
+            </div>
+
+            <div class="accordion-item" style="margin-top:1.5rem">
+              <button class="accordion-header" onclick="window.toggleAccordion(this)">
+                <span>📖 View Incident Runbook Details</span>
+                <span class="accordion-chevron">▼</span>
+              </button>
+              <div class="accordion-body">
+                <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6">
+                  <strong>Symptoms:</strong> ${activeTopic.incident.symptoms}<br><br>
+                  <strong>Possible Causes:</strong> ${activeTopic.incident.causes}<br><br>
+                  <strong>How to Verify:</strong> ${activeTopic.incident.verify}<br><br>
+                  <strong>Diagnostics Commands:</strong> <code>${activeTopic.incident.commands}</code><br><br>
+                  <strong>Verification/Fix Procedure:</strong> ${activeTopic.incident.fix}<br><br>
+                  <strong>Validation:</strong> ${activeTopic.incident.validation}<br><br>
+                  <strong>Prevention Strategy:</strong> ${activeTopic.incident.prevention}
+                </p>
+              </div>
+            </div>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'mockexam') {
+        let quizHtml = '';
+        activeTopic.quiz.forEach((q, idx) => {
+          quizHtml += `
+            <div style="margin-bottom:1.5rem">
+              <p style="font-weight:700; color:var(--text-primary); margin-bottom:0.5rem">${idx + 1}. ${q.q}</p>
+              <div style="display:flex; flex-direction:column; gap:0.5rem">
+                ${q.options.map(opt => `
+                  <label style="font-size:0.84rem; display:flex; align-items:center; gap:8px; cursor:pointer">
+                    <input type="radio" name="quiz-q-${idx}" value="${opt}" style="cursor:pointer">
+                    <span>${opt}</span>
+                  </label>
+                `).join('')}
+              </div>
+              <button onclick="window.submitQuizAnswer(this, '${q.a}', '${q.explanation.replace(/'/g, "\\'")}')" style="background:var(--bg-surface); border:1px solid var(--border); padding:0.35rem 0.85rem; border-radius:4px; font-size:0.72rem; font-weight:700; cursor:pointer; color:var(--text-primary); margin-top:0.75rem">
+                Submit Answer
+              </button>
+              <div class="quiz-feedback" style="display:none; font-size:0.78rem; margin-top:0.5rem; padding:0.5rem; border-radius:4px"></div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:1rem">
+              📝 Dynamic Assessment Mode
+            </h2>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.75rem">
+              Test your proficiency in ${activeTopic.title}. Each answer triggers immediate feedback, score tracking, and custom cheat-sheet cards.
+            </p>
+
+            <div id="quiz-block-wrapper">
+              ${quizHtml}
+            </div>
+
+            <!-- Scorecard and Career Roadmap Panel -->
+            <div id="scorecard-panel" style="display:none; margin-top:2rem; border-top:1px solid var(--border); padding-top:1.5rem">
+              <h3 style="font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text-primary); margin-bottom:0.75rem">📊 Real-Time Scorecard</h3>
+              <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; font-size:0.84rem; line-height:1.6">
+                <strong>Current Status:</strong> <span id="score-status">Pending</span><br>
+                <strong>Correct Answers:</strong> <span id="score-correct">0</span> / <span id="score-total">0</span><br>
+                <strong>Recommended Next Topic:</strong> <span style="color:var(--accent-cyan); font-weight:700">${activeTopic.related}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'directory') {
+        let rowsHtml = '';
+        studiosData.forEach(studio => {
+          rowsHtml += `
+            <tr>
+              <td style="font-weight:700; color:var(--text-primary); padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);">${studio.title}</td>
+              <td style="padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);">${studio.category}</td>
+              <td style="font-family:monospace; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);"><a href="https://github.com/${studio.repository}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-cyan);">${studio.repository}</a></td>
+              <td style="text-align:right; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);"><a href="../${studio.link}" style="font-weight:bold; color:var(--accent-cyan)">Launch ➜</a></td>
+            </tr>
+          `;
+        });
+
+        // Fallback rows if json fails
+        if (studiosData.length === 0) {
+          const fallbackList = [
+            { title: "🐳 Docker Manager", cat: "Config & Auto", repo: "Pradeeptalari14/tp-docker", link: "docker/" },
+            { title: "☸️ Advanced k8s Script Generator", cat: "Cloud & Infra", repo: "Pradeeptalari14/tp-kubernetes", link: "kubernetes/" },
+            { title: "🏗️ Terraform Architect", cat: "Cloud & Infra", repo: "Pradeeptalari14/tp-terraform", link: "terraform/" },
+            { title: "⚡ GitHub Actions Studio", cat: "CI/CD Pipelines", repo: "Pradeeptalari14/tp-github-actions", link: "github-actions/" },
+            { title: "📊 ArgoCD GitOps App", cat: "Cloud & Infra", repo: "Pradeeptalari14/tp-argocd", link: "argocd/" }
+          ];
+          fallbackList.forEach(s => {
+            rowsHtml += `
+              <tr>
+                <td style="font-weight:700; color:var(--text-primary); padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);">${s.title}</td>
+                <td style="padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);">Cloud &amp; Infra</td>
+                <td style="font-family:monospace; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);"><a href="https://github.com/${s.repo}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-cyan);">${s.repo}</a></td>
+                <td style="text-align:right; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);"><a href="../${s.link}" style="font-weight:bold; color:var(--accent-cyan)">Launch ➜</a></td>
+              </tr>
+            `;
+          });
+        }
+
+        container.innerHTML = `
+          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:0.5rem">
+              📁 SRE Automation Studios Directory
+            </h2>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem">
+              Explore the repository map linking generated local studios directly with target GitHub configurations.
+            </p>
+
+            <input type="text" class="directory-search" placeholder="🔍 Search studios, categories, or repositories..." oninput="window.filterDirectory(this)" />
+
+            <div style="overflow-x:auto; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md)">
+              <table class="compact-table">
+                <thead>
+                  <tr>
+                    <th>Studio Platform</th>
+                    <th>Category</th>
+                    <th>GitHub Repository</th>
+                    <th style="text-align:right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="directory-table-body">
+                  ${rowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Submission Handler for Quizzes
+    let quizScoreCorrect = 0;
+    let quizTotalSubmitted = 0;
+    window.submitQuizAnswer = function(button, correctVal, explanation) {
+      const parent = button.parentElement;
+      const selectedInput = parent.querySelector('input[type="radio"]:checked');
+      const feedbackDiv = parent.querySelector('.quiz-feedback');
+      
+      if (!selectedInput) {
+        alert('Please select an option before submitting.');
+        return;
+      }
+
+      button.style.display = 'none';
+      parent.querySelectorAll('input').forEach(i => i.disabled = true);
+      feedbackDiv.style.display = 'block';
+
+      if (selectedInput.value === correctVal) {
+        feedbackDiv.style.background = 'rgba(16, 185, 129, 0.1)';
+        feedbackDiv.style.border = '1px solid var(--accent-green)';
+        feedbackDiv.style.color = '#10b981';
+        feedbackDiv.innerHTML = `<strong>Correct!</strong> ${explanation}`;
+        quizScoreCorrect++;
+      } else {
+        feedbackDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+        feedbackDiv.style.border = '1px solid var(--accent-red)';
+        feedbackDiv.style.color = '#ef4444';
+        feedbackDiv.innerHTML = `<strong>Incorrect.</strong> Correct answer is: <em>${correctVal}</em>.<br>${explanation}`;
+      }
+
+      quizTotalSubmitted++;
+      
+      // Update scorecard
+      const scorecard = document.getElementById('scorecard-panel');
+      if (scorecard) {
+        scorecard.style.display = 'block';
+        document.getElementById('score-correct').textContent = quizScoreCorrect;
+        document.getElementById('score-total').textContent = quizTotalSubmitted;
+        const pct = Math.round((quizScoreCorrect / quizTotalSubmitted) * 100);
+        document.getElementById('score-status').innerHTML = `${pct}% Proficiency (${pct >= 75 ? '<span style="color:#10b981;font-weight:bold">Passed</span>' : '<span style="color:#ef4444;font-weight:bold">Needs Review</span>'})`;
+      }
+    };
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadStudios();
+      populateSidebar();
+      renderView();
+    });
+  </script>
+
+  <load src="../sections/chatbot.html" />
+</body>
+</html>

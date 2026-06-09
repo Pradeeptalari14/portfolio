@@ -97,6 +97,7 @@
       display: flex;
       align-items: center;
       gap: 2.25rem;
+      list-style: none;
     }
     .nav-link {
       font-size: 0.88rem;
@@ -896,11 +897,83 @@
       border-radius: 4px;
       font-size: 0.65rem;
     }
-    .provisioning-hub-banner:hover {
-      border-color: var(--accent-primary) !important;
-      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08), var(--shadow-md);
-      transform: translateY(-2px);
-    }
+     .provisioning-hub-banner:hover {
+       border-color: var(--accent-primary) !important;
+       box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08), var(--shadow-md);
+       transform: translateY(-2px);
+     }
+
+     /* ── Knowledge Vault ── */
+     .vault-section {
+       margin-top: 5rem;
+       width: 100%;
+       max-width: 1280px;
+       background: var(--bg-card);
+       border: 1px solid var(--border);
+       border-radius: var(--radius-xl);
+       padding: 3rem;
+       box-shadow: var(--shadow-lg);
+     }
+     .vault-tab-btn {
+       padding: 0.55rem 1.25rem;
+       border-radius: 50px;
+       border: 1px solid var(--border);
+       background: var(--bg-card);
+       color: var(--text-secondary);
+       font-size: 0.85rem;
+       font-weight: 600;
+       cursor: pointer;
+       transition: var(--transition);
+       box-shadow: var(--shadow-sm);
+     }
+     .vault-tab-btn:hover {
+       border-color: var(--accent-primary);
+       color: var(--accent-primary);
+       background: var(--bg-surface);
+     }
+     .vault-tab-btn.active {
+       background: var(--accent-primary) !important;
+       color: #ffffff !important;
+       border-color: var(--accent-primary) !important;
+       box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+     }
+     .qa-item {
+       border: 1px solid var(--border);
+       border-radius: var(--radius-md);
+       background: var(--bg-surface);
+       overflow: hidden;
+       margin-bottom: 0.75rem;
+       transition: border-color var(--transition);
+     }
+     .qa-question {
+       width: 100%;
+       text-align: left;
+       padding: 1.25rem;
+       background: none;
+       border: none;
+       outline: none;
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       cursor: pointer;
+       font-family: 'Space Grotesk', sans-serif;
+       font-size: 0.95rem;
+       font-weight: 700;
+       color: var(--text-primary);
+     }
+     .qa-answer {
+       display: none;
+       padding: 0 1.25rem 1.25rem;
+       font-size: 0.88rem;
+       color: var(--text-secondary);
+       line-height: 1.65;
+       border-top: 1px solid var(--border);
+       padding-top: 1rem;
+     }
+     .qa-answer ol, .qa-answer ul {
+       list-style-position: inside;
+       margin-left: 0.5rem;
+     }
 
     @media (prefers-color-scheme: dark) {
       :root {
@@ -1040,12 +1113,13 @@
         <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" width="32" height="32" loading="lazy" />
         <span>TP<span style="color:var(--accent-primary)">.</span></span>
       </a>
-      <ul class="nav-links">
+      <ul class="nav-links" style="list-style: none;">
         <li><a href="../#about" class="nav-link">About</a></li>
         <li><a href="../skills/" class="nav-link">Skills</a></li>
         <li><a href="../experience/" class="nav-link">Experience</a></li>
         <li><a href="../projects/" class="nav-link">Projects</a></li>
         <li><a href="./" class="nav-link active">Tools</a></li>
+        <li><a href="../interview/" class="nav-link">Interview</a></li>
         <li><a href="../#contact" class="nav-link">Contact</a></li>
       </ul>
       <div style="display: flex; align-items: center; gap: 12px;">
@@ -1221,6 +1295,220 @@
           <p class="finops-note">
             * Calculations are client-side estimates based on general AWS pricing indices (On-Demand baseline vs. SRE Spot/Graviton/Volume-Sweeper optimizations). Always execute dry-runs before provisioning.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SRE & DEVOPS KNOWLEDGE VAULT ══ -->
+    <section class="vault-section">
+      <div class="vault-header">
+        <h3 class="vault-title" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+          <span>📚</span> SRE &amp; DevOps Knowledge Vault
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">Master SRE interview prep, study real-world cloud diagnostics workflows, and explore the complete repository matrix for all integrated automation studios.</p>
+      </div>
+
+      <!-- Vault Tabs -->
+      <div class="vault-tabs" style="display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <button class="vault-tab-btn active" onclick="window.switchVaultTab('qa')">📖 Interview Q&amp;A</button>
+        <button class="vault-tab-btn" onclick="window.switchVaultTab('troubleshooting')">🔧 Diagnostics &amp; Troubleshooting</button>
+        <button class="vault-tab-btn" onclick="window.switchVaultTab('directory')">📁 Studio Directory &amp; Repos</button>
+      </div>
+
+      <!-- Tab Content 1: Interview Q&A -->
+      <div id="vault-tab-qa" class="vault-tab-content">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div class="qa-item">
+            <button class="qa-question" onclick="window.toggleAccordion(this)">
+              <span>Q1: How do you troubleshoot a Kubernetes Pod stuck in CrashLoopBackOff?</span>
+              <span class="chevron">▼</span>
+            </button>
+            <div class="qa-answer">
+              <p style="margin-bottom: 0.75rem;">A pod stuck in <code>CrashLoopBackOff</code> is repeatedly failing at runtime. Follow these diagnostic steps to resolve it:</p>
+              <ol style="margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Describe Pod:</strong> Run <code>kubectl describe pod &lt;pod-name&gt;</code>. Inspect the termination status and exit code. Exit Code 137 indicates it was OOMKilled (Out-of-Memory), while exit code 1 or 255 indicates an application crash.</li>
+                <li><strong>Check Container Logs:</strong> Use <code>kubectl logs &lt;pod-name&gt; --previous</code> to read the logs from the previous crashed container cycle to locate runtime stacktraces.</li>
+                <li><strong>Inspect Health Probes:</strong> Misconfigured Liveness or Readiness probes can terminate containers if endpoints do not respond in time.</li>
+                <li><strong>Validate Configuration:</strong> Ensure ConfigMaps, secrets, and environment parameters (like database credentials) are correctly mapped.</li>
+              </ol>
+              <pre style="background: #020617; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #34d399; overflow-x: auto; margin: 0;"># Review past crashed container logs
+kubectl logs my-app-deployment-abcde-1234 --previous
+
+# Check events list in chronological order
+kubectl get events --sort-by='.metadata.creationTimestamp'</pre>
+            </div>
+          </div>
+
+          <div class="qa-item">
+            <button class="qa-question" onclick="window.toggleAccordion(this)">
+              <span>Q2: What is the difference between a Liveness Probe and a Readiness Probe?</span>
+              <span class="chevron">▼</span>
+            </button>
+            <div class="qa-answer">
+              <p style="margin-bottom: 0.75rem;">Kubernetes health probes manage the lifecycle of container pods:</p>
+              <ul style="margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style-type: disc;">
+                <li><strong>Liveness Probe:</strong> Monitors if the container is running. If it fails, Kubernetes kills the container and triggers a restart based on the policy. Used to resolve deadlocks.</li>
+                <li><strong>Readiness Probe:</strong> Monitors if the container is ready to receive network traffic. If it fails, the pod is removed from Service endpoint routing (no traffic is sent). Used during app bootups.</li>
+              </ul>
+              <pre style="background: #020617; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #38bdf8; overflow-x: auto; margin: 0;"># Example probe block in Deployment manifest:
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 15
+  periodSeconds: 20</pre>
+            </div>
+          </div>
+
+          <div class="qa-item">
+            <button class="qa-question" onclick="window.toggleAccordion(this)">
+              <span>Q3: What is GitOps, and how does ArgoCD synchronize cluster state?</span>
+              <span class="chevron">▼</span>
+            </button>
+            <div class="qa-answer">
+              <p style="margin-bottom: 0.75rem;"><strong>GitOps</strong> is a methodology that uses Git repositories as the single source of truth for infrastructure and application configurations. ArgoCD handles deployments through a continuous reconciliation loop:</p>
+              <ol style="margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Pull Model:</strong> ArgoCD runs inside the cluster and polls the target Git repository for changes.</li>
+                <li><strong>State Comparison:</strong> It compares the <strong>desired state</strong> in Git with the <strong>live state</strong> in the cluster.</li>
+                <li><strong>Synchronization:</strong> If there is state drift, ArgoCD applies the changes from Git to the cluster. If enabled, self-healing will automatically overwrite manual cluster changes with the repo configurations.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Troubleshooting -->
+      <div id="vault-tab-troubleshooting" class="vault-tab-content" style="display: none;">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div class="qa-item">
+            <button class="qa-question" onclick="window.toggleAccordion(this)">
+              <span>🔥 Runbook #104: Mitigate Container OOMKilled Outage (Exit Code 137)</span>
+              <span class="chevron">▼</span>
+            </button>
+            <div class="qa-answer">
+              <div style="margin-bottom: 0.75rem; border-left: 3px solid #ef4444; padding-left: 0.75rem; background: rgba(239, 68, 68, 0.03); padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.82rem;">
+                <strong>Incident Alert:</strong> <code>App container terminated with exit code 137. Status: OOMKilled. Pod restarting continuously.</code>
+              </div>
+              <p style="margin-bottom: 0.5rem;"><strong>Diagnosis Steps:</strong></p>
+              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem;">$ kubectl describe pod my-web-app-pod | grep -E "Terminated|Reason|Exit Code"
+State:          Terminated
+Reason:         OOMKilled
+Exit Code:      137</pre>
+              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch:</strong></p>
+              <p style="margin-bottom: 0.75rem;">Adjust container resource allocations inside the Kubernetes manifest by setting requests/limits to scale memory limit:</p>
+              <pre style="background: #020617; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981; overflow-x: auto; margin: 0;">resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"  # Scaled up from 512Mi to prevent OOM
+    cpu: "500m"</pre>
+            </div>
+          </div>
+
+          <div class="qa-item">
+            <button class="qa-question" onclick="window.toggleAccordion(this)">
+              <span>🔥 Runbook #209: Reconcile Terraform Security Group State Drift</span>
+              <span class="chevron">▼</span>
+            </button>
+            <div class="qa-answer">
+              <div style="margin-bottom: 0.75rem; border-left: 3px solid #f59e0b; padding-left: 0.75rem; background: rgba(245, 158, 11, 0.03); padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.82rem;">
+                <strong>Incident Alert:</strong> <code>Auditing alert: Manual changes detected on AWS security group web-sec-group (SSH Port 22 opened).</code>
+              </div>
+              <p style="margin-bottom: 0.5rem;"><strong>Diagnosis Steps:</strong></p>
+              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem;">$ terraform plan
+# aws_security_group.web has been changed outside Terraform config:
+~ ingress {
+    ~ from_port = 0
+    ~ to_port   = 0
+    ~ protocol  = "-1"
+    # (Manual open SSH rule detected)
+  }</pre>
+              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch:</strong></p>
+              <p style="margin-bottom: 0.75rem;">Run the Terraform apply pipeline to reconcile resources back to their configured state:</p>
+              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981;">$ terraform apply -auto-approve
+# Reverting manual port rules to repository configurations...
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Studio Directory -->
+      <div id="vault-tab-directory" class="vault-tab-content" style="display: none;">
+        <div style="overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border); color: var(--text-secondary); background: var(--bg-surface);">
+                <th style="padding: 0.75rem 1rem; font-weight: 700;">Studio Platform</th>
+                <th style="padding: 0.75rem 1rem; font-weight: 700;">Category</th>
+                <th style="padding: 0.75rem 1rem; font-weight: 700;">GitHub Repository</th>
+                <th style="padding: 0.75rem 1rem; font-weight: 700; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🐳 Docker Manager</td>
+                <td style="padding: 0.75rem 1rem;">Config &amp; Auto</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-docker" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-docker</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="docker/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">☸️ Advanced k8s Script Generator</td>
+                <td style="padding: 0.75rem 1rem;">Cloud &amp; Infra</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-kubernetes" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-kubernetes</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="kubernetes/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🏗️ Terraform Architect</td>
+                <td style="padding: 0.75rem 1rem;">Cloud &amp; Infra</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-terraform" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-terraform</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="terraform/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">⚡ GitHub Actions Studio</td>
+                <td style="padding: 0.75rem 1rem;">CI/CD Pipelines</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-github-actions" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-github-actions</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="github-actions/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">📊 ArgoCD GitOps App</td>
+                <td style="padding: 0.75rem 1rem;">Cloud &amp; Infra</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-argocd" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-argocd</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="argocd/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">📈 Monitoring Script Generator</td>
+                <td style="padding: 0.75rem 1rem;">Observability</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-monitoring" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-monitoring</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="monitoring/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">⛵ Helm Chart Scaffold</td>
+                <td style="padding: 0.75rem 1rem;">Cloud &amp; Infra</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-helm" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-helm</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="helm/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">💥 Chaos Engineering Studio</td>
+                <td style="padding: 0.75rem 1rem;">Observability</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-chaos" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-chaos</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="chaos/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🐝 eBPF Tracing Studio</td>
+                <td style="padding: 0.75rem 1rem;">Observability</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-ebpf-tracing" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-ebpf-tracing</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="ebpf-tracing/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🛡️ Policy-as-Code Studio</td>
+                <td style="padding: 0.75rem 1rem;">Observability</td>
+                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-compliance" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-compliance</a></td>
+                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="compliance/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -1640,6 +1928,47 @@
         });
       });
     }
+
+    window.switchVaultTab = function(tabId) {
+      document.querySelectorAll('.vault-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      const eventTarget = window.event ? window.event.currentTarget : null;
+      if (eventTarget) {
+        eventTarget.classList.add('active');
+      } else {
+        const btns = document.querySelectorAll('.vault-tab-btn');
+        if (tabId === 'qa') btns[0].classList.add('active');
+        if (tabId === 'troubleshooting') btns[1].classList.add('active');
+        if (tabId === 'directory') btns[2].classList.add('active');
+      }
+
+      document.querySelectorAll('.vault-tab-content').forEach(content => {
+        content.style.display = 'none';
+      });
+
+      const targetContent = document.getElementById('vault-tab-' + tabId);
+      if (targetContent) {
+        targetContent.style.display = 'block';
+      }
+    };
+
+    window.toggleAccordion = function(button) {
+      const parent = button.parentElement;
+      const answer = parent.querySelector('.qa-answer');
+      const chevron = button.querySelector('.chevron');
+      
+      if (answer.style.display === 'block') {
+        answer.style.display = 'none';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+        parent.style.borderColor = 'var(--border)';
+      } else {
+        answer.style.display = 'block';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+        parent.style.borderColor = 'var(--accent-primary)';
+      }
+    };
 
     // Initialize all
     document.addEventListener('DOMContentLoaded', () => {

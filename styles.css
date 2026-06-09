@@ -251,6 +251,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   align-items: center;
   gap: 0.1rem;
   margin-left: auto;
+  list-style: none !important;
+  list-style-type: none !important;
 }
 
 .nav-link {
