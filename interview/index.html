@@ -1804,6 +1804,252 @@
                 options: ["Linear Search", "Binary Search", "Depth-First Search", "Randomized Sampling"],
                 a: "Binary Search",
                 explanation: "git bisect performs a binary search through the repository's commit history between a known good and bad commit to quickly isolate the breaking change."
+            ]
+          },
+          sre_devops_roadmap: {
+            title: "SRE & DevOps Toolchain Integration Path",
+            prereqs: "Unix CLI, system virtualization, cloud-native architecture principles",
+            related: "Must-Know Git Commands, SRE Networking",
+            advanced: "GitOps Automation, Multi-Cloud Orchestration, Service Mesh Fabric",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Unifies disconnected SRE and DevOps engineering tools into a single, cohesive deployment pipeline and feedback loop.",
+              why: "Created to systematically bridge code control, virtualization, infrastructure provisioning, automated releases, and observability.",
+              before: "Siloed configurations where developers managed code, sysadmins manually set up servers, and operators checked logs separately.",
+              limits: "Managing distinct tool integration domains adds operational overhead, requiring strict policy enforcement and configuration standards.",
+              alternatives: "Fully integrated cloud proprietary pipelines (e.g. AWS CodePipeline, Azure DevOps) or raw manual scripts.",
+              examples: "High-throughput SaaS companies deploying microservices using Terraform, ArgoCD, and Istio with Prometheus observability."
+            },
+            tips: "<strong>Production Value:</strong> Modern DevOps is about toolchain integration, not just running isolated commands. When a service goes down, you must trace issues from the Git commit down to the Linux container, Kubernetes routing, and Istio meshes using Grafana dashboards.<br><br><strong>Key Roadmap Integrations:</strong><br>• <strong>Infrastructure-as-Code:</strong> Use Terraform to define cloud infrastructure, then use Helm to provision software inside Kubernetes namespaces.<br>• <strong>Continuous Deployment:</strong> Sync Git changes to Kubernetes clusters using ArgoCD GitOps controllers, bypassing manual kubectl deployments.<br>• <strong>Observability:</strong> Collect metrics using Prometheus agents, visualize them via Grafana dashboards, and route alerts dynamically.",
+            flow: {
+              learning: "Git ➜ Linux ➜ Docker ➜ Kubernetes ➜ Helm ➜ Terraform ➜ AWS ➜ Jenkins ➜ ArgoCD ➜ Prometheus ➜ Grafana ➜ Service Mesh (Istio) ➜ SRE Concepts",
+              execution: "Git Commit ➜ Jenkins Pipeline ➜ Docker Build ➜ Terraform Plan/Apply ➜ Helm Chart Deployment ➜ ArgoCD Sync ➜ Ingress Gateway Routing ➜ Envoy Sidecar Redirect ➜ Prometheus Metrics Scrape ➜ Grafana Telemetry Visualization",
+              repo: "Pradeeptalari14/tp-argocd ➜ config/values.yaml ➜ pipelines/Jenkinsfile ➜ infra/main.tf"
+            },
+            labs: {
+              command: "git status && docker build -t app:v1 . && terraform plan && helm install app-chart ./charts",
+              syntax: "git [cmd] || docker build -t [tag] [dir] || terraform plan || helm install [release] [chart]",
+              args: "plan: Previews infrastructure changes in Terraform; install: Deploys a Helm chart release onto the target Kubernetes cluster.",
+              output: "Terminal logs showing staged Git changes, compiled Docker layers, Terraform plan resources, and Helm release deployment metadata.",
+              fail: "Docker daemon unreachable, Terraform credentials expired, or Helm release name collision. Remediate by validating local contexts.",
+              prod: "Run Terraform in automated CI runners using remote state locks (e.g. AWS S3/DynamoDB) and automate Helm promotions using ArgoCD GitOps."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Git[Git Commit] -- Trigger --> CI[Jenkins CI Pipeline]\\n  CI -- Build & Push --> Registry[Docker Image Registry]\\n  CI -- Provision --> TF[Terraform IaC]\\n  TF -- Deploy Infra --> AWS[AWS Cloud]\\n  Registry -- Pull Image --> K8s[Kubernetes Pods]\\n  K8s -- Sync --> CD[ArgoCD GitOps]\\n  AWS -- Host --> K8s\\n  K8s -- Expose Metrics --> Prom[Prometheus Scraper]\\n  Prom -- Visualize --> Grafana[Grafana Dashboards]\\n  K8s -- Intercept Traffic --> Mesh[Istio Envoy Mesh]",
+              spof: "Relying on a single Jenkins master node for build scheduling, creating a critical automation pipeline single point of failure.",
+              security: "Plaintext secrets checked into Git or passed unencrypted between Terraform state files and Jenkins build nodes.",
+              scaling: "Monolithic Jenkins builds queuing due to limited runner resources and lack of autoscaling Kubernetes executor agents.",
+              monitoring: "Alert fatigue from poorly configured alerting thresholds in Prometheus, leading to ignored notifications.",
+              backup: "Terraform state locks not backed up, risking database corruption and loss of resource state tracking.",
+              dr: "No cross-region failover strategy for the ArgoCD control plane, causing configuration lockouts during regional cloud outages.",
+              improvements: "Transition Jenkins builds to Kubernetes dynamic pod executors, encrypt Terraform states via KMS, and deploy highly available ArgoCD clusters across multiple availability zones."
+            },
+            subtopics: {
+              git: {
+                title: "Git",
+                desc: "Version control system tracking codebase changes, isolating work via branches, and initiating CI/CD automation pipelines.",
+                command: "git status && git log --oneline -n 5",
+                syntax: "git status || git log [options]",
+                args: "-n 5: Displays only the last 5 commits in the branch history logs to keep summaries concise.",
+                output: "Staged/unstaged files, and chronological branch history hashes.",
+                fail: "Not a git repository error (run git init first).",
+                prod: "Use Conventional Commits syntax to enable automated release notes generation inside CI workflows.",
+                tips: "Git is the absolute entry point of SRE. All infrastructure modifications must start with a commit."
+              },
+              linux: {
+                title: "Linux",
+                desc: "The foundational operating system of cloud containers, node servers, and orchestration systems. Powers kernel-level namespaces and control groups.",
+                command: "journalctl -u docker.service -n 50 --no-pager",
+                syntax: "journalctl [options]",
+                args: "-u docker.service: Restricts system logs to Docker daemon events; -n 50: Limit output to 50 lines.",
+                output: "Daemon boot notifications, socket activation events, and container lifecycle logs.",
+                fail: "Permission denied (requires sudo privilege to read systemd journals).",
+                prod: "Optimize kernel parameters like file descriptors (fs.file-max) and socket queue limits under /etc/sysctl.conf to scale high-concurrency systems.",
+                tips: "Understanding CPU schedulers, memory managers, and syslogs is mandatory to diagnose container crashes (OOMKilled)."
+              },
+              docker: {
+                title: "Docker",
+                desc: "Lightweight OS-level virtualization platform packing applications and dependencies into isolated container namespaces.",
+                command: "docker inspect --format='{{json .State}}' app-container",
+                syntax: "docker inspect [options] [container]",
+                args: "--format: Extracts specific JSON state parameters like health checks, process IDs, and exit status code fields.",
+                output: "JSON block mapping execution status, network bindings, and system mounts.",
+                fail: "Container 'app-container' not found or Docker daemon is offline.",
+                prod: "Always use multi-stage Dockerfiles and minimal base images (e.g. alpine or distroless) to optimize image sizes and minimize security vulnerabilities.",
+                tips: "Docker isolation relies on Linux Namespaces (network, mount, pid) and Cgroups (resource limits: CPU/memory)."
+              },
+              kubernetes: {
+                title: "Kubernetes",
+                desc: "Open-source container orchestration engine managing container scaling, scheduling, self-healing, and networking overlays.",
+                command: "kubectl describe pod -l app=web",
+                syntax: "kubectl describe [resource] [selector]",
+                args: "-l app=web: Targets pods matching selector labels, displaying status, events, and lifecycle limits.",
+                output: "Pod telemetry detail including scheduling logs, volumes, readiness status, and lifecycle events.",
+                fail: "API connection timeout or target pods not found in namespace.",
+                prod: "Never run pods without resource requests/limits configured. This prevents single pods from monopolizing host memory.",
+                tips: "Kubernetes is a declarative control plane. It continuously resolves the drift between actual state and target state."
+              },
+              helm: {
+                title: "Helm",
+                desc: "The package manager for Kubernetes. Packages YAML manifests into parameterized, reusable structures called charts.",
+                command: "helm list -n production",
+                syntax: "helm list [options]",
+                args: "-n production: Lists all deployed Helm chart releases in the production namespace.",
+                output: "Chart release names, revision numbers, updates timestamp, status, and app version numbers.",
+                fail: "Namespace not found, or chart inventory database unreachable.",
+                prod: "Store Helm values configurations in Git (GitOps) and run helm lint and dry-runs inside CI verification steps.",
+                tips: "Helm handles templating. It makes Kubernetes deployments reusable across Dev, Staging, and Production environments."
+              },
+              terraform: {
+                title: "Terraform",
+                desc: "Infrastructure as Code tool managing cloud platforms securely. Translates human-readable configuration files into API calls.",
+                command: "terraform plan -out=tfplan",
+                syntax: "terraform plan [options]",
+                args: "-out=tfplan: Saves the calculated execution plan safely, ensuring the exact same plan is applied during promotion.",
+                output: "Summary detailing additions, modifications, and deletions of cloud assets.",
+                fail: "Terraform lock file active, credentials invalid, or syntax errors in tf files.",
+                prod: "Use remote state backends (like AWS S3) with state locking (DynamoDB) to prevent concurrent executions from corrupting infrastructure state.",
+                tips: "Terraform is declarative. You declare what resource you want, and Terraform calculates the DAG (Direct Acyclic Graph) to create it."
+              },
+              aws: {
+                title: "AWS",
+                desc: "The underlying public cloud platform hosting compute instances, database backends, virtual private networks, and managed services.",
+                command: "aws ec2 describe-instances --filters 'Name=instance-state-name,Values=running'",
+                syntax: "aws ec2 describe-instances [options]",
+                args: "--filters: Restricts description to active, running compute nodes in the active region.",
+                output: "JSON block detailing instance IDs, public/private IPs, VPC IDs, and security configurations.",
+                fail: "AWS credentials expired or region configuration missing.",
+                prod: "Configure IAM policies following the principle of least privilege, mapping role credentials dynamically to Kubernetes ServiceAccounts (IRSA).",
+                tips: "In AWS SRE, manage all infrastructure via API. Treat servers as cattle, not pets: design for failure across multiple Availability Zones."
+              },
+              jenkins: {
+                title: "Jenkins",
+                desc: "Automation server orchestration tool driving CI/CD pipelines, executing automated build tasks, security audits, and code testing steps.",
+                command: "curl -u admin:token https://jenkins.internal/job/build-app/build",
+                syntax: "curl -u [user:pass] [endpoint]",
+                args: "-u admin:token: Auths API trigger requests using secure authentication tokens to start build pipelines.",
+                output: "HTTP status 201 Created indicating the build has been successfully queued.",
+                fail: "Authentication denied (invalid token) or endpoint unreachable.",
+                prod: "Use Declarative Pipelines defined in Jenkinsfile stored in Git. Avoid configuring jobs via Jenkins GUI to maintain pipeline-as-code standards.",
+                tips: "Jenkins runs agent nodes. Distribute workloads across dynamic ephemeral agents running as containers inside Kubernetes."
+              },
+              argocd: {
+                title: "ArgoCD",
+                desc: "Declarative GitOps continuous delivery tool for Kubernetes. Synchronizes application configurations from Git to live clusters.",
+                command: "argocd app sync production-app",
+                syntax: "argocd app sync [appname]",
+                args: "production-app: Commands the ArgoCD controller to immediately pull Git updates and sync live cluster resources.",
+                output: "Sync execution logs detailing target states, endpoints, and health status indicators.",
+                fail: "ArgoCD API server unreachable or authentication token expired.",
+                prod: "Enable auto-sync with self-healing options. This automatically reverts any manual edits (drift) made on the cluster to match Git.",
+                tips: "GitOps rules: Git is the single source of truth. Manual modifications to live environments are strictly prohibited."
+              },
+              prometheus: {
+                title: "Prometheus",
+                desc: "Time-series monitoring database. Scrapes metric endpoints from container systems, recording metrics data to drive alerting pathways.",
+                command: "curl http://localhost:9090/api/v1/targets",
+                syntax: "curl [endpoint]",
+                args: "/api/v1/targets: Queries the Prometheus server to verify metric scraper state loops across nodes.",
+                output: "Active scrapers status, target IPs, metrics endpoints, scrape intervals, and scrape duration.",
+                fail: "Prometheus service offline (port 9090 connection refused).",
+                prod: "Use Alertmanager to group metrics alerts, deduplicate alerts during incidents, and route notifications to Slack/PagerDuty.",
+                tips: "Prometheus uses pull-based monitoring (scraping metrics endpoints) and queries metrics using PromQL."
+              },
+              grafana: {
+                title: "Grafana",
+                desc: "Visualization platform connecting time-series databases. Builds clean, interactive dashboards mapping live infrastructure health metrics.",
+                command: "curl -H 'Authorization: Bearer api-key' http://grafana.internal/api/dashboards/uid/sre-metrics",
+                syntax: "curl -H [headers] [URL]",
+                args: "Bearer api-key: Authenticates API requests to fetch dashboard configuration JSON blocks.",
+                output: "JSON payload representing dashboard panel grids, queries, variables, and styling configurations.",
+                fail: "Grafana API key invalid or dashboard UID not found.",
+                prod: "Write Grafana dashboards as code (JSON/Terraform) to ensure dashboards can be version-controlled and restored instantly.",
+                tips: "Grafana unifies multi-source metrics, logs, and trace spans into singular, readable dashboards."
+              },
+              service_mesh: {
+                title: "Service Mesh (Istio)",
+                desc: "The infrastructure layer managing microservice network communications, injecting secure mTLS tunnels, routing traffic, and generating traces.",
+                command: "istioctl proxy-config endpoints pod-name.default",
+                syntax: "istioctl proxy-config endpoints [pod]",
+                args: "pod-name.default: Audits endpoint cluster routing tables on the Envoy proxy sidecar container of the target pod.",
+                output: "IP endpoints, routing weights, port allocations, and service targets configuration mappings.",
+                fail: "Pod does not contain Istio sidecar or Istio control plane is down.",
+                prod: "Transition to sidecarless Ambient meshes (e.g. Istio Ambient) to save memory usage and reduce container network overhead.",
+                tips: "Mesh separates network control. Developers write code, and the mesh handles retries, timeouts, and secure communication tunnels."
+              },
+              sre_concepts: {
+                title: "SRE Concepts",
+                desc: "Foundational operations framework ensuring system reliability. Governed by SLOs, SLAs, SLIs, Error Budgets, and Blameless Postmortems.",
+                command: "promtool check rules rules.yml",
+                syntax: "promtool check rules [file]",
+                args: "rules.yml: Validates PromQL alert logic, checking if SLA threshold triggers are configured correctly.",
+                output: "Checking rules.yml SUCCESS (N rules found).",
+                fail: "Syntax error in PromQL query expressions or incorrect YAML formatting.",
+                prod: "Enforce Error Budgets: if the budget is exhausted, halt feature development and pivot all engineering focus onto reliability tasks.",
+                tips: "SRE is not just about tools. It's about engineering incentives: balancing velocity (DevOps) against reliability (SRE)."
+              }
+            },
+            interview: [
+              {
+                q: "How do you design a complete CI/CD GitOps pipeline from code commit to Kubernetes deployment, and how does the toolchain fit together?",
+                intent: "Tests structural integration knowledge across SRE/DevOps lifecycle tools.",
+                hidden: "Wants to see how git commits flow through build registries, deployment IaC, Kubernetes clusters, and GitOps control loops.",
+                red: "Confusing CI (building images) with CD (deploying state), or proposing manually modifying kubernetes manifests at deployment stages.",
+                strong: "Describes code pushed to Git triggering Jenkins, building a Docker image, updating Helm manifests, and using ArgoCD to sync the manifests to Kubernetes.",
+                expert: "Details complete path: Git commit triggers Webhook to Jenkins ➜ Jenkins builds and pushes versioned Docker image to ECR ➜ Jenkins commits updated image tag to Helm values file in Git ➜ ArgoCD controller detects Git state changes and applies manifests to Kubernetes ➜ Ingress Gateway routes traffic dynamically.",
+                leadership: "Architects a zero-trust automated pipeline where IaC (Terraform) provisions base clusters, ArgoCD deploys Helm configurations dynamically, and policy controllers (OPA/Kyverno) audit manifests in Git before sync runs occur.",
+                coachTips: "Explain the separation of concerns: CI builds state, Git holds configuration state, and CD reconciles cluster state."
+              },
+              {
+                q: "Walk through a full troubleshooting scenario where an application is experiencing 5xx errors, explaining which tools you check at each layer.",
+                intent: "Evaluates systemic diagnostic capabilities across the SRE toolchain from edge to kernel.",
+                hidden: "Wants to see structured layer-by-layer traversal (Grafana dashboards ➜ Prometheus alerts ➜ Ingress routing ➜ Pod logs ➜ Linux kernel/kubelet).",
+                red: "Assuming the bug is in a random module without checking metrics first, or starting with destructive actions like server restarts.",
+                strong: "Checks Grafana dashboards to identify traffic spikes, Prometheus logs to find when alerts fired, and kubectl logs to inspect pod failures.",
+                expert: "Traces the issue systematically:<br>1. Check Grafana to identify target services returning 502/504 errors.<br>2. Run PromQL queries to check connection pools and CPU stats.<br>3. Inspect Envoy proxy config mesh using istioctl.<br>4. Run kubectl describe pod to find events/OOM kills.<br>5. Check journalctl logs on the host to verify kernel-level events.",
+                leadership: "Establishes end-to-end trace span collection using OpenTelemetry, pushing traces to centralized Jaeger databases to map exact microservice failure blocks automatically.",
+                coachTips: "Never jump to conclusions. Start broad with visualization (Grafana), drill down to query metrics (Prometheus), and surgical diagnostics (kubectl, journalctl)."
+              },
+              {
+                q: "What are SLIs, SLOs, and SLAs, and how do you implement error budget policies to align developer and SRE team goals?",
+                intent: "Tests understanding of SRE reliability management frameworks and engineering team incentives.",
+                hidden: "Expects clear mathematical distinction between SLIs, SLOs, and SLAs, and real-world application of error budget exhaustion policies.",
+                red: "Treating SLA and SLO as identical concepts, or treating error budget exhaustion as a passive indicator with no enforcement.",
+                strong: "Defines SLI as a service metric (e.g. success rate), SLO as the target reliability goal (e.g. 99.9%), and SLA as the legal contract with customers. Explains that error budget is 100% minus the SLO.",
+                expert: "Explains SLI (numerator/denominator metrics), SLO (target value over rolling 30-day window), and SLA (includes legal/financial penalties). Details error budget enforcement policies: if budget is exhausted, block new feature pushes, route developers to fix reliability issues, and redirect alert thresholds.",
+                leadership: "Designs organization-wide SRE dashboard metrics dynamically derived from live Prometheus telemetry, enforcing automated deployment gate locks when service error budgets drop below minimum limits.",
+                coachTips: "Emphasize that the error budget is a shared tool: it gives developers permission to fail and take risks, up to the SLO boundary."
+              }
+            ],
+            incident: {
+              title: "Error Budget Exhausted on Payment API Service",
+              flow: "High database query latency exhausts payment SLO, triggering alert fatigue and blocking releases.",
+              symptoms: "Grafana dashboard flags error budget at 0%; Jenkins pipeline blocks deployment promotions.",
+              causes: "A code change introduced an unindexed database query, causing query times to exceed 500ms on 2% of total transactions.",
+              verify: "Query Prometheus for transaction latency metrics: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)).",
+              commands: "explain analyze select * from payments where status = 'pending';",
+              fix: "Create missing index on status field in target database table, and verify query execution time drops below 5ms.",
+              validation: "Confirm Grafana payment latency charts drop back to healthy baselines and error budget calculations resume positive accumulation.",
+              prevention: "Enforce automated performance testing gates inside staging environments to intercept slow database queries before they merge to main."
+            },
+            quiz: [
+              {
+                q: "Which SRE metric represents the actual quantitative measurement of service reliability at a given moment?",
+                options: ["SLO", "SLA", "SLI", "Error Budget"],
+                a: "SLI",
+                explanation: "SLI (Service Level Indicator) is the direct, real-time metric measuring service performance (e.g. latency, error rate)."
+              },
+              {
+                q: "What GitOps tool is responsible for reconciling target Kubernetes cluster state against configurations declared in Git?",
+                options: ["Jenkins", "ArgoCD", "Terraform", "Helm"],
+                a: "ArgoCD",
+                explanation: "ArgoCD continuously monitors Git repositories and synchronizes live cluster resources to match the declared states."
+              },
+              {
+                q: "At which layer of container virtualization do namespaces and control groups (cgroups) operate?",
+                options: ["Hypervisor layer", "Host OS Kernel layer", "Hardware BIOS layer", "Application runtime layer"],
+                a: "Host OS Kernel layer",
+                explanation: "Namespaces and cgroups are native features of the Linux OS kernel used to partition resources and isolate container processes."
               }
             ]
           }
