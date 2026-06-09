@@ -822,6 +822,92 @@
                 explanation: "Exit code 137 indicates that the container process was terminated by an external signal (SIGKILL, signal 9) sent by the OS kernel OOM killer (128 + 9 = 137)."
               }
             ]
+          },
+          blue_green: {
+            title: "Blue-Green & Canary Rollout Strategies",
+            prereqs: "DNS route weights, container health probes, load balancers",
+            related: "Multi-Node Cloud Support",
+            advanced: "Progressive Delivery via Service Mesh (Istio / Linkerd)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Eliminates application deployment downtime and high-risk releases by hosting two identical environments (Active/Passive).",
+              why: "Created to allow SRE teams to deploy and validate new application code in production without disrupting active user traffic.",
+              before: "In-place rolling updates that risk service degradation, database locking, and complicated manual rollback procedures.",
+              limits: "Double infrastructure cost during rollouts, sticky session drift, and challenging database schema updates.",
+              alternatives: "Canary weighted releases, rolling updates, recreate strategy.",
+              examples: "Netflix deploying services via custom pipelines to ASGs, Google using internal routers for instant traffic migration."
+            },
+            flow: {
+              learning: "1. Active/Passive Environments ➜ 2. DNS Weight Swapping ➜ 3. Connection Draining ➜ 4. Verification Check gates",
+              execution: "Deploy Green ➜ Perform Smoke Tests ➜ Route traffic to Green ➜ Drain Blue connections ➜ Decommission Blue",
+              repo: "Pradeeptalari14/tp-argocd ➜ manifests/canary-rollout.yaml ➜ config/rollout-service.yaml"
+            },
+            labs: {
+              command: "kubectl patch service app-service -p '{\"spec\":{\"selector\":{\"version\":\"green\"}}}'",
+              syntax: "kubectl patch service [service-name] -p [patch-json]",
+              args: "-p: Specifies inline JSON patch payload to instantly update the pod label selector targeting the active pods.",
+              output: "service/app-service patched. Traffic shifts immediately to pods matching label version=green.",
+              fail: "Selector mismatch, targeting non-existent pods causing HTTP 503 gateway timeout outages.",
+              prod: "Running dynamic service swaps inside CI/CD CD runners after smoke tests return healthy status codes."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[User Traffic] --> Router[Ingress Gateway / Load Balancer]\\n  Router -- Route 100% Active --> Blue[Blue Environment: Active]\\n  Router -.->|0% Passive| Green[Green Environment: Passive]\\n  Blue --> DB[(Production DB)]\\n  Green --> DB",
+              spof: "The Ingress Gateway router represents a single routing controller point of failure during the swap window.",
+              security: "Insecure routing paths allowing direct ingress access to the passive (Green) environment without token validation.",
+              scaling: "Database connection pools exhausting due to concurrent connections from both active (Blue) and passive (Green) hosts.",
+              monitoring: "Missing alert signals tracking differences in HTTP response codes between active and passive pods.",
+              backup: "No automated database snapshots captured immediately prior to routing updates.",
+              dr: "No automated quick rollback path in case of post-routing memory leaks.",
+              improvements: "Establish automated canary promotions using Argo Rollouts with Prometheus metrics analysis rules."
+            },
+            interview: [
+              {
+                q: "What is the difference between Blue-Green and Canary deployments, and how do you design a rollback strategy for each?",
+                intent: "Assesses familiarity with continuous delivery strategies, routing mechanisms, and incident mitigation models.",
+                hidden: "Expects candidate to detail DNS/service weight swaps vs progressive step-based traffic splitting, and how to verify health indicators.",
+                red: "Failing to explain connection draining or recommending manual rollbacks during outages.",
+                strong: "Defines Blue-Green as all-or-nothing environment switches and Canary as step-based traffic splits, triggering automated rollbacks via metrics thresholds.",
+                expert: "Explains configuring weighted target groups, connection draining timeout values (e.g., 300s), and automated rollback scripting using Prometheus queries.",
+                leadership: "Advocates for automated Progressive Delivery strategies using GitOps patterns (ArgoCD/Flux) with integrated analysis runs checking SLO metrics."
+              },
+              {
+                q: "How do you manage database schema migrations (especially breaking changes) during a Blue-Green deployment?",
+                intent: "Verifies system design knowledge, database compatibility patterns, and zero-downtime database upgrades.",
+                hidden: "Wants to hear about the expand-and-contract pattern (parallel version support) to ensure backward compatibility.",
+                red: "Suggesting database locking or offline maintenance windows for major deployments.",
+                strong: "Proposes multi-step migration schemas: expand schema (additive change), deploy code (supports old & new), contract schema (remove old column).",
+                expert: "Details complete zero-downtime workflow: deploy column addition ➜ deploy code supporting both column layouts ➜ backfill data ➜ deploy final schema removal.",
+                leadership: "Establishes institutional schema guidelines, enforcing database backward-compatibility verification in CI/CD pipeline automation gates."
+              },
+              {
+                q: "How do you handle sticky sessions and cached user connections when switching traffic between Blue and Green environments?",
+                intent: "Tests understanding of network protocols, session persistence state management, and traffic draining.",
+                hidden: "Looks for session storage offloading (Redis clusters), connection draining timeouts, and cookie tracking adjustments.",
+                red: "Suggesting session loss is acceptable or ignoring load balancer session persistence configurations.",
+                strong: "Recommends offloading session states from local containers to centralized Redis clusters, and setting up load balancer connection draining.",
+                expert: "Explains configuring ALBs with connection draining thresholds (e.g., deregistration delay) matching maximum execution times, preventing active connection drops.",
+                leadership: "Designs decoupled stateless microservices architectures where user sessions are handled via signed client-side JWTs, eliminating server session caches."
+              }
+            ],
+            incident: {
+              title: "Traffic Swap Timeout Outage during Blue-Green Rollout",
+              flow: "Swap service command applied, but load balancer connections fail, returning 504 timeouts.",
+              symptoms: "Users receive HTTP 504 Gateway Timeout errors; passive environment pods fail to become ready.",
+              causes: "Target Green pods fail liveness/readiness probes due to database connection limits or firewall restrictions.",
+              verify: "kubectl describe service app-service\\nkubectl get endpoints app-service",
+              commands: "kubectl describe pods -l app=green",
+              fix: "Verify database access rules, scale database connection limits, and check readiness probe parameters.",
+              validation: "Confirm service endpoint lists active green pod IPs and verify curl to endpoint returns 200 OK.",
+              prevention: "Implement strict validation checks verifying Green pods are healthy and endpoints exist before applying routing service patch."
+            },
+            quiz: [
+              {
+                q: "What is the primary purpose of connection draining / deregistration delay during a blue-green swap?",
+                options: ["Clear cache databases", "Keep connections open for active requests to finish", "Re-route traffic to secondary DNS servers", "Terminate idle pods immediately"],
+                a: "Keep connections open for active requests to finish",
+                explanation: "Connection draining allows currently active HTTP requests to complete gracefully before the container is decoupled from load balancer pools."
+              }
+            ]
           }
         }
       },
@@ -1262,6 +1348,42 @@
       } 
       
       else if (activeTab === 'interview') {
+        let qaListHtml = '';
+        const qaArray = Array.isArray(activeTopic.interview) ? activeTopic.interview : [activeTopic.interview];
+        
+        qaArray.forEach((qa, idx) => {
+          qaListHtml += `
+            <div class="accordion-item" style="border-color:var(--border-accent); margin-bottom:1.5rem">
+              <button class="accordion-header" onclick="window.toggleAccordion(this)">
+                <span>Q${idx + 1}: ${qa.q}</span>
+                <span class="accordion-chevron">▼</span>
+              </button>
+              <div class="accordion-body" style="display:${idx === 0 ? 'block' : 'none'}">
+                <div style="background:rgba(245, 158, 11, 0.05); border-left:3px solid var(--accent-orange); padding:0.75rem; border-radius:0 4px 4px 0; font-size:0.78rem; line-height:1.5; margin-bottom:1.25rem">
+                  <strong>🎯 Interviewer Intent:</strong> ${qa.intent}<br>
+                  <strong>💡 Hidden Expectation:</strong> ${qa.hidden}<br>
+                  <strong>🚩 Red Flags:</strong> <span style="color:var(--accent-red)">${qa.red}</span>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:1rem; font-size:0.85rem; line-height:1.6">
+                  <div>
+                    <span style="font-weight:700; color:var(--text-primary)">🟢 Strong Answer:</span>
+                    <p style="color:var(--text-secondary)">${qa.strong}</p>
+                  </div>
+                  <div>
+                    <span style="font-weight:700; color:var(--accent-cyan)">🔵 Expert SRE Response:</span>
+                    <p style="color:var(--text-secondary)">${qa.expert}</p>
+                  </div>
+                  <div>
+                    <span style="font-weight:700; color:var(--accent-green)">👑 SRE Leadership Solution:</span>
+                    <p style="color:var(--text-secondary)">${qa.leadership}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
         container.innerHTML = `
           <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem">
             <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:0.5rem">
@@ -1271,33 +1393,8 @@
               Explore candidate responses matching the active focus. Read interviewer insights before expanding the answers.
             </p>
 
-            <div class="accordion-item" style="border-color:var(--border-accent)">
-              <button class="accordion-header" onclick="window.toggleAccordion(this)">
-                <span>Q: ${activeTopic.interview.q}</span>
-                <span class="accordion-chevron">▼</span>
-              </button>
-              <div class="accordion-body" style="display:block">
-                <div style="background:rgba(245, 158, 11, 0.05); border-left:3px solid var(--accent-orange); padding:0.75rem; border-radius:0 4px 4px 0; font-size:0.78rem; line-height:1.5; margin-bottom:1.25rem">
-                  <strong>🎯 Interviewer Intent:</strong> ${activeTopic.interview.intent}<br>
-                  <strong>💡 Hidden Expectation:</strong> ${activeTopic.interview.hidden}<br>
-                  <strong>🚩 Red Flags:</strong> <span style="color:var(--accent-red)">${activeTopic.interview.red}</span>
-                </div>
-
-                <div style="display:flex; flex-direction:column; gap:1rem; font-size:0.85rem; line-height:1.6">
-                  <div>
-                    <span style="font-weight:700; color:var(--text-primary)">🟢 Strong Answer:</span>
-                    <p style="color:var(--text-secondary)">${activeTopic.interview.strong}</p>
-                  </div>
-                  <div>
-                    <span style="font-weight:700; color:var(--accent-cyan)">🔵 Expert SRE Response:</span>
-                    <p style="color:var(--text-secondary)">${activeTopic.interview.expert}</p>
-                  </div>
-                  <div>
-                    <span style="font-weight:700; color:var(--accent-green)">👑 SRE Leadership Solution:</span>
-                    <p style="color:var(--text-secondary)">${activeTopic.interview.leadership}</p>
-                  </div>
-                </div>
-              </div>
+            <div style="display:flex; flex-direction:column; gap:1rem">
+              ${qaListHtml}
             </div>
           </div>
         `;
