@@ -767,6 +767,146 @@
                 explanation: "X-Frame-Options restricts other domains from embedding your site inside frames, mitigating clickjacking vulnerabilities."
               }
             ]
+          },
+          sre_practices: {
+            title: "SRE Practices & Reliability Principles",
+            prereqs: "Service level metrics, software release lifecycle, on-call principles",
+            related: "Incident Management, Observability Stack",
+            advanced: "Multi-Region Chaos Engineering (Chaos Mesh)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Solve team misalignment between rapid development velocity and system stability.",
+              why: "Created to define clear mathematical thresholds for when feature deployments must halt in favor of reliability work.",
+              before: "Manual release approvals, blame-based outage discussions, and unmeasured reliability objectives.",
+              limits: "Requires cultural changes, organizational buy-in, and reliable telemetry data to compute metrics.",
+              alternatives: "Traditional operations silos, developer-on-call models without standardized metrics.",
+              examples: "Google freezing feature deployments for services that exhaust their error budgets, and using blameless postmortems to learn from failures."
+            },
+            tips: "<strong>Production Value:</strong> Error budgets must be actionable. Alert on budget burn rate (e.g. 14.4x burn for 1 hour) rather than static latency thresholds to filter noise.<br><br><strong>Key SRE Tips:</strong><br>• <strong>Toil Reduction:</strong> Limit toil (manual, repetitive work) to less than 50% of an SRE's time. The remaining 50% must be reserved for engineering work.<br>• <strong>Blameless Postmortems:</strong> Assume engineers made decisions with the best available information. Focus on systemic fixes, not human blame.",
+            flow: {
+              learning: "Service Metrics ➜ SLIs ➜ SLOs ➜ Error Budgets ➜ Burn Rate Alerting ➜ Postmortems ➜ Toil Reduction",
+              execution: "Dev Push ➜ SLA Check ➜ Error Budget Validated ➜ Rollout Permitted ➜ Latency Metric Tracked ➜ Postmortem Logged on Failure",
+              repo: "Pradeeptalari14/portfolio ➜ config/alertmanager.yaml ➜ docs/sre-practices.md"
+            },
+            labs: {
+              command: "promtool check rules alerts.yaml",
+              syntax: "promtool check rules [options] [files]",
+              args: "alerts.yaml: Runs Prometheus verification tool against configuration alerts schemas to ensure PromQL metrics compile.",
+              output: "SUCCESS: 12 alerts validated successfully.",
+              fail: "YAML parsing error or invalid PromQL functions. Resolve by checking braces and metric names.",
+              prod: "Verify alerts in CI/CD pipeline tests before updating live Prometheus configmaps."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[User Client] -- Requests --> App[App Service]\\n  App -- Metrics --> Prom[Prometheus Server]\\n  Prom -- Query --> Alert[Alertmanager]\\n  Alert -- Burn Rate Spike --> Pager[PagerDuty / Slack]\\n  Prom -- Latency Data --> Grafana[Grafana Dashboard]",
+              spof: "Single monitoring server hosting Prometheus; if it crashes, you are blind to error budget burn rates.",
+              security: "Prometheus metric endpoints exposed publicly without authentication or TLS validation.",
+              scaling: "High query volumes on Prometheus cause memory starvation; scale using Thanos or Cortex.",
+              monitoring: "Missing alerting rules for Prometheus self-monitoring, leading to silent scraping failures.",
+              backup: "Historical TSDB metrics stored locally on ephemeral storage without snapshot backups.",
+              dr: "No secondary Prometheus resolver in backup availability zones, risking complete observability loss.",
+              improvements: "Enable multi-AZ Thanos storage backends, secure metrics endpoints with TLS/Basic Auth, and auto-provision monitors via Prometheus Operator."
+            },
+            interview: [
+              {
+                q: "What is the difference between an SLI, an SLO, and an SLA, and how do you enforce an error budget policy?",
+                intent: "Evaluates the candidate's understanding of SRE reliability management frameworks.",
+                hidden: "Wants to hear about mathematical formulas, rolling 30-day windows, and organizational policies when budget is exhausted.",
+                red: "Treating SLO and SLA as identical, or not having a clear consequence when the error budget is exhausted.",
+                strong: "Defines SLI as a metric, SLO as a target, and SLA as a legal agreement. Budget is 100% minus SLO.",
+                expert: "Explains SLI as a ratio of good events to total events. Proposes burn rate alerts (e.g. 14.4x burn for 1 hour). Details policies to freeze feature releases and pivot developers to reliability tasks when the budget is spent.",
+                leadership: "Designs dynamic error budget gateways in CD pipelines that automatically block feature deployments if the rolling 30-day error budget is below 10% remaining.",
+                coachTips: "Ensure you mention that error budgets align developers and SREs by removing subjectivity from deployment decisions."
+              }
+            ],
+            incident: {
+              title: "Alert Fatigue & Missing Burn Rate Alerts",
+              flow: "CPU spike alerts flood PagerDuty every 5 minutes while actual user error rates remain healthy.",
+              symptoms: "High volume of alerts, on-call engineer ignores pages, SLO budget metrics are unmonitored.",
+              causes: "Alerts are set on static thresholds (e.g., CPU > 80%) instead of SLO burn rates.",
+              verify: "Check Alertmanager configurations and verify active paging sources.",
+              commands: "kubectl logs alertmanager-0 -n monitoring",
+              fix: "Update alert rules to target 30-day SLO burn rate thresholds (e.g. alert if 2% of budget is burned in 1 hour).",
+              validation: "Verify static CPU alerts are silenced and only SLO burn rate anomalies trigger pages.",
+              prevention: "Implement alert design review processes requiring all pagers to link to an actionable runbook."
+            },
+            quiz: [
+              {
+                q: "If your SLO is 99.9% availability, what is your maximum allowed downtime in a 30-day month?",
+                options: ["43.2 minutes", "8.6 hours", "24 hours", "4.3 minutes"],
+                a: "43.2 minutes",
+                explanation: "A 99.9% SLO allows 0.1% downtime. In a 30-day month (43,200 minutes), this equals exactly 43.2 minutes (43,200 * 0.001)."
+              }
+            ]
+          },
+          platform_eng: {
+            title: "Platform Engineering & Developer Portals",
+            prereqs: "Git, Docker, Kubernetes manifests, Cloud provisioning",
+            related: "CI/CD Design, GitOps (ArgoCD)",
+            advanced: "Dynamic Infrastructure Orchestration via Backstage & Crossplane",
+            yield: "9.6 / 10",
+            purpose: {
+              solve: "Solve developer friction, cognitive load, and shadow IT.",
+              why: "Created to provide self-service golden paths that enable developers to provision compliant setups quickly.",
+              before: "Ticket-based infrastructure provisioning, inconsistent dev/prod environments, and manual configurations.",
+              limits: "Requires high initial setup effort, active catalog maintenance, and templates engineering.",
+              alternatives: "Manual ops, scripting deployments per project, or raw public cloud console access.",
+              examples: "Spotify creating Backstage to catalog services, map API docs, and run templated code setups."
+            },
+            tips: "<strong>Production Value:</strong> Focus on developer adoption. A golden path should be easier to use than building from scratch, otherwise developers will bypass it.<br><br><strong>Key Tips:</strong><br>• <strong>Golden Paths:</strong> Abstract complex infrastructure using templates. Don't force developers to learn Terraform syntax if they just want a standard database.<br>• <strong>Product Mindset:</strong> Treat the platform as a product with developer feedback loops.",
+            flow: {
+              learning: "Software Templates ➜ Golden Paths ➜ Backstage ➜ IaC Composition ➜ Self-Service APIs",
+              execution: "Developer Form Submit ➜ Backstage triggers template ➜ Git repo created ➜ Infrastructure provisioned ➜ Pipeline runs",
+              repo: "Pradeeptalari14/portfolio ➜ templates/app-template.yaml ➜ scripts/platform-provision.js"
+            },
+            labs: {
+              command: "npx @backstage/create-app@latest --skip-install",
+              syntax: "npx @backstage/create-app [options]",
+              args: "--skip-install: Scaffolds a new Backstage portal structure without installing package node_modules immediately.",
+              output: "Project generated successfully! Next steps: yarn install && yarn start.",
+              fail: "Node.js version mismatch or permission issues. Resolve by verifying node version is at least v18.",
+              prod: "Deploy developer portals in private VPN subnets, restricting portal authentication to SSO providers."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Dev[Developer UI] -- 1. Submit App Template --> Portal[Backstage Portal]\\n  Portal -- 2. Create Repository --> GitHub[GitHub Repo]\\n  Portal -- 3. Trigger IaC Provision --> TF[Terraform / Crossplane]\\n  TF -- 4. Provision Clusters --> AWS[AWS Cloud]\\n  GitHub -- 5. Auto Sync Deploy --> Argo[ArgoCD Sync]",
+              spof: "Backstage portal represents a single gateway for service creation; outage halts new project boots.",
+              security: "Developer portal having admin privileges to provision AWS resources directly without peer authorization gates.",
+              scaling: "Backstage catalog indexing bottleneck when scaling to thousands of dynamic software microservices.",
+              monitoring: "Missing telemetry on template execution success rates and infrastructure utilization metrics.",
+              backup: "Database containing catalog metadata and developer access configurations is not backed up.",
+              dr: "Single node deployment of Backstage portal, risking unavailability.",
+              improvements: "Enable AWS IAM OIDC roles for provider accounts, cache catalog listings in highly available PostgreSQL databases, and run portals as multi-replica deployments."
+            },
+            interview: [
+              {
+                q: "What is a 'Golden Path' in Platform Engineering, and how does it reduce developer cognitive load?",
+                intent: "Assesses candidate's understanding of platform engineering principles, developer velocity, and developer portals.",
+                hidden: "Looks for understanding of self-service templates, automated infrastructure, guardrails, and shifting security left.",
+                red: "Thinking Platform Engineering is just renaming the DevOps team, or forcing developers to write raw CloudFormation/Terraform templates.",
+                strong: "Explains Golden Path as a pre-packaged, standardized way to deploy software easily using templates.",
+                expert: "Details designing templates that bootstrap Git repos, CI/CD templates, default Kubernetes manifests, and logging/monitoring configurations automatically. Developer gets a working hello-world service in production within minutes.",
+                leadership: "Champions internal developer platform (IDP) adoption, measuring success through Net Promoter Scores (NPS) and Lead Time for Changes metrics.",
+                coachTips: "Emphasize that the goal is not to restrict developers, but to make the right (secure, compliant) way the easiest way."
+              }
+            ],
+            incident: {
+              title: "Software Template Execution Drift",
+              flow: "Developers deploy services using old templates, bypassing corporate compliance rules.",
+              symptoms: "High number of newly created repos fail security scans or lack standard monitoring rules.",
+              causes: "Software templates in the developer portal are outdated and drift from modern standards.",
+              verify: "Inspect templates in the catalog and check template version tags.",
+              commands: "git diff main..feature/sync-templates templates/",
+              fix: "Implement automated catalog validation checking template freshness and deprecating old schemas.",
+              validation: "Confirm new app generations are based on the latest secure and audited templates.",
+              prevention: "Run cron-based pipelines that scan all active repositories to flag security configuration drifts."
+            },
+            quiz: [
+              {
+                q: "Which open-source developer portal platform, originally created by Spotify, is the industry standard for Platform Engineering?",
+                options: ["Jenkins", "Backstage", "ArgoCD", "Kubectl"],
+                a: "Backstage",
+                explanation: "Backstage is an open-source framework created by Spotify for building developer portals, consolidating software catalogs, templates, and tech docs."
+              }
+            ]
           }
         }
       },
@@ -1143,6 +1283,287 @@
                 explanation: "Port Address Translation (PAT), also known as NAT overload, is a form of dynamic NAT that maps multiple private IP addresses to a single public IP address by tracking unique source port numbers."
               }
             ]
+          },
+          aws_networking: {
+            title: "AWS Cloud Networking & Hybrid Connectivity",
+            prereqs: "IPv4 subnetting, basic routing tables, OSI Layer 3 & 4",
+            related: "SRE Networking & Cloud Connectivity, Disaster Recovery",
+            advanced: "AWS Transit Gateway Route Domains, Anycast AWS Global Accelerator",
+            yield: "9.7 / 10",
+            purpose: {
+              solve: "Solve multi-account VPC routing complexities, secure ingress/egress boundaries, and establish high-speed on-prem links.",
+              why: "Created to isolate production environments from test beds and secure critical database boundaries via programmatic network route control.",
+              before: "Single flat network topologies, legacy hardware firewall routing, and manual VPN peer allocations.",
+              limits: "Transit Gateway pricing increases at scale; requires careful IP planning to avoid route overlaps.",
+              alternatives: "Direct inter-VPC Peering mesh structures, software-defined SD-WAN tunnels on raw EC2 nodes.",
+              examples: "AWS Transit Gateway serving as a centralized hub routing 100+ VPCs through dynamic BGP sessions, integrated with third-party firewall appliances."
+            },
+            tips: "<strong>Production Value:</strong> Size subnets wide (e.g. /20) to prevent pod IP exhaustion under autoscaling. NACLs are stateless (filter at subnet boundaries); SGs are stateful (filter at network interface levels).<br><br><strong>Key Tips:</strong><br>• <strong>Stateful vs Stateless:</strong> Remember SG automatically allows return traffic. NACL requires explicit return rules mapping to ephemeral ports (1024-65535).<br>• <strong>BFD Failover:</strong> Always configure Bidirectional Forwarding Detection (BFD) on Direct Connect connections to reduce failover detection time from 30s to under 1s.",
+            flow: {
+              learning: "VPC CIDR ➜ Subnets ➜ Route Tables ➜ Internet/NAT Gateways ➜ Transit Gateway ➜ Direct Connect ➜ Route53 Resolvers",
+              execution: "Client Request ➜ Route53 DNS ➜ CloudFront CDN ➜ ALB Ingress ➜ VPC Route Table ➜ Transit Gateway ➜ Private Pod Subnet",
+              repo: "Pradeeptalari14/portfolio ➜ infra/vpc.tf ➜ infra/transit-gateway.tf"
+            },
+            labs: {
+              command: "aws ec2 describe-transit-gateways --region us-east-1",
+              syntax: "aws ec2 describe-transit-gateways [options]",
+              args: "--region us-east-1: Queries Transit Gateway metadata and state in the us-east-1 AWS hub region.",
+              output: "JSON output representing TGW state, attachments, owner ID, and Amazon ASN details.",
+              fail: "Credentials expired or IAM role lacks ec2:DescribeTransitGateways privileges. Resolve by logging in via aws sso login.",
+              prod: "Manage all VPC routing and Transit Gateway tables strictly via Infrastructure as Code (Terraform) to avoid manual configuration drift."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[Internet User] --> IGW[Internet Gateway]\\n  IGW --> ALB[Application Load Balancer]\\n  ALB --> PrivateSub[Private Subnet App]\\n  PrivateSub -- Outbound Route --> NAT[NAT Gateway]\\n  NAT --> IGW",
+              spof: "NAT Gateway in a single availability zone; if that AZ suffers an outage, private subnet outbound traffic halts.",
+              security: "Public subnets directly hosting databases or backends without security group encapsulation.",
+              scaling: "IP space exhaustion due to using narrow subnet masks (e.g., /24) under heavy pod scaling.",
+              monitoring: "Missing VPC Flow Logs for diagnosing routing blocks and unauthorized traffic attempts.",
+              backup: "No versioning or Git backups of Route53 routing records and zone files.",
+              dr: "Direct Connect lacks secondary IPsec VPN failover tunnel routing configuration.",
+              improvements: "Provision multi-AZ NAT Gateways, enable VPC Flow Logs, and configure Route53 health checks with automated failover."
+            },
+            interview: [
+              {
+                q: "How do you design a secure, highly-available hybrid cloud connectivity model between AWS and an on-premises datacenter?",
+                intent: "Tests advanced network design, routing protocols, and disaster recovery architectures.",
+                hidden: "Looks for AWS Direct Connect with backup VPN, Transit Gateway, and dynamic BGP failover configurations.",
+                red: "Ignoring secondary failover paths, or choosing unencrypted legacy routing without Transit Gateway support.",
+                strong: "Suggests Direct Connect as the primary path and an IPsec VPN as the backup path, connected via Transit Gateway.",
+                expert: "Details dynamic routing using BGP (Border Gateway Protocol) with AS-Path prepending to ensure AWS prefers the Direct Connect path. Configures Transit Gateway route tables to segment dev and prod environments.",
+                leadership: "Architects zero-trust inter-VPC networks using AWS Transit Gateway and central firewall VPC inspection points, routing all cross-subnet traffic through automated traffic scanning appliances.",
+                coachTips: "Ensure you mention the exact failover convergence times (~sub-second for Direct Connect with BFD vs 10-30s for standard VPN)."
+              }
+            ],
+            incident: {
+              title: "Outbound Third-Party API Call Failures",
+              flow: "App pods fail to connect to external payment gateways, return connection timeouts.",
+              symptoms: "Logs report payment gateway timeouts, curl to external sites hangs.",
+              causes: "Subnet route table lacks a route mapping 0.0.0.0/0 to the NAT Gateway, or NAT Gateway is deleted.",
+              verify: "Inspect the route table associated with the private subnet.",
+              commands: "aws ec2 describe-route-tables --route-table-ids rtb-xxxxxxxx",
+              fix: "Add route table entry mapping 0.0.0.0/0 target to the active NAT Gateway ID.",
+              validation: "Verify curl from pod container resolves external endpoints successfully.",
+              prevention: "Enforce Terraform drift detection rules to automatically flag and revert manual VPC route alterations."
+            },
+            quiz: [
+              {
+                q: "Which AWS service acts as a cloud router, enabling you to connect thousands of VPCs and on-premises networks to a single gateway?",
+                options: ["VPC Peering", "Transit Gateway", "Direct Connect", "NAT Gateway"],
+                a: "Transit Gateway",
+                explanation: "AWS Transit Gateway acts as a highly scalable cloud router that simplifies networking by hub-and-spoke routing across VPCs and local datacenters."
+              }
+            ]
+          },
+          k8s_ha: {
+            title: "Kubernetes HA Architecture & Clustering",
+            prereqs: "Container runtimes, API architectures, load balancers, etcd",
+            related: "Observability Stack, Multi-Node Cloud Orchestration",
+            advanced: "Multi-Region Kubernetes Federations (Karmada)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Protect cluster control plane operations against master node failures.",
+              why: "Created to maintain scheduling, configuration, API access, and self-healing controls even if master nodes fail.",
+              before: "Single-master node clusters where a single node outage crashes API control and halts deployment schedules.",
+              limits: "Increased master node costs; etcd clustering requires odd node numbers to establish consensus quorum.",
+              alternatives: "Managed cloud control planes (AWS EKS, GCP GKE) which host highly available API panels natively.",
+              examples: "Bootstrapping 3 dedicated master nodes running stacked etcd clusters, load balanced behind HAProxy servers."
+            },
+            tips: "<strong>Production Value:</strong> etcd is sensitive to disk write latency. Always host etcd databases on dedicated NVMe SSDs to prevent quorum loss.<br><br><strong>Key Tips:</strong><br>• <strong>Quorum Majority:</strong> Quorum is computed as N/2 + 1. An odd count of etcd nodes (3 or 5) handles partition failures better than an even count (2 or 4).<br>• <strong>Compaction:</strong> Periodically run etcd compaction to clean historical database keys and prevent storage limit exhaustion."
+            },
+            flow: {
+              learning: "API Server ➜ Scheduler ➜ Controller Manager ➜ etcd consensus ➜ HA proxy load balancer ➜ Kubelet",
+              execution: "Client kubectl ➜ HA Load Balancer ➜ Master API Server ➜ etcd Write ➜ Scheduler binds pod ➜ Node Kubelet runs container",
+              repo: "Pradeeptalari14/portfolio ➜ config/kubeadm-ha-config.yaml ➜ manifests/etcd-cluster.yaml"
+            },
+            labs: {
+              command: "kubectl get pods -n kube-system -l component=etcd",
+              syntax: "kubectl get pods -n kube-system [options]",
+              args: "-l component=etcd: Filters system pods to check etcd replica health and configuration registers.",
+              output: "List showing etcd-member-1, etcd-member-2, etcd-member-3 in healthy Running state.",
+              fail: "etcd connection timeout, indicating quorum loss (e.g. 2 out of 3 members crashed). Resolve by recovering storage.",
+              prod: "Configure automated alerts checking etcd raft proposals success rates to catch disk latency before quorum drops."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  kubectl[User CLI] --> LB[API Load Balancer]\\n  LB --> API1[kube-apiserver 1]\\n  LB --> API2[kube-apiserver 2]\\n  API1 --> etcd[(etcd cluster)]\\n  API2 --> etcd\\n  Scheduler[kube-scheduler] --> LB\\n  Controller[kube-controller-manager] --> LB",
+              spof: "Quorum loss in etcd cluster (e.g. 2 out of 3 members down) freezes cluster writes and deployment schedules.",
+              security: "etcd peer communication ports left unencrypted without mutual TLS (mTLS) enforcement.",
+              scaling: "etcd database size limit exceeded due to keeping too many older revisions, triggering db defragmentation locks.",
+              monitoring: "Missing alert thresholds on apiserver latency, scheduler queue depth, and etcd leader election events.",
+              backup: "Quake backups of etcd snapshots not scheduled or stored on local ephemeral disks.",
+              dr: "Master nodes deployed in a single Availability Zone, risking a complete regional rack outage.",
+              improvements: "Enforce dynamic etcd defragmentation cron jobs, encrypt etcd-at-rest secrets, backup snapshots to S3 nightly, and distribute master nodes across 3 AZs."
+            },
+            interview: [
+              {
+                q: "Explain the etcd consensus mechanism in a High-Availability Kubernetes cluster and what happens if quorum is lost.",
+                intent: "Tests deep understanding of distributed systems, Raft consensus, and cluster recovery operations.",
+                hidden: "Looks for formulas for quorum (N/2 + 1), split-brain scenarios, read/write locks, and bootstrap recovery.",
+                red: "Thinking etcd can run with even numbers of nodes (like 2 or 4) for safety, or not knowing how to restore etcd from a backup.",
+                strong: "Explains etcd uses Raft consensus requiring a majority of nodes to be online. If quorum is lost, the cluster becomes read-only.",
+                expert: "Details quorum formula: `Q = floor(N/2) + 1`. Explains that if quorum is lost, no new resources can be scheduled or created. Describes etcd snapshot recovery process using `etcdctl snapshot restore` and re-bootstrapping the static cluster manifest files.",
+                leadership: "Architects zero-downtime control planes for 10,000-node scale, optimizing etcd compaction intervals and disk write priorities (ionice) to handle heavy runtime traffic.",
+                coachTips: "Always clarify that etcd quorum loss doesn't crash currently running pods, but freezes scheduling, scaling, and state updates."
+              }
+            ],
+            incident: {
+              title: "Cluster API Server Unreachable Outage",
+              flow: "kubectl returns connection refused, deployments cannot scale, nodes fail to report status.",
+              symptoms: "Developer tasks timeout; CI/CD pipelines fail; API load balancer reports 502.",
+              causes: "etcd storage partition disk full, triggering Raft consensus failure and crashing kube-apiservers.",
+              verify: "Check local directory space on master nodes and tail apiserver journals.",
+              commands: "df -h /var/lib/etcd\njournalctl -u kube-apiserver.service -f",
+              fix: "Clear host storage, run etcdctl defrag, and restart master control plane components.",
+              validation: "Verify kubectl cluster-info returns successfully and nodes report Ready.",
+              prevention: "Run automated cron checks auditing disk space on master nodes, sending warnings before disk exceeds 80%."
+            },
+            quiz: [
+              {
+                q: "In an etcd cluster consisting of 5 members, what is the minimum number of active nodes required to maintain consensus quorum?",
+                options: ["2", "3", "4", "5"],
+                a: "3",
+                explanation: "Quorum requires `(5/2) + 1 = 3` active nodes. If 3 nodes are online, the cluster maintains consensus quorum."
+              }
+            ]
+          },
+          observability: {
+            title: "Observability Stack & Telemetry Orchestration",
+            prereqs: "Metrics, logs, traces, HTTP protocol headers, PromQL",
+            related: "SRE Practices, Production Troubleshooting",
+            advanced: "OpenTelemetry Autoinstrumentation & Distributed Tracing",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Expose cluster internal metrics, logs, and distributed trace spans to diagnose runtime anomalies.",
+              why: "Created to eliminate operational blind spots in distributed architectures, tracking requests from frontend edge to database backends.",
+              before: "Isolated SSH log inspections, checking individual system logs on virtual host machines, and ununified dashboard sets.",
+              limits: "High telemetry data ingestion volumes incur high storage, compute, and indexing pricing costs.",
+              alternatives: "Proprietary telemetry engines (Datadog, Dynatrace, New Relic) or basic local logging files.",
+              examples: "Injecting OpenTelemetry collectors as standard scrapers exporting microservice trace graphs to Jaeger databases."
+            },
+            tips: "<strong>Production Value:</strong> Context propagation is key to tracing. Use traceparent headers across HTTP bounds. Enforce tail-based sampling to save telemetry storage cost.<br><br><strong>Key Tips:</strong><br>• <strong>Pull vs Push:</strong> Prometheus metrics are pull-based (scraped by server). Loki logs and Jaeger traces are push-based (sent by agents).<br>• <strong>Cardinality:</strong> Avoid adding raw user IDs or timestamp variables as Prometheus labels, as this inflates database memory usage.",
+            flow: {
+              learning: "Metrics/Logs/Traces ➜ Prometheus Scrapers ➜ Grafana Dashboards ➜ Vector log pipelines ➜ OpenTelemetry Collectors ➜ Distributed Tracing",
+              execution: "Client Call ➜ Otel context injected ➜ App executes ➜ Metrics scraped ➜ Log forwarded ➜ Trace exported ➜ Grafana dashboard displays",
+              repo: "Pradeeptalari14/portfolio ➜ config/otel-collector-config.yaml ➜ manifests/prometheus-rules.yaml"
+            },
+            labs: {
+              command: "otelcol --config=otel-collector.yaml",
+              syntax: "otelcol [options]",
+              args: "--config=otel-collector.yaml: Starts OpenTelemetry Collector agent to receive, process, and export logs and traces.",
+              output: "Status log showing listener pipelines active on ports 4317 (gRPC) and 4318 (HTTP).",
+              fail: "Port conflicts or validation error in configuration YAML receivers/exporters. Resolve by checking yaml indentation.",
+              prod: "Set memory limits (memory_limiter processor) in OTEL configuration to prevent collector memory exhaustion."
+            },
+            archGaps: {
+              mermaid: "graph LR\\n  App[App Pods] -- Spans/Logs --> Otel[OTel Collector]\\n  Otel -- Traces --> Jaeger[Jaeger DB]\\n  Otel -- Logs --> Loki[Grafana Loki]\\n  Prom[Prometheus] -- Scrape Metrics --> App\\n  Grafana[Grafana UI] -- Query --> Prom\\n  Grafana -- Query --> Loki\\n  Grafana -- Query --> Jaeger",
+              spof: "OTel Collector running as a single replica, creating a telemetry bottleneck for all services.",
+              security: "Distributed traces containing sensitive user data (PII) like passwords or tokens in plain text span attributes.",
+              scaling: "High database write load crashing Grafana Loki / Jaeger storage backends during traffic spikes.",
+              monitoring: "Missing tracing context propagation across microservice calls, breaking trace visualization chains.",
+              backup: "No storage lifecycle policy for historical telemetry logs, leading to disk exhaustion.",
+              dr: "Observability stack hosted in the same target cluster as production services, failing during cluster outages.",
+              improvements: "Deploy Prometheus/OTel Collector as scalable daemonsets, mask PII in traces via collector processors, and host logging infrastructure separately from app workloads."
+            },
+            interview: [
+              {
+                q: "What are the three pillars of Observability, and how does distributed tracing propagate transaction context across microservices?",
+                intent: "Assesses candidate's mastery of modern telemetry pipelines, OpenTelemetry standards, and distributed tracing architectures.",
+                hidden: "Looks for W3C Trace Context headers, span references, parent/child spans, collector processors, and sampling rates.",
+                red: "Confusing metrics with tracing, or recommending manual log file parsing to track microservice call graphs.",
+                strong: "Defines the pillars: Metrics, Logs, and Traces. Tracing passes parent trace IDs across HTTP calls in headers.",
+                expert: "Explains context propagation using headers (e.g. `traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`). Details collector architecture (Receivers, Processors, Exporters) and configuring tail-based sampling to save storage costs.",
+                leadership: "Establishes enterprise observability standards, deploying automated trace instrumentation across 500+ services using OpenTelemetry Operators and verifying alerting boundaries.",
+                coachTips: "Highlight context propagation details (e.g. inject/extract API patterns) to show you understand actual telemetry code execution."
+              }
+            ],
+            incident: {
+              title: "Telemetry Log Index Exhaustion Outage",
+              flow: "Application logs fail to index in Grafana Loki, alerting channels become blind to errors.",
+              symptoms: "Querying logs returns empty results, Loki logs show 'ingester database space exhausted'.",
+              causes: "An application debugging flag was left active in production, flooding Loki logs with high-cardinality metadata.",
+              verify: "Inspect rate charts on Loki inputs and trace cardinality metadata tags.",
+              commands: "logcli series --analyze-labels\nkubectl logs loki-0 -n monitoring",
+              fix: "Turn off application debug log level, clear Loki storage, and run log compaction.",
+              validation: "Verify logs populate in Grafana Loki dashboard and cardinality metrics normalize.",
+              prevention: "Configure rate-limiting filters (Vector / FluentBit) to drop debug statements before logs reach Loki ingestion layers."
+            },
+            quiz: [
+              {
+                q: "Which W3C standard HTTP header is used to propagate transaction trace IDs and span parent IDs across microservice calls?",
+                options: ["X-Request-ID", "traceparent", "X-Forwarded-For", "Authorization"],
+                a: "traceparent",
+                explanation: "The W3C `traceparent` header is the industry standard header for propagating distributed tracing context (Trace ID, Parent Span ID, and Trace Flags) between microservices."
+              }
+            ]
+          },
+          prod_troubleshooting: {
+            title: "Production Incident Troubleshooting & Diagnostics",
+            prereqs: "Linux CLI diagnostic utilities, network namespace routing, process status states",
+            related: "SRE Practices, Observability Stack, Incident Management",
+            advanced: "Kernel Tracepoints & Live Dynamic Debugging (eBPF / bpftrace)",
+            yield: "9.9 / 10",
+            purpose: {
+              solve: "Isolate and resolve complex system degradation and application outages under pressure.",
+              why: "Created to establish structured diagnostic strategies that reduce MTTR (Mean Time to Resolution) during critical production outages.",
+              before: "Random server reboots, configuration alterations without diagnostic evidence, and prolonged service unavailability.",
+              limits: "Live diagnostic tools add execution overhead; kernel probes require elevated root access policies.",
+              alternatives: "Automatic deployment rollbacks without debugging, or spawning duplicate parallel stages for diagnostics.",
+              examples: "Isolating thread locks and database connection pools exhaustion on high-concurrency Java APIs using thread dumps."
+            },
+            tips: "<strong>Production Value:</strong> Always debug systematically: isolate the layer first (CPU, Memory, Disk, Network). Never run destructive tracing like strace on high-concurrency databases in production.<br><br><strong>Key Tips:</strong><br>• <strong>Resource Starvation:</strong> Check host metrics first: <code>df -h</code> (Disk), <code>free -m</code> (Memory), <code>uptime</code> (Load Average).<br>• <strong>Socket Analysis:</strong> Use <code>ss -tulpn</code> to verify listening ports and connection states rapidly.",
+            flow: {
+              learning: "Symptom Triage ➜ Network dig/telnet ➜ Process top/ps ➜ Disk df/iostat ➜ Memory free/vmstat ➜ CPU mpstat/strace ➜ Kernel dmesg",
+              execution: "Incident alert ➜ Check Grafana ➜ Isolate node/pod ➜ Execute diagnostics ➜ Apply remediation ➜ Verify recovery ➜ Run postmortem",
+              repo: "Pradeeptalari14/portfolio ➜ runbooks/diagnostics.sh ➜ docs/incident-runbook.md"
+            },
+            labs: {
+              command: "strace -p 1234 -c",
+              syntax: "strace [options] -p [pid]",
+              args: "-p 1234: Attaches to active process ID 1234; -c: Compiles and summaries system call execution counts, elapsed times, and errors.",
+              output: "Tabular report showing read, write, futex, epoll_wait call counts and total execution times.",
+              fail: "Operation not permitted (requires root/sudo, or process belongs to another user namespace). Resolve by gaining sudo.",
+              prod: "Avoid running plain `strace` on high-throughput database processes, as it intercepts every system call, adding latency."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Alert[Incident Alert] --> Triage[Triage: Grafana / Logs]\\n  Triage -- Network Issue? --> Net[dig / tcpdump / ss]\\n  Triage -- Resource Issue? --> Sys[top / free / df / iostat]\\n  Triage -- Code Loop? --> Trace[strace / gdb]\\n  Net & Sys & Trace --> Fix[Mitigation / Patch]\\n  Fix --> Verify[Verify Metrics]",
+              spof: "Relying on manual diagnostic checks by a single engineer, slowing down RTO (Recovery Time Objective).",
+              security: "Diagnostic tools running with broad root permissions on nodes without access control rules.",
+              scaling: "Telemetry systems overwhelmed by debug logging logs during incident storms, blocking query access.",
+              monitoring: "Missing diagnostic logging indicators for transient storage and file descriptor leaks.",
+              backup: "No historical logging of interactive diagnostic commands executed on node terminals during outages.",
+              dr: "No secondary access route (such as dedicated out-of-band management network namespaces) during host SSH lockout.",
+              improvements: "Inject secure ephemeral debugging containers (kubectl debug) for runtime diagnostics, enforce strict SSH session logging, and create automated runbooks."
+            },
+            interview: [
+              {
+                q: "A Java application hosted on a Linux container is reporting high response latency and CPU usage is at 100%. Explain your step-by-step diagnostic workflow.",
+                intent: "Tests systemic troubleshooting skills, Linux kernel debugging, thread isolation, and runtime profiling.",
+                hidden: "Looks for process list monitoring (top/ps), thread-level analysis (top -H), thread dump generation (jstack), and garbage collection diagnostics.",
+                red: "Suggesting immediate container restarts without gathering context, or guessing configurations without checking metrics.",
+                strong: "Executes top to find the process ID, runs top -H to isolate threads consuming CPU, and gets application thread logs.",
+                expert: "Details the diagnostic path:<br>1. Check CPU load and process lists using `top`. Identify Java PID.<br>2. Run `top -Hp <PID>` to locate the exact thread IDs executing loops.<br>3. Convert thread ID to hexadecimal (printf '%x' <tid>).<br>4. Capture thread dumps via `jstack <PID>` and map the hex thread ID to trace the exact Java code loop.<br>5. Check GC metrics via `jstat` to verify JVM garbage collection loops are not bottlenecking memory spaces.",
+                leadership: "Establishes automated profiling loops using Continuous Profiling agents (Pyroscope/Parca) that automatically capture CPU flamegraphs during resource spikes, reducing diagnostic delays.",
+                coachTips: "Highlight precise Linux diagnostic commands (e.g. `top -Hp`, `printf '%x'`) to demonstrate hands-on command line execution under pressure."
+              }
+            ],
+            incident: {
+              title: "Disk I/O Starvation on Database Node",
+              flow: "Production databases return write timeouts, database latency charts show massive spikes.",
+              symptoms: "Web APIs return 504 Gateway Timeouts, database connection pools are saturated.",
+              causes: "A logging script cron job is loop writing diagnostic files, saturating disk I/O bandwidth.",
+              verify: "Check disk space and active disk I/O metrics on the database host.",
+              commands: "df -h\niostat -x 1 10\nlsof +D /var/log",
+              fix: "Kill the offending process writing files, clear disk space, and verify disk queue length drops.",
+              validation: "Verify iostat util% decreases and database writes resume in normal ranges.",
+              prevention: "Enforce isolated storage disks (LVs) for system logs separate from database data volumes, and set up warnings for disk-full."
+            },
+            quiz: [
+              {
+                q: "Which command-line utility displays dynamic real-time information about disk I/O statistics and storage utilization metrics on Linux?",
+                options: ["vmstat", "iostat", "free", "netstat"],
+                a: "iostat",
+                explanation: "The `iostat` command monitors system input/output storage device loading, tracking active read/write transfer rates and disk utility percentages."
+              }
+            ]
           }
         }
       },
@@ -1299,6 +1720,286 @@
                 explanation: "Connection draining allows currently active HTTP requests to complete gracefully before the container is decoupled from load balancer pools."
               }
             ]
+          },
+          canary_deployment: {
+            title: "Canary Deployment & Progressive Traffic Splitting",
+            prereqs: "Ingress routing weights, Prometheus metric alerts, microservices",
+            related: "Blue-Green Deployment, Rolling Updates, Service Mesh (Istio)",
+            advanced: "Automated Canary Analysis (Argo Rollouts & Kayenta)",
+            yield: "9.9 / 10",
+            purpose: {
+              solve: "Reduce deployment blast radius by routing a small percentage of user traffic to a new version.",
+              why: "Created to catch application regressions and resource leaks using real production traffic before wide-scale promotions.",
+              before: "Big-bang releases that impact 100% of users concurrently, and manual staging validation check validations.",
+              limits: "Requires advanced routing metrics, dynamic session handling, and complex query analytics configurations.",
+              alternatives: "Blue-Green deployments (all-or-nothing swap), standard rolling updates, or feature flag logic.",
+              examples: "Netflix shifting 1% of user requests to new version pods while comparing error rates against active baseline pods."
+            },
+            tips: "<strong>Production Value:</strong> Automate canary promotion using metrics. If HTTP 5xx error rates on canary pods increase by >0.5% compared to baseline pods, trigger an automated rollback.<br><br><strong>Key Tips:</strong><br>• <strong>Baseline Pods:</strong> Run a baseline pod alongside the canary. This isolates cluster-wide database or network outages from canary-specific bugs.<br>• <strong>Analysis Intervals:</strong> Ensure canary steps remain active long enough to gather statistical significance (at least 5-10 minutes per step).",
+            flow: {
+              learning: "Baseline vs Canary ➜ Traffic Weight Split ➜ Telemetry Collection ➜ Metric Comparison ➜ Promotion / Rollback",
+              execution: "Deploy Canary Pods ➜ Route 5% Traffic ➜ Compare HTTP Errors ➜ Step Split (10% ➜ 50% ➜ 100%) ➜ Terminate Old version",
+              repo: "Pradeeptalari14/tp-argocd ➜ manifests/canary-rollout.yaml ➜ config/analysis-template.yaml"
+            },
+            labs: {
+              command: "kubectl argo rollouts promote web-app",
+              syntax: "kubectl argo rollouts promote [resource]",
+              args: "web-app: Commands the Argo Rollouts controller to bypass remaining metric analysis phases and instantly promote the rollout to 100%.",
+              output: "rollout 'web-app' promoted successfully.",
+              fail: "Argo Rollouts plugin not installed or resource not found. Resolve by installing argo-rollouts binary.",
+              prod: "Let analysis templates execute fully in production; manual overrides should only be used during emergency hotfix operations."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[User Client] --> Ingress[Ingress Gateway]\\n  Ingress -- 90% Traffic --> Active[V1 Active Pods]\\n  Ingress -- 10% Traffic --> Canary[V2 Canary Pods]\\n  Active -- Metrics --> Prom[Prometheus Server]\\n  Canary -- Metrics --> Prom\\n  Argo[Argo Rollout Controller] -- Query Metrics --> Prom\\n  Argo -- High Errors? Rollback --> Ingress",
+              spof: "Prometheus scraper outage blocks Argo analysis, freezing rollout pipelines in suspended states.",
+              security: "Canary endpoint routes left exposed without authentication, permitting users to bypass gateway filters.",
+              scaling: "Telemetry ingestion delays causing delayed rollback decisions during severe outages.",
+              monitoring: "Missing comparison metrics checking host load profiles between active and canary nodes.",
+              backup: "No backup configurations of analysis template parameters.",
+              dr: "Argo Rollouts controller failure halts manual rollout promotions.",
+              improvements: "Enforce fallback timeout gates inside analysis templates that auto-rollback if Prometheus queries timeout."
+            },
+            interview: [
+              {
+                q: "How do you construct an automated canary rollback strategy using Prometheus metrics?",
+                intent: "Tests continuous delivery scripting, telemetry parsing, and rollback automation architectures.",
+                hidden: "Looks for Argo Rollouts, AnalysisTemplates, specific Prometheus queries (HTTP success/error rates, latency), and step promotions.",
+                red: "Proposing manual metric checks or recommending long analysis steps for high-frequency deployment pipelines.",
+                strong: "Outlines deploying Argo Rollouts with Prometheus integration to check error rate thresholds.",
+                expert: "Details defining an `AnalysisTemplate` in Kubernetes that queries Prometheus every 2 minutes: `sum(rate(http_requests_total{status=~'5..'}[2m])) / sum(rate(http_requests_total[2m]))`. Auto-triggers rollback if result is >0.01.",
+                leadership: "Designs enterprise progressive delivery platforms, deploying global canary analytics engines that evaluate metrics across multi-region clusters.",
+                coachTips: "Remember to explain why a baseline pod is needed: it isolates network or database errors that affect both canary and active nodes."
+              }
+            ],
+            incident: {
+              title: "Stuck Canary Sync Drift Outage",
+              flow: "A canary deployment is stuck at 10% traffic split, developer tasks queue up.",
+              symptoms: "Deployed code does not propagate to 100% of nodes; pods report status 'Paused'.",
+              causes: "The Argo Rollout analysis run timed out due to Prometheus authentication failures.",
+              verify: "Inspect the rollout status and retrieve controller events.",
+              commands: "kubectl argo rollouts status web-app\nkubectl describe rollout web-app",
+              fix: "Verify Prometheus credentials, restart the controller pod, and run manual promote.",
+              validation: "Verify rollout status transitions to 'Healthy' and all pods update to the latest revision.",
+              prevention: "Run secondary local monitoring checks verifying prometheus endpoint availability before booting rollouts."
+            },
+            quiz: [
+              {
+                q: "Which Kubernetes custom resource controller automates metric-driven canary deployments and progressive promotions?",
+                options: ["Argo Rollouts", "kube-controller-manager", "Kubelet", "Cert-Manager"],
+                a: "Argo Rollouts",
+                explanation: "Argo Rollouts replaces default deployment resources with a custom controller that drives automated canary promotions and metrics validations."
+              }
+            ]
+          },
+          rolling_updates: {
+            title: "Zero-Downtime Kubernetes Rolling Updates",
+            prereqs: "Pod lifecycles, readiness probes, replica controllers, connection draining",
+            related: "Canary Deployment, Kubernetes HA Architecture",
+            advanced: "Custom pod termination lifecycle hooks (preStop)",
+            yield: "9.7 / 10",
+            purpose: {
+              solve: "Deploy new application builds progressively, ensuring active requests are handled without downtime.",
+              why: "Created to replace big-bang releases that disconnect user sessions, enabling smooth deployment cycles.",
+              before: "Manual VM configurations or offline maintenance windows where applications are unavailable during updates.",
+              limits: "Requires the application code to be fully backward-compatible with database schemas.",
+              alternatives: "Recreate strategy (all pods terminated, then new pods booted), or Blue-Green load balancer swaps.",
+              examples: "Updating container versions on a Kubernetes deployment manifest, causing pods to roll over sequentially."
+            },
+            tips: "<strong>Production Value:</strong> Always use readinessProbes. Set maxUnavailable to 0 and maxSurge to 25% to ensure EKS scale never decreases during rollouts. Use a preStop hook for connection draining.<br><br><strong>Key Tips:</strong><br>• <strong>preStop Hooks:</strong> Add a <code>sleep 15</code> preStop command. This stops K8s from killing the container process immediately, letting active HTTP requests finish.<br>• <strong>Readiness vs Liveness:</strong> Readiness probe tells K8s when a booting pod can receive traffic. Liveness probe tells K8s when a locked pod must be rebooted.",
+            flow: {
+              learning: "ReplicaSet ➜ Rolling Update configuration ➜ maxSurge/maxUnavailable ➜ Readiness Probes ➜ preStop Hooks ➜ Termination Signals",
+              execution: "kubectl set image ➜ New Pod boots ➜ Readiness Probe passes ➜ Traffic routed to new pod ➜ SIGTERM sent to old pod ➜ Old pod shuts down",
+              repo: "Pradeeptalari14/tp-kubernetes ➜ manifests/web-deployment.yaml ➜ config/readiness-probe.yaml"
+            },
+            labs: {
+              command: "kubectl rollout status deployment/web-app",
+              syntax: "kubectl rollout status deployment/[name]",
+              args: "deployment/web-app: Monitors active rolling update progress, showing replica state shifts.",
+              output: "Waiting for deployment 'web-app' rollout to finish: 1 old replicas are pending termination...",
+              fail: "Rollout blocked (e.g. image pull backoff or failing readiness probes). Resolve by checking kubectl describe.",
+              prod: "Set `maxSurge: 25%` and `maxUnavailable: 0` to guarantee total replica count never drops below target scale during rollouts."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[User Traffic] --> Service[K8s Service]\\n  Service -- Route --> PodV1[Pod V1: Active]\\n  Deploy[Deployment Controller] -- 1. Boot --> PodV2[Pod V2: Booting]\\n  PodV2 -- 2. Pass Probe --> Service\\n  Deploy -- 3. SIGTERM --> PodV1",
+              spof: "None (deployment controller routes traffic dynamically across active nodes).",
+              security: "Containers running with root execution scopes, risking container break-outs during updates.",
+              scaling: "Nodes run out of CPU/memory resources during update surge phases, blocking pod scheduling.",
+              monitoring: "Missing connection termination alerts and logs tracking client-side request drops during rollout windows.",
+              backup: "No git backups of old configuration states before applying updates.",
+              dr: "Update failure blocks future rollouts, requiring manual deployment rollback.",
+              improvements: "Set `maxUnavailable: 0`, configure `preStop` hooks for connection draining (e.g., sleep 15), and execute automated rollback triggers."
+            },
+            interview: [
+              {
+                q: "Explain the role of maxSurge, maxUnavailable, and readinessProbes in a zero-downtime rolling update, and how to handle connection draining.",
+                intent: "Evaluates candidate's deep understanding of container lifecycles, load balancing states, and graceful terminations.",
+                hidden: "Looks for readiness vs liveness probes, SIGTERM signals, preStop hooks, and connection draining thresholds.",
+                red: "Confusing liveness probes with readiness probes, or suggesting termination signals are handled instantly without draining connections.",
+                strong: "Defines maxSurge as extra pods created and maxUnavailable as pods deleted during updates. Readiness probes verify the app is ready for traffic.",
+                expert: "Details the lifecycle: K8s sends SIGTERM, removes pod from Endpoint list, and stops routing traffic. To avoid dropping active connections, configures a `preStop` hook: `lifecycle: { preStop: { exec: { command: ['sleep', '15'] } } }` to allow processing requests to finish.",
+                leadership: "Architects global update policies, automating rollout gates using service meshes that terminate TLS gracefully and log connection tracking metrics.",
+                coachTips: "Emphasize that the preStop hook execution blocks container termination. Without it, K8s cuts traffic and kills processes concurrently, causing HTTP 502/504 errors."
+              }
+            ],
+            incident: {
+              title: "Client Request Drops During Rolling Update",
+              flow: "Users report HTTP 502/504 errors during deployment rollout periods.",
+              symptoms: "Web logs show abrupt termination of active requests, database operations break during updates.",
+              causes: "Missing `preStop` connection draining, or liveness probe restarts container before update terminates.",
+              verify: "Inspect deployment logs and check for termination events.",
+              commands: "kubectl get events --sort-by='.metadata.creationTimestamp'",
+              fix: "Add `preStop` hook sleeping for 15 seconds, and set readiness probe delay configuration.",
+              validation: "Trigger rollout update and confirm active downloads/requests finish without errors.",
+              prevention: "Enforce standard deployment linter templates requiring preStop and readiness probes on all microservices."
+            },
+            quiz: [
+              {
+                q: "Which Kubernetes probe verifies if a container is fully initialized and capable of accepting network traffic?",
+                options: ["Liveness Probe", "Readiness Probe", "Startup Probe", "Health Probe"],
+                a: "Readiness Probe",
+                explanation: "Readiness Probes monitor container initialization state, telling the service controller when it is safe to route traffic to the pod."
+              }
+            ]
+          },
+          cost_optimization: {
+            title: "AWS & Kubernetes Cost Optimization & Autoscaling",
+            prereqs: "AWS EC2 pricing tiers, Kubernetes request/limit mappings, pod autoscalers",
+            related: "Capacity Planning, Platform Engineering",
+            advanced: "Karpenter Cluster Consolidation & Spot Instance Interruption Handling",
+            yield: "9.5 / 10",
+            purpose: {
+              solve: "Reduce cloud infrastructure spending while maintaining application performance and SLA constraints.",
+              why: "Created to prevent cloud budget waste caused by idle CPU cycles and over-provisioned static node pools.",
+              before: "Static virtual machine sizing and fixed-size node pools that run 24/7 regardless of traffic.",
+              limits: "Spot instances can be terminated by AWS with a 2-minute warning, requiring resilient applications.",
+              alternatives: "Reserved instances (1-3 year commitments), or manual node pool scale scheduling.",
+              examples: "Using Karpenter to provision mixed Spot/On-Demand node pools, dynamically scaling down empty nodes."
+            },
+            tips: "<strong>Production Value:</strong> Use Karpenter consolidation instead of AWS Cluster Autoscaler. Right-size workloads using historical metrics to avoid paying for unused 'requested' CPU.<br><br><strong>Key Tips:</strong><br>• <strong>Spot vs On-Demand:</strong> Run stateless microservices on Spot instances (up to 90% cheaper). Keep stateful datastores on On-Demand nodes.<br>• <strong>Horizontal Pod Autoscaler (HPA):</strong> Configure HPAs to scale pods based on custom metrics (like QPS) instead of simple CPU averages.",
+            flow: {
+              learning: "Cloud Pricing Tiers ➜ Resource Requests/Limits ➜ Spot Instances ➜ HPA/VPA ➜ Karpenter ➜ Workload Consolidation",
+              execution: "Prometheus tracks usage ➜ Karpenter audits nodes ➜ Idle nodes flagged ➜ Workloads rescheduled ➜ Empty nodes terminated ➜ Cloud invoice reduced",
+              repo: "Pradeeptalari14/infra ➜ kubernetes/karpenter.yaml ➜ terraform/eks-cost.tf"
+            },
+            labs: {
+              command: "kubectl get nodepool default -o yaml",
+              syntax: "kubectl get nodepool [name] [options]",
+              args: "default: Queries the Karpenter NodePool configuration, auditing resource limits and spot instance allocations.",
+              output: "YAML spec mapping instance profiles, requirements (capacity-type: spot), and consolidation rules.",
+              fail: "Karpenter custom resource definition not installed or IAM roles mismatch. Resolve by checking permissions.",
+              prod: "Enable `consolidationPolicy: WhenUnderutilized` to allow Karpenter to clean and terminate empty nodes automatically."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Pods[App Pods] -- Scale Up --> Karpenter[Karpenter Autoscaler]\\n  Karpenter -- Select Spot instance --> AWS[AWS EC2 API]\\n  AWS -- Provision VM --> Node[EC2 Node]\\n  Node -- Register --> Cluster[EKS Cluster]\\n  Karpenter -- Underutilized? Consolidate --> Terminate[Terminate Node]",
+              spof: "Relying entirely on Spot instances for critical stateful databases, risking downtime when Spot capacity drops.",
+              security: "Karpenter IAM policies having overly broad permissions to terminate arbitrary EC2 instances.",
+              scaling: "Autoscaling loops throttling due to hitting AWS EC2 API rate limits during sudden load spikes.",
+              monitoring: "Missing notifications tracking cloud spending metrics and Spot reclamation events.",
+              backup: "No backups of cluster scaling profiles and historical cost allocation data.",
+              dr: "Sudden reclamation of all Spot instances in a region crashes services without backup Warm Standby pools.",
+              improvements: "Configure mixed-instance-types (mix Spot and On-Demand), allocate Karpenter templates across multiple instance families, and enable Spot termination handler alerts."
+            },
+            interview: [
+              {
+                q: "How do you design a cost-optimized, autoscaling EKS cluster using Karpenter and Spot instances without risking production uptime?",
+                intent: "Tests infrastructure cost management, advanced Kubernetes scheduling, and node provisioning designs.",
+                hidden: "Looks for Karpenter node templates, spot termination handlers (AWS Node Termination Handler), mixed instance groups, and pod disruption budgets (PDB).",
+                red: "Suggesting spot instances for database clusters, or neglecting to use PodDisruptionBudgets during node terminations.",
+                strong: "Suggests using Karpenter to spin up Spot instances for web pods and On-Demand instances for databases.",
+                expert: "Details configuring Karpenter NodePools with multi-instance families (e.g. `c6g`, `m6g`, `r6g`) to bypass regional spot shortages. Implements PodDisruptionBudgets (PDB) to restrict concurrently terminating pods, and configures node-termination-handlers to catch Spot reclamation signals.",
+                leadership: "Architects corporate FinOps governance portals that parse AWS billing APIs, automatically identifying over-provisioned namespaces and downsizing resources in staging environments.",
+                coachTips: "Highlight Karpenter's direct scheduling design over traditional Cluster Autoscaler (which relies on AWS ASG scaling limits), as this is a key modern architecture differentiator."
+              }
+            ],
+            incident: {
+              title: "Spot Instance Reclamation Outage",
+              flow: "AWS reclaims spot instance nodes, and container pods fail to reschedule, causing downtime.",
+              symptoms: "Pod status remains 'Pending' or 'Terminating'; API logs show connection drop alerts.",
+              causes: "No node termination handler deployed, or cluster lacks capacity in alternative instance families.",
+              verify: "Check instance statuses and review Karpenter controller outputs.",
+              commands: "kubectl logs -n karpenter -l app.kubernetes.io/name=karpenter",
+              fix: "Add mixed-instance-types to Karpenter configurations, and deploy PodDisruptionBudgets.",
+              validation: "Verify pods automatically migrate to online nodes within 2 minutes of termination warnings.",
+              prevention: "Maintain a minimum baseline pool (e.g. 20%) of On-Demand EC2 compute instances for critical microservices."
+            },
+            quiz: [
+              {
+                q: "Which dynamic autoscaling tool schedules container workloads directly on target cloud VMs, bypassing standard AWS Auto Scaling Groups?",
+                options: ["Cluster Autoscaler", "Karpenter", "KEDA", "HPA"],
+                a: "Karpenter",
+                explanation: "Karpenter is an open-source node autoscaler designed for Kubernetes that provisions host machines directly based on pod resource requirements, bypassing ASGs."
+              }
+            ]
+          },
+          capacity_planning: {
+            title: "SRE Capacity Planning & Load Testing",
+            prereqs: "Resource metrics, thread management, load test frameworks (Locust/k6), metrics analysis",
+            related: "Cost Optimization, Production Troubleshooting",
+            advanced: "Automated Performance Regression Testing in CI/CD (k6-operator)",
+            yield: "9.6 / 10",
+            purpose: {
+              solve: "Predict resource needs and define scaling thresholds to survive traffic peaks without degradation.",
+              why: "Created to replace guess-based capacity allocations with programmatic load tests that identify system breakpoints.",
+              before: "Provisioning hardware based on static estimates, leading to CPU starvation or expensive over-provisioning.",
+              limits: "Load simulations can impact backend data or trigger false alerts in downstream services if not scoped.",
+              alternatives: "Static over-provisioning (keeping clusters twice as large as needed), or standard reactive autoscaling.",
+              examples: "Simulating 10,000 concurrent users accessing checkout APIs to audit database connection limits and CPU throttling."
+            },
+            tips: "<strong>Production Value:</strong> Always run load tests (k6/Locust) in isolated staging environments. Measure saturation points (the exact threshold where response times spike exponentially).<br><br><strong>Key Tips:</strong><br>• <strong>p99 Latency:</strong> Focus on p99 latency rather than average latency. Averages hide outliers that represent severely degraded user experiences.<br>• <strong>Connection Saturation:</strong> Audit database pools (PgBouncer limits) before scaling pods. More pods can exhaust database connections, causing cascading failures.",
+            flow: {
+              learning: "Baseline Resource Usage ➜ Load Testing Tools ➜ Saturation Analysis ➜ CPU/Memory limits ➜ Autoscaling Metrics ➜ Headroom Calculations",
+              execution: "Write load test scripts ➜ Run tests via k6 ➜ Spike virtual users ➜ Track system CPU ➜ Identify bottlenecks ➜ Adjust replicas ➜ Update capacity sheets",
+              repo: "Pradeeptalari14/portfolio ➜ tests/load-test.js ➜ docs/capacity-planning.md"
+            },
+            labs: {
+              command: "k6 run --vus 50 --duration 30s load-test.js",
+              syntax: "k6 run [options] [script]",
+              args: "--vus 50: Spawns 50 parallel virtual user threads; --duration 30s: Executes the load simulation loop for 30 seconds.",
+              output: "Metrics summary reporting request duration average, p95/p99 percentiles, and failed request counts.",
+              fail: "Too many open files error on client machine or target server connection refused. Resolve by increasing ulimit.",
+              prod: "Schedule weekly automated load testing runs in staging pipelines to detect code regressions that increase latency."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  k6[k6 Load Agent] -- HTTP Request Flood --> Ingress[Ingress Gateway]\\n  Ingress --> App[App Service]\\n  App -- Read/Write --> DB[(Database)]\\n  App -- Telemetry --> Prom[Prometheus Server]\\n  DB -- Saturation Spike --> Prom",
+              spof: "Database CPU capacity bottleneck limits system scalability during traffic spikes.",
+              security: "Load testing tools exposing database read/write access logs in plaintext files.",
+              scaling: "Client-side agent host CPU exhaustion, skewing load testing statistics and latency measurements.",
+              monitoring: "Missing alerts tracking metrics latency differences between standard load and test load windows.",
+              backup: "No backups of benchmark configurations and performance templates.",
+              dr: "Load tests accidentally execution on production endpoints, risking live service degradation.",
+              improvements: "Provision distributed load generators (k6-operator), isolate data sets, and configure automatic threshold limits that abort tests if error rates exceed 5%."
+            },
+            interview: [
+              {
+                q: "How do you design a capacity planning study for a microservice cluster preparing for a 10x traffic spike?",
+                intent: "Tests load testing strategies, math calculations for scaling, and system bottleneck isolation.",
+                hidden: "Looks for baseline metrics, headroom calculations, concurrency models, identifying database connection limits, and latency percentiles (p99).",
+                red: "Recommending simple node scaling without auditing database limits or running actual load simulations.",
+                strong: "Suggests running load tests using k6, checking CPU usage, and scaling pods to handle more traffic.",
+                expert: "Details the planning workflow:<br>1. Define baseline: p99 latency under normal load.<br>2. Run k6 load test to identify saturation point (where queue depth increases and CPU exceeds 80%).<br>3. Compute resource requirements: `Scale = (Target QPS / Max QPS per pod) * Headroom (e.g. 1.3)`.<br>4. Audit down-stream dependencies: verify database max connection pool configurations (e.g. PgBouncer limits) match new pod scales.",
+                leadership: "Establishes global performance budgeting models, enforcing strict performance testing verification loops before major application releases compile.",
+                coachTips: "Explain that CPU is not the only bottleneck. SREs must audit IP tables allocations, database connection limits, and network throughput bandwidth during capacity checks."
+              }
+            ],
+            incident: {
+              title: "Database Connection Saturated Outage",
+              flow: "API latency spikes to 10 seconds during load testing, database crashes.",
+              symptoms: "Application returns HTTP 500/503 errors; logs report 'Too many client connections' from postgres.",
+              causes: "Application pods scaled up during load, but database connection pool limits (max_connections) were left at default.",
+              verify: "Check database connection charts in Grafana or run pg_stat_activity.",
+              commands: "psql -c 'show max_connections;'\npsql -c 'select count(*) from pg_stat_activity;'",
+              fix: "Deploy PgBouncer connection pooler in front of Postgres and set pool size configurations.",
+              validation: "Re-run load test and verify database connections remain stable under high concurrency.",
+              prevention: "Run load tests checking database connection limits in staging environments before applying horizontal pod scaling."
+            },
+            quiz: [
+              {
+                q: "Which diagnostic metric represents the exact point where a system resource (CPU, disk queue, network) cannot accept more work, causing queue depths to spike?",
+                options: ["Throughput", "Latency", "Saturation point", "Concurrency"],
+                a: "Saturation point",
+                explanation: "The saturation point marks the load threshold where a hardware or software resource is fully utilized, causing request queues to grow and latency to spike."
+              }
+            ]
           }
         }
       },
@@ -1367,6 +2068,216 @@
                 options: ["SonarQube", "Trivy", "Prometheus", "Ansible"],
                 a: "Trivy",
                 explanation: "Trivy is a high-performance vulnerability scanner designed to search for security issues in container images, file systems, and Git repositories."
+              }
+            ]
+          },
+          disaster_recovery: {
+            title: "SRE Disaster Recovery & Backup Orchestration",
+            prereqs: "Storage snapshots, replication models, DNS failover, RTO & RPO targets",
+            related: "Multi-Region Architecture, Kubernetes Security",
+            advanced: "Multi-Region Database Failover with Zero Data Loss (Sync Replication)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Ensure data durability and rapid service restoration during catastrophic infrastructure outages.",
+              why: "Created to protect organizations against regional cloud failures, host failures, or ransomware attacks that delete primary databases.",
+              before: "Manual snapshot exports, tape backups stored offsite, and unmeasured recovery processes.",
+              limits: "Synchronous replication introduces latency to application writes; backups take up network bandwidth and storage costs.",
+              alternatives: "Backup-and-restore (high RTO), active-passive warm standbys, or active-active global replication.",
+              examples: "Using Velero to capture Kubernetes state backups and database replication to maintain warm standby instances in secondary regions."
+            },
+            tips: "<strong>Production Value:</strong> DR plans are useless unless tested. Perform periodic GameDays (e.g. destroy a primary database instance in staging) to verify failover automation.<br><br><strong>Key Metrics:</strong><br>• <strong>RTO (Recovery Time Objective):</strong> Maximum allowed duration of service downtime before restoration (how fast we recover).<br>• <strong>RPO (Recovery Point Objective):</strong> Maximum allowed duration of data loss measured in time (how much data we can lose).",
+            flow: {
+              learning: "DR Strategies ➜ RTO/RPO ➜ Velero Backup schedules ➜ Snapshots ➜ DB Replication ➜ DNS Failover ➜ GameDay Tests",
+              execution: "Region failure detected ➜ Trigger failover script ➜ Route53 DNS updates ➜ DB promoted to Primary ➜ K8s manifests applied in backup region ➜ Traffic routes to secondary",
+              repo: "Pradeeptalari14/infra ➜ backup/velero-schedule.yaml ➜ scripts/failover.sh"
+            },
+            labs: {
+              command: "velero backup create prod-backup-1 --include-namespaces production",
+              syntax: "velero backup create [name] [options]",
+              args: "--include-namespaces production: Initiates snapshot backups of all resources, secrets, configurations, and volumes in the production namespace.",
+              output: "Backup 'prod-backup-1' created successfully. Status: Completed.",
+              fail: "MinIO/S3 object storage connection timeout or missing CSI snapshot support. Resolve by checking storage credentials.",
+              prod: "Schedule automated nightly Velero backups and store them in secure, immutable S3 buckets with object-lock policies."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  ActiveRegion[Active Region: us-east-1] -- 1. Async Replication --> BackupRegion[Backup Region: us-west-2]\\n  ActiveRegion -- 2. Daily Backups --> S3Active[S3 Bucket: us-east-1]\\n  S3Active -- 3. Cross-Region Sync --> S3Backup[S3 Bucket: us-west-2]\\n  User[User Client] -- 4. Route53 DNS --> ActiveRegion\\n  Route53 -- 5. Failure Failover --> BackupRegion",
+              spof: "Relying on a single DNS registrar account without offline recovery backup access.",
+              security: "Backups containing unencrypted database credentials or private SSL certificates.",
+              scaling: "Restore operations bottlenecking due to storage I/O limits during massive data imports.",
+              monitoring: "Missing alert rules verifying snapshot completeness and database replication lags.",
+              backup: "Velero backups saved in the same AWS account without cross-account backup replication.",
+              dr: "DR runbooks not updated, leading to human errors during live failovers.",
+              improvements: "Enable AWS Backup cross-account copying, enforce database replication lag alerts, and automate DR validation drills twice a year."
+            },
+            interview: [
+              {
+                q: "Explain the difference between Active-Active and Active-Passive disaster recovery architectures, and how you manage database consistency during a regional failover.",
+                intent: "Tests advanced system design, database replication, and global traffic routing skills.",
+                hidden: "Looks for dynamic routing (DNS weights vs Anycast), read-replicas, split-brain scenarios, consensus databases, and network latencies.",
+                red: "Ignoring database split-brain risks, or suggesting synchronous write replication across global regions with high latency.",
+                strong: "Defines Active-Active as both regions accepting writes, and Active-Passive as one region waiting in standby. Recommends routing failover using Route53.",
+                expert: "Details Active-Passive failover: DB is asynchronously replicated to us-west-2. During failover, DNS is updated, the read-replica in us-west-2 is promoted to primary, and we verify the replica lag is zero to prevent data loss. Explains how split-brain is avoided by ensuring the old primary is fenced (shut down) before promoting the secondary.",
+                leadership: "Architects multi-region active-active distributed databases (e.g. Spanner or CockroachDB) utilizing Raft consensus across 3 regions to guarantee zero-RTO failovers.",
+                coachTips: "Always mention database fencing. Promoting a backup database while the primary is still alive is a classic way to corrupt database states."
+              }
+            ],
+            incident: {
+              title: "Database Split-Brain Configuration Outage",
+              flow: "Regional failover script runs, but both databases accept writes concurrently, corrupting transaction tables.",
+              symptoms: "Customers report duplicate payment logs; database replication records conflict and crash the replication engine.",
+              causes: "The failover script promoted the passive database without disabling the active primary first (missing fencing).",
+              verify: "Check write records in both regions and inspect replication log errors.",
+              commands: "psql -h db-primary -c 'show transaction_read_only;'\npsql -h db-secondary -c 'show transaction_read_only;'",
+              fix: "Force the old primary into read-only mode, merge conflicted write rows, and re-establish replication sync.",
+              validation: "Verify database replication resumes and only a single primary database responds to writes.",
+              prevention: "Enforce stonith (Shoot The Other Node In The Head) or automated machine fencing mechanisms in DR failover orchestrations."
+            },
+            quiz: [
+              {
+                q: "Which metric defines the maximum acceptable duration of data loss measured in time before a disaster occurs?",
+                options: ["RTO", "RPO", "SLA", "MTTR"],
+                a: "RPO",
+                explanation: "RPO (Recovery Point Objective) defines the age of files that must be recovered from backup storage for normal operations to resume."
+              }
+            ]
+          },
+          multi_region: {
+            title: "Multi-Region Application Architectures",
+            prereqs: "Global DNS, Anycast networks, database replication models, CDNs",
+            related: "Disaster Recovery, AWS Networking",
+            advanced: "Active-Active Multi-Region Database Synchronizations",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Serve global users with minimum latency and handle complete cloud region outages.",
+              why: "Created to bypass regional fiber outages and reduce network latency bottlenecks for customers accessing systems globally.",
+              before: "Single-region hosting architectures where users across continents suffer from high network transit delays.",
+              limits: "Speed of light latency constraints make global synchronous write transactions highly complex.",
+              alternatives: "Single region deployments integrated with global Edge CDN caching (only supports read assets).",
+              examples: "Deploying multi-region APIs routed dynamically via Route53 Latency-based policies, utilizing global database synchronization."
+            },
+            tips: "<strong>Production Value:</strong> Optimize cost by caching static assets globally via CDNs (CloudFront/Cloudflare). Only route dynamic requests to regional backend APIs.<br><br><strong>Key Tips:</strong><br>• <strong>CAP Theorem:</strong> In a network partition, you must choose between Consistency (C) and Availability (A). You cannot guarantee both.<br>• <strong>Anycast:</strong> Use Anycast DNS routing to automatically send users to the geographically closest cloud edge portal.",
+            flow: {
+              learning: "Global Routing ➜ Latency Route53 ➜ CDN Caches ➜ Regional API Gateways ➜ Cross-Region DB Sync ➜ Replication Lag",
+              execution: "User clicks link ➜ Anycast routes to closest edge ➜ CDN handles static ➜ API Gateway routes dynamic ➜ Local DB write ➜ Cross-region sync",
+              repo: "Pradeeptalari14/infra ➜ global/route53.tf ➜ cloudfront/distribution.tf"
+            },
+            labs: {
+              command: "curl -w '\\nTime Connect: %{time_connect}s\\nTime TTFB: %{time_starttransfer}s\\n' -I https://talaripradeep.info",
+              syntax: "curl -w [format] -I [url]",
+              args: "-w: Prints specific execution metrics showing connection time and time-to-first-byte (TTFB) latencies.",
+              output: "Status headers and time analysis (e.g. Time Connect: 0.045s, Time TTFB: 0.120s).",
+              fail: "DNS routing loops or SSL certificate host mismatches. Resolve by validating zone records.",
+              prod: "Audit TTFB metrics from different global client regions to verify DNS latency routing is working correctly."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  User[Global User] -- Anycast Ingress --> Edge[Global Edge CDN]\\n  Edge -- Route Latency --> API1[API Region 1: us-east-1]\\n  Edge -- Route Latency --> API2[API Region 2: eu-west-1]\\n  API1 --> DB1[(DB Primary: us-east-1)]\\n  API2 --> DB2[(DB Read Replica: eu-west-1)]\\n  DB1 -- Async Replication --> DB2",
+              spof: "Centralized primary database represents a write bottleneck and write SPOF for all global regions.",
+              security: "Cross-region network traffic routed over public internet paths instead of private cloud backbone fabrics.",
+              scaling: "High database replication lag under write-heavy workloads, causing read inconsistency in secondary regions.",
+              monitoring: "Missing alerts tracking replication lag and latency deviations across client countries.",
+              backup: "Backups stored in a single region, risking complete loss during a regional cloud disaster.",
+              dr: "No automated redirection of write operations if the primary region database crashes.",
+              improvements: "Configure private AWS Transit Gateway peering, deploy global databases (e.g. DynamoDB Global Tables), and backup configurations to secondary vaults."
+            },
+            interview: [
+              {
+                q: "How do you resolve read inconsistencies (dirty reads) in an Active-Passive multi-region architecture where databases are replicated asynchronously?",
+                intent: "Evaluates mastery of distributed database consistency, replication delay patterns, and session pinning.",
+                hidden: "Looks for read-after-write consistency, sticky routing, caching write markers, and replication lag metrics.",
+                red: "Suggesting database locking across regions (which ruins availability), or denying that read inconsistency exists.",
+                strong: "Suggests routing users who perform writes to the primary region database for a short time to avoid dirty reads.",
+                expert: "Details the session-pinning approach: When a user writes to us-east-1, set a temporary cookie/session key. For the next 10 seconds, force all their reads to route to us-east-1 instead of local replicas. After 10s (exceeding maximum replication lag), clear the marker to resume local secondary reads.",
+                leadership: "Architects globally consistent systems, leveraging Eventual Consistency models with conflict-free replicated data types (CRDT) to synchronize data points.",
+                coachTips: "Explain that consistency is a business trade-off. Connect this to the CAP Theorem to show you understand architectural constraints."
+              }
+            ],
+            incident: {
+              title: "Database Replication Lag Inconsistency Outage",
+              flow: "Users in Europe update their profile, but the dashboard still displays old info, triggering support tickets.",
+              symptoms: "Database replication logs show lag exceeding 20 minutes; users report profiles are revert-looping.",
+              causes: "High database write workload in us-east-1 saturated cross-region network connections.",
+              verify: "Query replication status variables on the replica database.",
+              commands: "aws rds describe-pending-maintenance-actions\npsql -c 'select pg_wal_lsn_diff(pg_current_wal_lsn(), sentinel_lsn);'",
+              fix: "Increase network bandwidth configurations, optimize write batch operations, and route update views to primary database.",
+              validation: "Verify replication lag decreases below 1 second and European profile updates render instantly.",
+              prevention: "Configure Prometheus alert alarms checking pg_replication_lag thresholds, sending alerts before lag exceeds 10s."
+            },
+            quiz: [
+              {
+                q: "Which distributed system theorem states that a database can only guarantee two out of three properties: Consistency, Availability, and Partition tolerance?",
+                options: ["CAP Theorem", "PACELC Theorem", "Amdahl's Law", "Little's Law"],
+                a: "CAP Theorem",
+                explanation: "The CAP Theorem states that in the event of a network partition, a distributed database must choose between Consistency (all nodes see the same data) and Availability (every request receives a response)."
+              }
+            ]
+          },
+          k8s_security: {
+            title: "Kubernetes Security, RBAC & Admission Control",
+            prereqs: "Kubernetes api resources, TLS certificates, linux namespaces, RBAC roles",
+            related: "Kubernetes HA Architecture, Projects Security",
+            advanced: "eBPF Runtime Threat Auditing (Cilium Tetragon / Falco)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Enforce secure boundaries inside Kubernetes clusters to prevent container breakouts, privilege escalations, and credential leaks.",
+              why: "Created to lock down api-server resources, restrict host machine access, and prevent compromised containers from escalating privileges.",
+              before: "Containers executing as root, wide network access allowed by default, and unencrypted secrets stored in etcd databases.",
+              limits: "Strict security contexts can break legacy application containers that depend on write access.",
+              alternatives: "Relying purely on host-level OS boundaries or virtual machine isolation.",
+              examples: "Implementing OPA Gatekeeper policies to automatically reject deployments requesting root access or lacking CPU/memory limits."
+            },
+            tips: "<strong>Production Value:</strong> Never use the default service account with admin privileges. Enforce a ReadOnlyRootFilesystem on deployments to block runtime code injection.<br><br><strong>Key Tips:</strong><br>• <strong>Default deny:</strong> All pods in a namespace can communicate by default. Always apply a default-deny NetworkPolicy and whitelist explicit routes.<br>• <strong>RBAC RoleBinding:</strong> Keep RoleBindings scoped to specific namespaces. Avoid using cluster-wide ClusterRoles unless absolutely necessary.",
+            flow: {
+              learning: "RBAC Roles ➜ ServiceAccounts ➜ Pod Security Standards ➜ NetworkPolicies ➜ Admission Controllers ➜ Secrets Encryption ➜ Container Runtime Audit",
+              execution: "kubectl apply pod ➜ Admission Controller validates ➜ Pod booted ➜ NetworkPolicy restricts ports ➜ Process runs as non-root ➜ Falco monitors system calls",
+              repo: "Pradeeptalari14/tp-sast ➜ manifests/rbac-role.yaml ➜ manifests/network-policy.yaml"
+            },
+            labs: {
+              command: "kubectl auth can-i create pods --as=system:serviceaccount:default:app-sa",
+              syntax: "kubectl auth can-i [action] [resource] [options]",
+              args: "--as=system:serviceaccount:default:app-sa: Audits authorization rules, checking if the service account can create pods.",
+              output: "no (indicating correct restrictive permissions are active).",
+              fail: "Unauthorized access or invalid service account name format. Resolve by validating service account scopes.",
+              prod: "Run `kube-bench` regularly to audit EKS worker nodes against CIS Kubernetes Benchmarks."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  kubectl[User CLI] -- 1. Request --> API[kube-apiserver]\\n  API -- 2. Authentication --> Auth[RBAC validation]\\n  API -- 3. Admission Control --> Controller[OPA Gatekeeper / Kyverno]\\n  Controller -- 4. Deny / Accept --> API\\n  API -- 5. Write state --> etcd[(etcd encrypted)]",
+              spof: "Compromised cluster-admin API token grants complete control over infrastructure assets.",
+              security: "Secrets stored in etcd in plain text without AWS KMS envelope encryption active.",
+              scaling: "Admission controller latency increases pod bootstrapping delays during cluster autoscaling.",
+              monitoring: "Missing audit logs tracking API server requests and pod execution boundaries.",
+              backup: "No backups of RBAC rules and namespace security group policies.",
+              dr: "Misconfigured security policies blocking critical backup operator namespaces from restoring resources.",
+              improvements: "Enforce KMS envelope encryption, run pods with ReadOnlyRootFilesystem, and deploy Kyverno policy validation engines."
+            },
+            interview: [
+              {
+                q: "How do you secure a Kubernetes cluster against container escape vulnerabilities and enforce network segregation?",
+                intent: "Tests advanced container security, Linux kernel namespaces, RBAC, and network policy architectures.",
+                hidden: "Looks for Pod Security Standards (Restricted profile), Seccomp profiles, AppArmor, default-deny NetworkPolicies, and admission controllers.",
+                red: "Ignoring container root execution scopes, or suggesting that namespaces provide absolute security boundaries.",
+                strong: "Suggests using non-root container users, configuring RBAC roles carefully, and applying Kubernetes NetworkPolicies.",
+                expert: "Details configuration steps: 1. Deploy NetworkPolicies enforcing default-deny. 2. Set Pod Security Standards: `securityContext: { runAsNonRoot: true, allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: { drop: ['ALL'] } }`. 3. Enable admission controllers (Kyverno) to reject containers that run as root.",
+                leadership: "Designs enterprise security guardrails, implementing eBPF-based runtime threat auditing (Tetragon) to intercept unauthorized kernel system calls dynamically.",
+                coachTips: "Remember to emphasize that namespaces do NOT provide security isolation. Without NetworkPolicies, a compromised pod can scan and attack any other pod in the cluster."
+              }
+            ],
+            incident: {
+              title: "Privileged Container Escape Security Alert",
+              flow: "Runtime threat auditor (Falco) alerts that a container is writing to the host node's /etc directory.",
+              symptoms: "Falco reports 'Container escape attempt detected'; node CPU average spikes.",
+              causes: "A deployment manifest was applied with `privileged: true` and mount points mapping to the host root file system.",
+              verify: "Inspect the security context of the running pod.",
+              commands: "kubectl get pod compromised-pod -o jsonpath='{.spec.containers[*].securityContext}'",
+              fix: "Terminate the compromised pod, remove `privileged: true` from the deployment manifest, and redeploy.",
+              validation: "Verify Falco logs report normal container execution and host writes are blocked.",
+              prevention: "Enforce admission control policies (OPA Gatekeeper) that reject any pod configurations containing `privileged: true` parameters."
+            },
+            quiz: [
+              {
+                q: "Which Kubernetes resource restricts network traffic communication between pod namespaces?",
+                options: ["Security Group", "NetworkPolicy", "Ingress", "ServiceAccount"],
+                a: "NetworkPolicy",
+                explanation: "Kubernetes NetworkPolicies let you configure ingress and egress traffic filtering rules at the pod level using selector labels."
               }
             ]
           }
@@ -2052,6 +2963,286 @@
                 explanation: "Namespaces and cgroups are native features of the Linux OS kernel used to partition resources and isolate container processes."
               }
             ]
+          },
+          gitops_argocd: {
+            title: "GitOps (ArgoCD) Continuous Delivery",
+            prereqs: "Kubernetes manifests, Git repositories, pull-request workflows",
+            related: "CI/CD Design, SRE & DevOps Toolchain Integration Path",
+            advanced: "Multi-Cluster GitOps Management using ArgoCD ApplicationSets",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Automate Kubernetes state synchronization directly from Git, preventing configuration drift.",
+              why: "Created to eliminate manual kubectl adjustments in production, ensuring the live cluster automatically matches version-controlled Git code.",
+              before: "Direct SSH and shell-script deployments in CI pipelines that bypass audits and cause environment configuration drift.",
+              limits: "Requires continuous etcd connectivity; API limits can choke when scaling across hundreds of applications.",
+              alternatives: "FluxCD (pull model), or Jenkins shell scripts applying manifests directly (push model).",
+              examples: "Updating container tags inside a Helm repository, triggering ArgoCD to pull and deploy the modifications to EKS nodes."
+            },
+            tips: "<strong>Production Value:</strong> Always enable Auto-Sync with Prune and Self-Heal in ArgoCD. Self-Heal instantly reverts manual cluster edits, keeping environments aligned with Git.<br><br><strong>Key Tips:</strong><br>• <strong>Drift Auditing:</strong> Use <code>argocd app diff <app></code> in CLI to audit the exact difference between Git manifests and running pods.<br>• <strong>App-of-Apps:</strong> Manage complex platforms using an App-of-Apps pattern. One parent ArgoCD app provisions child applications dynamically.",
+            flow: {
+              learning: "GitOps Core ➜ ArgoCD Controller ➜ Manifest Repo ➜ Sync Policies ➜ Self-Healing ➜ App-of-Apps pattern",
+              execution: "Git Merge to main ➜ ArgoCD polls change ➜ Compare active state ➜ Identify drift ➜ Apply yaml to K8s API ➜ Sync Status green",
+              repo: "Pradeeptalari14/tp-argocd ➜ manifests/application.yaml ➜ config/values.yaml"
+            },
+            labs: {
+              command: "argocd app get production-app",
+              syntax: "argocd app get [app-name]",
+              args: "production-app: Queries ArgoCD controller to retrieve synchronization status, health state, and drift parameters.",
+              output: "Name: production-app, Status: Synced, Health: Healthy, Repository: git@github.com...",
+              fail: "ArgoCD API server unreachable or login session expired. Resolve by checking connection routing.",
+              prod: "Configure ArgoCD to trigger syncs via Git Webhooks instead of default 3-minute polling to reduce deployment delay."
+            },
+            archGaps: {
+              mermaid: "graph LR\\n  Git[🐱 Git Manifest Repo] -- Webhook --> Argo[🐙 ArgoCD Controller]\\n  Argo -- 1. Read Manifests --> Git\\n  Argo -- 2. Reconcile / Diff --> K8s[☸️ Kubernetes API]\\n  K8s -- 3. Correct Drift --> K8s\\n  Argo -- 4. Telemetry --> Grafana[Grafana Dashboards]",
+              spof: "Single ArgoCD application controller instance handles too many cluster namespaces, causing thread exhaustion.",
+              security: "ArgoCD admin credentials stored with weak password configurations without Single Sign-On (SSO) active.",
+              scaling: "Git repository timeouts during massive concurrent git operations by multiple build agents.",
+              monitoring: "Missing logs tracking webhook delivery status and auto-sync failure metrics.",
+              backup: "No backups of ArgoCD application registers and custom resource definitions (CRDs).",
+              dr: "Complete loss of the target cluster isolates ArgoCD controllers, blocking release recovery operations.",
+              improvements: "Enforce SSO integration via Dex, run ArgoCD controllers in HA mode with redis caching, and back up manifests."
+            },
+            interview: [
+              {
+                q: "What are the core benefits of GitOps, and how does ArgoCD detect and handle configuration drift in a Kubernetes cluster?",
+                intent: "Tests understanding of GitOps core principles, controller reconcile loops, and automated self-healing.",
+                hidden: "Looks for Git source of truth, reconciliation loops, self-heal, prune options, webhook configurations, and application states.",
+                red: "Recommending manual hotfixes via kubectl directly during live outages, or thinking GitOps is just Jenkins script deployments.",
+                strong: "Explains GitOps as treating Git as the source of truth, and ArgoCD automates syncs to match the cluster.",
+                expert: "Details the reconciliation loop: ArgoCD compares target state (Git manifests) with live state (K8s API objects). If it detects a mismatch, it marks the app as OutOfSync. If Self-Heal is active, it applies the Git definition. If Prune is active, it deletes orphaned K8s objects not declared in Git.",
+                leadership: "Architects multi-tenant multi-cluster architectures, deploying ArgoCD ApplicationSets that auto-generate manifests dynamically for 100+ environments.",
+                coachTips: "Explain that GitOps provides an automatic audit trail: every change to production must be approved in a Git Pull Request first."
+              }
+            ],
+            incident: {
+              title: "Out-of-Sync Loop During GitOps Sync",
+              flow: "ArgoCD continuously attempts to sync a service but stays OutOfSync, filling logs with error loops.",
+              symptoms: "ArgoCD dashboard flags app status as OutOfSync; CPU usage on EKS nodes increases.",
+              causes: "A Kubernetes mutation webhook (like Linkerd or Kyverno) modifies the pod manifest at runtime, creating a continuous diff with Git.",
+              verify: "Inspect the diff between target and live manifests in ArgoCD.",
+              commands: "argocd app diff production-app",
+              fix: "Configure ArgoCD `ignoreDifferences` parameters to exclude runtime-mutated fields (e.g. metadata labels, annotations).",
+              validation: "Verify application status transitions to Synced and sync loops stop.",
+              prevention: "Run validation rules verifying compatibility between runtime webhooks and GitOps declarations before deployment."
+            },
+            quiz: [
+              {
+                q: "Which ArgoCD configuration option automatically deletes Kubernetes resources that are no longer declared in the Git repository?",
+                options: ["Self-Heal", "Prune", "Auto-Sync", "Retry"],
+                a: "Prune",
+                explanation: "The Prune configuration tells the ArgoCD controller to delete active cluster resources that have been deleted from the source Git manifests."
+              }
+            ]
+          },
+          terraform_state: {
+            title: "Terraform State Management & Backend Scaling",
+            prereqs: "Terraform HCL, state files, AWS S3/DynamoDB, infrastructure locking",
+            related: "SRE Practices, Platform Engineering",
+            advanced: "Terraform Enterprise/Cloud workspace migrations and drift reconciliation",
+            yield: "9.7 / 10",
+            purpose: {
+              solve: "Store and lock cloud resource states securely to prevent concurrent execution conflicts and data corruption.",
+              why: "Created to prevent multiple team members or build systems from applying conflicts simultaneously, protecting state files from corruption.",
+              before: "Local state files committed to Git (which exposes plain text secrets) or unshared local states that skew resource configurations.",
+              limits: "Stuck locks require manual unlocking interventions, blocking automated CI pipelines during runs.",
+              alternatives: "Manual cloud resource mapping and auditing, or relying entirely on AWS CloudFormation stacks.",
+              examples: "Configuring a Terraform remote backend to store configurations in S3, using a DynamoDB primary key for state locking."
+            },
+            tips: "<strong>Production Value:</strong> Never commit terraform.tfstate to Git. It contains plaintext secrets. Use S3 versioning for state files and DynamoDB for lock tables.<br><br><strong>Key Tips:</strong><br>• <strong>State corruption:</strong> If a state file gets corrupted, recover it by downloading the previous version from S3 using versioning controls.<br>• <strong>force-unlock:</strong> If a run crashes, release the lock by identifying the Lock Info ID and executing <code>terraform force-unlock <ID></code>.",
+            flow: {
+              learning: "Terraform State ➜ Plaintext Secrets ➜ S3 Backend ➜ DynamoDB State Locking ➜ Terraform Workspace ➜ State Imports",
+              execution: "terraform apply ➜ Read remote state ➜ Lock state in DynamoDB ➜ Call Cloud APIs ➜ Write new state ➜ Release lock",
+              repo: "Pradeeptalari14/infra ➜ terraform/backend.tf ➜ terraform/main.tf"
+            },
+            labs: {
+              command: "terraform state show aws_instance.web",
+              syntax: "terraform state show [resource-path]",
+              args: "aws_instance.web: Retrieves the live state attributes and properties of the specified web EC2 instance from the remote state file.",
+              output: "Properties details: id = i-xxxxxx, ami = ami-xxxxxx, instance_type = m5.large, private_ip = 10.0...",
+              fail: "Resource not found in state or state file unreachable. Resolve by running terraform init.",
+              prod: "Store state buckets in dedicated, locked AWS accounts separate from application workload scopes."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Dev[Developer / CI] -- 1. CLI Apply --> TF[Terraform Executable]\\n  TF -- 2. Query Remote State --> S3[(AWS S3 Bucket: State)]\\n  TF -- 3. Acquire Lock --> Dynamo[(DynamoDB Table: Lock)]\\n  TF -- 4. Provision --> AWS[AWS Cloud APIs]\\n  TF -- 5. Update State --> S3\\n  TF -- 6. Release Lock --> Dynamo",
+              spof: "Loss of S3 state bucket database deletes track of cloud resource mappings, requiring manual resource imports.",
+              security: "Sensitive variables (e.g. database master passwords) saved in plaintext inside the remote tfstate file.",
+              scaling: "State locking bottlenecks when multiple team pipelines concurrently apply changes to the same monorepo.",
+              monitoring: "Missing alert rules tracking access attempts and data manipulation logs in the state S3 bucket.",
+              backup: "S3 bucket lacks cross-region replication and snapshot versioning, exposing state to accidental deletion.",
+              dr: "Corruption of state file requires manual rollback of old state files.",
+              improvements: "Enable S3 bucket versioning, implement strict KMS envelope encryption, enforce DynamoDB state locking, and use Terraform workspaces."
+            },
+            interview: [
+              {
+                q: "How does Terraform state locking work, and how do you recover from a corrupted state file or a stuck state lock?",
+                intent: "Tests troubleshooting, state locking mechanisms, disaster recovery of state files, and parallel run hazards.",
+                hidden: "Looks for DynamoDB lock tables, LockID, state file backup histories, `terraform force-unlock`, and backend initialization configurations.",
+                red: "Suggesting manual editing of the raw remote tfstate file, or not knowing why local states are insecure.",
+                strong: "Explains state locking prevents concurrent runs by locking a database. stuck locks are unlocked using force-unlock.",
+                expert: "Details the lock: TF creates an item in DynamoDB with a LockID. If a pipeline runs, it checks DynamoDB. If stuck (e.g. pipeline crashed), identify the Lock Info ID from logs, run `terraform force-unlock <ID>` after verifying the run is dead. To recover corrupted states, retrieve the previous S3 version from the bucket's versioning history.",
+                leadership: "Architects scale IaC pipelines using Terraform Cloud/Enterprise, implementing automated plan policies (Sentinel/OPA) to audit configurations in Git before execution.",
+                coachTips: "Warn that editing state files manually is highly risky. Always use `terraform state mv` or `terraform state rm` CLI commands instead."
+              }
+            ],
+            incident: {
+              title: "Stuck Terraform Lock Halts Deployments",
+              flow: "Deployment pipeline fails at the Terraform plan stage, returning state lock error messages.",
+              symptoms: "CI logs report 'Error: Error acquiring the state lock: ConditionalCheckFailedException'; updates are blocked.",
+              causes: "A previous Jenkins build runner crashed or was killed abruptly without running the cleanup tasks that release the lock.",
+              verify: "Inspect lock logs to extract the Lock Info ID.",
+              commands: "aws dynamodb scan --table-name terraform-locks\nterraform force-unlock xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              fix: "Run force-unlock command using the active Lock ID.",
+              validation: "Re-trigger deployment pipeline and verify the plan proceeds without lock blocks.",
+              prevention: "Configure short timeouts on CI execution tasks, ensuring builders clean environments during crashes."
+            },
+            quiz: [
+              {
+                q: "Which AWS service is commonly paired with Amazon S3 to enforce state locking for Terraform backend configurations?",
+                options: ["RDS", "DynamoDB", "ElastiCache", "Route53"],
+                a: "DynamoDB",
+                explanation: "DynamoDB is paired with S3 backends, providing state locking by storing lock indices in a primary key table during Terraform runs."
+              }
+            ]
+          },
+          cicd_design: {
+            title: "SRE Pipeline & CI/CD Architecture",
+            prereqs: "Git, runner execution models, container registry APIs, build tooling",
+            related: "GitOps (ArgoCD), Platform Engineering",
+            advanced: "Multi-Architecture Docker Builds & Automated Rolling Canary Release Gates",
+            yield: "9.7 / 10",
+            purpose: {
+              solve: "Automate build, test, and container packaging stages to guarantee secure, rapid software releases.",
+              why: "Created to eliminate manual server updates and developer interventions, accelerating lead time for production changes.",
+              before: "Manual SFTP uploads, local packaging runs, and untested server releases that cause regression outages.",
+              limits: "Pipeline queue depth can choke during active team sprint hours, delaying deployment rollouts.",
+              alternatives: "Scripted manual command line deployments from developer local nodes.",
+              examples: "Executing Jenkins/GitHub Actions pipeline runs that automatically test, build, scan, and deploy containers."
+            },
+            tips: "<strong>Production Value:</strong> Optimize pipelines: use caching (node_modules/dependencies), build multi-architecture containers (x86/ARM), and enforce immutable artifacts.<br><br><strong>Key Tips:</strong><br>• <strong>Immutable builds:</strong> Compile the container once. Promote that exact same image tag across Dev, Staging, and Production. Never rebuild per stage.<br>• <strong>Fail Fast:</strong> Place linting and unit tests at the start of the build queue to detect failures before running slow compiler blocks.",
+            flow: {
+              learning: "CI Core ➜ Runner Agents ➜ Build Caches ➜ Parallel testing ➜ SAST/DAST Scans ➜ Artifact Storage ➜ CD gates",
+              execution: "Dev Push ➜ Webhook runs ➜ Run Linter ➜ Build Image ➜ Run vulnerability scan ➜ Push to Registry ➜ Deploy to Staging",
+              repo: "Pradeeptalari14/tp-github-actions ➜ .github/workflows/main.yml ➜ pipelines/Jenkinsfile"
+            },
+            labs: {
+              command: "docker buildx build --platform linux/amd64,linux/arm64 -t app:v1 --push .",
+              syntax: "docker buildx build [options] [path]",
+              args: "--platform: Generates cross-architecture (x86/ARM) container builds; --push: Uploads the manifest to the remote container registry.",
+              output: "Manifest list and image layers pushed to target registry.",
+              fail: "Buildx driver not initialized or credentials missing. Resolve by initializing buildx driver.",
+              prod: "Verify container images using security signature check gates (e.g. Cosign) before running in clusters."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Dev[Developer Commit] -- 1. Git Push --> Git[GitHub Repo]\\n  Git -- 2. Webhook Trigger --> CI[Jenkins / Actions Runner]\\n  CI -- 3. Retrieve Cache --> Cache[(Runner Volume Cache)]\\n  CI -- 4. Build & Scan --> Trivy[Trivy Vulnerability Scan]\\n  CI -- 5. Push Build --> Registry[(ECR Container Registry)]\\n  Registry -- 6. Pull and Sync --> Argo[ArgoCD Sync]",
+              spof: "Monolithic build runner server node represents a pipeline scheduler single point of failure.",
+              security: "Private API keys and Docker credentials hardcoded in clear text in pipeline script configuration registers.",
+              scaling: "Build queues backing up during team sprints due to lack of autoscaling runner executors.",
+              monitoring: "Missing telemetry tracking pipeline failure rates, build duration trends, and checkout latencies.",
+              backup: "No backups of compiled artifacts and pipeline build logs.",
+              dr: "Runner cluster crash blocks hotfix compilation pipelines during active outages.",
+              improvements: "Implement autoscaling Kubernetes runner agents, integrate secret injection via Vault, and enable artifact cache sharing."
+            },
+            interview: [
+              {
+                q: "How do you design a secure, highly-available CI/CD pipeline that scales dynamically to handle hundreds of concurrent builds?",
+                intent: "Tests system integration, security tooling integration, caching optimizations, and runner resource management.",
+                hidden: "Looks for ephemeral runners (Kubernetes executors), secrets management integration (Vault/OIDC), distributed caching, and artifact signature validation.",
+                red: "Recommending static virtual machine runners that save credentials locally on disks, or suggesting building separate containers per stage.",
+                strong: "Suggests using GitHub Actions or Jenkins with containerized runner pods that autoscale.",
+                expert: "Details the architecture: 1. Deploy ephemeral runner pods in Kubernetes (e.g., Actions Runner Controller). 2. Use OIDC (OpenID Connect) token authentication with AWS IAM to avoid hardcoding access keys in CI. 3. Configure distributed caching (e.g., S3/MinIO caching for compilers). 4. Secure builds by scanning via Trivy and signing images via Cosign before pushing to ECR.",
+                leadership: "Architects enterprise-wide DevOps governance, designing unified golden-pipeline libraries that automatically enforce compliance checks and SOC2 security gates.",
+                coachTips: "Explain that building container images once is critical: it guarantees the exact code validated in staging runs in production."
+              }
+            ],
+            incident: {
+              title: "Container Image Secret Leak Outage",
+              flow: "A pipeline build finishes, but security scanners flag that a developer checked credentials into the Git commit.",
+              symptoms: "Pipeline security scan gates fail; GitGuardian sends critical API leak warnings.",
+              causes: "A developer checked in a testing `.env` configuration file containing AWS credentials into the feature branch.",
+              verify: "Inspect git history and review SAST reports.",
+              commands: "git log -p -S 'AWS_ACCESS_KEY_ID'\ntrufflehog git file://. --since-commit HEAD~1",
+              fix: "Revoke the leaked AWS credentials, add the `.env` file to `.gitignore`, rewrite git history via BFG, and push.",
+              validation: "Re-run Trufflehog scan on repository and verify zero secret leakage.",
+              prevention: "Deploy pre-commit hook scanning (Trufflehog) to block Git commits locally before developers push changes."
+            },
+            quiz: [
+              {
+                q: "Which authentication protocol allows CI/CD pipeline runners to obtain temporary credentials from AWS IAM without storing static keys?",
+                options: ["SAML 2.0", "OpenID Connect (OIDC)", "OAuth 1.0", "Basic Auth"],
+                a: "OpenID Connect (OIDC)",
+                explanation: "OIDC allows pipeline runners to assume AWS IAM roles dynamically using cryptographically signed tokens, eliminating static secret key storage."
+              }
+            ]
+          },
+          service_mesh_istio: {
+            title: "Service Mesh & Istio Network Orchestration",
+            prereqs: "Kubernetes networking, Envoy proxy logic, mTLS, TLS handshakes",
+            related: "Kubernetes HA Architecture, AWS Networking",
+            advanced: "Istio Ambient Mesh (Sidecarless Service Mesh)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Manage microservice network communications, enforce mutual TLS (mTLS), and implement traffic routing policies dynamically.",
+              why: "Created to abstract traffic security, observability, and routing from container application code, enforcing it at infrastructure layers.",
+              before: "Enforcing security (mTLS) in code, and using raw IP routing that lacks tracing metrics and canary traffic splits.",
+              limits: "Envoy sidecar proxies add trace validation latency and consume memory footprints in huge namespaces.",
+              alternatives: "Direct Kubernetes core service routing (kube-proxy routing), or using basic ingress ingress routing rules.",
+              examples: "Injecting Envoy sidecars to encrypt network flows via strict mTLS and routing 10% of HTTP traffic to canary sub-groups."
+            },
+            tips: "<strong>Production Value:</strong> Envoy proxies add small latency. Manage proxy limits carefully. Use Istio Sidecar objects to restrict routing table visibility and save memory.<br><br><strong>Key Tips:</strong><br>• <strong>mTLS Modes:</strong> Enforce strict mTLS (STRICT) instead of PERMISSIVE in production. Permissive mode allows unencrypted plain text traffic.<br>• <strong>VirtualService vs DestinationRule:</strong> VirtualService routes traffic to a destination (handles weights/headers). DestinationRule configures destination policies (handles load balancing, mTLS, and circuit breakers).",
+            flow: {
+              learning: "Control vs Data Plane ➜ Envoy Proxy Injection ➜ mTLS ➜ VirtualServices ➜ DestinationRules ➜ Gateways ➜ Circuit Breakers",
+              execution: "Client Call ➜ Ingress Gateway ➜ Envoy Proxy intercepts ➜ mTLS handshake ➜ Routing rules applied ➜ Target Pod Sidecar decrypts ➜ Target App",
+              repo: "Pradeeptalari14/tp-kubernetes ➜ manifests/istio-gateway.yaml ➜ manifests/virtual-service.yaml"
+            },
+            labs: {
+              command: "istioctl proxy-config routes pod-name.default",
+              syntax: "istioctl proxy-config routes [pod-name] [options]",
+              args: "pod-name.default: Audits active dynamic route table mappings inside the Envoy container of the target pod.",
+              output: "List showing route paths, targets, cluster destinations, and timeout settings.",
+              fail: "Pod does not contain an Istio sidecar proxy. Resolve by labeling the namespace with istio-injection.",
+              prod: "Label namespaces with `istio-injection=enabled` to automate Envoy proxy sidecar injection during deployments."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[User Client] --> Gateway[Istio Ingress Gateway]\\n  Gateway -- mTLS Route --> SidecarA[Envoy Sidecar A]\\n  SidecarA --> AppA[App Pod A]\\n  SidecarA -- mTLS Connection --> SidecarB[Envoy Sidecar B]\\n  SidecarB --> AppB[App Pod B]\\n  Istiod[Istio Control Plane: istiod] -- Propagate Config --> Gateway & SidecarA & SidecarB",
+              spof: "Istiod control plane failure halts configuration updates and dynamic routing updates.",
+              security: "mTLS set to permissive mode, allowing unencrypted network packets within the mesh.",
+              scaling: "High CPU/memory load on Envoy sidecars during traffic peaks, causing latency delays.",
+              monitoring: "Missing tracing dashboards mapping service dependencies and Envoy latency distributions.",
+              backup: "No backups of Istio custom resource definitions (CRDs).",
+              dr: "Misconfigured routing weights blocking access to secondary service groups.",
+              improvements: "Enforce strict mTLS, deploy Istio Ambient mesh to remove sidecar resource overhead, and configure sidecar resource boundaries."
+            },
+            interview: [
+              {
+                q: "Explain the difference between VirtualServices and DestinationRules in Istio, and how you implement a circuit breaker using the mesh.",
+                intent: "Tests advanced service mesh design, microservice traffic controls, and resiliency patterns.",
+                hidden: "Looks for traffic shifting, routing rules, connection pools, outlier detection, Envoy proxies, and circuit breaking thresholds.",
+                red: "Confusing VirtualServices with Kubernetes services, or suggesting circuit breaking must be written in application code.",
+                strong: "Differentiates VirtualServices (routes traffic to a service destination) from DestinationRules (configures policies for that destination). Recommends circuit breaking to isolate bad pods.",
+                expert: "Details: VirtualService defines host routing matching paths/headers and splits traffic weight (e.g. 90/10). DestinationRule defines load balancing metrics and circuit breakers. In the DestinationRule, configures `trafficPolicy.connectionPool` (e.g., maxConnections: 100) and `outlierDetection` (e.g., consecutive5xxErrors: 3) to automatically evict failing nodes.",
+                leadership: "Architects global service meshes, integrating cross-cluster meshes using Istio service registries to route traffic securely across multi-region configurations.",
+                coachTips: "Explain that circuit breaking prevents cascading failures: by evicting slow/unhealthy nodes, the mesh keeps the overall system alive."
+              }
+            ],
+            incident: {
+              title: "Permissive mTLS Mesh Security Vulnerability",
+              flow: "A security audit flags that unencrypted plain HTTP traffic is traversing namespaces, violating policies.",
+              symptoms: "Security scanners report unencrypted packets between pods; traffic analysis shows lack of client certificates.",
+              causes: "Istio's PeerAuthentication policy was left at default Permissive mode instead of Strict.",
+              verify: "Inspect PeerAuthentication resources in the namespace.",
+              commands: "kubectl get peerauthentications -n default",
+              fix: "Apply PeerAuthentication manifest setting mode to STRICT.",
+              validation: "Verify curl requests lacking client TLS certificates are blocked with HTTP 403 / connection drops.",
+              prevention: "Enforce automated OPA policy checks blocking deployment of permissive PeerAuthentication configurations."
+            },
+            quiz: [
+              {
+                q: "Which Istio custom resource configures load balancing, mutual TLS settings, and circuit breaking parameters for backend destination pools?",
+                options: ["VirtualService", "DestinationRule", "Gateway", "PeerAuthentication"],
+                a: "DestinationRule",
+                explanation: "DestinationRule defines target policies (load balancing algorithms, TLS, and circuit breakers) applied to a destination pool once routing is completed."
+              }
+            ]
           }
         }
       },
@@ -2115,11 +3306,77 @@
               prevention: "Configure circuit-breaker gateways returning immediate HTTP 202, queuing tasks to secondary SQS layers for async processing."
             },
             quiz: [
-              {
-                q: "What mechanism is typically used to guarantee webhook payloads are not tampered with during transmission?",
-                options: ["OAuth 2.0", "HMAC Signatures", "SSL Pinning", "JWT tokens"],
-                a: "HMAC Signatures",
                 explanation: "HMAC signatures involve hashing payload data utilizing shared secrets, allowing receivers to verify origin and content integrity."
+              }
+            ]
+          },
+          incident_management: {
+            title: "SRE Incident Management & On-Call Operations",
+            prereqs: "On-call rotations, alerting priorities, postmortem processes, severity classification levels",
+            related: "Production Troubleshooting, Observability Stack",
+            advanced: "Automated Self-Healing Orchestration loops (Event-Driven Remediation)",
+            yield: "9.8 / 10",
+            purpose: {
+              solve: "Restore service stability rapidly during outages, establish clear communication bridges, and compile blameless postmortems.",
+              why: "Created to replace chaotic, unstructured team communication during outages with a clear command chain that minimizes MTTR.",
+              before: "Unstructured ad-hoc slack messaging, panicking, finger-pointing, and prolonged service unavailability.",
+              limits: "Requires continuous on-call support rotations and can lead to burnout if alert noise is not suppressed.",
+              alternatives: "Standard developer ticketing systems without escalation policies, or wait-and-see operations.",
+              examples: "Triggering a Sev1 bridge call when a core billing system returns HTTP 5xx errors, paging active on-call staff dynamically."
+            },
+            tips: "<strong>Production Value:</strong> Always separate the role of Incident Commander (who manages communication and tasks) from the Operations Lead (who performs the actual technical fixes). This keeps coordination clean.<br><br><strong>Key Tips:</strong><br>• <strong>Alert Fatigue:</strong> Ruthlessly suppress alerts that don't require immediate action. Non-actionable pages should be logged as tickets, not phone calls.<br>• <strong>Postmortems:</strong> Write postmortems within 48 hours of resolution. Ensure they are blameless to encourage team transparency and systemic improvements.",
+            flow: {
+              learning: "Alert Trigger ➜ Paging ➜ Triage ➜ Commander Role ➜ Operations Fix ➜ Resolution ➜ Blameless Postmortem",
+              execution: "SLO Burn Alert ➜ PagerDuty page ➜ ACK alert ➜ Open bridge call ➜ Mitigate loop ➜ Resolve ticket ➜ Schedule postmortem",
+              repo: "Pradeeptalari14/tp-webhooks ➜ receiver.py ➜ config/alert_rules.json"
+            },
+            labs: {
+              command: "pd-cli incident list --status triggered",
+              syntax: "pd-cli incident [command] [options]",
+              args: "list --status triggered: Queries PagerDuty client CLI registers to list active, unacknowledged incident reports.",
+              output: "Incident ID: INC-99012, Status: Triggered, Service: Payments API, Severity: Critical.",
+              fail: "PagerDuty token expired or internet connection timeout. Resolve by checking network credentials.",
+              prod: "Enforce automated escalation policies: alert escalates to Secondary engineer if Primary does not ACK within 15 minutes."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Alert[Scraper Alert] -- 1. Trigger --> Pager[PagerDuty API]\\n  Pager -- 2. Page Primary --> Eng[On-Call Engineer]\\n  Eng -- 3. Unresolved 15m? Escalation --> SecEng[Secondary On-Call]\\n  Eng -- 4. Mitigate --> Infra[AWS / K8s Cloud]\\n  Eng -- 5. Resolve --> Pager\\n  Eng -- 6. Schedule --> Post[Blameless Postmortem]",
+              spof: "Relying on a single communication tool (e.g. Slack/Teams) for on-call notification bridges, losing alerts during corporate messenger outages.",
+              security: "Incident logs containing plaintext user credentials or secret variables generated during diagnostics.",
+              scaling: "Alert fatigue: duplicate pages flooding the on-call engineer's phone, causing ignored alerts.",
+              monitoring: "Missing monitoring checks checking the health and delivery success rates of alerting gateways.",
+              backup: "No backups of on-call roster schedules and escalation rules outside the primary paging provider.",
+              dr: "Failure of the paging provider API prevents alerting notifications, leaving engineers blind during outages.",
+              improvements: "Integrate multi-channel alerting (SMS, Phone Call, Push, email), configure automated alert deduplication rules, and schedule quarterly blameless postmortem audits."
+            },
+            interview: [
+              {
+                q: "Walk through your systematic response and communication strategy during a major Sev1 production outage.",
+                intent: "Tests leadership, incident response patterns, communication control, and structured outage resolution.",
+                hidden: "Looks for Incident Commander role, separating commander from technical operator, blameless terminology, dynamic status updates, and timeline tracking.",
+                red: "Ignoring team communication, attempting to fix issues in isolation, or hiding failures from stakeholders.",
+                strong: "Declares a Sev1 incident, opens a video bridge call, diagnoses the root cause, coordinates hotfixes, and updates stakeholders.",
+                expert: "Details: 1. Immediately declare Sev1. 2. Appoint an Incident Commander (IC) to handle communications and updates (e.g. status page). 3. Appoint a Tech Lead to drive diagnostics. 4. Isolate changes (revert latest deployments). 5. Update customers/execs every 15-30 minutes. 6. Once resolved, schedule a blameless postmortem to implement preventive fixes.",
+                leadership: "Champions corporate resiliency frameworks, automated runbook responses, and organizational reliability culture.",
+                coachTips: "Focus on communication. In SRE, keeping stakeholders updated is just as important as fixing the code."
+              }
+            ],
+            incident: {
+              title: "Alert Routing Gateway Failure",
+              flow: "EKS cluster crashes, but no paging alerts fire, leading to 2 hours of silent downtime.",
+              symptoms: "Customer transaction success rates drop to zero; status page remains green; on-call engineer is not paged.",
+              causes: "The PagerDuty webhook authentication token expired, blocking alerting pipelines.",
+              verify: "Check Alertmanager dispatch logs and verify target webhook response codes.",
+              commands: "curl -i -X POST -d '{\"event_action\":\"trigger\"}' https://events.pagerduty.com/v2/enqueue",
+              fix: "Update PagerDuty integration token, trigger a test alert, and confirm the on-call pager rings.",
+              validation: "Verify test alert payload successfully creates and triggers an active incident ticket in PagerDuty.",
+              prevention: "Configure secondary alerting pathways (e.g., direct SMS/AWS SNS) that trigger if the primary PagerDuty webhook fails."
+            },
+            quiz: [
+              {
+                q: "Which SRE role is responsible for coordinating communication, updating stakeholders, and documenting timelines during an incident, without performing technical debugging?",
+                options: ["Operations Lead", "Incident Commander", "Communications Officer", "SRE Manager"],
+                a: "Incident Commander",
+                explanation: "The Incident Commander (IC) leads the incident response, coordinating communication, logging events, and updating stakeholders so the technical team can focus on mitigation."
               }
             ]
           }
