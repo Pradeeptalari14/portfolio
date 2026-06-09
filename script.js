@@ -28,6 +28,16 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
 
+let activeTerminalHandler = null;
+window.runSRETerminalCommand = function(cmd) {
+  if (activeTerminalHandler) {
+    const input = $('terminalInput');
+    if (input) input.value = cmd;
+    activeTerminalHandler(cmd);
+    if (input) input.value = '';
+  }
+};
+
 /* ══════════════
    NAVBAR
 ══════════════ */
@@ -731,6 +741,8 @@ function initSRETerminal() {
   const chips = $('terminalChips');
   if (!term || !history || !input) return;
 
+  activeTerminalHandler = handleCommand;
+
   // Print initial greeting
   const initialLines = [
     'Welcome to tp-shell v2.4 (type "help" for available commands)',
@@ -779,49 +791,127 @@ function initSRETerminal() {
     }
 
     let outText = '';
-    switch (cleanCmd) {
-      case 'help':
-        outText = 'Available commands:\n' +
-                  '  help     - Show list of available commands\n' +
-                  '  about    - SRE credentials, role details, and target SLA\n' +
-                  '  skills   - List key tools and tech stack expertise\n' +
-                  '  neofetch - Display system info and cloud stats\n' +
-                  '  clear    - Clear terminal screen and history';
-        break;
-      case 'about':
-        outText = 'TALARI PRADEEP - CLOUD & DEVOPS ENGINEER\n' +
-                  '------------------------------------------------\n' +
-                  'Current Focus: AWS, Kubernetes, Terraform, SRE.\n' +
-                  'Enterprise Experience: Managed enterprise EKS workloads\n' +
-                  'with Helm, Karpenter, private network subnets, and IaC.\n' +
-                  'Studios & Repos: Automated secure deployments and GitOps\n' +
-                  'monitoring for 15+ microservice repositories.\n' +
-                  'Status: Operational (SLA target: 99.99%). Open to work.';
-        break;
-      case 'skills':
-        outText = 'KEY SKILLS & TOOLS:\n' +
-                  '------------------------------------------------\n' +
-                  '[Cloud Platforms]  AWS, GCP, Azure\n' +
-                  '[Containers/Orch]  Kubernetes (EKS, GKE), Docker, Helm\n' +
-                  '[IaC & GitOps]     Terraform, Ansible, Pulumi\n' +
-                  '[CI/CD Pipelines]  Jenkins, GitHub Actions, Git\n' +
-                  '[Observability]    Prometheus, Grafana, ELK Stack, Loki\n' +
-                  '[Development]      Python, Bash, Groovy, JavaScript';
-        break;
-      case 'neofetch':
-        outText = '     _.._       visitor@talaripradeep.info\n' +
-                  '   .\' .-\'`      --------------------------\n' +
-                  '  /  /          OS: TalariOS 2.0\n' +
-                  '  |  |          Host: talaripradeep.info (SLA: 99.99%)\n' +
-                  '  \\  \\__.-.     Kernel: Web Shell/v2.4\n' +
-                  '   \'._`  .\'     Uptime: 100% (Continuous Integration)\n' +
-                  '      ``        Shell: bash-tp-custom\n' +
-                  '                Location: India (Open to Work)\n' +
-                  '                Core Stack: AWS, Kubernetes, Terraform, SRE';
-        break;
-      default:
-        outText = 'bash: command not found: ' + cmd + '. Type "help" for available commands.';
-        outputEl.style.color = '#ef4444'; // Red color for errors
+    if (cleanCmd === 'sre-reconcile sg') {
+      outText = 'Running SRE Security Group reconciliation...\n' +
+                'Restoring firewall ingress rules to port 80.\n' +
+                'Reconciliation complete. Status: OK.';
+      const tfEditor = $('tfCodeEditor');
+      if (tfEditor) {
+        tfEditor.value = `resource "aws_security_group" "web" {
+  name = "web-sec-group"
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+  }
+}`;
+        tfEditor.dispatchEvent(new Event('input'));
+      }
+    } else if (cleanCmd === 'sre-patch oom') {
+      outText = 'Deploying OOM mitigation heap eviction patch...\n' +
+                'kubectl rollout restart deployment/payment-service\n' +
+                'Evicting heap. Restarting containers... RAM usage normalized.';
+      const ramVal = $('metric-ram-val');
+      const ramBar = $('metric-ram-bar');
+      if (ramVal && ramBar) {
+        ramVal.textContent = "42";
+        ramBar.style.width = "42%";
+      }
+      const logBox = $('healerLogs');
+      if (logBox) {
+        const row = document.createElement('div');
+        row.textContent = '[HEALER] Evicting cache & triggering OOMKilled rescue reboot.';
+        logBox.appendChild(row);
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+    } else if (cleanCmd === 'sre-rollback') {
+      outText = 'Canary deployment auto-rollback triggered via CLI...\n' +
+                'Resetting routing splits to stable. Setting canary traffic to 0%.';
+      const canarySlider = $('canarySlider');
+      const toggleCanaryError = $('toggleCanaryError');
+      if (canarySlider) {
+        canarySlider.value = 0;
+        canarySlider.dispatchEvent(new Event('input'));
+      }
+      if (toggleCanaryError) {
+        toggleCanaryError.checked = false;
+      }
+    } else if (cleanCmd === 'cat /var/log/containers/payment-service.log') {
+      outText = '2026-06-08T22:45:12Z payment-service-xyz [INFO] Starting payment-service application...\n' +
+                '2026-06-08T22:45:15Z payment-service-xyz [WARN] Memory usage climbing: heap allocated = 212MB\n' +
+                '2026-06-08T22:45:19Z payment-service-xyz [ERROR] Out of Memory: Heap space limit exceeded\n' +
+                '2026-06-08T22:45:19Z payment-service-xyz [FATAL] process exited with status 137 (OOMKilled)';
+    } else if (cleanCmd === 'terraform plan') {
+      outText = 'Executing terraform plan from SRE terminal...\n';
+      const tfPlanBtn = $('btnTfPlan');
+      if (tfPlanBtn && !tfPlanBtn.disabled) {
+        tfPlanBtn.click();
+        outText += 'Terraform Plan completed successfully.';
+      } else {
+        outText += 'Error: terraform plan is not applicable in current state.';
+        outputEl.style.color = '#ef4444';
+      }
+    } else if (cleanCmd === 'terraform apply') {
+      outText = 'Executing terraform apply from SRE terminal...\n';
+      const tfApplyBtn = $('btnTfApply');
+      if (tfApplyBtn && !tfApplyBtn.disabled) {
+        tfApplyBtn.click();
+        outText += 'Terraform Apply completed successfully.';
+      } else {
+        outText += 'Error: terraform apply is not applicable in current state.';
+        outputEl.style.color = '#ef4444';
+      }
+    } else {
+      switch (cleanCmd) {
+        case 'help':
+          outText = 'Available commands:\n' +
+                    '  help     - Show list of available commands\n' +
+                    '  about    - SRE credentials, role details, and target SLA\n' +
+                    '  skills   - List key tools and tech stack expertise\n' +
+                    '  neofetch - Display system info and cloud stats\n' +
+                    '  clear    - Clear terminal screen and history\n' +
+                    '  sre-reconcile sg - Reconcile SecGroup drift\n' +
+                    '  sre-patch oom    - Deploys memory limit patch\n' +
+                    '  sre-rollback     - Rollback Canary traffic splits\n' +
+                    '  cat /var/log/containers/payment-service.log - Print container log\n' +
+                    '  terraform plan   - Propose Terraform plan\n' +
+                    '  terraform apply  - Apply pending Terraform changes';
+          break;
+        case 'about':
+          outText = 'TALARI PRADEEP - CLOUD & DEVOPS ENGINEER\n' +
+                    '------------------------------------------------\n' +
+                    'Current Focus: AWS, Kubernetes, Terraform, SRE.\n' +
+                    'Enterprise Experience: Managed enterprise EKS workloads\n' +
+                    'with Helm, Karpenter, private network subnets, and IaC.\n' +
+                    'Studios & Repos: Automated secure deployments and GitOps\n' +
+                    'monitoring for 15+ microservice repositories.\n' +
+                    'Status: Operational (SLA target: 99.99%). Open to work.';
+          break;
+        case 'skills':
+          outText = 'KEY SKILLS & TOOLS:\n' +
+                    '------------------------------------------------\n' +
+                    '[Cloud Platforms]  AWS, GCP, Azure\n' +
+                    '[Containers/Orch]  Kubernetes (EKS, GKE), Docker, Helm\n' +
+                    '[IaC & GitOps]     Terraform, Ansible, Pulumi\n' +
+                    '[CI/CD Pipelines]  Jenkins, GitHub Actions, Git\n' +
+                    '[Observability]    Prometheus, Grafana, ELK Stack, Loki\n' +
+                    '[Development]      Python, Bash, Groovy, JavaScript';
+          break;
+        case 'neofetch':
+          outText = '     _.._       visitor@talaripradeep.info\n' +
+                    '   .\' .-\'`      --------------------------\n' +
+                    '  /  /          OS: TalariOS 2.0\n' +
+                    '  |  |          Host: talaripradeep.info (SLA: 99.99%)\n' +
+                    '  \\  \\__.-.     Kernel: Web Shell/v2.4\n' +
+                    '   \'._`  .\'     Uptime: 100% (Continuous Integration)\n' +
+                    '      ``        Shell: bash-tp-custom\n' +
+                    '                Location: India (Open to Work)\n' +
+                    '                Core Stack: AWS, Kubernetes, Terraform, SRE';
+          break;
+        default:
+          outText = 'bash: command not found: ' + cmd + '. Type "help" for available commands.';
+          outputEl.style.color = '#ef4444';
+      }
     }
 
     const lines = outText.split('\n');
@@ -943,6 +1033,11 @@ function initSLACalculatorGame() {
     slider.disabled = true;
     btnStart.disabled = true;
     btnStart.classList.add('disabled');
+
+    if (window.logEbpfSyscall) {
+      window.logEbpfSyscall('sched_yield', 'priority: 0) = 0');
+      window.logEbpfSyscall('kill', 'pid: 8940, sig: SIGKILL) = 0');
+    }
 
     systemStatus.textContent = 'INCIDENT ACTIVE';
     systemStatus.className = 'status-badge status-red';
@@ -1141,6 +1236,15 @@ function initGitOpsSimulator() {
         logBox.appendChild(row);
         logBox.scrollTop = logBox.scrollHeight;
       }
+
+      if (window.logEbpfSyscall) {
+        if (toggleFailover.checked) {
+          window.logEbpfSyscall('connect', 'fd: 4, addr: "10.0.12.8:443", len: 16) = -1 (EINPROGRESS)');
+          window.logEbpfSyscall('setsockopt', 'fd: 4, level: SOL_SOCKET, optname: SO_SNDTIMEO, optval: [3, 0], optlen: 16) = 0');
+        } else {
+          window.logEbpfSyscall('connect', 'fd: 4, addr: "10.0.10.4:443", len: 16) = 0');
+        }
+      }
     });
   }
 
@@ -1158,6 +1262,11 @@ function initGitOpsSimulator() {
     btnSync.disabled = false;
     btnSync.classList.remove('disabled');
     if (btnPromote) btnPromote.classList.add('hidden');
+
+    if (window.logEbpfSyscall) {
+      window.logEbpfSyscall('clone', 'flags: CLONE_VM|CLONE_FS|CLONE_FILES, child_stack: 0) = 14208');
+      window.logEbpfSyscall('execve', 'filename: "/usr/bin/git", argv: ["git", "push"], envp: [...]) = 0');
+    }
   });
 
   btnSync.addEventListener('click', async () => {
@@ -1432,6 +1541,18 @@ function initChaosHealingDashboard() {
     activeAnomaly = anomalyType;
     disableChaosButtons(true);
 
+    if (window.logEbpfSyscall) {
+      if (anomalyType === 'cpu') {
+        window.logEbpfSyscall('sched_yield', 'priority: 0) = 0');
+        window.logEbpfSyscall('getcpu', 'cpu: 3, node: 0) = 0');
+      } else if (anomalyType === 'leak') {
+        window.logEbpfSyscall('mmap', 'addr: NULL, length: 1048576, prot: PROT_READ|PROT_WRITE, flags: MAP_PRIVATE|MAP_ANONYMOUS, fd: -1) = 0x7f3a12b00000');
+        window.logEbpfSyscall('brk', 'addr: 0x55d21a00000) = 0x55d21a00000');
+      } else if (anomalyType === 'latency') {
+        window.logEbpfSyscall('recvfrom', 'fd: 5, buf: 0x7f3a12, len: 4096, flags: MSG_DONTWAIT) = -1 (EAGAIN)');
+      }
+    }
+
     if (anomalyType === 'cpu') {
       const cpu = 98;
       const errors = 1.2;
@@ -1657,6 +1778,363 @@ function initEbpfSniffer() {
 
   btnHttp.addEventListener('click', () => triggerPacket('http'));
   btnSsh.addEventListener('click', () => triggerPacket('ssh'));
+
+  // eBPF Syscall Tracer
+  const toggleSyscalls = $('toggleEbpfSyscalls');
+  const syscallConsole = $('ebpfSyscallConsole');
+  let syscallInterval = null;
+
+  window.logEbpfSyscall = function(syscall, details) {
+    if (!syscallConsole) return;
+    const row = document.createElement('div');
+    const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
+    row.textContent = `[${timestamp}] sys_${syscall}(${details})`;
+    syscallConsole.appendChild(row);
+    syscallConsole.scrollTop = syscallConsole.scrollHeight;
+  };
+
+  if (toggleSyscalls && syscallConsole) {
+    toggleSyscalls.addEventListener('change', () => {
+      if (toggleSyscalls.checked) {
+        syscallConsole.classList.remove('hidden');
+        if (syscallInterval) clearInterval(syscallInterval);
+        
+        const genericSyscalls = [
+          { name: 'read', details: 'fd: 3, buf: 0x7ffd9a, count: 1024) = 1024' },
+          { name: 'write', details: 'fd: 1, buf: 0x55d21a, count: 128) = 128' },
+          { name: 'poll', details: 'fds: 0x7ffd9a, nfds: 2, timeout: -1) = 1' },
+          { name: 'epoll_wait', details: 'epfd: 5, events: 0x7ffd9b, maxevents: 32) = 1' },
+          { name: 'recvfrom', details: 'fd: 4, buf: 0x7ffd9c, len: 2048, flags: 0) = 512' }
+        ];
+
+        window.logEbpfSyscall('epoll_create1', 'flags: EPOLL_CLOEXEC) = 5');
+
+        syscallInterval = setInterval(() => {
+          const sc = genericSyscalls[Math.floor(Math.random() * genericSyscalls.length)];
+          window.logEbpfSyscall(sc.name, sc.details);
+        }, 1500);
+      } else {
+        syscallConsole.classList.add('hidden');
+        if (syscallInterval) {
+          clearInterval(syscallInterval);
+          syscallInterval = null;
+        }
+      }
+    });
+  }
+}
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 11: SRE RUNBOOK SIMULATOR
+══════════════════════════════════════════ */
+function initRunbookSimulator() {
+  const runbookSelector = $('runbookSelector');
+  const stepsList = $('runbook-steps-list');
+  const emptyState = $('runbook-empty-state');
+  const consoleLog = $('runbook-console');
+  const btnReset = $('btnRunbookReset');
+  const btnAction = $('btnRunbookAction');
+
+  if (!runbookSelector || !stepsList || !emptyState || !consoleLog || !btnReset || !btnAction) return;
+
+  let activeRunbook = null;
+  let runbookSteps = [];
+  let currentStepIdx = 0;
+  let monitorInterval = null;
+
+  function appendRunbookLog(msg) {
+    const row = document.createElement('div');
+    const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
+    row.textContent = `[${timestamp}] ${msg}`;
+    consoleLog.appendChild(row);
+    consoleLog.scrollTop = consoleLog.scrollHeight;
+  }
+
+  function updateRunbookActionBtn() {
+    if (currentStepIdx < runbookSteps.length) {
+      const nextStep = runbookSteps[currentStepIdx];
+      if (nextStep.manual) {
+        btnAction.disabled = false;
+        btnAction.classList.remove('disabled');
+        return;
+      }
+    }
+    btnAction.disabled = true;
+    btnAction.classList.add('disabled');
+  }
+
+  function renderRunbookSteps() {
+    stepsList.replaceChildren();
+    runbookSteps.forEach((step, idx) => {
+      const div = document.createElement('div');
+      div.className = 'runbook-step-item';
+      div.style.display = 'flex';
+      div.style.alignItems = 'center';
+      div.style.gap = '0.5rem';
+      div.style.marginBottom = '0.25rem';
+
+      if (step.manual && idx === currentStepIdx) {
+        div.style.cursor = 'pointer';
+        div.addEventListener('click', () => {
+          btnAction.click();
+        });
+      }
+
+      const spanBadge = document.createElement('span');
+      spanBadge.className = 'step-badge';
+      spanBadge.textContent = '⚪';
+      spanBadge.style.fontFamily = 'monospace';
+      spanBadge.style.fontSize = '12px';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.disabled = true;
+      checkbox.style.accentColor = 'var(--accent-primary)';
+
+      const spanText = document.createElement('span');
+      spanText.textContent = step.text;
+      spanText.style.color = 'var(--text-secondary)';
+
+      div.appendChild(spanBadge);
+      div.appendChild(checkbox);
+      div.appendChild(spanText);
+      stepsList.appendChild(div);
+    });
+  }
+
+  const scenarios = {
+    oom: [
+      {
+        text: "Inject memory leak anomaly to observe heap exhaustion (RAM > 75%).",
+        check: () => {
+          const ram = parseInt($('metric-ram-val')?.textContent || '0', 10);
+          return ram > 75;
+        }
+      },
+      {
+        text: "Examine system container logs for out-of-memory errors.",
+        manual: true,
+        action: () => {
+          appendRunbookLog("Scanning docker daemon sockets... found: OOMKilled event for container payment-service-xyz.");
+          if (typeof window.runSRETerminalCommand === 'function') {
+            window.runSRETerminalCommand("cat /var/log/containers/payment-service.log");
+          }
+          return true;
+        }
+      },
+      {
+        text: "Deploy memory heap eviction patch to restart container.",
+        manual: true,
+        action: () => {
+          appendRunbookLog("Running patch script: kubectl rollout restart deployment/payment-service...");
+          if (typeof window.runSRETerminalCommand === 'function') {
+            window.runSRETerminalCommand("sre-patch oom");
+          }
+          return true;
+        }
+      },
+      {
+        text: "Verify heap utilization metrics normalize below threshold (RAM <= 50%).",
+        check: () => {
+          const ram = parseInt($('metric-ram-val')?.textContent || '0', 10);
+          return ram <= 50;
+        }
+      }
+    ],
+    drift: [
+      {
+        text: "Trigger manual Security Group drift (inject port 22 SSH opening).",
+        check: () => {
+          const status = $('tf-sg-status')?.textContent || '';
+          return status.includes('DRIFT');
+        }
+      },
+      {
+        text: "Edit main.tf configuration: remove port 22 rule in editor.",
+        check: () => {
+          const val = $('tfCodeEditor')?.value || '';
+          return !val.includes('from_port = 22') && !val.includes('to_port = 22') && !val.includes('22');
+        }
+      },
+      {
+        text: "Run Terraform Plan command to compile structural differences.",
+        check: () => {
+          const terminalText = $('tfDiffTerminal')?.textContent || '';
+          return terminalText.includes('Plan:') || terminalText.includes('Plan complete') || terminalText.includes('0 to add, 1 to change');
+        }
+      },
+      {
+        text: "Apply Terraform state changes to lock downstream ports.",
+        check: () => {
+          const terminalText = $('tfDiffTerminal')?.textContent || '';
+          return terminalText.includes('Apply complete') || terminalText.includes('Modifications complete');
+        }
+      }
+    ],
+    rollback: [
+      {
+        text: "Select Canary Rollout Strategy and trigger Git Commit.",
+        check: () => {
+          const btnCanary = $('btnStrategyCanary');
+          const status = $('argocd-sync-status')?.textContent || '';
+          return btnCanary?.classList.contains('active') && status.includes('OutOfSync');
+        }
+      },
+      {
+        text: "Sync Canary deployment to direct 10% traffic to canary pod.",
+        check: () => {
+          const status = $('argocd-sync-status')?.textContent || '';
+          return status.includes('Canary Active');
+        }
+      },
+      {
+        text: "Inject Canary error spikes to trigger Prometheus alarms.",
+        check: () => {
+          return $('toggleCanaryError')?.checked === true;
+        }
+      },
+      {
+        text: "Confirm automatic rollback resets traffic split back to stable (split 0%).",
+        check: () => {
+          const sliderVal = $('canarySlider')?.value;
+          const errorChecked = $('toggleCanaryError')?.checked;
+          return sliderVal === '0' && !errorChecked;
+        }
+      }
+    ]
+  };
+
+  runbookSelector.addEventListener('change', () => {
+    const val = runbookSelector.value;
+    if (val === 'none') {
+      activeRunbook = null;
+      runbookSteps = [];
+      currentStepIdx = 0;
+      stepsList.classList.add('hidden');
+      consoleLog.classList.add('hidden');
+      emptyState.classList.remove('hidden');
+      btnReset.disabled = true;
+      btnReset.classList.add('disabled');
+      btnAction.disabled = true;
+      btnAction.classList.add('disabled');
+      if (monitorInterval) {
+        clearInterval(monitorInterval);
+        monitorInterval = null;
+      }
+    } else {
+      activeRunbook = val;
+      runbookSteps = JSON.parse(JSON.stringify(scenarios[val] || []));
+      runbookSteps.forEach((s, idx) => {
+        s.check = scenarios[val][idx].check;
+        s.action = scenarios[val][idx].action;
+        s.completed = false;
+      });
+      currentStepIdx = 0;
+      emptyState.classList.add('hidden');
+      stepsList.classList.remove('hidden');
+      consoleLog.classList.remove('hidden');
+      consoleLog.replaceChildren();
+      appendRunbookLog(`Scenario loaded: ${runbookSelector.options[runbookSelector.selectedIndex].text}. Waiting for actions...`);
+      renderRunbookSteps();
+      updateRunbookActionBtn();
+      btnReset.disabled = false;
+      btnReset.classList.remove('disabled');
+
+      if (monitorInterval) clearInterval(monitorInterval);
+      monitorInterval = setInterval(runMonitorLoop, 500);
+    }
+  });
+
+  function runMonitorLoop() {
+    if (!activeRunbook) return;
+    let stateChanged = false;
+
+    for (let i = 0; i < runbookSteps.length; i++) {
+      const step = runbookSteps[i];
+      const itemEl = stepsList.children[i];
+      if (!itemEl) continue;
+      const checkbox = itemEl.querySelector('input[type="checkbox"]');
+      const badge = itemEl.querySelector('.step-badge');
+
+      if (step.completed) {
+        if (checkbox) checkbox.checked = true;
+        if (badge) {
+          badge.textContent = '✅';
+          badge.style.color = '#10b981';
+        }
+        continue;
+      }
+
+      if (i > currentStepIdx) {
+        if (checkbox) checkbox.checked = false;
+        if (badge) {
+          badge.textContent = '⚪';
+          badge.style.color = 'var(--text-muted)';
+        }
+        continue;
+      }
+
+      if (!step.manual && step.check && step.check()) {
+        step.completed = true;
+        if (checkbox) checkbox.checked = true;
+        if (badge) {
+          badge.textContent = '✅';
+          badge.style.color = '#10b981';
+        }
+        appendRunbookLog(`Step ${i + 1} completed: ${step.text}`);
+        currentStepIdx = i + 1;
+        stateChanged = true;
+      } else if (step.manual) {
+        if (badge) {
+          badge.textContent = '⚡';
+          badge.style.color = '#6366f1';
+        }
+      } else {
+        if (badge) {
+          badge.textContent = '⚪';
+          badge.style.color = 'var(--text-muted)';
+        }
+      }
+    }
+
+    if (stateChanged) {
+      updateRunbookActionBtn();
+    }
+  }
+
+  btnAction.addEventListener('click', () => {
+    if (currentStepIdx < runbookSteps.length) {
+      const step = runbookSteps[currentStepIdx];
+      if (step.manual && step.action) {
+        const res = step.action();
+        if (res) {
+          step.completed = true;
+          const itemEl = stepsList.children[currentStepIdx];
+          if (itemEl) {
+            const checkbox = itemEl.querySelector('input[type="checkbox"]');
+            const badge = itemEl.querySelector('.step-badge');
+            if (checkbox) checkbox.checked = true;
+            if (badge) {
+              badge.textContent = '✅';
+              badge.style.color = '#10b981';
+            }
+          }
+          appendRunbookLog(`Step ${currentStepIdx + 1} completed manually: ${step.text}`);
+          currentStepIdx++;
+          updateRunbookActionBtn();
+        }
+      }
+    }
+  });
+
+  btnReset.addEventListener('click', () => {
+    runbookSteps.forEach(s => s.completed = false);
+    currentStepIdx = 0;
+    consoleLog.replaceChildren();
+    appendRunbookLog("Scenario reset. Waiting for actions...");
+    renderRunbookSteps();
+    updateRunbookActionBtn();
+  });
 }
 
 /* ══════════════════════════════════════════
@@ -1668,6 +2146,7 @@ function initTfDriftReconciler() {
   const btnApply = $('btnTfApply');
   const sgStatus = $('tf-sg-status');
   const diffTerminal = $('tfDiffTerminal');
+  const editor = $('tfCodeEditor');
 
   if (!btnDrift || !btnPlan || !btnApply || !diffTerminal) return;
 
@@ -1687,10 +2166,64 @@ function initTfDriftReconciler() {
     });
   }
 
+  if (editor) {
+    editor.addEventListener('input', () => {
+      const val = editor.value;
+      if (val.includes('from_port = 22') || val.includes('to_port = 22') || val.includes('22')) {
+        sgStatus.textContent = 'DRIFT: Port 22 open';
+        sgStatus.style.color = '#f59e0b';
+        btnDrift.disabled = true;
+        btnDrift.classList.add('disabled');
+        btnPlan.disabled = false;
+        btnPlan.classList.remove('disabled');
+        setTerminal([
+          '[ALERT] State discrepancy detected.',
+          'Local configuration contains Port 22 open rules.'
+        ], true);
+      } else if (!val.includes('ingress')) {
+        sgStatus.textContent = 'ERROR: Firewall Empty';
+        sgStatus.style.color = '#ef4444';
+        btnDrift.disabled = true;
+        btnDrift.classList.add('disabled');
+        btnPlan.disabled = true;
+        btnPlan.classList.add('disabled');
+        setTerminal([
+          '[ERROR] Validation failed: ingress block is missing.',
+          'Firewall state is empty and insecure.'
+        ], true);
+      } else {
+        const match = val.match(/from_port\s*=\s*(\d+)/);
+        const port = match ? match[1] : '80';
+        sgStatus.textContent = `OK (Port ${port})`;
+        sgStatus.style.color = '';
+        btnDrift.disabled = false;
+        btnDrift.classList.remove('disabled');
+        btnPlan.disabled = true;
+        btnPlan.classList.add('disabled');
+        btnApply.disabled = true;
+        btnApply.classList.add('disabled');
+        setTerminal([
+          'No changes. Infrastructure matches configuration.'
+        ]);
+      }
+    });
+  }
+
   btnDrift.addEventListener('click', () => {
     sgStatus.textContent = 'DRIFT: Port 22 open';
     sgStatus.style.color = '#f59e0b';
     
+    if (editor) {
+      editor.value = `resource "aws_security_group" "web" {
+  name = "web-sec-group"
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+  }
+}`;
+    }
+
     setTerminal([
       '[ALERT] State discrepancy detected.',
       'Manual out-of-band changes applied to Security Group: web-sec-group.'
@@ -1741,6 +2274,17 @@ function initTfDriftReconciler() {
     sgStatus.textContent = 'OK';
     sgStatus.style.color = '';
 
+    if (editor) {
+      editor.value = `resource "aws_security_group" "web" {
+  name = "web-sec-group"
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+  }
+}`;
+    }
+
     setTerminal([
       'aws_security_group.web: Modifications complete.',
       'Reconciliation successful.',
@@ -1786,6 +2330,10 @@ function initAlertmanagerRouting() {
   async function routeAlert(alertType) {
     if (running) return;
     running = true;
+
+    if (window.logEbpfSyscall) {
+      window.logEbpfSyscall('sendto', 'fd: 6, buf: "POST /api/v2/alerts HTTP/1.1...", len: 452, flags: 0) = 452');
+    }
 
     // Reset layouts
     [nodeCpu, nodeDisk, nodeEngine, destSlack, destPager].forEach(n => {
@@ -2089,6 +2637,66 @@ function initChaosMultiAz() {
 
   let isPartitioned = false;
 
+  function updateBlastRadiusHeatmap() {
+    const blastIndicator = $('blast-status-indicator');
+    const nodeVpc = $('blast-node-vpc');
+    const nodeDb = $('blast-node-db');
+    const nodeIngress = $('blast-node-ingress');
+    const mapContainer = $('chaos-blast-map');
+
+    if (!blastIndicator) return;
+
+    const offlineCount = [cardA, cardB, cardC].filter(c => c && c.classList.contains('az-offline')).length;
+
+    if (offlineCount > 0) {
+      const avail = Math.max(0, Math.round(((3 - offlineCount) / 3) * 100));
+      blastIndicator.textContent = `Degraded (${avail}% Uptime Availability)`;
+      blastIndicator.style.color = '#ef4444'; // red
+
+      if (nodeVpc) {
+        nodeVpc.className = 'status-badge status-orange';
+        nodeVpc.textContent = 'VPC: Degraded';
+      }
+      if (nodeDb) {
+        nodeDb.className = 'status-badge status-red';
+        nodeDb.textContent = 'DB: Partitioned';
+      }
+      if (nodeIngress) {
+        nodeIngress.className = 'status-badge status-orange';
+        nodeIngress.textContent = 'Routing: Rerouted';
+      }
+
+      if (mapContainer) {
+        mapContainer.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.2)';
+        mapContainer.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+      }
+    } else {
+      blastIndicator.textContent = 'System Stable (100% Availability)';
+      blastIndicator.style.color = '#10b981'; // green
+
+      if (nodeVpc) {
+        nodeVpc.className = 'status-badge status-green';
+        nodeVpc.textContent = 'VPC Gateways';
+      }
+      if (nodeDb) {
+        nodeDb.className = 'status-badge status-green';
+        nodeDb.textContent = 'DB Clustering';
+      }
+      if (nodeIngress) {
+        nodeIngress.className = 'status-badge status-green';
+        nodeIngress.textContent = 'App Routing';
+      }
+
+      if (mapContainer) {
+        mapContainer.style.boxShadow = '';
+        mapContainer.style.borderColor = '';
+      }
+    }
+  }
+
+  // Initial render
+  updateBlastRadiusHeatmap();
+
   btn.addEventListener('click', () => {
     if (!isPartitioned) {
       isPartitioned = true;
@@ -2106,11 +2714,14 @@ function initChaosMultiAz() {
       });
     } else {
       isPartitioned = false;
-      cardA.classList.remove('az-offline');
+      [cardA, cardB, cardC].forEach(c => {
+        if (c) c.classList.remove('az-offline');
+      });
       status.textContent = '3 / 3 Active';
       status.className = 'status-badge status-green';
       btn.textContent = 'Partition us-east-1a Zone';
     }
+    updateBlastRadiusHeatmap();
   });
 
   // Chaos Monkey Drag and Drop Injector logic
@@ -2162,6 +2773,7 @@ function initChaosMultiAz() {
           status.className = offlineCount > 0 ? 'status-badge status-orange' : 'status-badge status-green';
           btn.textContent = 'Rebuild us-east-1a Network Route';
           isPartitioned = true;
+          updateBlastRadiusHeatmap();
         }
       });
     });
@@ -2245,12 +2857,169 @@ initSLACalculatorGame();
 initGitOpsSimulator();
 initChaosHealingDashboard();
 initEbpfSniffer();
+initRunbookSimulator();
 initTfDriftReconciler();
 initAlertmanagerRouting();
 initCicdPipelineRunner();
 initKarpenterAutoscaler();
 initCanarySplitter();
 initChaosMultiAz();
+initManifestOverlayCompiler();
+initPrometheusChartPopup();
+
+/* ══════════════════════════════════════════
+   PLAYGROUND WIDGET 12: MANIFEST OVERLAY COMPILER
+   ══════════════════════════════════════════ */
+function initManifestOverlayCompiler() {
+  const baseInput = $('kustBaseInput');
+  const patchInput = $('kustPatchInput');
+  const output = $('kustResolvedOutput');
+
+  if (!baseInput || !patchInput || !output) return;
+
+  function compileManifest() {
+    const baseText = baseInput.value || baseInput.textContent || '';
+    const patchText = patchInput.value || patchInput.textContent || '';
+
+    let replicas = '2';
+    let image = 'nginx:1.21';
+
+    const baseReplicasMatch = baseText.match(/replicas:\s*(\d+)/);
+    if (baseReplicasMatch) replicas = baseReplicasMatch[1];
+    
+    const baseImageMatch = baseText.match(/image:\s*([^\s\n]+)/);
+    if (baseImageMatch) image = baseImageMatch[1];
+
+    const patchReplicasMatch = patchText.match(/replicas:\s*(\d+)/);
+    if (patchReplicasMatch) replicas = patchReplicasMatch[1];
+
+    const patchImageMatch = patchText.match(/image:\s*([^\s\n]+)/);
+    if (patchImageMatch) image = patchImageMatch[1];
+
+    const resolvedYaml = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: ${replicas}
+  template:
+    spec:
+      containers:
+      - name: web
+        image: ${image}`;
+
+    output.textContent = resolvedYaml;
+  }
+
+  baseInput.addEventListener('input', compileManifest);
+  patchInput.addEventListener('input', compileManifest);
+  
+  compileManifest();
+}
+
+/* ══════════════════════════════════════════
+   PROMETHEUS CHART OVERLAY POPUP
+   ══════════════════════════════════════════ */
+function initPrometheusChartPopup() {
+  const overlay = $('prometheus-chart-overlay');
+  const canvas = $('prometheusMetricChart');
+  const closeBtn = $('btn-close-prom-chart');
+  const titleEl = $('prometheus-chart-title');
+  if (!overlay || !canvas || !closeBtn) return;
+
+  window.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.add('hidden');
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    overlay.classList.add('hidden');
+  });
+
+  window.showPrometheusChart = function(metricName, dataHistory) {
+    overlay.classList.remove('hidden');
+    if (titleEl) {
+      titleEl.innerHTML = `<span>📈</span> Prometheus Live Timeline - ${metricName}`;
+    }
+    drawPrometheusChart(dataHistory);
+  };
+
+  const srcCpu = $('am-src-cpu');
+  const srcDisk = $('am-src-disk');
+  if (srcCpu) {
+    srcCpu.style.cursor = 'pointer';
+    srcCpu.addEventListener('click', () => {
+      window.showPrometheusChart('CPU Usage', [45, 52, 58, 89, 94, 98, 99, 42, 35, 28]);
+    });
+  }
+  if (srcDisk) {
+    srcDisk.style.cursor = 'pointer';
+    srcDisk.addEventListener('click', () => {
+      window.showPrometheusChart('Disk Exhaustion', [60, 68, 75, 87, 92, 96, 99, 85, 70, 50]);
+    });
+  }
+
+  function drawPrometheusChart(data) {
+    const ctx = typeof canvas.getContext === 'function' ? canvas.getContext('2d') : null;
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (data.length < 2) return;
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 4; i++) {
+      const y = (canvas.height / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+
+    const thresholdY = canvas.height * (1 - 0.85);
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, thresholdY);
+    ctx.lineTo(canvas.width, thresholdY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    const step = canvas.width / (data.length - 1);
+    
+    for (let i = 0; i < data.length; i++) {
+      const x = i * step;
+      const y = canvas.height - (data[i] / 100) * canvas.height;
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    grad.addColorStop(0, '#818cf8');
+    grad.addColorStop(0.5, '#ef4444');
+    grad.addColorStop(1, '#34d399');
+    
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.lineTo(0, canvas.height);
+    ctx.closePath();
+    
+    const fillGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    fillGrad.addColorStop(0, 'rgba(129, 140, 248, 0.2)');
+    fillGrad.addColorStop(1, 'rgba(129, 140, 248, 0.0)');
+    ctx.fillStyle = fillGrad;
+    ctx.fill();
+  }
+}
 
 /* ══════════════════════════════════════════
    EXPERIENCE — ACCORDION

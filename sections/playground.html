@@ -264,6 +264,41 @@
             </button>
           </div>
         </div>
+
+        <!-- WIDGET 11: SRE Runbook Simulator -->
+        <div class="playground-card" id="widget-runbooks">
+          <div class="widget-header">
+            <div class="widget-icon">📖</div>
+            <h3 class="widget-title">SRE Runbook Simulator</h3>
+          </div>
+          <p class="widget-desc">Execute interactive checklists to triage outages, resolve state drifts, and roll back canary versions.</p>
+          
+          <div class="runbook-selector-wrap" style="width: 100%;">
+            <label for="runbookSelector" class="ebpf-toggle-lbl" style="font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.25rem; display: block;">Select Runbook Scenario:</label>
+            <select id="runbookSelector" class="form-select w-full p-2 text-xs" style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary);">
+              <option value="none">-- Choose an SRE Runbook --</option>
+              <option value="oom">Runbook #104: Mitigate Pod OOMKilled Restarts</option>
+              <option value="drift">Runbook #209: Reconcile Cloud SG Port 22 Drift</option>
+              <option value="rollback">Runbook #312: Rollback Failing Canary Rollout</option>
+            </select>
+          </div>
+
+          <div class="runbook-steps-card" id="runbookStepsCard" style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.75rem; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; min-height: 100px;">
+            <div id="runbook-empty-state" style="color: var(--text-muted); text-align: center; padding: 1.5rem 0;">Select a runbook scenario to start the SRE checklist.</div>
+            <div id="runbook-steps-list" class="hidden" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <!-- Checklist populated dynamically -->
+            </div>
+          </div>
+
+          <div id="runbook-console" class="ebpf-console-log hidden" style="height: 70px; font-size: 10px; font-family: 'JetBrains Mono', monospace; background: #020617; border: 1px solid rgba(255, 255, 255, 0.05); padding: 0.5rem; border-radius: 4px; overflow-y: auto;">
+            <!-- Logs populated dynamically -->
+          </div>
+
+          <div class="runbook-actions" style="display: flex; gap: 0.5rem;">
+            <button id="btnRunbookReset" class="btn-widget-action bg-orange disabled w-1/3" disabled style="margin: 0; padding: 0.5rem;">Reset</button>
+            <button id="btnRunbookAction" class="btn-widget-action bg-indigo disabled flex-1" disabled style="margin: 0; padding: 0.5rem;">Execute Step Action</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -325,6 +360,17 @@
               <div>[SYSTEM] eBPF probes attached. Waiting for frames...</div>
             </div>
 
+            <div class="ebpf-syscall-toggles" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center; margin-top: 0.25rem;">
+              <span style="font-size: 0.65rem; font-weight: 600; color: var(--text-secondary);">eBPF Syscall Tracer:</span>
+              <label class="ebpf-toggle-lbl" style="font-size: 0.65rem; display: flex; align-items: center; gap: 0.25rem; cursor: pointer;">
+                <input type="checkbox" id="toggleEbpfSyscalls" style="width: 12px; height: 12px;" />
+                <span>Stream System Calls</span>
+              </label>
+            </div>
+            <div class="ebpf-console-log hidden" id="ebpfSyscallConsole" style="background: #020617; border-color: rgba(255, 255, 255, 0.05); color: #38bdf8; font-size: 9px; height: 70px; margin-top: 0.25rem; font-family: 'JetBrains Mono', monospace; overflow-y: auto; text-align: left; padding: 0.5rem; border-radius: 4px;">
+              <div>[TRACER] Syscall probes attached. Waiting for active events...</div>
+            </div>
+
             <div class="ebpf-actions">
               <button id="btnEbpfHttp" class="btn-widget-action bg-indigo">
                 <span>🌐 Send HTTP Frame</span>
@@ -346,15 +392,15 @@
           
           <div class="tf-layout-box">
             <div class="tf-code-view">
-              <div class="tf-code-header">main.tf</div>
-              <pre class="tf-code-lines"><code>resource "aws_security_group" "web" {
+              <div class="tf-code-header">main.tf (Editable)</div>
+              <textarea class="tf-code-lines" id="tfCodeEditor" style="width: 100%; height: 110px; resize: none; border: none; outline: none; background: transparent; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #e2e8f0; line-height: 1.4; padding: 0.65rem; display: block;" spellcheck="false">resource "aws_security_group" "web" {
   name = "web-sec-group"
   ingress {
     from_port = 80
     to_port   = 80
     protocol  = "tcp"
   }
-}</code></pre>
+}</textarea>
             </div>
 
             <div class="tf-visual-graph">
@@ -665,8 +711,81 @@
               <span>🔥 Partition us-east-1a Zone</span>
             </button>
           </div>
+
+          <!-- Visual blast-radius heatmap network indicators -->
+          <div id="chaos-blast-map" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.5rem; margin-top: 0.5rem; font-size: 0.65rem;">
+            <div style="font-weight: bold; color: var(--text-secondary); margin-bottom: 0.25rem; display: flex; justify-content: space-between;">
+              <span>💥 Blast Radius Heatmap:</span>
+              <span id="blast-status-indicator" style="color: #10b981; font-weight: bold;">System Stable (100% Availability)</span>
+            </div>
+            <div style="display: flex; justify-content: space-around; font-size: 0.6rem; font-family: monospace; margin-top: 0.25rem;">
+              <div id="blast-node-vpc" class="status-badge status-green" style="padding: 2px 6px;">VPC Gateways</div>
+              <div id="blast-node-db" class="status-badge status-green" style="padding: 2px 6px;">DB Clustering</div>
+              <div id="blast-node-ingress" class="status-badge status-green" style="padding: 2px 6px;">App Routing</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WIDGET 12: Manifest Overlay Compiler -->
+        <div class="playground-card" id="widget-kustomize">
+          <div class="widget-header">
+            <div class="widget-icon">🧩</div>
+            <h3 class="widget-title">Manifest Overlay Compiler</h3>
+          </div>
+          <p class="widget-desc">Configure base Kubernetes resources and apply Kustomize patch overlays to compile resolved YAML manifests.</p>
+          
+          <div style="display: flex; gap: 0.5rem; width: 100%; height: 120px; margin-bottom: 0.5rem;">
+            <div style="flex: 1; display: flex; flex-direction: column;">
+              <span style="font-size: 0.6rem; color: var(--text-secondary); margin-bottom: 0.15rem; font-weight: bold;">base.yaml (Base manifest)</span>
+              <textarea id="kustBaseInput" style="flex: 1; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; padding: 0.35rem; color: var(--text-primary); font-family: monospace; font-size: 0.6rem; resize: none; outline: none;" spellcheck="false">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.21</textarea>
+            </div>
+            
+            <div style="flex: 1; display: flex; flex-direction: column;">
+              <span style="font-size: 0.6rem; color: var(--text-secondary); margin-bottom: 0.15rem; font-weight: bold;">patch.yaml (Overlay patch)</span>
+              <textarea id="kustPatchInput" style="flex: 1; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; padding: 0.35rem; color: var(--text-primary); font-family: monospace; font-size: 0.6rem; resize: none; outline: none;" spellcheck="false">spec:
+  replicas: 5
+  template:
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.25-alpine</textarea>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; width: 100%;">
+            <span style="font-size: 0.6rem; color: var(--text-secondary); margin-bottom: 0.15rem; font-weight: bold;">resolved.yaml (Compiled output)</span>
+            <pre id="kustResolvedOutput" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 4px; padding: 0.5rem; color: #10b981; font-family: monospace; font-size: 0.6rem; height: 110px; overflow-y: auto; margin: 0; white-space: pre-wrap; text-align: left;"></pre>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Prometheus Time-Series Chart Overlay Popup -->
+  <div id="prometheus-chart-overlay" class="hidden" style="position: fixed; z-index: 2000; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0b1329; border: 1px solid rgba(129, 140, 248, 0.3); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 1.25rem; width: 320px; font-family: sans-serif; text-align: left; color: #cbd5e1;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem; margin-bottom: 0.75rem;">
+      <h4 id="prometheus-chart-title" style="margin: 0; font-size: 0.8rem; font-weight: bold; color: #ffffff; display: flex; align-items: center; gap: 0.35rem;">
+        <span>📈</span> Prometheus Live Timeline
+      </h4>
+      <button id="btn-close-prom-chart" style="background: transparent; border: none; color: var(--text-secondary); font-size: 0.8rem; cursor: pointer; font-weight: bold;">✕</button>
+    </div>
+    <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem;">
+      <span style="color: var(--text-secondary);">Threshold Limit:</span>
+      <span style="color: #ef4444; font-weight: bold;">&gt; 85.0% (Alerting)</span>
+    </div>
+    <div style="background: #020617; border-radius: 6px; padding: 0.25rem; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 0.5rem;">
+      <canvas id="prometheusMetricChart" width="280" height="120" style="width: 280px; height: 120px; display: block;"></canvas>
+    </div>
+    <div style="font-size: 0.6rem; color: var(--text-muted); text-align: center;">Click ✕ or anywhere outside to close.</div>
   </div>
 </section>

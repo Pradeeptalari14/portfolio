@@ -16,6 +16,62 @@
   // Utility helper
   const $ = (id) => document.getElementById(id);
 
+  function applyRemediationPatch(ruleName) {
+    const outputBox = $('output-box');
+    if (!outputBox) return;
+
+    let code = lastCompiledCode || outputBox.textContent || '';
+    
+    if (ruleName.includes('Open CIDR')) {
+      code = code.replace(/0\.0\.0\.0\/0/g, '10.0.0.0/16');
+    } else if (ruleName.includes('Unencrypted S3')) {
+      const match = code.match(/resource "aws_s3_bucket" "([^"]+)"/);
+      const bucketId = match ? match[1] : 's3_bucket';
+      const encryptBlock = `\nresource "aws_s3_bucket_server_side_encryption_configuration" "${bucketId}_encryption" {
+  bucket = aws_s3_bucket.${bucketId}.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}`;
+      code += encryptBlock;
+    } else if (ruleName.includes('Running as Root') || ruleName.includes('Container Running as Root')) {
+      code = code.replace(/runAsUser:\s*0/gi, 'runAsUser: 1000');
+      code = code.replace(/runAsNonRoot:\s*false/gi, 'runAsNonRoot: true');
+      code = code.replace(/user:\s*"root"/gi, 'user: "nonroot"');
+      code = code.replace(/user:\s*root/gi, 'user: nonroot');
+    } else if (ruleName.includes('Missing Kubernetes Probes') || ruleName.includes('Missing Docker Healthcheck')) {
+      if (code.toLowerCase().includes('kind: deployment')) {
+        code = code.replace(/(-\s*name:\s*[^\n]+)/i, `$1
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080`);
+      } else if (code.toLowerCase().includes('services:')) {
+        code = code.replace(/(image:\s*[^\n]+)/i, `$1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3`);
+      }
+    }
+
+    lastCompiledCode = code;
+    outputBox.textContent = code;
+
+    // Refresh linter results
+    const linterTab = $('tab-linter');
+    if (linterTab) {
+      linterTab.click();
+    }
+  }
+
   // 1. Inject PagerDuty Configuration Panel
   function injectPagerDutyUI() {
     if ($('pagerduty-config-block')) return;
@@ -154,6 +210,88 @@
   }
 
   // 2. Inject webhooks.json tab in the IDE file navbar
+  function downloadSREBundle() {
+    if (!window.JSZip) {
+      console.error("JSZip is not loaded on this page");
+      alert("Error: JSZip dependency is not loaded yet.");
+      return;
+    }
+    const zip = new window.JSZip();
+
+    const primaryNameInput = $('download-name-input')?.value || 'configuration';
+    const extensionTag = $('file-extension-tag')?.textContent || '.yaml';
+    
+    let primaryFileName = primaryNameInput;
+    if (!primaryFileName.endsWith(extensionTag) && !primaryFileName.includes('.')) {
+      primaryFileName += extensionTag;
+    }
+    zip.file(primaryFileName, lastCompiledCode || '');
+
+    const studioName = pathname.split('/').filter(Boolean).pop() || "devops-studio";
+    const validateScript = `#!/bin/bash
+# SRE Validation script for ${studioName}
+echo "Running validation suite for ${primaryFileName}..."
+if [ ! -f "${primaryFileName}" ]; then
+  echo "Error: Primary configuration file ${primaryFileName} not found!"
+  exit 1
+fi
+echo "Validating configuration syntax..."
+# Mocking syntax validation checks
+echo "Checking security policies..."
+grep -q "0.0.0.0/0" "${primaryFileName}" && echo "Warning: Open CIDR block detected!"
+echo "Validation passed successfully."
+exit 0
+`;
+    zip.folder("scripts").file("validate.sh", validateScript);
+
+    const readmeContent = `# SRE Onboarding & Deployment Guide: ${studioName}
+
+This bundle contains the production SRE configuration and validation scripts for the **${studioName}** service.
+
+## Bundle Contents
+- \`${primaryFileName}\`: Primary configuration file.
+- \`scripts/validate.sh\`: Shell script to validate syntax and security compliance.
+- \`.gitignore\`: Default Git exclusions.
+
+## Deployment Steps
+1. Review the configuration defined in \`${primaryFileName}\`.
+2. Execute the validation script locally to ensure compliance:
+   \`\`\`bash
+   chmod +x scripts/validate.sh
+   ./scripts/validate.sh
+   \`\`\`
+3. Commit and push to deploy via the ArgoCD GitOps pipeline.
+`;
+    zip.file("README.md", readmeContent);
+
+    const gitignoreContent = `# SRE Bundle local cache
+.DS_Store
+*.log
+tmp/
+`;
+    zip.file(".gitignore", gitignoreContent);
+
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      const createObjectURL = (typeof URL !== 'undefined' && URL.createObjectURL) 
+        ? URL.createObjectURL 
+        : () => 'mock-url';
+      const revokeObjectURL = (typeof URL !== 'undefined' && URL.revokeObjectURL) 
+        ? URL.revokeObjectURL 
+        : () => {};
+
+      const a = document.createElement("a");
+      const url = createObjectURL(content);
+      a.href = url;
+      a.download = `${studioName}-sre-bundle.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      revokeObjectURL(url);
+    }).catch(err => {
+      console.error("Failed to generate zip bundle:", err);
+    });
+  }
+
   function injectWebhookTab() {
     const tabContainer = document.querySelector('.tabs-scrollable') ||
                          (document.querySelector('.tab-btn') ? document.querySelector('.tab-btn').parentElement : null);
@@ -209,7 +347,26 @@
           ]
         };
 
-        outputBox.textContent = JSON.stringify(payload, null, 2);
+        const jsonStr = JSON.stringify(payload, null, 2);
+        outputBox.innerHTML = `
+          <div style="padding: 1.5rem; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); font-family: sans-serif; color: #cbd5e1; white-space: normal;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+              <h3 style="font-size: 0.9rem; font-weight: bold; color: #ffffff; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                <span>🚨</span> Webhook Configuration (webhooks.json)
+              </h3>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button id="btn-download-sre-bundle-webhooks" style="font-size: 10px; font-weight: bold; background: #6366f1; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s;">📦 Download SRE Bundle (.zip)</button>
+                <span style="font-size: 9px; font-family: monospace; color: #818cf8; background: rgba(129, 140, 248, 0.1); border: 1px solid rgba(129, 140, 248, 0.2); padding: 2px 6px; border-radius: 4px;">JSON</span>
+              </div>
+            </div>
+            <pre style="background: #020617; padding: 1rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; overflow-x: auto; margin: 0; white-space: pre;">${jsonStr}</pre>
+          </div>
+        `;
+
+        const dlBtn = $('btn-download-sre-bundle-webhooks');
+        if (dlBtn) {
+          dlBtn.onclick = () => downloadSREBundle();
+        }
       }
 
       // Update IDE file header labels
@@ -254,12 +411,81 @@
         const codeToAudit = lastCompiledCode || outputBox.textContent || '';
         const findings = runSecurityAudit(codeToAudit);
 
+        // Calculate compliance score
+        let score = 100;
+        findings.forEach(f => {
+          if (f.severity === 'Critical') score -= 30;
+          else if (f.severity === 'Warning') score -= 15;
+        });
+        score = Math.max(0, score);
+        let scoreColor = '#10b981'; // Green
+        let statusText = 'COMPLIANT';
+        if (score < 70) {
+          scoreColor = '#ef4444'; // Red
+          statusText = 'NON-COMPLIANT';
+        } else if (score < 90) {
+          scoreColor = '#f59e0b'; // Yellow
+          statusText = 'PARTIALLY COMPLIANT';
+        }
+
+        const scoreGaugeHtml = `
+          <div style="margin-bottom: 1.5rem; padding: 1rem; background: #090d16; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-size: 10px; font-weight: bold; color: #94a3b8; text-transform: uppercase;">Compliance &amp; Lint Score:</span>
+              <span id="compliance-score-val" style="font-size: 12px; font-weight: 800; color: ${scoreColor}; font-family: monospace;">${score}% (${statusText})</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden;">
+              <div id="compliance-score-bar" style="width: ${score}%; height: 100%; background: ${scoreColor}; transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+
         // Build HTML report with styling and dark mode harmony
         const findingsHtml = findings.map(f => {
           let badgeColor = '';
           if (f.severity === 'Critical') badgeColor = 'bg-rose-500/20 text-rose-400 border border-rose-500/30';
           else if (f.severity === 'Warning') badgeColor = 'bg-amber-500/20 text-amber-400 border border-amber-500/30';
           else badgeColor = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+
+          let diffHtml = '';
+          if (f.severity !== 'Passed') {
+            let vulnSnippet = '';
+            let patchedSnippet = '';
+            
+            if (f.rule.includes('Open CIDR')) {
+              vulnSnippet = 'cidr_blocks = ["0.0.0.0/0"]';
+              patchedSnippet = 'cidr_blocks = ["10.0.0.0/16"]';
+            } else if (f.rule.includes('Unencrypted S3')) {
+              vulnSnippet = 'resource "aws_s3_bucket" "b" {}';
+              patchedSnippet = 'resource "aws_s3_bucket" "b" {}\n+ resource "aws_s3_bucket_server_side_encryption_configuration" "b_enc" { ... }';
+            } else if (f.rule.includes('Running as Root') || f.rule.includes('Container Running as Root')) {
+              vulnSnippet = 'runAsUser: 0\nrunAsNonRoot: false';
+              patchedSnippet = 'runAsUser: 1000\nrunAsNonRoot: true';
+            } else if (f.rule.includes('Missing Kubernetes Probes') || f.rule.includes('Missing Docker Healthcheck')) {
+              vulnSnippet = '(No container health probes configured)';
+              patchedSnippet = '+ livenessProbe:\n+   httpGet:\n+     path: /healthz\n+     port: 8080';
+            }
+
+            if (vulnSnippet && patchedSnippet) {
+              diffHtml = `
+                <div class="visual-diff-box" style="margin-top: 0.5rem; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 0.5rem; font-family: monospace; font-size: 10px;">
+                  <div style="display: flex; gap: 0.5rem;">
+                    <div style="flex: 1; border-right: 1px solid rgba(255, 255, 255, 0.05); padding-right: 0.25rem;">
+                      <div style="color: #ef4444; font-weight: bold; margin-bottom: 0.25rem; font-size: 8px; text-transform: uppercase;">Current (Vulnerable)</div>
+                      <pre style="margin: 0; color: #f87171; white-space: pre-wrap; font-family: monospace; text-align: left;">- ${vulnSnippet}</pre>
+                    </div>
+                    <div style="flex: 1; padding-left: 0.25rem;">
+                      <div style="color: #10b981; font-weight: bold; margin-bottom: 0.25rem; font-size: 8px; text-transform: uppercase;">Suggested (Secure)</div>
+                      <pre style="margin: 0; color: #34d399; white-space: pre-wrap; font-family: monospace; text-align: left;">+ ${patchedSnippet}</pre>
+                    </div>
+                  </div>
+                  <div style="text-align: right; margin-top: 0.5rem;">
+                    <button class="btn-apply-remediation" data-rule="${f.rule}" style="font-size: 9px; font-weight: bold; background: #10b981; color: white; border: none; padding: 3px 8px; border-radius: 3px; cursor: pointer; transition: background 0.2s;">💡 Apply Security Patch</button>
+                  </div>
+                </div>
+              `;
+            }
+          }
 
           return `
             <div style="margin-bottom: 1rem; padding: 1rem; background: #020617; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
@@ -268,6 +494,7 @@
                 <span class="${badgeColor}" style="font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">${f.severity.toUpperCase()}</span>
               </div>
               <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 0.5rem;">${f.desc}</p>
+              ${diffHtml}
               ${f.remediation !== 'None' ? `
                 <div style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 0.5rem; margin-top: 0.5rem;">
                   <span style="font-size: 9px; color: #64748b; font-weight: bold; text-transform: uppercase;">Remediation:</span>
@@ -284,13 +511,30 @@
               <h3 style="font-size: 0.9rem; font-weight: bold; color: #ffffff; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                 <span>🛡️</span> IaC Security Guardrail Report
               </h3>
-              <span style="font-size: 9px; font-family: monospace; color: #818cf8; background: rgba(129, 140, 248, 0.1); border: 1px solid rgba(129, 140, 248, 0.2); padding: 2px 6px; border-radius: 4px;">v1.0.0</span>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button id="btn-download-sre-bundle-linter" style="font-size: 10px; font-weight: bold; background: #6366f1; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s;">📦 Download SRE Bundle (.zip)</button>
+                <span style="font-size: 9px; font-family: monospace; color: #818cf8; background: rgba(129, 140, 248, 0.1); border: 1px solid rgba(129, 140, 248, 0.2); padding: 2px 6px; border-radius: 4px;">v1.0.0</span>
+              </div>
             </div>
+            ${scoreGaugeHtml}
             <div>
               ${findingsHtml}
             </div>
           </div>
         `;
+
+        const dlBtn = $('btn-download-sre-bundle-linter');
+        if (dlBtn) {
+          dlBtn.onclick = () => downloadSREBundle();
+        }
+
+        const remediateBtns = outputBox.querySelectorAll('.btn-apply-remediation');
+        remediateBtns.forEach(rBtn => {
+          rBtn.onclick = () => {
+            const ruleName = rBtn.getAttribute('data-rule');
+            applyRemediationPatch(ruleName);
+          };
+        });
       }
 
       // Update IDE file header labels

@@ -87,5 +87,63 @@ describe('Shared Tools Utility', () => {
     linterTab.dispatchEvent(new window.Event('click'));
     expect(outputBox.innerHTML).toContain('Open CIDR Block (0.0.0.0/0)');
     expect(outputBox.innerHTML).toContain('CRITICAL');
+
+    // 8. Verify Compliance Score Gauge
+    const scoreVal = window.document.getElementById('compliance-score-val');
+    expect(scoreVal).not.toBeNull();
+    expect(scoreVal.textContent).toContain('70% (PARTIALLY COMPLIANT)');
+
+    // 8.5 Test applying security patch auto-remediation
+    const patchBtn = outputBox.querySelector('.btn-apply-remediation');
+    expect(patchBtn).not.toBeNull();
+    patchBtn.dispatchEvent(new window.Event('click'));
+    await new Promise(r => setTimeout(r, 200));
+    expect(window.document.getElementById('compliance-score-val').textContent).toContain('100%');
+
+    // 9. Mock and Test JSZip Bundle Exporter
+    let zipMockInstance = null;
+    window.JSZip = class {
+      constructor() {
+        this.files = {};
+        zipMockInstance = this;
+      }
+      file(name, content) {
+        this.files[name] = content;
+        return this;
+      }
+      folder(name) {
+        return {
+          file: (subName, content) => {
+            this.files[`${name}/${subName}`] = content;
+            return this;
+          }
+        };
+      }
+      generateAsync(opts) {
+        return Promise.resolve({ type: 'blob' });
+      }
+    };
+    if (!window.Blob) {
+      window.Blob = class {
+        constructor(parts, opts) {
+          this.parts = parts;
+          this.opts = opts;
+        }
+      };
+    }
+
+    const downloadBtn = window.document.getElementById('btn-download-sre-bundle-linter');
+    expect(downloadBtn).not.toBeNull();
+
+    // Trigger download
+    downloadBtn.dispatchEvent(new window.Event('click'));
+    
+    // Allow promise resolution for JSZip generation
+    await new Promise(r => setTimeout(r, 100));
+
+    expect(zipMockInstance).not.toBeNull();
+    expect(zipMockInstance.files['README.md']).toContain('SRE Onboarding & Deployment Guide');
+    expect(zipMockInstance.files['scripts/validate.sh']).toContain('Running validation suite');
+    expect(zipMockInstance.files['.gitignore']).toContain('SRE Bundle local cache');
   });
 });

@@ -580,4 +580,262 @@ describe('DevOps & SRE Interactive Playground Widgets', () => {
       input.dispatchEvent(new window.Event('input'));
     });
   });
+
+  describe('SRE Runbook Simulator Widget (Widget 11)', () => {
+    it('should load OOM runbook steps and progress through checks', async () => {
+      const runbookSelector = document.getElementById('runbookSelector');
+      const stepsList = document.getElementById('runbook-steps-list');
+      const emptyState = document.getElementById('runbook-empty-state');
+      const consoleLog = document.getElementById('runbook-console');
+      const btnAction = document.getElementById('btnRunbookAction');
+      const btnReset = document.getElementById('btnRunbookReset');
+
+      expect(emptyState.classList.contains('hidden')).toBe(false);
+
+      // Select OOM runbook
+      runbookSelector.value = 'oom';
+      runbookSelector.dispatchEvent(new window.Event('change'));
+
+      expect(emptyState.classList.contains('hidden')).toBe(true);
+      expect(stepsList.classList.contains('hidden')).toBe(false);
+      expect(stepsList.children.length).toBe(4);
+
+      // Step 1: Inject memory leak to get RAM > 75%
+      const btnLeak = document.getElementById('btnChaosLeak');
+      btnLeak.dispatchEvent(new window.Event('click'));
+
+      // Wait a short time for monitor loop
+      await new Promise(r => setTimeout(r, 600));
+
+      // Step 1 should be checked
+      const step1Checkbox = stepsList.children[0].querySelector('input[type="checkbox"]');
+      expect(step1Checkbox.checked).toBe(true);
+
+      // Step 2 is manual, btnAction should be active
+      expect(btnAction.disabled).toBe(false);
+      btnAction.dispatchEvent(new window.Event('click'));
+
+      const step2Checkbox = stepsList.children[1].querySelector('input[type="checkbox"]');
+      expect(step2Checkbox.checked).toBe(true);
+
+      // Step 3 is manual, btnAction should be active
+      expect(btnAction.disabled).toBe(false);
+      btnAction.dispatchEvent(new window.Event('click'));
+
+      const step3Checkbox = stepsList.children[2].querySelector('input[type="checkbox"]');
+      expect(step3Checkbox.checked).toBe(true);
+
+      // Step 4: Verify metrics normalize below threshold
+      await new Promise(r => setTimeout(r, 600));
+      const step4Checkbox = stepsList.children[3].querySelector('input[type="checkbox"]');
+      expect(step4Checkbox.checked).toBe(true);
+
+      // Click Reset and verify reset
+      btnReset.dispatchEvent(new window.Event('click'));
+      const resetStep1 = stepsList.children[0].querySelector('input[type="checkbox"]');
+      const resetStep2 = stepsList.children[1].querySelector('input[type="checkbox"]');
+      expect(resetStep1.checked).toBe(false);
+      expect(resetStep2.checked).toBe(false);
+    });
+
+    it('should load Drift and Rollback runbook scenarios successfully', () => {
+      const runbookSelector = document.getElementById('runbookSelector');
+      const stepsList = document.getElementById('runbook-steps-list');
+
+      runbookSelector.value = 'drift';
+      runbookSelector.dispatchEvent(new window.Event('change'));
+      expect(stepsList.children.length).toBe(4);
+      expect(stepsList.textContent).toContain('Security Group drift');
+
+      runbookSelector.value = 'rollback';
+      runbookSelector.dispatchEvent(new window.Event('change'));
+      expect(stepsList.children.length).toBe(4);
+      expect(stepsList.textContent).toContain('Canary Rollout Strategy');
+    });
+  });
+
+  describe('eBPF Syscall Tracer Widget', () => {
+    it('should stream syscall logs and capture actions like Git commit and failover', async () => {
+      const toggleSyscalls = document.getElementById('toggleEbpfSyscalls');
+      const syscallConsole = document.getElementById('ebpfSyscallConsole');
+
+      expect(syscallConsole.classList.contains('hidden')).toBe(true);
+
+      // Toggle stream on
+      toggleSyscalls.checked = true;
+      toggleSyscalls.dispatchEvent(new window.Event('change'));
+
+      expect(syscallConsole.classList.contains('hidden')).toBe(false);
+      expect(syscallConsole.textContent).toContain('epoll_create1');
+
+      // Click git commit to trigger clone / execve syscall logs
+      const btnCommit = document.getElementById('btnGitCommit');
+      btnCommit.dispatchEvent(new window.Event('click'));
+
+      expect(syscallConsole.textContent).toContain('sys_clone');
+      expect(syscallConsole.textContent).toContain('sys_execve');
+
+      // Trigger failover to trigger connect/setsockopt syscall logs
+      const toggleFailover = document.getElementById('toggleArgoFailover');
+      toggleFailover.checked = true;
+      toggleFailover.dispatchEvent(new window.Event('change'));
+
+      expect(syscallConsole.textContent).toContain('sys_connect');
+      expect(syscallConsole.textContent).toContain('sys_setsockopt');
+
+      // Toggle off
+      toggleSyscalls.checked = false;
+      toggleSyscalls.dispatchEvent(new window.Event('change'));
+      expect(syscallConsole.classList.contains('hidden')).toBe(true);
+    });
+  });
+
+  describe('Terraform Drift Editor Two-Way Syncing', () => {
+    it('should update visual node graph statuses based on editor inputs', () => {
+      const editor = document.getElementById('tfCodeEditor');
+      const sgStatus = document.getElementById('tf-sg-status');
+      const btnPlan = document.getElementById('btnTfPlan');
+      const diffTerminal = document.getElementById('tfDiffTerminal');
+
+      // Ingress rule change to SSH port 22
+      editor.value = 'ingress { from_port = 22 to_port = 22 }';
+      editor.dispatchEvent(new window.Event('input'));
+
+      expect(sgStatus.textContent).toContain('DRIFT: Port 22 open');
+      expect(btnPlan.disabled).toBe(false);
+      expect(diffTerminal.textContent).toContain('State discrepancy detected');
+
+      // Empty ingress configuration
+      editor.value = 'resource "aws_security_group" "web" {}';
+      editor.dispatchEvent(new window.Event('input'));
+
+      expect(sgStatus.textContent).toContain('ERROR: Firewall Empty');
+      expect(btnPlan.disabled).toBe(true);
+      expect(diffTerminal.textContent).toContain('Validation failed');
+
+      // Restored port 80 configuration
+      editor.value = 'ingress { from_port = 80 to_port = 80 }';
+      editor.dispatchEvent(new window.Event('input'));
+
+      expect(sgStatus.textContent).toContain('OK (Port 80)');
+      expect(btnPlan.disabled).toBe(true);
+      expect(diffTerminal.textContent).not.toContain('Validation failed');
+    });
+  });
+
+  describe('Advanced SRE Interactivity Suite', () => {
+    it('should compile Kustomize overlays in Widget 12', () => {
+      const baseInput = document.getElementById('kustBaseInput');
+      const patchInput = document.getElementById('kustPatchInput');
+      const output = document.getElementById('kustResolvedOutput');
+
+      expect(baseInput).not.toBeNull();
+      expect(patchInput).not.toBeNull();
+      expect(output).not.toBeNull();
+
+      // Trigger compilation with new patch replicas limit
+      patchInput.value = 'spec:\n  replicas: 10\n  template:\n    spec:\n      containers:\n      - name: web\n        image: nginx:latest';
+      patchInput.dispatchEvent(new window.Event('input'));
+
+      expect(output.textContent).toContain('replicas: 10');
+      expect(output.textContent).toContain('image: nginx:latest');
+    });
+
+    it('should trigger Prometheus live chart popup on node clicks', () => {
+      const overlay = document.getElementById('prometheus-chart-overlay');
+      const cpuNode = document.getElementById('am-src-cpu');
+      const diskNode = document.getElementById('am-src-disk');
+      const closeBtn = document.getElementById('btn-close-prom-chart');
+
+      expect(overlay.classList.contains('hidden')).toBe(true);
+
+      // Click CPU alert node
+      cpuNode.dispatchEvent(new window.Event('click'));
+      expect(overlay.classList.contains('hidden')).toBe(false);
+      expect(document.getElementById('prometheus-chart-title').textContent).toContain('CPU Usage');
+
+      // Click Close
+      closeBtn.dispatchEvent(new window.Event('click'));
+      expect(overlay.classList.contains('hidden')).toBe(true);
+
+      // Trigger showPrometheusChart programmatically
+      window.showPrometheusChart('Disk Space', [10, 20, 30]);
+      expect(overlay.classList.contains('hidden')).toBe(false);
+      expect(document.getElementById('prometheus-chart-title').textContent).toContain('Disk Space');
+    });
+
+    it('should run custom SRE shell terminal commands and trigger playground side-effects', () => {
+      // 1. sre-reconcile sg
+      window.runSRETerminalCommand('sre-reconcile sg');
+      const tfEditor = document.getElementById('tfCodeEditor');
+      expect(tfEditor.value).toContain('from_port = 80');
+      expect(document.getElementById('tf-sg-status').textContent).toContain('OK');
+
+      // 2. sre-patch oom
+      window.runSRETerminalCommand('sre-patch oom');
+      expect(document.getElementById('metric-ram-val').textContent).toBe('42');
+
+      // 3. sre-rollback
+      window.runSRETerminalCommand('sre-rollback');
+      expect(document.getElementById('canarySlider').value).toBe('0');
+      expect(document.getElementById('toggleCanaryError').checked).toBe(false);
+
+      // 4. cat /var/log/containers/payment-service.log
+      window.runSRETerminalCommand('cat /var/log/containers/payment-service.log');
+      const history = document.getElementById('terminalHistory');
+      expect(history.textContent).toContain('payment-service-xyz');
+      expect(history.textContent).toContain('OOMKilled');
+    });
+
+    it('should click runbook step checklists and execute terminal actions', () => {
+      const runbookSelector = document.getElementById('runbookSelector');
+      const stepsList = document.getElementById('runbook-steps-list');
+      const history = document.getElementById('terminalHistory');
+
+      // Load OOM runbook
+      runbookSelector.value = 'oom';
+      runbookSelector.dispatchEvent(new window.Event('change'));
+
+      // Step 1: Trigger leak to get RAM > 75%
+      document.getElementById('btnChaosLeak').click();
+      
+      // Step 2 checklist item click (manual step)
+      const step2Item = stepsList.children[1];
+      step2Item.dispatchEvent(new window.Event('click'));
+
+      // SRE terminal should execute cat command
+      expect(history.textContent).toContain('cat /var/log/containers/payment-service.log');
+    });
+
+    it('should calculate degradation and AZ uptime statuses in Chaos Monkey blast radius heatmap', () => {
+      const cardA = document.getElementById('az-card-a');
+      const cardB = document.getElementById('az-card-b');
+      const status = document.getElementById('multiaz-zones-status');
+      const blastIndicator = document.getElementById('blast-status-indicator');
+      const nodeDb = document.getElementById('blast-node-db');
+      const btn = document.getElementById('btnTriggerPartition');
+
+      // Clean up previous test's isolated cardB
+      if (cardB) cardB.classList.remove('az-offline');
+      if (btn && btn.textContent.includes('Rebuild')) {
+        btn.click();
+      }
+
+      expect(cardA.classList.contains('az-offline')).toBe(false);
+
+      // Trigger us-east-1a partition
+      btn.click();
+
+      expect(cardA.classList.contains('az-offline')).toBe(true);
+      expect(status.textContent).toContain('2 / 3');
+      expect(blastIndicator.textContent).toContain('Degraded');
+      expect(nodeDb.textContent).toContain('Partitioned');
+
+      // Restore network routes
+      btn.click();
+      expect(cardA.classList.contains('az-offline')).toBe(false);
+      expect(status.textContent).toContain('3 / 3');
+      expect(blastIndicator.textContent).toContain('System Stable');
+    });
+  });
 });
