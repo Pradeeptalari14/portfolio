@@ -1094,6 +1094,16 @@
                 expert: "Traces ingress traffic: External Load Balancer maps to Ingress Pod NodePort, then Node routing maps service VIP using iptables/IPVS (or Cilium's eBPF). The CNI routes packets across hosts using VXLAN/Geneve overlay tunnels or direct BGP routes. The Service Mesh (Istio) injects Envoy sidecars that intercept pod traffic, establishing mutual TLS (mTLS) and enforcing path-based rate-limits.",
                 leadership: "Champions modern cloud-native networking architectures, upgrading legacy IPVS clusters to eBPF-based Cilium CNI to eliminate iptables latency, implementing Istio Ambient mesh to remove sidecar resource overhead.",
                 coachTips: "Emphasize how iptables scaling bottlenecks led to eBPF-based Cilium. Connect this to Istio's sidecar-less Ambient Mesh to show you follow modern roadmap patterns."
+              },
+              {
+                q: "What is your systematic troubleshooting flow when an application hosted on Kubernetes (EKS, AKS, GKE, OpenShift, or on-prem) is reported as 'Down'?",
+                intent: "Tests the candidate's structured, logical approach to debugging multi-tiered container applications and infrastructure layers.",
+                hidden: "Wants to see a structured diagnostic path (traversing from Pods up to DNS and Nodes) rather than running random commands.",
+                red: "Proposing random node reboots, altering config files blindly, or not knowing the difference between service selectors and pod endpoint matchers.",
+                strong: "Outlines checking if pods are running (`kubectl get pods`), checking logs and events (`kubectl describe pod`, `kubectl logs`), verifying if the service endpoints match, and verifying ingress paths.",
+                expert: "Details a structured Kubernetes troubleshooting hierarchy:<br>• <strong>Application Down</strong> ➜ Check if Pod is running? (If No ➜ Check Events/Logs via <code>kubectl describe pod</code> / <code>kubectl logs</code>)<br>• If Pod is running ➜ Check if Service is routing? (If No ➜ Verify <code>kubectl get endpoints</code>)<br>• If Service works ➜ Check if Ingress routes traffic? (If No ➜ Audit Ingress Controller configurations and logs)<br>• If Ingress works ➜ Check DNS resolution? (If No ➜ Verify CoreDNS logs and local namespace resolving rules)<br>• If DNS works ➜ Check Node health? (If No ➜ Audit Kubelet status via <code>systemctl status kubelet</code>).",
+                leadership: "Establishes automated observability loops with Prometheus/Grafana alerts, configures Falco for container runtime auditing, enforces default Liveness/Readiness probes via OPA Gatekeeper policies, and deploys Karpenter to autoscale unhealthy nodes.",
+                coachTips: "This troubleshooting approach is exactly what interviewers expect from a DevOps engineer working with EKS, AKS, GKE, OpenShift, or on-prem Kubernetes clusters. Draw this flow or write it down logically to show you debug systems systematically rather than guessing."
               }
             ],
             incident: {
