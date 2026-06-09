@@ -752,6 +752,120 @@
                 explanation: "Vitest is used for high-performance Unit and Integration testing in this Vite-configured portfolio repo."
               }
             ]
+          },
+          sre_networking: {
+            title: "SRE Networking & Cloud Connectivity",
+            prereqs: "IP protocol suite, Ethernet frames, Linux network namespace",
+            related: "Multi-Node Cloud Support",
+            advanced: "eBPF Service Mesh CNI (Cilium)",
+            yield: "9.7 / 10",
+            purpose: {
+              solve: "Provides step-by-step visibility into SRE network routing, from lower-level frame transmission up to high-level cloud fabric and application service mesh layers.",
+              why: "Created to diagnose complex routing, firewalls, DNS latency, and container network overlays that cause production application outages.",
+              before: "Isolated diagnostic silos where developers analyzed HTTP APIs but SREs manually debugged raw switch tables without service abstraction.",
+              limits: "Simulating multi-node VPC route propagation or service mesh routing requires container-native network namespaces (netns) which can't be fully tested in single-node environments without overlays.",
+              alternatives: "Direct physical routing, unmanaged Kubernetes hostNetwork namespaces, basic legacy hardware routers.",
+              examples: "AWS Route53 routing internet requests to ALBs, CoreDNS translating service queries in EKS, Cilium injecting eBPF routing rules to bypass iptables in high-throughput microservices."
+            },
+            tips: "<strong>Production Value:</strong> Networking is the vascular system of cloud-native architectures. 90% of SRE debug calls during outages trace back to DNS routing limits, network policy blocks, subnet space exhaustion, or asymmetrical route paths. Master these rules to isolate failure domains instantly.<br><br><strong>Day-2 Support Tips:</strong><br>• <strong>Prerequisite Validation:</strong> When starting a debug flow from a middle tier, check DNS first (<code>dig +trace</code>), confirm firewall policies next (NACLs/SG), and trace pod CNI paths with eBPF metrics.<br>• <strong>DNS Latency:</strong> Large clusters can overload CoreDNS. Use NodeLocal DNSCache to cache DNS responses directly on worker node loopbacks, decreasing resolution latency from ~15ms to &lt;1ms.<br>• <strong>Subnet Reservation:</strong> Always allocate subnets with growth in mind (at least <code>/20</code> for K8s nodes). Pod overlays consume IPs rapidly, and changing subnet sizes in AWS after provisioning requires recreating resources.<br>• <strong>L4 vs L7 routing:</strong> Use NLB (L4) for high-performance TCP traffic or raw protocol streams. Use ALB (L7) when header-based filtering, SSL termination, or context-routing is required.<br>• <strong>Firewall Filtering:</strong> Place stateful security groups as close to target instances as possible. NACLs are stateless and should be reserved for broad traffic blocking or boundary isolation.",
+            flow: {
+              learning: "OSI Model ➜ TCP/IP ➜ IP Address ➜ Ports ➜ TCP/UDP ➜ DNS ➜ DHCP ➜ Subnetting ➜ Routing ➜ NAT ➜ Load Balancer ➜ Firewall ➜ VPN ➜ AWS VPC ➜ Kubernetes Networking ➜ Service Mesh",
+              execution: "Client Ingress ➜ Route53 DNS Resolution ➜ ALB L7 Routing ➜ NAT Port Address Translation ➜ VPC Routing Table ➜ CoreDNS Namespace Lookup ➜ CNI Pod Overlay (Calico/Cilium) ➜ Envoy Proxy Sidecar redirection",
+              repo: "Pradeeptalari14/tp-kubernetes ➜ manifests/ingress.yaml ➜ config/coredns-configmap.yaml"
+            },
+            labs: {
+              command: "dig +trace google.com && ip route show && iptables -t nat -L -n -v",
+              syntax: "dig [server] [name] [type] +trace || ip route show || iptables -t [table] -L [chain] [options]",
+              args: "+trace: Executes a hierarchical recursive DNS resolution path tracking queries from Root servers down to Authoritative Name Servers. -t nat -L: Lists current Network Address Translation tables to audit Kubernetes service VIP routing rules.",
+              output: "DNS delegation logs representing Root/TLD name queries; ip routing table rows (default dev eth0 proto kernel scope link); and iptables target groups.",
+              fail: "DNS resolution failures, unreachable default gateways, or iptables lock issues. Mitigate DNS timeouts by editing /etc/resolv.conf and pointing to upstream resolver (8.8.8.8).",
+              prod: "Running periodic network connectivity tests (e.g. netshoot containers) using automated canary checks checking route latency between pod namespaces."
+            },
+            archGaps: {
+              mermaid: "graph TD\\n  Client[Browser Client] -- 1. DNS Query --> DNS[Route53 / DNS Resolver]\\n  Client -- 2. HTTPS Request to Port 443 --> LB[Application Load Balancer]\\n  LB -- 3. DNAT Translation --> NAT[NAT Gateway]\\n  NAT -- 4. Route via VPC Route Table --> IGW[Internet Gateway]\\n  IGW -- 5. VPN Gateway Tunnel --> VPC[AWS VPC Subnet]\\n  VPC -- 6. Target Pod IP Routing --> CNI[K8s CNI Network Overlay]\\n  CNI -- 7. Service Mesh Envoy Proxy --> Pod[Target Pod Container]",
+              spof: "Single NAT Gateway instance in a single Availability Zone creates an absolute network exit routing single point of failure.",
+              security: "Broad VPC CIDR ranges allowing unrestricted ingress/egress between namespaces without network policies or security groups.",
+              scaling: "Subnet size too small (e.g., /24) causing IP exhaustion when scaling Kubernetes nodes and pods under load spikes.",
+              monitoring: "Missing VPC Flow Logs analysis rules and CoreDNS latency telemetry monitoring, causing blind spots in network degradation.",
+              backup: "VPC route tables, security groups, and NACL rules are not version-controlled via Infrastructure as Code (Terraform).",
+              dr: "Lack of multi-region VPC Peering or Transit Gateway failovers, risking a complete regional network isolation.",
+              improvements: "Implement multi-AZ NAT Gateways, enforce strict Kubernetes NetworkPolicies, allocate wide CIDRs (e.g. /16), enable VPC Flow Logs to CloudWatch, and write all VPC infra in Terraform."
+            },
+            interview: [
+              {
+                q: "Trace a packet's journey starting from a DNS query up to establishing a TCP connection, explaining how the OSI layers and DHCP are involved.",
+                intent: "Tests end-to-end understanding of fundamental networking protocols, OS socket calls, layer encapsulations, and DNS lookup hierarchies.",
+                hidden: "Interviewer wants details on ARP resolutions, DHCP allocation scope, DNS recursive/iterative lookup differences, and the TCP 3-way handshake.",
+                red: "Confusing L4 protocols (TCP/UDP) with L7 protocols (HTTP/DNS), or neglecting to mention MAC address lookup via ARP.",
+                strong: "Explains how DHCP leases IPs at boot, how DNS resolves the domain name recursively, how TCP handles the three-way handshake, and how the packet is encapsulated/decapsulated across OSI layers.",
+                expert: "Describes the packet's journey with precise system calls: socket(), bind(), connect(). Explains layer encapsulation: HTTP payload at L7, TCP segment with ports at L4, IP packet with source/destination IPs at L3, and Ethernet frame with MAC addresses at L2, resolved via ARP table queries.",
+                leadership: "Designs global DNS architectures leveraging Anycast routing, active-active CoreDNS configurations, and DHCP option sets mapping custom DNS endpoints across VPCs to enforce network consistency."
+              },
+              {
+                q: "How do you design a secure subnet routing architecture within a VPC, and what is the difference between Security Groups and Network Access Control Lists (NACLs)?",
+                intent: "Evaluates architectural skills in IP partitioning, routing configurations, and stateless vs stateful packet filtering.",
+                hidden: "Looks for understanding of route tables, public vs private subnets, NAT Gateway routing, stateful vs stateless traffic filtering, and subnet size allocation.",
+                red: "Confusing Security Groups (stateful, target instance level) with NACLs (stateless, subnet level), or routing public traffic without an Internet Gateway.",
+                strong: "Defines public subnets (routed to Internet Gateway) and private subnets (routed to NAT Gateway). Explains Security Groups filter at instance level (stateful) and NACLs filter at subnet boundaries (stateless).",
+                expert: "Details stateless NACL packet filtering (requires explicit rules for both ingress and ephemeral egress ports 1024-65535) versus stateful Security Groups (automatically allows response traffic). Designs VPCs with separate tiers: Public, Private, and Isolated Data subnets, keeping IPs reserved for scaling.",
+                leadership: "Establishes organization-wide VPC standards using Terraform module blueprints, enforcing automated NACL security compliance scanning and VPC Flow Logs validation in CI/CD pipeline runs."
+              },
+              {
+                q: "What are the key differences between Layer 4 and Layer 7 load balancing, and how would you establish secure, high-throughput connectivity between on-premises datacenters and multiple VPCs?",
+                intent: "Tests knowledge of high-performance traffic routing, proxy models, SSL termination, and hybrid cloud network topologies.",
+                hidden: "Expects deep explanation of TCP-passthrough vs HTTP header inspection, and AWS Site-to-Site VPN vs Direct Connect with Transit Gateway.",
+                red: "Recommending L7 load balancing for high-volume database replica clusters or choosing basic VPNs over Direct Connect for dedicated multi-gigabit workloads.",
+                strong: "Differentiates Layer 4 (routing packets based on IP/Port, high throughput) from Layer 7 (inspecting headers, cookies, URLs, path-based routing). Recommends AWS Site-to-Site VPN for backup and Direct Connect for primary high-speed connection, aggregated via Transit Gateway.",
+                expert: "Explains the mechanics: L4 (Network Load Balancer) does not terminate TCP connection, preserving client IP (using proxy protocol if needed). L7 (Application Load Balancer) terminates the TLS connection, performs inspection, and initiates a new TCP connection to targets. For hybrid connect, details AWS Transit Gateway routing, BGP session establishment, and IPsec VPN failover routing configurations.",
+                leadership: "Designs zero-trust hybrid routing networks utilizing Transit Gateway route domain tables to isolate test and production environments, using SD-WAN overlay fabrics to unify cloud and on-prem connectivity."
+              },
+              {
+                q: "Describe the flow of traffic from an external user to a pod in a Kubernetes cluster, and explain how a Container Network Interface (CNI) like Cilium differs from a Service Mesh like Istio.",
+                intent: "Assesses knowledge of container-native networking, overlay/underlay networks, eBPF vs iptables performance, and L7 service mesh routing.",
+                hidden: "Looks for precise routing steps: Ingress Controller ➜ Kubernetes Service VIP ➜ Kube-Proxy/eBPF ➜ CNI overlay routing ➜ Pod. Wants to hear about eBPF bypass of iptables vs Envoy sidecar proxy traffic redirection.",
+                red: "Confusing Kubernetes Service IP routing (which is virtual and handled by iptables/IPVS/eBPF) with physical pod IP routing, or treating CNI and Service Mesh as mutually exclusive.",
+                strong: "Explains that CNI (like Calico or Cilium) provides pod IP connectivity and L3/L4 routing, while Service Mesh (like Istio) manages L7 traffic control, mTLS, retry policies, and telemetry using sidecar proxies like Envoy.",
+                expert: "Traces ingress traffic: External Load Balancer maps to Ingress Pod NodePort, then Node routing maps service VIP using iptables/IPVS (or Cilium's eBPF). The CNI routes packets across hosts using VXLAN/Geneve overlay tunnels or direct BGP routes. The Service Mesh (Istio) injects Envoy sidecars that intercept pod traffic, establishing mutual TLS (mTLS) and enforcing path-based rate-limits.",
+                leadership: "Champions modern cloud-native networking architectures, upgrading legacy IPVS clusters to eBPF-based Cilium CNI to eliminate iptables latency, implementing Istio Ambient mesh to remove sidecar resource overhead."
+              }
+            ],
+            incident: {
+              title: "DNS Latency Spikes and VPC Subnet Route Outage",
+              flow: "Resolve DNS queries returns timeouts; pods fail to connect to external databases.",
+              symptoms: "App logs report connection timeout to database; curl -v returns DNS lookup timeouts.",
+              causes: "CoreDNS replica deployment is underscaled under heavy traffic, or VPC Route Table lacks NAT Gateway mapping for target subnet range.",
+              verify: "dig +short @10.96.0.10 google.com && nc -z -v -w 5 <db-host> 5432",
+              commands: "kubectl get pods -n kube-system -l k8s-app=kube-dns\\nkubectl logs -n kube-system -l k8s-app=kube-dns --tail=100",
+              fix: "Scale CoreDNS deployment replicas to match cluster load, and update VPC Route Table associated with the private subnet to route 0.0.0.0/0 to the NAT Gateway.",
+              validation: "Run dns lookup query inside testing container and check if resolving domain returns success code in under 5ms.",
+              prevention: "Enforce CoreDNS autoscale profiles (HPA) and deploy NodeLocal DNSCache daemonsets across all Kubernetes worker nodes to intercept DNS requests locally."
+            },
+            quiz: [
+              {
+                q: "Which Kubernetes component is responsible for translating Virtual Service IPs into actual target Pod IP addresses?",
+                options: ["CoreDNS", "kube-proxy", "kube-apiserver", "Kubelet"],
+                a: "kube-proxy",
+                explanation: "kube-proxy manages host network routing tables (via iptables or IPVS) to translate the virtual cluster IP of a service into the endpoint IP of a specific pod container."
+              },
+              {
+                q: "At which Layer of the OSI Model does a Network Load Balancer (NLB) primarily operate?",
+                options: ["Layer 2 (Data Link)", "Layer 3 (Network)", "Layer 4 (Transport)", "Layer 7 (Application)"],
+                a: "Layer 4 (Transport)",
+                explanation: "Network Load Balancers operate at Layer 4 (Transport), routing raw TCP and UDP connections without terminating the connections or inspecting HTTP header payloads."
+              },
+              {
+                q: "What is the difference between a stateless NACL and a stateful Security Group in AWS VPC?",
+                options: ["NACL is stateful, Security Group is stateless", "NACL requires rules for both inbound and outbound traffic, Security Group automatically allows outbound responses", "NACL filters traffic at host level, Security Group filters at subnet level", "There is no difference between them"],
+                a: "NACL requires rules for both inbound and outbound traffic, Security Group automatically allows outbound responses",
+                explanation: "NACLs are stateless and inspect inbound/outbound packets independently, requiring explicit return rule configurations. Security Groups are stateful, allowing return traffic automatically."
+              },
+              {
+                q: "Which type of Network Address Translation (NAT) maps multiple private IP addresses to a single public IP address using different source ports?",
+                options: ["Static NAT", "Dynamic NAT", "Port Address Translation (PAT)", "Destination NAT"],
+                a: "Port Address Translation (PAT)",
+                explanation: "Port Address Translation (PAT), also known as NAT overload, is a form of dynamic NAT that maps multiple private IP addresses to a single public IP address by tracking unique source port numbers."
+              }
+            ]
           }
         }
       },
@@ -1304,6 +1418,17 @@
                 <strong>Production Best Practice:</strong> ${activeTopic.labs.prod}
               </p>
             </div>
+
+            ${activeTopic.tips ? `
+            <div style="margin-top:1.5rem; background:rgba(16, 185, 129, 0.05); border-left:3px solid var(--accent-green); padding:1rem; border-radius:0 var(--radius-md) var(--radius-md) 0">
+              <h4 style="font-size:0.88rem; font-weight:700; color:var(--accent-green); margin-bottom:0.5rem; display:flex; align-items:center; gap:6px">
+                💡 DevOps &amp; SRE Production Tips (How it Helps)
+              </h4>
+              <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6; margin:0">
+                ${activeTopic.tips}
+              </p>
+            </div>
+            ` : ''}
           </div>
         `;
       } 
