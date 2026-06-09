@@ -18,6 +18,7 @@ export default defineConfig({
         awsCostOptimizer: resolve(__dirname, 'projects/aws-cost-optimizer.html'),
         experience: resolve(__dirname, 'experience/index.html'),
         tools: resolve(__dirname, 'tools/index.html'),
+        interview: resolve(__dirname, 'interview/index.html'),
         git: resolve(__dirname, 'tools/git/index.html'),
         sresimulator: resolve(__dirname, 'tools/sre-simulator/index.html'),
         mcpstudio: resolve(__dirname, 'tools/mcp-studio/index.html'),
