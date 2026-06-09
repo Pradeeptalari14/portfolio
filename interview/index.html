@@ -1253,7 +1253,11 @@
           </div>
         `;
         try {
-          mermaid.contentLoaded();
+          const el = document.getElementById('arch-mermaid');
+          if (el) {
+            el.removeAttribute('data-processed');
+          }
+          mermaid.run();
         } catch(e) { console.error('Mermaid render error', e); }
       } 
       
