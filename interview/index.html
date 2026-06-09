@@ -1162,6 +1162,135 @@
                 explanation: "GitHub Actions workflow pipelines are configured using YAML syntax inside the `.github/workflows` directory."
               }
             ]
+          },
+          sre_git_commands: {
+            title: "Must-Know Git Commands for DevOps Interviews",
+            prereqs: "Unix CLI, secure shells (SSH/HTTPS), file systems",
+            related: "Studio Code Generation & Repository Sync",
+            advanced: "GitOps Infrastructure Control (ArgoCD/Flux)",
+            yield: "9.6 / 10",
+            purpose: {
+              solve: "Enables systematic version control, codebase alignment, and collaborative change management for large-scale engineering teams.",
+              why: "Created to track revision history, isolate features via branches, resolve merge conflicts, and drive automated CI/CD pipelines.",
+              before: "Manual directory copying (e.g., source_v1, source_final) leading to overwrites, lost code, and zero accountability.",
+              limits: "Large binary file storage (LFS required) and complex branching topologies that can lead to merge debt.",
+              alternatives: "SVN (Apache Subversion), Mercurial, TFS (Team Foundation Server).",
+              examples: "GitHub hosting millions of repositories, SRE teams managing infrastructure-as-code files in monorepos, ArgoCD syncing cluster state directly from Git commits."
+            },
+            tips: "<strong>Production Value:</strong> Git is the interface for GitOps and Infrastructure as Code. Every SRE must know how to safely navigate histories, recover lost commits using reflog, resolve merge conflicts, and optimize repositories using worktrees.<br><br><strong>Interactivity Tips:</strong><br>• <strong>Reflog is your safety net:</strong> <code>git reflog</code> tracks every single update to references (commits, checkouts, merges). If you accidentially reset or delete a branch, reflog is the only way to recover the dangling commit hashes.<br>• <strong>Rebase vs Merge:</strong> Use <code>git rebase</code> to keep a clean, linear history for feature branches. Avoid rebasing shared public branches as it rewrites commit history, causing issues for other collaborators.<br>• <strong>Worktrees for multi-tasking:</strong> Instead of stashing or cloning a repo twice to work on two branches simultaneously, use <code>git worktree add</code> to checkout multiple branches in separate directories within the same repository footprint.",
+            flow: {
+              learning: "git clone ➜ git fetch/pull ➜ git add/commit ➜ git push ➜ git stash/pop ➜ git merge/rebase ➜ git cherry-pick ➜ git reflog ➜ git reset/revert ➜ git blame/bisect ➜ git tag ➜ git worktree ➜ git log/show/diff",
+              execution: "Working Directory (untracked/modified) ➜ Staging Area (indexed via git add) ➜ Local Repository (committed via git commit) ➜ Remote Repository (pushed via git push)",
+              repo: "Pradeeptalari14/tp-github-actions ➜ scripts/sync.js ➜ .github/workflows/main.yml"
+            },
+            labs: {
+              command: "Demo 1 (Feature Dev):\\ngit clone <url> && git checkout -b feature-a && git add . && git commit -m 'feat: feature' && git push origin feature-a\\n\\nDemo 2 (Linear History):\\ngit checkout main && git pull origin main && git checkout feature-a && git rebase main && git checkout main && git merge feature-a\\n\\nDemo 3 (Stash & Cherry-Pick):\\ngit stash && git checkout release-1.0 && git cherry-pick <commit-sha> && git checkout feature-a && git stash pop\\n\\nDemo 4 (Diagnostic Reversion):\\ngit blame -L 10,20 script.js && git bisect start && git bisect bad && git bisect good v1.0.0 && git revert <bad-commit-sha>\\n\\nDemo 5 (Workspace & Recovery):\\ngit reflog && git reset --hard HEAD@{3} && git tag -a v1.0.1 -m 'v1.0.1 release' && git worktree add ../another-branch-dir another-branch",
+              syntax: "git clone [url] || git checkout -b [branch] || git add [path] || git commit -m [msg] || git push [remote] [branch] || git stash || git stash pop || git merge || git rebase || git cherry-pick [sha] || git reflog || git reset --hard [ref] || git revert [sha] || git blame || git bisect || git tag || git worktree || git log || git show || git diff",
+              args: "Demo 1: clone (copies remote repo), checkout -b (creates/switches branch), add (stages modifications), commit -m (commits locally), push (transmits to remote).\\nDemo 2: pull (fetches and merges), rebase (applies commits on top of base), merge (joins histories).\\nDemo 3: stash (saves uncommitted changes), cherry-pick (copies target commit SHA), stash pop (restores saved changes).\\nDemo 4: blame -L (inspects authors for line range), bisect (runs binary search for bugs), revert (applies inverse commit changes).\\nDemo 5: reflog (shows pointer updates history), reset --hard (forces HEAD and workdir rollback), tag (creates release tag), worktree add (creates concurrent workspace).",
+              output: "Output reports showing repository downloads, branch configurations, commit creation states, stash status indexes, conflict warnings, binary search bounds, reflog logs, and worktree creation directories.",
+              fail: "Permissions denied during push, merge conflicts during rebase/merge, stash pop file collisions, or non-fast-forward push rejections. Resolve merge conflicts by editing conflict zones, and resolve push blocks by pulling updates first.",
+              prod: "Use git push --force-with-lease instead of --force to protect peer commits, set up shallow clones (git clone --depth 1) in automated build containers, and leverage git worktree to work on multiple active branches concurrently without overhead."
+            },
+            archGaps: {
+              mermaid: "graph LR\\n  WD[Working Directory] -- git add --> SA[Staging Area]\\n  SA -- git commit --> LR[Local Repository]\\n  LR -- git push --> RR[Remote Repository]\\n  RR -- git clone / git fetch --> LR\\n  LR -- git checkout / git reset --> WD\\n  WD -- git stash --> Stash[(Git Stash)]\\n  Stash -- git stash pop --> WD",
+              spof: "Relying on a single remote hosting provider (like GitHub) without mirror repository sync configurations.",
+              security: "Developers committing secrets (API keys, SSH keys) in cleartext into public repositories, exposing infrastructure access.",
+              scaling: "Monorepos growing excessively large, slowing down git fetch/pull operations and exceeding disk space limits on build agents.",
+              monitoring: "No automated repository scanning (e.g. GitGuardian or Trufflehog) monitoring push events for credential leaks.",
+              backup: "No automated backup of git metadata, pull requests, issue trackers, and release notes outside the main repository host.",
+              dr: "Failure of remote host services halting continuous deployment pipelines with no secondary source registry failover.",
+              improvements: "Enforce pre-commit hooks (Trufflehog) to prevent secrets from being committed, enable shallow cloning (git clone --depth 1) in pipelines to scale build speeds, and set up secondary repository mirrors."
+            },
+            interview: [
+              {
+                q: "Explain the differences between git merge and git rebase, when you would use each, and how git stash and git cherry-pick fit into daily workflows.",
+                intent: "Assesses candidate's command over Git histories, features isolation, and advanced commit manipulation.",
+                hidden: "Interviewer wants to know about keeping a clean, linear commit history, avoiding rewriting shared history, and retrieving individual commits.",
+                red: "Rebasing shared remote branches (like main), or failing to explain how cherry-pick extracts specific commits by hash.",
+                strong: "Uses merge to preserve history chronology and merge commits. Uses rebase on local feature branches to maintain a clean linear commit graph. Uses stash to temporarily save uncommitted changes, and cherry-pick to apply a specific commit from one branch to another.",
+                expert: "Explains that merge creates a new merge commit (non-destructive history), while rebase applies local commits sequentially on top of the target base branch (destructively rewriting commit IDs). Explains git stash saves dirty state in ref/stash, and cherry-pick copies commit payloads onto HEAD, generating a new commit ID.",
+                leadership: "Establishes organization-wide branching guidelines, enforcing squash-merge rules on main branches to ensure clear release tags while maintaining rebase requirements on active feature development."
+              },
+              {
+                q: "If you accidentally perform a hard reset (git reset --hard) and lose uncommitted/committed code, how do you recover? How does git revert differ from git reset?",
+                intent: "Tests the candidate's crisis management skills when recovering lost code and their understanding of modifying local vs remote histories.",
+                hidden: "Looks for understanding of git reflog to find dangling commit hashes, and when to use safe reverts (non-destructive) vs resets (rewriting history).",
+                red: "Assuming that a git reset --hard is completely unrecoverable, or using git reset to modify pushed remote commits on shared branches.",
+                strong: "Uses git reflog to locate the commit hash before the reset, then runs git checkout or git reset to recover it. Explains git reset moves the HEAD pointer backward, while git revert creates a new commit that applies inverse changes.",
+                expert: "Details running 'git reflog' to inspect local reference movements, finding the dangling commit SHA, and running 'git reset --hard HEAD@{index}' to restore files. Explains that git revert is safe for public branches because it doesn't alter previous commits, whereas git reset rewrites history and requires force pushing (git push --force-with-lease) which breaks collaborators' local clones.",
+                leadership: "Enforces commit sig-verification and disables force-push permissions on main branches using repository rulesets, preventing accidental history overrides while establishing automated backups for commit graphs."
+              },
+              {
+                q: "How do you locate the commit that introduced a bug in a codebase with hundreds of commits? What is git worktree and how does it optimize developer operations?",
+                intent: "Verifies advanced diagnostic capability using binary searches, and resource optimization during multi-branch development.",
+                hidden: "Interviewer wants details on git bisect automation (bisect run), git blame for target lines, and checking out multiple paths without double cloning.",
+                red: "Checking out commits manually in a sequential loop to locate a bug, or cloning a repository multiple times to work on different branches simultaneously.",
+                strong: "Uses git bisect to perform a binary search between a known good and bad commit. Uses git blame to find who modified specific lines. Uses git worktree to manage multiple active working directories from a single local repo.",
+                expert: "Explains git bisect start ➜ git bisect bad ➜ git bisect good. Details how 'git bisect run test-script.sh' automates the search via exit codes. Explains 'git worktree add ../feature-dir feat-branch' links separate working trees to a single .git database, saving storage and context-switching overhead.",
+                leadership: "Integrates git bisect scripts within automated testing pipelines to identify regression points, creating standardized worktree automation templates for local development environments."
+              },
+              {
+                q: "What is the difference between git fetch and git pull? How do you inspect differences between branches or specific commits using git diff and git show?",
+                intent: "Tests basic repository synchronization mechanics and file difference analysis.",
+                hidden: "Wants to hear about pull being fetch + merge, checking remote updates without merging, and filtering diff results by file.",
+                red: "Running git pull blindly without understanding it can trigger unwanted merge commits, or confusing git diff with git log.",
+                strong: "Explains git fetch downloads remote tracking branches without changing local HEAD, while git pull fetches and merges. Uses git diff to see code changes and git show to inspect metadata and contents of a specific commit.",
+                expert: "Explains git pull runs git fetch and then git merge under the hood (or git rebase if configured). Details git diff options like --stat, comparing working directory to index, and using 'git show <commit-sha>:<file-path>' to view a file at a specific historical point.",
+                leadership: "Establishes developer sync schedules, configuring git pull --rebase as the organization default to prevent pull merge-bubbles, and integrating automated repository status checks in IDE modules."
+              },
+              {
+                q: "Walk through the complete lifecycle of creating, staging, committing, tagging, and pushing a feature from local sandbox to production branch. What are the best practices for commit message formats?",
+                intent: "Verifies developer hygiene, understanding of git tracking states, and semantic version tagging.",
+                hidden: "Expects detailing of untracked ➜ staged ➜ local commit ➜ annotated tag ➜ remote push with tags. Wants discussion of Conventional Commits format.",
+                red: "Committing directly to main, staging files blindly using git add . without verifying contents, or not tagging production releases.",
+                strong: "Uses git add to stage, git commit to record locally, git tag to mark version, and git push to publish. Follows standard commit formats (e.g. feat:, fix:).",
+                expert: "Details staging specific hunks using 'git add -p', writing commits following Conventional Commits format (type(scope): message), creating an annotated tag (git tag -a v1.0.0 -m 'message'), and pushing with '--follow-tags' to remote hosts.",
+                leadership: "Automates release notes generation and semantic versioning triggers (such as semantic-release) driven entirely by Conventional Commits in merged pull requests."
+              }
+            ],
+            incident: {
+              title: "Merge Conflict Blocking Production Hotfix Deployment",
+              flow: "Release branch pull request blocks merge due to conflicting line changes in tools scripts.",
+              symptoms: "CI pipeline fails at merge stage; pull request UI displays 'This branch has conflicts that must be resolved'.",
+              causes: "Two developers modified the same code lines in script.js concurrently without syncing changes.",
+              verify: "git checkout production && git merge hotfix-branch",
+              commands: "git status\\ngit diff --name-only --diff-filter=U",
+              fix: "Manually edit conflicting files to resolve HEAD indicators (<<<<<<< to >>>>>>>), stage changes (git add), and finalize commit.",
+              validation: "Verify file compiles correctly, run npm run build, and verify git status shows clean working directory.",
+              prevention: "Enforce frequent pulls from main branch, run small pull requests, and leverage git rebase regularly to resolve conflicts early."
+            },
+            quiz: [
+              {
+                q: "Which command allows you to view the log of all local HEAD pointer movements, including checked out branches and hard resets?",
+                options: ["git log", "git reflog", "git show", "git status"],
+                a: "git reflog",
+                explanation: "git reflog records every update to reference tips (HEAD, branches, tags) in the local repository, making it easy to recover deleted commits or undo resets."
+              },
+              {
+                q: "How does 'git checkout' differ from 'git worktree' when switching context between branches?",
+                options: ["checkout moves HEAD in the current directory; worktree creates a new directory to work on another branch concurrently", "checkout deletes uncommitted changes; worktree stashes them", "There is no difference", "worktree can only be used on remote servers"],
+                a: "checkout moves HEAD in the current directory; worktree creates a new directory to work on another branch concurrently",
+                explanation: "git worktree creates separate physical directories linked to a single local repository, allowing you to checkout and run multiple branches in parallel without cloning the repo multiple times."
+              },
+              {
+                q: "What is the main danger of running 'git push --force' instead of 'git push --force-with-lease'?",
+                options: ["It corrupts local repositories", "It overwrites any commits made on the remote branch by other developers since your last pull", "It changes local SSH configuration keys", "It deletes tag history"],
+                a: "It overwrites any commits made on the remote branch by other developers since your last pull",
+                explanation: "--force-with-lease checks if the remote branch has updated since your last local fetch, preventing you from accidentally overwriting changes pushed by other team members."
+              },
+              {
+                q: "Which Git command applies the changes introduced by an existing commit hash from another branch onto your current HEAD?",
+                options: ["git merge", "git rebase", "git cherry-pick", "git revert"],
+                a: "git cherry-pick",
+                explanation: "git cherry-pick copies the changes from a specific commit hash and applies them as a new commit on the active branch HEAD."
+              },
+              {
+                q: "What algorithm does 'git bisect' utilize to locate the commit that introduced a bug or regression?",
+                options: ["Linear Search", "Binary Search", "Depth-First Search", "Randomized Sampling"],
+                a: "Binary Search",
+                explanation: "git bisect performs a binary search through the repository's commit history between a known good and bad commit to quickly isolate the breaking change."
+              }
+            ]
           }
         }
       },
