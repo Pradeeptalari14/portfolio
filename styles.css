@@ -3533,6 +3533,10 @@ body.modal-open {
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
 }
 
+.hidden {
+  display: none !important;
+}
+
 .playground-group.hidden {
   display: none;
 }
