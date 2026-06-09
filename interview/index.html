@@ -1368,8 +1368,7 @@
               alternatives: "Managed cloud control planes (AWS EKS, GCP GKE) which host highly available API panels natively.",
               examples: "Bootstrapping 3 dedicated master nodes running stacked etcd clusters, load balanced behind HAProxy servers."
             },
-            tips: "<strong>Production Value:</strong> etcd is sensitive to disk write latency. Always host etcd databases on dedicated NVMe SSDs to prevent quorum loss.<br><br><strong>Key Tips:</strong><br>• <strong>Quorum Majority:</strong> Quorum is computed as N/2 + 1. An odd count of etcd nodes (3 or 5) handles partition failures better than an even count (2 or 4).<br>• <strong>Compaction:</strong> Periodically run etcd compaction to clean historical database keys and prevent storage limit exhaustion."
-            },
+            tips: "<strong>Production Value:</strong> etcd is sensitive to disk write latency. Always host etcd databases on dedicated NVMe SSDs to prevent quorum loss.<br><br><strong>Key Tips:</strong><br>• <strong>Quorum Majority:</strong> Quorum is computed as N/2 + 1. An odd count of etcd nodes (3 or 5) handles partition failures better than an even count (2 or 4).<br>• <strong>Compaction:</strong> Periodically run etcd compaction to clean historical database keys and prevent storage limit exhaustion.",
             flow: {
               learning: "API Server ➜ Scheduler ➜ Controller Manager ➜ etcd consensus ➜ HA proxy load balancer ➜ Kubelet",
               execution: "Client kubectl ➜ HA Load Balancer ➜ Master API Server ➜ etcd Write ➜ Scheduler binds pod ➜ Node Kubelet runs container",
@@ -2715,6 +2714,7 @@
                 options: ["Linear Search", "Binary Search", "Depth-First Search", "Randomized Sampling"],
                 a: "Binary Search",
                 explanation: "git bisect performs a binary search through the repository's commit history between a known good and bad commit to quickly isolate the breaking change."
+              }
             ]
           },
           sre_devops_roadmap: {
@@ -3306,6 +3306,15 @@
               prevention: "Configure circuit-breaker gateways returning immediate HTTP 202, queuing tasks to secondary SQS layers for async processing."
             },
             quiz: [
+              {
+                q: "Which cryptographic hashing method is the industry standard for validating incoming webhook payloads to verify their origin?",
+                options: [
+                  "HMAC-SHA256 signatures validated using a shared secret",
+                  "Stateless IP address comparison ranges",
+                  "Diffie-Hellman dynamic key exchanges",
+                  "AES-256 decryption utilizing SSH public keys"
+                ],
+                a: "HMAC-SHA256 signatures validated using a shared secret",
                 explanation: "HMAC signatures involve hashing payload data utilizing shared secrets, allowing receivers to verify origin and content integrity."
               }
             ]
