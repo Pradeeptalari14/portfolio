@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **120 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **267 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 120 Studios
+    loop For each of the 267 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -68,7 +68,7 @@ graph TD
 
 ## 2. Batch Repository Creation Automation Script
 
-You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 120 public repositories under your profile:
+You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 267 public repositories under your profile:
 
 ```javascript
 // File: scratch/create-github-repos.js
@@ -111,12 +111,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 120 target repositories have been processed!");
+console.log("🎉 All 267 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 120-Repository Execution Matrix
+## 3. Exhaustive 267-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -271,11 +271,11 @@ Whenever a configuration needs an update:
 2. **Commit:** Replace the outdated config file in your local cloned git repository (following the *Commit Destination* in the matrix above).
 3. **Verify:** Commit and push the file to your `main` branch. Run the *Validation Command* locally or let your CI pipeline verify the output.
 
-### D. SRE Best Practices: Managing 99 Repositories at Scale
+### D. SRE Best Practices: Managing 267 Repositories at Scale
 
-As your platform scales to 120 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+As your platform scales to 267 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
-   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 120 repositories individually, define them at the **GitHub Organization level**.
+   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 267 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
 2. **Standard Repository Template:**
    - Create a base template repository (e.g., `tp-template-base`) pre-configured with the standard `.gitignore`, `LICENSE`, and default security linter workflows.

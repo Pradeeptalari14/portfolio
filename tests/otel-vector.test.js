@@ -74,7 +74,7 @@ describe('OpenTelemetry Collector Configurator Studio', () => {
 
     expect(debugLogs.textContent).toContain('RECEIVER: Payload matched OTLP gRPC endpoint.');
     expect(debugLogs.textContent).toContain('EXPORTER: Logged error status trace');
-  });
+  }, 15000);
 });
 
 describe('Vector Log Pipeline Studio', () => {

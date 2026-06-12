@@ -1118,8 +1118,8 @@
         <li><a href="../skills/" class="nav-link">Skills</a></li>
         <li><a href="../experience/" class="nav-link">Experience</a></li>
         <li><a href="../projects/" class="nav-link">Projects</a></li>
-        <li><a href="./" class="nav-link active" id="nav-tools-link">Tools</a></li>
-        <li><a href="../AI/" class="nav-link" id="nav-ai-link">AI</a></li>
+        <li><a href="../tools/" class="nav-link" id="nav-tools-link">Tools</a></li>
+        <li><a href="./" class="nav-link active" id="nav-ai-link">AI</a></li>
         <li><a href="../interview/" class="nav-link">Interview</a></li>
         <li><a href="../#contact" class="nav-link">Contact</a></li>
       </ul>
@@ -1181,11 +1181,11 @@
  
       <!-- Category Filter Tabs -->
       <div class="filter-tabs">
-        <button class="filter-btn active" data-filter="all">
+        <button class="filter-btn" data-filter="all">
           <span>All Studios</span>
           <span class="filter-count">267</span>
         </button>
-        <button class="filter-btn" data-filter="ai">
+        <button class="filter-btn active" data-filter="ai">
           <span>AI & MLOps</span>
           <span class="filter-count">172</span>
         </button>
@@ -1537,7 +1537,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
   </footer>
 
   <script type="module">
-    import toolsData from './tools.json';
+    import toolsData from '../tools/tools.json';
 
     function renderToolsGrid() {
       const container = document.getElementById('tools-grid-container');
@@ -1772,7 +1772,10 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
 
       // Check for URL filter parameter (e.g. tools/?filter=ai)
       const urlParams = new URLSearchParams(window.location.search);
-      const urlFilter = urlParams.get('filter') ? urlParams.get('filter').toLowerCase() : null;
+      let urlFilter = urlParams.get('filter') ? urlParams.get('filter').toLowerCase() : null;
+      if (!urlFilter) {
+        urlFilter = 'ai'; // Default to 'ai' on the AI page
+      }
       if (urlFilter && counts[urlFilter] !== undefined) {
         filterBtns.forEach(btn => {
           if (btn.getAttribute('data-filter') === urlFilter) {
