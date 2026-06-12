@@ -311,6 +311,7 @@
               <button onclick="switchTab('parent_pwa')" id="tab-parent_pwa" class="tab-btn">parent_pwa.html</button>
               <button onclick="switchTab('driver_app')" id="tab-driver_app" class="tab-btn">driver_app.html</button>
               <button onclick="switchTab('admin')" id="tab-admin" class="tab-btn">admin_dashboard.html</button>
+              <button onclick="switchTab('simulator')" id="tab-simulator" class="tab-btn text-indigo-400">📱 Live Tracker App</button>
               <button onclick="switchTab('flow_diagram')" id="tab-flow_diagram" class="tab-btn">📊 Visual Flowchart</button>
             </div>
           </div>
@@ -318,6 +319,79 @@
           <!-- Output Viewport -->
           <pre id="output-box" class="ide-viewport" style="max-height: 520px; overflow-y: auto;"></pre>
           <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+
+          <!-- Simulator Viewport (Live Tracker App) -->
+          <div id="simulator-viewport" class="hidden ide-viewport flex flex-col bg-slate-950 p-4 border border-slate-800 font-sans text-xs text-slate-300 animate-fadeIn" style="min-height: 480px; max-height: 520px; overflow-y: auto;">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+              <span class="text-[9px] font-bold text-slate-400 uppercase font-mono">Live Route Tracking &amp; WhatsApp SMS Sandbox</span>
+              <button id="btn_run_sim" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] px-3 py-1.5 rounded transition uppercase font-mono tracking-wider">
+                Start Route Simulation
+              </button>
+            </div>
+
+            <!-- Visual Grid Map & Simulated Phone -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+              <!-- Grid Map View -->
+              <div class="bg-slate-900 border border-slate-800 p-3 rounded flex flex-col justify-between relative min-h-[220px]">
+                <div class="text-[9px] font-bold text-slate-400 font-mono mb-2 uppercase">Live Map Viewport</div>
+                
+                <!-- Bus track road -->
+                <div class="relative w-full h-[150px] bg-slate-950 rounded border border-slate-800 overflow-hidden flex items-center justify-between p-4">
+                  <!-- Dashed Road -->
+                  <div class="absolute left-0 right-0 h-1 border-t-2 border-dashed border-slate-800 top-[50%]"></div>
+                  
+                  <!-- Stop coordinates -->
+                  <div class="flex justify-between w-full relative z-10">
+                    <div class="flex flex-col items-center">
+                      <span class="text-base transition-all duration-300" id="node-depot">🏭</span>
+                      <span class="text-[8px] text-slate-400 font-mono mt-1">Depot</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span class="text-base text-slate-500 transition-all duration-300" id="node-stop-a">🚏</span>
+                      <span class="text-[8px] text-slate-400 font-mono mt-1">Stop A</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span class="text-base text-slate-500 transition-all duration-300" id="node-stop-b">🚏</span>
+                      <span class="text-[8px] text-slate-400 font-mono mt-1">Stop B</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span class="text-base text-slate-500 transition-all duration-300" id="node-school">🏫</span>
+                      <span class="text-[8px] text-slate-400 font-mono mt-1">School</span>
+                    </div>
+                  </div>
+                  
+                  <!-- Moving Bus Avatar -->
+                  <div id="sim-bus" class="absolute text-2xl z-20 transition-all duration-1000 ease-in-out" style="left: 20px; top: calc(50% - 16px);">🚌</div>
+                </div>
+
+                <div class="flex justify-between mt-2 text-[8px] text-slate-400 font-mono">
+                  <span id="sim-speed">Velocity: -- km/h</span>
+                  <span id="sim-distance">Distance: 0m</span>
+                </div>
+              </div>
+
+              <!-- Phone Mock Screen -->
+              <div class="bg-slate-900 border border-slate-800 p-3 rounded flex flex-col justify-between min-h-[220px]">
+                <div class="text-[9px] font-bold text-slate-400 font-mono mb-2 uppercase">WhatsApp Mobile Alerts</div>
+                
+                <!-- Chat boxes -->
+                <div class="flex-1 bg-emerald-950/20 border border-emerald-900/40 rounded p-2 overflow-y-auto flex flex-col gap-2" id="sim-chat-container" style="max-height: 140px; min-height: 120px;">
+                  <div class="text-[8px] text-slate-500 text-center font-mono py-1">🔒 Messages and calls are end-to-end encrypted.</div>
+                </div>
+
+                <div class="mt-2 text-[8px] text-slate-400 font-mono text-center flex items-center justify-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>WhatsApp Cloud API Hook Established</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ingestion logs console -->
+            <div class="mt-3 bg-slate-900 border border-slate-800 rounded p-3 font-mono text-[9px]">
+              <div class="text-slate-400 font-bold uppercase mb-1">Server Ingestion Telemetry Output:</div>
+              <pre id="sim-telemetry" class="bg-slate-950 p-2 rounded text-emerald-400 border border-slate-800/80 overflow-y-auto" style="max-height: 80px; min-height: 60px; margin: 0; white-space: pre-wrap;"></pre>
+            </div>
+          </div>
         </div>
 
         <!-- Global Actions -->

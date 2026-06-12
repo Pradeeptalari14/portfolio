@@ -597,9 +597,166 @@ function setupSheetDatabase() {
     };
   }
 
+  // Interactive Simulation Loop
+  const btnRunSim = document.getElementById('btn_run_sim');
+  const simBus = document.getElementById('sim-bus');
+  const simSpeed = document.getElementById('sim-speed');
+  const simDistance = document.getElementById('sim-distance');
+  const simChatContainer = document.getElementById('sim-chat-container');
+  const simTelemetry = document.getElementById('sim-telemetry');
+
+  const nodes = {
+    'node-depot': document.getElementById('node-depot'),
+    'node-stop-a': document.getElementById('node-stop-a'),
+    'node-stop-b': document.getElementById('node-stop-b'),
+    'node-school': document.getElementById('node-school'),
+  };
+
+  let simTimer = null;
+  let isSimActive = false;
+
+  if (btnRunSim) {
+    btnRunSim.onclick = () => {
+      if (isSimActive) return;
+      isSimActive = true;
+      btnRunSim.disabled = true;
+      btnRunSim.textContent = "Simulation Running...";
+      btnRunSim.classList.replace('bg-indigo-600', 'bg-slate-700');
+
+      // Reset DOM elements
+      if (simTelemetry) simTelemetry.textContent = "";
+      if (simChatContainer) {
+        simChatContainer.innerHTML = '<div class="text-[8px] text-slate-500 text-center font-mono py-1">🔒 Messages and calls are end-to-end encrypted.</div>';
+      }
+      Object.values(nodes).forEach(n => {
+        if (n) {
+          n.classList.remove('text-indigo-400', 'scale-125');
+          n.classList.add('text-slate-500');
+        }
+      });
+
+      const radius = document.getElementById('geofence_radius').value;
+      const steps = [
+        {
+          left: '20px',
+          speed: '35 km/h',
+          distance: '0m',
+          log: '[Ingest] Bus BUS-4B initialization sequence complete. Engine ON. Status: moving',
+          whatsapp: '🚌 Depot Alert: Bus BUS-4B has departed the school depot on Route 4-B.',
+          activeNode: 'node-depot'
+        },
+        {
+          left: '16%',
+          speed: '42 km/h',
+          distance: '450m',
+          log: '[Ingest] Driver telemetry ping: lat=12.968431, lng=77.588210 (Status: moving)',
+          activeNode: null
+        },
+        {
+          left: 'calc(33% - 12px)',
+          speed: '12 km/h',
+          distance: '950m',
+          log: `[Geofence] Stop A breached (Radius: ${radius}m). Target distance: 85m. Dispatching alerts.`,
+          whatsapp: `🚌 Arrival Alert: Bus BUS-4B is entering the geofence for Stop A. Estimated arrival in 2 minutes. Please be ready!`,
+          activeNode: 'node-stop-a'
+        },
+        {
+          left: 'calc(33% - 12px)',
+          speed: '0 km/h',
+          distance: '1000m',
+          log: '[Boarding] Driver logged child boarding tap at Stop A. Sending parent notifications...',
+          whatsapp: '✅ Boarding Confirmed: Your child has boarded Bus BUS-4B at Stop A.',
+          activeNode: 'node-stop-a'
+        },
+        {
+          left: '50%',
+          speed: '45 km/h',
+          distance: '1500m',
+          log: '[Ingest] Driver telemetry ping: lat=12.973510, lng=77.601243 (Status: moving)',
+          activeNode: null
+        },
+        {
+          left: 'calc(66% - 12px)',
+          speed: '15 km/h',
+          distance: '2000m',
+          log: `[Geofence] Stop B breached (Radius: ${radius}m). Target distance: 110m. Dispatching alerts.`,
+          whatsapp: `🚌 Arrival Alert: Bus BUS-4B is entering the geofence for Stop B. Estimated arrival in 3 minutes. Please be ready!`,
+          activeNode: 'node-stop-b'
+        },
+        {
+          left: '83%',
+          speed: '38 km/h',
+          distance: '2500m',
+          log: '[Ingest] Driver telemetry ping: lat=12.978210, lng=77.608122 (Status: moving)',
+          activeNode: null
+        },
+        {
+          left: 'calc(100% - 40px)',
+          speed: '0 km/h',
+          distance: '3100m',
+          log: '[Ingest] School coordinates match. Route completed successfully. Transiting to depot state.',
+          whatsapp: '🏫 School Arrival: Bus BUS-4B has arrived safely at school hub. Trip completed.',
+          activeNode: 'node-school'
+        }
+      ];
+
+      let currentStep = 0;
+      function runNextStep() {
+        if (currentStep >= steps.length) {
+          isSimActive = false;
+          btnRunSim.disabled = false;
+          btnRunSim.textContent = "Start Route Simulation";
+          btnRunSim.classList.replace('bg-slate-700', 'bg-indigo-600');
+          return;
+        }
+
+        const step = steps[currentStep];
+
+        // Update bus avatar
+        if (simBus) simBus.style.left = step.left;
+        if (simSpeed) simSpeed.textContent = `Velocity: ${step.speed}`;
+        if (simDistance) simDistance.textContent = `Distance: ${step.distance}`;
+
+        // Highlight nodes
+        if (step.activeNode) {
+          Object.entries(nodes).forEach(([key, n]) => {
+            if (n) {
+              if (key === step.activeNode) {
+                n.classList.remove('text-slate-500');
+                n.classList.add('text-indigo-400', 'scale-125');
+              } else {
+                n.classList.remove('scale-125');
+              }
+            }
+          });
+        }
+
+        // Output telemetry logs
+        if (simTelemetry) {
+          simTelemetry.textContent += `[${new Date().toLocaleTimeString()}] ${step.log}\n`;
+          simTelemetry.scrollTop = simTelemetry.scrollHeight;
+        }
+
+        // WhatsApp message dispatch
+        if (step.whatsapp && simChatContainer) {
+          const bubble = document.createElement('div');
+          bubble.style.cssText = "align-self: flex-end; background: #056162; color: white; padding: 6.5px 10px; border-radius: 8px 8px 0 8px; max-width: 80%; font-size: 10px; line-height: 1.35; box-shadow: 0 1px 1px rgba(0,0,0,0.1); word-wrap: break-word; font-family: sans-serif;";
+          bubble.innerHTML = `<div>${step.whatsapp}</div><div style="text-align: right; font-size: 8px; color: #a5d6a7; margin-top: 2px;">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>`;
+          simChatContainer.appendChild(bubble);
+          simChatContainer.scrollTop = simChatContainer.scrollHeight;
+        }
+
+        currentStep++;
+        simTimer = setTimeout(runNextStep, 2500);
+      }
+
+      runNextStep();
+    };
+  }
+
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['backend', 'db_setup', 'parent_pwa', 'driver_app', 'admin', 'flow_diagram'],
+    ['backend', 'db_setup', 'parent_pwa', 'driver_app', 'admin', 'flow_diagram', 'simulator'],
     'backend',
     { outputBox: elements.outputBox },
     (tabName) => {
@@ -618,6 +775,7 @@ function setupSheetDatabase() {
       if (tabName === 'driver_app') name = 'driver_app.html';
       if (tabName === 'admin') name = 'admin_dashboard.html';
       if (tabName === 'flow_diagram') name = 'flowchart.txt';
+      if (tabName === 'simulator') name = 'simulation.log';
       
       elements.downloadInput.value = name;
       updateViewportContent();
