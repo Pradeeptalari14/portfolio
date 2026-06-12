@@ -17,7 +17,7 @@ function getToolInputs() {
     awsCostOptimizer: resolve(__dirname, 'projects/aws-cost-optimizer.html'),
     experience: resolve(__dirname, 'experience/index.html'),
     tools: resolve(__dirname, 'tools/index.html'),
-    ai: resolve(__dirname, 'AI/index.html'),
+    aiCatalog: resolve(__dirname, 'AI/index.html'),
     interview: resolve(__dirname, 'interview/index.html'),
   };
 
