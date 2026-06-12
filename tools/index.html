@@ -1772,7 +1772,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
 
       // Check for URL filter parameter (e.g. tools/?filter=ai)
       const urlParams = new URLSearchParams(window.location.search);
-      const urlFilter = urlParams.get('filter');
+      const urlFilter = urlParams.get('filter') ? urlParams.get('filter').toLowerCase() : null;
       if (urlFilter && counts[urlFilter] !== undefined) {
         filterBtns.forEach(btn => {
           if (btn.getAttribute('data-filter') === urlFilter) {
