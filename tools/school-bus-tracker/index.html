@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>School Bus Tracking System Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate production-ready location ingestion APIs, geofenced WhatsApp notification dispatchers, Leaflet maps, and admin dashboard configs for school fleets." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --accent-green:   #059669;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: all 0.22s ease;
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .diagram-container {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      color: #e2e8f0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" width="32" height="32" loading="lazy" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN TRANSIT MONITOR STUDIO ══ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Autonomous Transit &amp; IoT</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">School Bus Tracking System Studio</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl leading-normal">
+        Configure, design, and compile complete components for a School Bus Tracking Platform. Generate custom geolocation APIs, database schemas, PWA parent map screens, driver button modules, and live fleet telemetry dashboards.
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Hardware & API Integration -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🚌 Transit System Properties</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="gps_source" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">GPS Tracker Device</label>
+              <select id="gps_source" class="form-select w-full p-2.5 text-xs">
+                <option value="smartphone">Driver's Smartphone App</option>
+                <option value="dedicated_hardware">Dedicated Hardware (GT06 Protocol)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="backend_stack" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Backend Stack</label>
+              <select id="backend_stack" class="form-select w-full p-2.5 text-xs">
+                <option value="fastapi">Python + FastAPI</option>
+                <option value="node">Node.js + Express</option>
+                <option value="google_apps_script">Google Apps Script (Free Tier)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="database_type" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Database Store</label>
+              <select id="database_type" class="form-select w-full p-2.5 text-xs">
+                <option value="postgresql">PostgreSQL + PostGIS</option>
+                <option value="google_sheets">Google Sheets (Prototyping)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="gateway" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">WhatsApp Gateway API</label>
+              <select id="gateway" class="form-select w-full p-2.5 text-xs">
+                <option value="callmebot">CallMeBot API (Free Wrapper)</option>
+                <option value="whatsapp_business">WhatsApp Business Cloud API</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="geofence_radius" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Geofence Radius: <span id="geofence_radius_val" class="font-bold text-indigo-600">200</span> meters</label>
+              <input type="range" id="geofence_radius" min="50" max="1000" step="50" value="200" oninput="document.getElementById('geofence_radius_val').innerText = this.value" class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+            </div>
+
+            <div>
+              <label for="update_interval" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">GPS Update Interval: <span id="update_interval_val" class="font-bold text-indigo-600">5</span> seconds</label>
+              <input type="range" id="update_interval" min="2" max="60" step="1" value="5" oninput="document.getElementById('update_interval_val').innerText = this.value" class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Notification & Event Triggers -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🔔 Alerting &amp; Notification Events</h3>
+          
+          <div class="space-y-4 text-xs font-semibold text-gray-700">
+            <!-- Depot Departure -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="notify_depot" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="notify_depot" class="font-bold text-gray-900 block cursor-pointer">Depot Departure Event</label>
+                <span class="text-[10px] text-gray-400 font-normal">Dispatches an broadcast WhatsApp text message to all parents on the bus route when transit begins.</span>
+              </div>
+            </div>
+
+            <!-- Geofence Arrival -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="notify_geofence" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="notify_geofence" class="font-bold text-gray-900 block cursor-pointer">Stop Geofence Arrival Event</label>
+                <span class="text-[10px] text-gray-400 font-normal">Triggers a targeted WhatsApp ETA alert to parents when the bus crosses inside the set meter geofence.</span>
+              </div>
+            </div>
+
+            <!-- Boarding Confirmation -->
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-start gap-3">
+              <input type="checkbox" id="notify_boarding" class="custom-checkbox mt-0.5" checked />
+              <div>
+                <label for="notify_boarding" class="font-bold text-gray-900 block cursor-pointer">Boarding / Drop-off Taps</label>
+                <span class="text-[10px] text-gray-400 font-normal">Sends personalized confirmation alerts to individual parents when driver records child ingress or egress.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Agentic Optimization Plugins -->
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🧠 AI &amp; Agentic Optimizations</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-center gap-3">
+              <input type="checkbox" id="opt_eta" class="custom-checkbox" checked />
+              <div>
+                <label for="opt_eta" class="font-bold text-gray-900 block cursor-pointer">Predictive ETA Agent</label>
+                <span class="text-[9px] text-gray-400 font-normal">Integrate Google Maps traffic factor calculations.</span>
+              </div>
+            </div>
+
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-center gap-3">
+              <input type="checkbox" id="opt_route" class="custom-checkbox" />
+              <div>
+                <label for="opt_route" class="font-bold text-gray-900 block cursor-pointer">Route Optimizer</label>
+                <span class="text-[9px] text-gray-400 font-normal">Auto-reorder stops based on live congestion models.</span>
+              </div>
+            </div>
+
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-center gap-3">
+              <input type="checkbox" id="opt_behavior" class="custom-checkbox" />
+              <div>
+                <label for="opt_behavior" class="font-bold text-gray-900 block cursor-pointer">Behavior Learner</label>
+                <span class="text-[9px] text-gray-400 font-normal">Fall back to Voice / SMS if WhatsApp messages are ignored.</span>
+              </div>
+            </div>
+
+            <div class="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 flex items-center gap-3">
+              <input type="checkbox" id="opt_fatigue" class="custom-checkbox" />
+              <div>
+                <label for="opt_fatigue" class="font-bold text-gray-900 block cursor-pointer">Fatigue / Safety Watch</label>
+                <span class="text-[9px] text-gray-400 font-normal">Analyze driver telemetry to identify reckless maneuvers.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container">
+          <div class="ide-header flex-col items-stretch p-0">
+            <!-- IDE Header Row -->
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-36 focus:outline-none" value="bus_tracker.py" readonly />
+                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag">.py</span>
+              </div>
+            </div>
+            
+            <!-- File Tabs Navigation (Scrollable) -->
+            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50 overflow-x-auto tabs-scrollable">
+              <button onclick="switchTab('backend')" id="tab-backend" class="tab-btn active">bus_tracker.py</button>
+              <button onclick="switchTab('db_setup')" id="tab-db_setup" class="tab-btn">schema.sql</button>
+              <button onclick="switchTab('parent_pwa')" id="tab-parent_pwa" class="tab-btn">parent_pwa.html</button>
+              <button onclick="switchTab('driver_app')" id="tab-driver_app" class="tab-btn">driver_app.html</button>
+              <button onclick="switchTab('admin')" id="tab-admin" class="tab-btn">admin_dashboard.html</button>
+              <button onclick="switchTab('flow_diagram')" id="tab-flow_diagram" class="tab-btn">📊 Visual Flowchart</button>
+            </div>
+          </div>
+
+          <!-- Output Viewport -->
+          <pre id="output-box" class="ide-viewport" style="max-height: 520px; overflow-y: auto;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <button onclick="compileConfigs(); showToast('⚡ Code recompiled successfully!');" class="col-span-3 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>🔄 Recompile Code Artifacts</span>
+            </button>
+            <button onclick="copyActiveTabContent()" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy</span>
+            </button>
+            <button onclick="explainActiveTabCode()" class="py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>🧠 Explain</span>
+            </button>
+            <button onclick="clearAllFields()" class="py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+              <span>🗑️ Clear</span>
+            </button>
+          </div>
+
+          <button onclick="downloadWorkspaceZip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2">
+            <span>⬇5️ Download Project Bundle (.zip)</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Wrapper -->
+  <div id="toast-wrapper" class="fixed bottom-5 right-5 z-50 transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none">
+    <div id="toast-content" class="bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2">
+      <!-- Injected -->
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
+      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Drawer script triggers -->
+  <script>
+    function showToast(msg) {
+      const wrapper = document.getElementById('toast-wrapper');
+      const content = document.getElementById('toast-content');
+      if (wrapper && content) {
+        content.textContent = msg;
+        wrapper.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+        setTimeout(() => {
+          wrapper.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+        }, 2000);
+      }
+    }
+    
+    function copyActiveTabContent() {
+      const box = document.getElementById('output-box');
+      if (box && !box.classList.contains('hidden')) {
+        navigator.clipboard.writeText(box.textContent).then(() => {
+          showToast('📋 Copied to clipboard!');
+        });
+      } else {
+        showToast('⚠️ Cannot copy visual tab');
+      }
+    }
+
+    function downloadWorkspaceZip() {
+      // Mock ZIP compilation for student project plans
+      showToast('⬇️ Packaging transit SRE files...');
+      setTimeout(() => {
+        const activeCode = document.getElementById('output-box').textContent;
+        const name = document.getElementById('download-name-input').value;
+        const a = document.createElement('a');
+        a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(activeCode);
+        a.download = name;
+        a.click();
+      }, 500);
+    }
+  </script>
+
+  <!-- ══ ENGINE SCRIPT ══ -->
+  <script type="module" src="../../src/js/generators/school-bus-tracker-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+  <script src="../shared-tools.js"></script>
+</body>
+</html>

@@ -3202,5 +3202,17 @@
     "tag": "campus_counsel.py",
     "link": "campus-counsel/",
     "repository": "Pradeeptalari14/tp-campus-counsel"
+  },
+  {
+    "title": "School Bus Tracking System Studio",
+    "desc": "Real-time location, ETA notifications via WhatsApp, geofencing, driver tap logs, and route optimization.",
+    "category": "ai",
+    "icon": "🚌",
+    "color": "rgb(99, 102, 241)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "bus_tracker.py",
+    "link": "school-bus-tracker/",
+    "repository": "Pradeeptalari14/tp-school-bus-tracker"
   }
 ]
