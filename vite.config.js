@@ -1,147 +1,46 @@
 import { defineConfig } from 'vite';
 import injectHTML from 'vite-plugin-html-inject';
-import { resolve } from 'path';
+import { resolve, join } from 'path';
+import fs from 'fs';
+
+// Helper to find all tools dynamically
+function getToolInputs() {
+  const inputs = {
+    main: resolve(__dirname, 'index.html'),
+    skills: resolve(__dirname, 'skills/index.html'),
+    projects: resolve(__dirname, 'projects/index.html'),
+    awsDevopsDashboard: resolve(__dirname, 'projects/aws-devops-dashboard.html'),
+    awsEksDeployment: resolve(__dirname, 'projects/aws-eks-deployment.html'),
+    jenkinsSharedLibrary: resolve(__dirname, 'projects/jenkins-shared-library.html'),
+    sreMonitoringSystem: resolve(__dirname, 'projects/sre-monitoring-system.html'),
+    terraformAwsModules: resolve(__dirname, 'projects/terraform-aws-modules.html'),
+    awsCostOptimizer: resolve(__dirname, 'projects/aws-cost-optimizer.html'),
+    experience: resolve(__dirname, 'experience/index.html'),
+    tools: resolve(__dirname, 'tools/index.html'),
+    interview: resolve(__dirname, 'interview/index.html'),
+  };
+
+  const toolsDir = resolve(__dirname, 'tools');
+  const items = fs.readdirSync(toolsDir);
+  for (const item of items) {
+    const itemPath = join(toolsDir, item);
+    if (fs.statSync(itemPath).isDirectory()) {
+      const htmlPath = join(itemPath, 'index.html');
+      if (fs.existsSync(htmlPath)) {
+        // Convert folder name to camelCase for the rollup input key
+        const key = item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+        inputs[key] = htmlPath;
+      }
+    }
+  }
+  return inputs;
+}
 
 export default defineConfig({
   plugins: [injectHTML()],
   build: {
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        skills: resolve(__dirname, 'skills/index.html'),
-        projects: resolve(__dirname, 'projects/index.html'),
-        awsDevopsDashboard: resolve(__dirname, 'projects/aws-devops-dashboard.html'),
-        awsEksDeployment: resolve(__dirname, 'projects/aws-eks-deployment.html'),
-        jenkinsSharedLibrary: resolve(__dirname, 'projects/jenkins-shared-library.html'),
-        sreMonitoringSystem: resolve(__dirname, 'projects/sre-monitoring-system.html'),
-        terraformAwsModules: resolve(__dirname, 'projects/terraform-aws-modules.html'),
-        awsCostOptimizer: resolve(__dirname, 'projects/aws-cost-optimizer.html'),
-        experience: resolve(__dirname, 'experience/index.html'),
-        tools: resolve(__dirname, 'tools/index.html'),
-        interview: resolve(__dirname, 'interview/index.html'),
-        git: resolve(__dirname, 'tools/git/index.html'),
-        sresimulator: resolve(__dirname, 'tools/sre-simulator/index.html'),
-        mcpstudio: resolve(__dirname, 'tools/mcp-studio/index.html'),
-        ai: resolve(__dirname, 'tools/ai/index.html'),
-        ansible: resolve(__dirname, 'tools/ansible/index.html'),
-        docker: resolve(__dirname, 'tools/docker/index.html'),
-        jenkins: resolve(__dirname, 'tools/jenkins/index.html'),
-        terraform: resolve(__dirname, 'tools/terraform/index.html'),
-        kubernetes: resolve(__dirname, 'tools/kubernetes/index.html'),
-        monitoring: resolve(__dirname, 'tools/monitoring/index.html'),
-        github: resolve(__dirname, 'tools/github-actions/index.html'),
-        helm: resolve(__dirname, 'tools/helm/index.html'),
-        argocd: resolve(__dirname, 'tools/argocd/index.html'),
-        logging: resolve(__dirname, 'tools/logging/index.html'),
-        linux: resolve(__dirname, 'tools/linux/index.html'),
-        python: resolve(__dirname, 'tools/python/index.html'),
-        shellscript: resolve(__dirname, 'tools/shellscript/index.html'),
-        gitlab: resolve(__dirname, 'tools/gitlab/index.html'),
-        llm: resolve(__dirname, 'tools/llm/index.html'),
-        slm: resolve(__dirname, 'tools/slm/index.html'),
-        mlflow: resolve(__dirname, 'tools/mlflow/index.html'),
-        strands: resolve(__dirname, 'tools/strands/index.html'),
-        webhooks: resolve(__dirname, 'tools/webhooks/index.html'),
-        secrets: resolve(__dirname, 'tools/secrets/index.html'),
-        chaos: resolve(__dirname, 'tools/chaos/index.html'),
-        mesh: resolve(__dirname, 'tools/mesh/index.html'),
-        tracing: resolve(__dirname, 'tools/tracing/index.html'),
-        compliance: resolve(__dirname, 'tools/compliance/index.html'),
-        dbmigration: resolve(__dirname, 'tools/db-migration/index.html'),
-        performance: resolve(__dirname, 'tools/performance/index.html'),
-        slo: resolve(__dirname, 'tools/slo/index.html'),
-        sast: resolve(__dirname, 'tools/sast/index.html'),
-        finops: resolve(__dirname, 'tools/finops/index.html'),
-        dnsssl: resolve(__dirname, 'tools/dns-ssl/index.html'),
-        backupdr: resolve(__dirname, 'tools/backup-dr/index.html'),
-        statusincident: resolve(__dirname, 'tools/status-incident/index.html'),
-        apigateway: resolve(__dirname, 'tools/api-gateway/index.html'),
-        gitopssecrets: resolve(__dirname, 'tools/gitops-secrets/index.html'),
-        idptemplate: resolve(__dirname, 'tools/idp-template/index.html'),
-        progressivedelivery: resolve(__dirname, 'tools/progressive-delivery/index.html'),
-        containerregistry: resolve(__dirname, 'tools/container-registry/index.html'),
-        dbclustering: resolve(__dirname, 'tools/db-clustering/index.html'),
-        llmguardrails: resolve(__dirname, 'tools/llm-guardrails/index.html'),
-        raycluster: resolve(__dirname, 'tools/ray-cluster/index.html'),
-        aieval: resolve(__dirname, 'tools/ai-eval/index.html'),
-        ebpftracing: resolve(__dirname, 'tools/ebpf-tracing/index.html'),
-        featurestore: resolve(__dirname, 'tools/feature-store/index.html'),
-        edgewasm: resolve(__dirname, 'tools/edge-wasm/index.html'),
-        greenops: resolve(__dirname, 'tools/greenops/index.html'),
-        confidentialenclave: resolve(__dirname, 'tools/confidential-enclave/index.html'),
-        decentralizedinfra: resolve(__dirname, 'tools/decentralized-infra/index.html'),
-        dataops: resolve(__dirname, 'tools/dataops/index.html'),
-        aiops: resolve(__dirname, 'tools/aiops/index.html'),
-        systemdbuilder: resolve(__dirname, 'tools/systemd-builder/index.html'),
-        vpcsubnetter: resolve(__dirname, 'tools/vpc-subnetter/index.html'),
-        nginxconfig: resolve(__dirname, 'tools/nginx-config/index.html'),
-        k8scrd: resolve(__dirname, 'tools/k8s-crd/index.html'),
-        trivystudio: resolve(__dirname, 'tools/trivy/index.html'),
-        airulescustomizer: resolve(__dirname, 'tools/ai-rules-customizer/index.html'),
-        falcoauditor: resolve(__dirname, 'tools/falco-auditor/index.html'),
-        alertmanagervisualizer: resolve(__dirname, 'tools/alertmanager-visualizer/index.html'),
-        daggerpipelines: resolve(__dirname, 'tools/dagger-pipelines/index.html'),
-        ebpfgenerator: resolve(__dirname, 'tools/ebpf-generator/index.html'),
-        crossplanestudio: resolve(__dirname, 'tools/crossplane-studio/index.html'),
-        knativerouting: resolve(__dirname, 'tools/knative-routing/index.html'),
-        karpenterautoscaler: resolve(__dirname, 'tools/karpenter-autoscaler/index.html'),
-        otelconfigurator: resolve(__dirname, 'tools/otel-configurator/index.html'),
-        kedascaling: resolve(__dirname, 'tools/keda-scaling/index.html'),
-        vectorpipeline: resolve(__dirname, 'tools/vector-pipeline/index.html'),
-        kyvernopolicy: resolve(__dirname, 'tools/kyverno-policy/index.html'),
-        githubarc: resolve(__dirname, 'tools/github-arc/index.html'),
-        terraformdrift: resolve(__dirname, 'tools/terraform-drift/index.html'),
-        fluxcdgitops: resolve(__dirname, 'tools/fluxcd-gitops/index.html'),
-        ciliumpolicy: resolve(__dirname, 'tools/cilium-policy/index.html'),
-        awsiam: resolve(__dirname, 'tools/aws-iam/index.html'),
-        vaultsecrets: resolve(__dirname, 'tools/vault-secrets/index.html'),
-        tektonpipeline: resolve(__dirname, 'tools/tekton-pipeline/index.html'),
-        goutility: resolve(__dirname, 'tools/go-utility/index.html'),
-        cloudformation: resolve(__dirname, 'tools/cloudformation/index.html'),
-        bitbucket: resolve(__dirname, 'tools/bitbucket/index.html'),
-        tomcat: resolve(__dirname, 'tools/tomcat/index.html'),
-        maven: resolve(__dirname, 'tools/maven/index.html'),
-        sonarqube: resolve(__dirname, 'tools/sonarqube/index.html'),
-        agileitsm: resolve(__dirname, 'tools/agile-itsm/index.html'),
-        eventsre: resolve(__dirname, 'tools/event-sre/index.html'),
-        githubgov: resolve(__dirname, 'tools/github-gov/index.html'),
-        cloudflarezerotrust: resolve(__dirname, 'tools/cloudflare-zero-trust/index.html'),
-        localstackdev: resolve(__dirname, 'tools/localstack-dev/index.html'),
-        localclouddev: resolve(__dirname, 'tools/local-cloud-dev/index.html'),
-        llmgateway: resolve(__dirname, 'tools/llm-gateway/index.html'),
-        llmtracing: resolve(__dirname, 'tools/llm-tracing/index.html'),
-        vectordb: resolve(__dirname, 'tools/vector-db/index.html'),
-        githubprovisioningguide: resolve(__dirname, 'tools/github-provisioning-guide/index.html'),
-        pulumi: resolve(__dirname, 'tools/pulumi/index.html'),
-        qloratuning: resolve(__dirname, 'tools/qlora-tuning/index.html'),
-        promptops: resolve(__dirname, 'tools/promptops/index.html'),
-        modelopsgitops: resolve(__dirname, 'tools/modelops-gitops/index.html'),
-        llmredteaming: resolve(__dirname, 'tools/llm-redteaming/index.html'),
-        syntheticdata: resolve(__dirname, 'tools/synthetic-data/index.html'),
-        gpuscheduler: resolve(__dirname, 'tools/gpu-scheduler/index.html'),
-        mcpserver: resolve(__dirname, 'tools/mcp-server/index.html'),
-         agentworkflow: resolve(__dirname, 'tools/agent-workflow/index.html'),
-        azureSearchAi: resolve(__dirname, 'tools/azure-search-ai/index.html'),
-        gcpVertexAi: resolve(__dirname, 'tools/gcp-vertex-ai/index.html'),
-        azureAks: resolve(__dirname, 'tools/azure-aks/index.html'),
-        azureAppService: resolve(__dirname, 'tools/azure-app-service/index.html'),
-        azureArc: resolve(__dirname, 'tools/azure-arc/index.html'),
-        gcpGkeAutopilot: resolve(__dirname, 'tools/gcp-gke-autopilot/index.html'),
-        gcpCloudRun: resolve(__dirname, 'tools/gcp-cloud-run/index.html'),
-        gcpAnthos: resolve(__dirname, 'tools/gcp-anthos/index.html'),
-        azureDevopsPipelines: resolve(__dirname, 'tools/azure-devops-pipelines/index.html'),
-        gcpCloudBuild: resolve(__dirname, 'tools/gcp-cloud-build/index.html'),
-        azureBicepArm: resolve(__dirname, 'tools/azure-bicep-arm/index.html'),
-        azureAcrSecure: resolve(__dirname, 'tools/azure-acr-secure/index.html'),
-        azureKeyVault: resolve(__dirname, 'tools/azure-key-vault/index.html'),
-        azureFunctions: resolve(__dirname, 'tools/azure-functions/index.html'),
-        gcpDeploymentManager: resolve(__dirname, 'tools/gcp-deployment-manager/index.html'),
-        gcpSecretManager: resolve(__dirname, 'tools/gcp-secret-manager/index.html'),
-        gcpCloudFunctions: resolve(__dirname, 'tools/gcp-cloud-functions/index.html'),
-        gcpCloudSpanner: resolve(__dirname, 'tools/gcp-cloud-spanner/index.html'),
-        azureMonitor: resolve(__dirname, 'tools/azure-monitor/index.html'),
-        gcpCloudOperations: resolve(__dirname, 'tools/gcp-cloud-operations/index.html'),
-      }
+      input: getToolInputs()
     }
   }
 });

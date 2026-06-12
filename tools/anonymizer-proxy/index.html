@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymizer Proxy - Developer Studio</title>
+  <meta name="description" content="Envoy reverse proxy running Presidio scripts to mask private data fields inside HTTP flows.">
+  <link rel="icon" href="../../Favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../shared-tools.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: false, theme: 'dark' });</script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col">
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full flex-row" style="display: flex; align-items: center; justify-content: space-between; height: 100%;">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #ffffff;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" width="32" height="32" loading="lazy" style="border-radius: 9999px; object-fit: cover;" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      
+      <div class="flex items-center gap-6 text-sm font-semibold text-gray-400" style="display: flex; align-items: center; gap: 1.5rem;">
+        <a href="../../#home" class="hover:text-indigo-400 transition" style="text-decoration: none; color: inherit;">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-400 transition" style="text-decoration: none; color: inherit;">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="text-3xl">🕵️</span>
+      <div>
+        <h1 class="text-2xl font-bold text-white">Anonymizer Proxy</h1>
+        <p class="text-xs text-slate-400">Category: <span class="uppercase font-semibold text-indigo-400">ai</span></p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Controls -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="studio-card">
+          <h3 class="studio-title text-base font-bold text-white mb-4">⚙️ RAG Node Parameters</h3>
+          
+          <div class="space-y-4">
+            <div>
+              <label for="model_endpoint" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Model Endpoint</label>
+              <input type="text" id="model_endpoint" class="form-input w-full p-2.5 text-xs" value="https://api.openai.com/v1" />
+            </div>
+
+            <div>
+              <label for="temperature" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Temperature</label>
+              <input type="range" id="temperature" class="w-full" min="0" max="1" step="0.1" value="0.3" />
+            </div>
+
+            <div>
+              <label for="system_prompt" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">System Instructions</label>
+              <textarea id="system_prompt" class="form-input w-full p-2.5 text-xs" rows="4">You are an SRE assistant for Anonymizer Proxy. Answer only if fully supported by retrieved context.</textarea>
+            </div>
+            
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Integrations</label>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-xs text-slate-300">
+                  <input type="checkbox" id="enable_alerts" class="custom-checkbox" checked />
+                  <span>Enable Custom Alerting (Slack/Teams)</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs text-slate-300">
+                  <input type="checkbox" id="enable_chat_api" class="custom-checkbox" checked />
+                  <span>Connect WhatsApp / Telegram Client API</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button id="btn-copy" class="py-2.5 border border-slate-700 hover:bg-slate-800 text-slate-300 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5 bg-slate-800/50">
+              <span>📋 Copy Output</span>
+            </button>
+            <button id="btn-download" class="py-2.5 bg-indigo-650 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>⬇️ Download file</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Workspace -->
+      <div class="lg:col-span-8 flex flex-col">
+        <div class="flex-grow bg-slate-950 rounded-xl border border-slate-800 overflow-hidden flex flex-col">
+          <div class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <input type="text" id="download-name-input" class="bg-slate-850 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-44 focus:outline-none" value="envoy_proxy.yaml" readonly />
+            </div>
+            
+            <div class="flex bg-slate-900 overflow-x-auto gap-2">
+              <button onclick="switchTab('primary_config')" id="tab-primary_config" class="tab-btn active text-xs px-3 py-1.5 rounded bg-slate-850">envoy_proxy.yaml</button>
+              <button onclick="switchTab('env_config')" id="tab-env_config" class="tab-btn text-xs px-3 py-1.5 rounded">.env</button>
+              <button onclick="switchTab('validate_sh')" id="tab-validate_sh" class="tab-btn text-xs px-3 py-1.5 rounded">validate.sh</button>
+              <button onclick="switchTab('flow_diagram')" id="tab-flow_diagram" class="tab-btn text-xs px-3 py-1.5 text-teal-400 rounded">📊 Flow Diagram</button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto flex-grow" style="min-height: 400px; max-height: 550px;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex-grow flex items-center justify-center" style="min-height: 400px; max-height: 550px;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../../src/js/core-tool.js"></script>
+  <script type="module" src="../../src/js/generators/anonymizer-proxy-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>
