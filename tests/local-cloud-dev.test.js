@@ -41,17 +41,21 @@ function loadToolDom(htmlRelativePath, jsRelativePath) {
 }
 
 describe('Docker Compose & Local Cloud Dev Studio', () => {
-  it('should compile default docker-compose services with AWS emulator on custom 7-series port', () => {
+  it('should compile default docker-compose services with S3 (MinIO) and SQS (ElasticMQ) emulators', () => {
     const window = loadToolDom('../tools/local-cloud-dev/index.html', '../src/js/generators/local-cloud-dev-gen.js');
     const outputBox = window.document.getElementById('output-box');
 
-    expect(outputBox.textContent).toContain('container_name: local_aws_emulator');
-    expect(outputBox.textContent).toContain('127.0.0.1:7090:4566');
+    expect(outputBox.textContent).toContain('s3-emulator:');
+    expect(outputBox.textContent).toContain('image: minio/minio:latest');
+    expect(outputBox.textContent).toContain('127.0.0.1:7090:9000');
+    expect(outputBox.textContent).toContain('sqs-emulator:');
+    expect(outputBox.textContent).toContain('image: softwaremill/elasticmq-native:latest');
+    expect(outputBox.textContent).toContain('127.0.0.1:7093:9324');
     expect(outputBox.textContent).toContain('container_name: local_postgres_db');
     expect(outputBox.textContent).toContain('container_name: local_redis_cache');
   });
 
-  it('should compile GCP and Azure emulators when checkboxes are enabled', () => {
+  it('should compile official Google and Microsoft emulators when checkboxes are enabled', () => {
     const window = loadToolDom('../tools/local-cloud-dev/index.html', '../src/js/generators/local-cloud-dev-gen.js');
     const outputBox = window.document.getElementById('output-box');
 
@@ -64,10 +68,10 @@ describe('Docker Compose & Local Cloud Dev Studio', () => {
     gcpCheck.dispatchEvent(new window.Event('change'));
     azureCheck.dispatchEvent(new window.Event('change'));
 
-    expect(outputBox.textContent).toContain('container_name: local_gcp_emulator');
-    expect(outputBox.textContent).toContain('127.0.0.1:7091:4588');
-    expect(outputBox.textContent).toContain('container_name: local_azure_emulator');
-    expect(outputBox.textContent).toContain('127.0.0.1:7092:4577');
+    expect(outputBox.textContent).toContain('image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators');
+    expect(outputBox.textContent).toContain('127.0.0.1:7091:8085');
+    expect(outputBox.textContent).toContain('image: mcr.microsoft.com/azure-storage/azurite:latest');
+    expect(outputBox.textContent).toContain('127.0.0.1:7092:10000');
   });
 
   it('should compile bootstrap scripts and set custom buckets and queues', () => {
@@ -85,7 +89,7 @@ describe('Docker Compose & Local Cloud Dev Studio', () => {
 
     window.switchTab('cloud_sh');
     expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7090 s3 mb s3://my-custom-test-bucket');
-    expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7090 sqs create-queue --queue-name my-custom-test-queue');
+    expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7093 sqs create-queue --queue-name my-custom-test-queue');
   });
 
   it('should switch tabs and update download filename', () => {
