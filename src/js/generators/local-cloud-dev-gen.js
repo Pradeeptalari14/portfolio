@@ -328,10 +328,16 @@ function initLocalCloudStudio() {
   compileConfigs();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('cloud_aws')) {
+      initLocalCloudStudio();
+    }
+  });
+} else {
   if (document.getElementById('cloud_aws')) {
     initLocalCloudStudio();
   }
-});
+}
 
 window.initLocalCloudStudio = initLocalCloudStudio;
