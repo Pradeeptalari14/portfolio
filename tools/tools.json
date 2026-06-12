@@ -552,6 +552,18 @@
     "repository": "Pradeeptalari14/tp-localstack-dev"
   },
   {
+    "title": "Docker Compose & Local Cloud Dev Studio",
+    "desc": "Scaffold custom multi-cloud local sandboxes (AWS, Azure, GCP APIs). Generate private, telemetry-free compose stacks with Postgres, Redis, and setup scripts using custom 7-series ports.",
+    "category": "automation",
+    "icon": "☁️",
+    "color": "rgb(14, 165, 233)",
+    "borderClass": "border-sky-200",
+    "bgClass": "bg-sky-50/10",
+    "tag": "docker-compose.yml",
+    "link": "local-cloud-dev/",
+    "repository": "Pradeeptalari14/tp-local-cloud-dev"
+  },
+  {
     "title": "Status & Incident Studio",
     "desc": "Scaffold PagerDuty/Opsgenie escalation chains, status dashboard config schemas, and incident triage runbooks.",
     "category": "automation",
