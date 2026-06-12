@@ -191,7 +191,7 @@
               <input type="text" id="mock_queue" class="form-input w-full p-2.5 text-xs" value="dev-local-queue" />
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label for="db_services" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Data Store Emulators</label>
               <select id="db_services" class="form-select w-full p-2.5 text-xs">
@@ -203,6 +203,17 @@
             <div>
               <label for="aws_region" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Simulated Regions</label>
               <input type="text" id="aws_region" class="form-input w-full p-2.5 text-xs" value="us-east-1" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <label for="workflow_template" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Simulation Workflow Recipe</label>
+              <select id="workflow_template" class="form-select w-full p-2.5 text-xs">
+                <option value="basic" selected>Basic Sandbox (Storage + Messaging setup)</option>
+                <option value="eks">Kubernetes EKS Local Sandbox (EKS + kubectl pods)</option>
+                <option value="ecs">ECS Task Runner Sandbox (Task definition + container launch)</option>
+                <option value="athena">Athena SQL Analytics Sandbox (Athena + S3 + Glue Catalog)</option>
+              </select>
             </div>
           </div>
         </div>

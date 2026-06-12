@@ -14,6 +14,7 @@ function initLocalCloudStudio() {
     postgresUser: document.getElementById('postgres_user'),
     addPostgres: document.getElementById('add_postgres'),
     addRedis: document.getElementById('add_redis'),
+    workflowTemplate: document.getElementById('workflow_template'),
     outputBox: document.getElementById('output-box'),
     downloadInput: document.getElementById('download-name-input'),
     btnCopy: document.getElementById('btn-copy-cloud'),
@@ -39,6 +40,7 @@ function initLocalCloudStudio() {
     const queue = elements.mockQueue ? elements.mockQueue.value.trim() : 'dev-local-queue';
     const dbSrv = elements.dbServices ? elements.dbServices.value : 'standard';
     const region = elements.awsRegion ? elements.awsRegion.value.trim() : 'us-east-1';
+    const recipe = elements.workflowTemplate ? elements.workflowTemplate.value : 'basic';
     
     const pgDb = elements.postgresDb ? elements.postgresDb.value.trim() : 'sandbox_db';
     const pgUser = elements.postgresUser ? elements.postgresUser.value.trim() : 'sandbox_user';
@@ -52,24 +54,56 @@ function initLocalCloudStudio() {
     yaml += `services:\n`;
 
     if (runAws) {
-      yaml += `  # Standard, Apache/AGPL licensed S3-compatible Object Store\n`;
-      yaml += `  s3-emulator:\n`;
-      yaml += `    container_name: local_s3_emulator\n`;
-      yaml += `    image: minio/minio:latest\n`;
-      yaml += `    ports:\n`;
-      yaml += `      - "127.0.0.1:7090:9000"\n`;
-      yaml += `    environment:\n`;
-      yaml += `      - MINIO_ROOT_USER=mock-developer-key-123\n`;
-      yaml += `      - MINIO_ROOT_PASSWORD=mock-developer-secret-456\n`;
-      yaml += `    command: server /data\n\n`;
-
-      if (dbSrv === 'standard' || dbSrv === 'full') {
-        yaml += `  # Standard SQS-compatible messaging service\n`;
-        yaml += `  sqs-emulator:\n`;
-        yaml += `    container_name: local_sqs_emulator\n`;
-        yaml += `    image: softwaremill/elasticmq-native:latest\n`;
+      if (recipe === 'eks') {
+        yaml += `  # Local EKS Emulator container (Runs k3s/Kubernetes node locally)\n`;
+        yaml += `  eks-emulator:\n`;
+        yaml += `    container_name: local_eks_emulator\n`;
+        yaml += `    image: local-cloud-sandbox:latest\n`;
         yaml += `    ports:\n`;
-        yaml += `      - "127.0.0.1:7093:9324"\n\n`;
+        yaml += `      - "127.0.0.1:7090:4566"\n`;
+        yaml += `    environment:\n`;
+        yaml += `      - SERVICES=s3,eks,iam\n`;
+        yaml += `      - DEFAULT_REGION=${region}\n\n`;
+      } else if (recipe === 'ecs') {
+        yaml += `  # Local ECS Emulator container (Launches Docker container tasks)\n`;
+        yaml += `  ecs-emulator:\n`;
+        yaml += `    container_name: local_ecs_emulator\n`;
+        yaml += `    image: local-cloud-sandbox:latest\n`;
+        yaml += `    ports:\n`;
+        yaml += `      - "127.0.0.1:7090:4566"\n`;
+        yaml += `    environment:\n`;
+        yaml += `      - SERVICES=s3,ecs,iam\n`;
+        yaml += `      - DEFAULT_REGION=${region}\n\n`;
+      } else if (recipe === 'athena') {
+        yaml += `  # Local SQL Analytics Emulator container (Athena + Glue Metastore)\n`;
+        yaml += `  athena-emulator:\n`;
+        yaml += `    container_name: local_athena_emulator\n`;
+        yaml += `    image: local-cloud-sandbox:latest\n`;
+        yaml += `    ports:\n`;
+        yaml += `      - "127.0.0.1:7090:4566"\n`;
+        yaml += `    environment:\n`;
+        yaml += `      - SERVICES=s3,glue,athena\n`;
+        yaml += `      - DEFAULT_REGION=${region}\n\n`;
+      } else {
+        yaml += `  # Standard S3-compatible Object Store\n`;
+        yaml += `  s3-emulator:\n`;
+        yaml += `    container_name: local_s3_emulator\n`;
+        yaml += `    image: minio/minio:latest\n`;
+        yaml += `    ports:\n`;
+        yaml += `      - "127.0.0.1:7090:9000"\n`;
+        yaml += `    environment:\n`;
+        yaml += `      - MINIO_ROOT_USER=mock-developer-key-123\n`;
+        yaml += `      - MINIO_ROOT_PASSWORD=mock-developer-secret-456\n`;
+        yaml += `    command: server /data\n\n`;
+
+        if (dbSrv === 'standard' || dbSrv === 'full') {
+          yaml += `  # Standard SQS-compatible messaging service\n`;
+          yaml += `  sqs-emulator:\n`;
+          yaml += `    container_name: local_sqs_emulator\n`;
+          yaml += `    image: softwaremill/elasticmq-native:latest\n`;
+          yaml += `    ports:\n`;
+          yaml += `      - "127.0.0.1:7093:9324"\n\n`;
+        }
       }
     }
 
@@ -124,28 +158,81 @@ function initLocalCloudStudio() {
     sh += `echo "========================================="\n\n`;
 
     if (runAws) {
-      sh += `# 1. Provision S3-Compatible Storage (Port 7090)\n`;
-      sh += `echo "Creating object storage bucket..."\n`;
-      sh += `# Configure mc (MinIO CLI) or use aws CLI to initialize standard bucket\n`;
+      sh += `# Configure standard AWS CLI environment variables to point to the local port\n`;
+      sh += `export AWS_ENDPOINT_URL=http://localhost:7090\n`;
+      sh += `export AWS_DEFAULT_REGION=${region}\n`;
       sh += `export AWS_ACCESS_KEY_ID=mock-developer-key-123\n`;
-      sh += `export AWS_SECRET_ACCESS_KEY=mock-developer-secret-456\n`;
-      sh += `aws --endpoint-url http://localhost:7090 s3 mb s3://${bucket} || true\n\n`;
+      sh += `export AWS_SECRET_ACCESS_KEY=mock-developer-secret-456\n\n`;
 
-      if (dbSrv === 'standard' || dbSrv === 'full') {
-        sh += `# 2. Provision SQS-Compatible Messaging (Port 7093)\n`;
-        sh += `echo "Creating queue in SQS-compatible emulator..."\n`;
-        sh += `aws --endpoint-url http://localhost:7093 sqs create-queue --queue-name ${queue} || true\n\n`;
+      if (recipe === 'eks') {
+        sh += `# --- EKS + kubectl Workflow Recipe ---\n`;
+        sh += `# Create EKS cluster (Local sandbox spins up a real k3s node)\n`;
+        sh += `aws --endpoint-url http://localhost:7090 eks create-cluster \\\n`;
+        sh += `    --name dev-cluster \\\n`;
+        sh += `    --role-arn arn:aws:iam::000000000000:role/eks-role \\\n`;
+        sh += `    --resources-vpc-config subnetIds=subnet-00000001 || true\n\n`;
+
+        sh += `# Pull kubeconfig and use kubectl\n`;
+        sh += `aws --endpoint-url http://localhost:7090 eks update-kubeconfig --name dev-cluster || true\n`;
+        sh += `kubectl run nginx --image=nginx:alpine --port=80 || true\n`;
+        sh += `kubectl get pods,svc || true\n\n`;
+      } else if (recipe === 'ecs') {
+        sh += `# --- ECS Container Task Workflow Recipe ---\n`;
+        sh += `# Register task definition and create cluster\n`;
+        sh += `aws --endpoint-url http://localhost:7090 ecs register-task-definition \\\n`;
+        sh += `    --family web-task --network-mode bridge \\\n`;
+        sh += `    --container-definitions '[{"name":"web","image":"nginx:alpine","portMappings":[{"containerPort":80,"hostPort":8081}],"memory":128,"cpu":64}]' || true\n\n`;
+        sh += `aws --endpoint-url http://localhost:7090 ecs create-cluster --cluster-name dev-cluster || true\n\n`;
+
+        sh += `# Run a task (Local sandbox launches a real Docker container)\n`;
+        sh += `aws --endpoint-url http://localhost:7090 ecs run-task \\\n`;
+        sh += `    --cluster dev-cluster \\\n`;
+        sh += `    --task-definition web-task \\\n`;
+        sh += `    --count 1 || true\n\n`;
+      } else if (recipe === 'athena') {
+        sh += `# --- Athena + S3 SQL Analytics Workflow Recipe ---\n`;
+        sh += `# Upload data to S3\n`;
+        sh += `aws --endpoint-url http://localhost:7090 s3 mb s3://analytics-bucket || true\n`;
+        sh += `aws --endpoint-url http://localhost:7090 s3 cp orders.json s3://analytics-bucket/orders/ || true\n\n`;
+
+        sh += `# Register Glue table and run SQL query\n`;
+        sh += `aws --endpoint-url http://localhost:7090 glue create-database --database-input '{"Name":"shop"}' || true\n\n`;
+
+        sh += `QUERY_ID=$(aws --endpoint-url http://localhost:7090 athena start-query-execution \\\n`;
+        sh += `    --query-string "SELECT customer, SUM(amount) FROM shop.orders GROUP BY customer" \\\n`;
+        sh += `    --result-configuration '{"OutputLocation":"s3://analytics-bucket/results/"}' \\\n`;
+        sh += `    --query 'QueryExecutionId' --output text)\n\n`;
+
+        sh += `aws --endpoint-url http://localhost:7090 athena get-query-results --query-execution-id $QUERY_ID || true\n\n`;
+      } else {
+        sh += `# --- Basic Storage & Messaging Recipe ---\n`;
+        sh += `# Create Storage Bucket\n`;
+        sh += `aws --endpoint-url http://localhost:7090 s3 mb s3://${bucket} || true\n\n`;
+
+        if (dbSrv === 'standard' || dbSrv === 'full') {
+          sh += `# Create Message Queue\n`;
+          sh += `aws --endpoint-url http://localhost:7093 sqs create-queue --queue-name ${queue} || true\n\n`;
+        }
+
+        if (dbSrv === 'full') {
+          sh += `# Create DynamoDB Table\n`;
+          sh += `aws --endpoint-url http://localhost:7090 dynamodb create-table \\\n`;
+          sh += `  --table-name Users \\\n`;
+          sh += `  --attribute-definitions AttributeName=UserId,AttributeType=S \\\n`;
+          sh += `  --key-schema AttributeName=UserId,KeyType=HASH \\\n`;
+          sh += `  --billing-mode PAY_PER_REQUEST || true\n\n`;
+        }
       }
     }
 
     if (runGcp) {
-      sh += `# 3. GCP PubSub Initialization (Port 7091)\n`;
-      sh += `# Call official gcloud command to initialize topics and subscriptions\n`;
-      sh += `# Environment target: PUBSUB_EMULATOR_HOST=localhost:7091\n\n`;
+      sh += `# 3. Provision GCP-Compatible Resources (Port 7091)\n`;
+      sh += `# GCP-compatible emulator initializes standard APIs on startup.\n`;
+      sh += `# Ensure your SDK points to: STORAGE_EMULATOR_HOST=http://localhost:7091\n\n`;
     }
 
     if (runAzure) {
-      sh += `# 4. Azure Blob Container Initialization (Port 7092)\n`;
+      sh += `# 4. Provision Azure-Compatible Resources (Port 7092)\n`;
       sh += `# Azure Storage containers will automatically handle connection strings.\n\n`;
     }
 
@@ -164,10 +251,10 @@ function initLocalCloudStudio() {
     env += `AWS_SECRET_ACCESS_KEY=mock-developer-secret-456\n\n`;
 
     if (runAws) {
-      env += `# AWS S3 Object Storage Override (Port 7090)\n`;
+      env += `# AWS Overrides pointing to the local custom ports\n`;
+      env += `AWS_ENDPOINT_URL=http://localhost:7090\n`;
       env += `S3_ENDPOINT=http://localhost:7090\n`;
-      if (dbSrv === 'standard' || dbSrv === 'full') {
-        env += `# AWS SQS Queue Service Override (Port 7093)\n`;
+      if (recipe === 'basic' && (dbSrv === 'standard' || dbSrv === 'full')) {
         env += `SQS_ENDPOINT=http://localhost:7093\n`;
       }
       env += `\n`;
@@ -223,11 +310,25 @@ function initLocalCloudStudio() {
     let flow = 'graph TD\n';
     flow += '  App[☕ Client App] -->|Reads overrides| Env[.env file]\n';
     if (runAws) {
-      flow += '  App -->|Port 7090: S3 API| S3[🐳 MinIO S3 Emulator]\n';
-      flow += `  S3 -->|Mock Storage| S3Buck[🗄️ Bucket: ${bucket}]\n`;
-      if (dbSrv === 'standard' || dbSrv === 'full') {
-        flow += `  App -->|Port 7093: SQS API| SQS[🐳 ElasticMQ SQS Emulator]\n`;
-        flow += `  SQS -->|Mock Messaging| SQSQue[✉️ Queue: ${queue}]\n`;
+      if (recipe === 'eks') {
+        flow += '  App -->|Port 7090: EKS API| EKS[🐳 Local EKS Emulator]\n';
+        flow += '  EKS -->|Control plane| K3s[☸️ Local k3s Cluster]\n';
+        flow += '  K3s -->|Pods / Services| Pods[📦 Nginx Pod]\n';
+      } else if (recipe === 'ecs') {
+        flow += '  App -->|Port 7090: ECS API| ECS[🐳 Local ECS Emulator]\n';
+        flow += '  ECS -->|Runs task| Task[📦 ECS Task: web-task]\n';
+        flow += '  Task -->|Docker Run| Cont[🐳 Nginx Container]\n';
+      } else if (recipe === 'athena') {
+        flow += '  App -->|Port 7090: Athena API| Athena[🐳 Local Athena Emulator]\n';
+        flow += '  Athena -->|Query schema| Glue[🗄️ Glue Database Catalog]\n';
+        flow += '  Athena -->|Fetch datasets| S3Buck[🗄️ analytics-bucket]\n';
+      } else {
+        flow += '  App -->|Port 7090: S3 API| S3[🐳 MinIO S3 Emulator]\n';
+        flow += `  S3 -->|Mock Storage| S3Buck[🗄️ Bucket: ${bucket}]\n`;
+        if (dbSrv === 'standard' || dbSrv === 'full') {
+          flow += `  App -->|Port 7093: SQS API| SQS[🐳 ElasticMQ SQS Emulator]\n`;
+          flow += `  SQS -->|Mock Messaging| SQSQue[✉️ Queue: ${queue}]\n`;
+        }
       }
     }
     if (runGcp) {
@@ -283,7 +384,7 @@ function initLocalCloudStudio() {
     elements.cloudAws, elements.cloudGcp, elements.cloudAzure,
     elements.mockBucket, elements.mockQueue, elements.dbServices,
     elements.awsRegion, elements.postgresDb, elements.postgresUser,
-    elements.addPostgres, elements.addRedis
+    elements.addPostgres, elements.addRedis, elements.workflowTemplate
   ];
   
   controls.forEach(ctrl => {

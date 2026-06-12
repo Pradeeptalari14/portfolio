@@ -107,4 +107,50 @@ describe('Docker Compose & Local Cloud Dev Studio', () => {
     window.switchTab('cloud_help');
     expect(filenameInput.value).toBe('compliance_guide.txt');
   });
+
+  it('should compile advanced EKS control commands and containers', () => {
+    const window = loadToolDom('../tools/local-cloud-dev/index.html', '../src/js/generators/local-cloud-dev-gen.js');
+    const outputBox = window.document.getElementById('output-box');
+
+    const workflowSelect = window.document.getElementById('workflow_template');
+    workflowSelect.value = 'eks';
+    workflowSelect.dispatchEvent(new window.Event('change'));
+
+    expect(outputBox.textContent).toContain('container_name: local_eks_emulator');
+    expect(outputBox.textContent).toContain('127.0.0.1:7090:4566');
+
+    window.switchTab('cloud_sh');
+    expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7090 eks create-cluster');
+    expect(outputBox.textContent).toContain('kubectl run nginx');
+  });
+
+  it('should compile advanced ECS task definitions and clusters', () => {
+    const window = loadToolDom('../tools/local-cloud-dev/index.html', '../src/js/generators/local-cloud-dev-gen.js');
+    const outputBox = window.document.getElementById('output-box');
+
+    const workflowSelect = window.document.getElementById('workflow_template');
+    workflowSelect.value = 'ecs';
+    workflowSelect.dispatchEvent(new window.Event('change'));
+
+    expect(outputBox.textContent).toContain('container_name: local_ecs_emulator');
+
+    window.switchTab('cloud_sh');
+    expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7090 ecs register-task-definition');
+    expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7090 ecs create-cluster --cluster-name dev-cluster');
+  });
+
+  it('should compile Athena SQL query execution', () => {
+    const window = loadToolDom('../tools/local-cloud-dev/index.html', '../src/js/generators/local-cloud-dev-gen.js');
+    const outputBox = window.document.getElementById('output-box');
+
+    const workflowSelect = window.document.getElementById('workflow_template');
+    workflowSelect.value = 'athena';
+    workflowSelect.dispatchEvent(new window.Event('change'));
+
+    expect(outputBox.textContent).toContain('container_name: local_athena_emulator');
+
+    window.switchTab('cloud_sh');
+    expect(outputBox.textContent).toContain('aws --endpoint-url http://localhost:7090 glue create-database');
+    expect(outputBox.textContent).toContain('athena start-query-execution');
+  });
 });
