@@ -547,6 +547,53 @@ tmp/
     tabContainer.appendChild(btn);
   }
 
+  // Dynamic injection of AI link in studio header navbars
+  function injectAiLinkToNavbar() {
+    const navContainer = document.querySelector('.navbar > div');
+    if (!navContainer) return;
+
+    const linksWrap = navContainer.querySelector('.hidden.sm\\:flex') || 
+                      navContainer.querySelector('.flex.items-center.gap-6') ||
+                      navContainer.querySelector('ul.nav-links') ||
+                      navContainer.querySelector('.nav-links');
+    if (linksWrap) {
+      const links = Array.from(linksWrap.querySelectorAll('a'));
+      const hasAiLink = links.some(a => {
+        const href = a.getAttribute('href') || '';
+        return href.includes('/AI/') || a.textContent.toLowerCase().includes('ai');
+      });
+
+      if (!hasAiLink) {
+        const toolsLink = links.find(a => a.textContent.includes('Tools') || a.textContent.includes('Dashboard'));
+        
+        const aiLink = document.createElement('a');
+        aiLink.href = '../../AI/';
+        aiLink.className = 'hover:text-indigo-600 transition';
+        aiLink.style.display = 'inline-flex';
+        aiLink.style.alignItems = 'center';
+        aiLink.style.gap = '4px';
+        aiLink.innerHTML = '🧠 AI Studios';
+
+        if (linksWrap.tagName.toLowerCase() === 'ul') {
+          const li = document.createElement('li');
+          aiLink.className = 'nav-link';
+          li.appendChild(aiLink);
+          if (toolsLink && toolsLink.parentElement) {
+            toolsLink.parentElement.insertAdjacentElement('afterend', li);
+          } else {
+            linksWrap.appendChild(li);
+          }
+        } else {
+          if (toolsLink) {
+            toolsLink.insertAdjacentElement('afterend', aiLink);
+          } else {
+            linksWrap.appendChild(aiLink);
+          }
+        }
+      }
+    }
+  }
+
   // 3. Floating network status badge
   function injectNetworkStatusBadge() {
     if ($('sre-network-badge')) return;
@@ -705,6 +752,7 @@ tmp/
 
   // Initialize features on load
   function init() {
+    injectAiLinkToNavbar();
     injectPagerDutyUI();
     injectWebhookTab();
     injectLinterTab();
