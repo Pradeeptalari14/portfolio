@@ -1118,7 +1118,8 @@
         <li><a href="../skills/" class="nav-link">Skills</a></li>
         <li><a href="../experience/" class="nav-link">Experience</a></li>
         <li><a href="../projects/" class="nav-link">Projects</a></li>
-        <li><a href="./" class="nav-link active">Tools</a></li>
+        <li><a href="./" class="nav-link active" id="nav-tools-link">Tools</a></li>
+        <li><a href="./?filter=ai" class="nav-link" id="nav-ai-link">AI</a></li>
         <li><a href="../interview/" class="nav-link">Interview</a></li>
         <li><a href="../#contact" class="nav-link">Contact</a></li>
       </ul>
@@ -1768,6 +1769,27 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
       });
       
       searchInput.addEventListener('input', filterTools);
+
+      // Check for URL filter parameter (e.g. tools/?filter=ai)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlFilter = urlParams.get('filter');
+      if (urlFilter && counts[urlFilter] !== undefined) {
+        filterBtns.forEach(btn => {
+          if (btn.getAttribute('data-filter') === urlFilter) {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterTools();
+          }
+        });
+        if (urlFilter === 'ai') {
+          const toolsLink = $('nav-tools-link');
+          const aiLink = $('nav-ai-link');
+          if (toolsLink && aiLink) {
+            toolsLink.classList.remove('active');
+            aiLink.classList.add('active');
+          }
+        }
+      }
     }
 
     // Command Palette Controller
