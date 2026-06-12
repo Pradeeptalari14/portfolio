@@ -519,6 +519,21 @@
       color: #000;
       font-weight: 700;
     }
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   </style>
 </head>
 <body>
@@ -604,6 +619,14 @@
 
     <!-- Main Dynamic Content Panel -->
     <section>
+      <!-- Page Heading for SEO and Layout -->
+      <div style="margin-bottom: 2rem;">
+        <h1 class="page-title">DevOps &amp; SRE <span class="gradient-text">Interview Coach &amp; Vault</span></h1>
+        <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; margin-top: 0.25rem;">
+          Master SRE interview preparation, study real-world cloud diagnostics workflows, run hands-on labs, and explore visual architecture reviews.
+        </p>
+      </div>
+
       <!-- Telemetry Status Bar -->
       <div class="telemetry-status-container">
         <div class="telemetry-card">
