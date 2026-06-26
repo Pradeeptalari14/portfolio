@@ -180,7 +180,7 @@ curl -sSL https://raw.githubusercontent.com/Pradeeptalari14/portfolio/main/scrat
           <button class="px-2.5 py-1 bg-slate-800 border border-white/5 text-slate-400 rounded hover:bg-slate-700" onclick="switchFlowImage('observability', this)">Obs</button>
         </div>
         <div class="rounded-lg overflow-hidden border border-white/5 bg-slate-950 p-2">
-          <img id="sre-flow-img" src="../../sre_architecture_flow_ai.png" alt="SRE Architecture Flow" class="w-full h-auto object-cover rounded hover:scale-[1.03] transition-all duration-300" width="1024" height="1024" loading="lazy" />
+          <img id="sre-flow-img" src="/sre_architecture_flow_ai.png" alt="SRE Architecture Flow" class="w-full h-auto object-cover rounded hover:scale-[1.03] transition-all duration-300" width="1024" height="1024" loading="lazy" />
         </div>
       </div>
 
@@ -351,7 +351,7 @@ curl -sSL https://raw.githubusercontent.com/Pradeeptalari14/portfolio/main/scrat
     function switchFlowImage(category, btn) {
       const img = document.getElementById('sre-flow-img');
       if (img) {
-        img.src = `../../sre_architecture_flow_${category}.png`;
+        img.src = `/sre_architecture_flow_${category}.png`;
       }
       const buttons = btn.parentElement.querySelectorAll('button');
       buttons.forEach(b => {
