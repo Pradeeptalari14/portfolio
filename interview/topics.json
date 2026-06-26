@@ -4706,6 +4706,16 @@
             "expert": "Explains: 1. **Mechanism**: Uses sparse retrieval (BM25) to rank documents based on exact match frequencies normalized by document length. 2. **SRE Trade-offs**: Latency is sub-millisecond (B-tree or inverted indexes) compared to vector searches (ANN trees or HNSW indexing which require substantial RAM). Indexing costs are near-zero. 3. **Use Cases**: Best for code search, log lookup, product IDs, name searches, or when deploying on low-resource environments without GPU/embedding pipelines.",
             "leadership": "Designs multi-stage hybrid search architectures that routing queries through BM25 for exact codes/IDs first, falling back to dense vectors only for semantic concepts.",
             "coachTips": "Frame the choice as an engineering trade-off: don't spin up a 16GB RAM vector database to search for a user's alphanumeric ticket ID. Traditional database indices are faster and cheaper."
+          },
+          {
+            "q": "What is Prompt Caching, and how do you design cache-friendly prompts to maximize cost savings and minimize latency in multi-agent LLM systems?",
+            "intent": "Evaluates understanding of prompt caching mechanics, prefix matching constraints, and prompt engineering best practices for cost optimization.",
+            "hidden": "Interviewer looks for prefix matching rules, placement of static vs. dynamic content, and provider-specific cache control mechanics (e.g. Anthropic explicit cache control vs. OpenAI automatic caching).",
+            "red": "Putting dynamic parameters (like current timestamp, user query, or metrics) at the beginning of the prompt, causing a complete cache miss.",
+            "strong": "Explains that prompt caching saves costs by storing the static part of the prompt (system instructions, examples) so it doesn't need to be processed again.",
+            "expert": "Explains: 1. **Mechanism**: Cache matches prompt prefixes. The first part of the prompt must be identical across requests. 2. **Best Practice**: Place all static content (system prompts, tool definitions, documentation, examples) first. Place the changing user question or active chat history at the end. 3. **APIs**: Anthropic Claude requires explicit caching of blocks using `cache_control` headers (valid for 5 mins), while OpenAI dynamically caches prefixes of 1024+ tokens.",
+            "leadership": "Implements centralized gateway-level prompt caches that pre-compile and reuse static agent prompts across multiple users, enforcing strict prompt layout linting in pipelines.",
+            "coachTips": "Always remember prefix matching: if a single character changes at the start of your prompt, the entire cache is invalidated. Keep the header stable."
           }
         ],
         "incident": {

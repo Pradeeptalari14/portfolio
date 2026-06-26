@@ -222,3 +222,68 @@ describe('Production Secrets & Rotation Studio', () => {
     vi.useRealTimers();
   });
 });
+
+describe('Prompt Caching & Cost Optimization Studio', () => {
+  it('should compile prompt caching configurations, calculate cost savings, and run terminal validation', () => {
+    const window = loadToolDom('../tools/prompt-caching/index.html', '../src/js/generators/prompt-caching-gen.js');
+    const outputBox = window.document.getElementById('output-box');
+
+    // Default configuration: anthropic model, system_and_tools scope, 4096 tokens size
+    expect(outputBox.textContent).toContain('client = anthropic.Anthropic()');
+    expect(outputBox.textContent).toContain('"cache_control": {"type": "ephemeral"}');
+
+    // Test Cost Savings Calculator Default Outputs
+    const costWithout = window.document.getElementById('cost-without-caching').textContent;
+    const costWith = window.document.getElementById('cost-with-caching').textContent;
+    expect(costWithout).not.toBe('$0.00');
+    expect(costWith).not.toBe('$0.00');
+
+    // Test form controls changes
+    const providerSelect = window.document.getElementById('caching_provider');
+    const scopeSelect = window.document.getElementById('cached_scope');
+    const sizeSelect = window.document.getElementById('mock_prompt_size');
+    const normSelect = window.document.getElementById('token_normalization');
+
+    providerSelect.value = 'openai';
+    scopeSelect.value = 'rag_docs';
+    sizeSelect.value = '8192';
+    normSelect.value = 'disabled';
+
+    providerSelect.dispatchEvent(new window.Event('change'));
+    scopeSelect.dispatchEvent(new window.Event('change'));
+    sizeSelect.dispatchEvent(new window.Event('change'));
+    normSelect.dispatchEvent(new window.Event('change'));
+
+    // Assert OpenAI SDK configuration
+    expect(outputBox.textContent).toContain('from openai import OpenAI');
+    expect(outputBox.textContent).toContain('OpenAI automatically caches prompt prefixes containing 1024+ tokens.');
+
+    // Switch to payload.json
+    window.switchTab('payload_json');
+    expect(outputBox.textContent).toContain('"role": "system"');
+
+    // Switch to caching_rules.json
+    window.switchTab('caching_rules_json');
+    const config = JSON.parse(outputBox.textContent);
+    expect(config.provider).toBe('openai');
+    expect(config.rules.min_prefix_tokens).toBe(1024);
+
+    // Switch to github actions workflow
+    window.switchTab('github_actions_yml');
+    expect(outputBox.textContent).toContain('Spin up prompt registry cache mock proxy');
+
+    // Test SRE Terminal Emulator
+    vi.useFakeTimers();
+    window.switchTab('terminal');
+    window.runTerminalCommand('docker compose up -d');
+    vi.advanceTimersByTime(2000);
+    const logs = window.document.getElementById('terminal-logs');
+    expect(logs.textContent).toContain('Creating container tp-prompt-caching-db-1');
+
+    window.runTerminalCommand('bash scripts/validate.sh');
+    vi.advanceTimersByTime(1500);
+    expect(logs.textContent).toContain('SRE compliance validation complete for prompt-caching.');
+    vi.useRealTimers();
+  });
+});
+

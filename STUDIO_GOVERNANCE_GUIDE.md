@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **290 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **291 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 290 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 291 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -234,6 +234,7 @@ The following catalog registers all **276 Developer Studios** to their team owne
 | 140 | Knowledge Graph & Entity Extraction Studio | [knowledge-graph/](file:///d:/Domain/tools/knowledge-graph/index.html) | `tp-knowledge-graph` | AI Engineering | `main` | Python, spaCy, GLiNER, Neo4j, RDF | GraphRAG, Enterprise LLM |
 | 141 | Vectorless RAG & Sparse Search Studio | [vectorless-rag/](file:///d:/Domain/tools/vectorless-rag/index.html) | `tp-vectorless-rag` | AI Engineering | `main` | Python, BM25, TF-IDF, SQL | Vector DB, DataOps Studio |
 | 142 | Production Secrets & Rotation Studio | [production-secrets/](file:///d:/Domain/tools/production-secrets/index.html) | `tp-production-secrets` | Security Engineering | `main` | Terraform, Vault, Kubernetes, YAML | Secret Management, Kubernetes Security |
+| 143 | Prompt Caching & Cost Optimization Studio | [prompt-caching/](file:///d:/Domain/tools/prompt-caching/index.html) | `tp-prompt-caching` | AI Engineering | `main` | Python, Anthropic, OpenAI, DeepSeek | Enterprise LLM, Vector DB |
 
 ---
 
@@ -241,15 +242,15 @@ The following catalog registers all **276 Developer Studios** to their team owne
 
 The catalog integrates seamlessly across all 11 phases of the Software Development Life Cycle:
 
-* **Planning:** VPC Subnetting Calculator, Crossplane Cloud, Ray Cluster, IDP Template, Enterprise K8s AI Platform, Enterprise AI Stack Blueprint, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio, GraphRAG & Neo4j Database Studio, Supabase & pgvector Developer Studio, Kafka & Flink Streaming Studio, Milvus & Weaviate Vector DB Clustering Studio, Pinecone Serverless Vector DB Studio, Knowledge Graph & Entity Extraction Studio, Vectorless RAG & Sparse Search Studio, Production Secrets & Rotation Studio.
-* **Development:** Docker Compose & LocalStack, systemd Service Builder, Go SRE Utility, Python SRE Utility, eBPF Tracing Generator, Maven Build, LLM Fundamentals & Runtime, LangChain & LlamaIndex, LangGraph & Multi-Agent Swarm, Enterprise AI Stack Blueprint, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio, GraphRAG & Neo4j Database Studio, Supabase & pgvector Developer Studio, Kafka & Flink Streaming Studio, Milvus & Weaviate Vector DB Clustering Studio, Pinecone Serverless Vector DB Studio, Knowledge Graph & Entity Extraction Studio, Vectorless RAG & Sparse Search Studio.
+* **Planning:** VPC Subnetting Calculator, Crossplane Cloud, Ray Cluster, IDP Template, Enterprise K8s AI Platform, Enterprise AI Stack Blueprint, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio, GraphRAG & Neo4j Database Studio, Supabase & pgvector Developer Studio, Kafka & Flink Streaming Studio, Milvus & Weaviate Vector DB Clustering Studio, Pinecone Serverless Vector DB Studio, Knowledge Graph & Entity Extraction Studio, Vectorless RAG & Sparse Search Studio, Production Secrets & Rotation Studio, Prompt Caching & Cost Optimization Studio.
+* **Development:** Docker Compose & LocalStack, systemd Service Builder, Go SRE Utility, Python SRE Utility, eBPF Tracing Generator, Maven Build, LLM Fundamentals & Runtime, LangChain & LlamaIndex, LangGraph & Multi-Agent Swarm, Enterprise AI Stack Blueprint, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio, GraphRAG & Neo4j Database Studio, Supabase & pgvector Developer Studio, Kafka & Flink Streaming Studio, Milvus & Weaviate Vector DB Clustering Studio, Pinecone Serverless Vector DB Studio, Knowledge Graph & Entity Extraction Studio, Vectorless RAG & Sparse Search Studio, Prompt Caching & Cost Optimization Studio.
 * **Code Review:** GitHub Org Governance, SonarQube Quality Gate, AI Rules Customizer.
 * **Testing:** Performance Studio (k6/Locust), AI Evaluation Studio (Ragas), Chaos Engineering.
-* **Security:** SAST Security, Falco Security Auditor, Kyverno Policy, Secret Management, Vault Secrets, Trivy Security, Cloudflare Zero Trust, AI Security & Governance, Production Secrets & Rotation Studio.
+* **Security:** SAST Security, Falco Security Auditor, Kyverno Policy, Secret Management, Vault Secrets, Trivy Security, Cloudflare Zero Trust, AI Security & Governance, Production Secrets & Rotation Studio, Prompt Caching & Cost Optimization Studio.
 * **Build:** Maven Build, Docker Manager, Container Registry Studio, Dagger Pipelines.
 * **Release:** Progressive Delivery (Canaries), Webhooks Studio, ArgoCD GitOps, FluxCD GitOps.
 * **Deployment:** Advanced k8s Script Generator, Terraform Architect, AWS CloudFormation, Karpenter, KEDA, Tekton Pipeline, Jenkins, GitLab CI/CD, Bitbucket Pipelines.
-* **Operations:** Database Migration Studio, Backup & DR Studio, Database Clustering, Agile & ITSM, Vector RAG Optimizer, Enterprise AI Infrastructure Integration, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio, GraphRAG & Neo4j Database Studio, Supabase & pgvector Developer Studio, Kafka & Flink Streaming Studio, Milvus & Weaviate Vector DB Clustering Studio, Pinecone Serverless Vector DB Studio, Production Secrets & Rotation Studio.
+* **Operations:** Database Migration Studio, Backup & DR Studio, Database Clustering, Agile & ITSM, Vector RAG Optimizer, Enterprise AI Infrastructure Integration, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio, GraphRAG & Neo4j Database Studio, Supabase & pgvector Developer Studio, Kafka & Flink Streaming Studio, Milvus & Weaviate Vector DB Clustering Studio, Pinecone Serverless Vector DB Studio, Production Secrets & Rotation Studio, Prompt Caching & Cost Optimization Studio.
 * **Monitoring:** OpenTelemetry Collector, Advanced Monitoring Script, ELK & Loki, Vector Log Pipeline, eBPF Tracing Studio, Cilium Policy, AI Observability & Trace.
 * **Incident Response:** Status & Incident, SRE AI Agent Simulator, Strands SRE Agent, Alertmanager Visualizer, AIOps, MCP & Tool Integration.
 

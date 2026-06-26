@@ -3478,5 +3478,17 @@
     "tag": "vault_rotation.tf",
     "link": "production-secrets/",
     "repository": "Pradeeptalari14/tp-production-secrets"
+  },
+  {
+    "title": "Prompt Caching & Cost Optimization Studio",
+    "desc": "Optimize AI API costs and latency using prompt caching. Compile Python SDK wrappers with cache decorators, raw HTTP JSON payloads with cache-control headers, and validation setups.",
+    "category": "ai",
+    "icon": "🧠",
+    "color": "rgb(99, 102, 241)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "prompt_caching.py",
+    "link": "prompt-caching/",
+    "repository": "Pradeeptalari14/tp-prompt-caching"
   }
 ]
