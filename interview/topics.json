@@ -3729,6 +3729,16 @@
             "expert": "Calculates SLO availability as a ratio of successful requests. Configures burn-rate alerts that notify the team when budget is spent.",
             "leadership": "Enforces automated error budget gates in pipelines that block deployments if availability falls below target thresholds.",
             "coachTips": "Error budgets are a policy tool. They resolve the conflict between developer speed and SRE stability."
+          },
+          {
+            "q": "How do you manage secrets, API keys, and passwords securely in production when using client-side developer studios that compile configuration files, ensuring zero leaks in Git repos?",
+            "intent": "Tests your ability to architect secrets delivery systems for applications, preventing hardcoded credentials in codebases and git histories.",
+            "hidden": "Interviewer wants to see if you understand secret injection patterns (runtime injection via env vars, HashiCorp Vault dynamic keys, K8s External Secrets Operator) instead of hardcoding dummy/cleartext passwords.",
+            "red": "Suggesting that it is fine to hardcode cleartext passwords in static code or git templates as long as the repository is private.",
+            "strong": "Enforces using environment variables (e.g. ${VAULT_TOKEN}) or KMS keys. Recommends dynamic injection at runtime rather than compile-time.",
+            "expert": "Explains: 1. **Studio Security**: Client-side generators must compile placeholder tokens or environment variable parameters rather than cleartext keys. 2. **Production Pipeline**: Integrates Vault or cloud Secret Managers. Dynamic credentials engines rotate database passwords automatically with short TTLs. 3. **Kubernetes Integration**: Uses the External Secrets Operator (ESO) to sync secrets from Vault to native Kubernetes Secrets, injecting them as env variables or mounted files in container pods.",
+            "leadership": "Architects zero-trust secrets platforms, enforcing IAM-based service identity (AWS IAM Roles for Service Accounts) and automated certificate/key rotation without human intervention.",
+            "coachTips": "Explain the difference between compile-time injection (bad, bakes credentials into code) and runtime injection (good, fetches credentials dynamically). Emphasize that static credentials are a major vulnerability."
           }
         ],
         "incident": {
@@ -4676,6 +4686,26 @@
             "expert": "Audits \"Missing checks for generation speeds, such as Time-to-First-Token (how fast the AI starts responding).\": Configures specific metric collectors, sets Prometheus alerts on service SLIs/SLOs, and aggregates traces.",
             "leadership": "Establishes unified telemetry loops that correlate server metrics with business KPIs and trigger self-healing runbooks.",
             "coachTips": "Focus on actionability. Connect alerts to specific operations runbooks to speed up MTTR."
+          },
+          {
+            "q": "How do you design a Knowledge Graph (KG) based GraphRAG system to capture semantic relationships that traditional vector databases miss, and what are the infrastructure implications?",
+            "intent": "Tests your understanding of Graph databases, entity extraction (NLP pipelines), and how GraphRAG structures semantic context for LLMs compared to pure dense search.",
+            "hidden": "Interviewer wants to see if you understand the trade-offs of parsing unstructured data into nodes/edges and the query time/cost performance of recursive graph traversal.",
+            "red": "Failing to explain how graphs connect entities (nodes and relationships) or suggesting that vector databases naturally handle multi-hop relational reasoning without graph schemas.",
+            "strong": "Explains GraphRAG as linking chunks to extracted entities. Illustrates that searching for \"cat\" -> \"owner\" -> \"car\" requires graph relations, which standard vector-only databases cannot easily query.",
+            "expert": "Explains: 1. **Concept**: GraphRAG extracts entities (nouns) and relations (verbs) from document chunks using NLP models (like spacy or LLM extraction), building a Graph. 2. **RAG Integration**: Queries combine semantic search (vector indexing of chunks) with sub-graph retrievals (Cypher/APOC queries) to retrieve context across multiple connected documents. 3. **Infrastructure**: Requires graph nodes constraints (uniqueness), indexes on relationships, and caching strategies since graph traversals are highly CPU-bound.",
+            "leadership": "Deploys hybrid vector-graph indexing pipelines, leveraging private Triton inference clusters for real-time entity mapping and securing Cypher endpoints via strict network firewalls.",
+            "coachTips": "Clarify that vectors represent similarity, while graphs represent factual relationships. A graph allows the model to answer: \"Which services are impacted by the DB upgrade?\" because it tracks dependencies directly."
+          },
+          {
+            "q": "What is Vectorless RAG (using sparse search like BM25 or relational searches) and when would you choose it over vector search in terms of SRE latency, cost, and complexity?",
+            "intent": "Tests your knowledge of sparse retrieval algorithms (like BM25) and database indexing options that do not require running heavy embedding models.",
+            "hidden": "Interviewer wants to see if you recognize that vector embeddings can be overkill for exact-match searches and carry significant GPU/memory indexing costs.",
+            "red": "Claiming that vector search is always superior to keyword search, or failing to explain how BM25 scores term frequency and inverse document frequency.",
+            "strong": "Defines Vectorless RAG as using traditional keyword indexes (BM25/TF-IDF) or SQL FTS. Explains that it is extremely cheap, fast, and does not require GPU resources.",
+            "expert": "Explains: 1. **Mechanism**: Uses sparse retrieval (BM25) to rank documents based on exact match frequencies normalized by document length. 2. **SRE Trade-offs**: Latency is sub-millisecond (B-tree or inverted indexes) compared to vector searches (ANN trees or HNSW indexing which require substantial RAM). Indexing costs are near-zero. 3. **Use Cases**: Best for code search, log lookup, product IDs, name searches, or when deploying on low-resource environments without GPU/embedding pipelines.",
+            "leadership": "Designs multi-stage hybrid search architectures that routing queries through BM25 for exact codes/IDs first, falling back to dense vectors only for semantic concepts.",
+            "coachTips": "Frame the choice as an engineering trade-off: don't spin up a 16GB RAM vector database to search for a user's alphanumeric ticket ID. Traditional database indices are faster and cheaper."
           }
         ],
         "incident": {
