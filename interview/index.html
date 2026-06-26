@@ -2867,15 +2867,31 @@
     // ─── Exam Countdown Timer ───────────────────────────────────────────────────
     window.startExamTimer = function() {
       if (examTimerInterval) clearInterval(examTimerInterval);
-      let seconds = 15 * 60;
+      let seconds = 5 * 60; // 5-minute countdown timer
       const update = () => {
         const timerEl = document.getElementById('exam-timer-display');
         if (!timerEl) { clearInterval(examTimerInterval); return; }
         const m = String(Math.floor(seconds / 60)).padStart(2, '0');
         const s = String(seconds % 60).padStart(2, '0');
         timerEl.textContent = `⏱ ${m}:${s}`;
-        if (seconds <= 60)  timerEl.style.color = '#f59e0b';
-        if (seconds <= 0)  { timerEl.textContent = '⏱ 00:00'; timerEl.style.color = '#ef4444'; clearInterval(examTimerInterval); }
+        
+        // Color-changing states
+        if (seconds > 120) {
+          timerEl.style.color = 'var(--accent-cyan)';
+        } else if (seconds <= 120 && seconds > 60) {
+          timerEl.style.color = '#f59e0b'; // Warning yellow
+        } else if (seconds <= 60) {
+          timerEl.style.color = '#ef4444'; // Critical red
+        }
+        
+        if (seconds <= 0)  {
+          timerEl.textContent = '⏱ 00:00';
+          timerEl.style.color = '#ef4444';
+          clearInterval(examTimerInterval);
+          alert("Time is up! The exam session has ended.");
+          const allInputs = document.querySelectorAll('#quiz-block-wrapper input');
+          allInputs.forEach(i => i.disabled = true);
+        }
         seconds--;
       };
       update();
@@ -2931,7 +2947,7 @@
         sl.style.color = scorePct >= 75 ? 'var(--accent-green)' : '#f59e0b';
       }
 
-      // Update scorecard panel
+      // Update scorecard panel with Seniority advice
       const scorecard = document.getElementById('scorecard-panel');
       if (scorecard) {
         scorecard.style.display = 'block';
@@ -2939,10 +2955,28 @@
         document.getElementById('score-total').textContent   = quizTotalSubmitted;
         const pctEl = document.getElementById('score-pct');
         if (pctEl) pctEl.textContent = scorePct + '%';
+        
+        let tierAdvice = "";
+        let tierColor = "#cbd5e1";
+        if (scorePct >= 80) {
+          tierAdvice = "Distinguished Principal SRE (Aligns with senior platform leaders)";
+          tierColor = "var(--accent-purple)";
+        } else if (scorePct >= 60) {
+          tierAdvice = "Senior SRE (Aligns with senior on-call responders)";
+          tierColor = "var(--accent-cyan)";
+        } else if (scorePct >= 40) {
+          tierAdvice = "Mid-level Site Reliability Engineer";
+          tierColor = "var(--accent-green)";
+        } else {
+          tierAdvice = "Associate SRE/DevOps Engineer (Needs review)";
+          tierColor = "#ef4444";
+        }
+        
         document.getElementById('score-status').innerHTML =
-          scorePct >= 75
-            ? `<span style="color:#10b981;font-weight:800">✓ Passed</span> — ${scorePct}% proficiency`
-            : `<span style="color:#f59e0b;font-weight:800">⚠ Review Needed</span> — ${scorePct}% proficiency`;
+          `Tier: <span style="color:${tierColor}; font-weight:800">${tierAdvice}</span> &nbsp;·&nbsp; ` +
+          (scorePct >= 75
+            ? `<span style="color:#10b981;font-weight:800">✓ Passed</span>`
+            : `<span style="color:#f59e0b;font-weight:800">⚠ Review Needed</span>`);
       }
     };
 

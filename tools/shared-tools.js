@@ -700,7 +700,660 @@ tmp/
     }
   }
 
-  // 6. Wrap window.switchTab to clean up webhook tab selection
+  let telemetryInterval = null;
+  let cpuData = Array(30).fill(40);
+  let memData = Array(30).fill(60);
+  let latencyData = Array(30).fill(50);
+
+  function getStudioCategory() {
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('/ai/') || path.includes('/llm')) {
+      return 'ai';
+    }
+    const titleText = document.title.toLowerCase();
+    if (titleText.includes('observability') || titleText.includes('monitoring') || titleText.includes('alert') || titleText.includes('loki') || titleText.includes('prometheus') || titleText.includes('grafana')) {
+      return 'observability';
+    }
+    if (titleText.includes('ci/cd') || titleText.includes('pipeline') || titleText.includes('jenkins') || titleText.includes('github actions') || titleText.includes('workflow')) {
+      return 'cicd';
+    }
+    if (titleText.includes('kubernetes') || titleText.includes('k8s') || titleText.includes('terraform') || titleText.includes('cloud') || titleText.includes('aws') || titleText.includes('gcp') || titleText.includes('azure') || titleText.includes('vpc') || titleText.includes('subnet')) {
+      return 'cloud';
+    }
+    if (titleText.includes('docker') || titleText.includes('ansible') || titleText.includes('script') || titleText.includes('automation') || titleText.includes('auto')) {
+      return 'automation';
+    }
+    const folder = path.split('/').filter(Boolean).pop() || '';
+    if (folder.includes('docker') || folder.includes('ansible') || folder.includes('script')) return 'automation';
+    if (folder.includes('k8s') || folder.includes('kubernetes') || folder.includes('terraform') || folder.includes('vpc') || folder.includes('subnet') || folder.includes('aws') || folder.includes('gcp') || folder.includes('azure') || folder.includes('crossplane') || folder.includes('karpenter')) return 'cloud';
+    if (folder.includes('loki') || folder.includes('prometheus') || folder.includes('alert') || folder.includes('grafana') || folder.includes('monitor')) return 'observability';
+    if (folder.includes('ci') || folder.includes('pipeline') || folder.includes('workflow') || folder.includes('action')) return 'cicd';
+    return 'cloud';
+  }
+
+  function startTelemetrySim() {
+    if (telemetryInterval) clearInterval(telemetryInterval);
+    const canvas = $('sre-telemetry-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    telemetryInterval = setInterval(() => {
+      cpuData.shift();
+      cpuData.push(Math.max(10, Math.min(100, cpuData[cpuData.length - 1] + (Math.random() - 0.5) * 15)));
+      
+      memData.shift();
+      memData.push(Math.max(10, Math.min(100, memData[memData.length - 1] + (Math.random() - 0.5) * 8)));
+
+      latencyData.shift();
+      latencyData.push(Math.max(10, Math.min(100, latencyData[latencyData.length - 1] + (Math.random() - 0.5) * 20)));
+
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, h * (i / 4));
+        ctx.lineTo(w, h * (i / 4));
+        ctx.stroke();
+      }
+
+      function drawLine(data, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < data.length; i++) {
+          const x = (i / (data.length - 1)) * w;
+          const y = h - (data[i] / 100) * (h - 20) - 10;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      drawLine(cpuData, '#3b82f6');
+      drawLine(memData, '#10b981');
+      drawLine(latencyData, '#f59e0b');
+    }, 1000);
+  }
+
+  const categorySvgs = {
+    ai: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Prompt</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">LLM Router</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Cache (Redis)</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">vLLM Host</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">RAG</text></g></svg>`,
+    cloud: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">IaC Push</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">TF/Crossplane</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Vault Sec</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Compute</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Mesh</text></g></svg>`,
+    cicd: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Commit</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Webhook</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Lint/Scan</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Trivy Scan</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">GitOps</text></g></svg>`,
+    automation: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Scheduler</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Ansible Run</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Env Sync</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Daemon</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Verify</text></g></svg>`,
+    observability: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Scraper</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Ingest</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Evaluator</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Escalation</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Slack</text></g></svg>`
+  };
+
+  const lifecycles = {
+    ai: {
+      when: "Use when optimizing inference token cost, setting up RAG caching, or deploying scalable private LLM models under strict SLO targets.",
+      where: "Runs on GPU-accelerated Kubernetes clusters (e.g. AWS EKS g5 instances) behind a cloud-native API gateway."
+    },
+    cloud: {
+      when: "Use when provisioning multi-region cloud resources, configuring subnets, managing secrets lifecycle, or synchronizing resource control planes via GitOps.",
+      where: "Deploys to global cloud provider regions (AWS, GCP, Azure) via automated CI pipelines or operators."
+    },
+    cicd: {
+      when: "Use during code integration check-in, automated test suite runs, vulnerability scanning, and continuous delivery synchronization.",
+      where: "Executes on secure CI/CD runners (e.g. GitHub Actions self-hosted runners or Jenkins agents) with access to container registries."
+    },
+    automation: {
+      when: "Use when running ad-hoc system maintenance tasks, templating configuration files, or enforcing compliance baselines on virtual servers.",
+      where: "Runs on target virtual machine nodes, serverless scheduler runtimes, or management control machines."
+    },
+    observability: {
+      when: "Use when monitoring application performance, alerting on latency drifts, querying log streams, and routing critical incidents to on-call teams.",
+      where: "Runs in a dedicated monitoring namespace under centralized observability clusters linked to service alert handlers."
+    }
+  };
+
+  function renderSystemFlowContent() {
+    const viewport = $('system-flow-viewport');
+    if (!viewport) return;
+
+    const cat = getStudioCategory();
+    const svg = categorySvgs[cat] || categorySvgs.cloud;
+    const life = lifecycles[cat] || lifecycles.cloud;
+
+    viewport.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1.5rem; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); font-family: sans-serif; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 0.95rem; font-weight: bold; color: #ffffff; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🗺️</span> Production Topology &amp; Flow Guide
+          </h3>
+          <button id="btn-print-cheatsheet" style="font-size: 10px; font-weight: bold; background: #6366f1; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s;">📄 Print Cheatsheet</button>
+        </div>
+        
+        <div style="background: #020617; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; text-align: center;">
+          ${svg}
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; background: #090d16; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; font-size: 11px;">
+          <div><strong>WHEN to Use:</strong> <span style="color: #cbd5e1;">${life.when}</span></div>
+          <div style="margin-top: 0.25rem;"><strong>WHERE to Deploy:</strong> <span style="color: #cbd5e1;">${life.where}</span></div>
+        </div>
+
+        <div>
+          <h4 style="font-size: 0.8rem; font-weight: bold; color: #cbd5e1; margin-bottom: 0.5rem;">📈 Live SRE Telemetry Metrics (Simulation)</h4>
+          <canvas id="sre-telemetry-canvas" width="400" height="150" style="width: 100%; height: 150px; background: #020617; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);"></canvas>
+          <div style="display: flex; justify-content: center; gap: 1rem; font-size: 10px; margin-top: 0.5rem; font-family: monospace;">
+            <span style="color: #3b82f6;">● CPU Utilization</span>
+            <span style="color: #10b981;">● Memory Allocation</span>
+            <span style="color: #f59e0b;">● Latency Metrics</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const printBtn = $('btn-print-cheatsheet');
+    if (printBtn) {
+      printBtn.onclick = () => window.print();
+    }
+    startTelemetrySim();
+  }
+
+  function getDefaultPayload(slug) {
+    return JSON.stringify({
+      "name": slug,
+      "environment": "production",
+      "replicas": 3,
+      "port": 8080,
+      "enable_tls": true,
+      "security": {
+        "run_as_root": false,
+        "allow_privileged": false
+      }
+    }, null, 2);
+  }
+
+  function appendConsoleLog(msg, type = 'info') {
+    const consoleLogs = $('sandbox-console-logs');
+    if (!consoleLogs) return;
+    const el = document.createElement('div');
+    if (type === 'error') el.className = 'text-rose-500 font-bold';
+    else if (type === 'success') el.className = 'text-emerald-400';
+    else if (type === 'warn') el.className = 'text-amber-500';
+    else el.className = 'text-slate-300';
+    el.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    consoleLogs.appendChild(el);
+    consoleLogs.scrollTop = consoleLogs.scrollHeight;
+  }
+
+  function validateSandboxJson() {
+    const payloadText = $('sandbox-payload').value;
+    const statusSpan = $('sandbox-json-status');
+    if (!statusSpan) return false;
+
+    try {
+      JSON.parse(payloadText);
+      statusSpan.textContent = '✅ Valid JSON';
+      statusSpan.style.color = '#10b981';
+      appendConsoleLog('[SUCCESS] JSON validation complete. No syntax errors.', 'success');
+      return true;
+    } catch (e) {
+      statusSpan.textContent = '❌ Invalid JSON';
+      statusSpan.style.color = '#ef4444';
+      appendConsoleLog(`[ERROR] JSON Parsing Error: ${e.message}`, 'error');
+      return false;
+    }
+  }
+
+  function compareAndAudit() {
+    if (!validateSandboxJson()) {
+      alert("Please correct the JSON syntax errors before auditing.");
+      return;
+    }
+
+    const payloadText = $('sandbox-payload').value;
+    const userObj = JSON.parse(payloadText);
+
+    const compiledText = lastCompiledCode || ($('output-box') ? $('output-box').textContent : '');
+    const compiledKeys = {};
+    const lines = compiledText.split('\n');
+    lines.forEach(line => {
+      const match = line.match(/^\s*["']?([a-zA-Z0-9_-]+)["']?\s*[:=]\s*(.*)$/);
+      if (match) {
+        const key = match[1].trim();
+        let val = match[2].trim().replace(/,$/, '').replace(/["']/g, '');
+        compiledKeys[key] = val;
+      }
+    });
+
+    const auditList = $('sandbox-audit-list');
+    if (!auditList) return;
+    auditList.innerHTML = '';
+    $('sandbox-audit-results').classList.remove('hidden');
+
+    const allKeys = new Set([...Object.keys(userObj), ...Object.keys(compiledKeys)]);
+    let matchCount = 0;
+    let mismatchCount = 0;
+
+    allKeys.forEach(key => {
+      if (!key || (typeof userObj[key] === 'object' && userObj[key] !== null)) return;
+
+      const userVal = userObj[key] !== undefined ? String(userObj[key]) : undefined;
+      const compVal = compiledKeys[key];
+
+      const item = document.createElement('div');
+      item.style.display = 'flex';
+      item.style.justifyContent = 'space-between';
+      item.style.padding = '2px 0';
+      item.style.borderBottom = '1px solid rgba(255,255,255,0.02)';
+
+      if (userVal === undefined) {
+        item.innerHTML = `<span style="color: #ef4444;">⚠️ Missing key: ${key}</span><span style="color: #cbd5e1;">Compiled: ${compVal}</span>`;
+        mismatchCount++;
+      } else if (compVal === undefined) {
+        item.innerHTML = `<span style="color: #cbd5e1;">➕ Extra sandbox key: ${key}</span><span style="color: #a3e635;">Sandbox: ${userVal}</span>`;
+      } else if (userVal !== compVal) {
+        item.innerHTML = `<span style="color: #f59e0b;">⚡ Mismatch: ${key}</span><span style="color: #f59e0b;">Sandbox: ${userVal} vs Compiled: ${compVal}</span>`;
+        mismatchCount++;
+      } else {
+        item.innerHTML = `<span style="color: #10b981;">✓ Matched: ${key}</span><span style="color: #cbd5e1;">${userVal}</span>`;
+        matchCount++;
+      }
+      auditList.appendChild(item);
+    });
+
+    appendConsoleLog(`[INFO] Audit complete: ${matchCount} matches, ${mismatchCount} warnings/mismatches.`, 'info');
+  }
+
+  function sendApiRequestSim() {
+    if (!validateSandboxJson()) return;
+    const method = $('sandbox-method').value;
+    const url = $('sandbox-url').value;
+    const payloadText = $('sandbox-payload').value;
+
+    appendConsoleLog(`[HTTP] Sending ${method} request to ${url}...`, 'info');
+    appendConsoleLog(`[HTTP] Headers: Content-Type: application/json, Authorization: Bearer tp-token-xxx`, 'info');
+    appendConsoleLog(`[HTTP] Body: ${payloadText.substring(0, 100)}...`, 'info');
+
+    setTimeout(() => {
+      appendConsoleLog(`[SUCCESS] HTTP 201 Created (OK)`, 'success');
+      appendConsoleLog(`[SUCCESS] Transaction payload synchronized with GitOps database.`, 'success');
+      appendConsoleLog(`[SUCCESS] Webhook event dispatched.`, 'success');
+    }, 1200);
+  }
+
+  function renderRestSandboxContent() {
+    const viewport = $('rest-sandbox-viewport');
+    if (!viewport) return;
+
+    const slug = pathname.split('/').filter(Boolean).pop() || "devops-studio";
+
+    viewport.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1.5rem; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); font-family: sans-serif; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 0.95rem; font-weight: bold; color: #ffffff; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🚀</span> REST API Client Sandbox
+          </h3>
+          <span style="font-size: 9px; font-family: monospace; color: #818cf8; background: rgba(129, 140, 248, 0.1); border: 1px solid rgba(129, 140, 248, 0.2); padding: 2px 6px; border-radius: 4px;">REST CLIENT</span>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <select id="sandbox-method" style="background: #020617; color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: monospace; font-weight: bold;">
+            <option value="POST">POST</option>
+            <option value="GET">GET</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">PATCH</option>
+          </select>
+          <input type="text" id="sandbox-url" style="flex: 1; background: #020617; color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: monospace;" value="/api/v1/deploy/${slug}">
+        </div>
+
+        <div style="font-size: 10px; background: #090d16; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 0.5rem; font-family: monospace;">
+          <div style="color: #64748b; font-weight: bold; margin-bottom: 0.25rem;">HTTP HEADERS</div>
+          <div style="color: #cbd5e1;">Content-Type: application/json</div>
+          <div style="color: #cbd5e1;">Authorization: Bearer tp-token-sandbox-0129</div>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <span style="font-size: 11px; font-weight: bold; color: #cbd5e1;">JSON Payload</span>
+            <span id="sandbox-json-status" style="font-size: 9px; font-family: monospace;"></span>
+          </div>
+          <textarea id="sandbox-payload" style="width: 100%; height: 120px; background: #020617; color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 8px; font-family: monospace; font-size: 11px; outline: none; resize: vertical; white-space: pre;" placeholder='{ "key": "value" }'></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="btn-sandbox-validate" style="flex: 1; font-size: 10px; font-weight: bold; background: #1e293b; color: white; border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px; border-radius: 4px; cursor: pointer; transition: background 0.2s;">Validate JSON</button>
+          <button id="btn-sandbox-compare" style="flex: 1; font-size: 10px; font-weight: bold; background: #4f46e5; color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; transition: background 0.2s;">Compare &amp; Audit</button>
+          <button id="btn-sandbox-send" style="flex: 1; font-size: 10px; font-weight: bold; background: #10b981; color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; transition: background 0.2s;">Send Request</button>
+        </div>
+
+        <div id="sandbox-audit-results" class="hidden" style="background: #090d16; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 0.75rem; font-size: 11px; font-family: monospace; max-height: 150px; overflow-y: auto;">
+          <div style="color: #64748b; font-weight: bold; margin-bottom: 0.5rem;">SIDE-BY-SIDE CONFIG DIFF AUDITOR</div>
+          <div id="sandbox-audit-list" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
+        </div>
+
+        <div>
+          <div style="font-size: 11px; font-weight: bold; color: #cbd5e1; margin-bottom: 0.25rem;">SIMULATED CONSOLE LOGS</div>
+          <div id="sandbox-console-logs" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 0.5rem; height: 100px; overflow-y: auto; font-family: monospace; font-size: 10px; color: #cbd5e1; text-align: left; white-space: pre-wrap;">
+            <div>[SYSTEM] Console ready. Pasted JSON variables can be audited or sent.</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    $('sandbox-payload').value = getDefaultPayload(slug);
+
+    $('btn-sandbox-validate').onclick = validateSandboxJson;
+    $('btn-sandbox-compare').onclick = compareAndAudit;
+    $('btn-sandbox-send').onclick = sendApiRequestSim;
+  }
+
+  function injectPrintStyle() {
+    if ($('cheatsheet-print-style')) return;
+    const style = document.createElement('style');
+    style.id = 'cheatsheet-print-style';
+    style.textContent = `
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #system-flow-viewport, #system-flow-viewport * {
+          visibility: visible;
+        }
+        #system-flow-viewport {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          background: white !important;
+          color: black !important;
+        }
+        #btn-print-cheatsheet, #sre-telemetry-canvas, .no-print, canvas {
+          display: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function injectSystemFlowTab() {
+    const tabContainer = document.querySelector('.tabs-scrollable') ||
+                         (document.querySelector('.tab-btn') ? document.querySelector('.tab-btn').parentElement : null);
+    if (!tabContainer || $('tab-system-flow')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'tab-system-flow';
+    btn.className = 'tab-btn';
+    btn.type = 'button';
+    btn.innerHTML = '🗺️ System Flow';
+    btn.onclick = () => selectCustomTab('system-flow');
+    tabContainer.appendChild(btn);
+  }
+
+  function injectRestSandboxTab() {
+    const tabContainer = document.querySelector('.tabs-scrollable') ||
+                         (document.querySelector('.tab-btn') ? document.querySelector('.tab-btn').parentElement : null);
+    if (!tabContainer || $('tab-rest-sandbox')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'tab-rest-sandbox';
+    btn.className = 'tab-btn';
+    btn.type = 'button';
+    btn.innerHTML = '🚀 REST Sandbox';
+    btn.onclick = () => selectCustomTab('rest-sandbox');
+    tabContainer.appendChild(btn);
+  }
+
+  function injectCustomViewports() {
+    const outputBox = $('output-box');
+    if (!outputBox || $('system-flow-viewport')) return;
+
+    const parent = outputBox.parentElement;
+
+    const flowDiv = document.createElement('div');
+    flowDiv.id = 'system-flow-viewport';
+    flowDiv.className = 'hidden ide-viewport flex flex-col bg-slate-950 p-6 border border-slate-800 rounded-lg text-slate-300';
+    flowDiv.style.minHeight = '380px';
+    flowDiv.style.maxHeight = '480px';
+    flowDiv.style.overflowY = 'auto';
+    parent.appendChild(flowDiv);
+
+    const sandboxDiv = document.createElement('div');
+    sandboxDiv.id = 'rest-sandbox-viewport';
+    sandboxDiv.className = 'hidden ide-viewport flex flex-col bg-slate-950 p-6 border border-slate-800 rounded-lg text-slate-300';
+    sandboxDiv.style.minHeight = '380px';
+    sandboxDiv.style.maxHeight = '480px';
+    sandboxDiv.style.overflowY = 'auto';
+    parent.appendChild(sandboxDiv);
+  }
+
+  function selectCustomTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    const outputBox = $('output-box');
+    if (outputBox) outputBox.classList.add('hidden');
+    const simViewport = $('simulator-viewport');
+    if (simViewport) simViewport.classList.add('hidden');
+    const terminalViewport = $('terminal-viewport');
+    if (terminalViewport) terminalViewport.classList.add('hidden');
+    const mermaidContainer = $('mermaid-container');
+    if (mermaidContainer) mermaidContainer.classList.add('hidden');
+
+    const flowViewport = $('system-flow-viewport');
+    if (flowViewport) flowViewport.classList.add('hidden');
+    const flowTab = $('tab-system-flow');
+    if (flowTab) flowTab.classList.remove('active');
+
+    const sandboxViewport = $('rest-sandbox-viewport');
+    if (sandboxViewport) sandboxViewport.classList.add('hidden');
+    const sandboxTab = $('tab-rest-sandbox');
+    if (sandboxTab) sandboxTab.classList.remove('active');
+
+    const webhookTab = $('tab-webhooks');
+    if (webhookTab) webhookTab.classList.remove('active');
+    const linterTab = $('tab-linter');
+    if (linterTab) linterTab.classList.remove('active');
+    
+    const activeBtn = $(`tab-${tabId}`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    const targetViewport = $(`${tabId}-viewport`);
+    if (targetViewport) {
+      targetViewport.classList.remove('hidden');
+    }
+
+    if (telemetryInterval) {
+      clearInterval(telemetryInterval);
+      telemetryInterval = null;
+    }
+
+    if (tabId === 'system-flow') {
+      renderSystemFlowContent();
+    } else if (tabId === 'rest-sandbox') {
+      renderRestSandboxContent();
+    }
+
+    const fileExtensionTag = $('file-extension-tag');
+    if (fileExtensionTag) fileExtensionTag.textContent = '';
+  }
+
+  function triggerFireDrill() {
+    if ($('fire-drill-alert')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'fire-drill-alert';
+    overlay.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 320px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid #ef4444;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+      z-index: 10000;
+      color: white;
+      font-family: 'Space Grotesk', sans-serif;
+      animation: slideIn 0.3s ease;
+    `;
+    
+    if (!document.getElementById('fire-drill-style')) {
+      const style = document.createElement('style');
+      style.id = 'fire-drill-style';
+      style.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(-100%) translateY(20px); opacity: 0; }
+          to { transform: translateX(0) translateY(0); opacity: 1; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const slug = pathname.split('/').filter(Boolean).pop() || "devops-studio";
+    
+    overlay.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem;">
+        <span style="font-size: 1.25rem;">🚨</span>
+        <strong style="color: #ef4444; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Critical PagerDuty Incident</strong>
+      </div>
+      <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem; line-height: 1.4;">
+        Outage Fire-drill: High error rate detected in <strong>${slug}</strong> pod routing thresholds!
+      </p>
+      <div style="display: flex; gap: 0.5rem;">
+        <button id="btn-fd-investigate" style="flex: 1; font-size: 10px; font-weight: bold; background: #ef4444; color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer;">Investigate</button>
+        <button id="btn-fd-resolve" style="font-size: 10px; font-weight: bold; background: #334155; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 4px; cursor: pointer;">Acknowledge</button>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    $('btn-fd-investigate').onclick = () => {
+      const terminalTab = $('tab-terminal') || $('tab-simulator') || $('tab-webhooks');
+      if (terminalTab) terminalTab.click();
+      
+      const terminalLogs = $('terminal-logs');
+      if (terminalLogs) {
+        const div = document.createElement('div');
+        div.className = 'text-rose-500 font-bold';
+        div.innerHTML = `[FIRE-DRILL] Incident pd-inc-fire-drill triggered. Error logs: HTTP 502 Bad Gateway.<br/>Running bash scripts/validate.sh checks is recommended.`;
+        terminalLogs.appendChild(div);
+        terminalLogs.scrollTop = terminalLogs.scrollHeight;
+      }
+      
+      overlay.style.borderColor = '#f59e0b';
+      overlay.querySelector('strong').style.color = '#f59e0b';
+      overlay.querySelector('strong').textContent = 'Investigating Incident';
+    };
+
+    $('btn-fd-resolve').onclick = () => {
+      overlay.remove();
+      alert("Incident acknowledged and auto-remediation policies applied successfully. Excellent work!");
+      setTimeout(triggerFireDrill, 120000);
+    };
+  }
+
+  function initIncidentFireDrills() {
+    if ($('fire-drill-alert')) return;
+    setTimeout(() => {
+      triggerFireDrill();
+    }, 10000);
+  }
+
+  function triggerGitOpsAnimation() {
+    if ($('gitops-sync-panel')) return;
+
+    const panel = document.createElement('div');
+    panel.id = 'gitops-sync-panel';
+    panel.style.cssText = `
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      width: 300px;
+      background: #090d16;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 9999;
+      font-family: 'Space Grotesk', sans-serif;
+      color: white;
+      text-align: left;
+    `;
+
+    panel.innerHTML = `
+      <h4 style="font-size: 12px; font-weight: bold; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; margin-top: 0;">
+        <span>🔄 GitOps Pipeline Sync</span>
+        <button onclick="document.getElementById('gitops-sync-panel').remove()" style="background:none; border:none; color:#64748b; cursor:pointer; font-size:14px;">&times;</button>
+      </h4>
+      <div id="gitops-steps" style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 11px;">
+        <div id="step-git-push" style="color: #cbd5e1;">● Initiating Git Push...</div>
+        <div id="step-argocd" style="color: #64748b;">● Webhook delivered to ArgoCD...</div>
+        <div id="step-lint" style="color: #64748b;">● Running Security Scan (Trivy)...</div>
+        <div id="step-deploy" style="color: #64748b;">● Kubernetes Deployment Rollout...</div>
+        <div id="step-mesh" style="color: #64748b;">● Route shifted via Service Mesh...</div>
+      </div>
+    `;
+
+    document.body.appendChild(panel);
+
+    const steps = [
+      { id: 'step-git-push', text: '✅ Git Push Completed', delay: 1000 },
+      { id: 'step-argocd', text: '✅ Webhook payload delivered to ArgoCD', delay: 2000 },
+      { id: 'step-lint', text: '✅ Lint & Trivy Scanners passed (100% compliant)', delay: 3500 },
+      { id: 'step-deploy', text: '✅ Kubernetes Deployment rollout complete', delay: 5000 },
+      { id: 'step-mesh', text: '✅ Route traffic successfully shifted to live (100% green)', delay: 6500 }
+    ];
+
+    steps.forEach(step => {
+      setTimeout(() => {
+        const el = $(step.id);
+        if (el) {
+          el.textContent = step.text;
+          el.style.color = '#10b981';
+          el.style.fontWeight = 'bold';
+        }
+        if (step.id === 'step-mesh') {
+          setTimeout(() => {
+            if ($('gitops-sync-panel')) $('gitops-sync-panel').remove();
+          }, 3000);
+        }
+      }, step.delay);
+    });
+  }
+
+  function injectGitOpsWebhookSimulator() {
+    const nameInput = $('download-name-input');
+    if (!nameInput || $('btn-gitops-push')) return;
+
+    const parent = nameInput.parentElement;
+    const btn = document.createElement('button');
+    btn.id = 'btn-gitops-push';
+    btn.type = 'button';
+    btn.style.cssText = `
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    `;
+    btn.innerHTML = `
+      <svg style="width: 10px; height: 10px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+      </svg>
+      <span>GitOps Push</span>
+    `;
+
+    btn.onclick = triggerGitOpsAnimation;
+    parent.insertBefore(btn, nameInput);
+  }
+
+  // 6. Wrap window.switchTab to clean up custom tab selection
   function wrapSwitchTab() {
     if (typeof window.switchTab === 'function' && !window.switchTab.__wrapped) {
       const original = window.switchTab;
@@ -711,8 +1364,23 @@ tmp/
         const linterTab = $('tab-linter');
         if (linterTab) linterTab.classList.remove('active');
 
+        const flowTab = $('tab-system-flow');
+        if (flowTab) flowTab.classList.remove('active');
+        const flowViewport = $('system-flow-viewport');
+        if (flowViewport) flowViewport.classList.add('hidden');
+
+        const sandboxTab = $('tab-rest-sandbox');
+        if (sandboxTab) sandboxTab.classList.remove('active');
+        const sandboxViewport = $('rest-sandbox-viewport');
+        if (sandboxViewport) sandboxViewport.classList.add('hidden');
+
+        if (telemetryInterval) {
+          clearInterval(telemetryInterval);
+          telemetryInterval = null;
+        }
+
         const fileExtensionTag = $('file-extension-tag');
-        if (fileExtensionTag && tabId !== 'webhooks' && tabId !== 'linter') {
+        if (fileExtensionTag && tabId !== 'webhooks' && tabId !== 'linter' && tabId !== 'system-flow' && tabId !== 'rest-sandbox') {
           if (tabId === 'flow' || tabId === 'sandbox') {
             fileExtensionTag.textContent = '';
           } else if (tabId === 'script' || tabId === 'bash') {
@@ -735,7 +1403,7 @@ tmp/
         }
 
         // Cache the compiled code if switching to a code tab
-        if (tabId !== 'webhooks' && tabId !== 'linter') {
+        if (tabId !== 'webhooks' && tabId !== 'linter' && tabId !== 'system-flow' && tabId !== 'rest-sandbox') {
           setTimeout(() => {
             const outputBox = $('output-box');
             if (outputBox) {
@@ -757,6 +1425,14 @@ tmp/
     injectWebhookTab();
     injectLinterTab();
     injectNetworkStatusBadge();
+
+    // Inject Phase 14 Custom Features
+    injectSystemFlowTab();
+    injectRestSandboxTab();
+    injectCustomViewports();
+    injectPrintStyle();
+    injectGitOpsWebhookSimulator();
+    initIncidentFireDrills();
 
     // Listen to changes for caching
     const fields = document.querySelectorAll('input, select, textarea');

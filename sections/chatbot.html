@@ -1,6 +1,45 @@
 <!-- ══ AI PORTFOLIO CHATBOT WIDGET ══ -->
 <div class="ai-chatbot-widget" id="aiChatbotWidget">
   
+  <!-- Settings Cog button -->
+  <button id="btn-open-settings" style="position: absolute; bottom: 70px; right: 10px; width: 40px; height: 40px; border-radius: 50%; background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 999; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(45deg)'" onmouseout="this.style.transform='rotate(0deg)'">
+    <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+  </button>
+
+  <!-- ══ SRE GLOBAL BACKUP & SETTINGS MODAL ══ -->
+  <div id="sre-backup-modal" class="sre-backup-modal" style="display: none;">
+    <div class="sre-backup-modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px;">
+          <span>⚙️</span> SRE Portal Backups &amp; Settings
+        </h3>
+        <button id="btn-close-backup-modal" style="background: none; border: none; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer;">&times;</button>
+      </div>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+        <div>
+          <label style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Global Theme Settings</label>
+          <button id="btn-toggle-global-theme" style="width: 100%; background: var(--accent-primary); color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s;">🌓 Toggle Light / Dark Mode</button>
+        </div>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border);" />
+
+        <div>
+          <label style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Local State Backups (JSON)</label>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">Export your progress checklists, studio cache profiles, and local study diagnostics history to a JSON backup file, or restore them.</p>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="btn-export-backup" style="flex: 1; background: #10b981; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer;">Export</button>
+            <button id="btn-import-backup-trigger" style="flex: 1; background: #3b82f6; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer;">Import</button>
+            <input type="file" id="input-import-backup-file" style="display: none;" accept=".json" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Pulsing Chat Toggle Button -->
   <button class="chat-toggle-btn" id="chatToggleBtn" aria-label="Open AI Assistant">
     <div class="toggle-pulse"></div>
@@ -473,6 +512,29 @@
       height: 480px;
     }
   }
+
+  /* SRE Backup settings modal styles */
+  .sre-backup-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 11000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .sre-backup-modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: zoomIn 0.25s ease;
+  }
 </style>
 
 <!-- Chatbot Engine Script -->
@@ -700,6 +762,22 @@
       answer: "📧 **Contact Talari Pradeep**: You can email him at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com), call him at **+91-7330737488**, or connect on [LinkedIn](https://linkedin.com/in/pradeep-talari). He is based in **Bangalore, India**."
     },
     {
+      keywords: ['quiz', 'mock exam', 'timed assessment', 'timer'],
+      answer: "📝 **SRE Timed Quiz Dashboard**: SREs must perform diagnostics under strict operational timelines. The timed exam dashboard (found in the [Mock Exam Pool](/interview/index.html) tab under Interview Prep) features:<br><br>• 5-minute countdown clock with warning/critical color states.<br>• Dynamic scorecard evaluations mapping responses directly to professional SRE levels (Associate, Mid-level, Senior, Principal)."
+    },
+    {
+      keywords: ['backup', 'export settings', 'restore', 'json backup'],
+      answer: "⚙️ **Settings & State Backups**: You can backup all checklist progress states, studio caching data, and exam study logs by clicking the Settings cog near the bottom-right toggle button.<br><br>• Click **Export Backup** to save an `sre_backup.json` configuration locally.<br>• Click **Import Backup** to upload a previously saved file and instantly restore progress."
+    },
+    {
+      keywords: ['theme', 'dark mode', 'light mode', 'switch colors'],
+      answer: "🌓 **Global Color Switcher**: Toggle between light and dark visual setups across all pages of the portal by launching the Settings cog block (near the chat toggle icon) and clicking **Toggle Light/Dark Mode**."
+    },
+    {
+      keywords: ['rest', 'sandbox', 'client', 'payload', 'validate json'],
+      answer: "🚀 **REST Client Sandbox & Diff Auditor**: All 291 developer studios feature a dedicated **REST Sandbox** tab. This tool enables developers to:<br><br>1. Select HTTP methods (GET, POST, PUT, DELETE) and endpoints.<br>2. Edit, lint, and format JSON payload variables.<br>3. Audit properties side-by-side against compiled studio files to catch missing environment parameters."
+    },
+    {
       keywords: ['argocd', 'gitops', 'git ops', 'continuous deployment'],
       answer: "🐙 **ArgoCD (GitOps)**: A declarative, GitOps continuous delivery tool for Kubernetes. It monitors Git repositories for manifest changes and automatically synchronizes them with target clusters. Pradeep implements ArgoCD for automated deployments. Scaffold GitOps configurations at the [ArgoCD Studio](/tools/argocd/)!"
     },
@@ -850,18 +928,201 @@
            `Feel free to check out Pradeep's work under the [Skills](/skills/) page, his [Projects](/projects/), or email him directly at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com).`;
   }
 
-})();
+  // Backup and Restore settings
+  function exportBackup() {
+    const backupData = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith('sre_') || key.startsWith('tp-studio-')) {
+        try {
+          backupData[key] = JSON.parse(localStorage.getItem(key)) || localStorage.getItem(key);
+        } catch(e) {
+          backupData[key] = localStorage.getItem(key);
+        }
+      }
+    }
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sre_backup.json';
+    a.click();
+  }
 
-// Register Service Worker for offline capabilities
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((reg) => {
-        console.log('Service Worker registered successfully with scope:', reg.scope);
-      })
-      .catch((err) => {
-        console.warn('Service Worker registration failed:', err);
+  function importBackup(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (typeof data !== 'object' || data === null) {
+          alert('Invalid backup file format.');
+          return;
+        }
+        Object.entries(data).forEach(([key, val]) => {
+          const stringVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+          localStorage.setItem(key, stringVal);
+        });
+        alert('Backup restored successfully! Reloading portal...');
+        window.location.reload();
+      } catch (err) {
+        alert('Error parsing backup file: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // Theme override switcher
+  function toggleGlobalTheme() {
+    const isDark = document.documentElement.classList.toggle('dark-theme');
+    localStorage.setItem('sre_dark_mode_active', isDark ? 'true' : 'false');
+    applyGlobalTheme();
+  }
+
+  const $ = (id) => document.getElementById(id);
+
+  function applyGlobalTheme() {
+    const active = localStorage.getItem('sre_dark_mode_active') === 'true';
+    if (active) {
+      document.documentElement.classList.add('dark-theme');
+      if (!document.getElementById('dark-theme-override-styles')) {
+        const style = document.createElement('style');
+        style.id = 'dark-theme-override-styles';
+        style.textContent = `
+          .dark-theme, .dark-theme body {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+          }
+          .dark-theme :root {
+            --bg-base:        #0f172a !important;
+            --bg-surface:     #1e293b !important;
+            --bg-card:        #1e293b !important;
+            --bg-card-hover:  #1e2b4d !important;
+            --text-primary:   #f8fafc !important;
+            --text-secondary: #cbd5e1 !important;
+            --text-muted:     #64748b !important;
+            --border:         #334155 !important;
+          }
+          .dark-theme .navbar {
+            background: rgba(15, 23, 42, 0.85) !important;
+            border-bottom-color: #334155 !important;
+          }
+          .dark-theme .nav-link {
+            color: #cbd5e1 !important;
+          }
+          .dark-theme .tool-card, .dark-theme .stats-card {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+      const style = document.getElementById('dark-theme-override-styles');
+      if (style) style.remove();
+    }
+  }
+
+  // One-Click Code Copier
+  function initCodeCopier() {
+    const codeBlocks = document.querySelectorAll('pre');
+    codeBlocks.forEach(block => {
+      if (block.querySelector('.btn-copy-code') || block.id === 'output-box' || block.classList.contains('no-copy')) return;
+
+      block.style.position = 'relative';
+      const btn = document.createElement('button');
+      btn.className = 'btn-copy-code no-print';
+      btn.type = 'button';
+      btn.style.cssText = `
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 10px;
+        font-family: inherit;
+        font-weight: bold;
+        background: #1e293b;
+        color: #cbd5e1;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 4px;
+        padding: 2px 6px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, background 0.2s;
+        z-index: 10;
+      `;
+      btn.textContent = '📋 Copy';
+
+      btn.onclick = () => {
+        const codeElement = block.querySelector('code') || block;
+        let textToCopy = codeElement.textContent;
+        if (textToCopy.endsWith('\nCopy')) {
+          textToCopy = textToCopy.substring(0, textToCopy.length - 5);
+        }
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.background = '#10b981';
+          btn.style.color = '#ffffff';
+          setTimeout(() => {
+            btn.textContent = '📋 Copy';
+            btn.style.background = '#1e293b';
+            btn.style.color = '#cbd5e1';
+          }, 1500);
+        });
+      };
+
+      block.addEventListener('mouseenter', () => {
+        btn.style.opacity = '1';
       });
-  });
-}
+      block.addEventListener('mouseleave', () => {
+        btn.style.opacity = '0';
+      });
+
+      block.appendChild(btn);
+    });
+  }
+
+  // Bind settings cog trigger actions
+  document.getElementById('btn-open-settings').onclick = () => {
+    document.getElementById('sre-backup-modal').style.display = 'flex';
+  };
+  document.getElementById('btn-close-backup-modal').onclick = () => {
+    document.getElementById('sre-backup-modal').style.display = 'none';
+  };
+  document.getElementById('btn-toggle-global-theme').onclick = toggleGlobalTheme;
+  document.getElementById('btn-export-backup').onclick = exportBackup;
+  
+  const triggerBtn = document.getElementById('btn-import-backup-trigger');
+  const fileInput = document.getElementById('input-import-backup-file');
+  triggerBtn.onclick = () => fileInput.click();
+  fileInput.onchange = (e) => {
+    if (e.target.files.length > 0) {
+      importBackup(e.target.files[0]);
+    }
+  };
+
+  document.getElementById('sre-backup-modal').onclick = (e) => {
+    if (e.target === document.getElementById('sre-backup-modal')) {
+      document.getElementById('sre-backup-modal').style.display = 'none';
+    }
+  };
+
+  applyGlobalTheme();
+  initCodeCopier();
+
+  const observer = new MutationObserver(initCodeCopier);
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Register Service Worker for offline capabilities
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('Service Worker registered successfully with scope:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('Service Worker registration failed:', err);
+        });
+    });
+  }
+})();
 </script>

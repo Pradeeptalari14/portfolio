@@ -1183,6 +1183,221 @@
         color: #f8fafc;
       }
     }
+    
+    /* ── SRE Pipeline Topology Map Styles ── */
+    .topology-container {
+      width: 100%;
+      max-width: 1280px;
+      margin-bottom: 2.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: visible;
+      transition: var(--transition);
+    }
+    .topology-title-bar {
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
+    .topology-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .topology-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .topology-timeline {
+      position: relative;
+      width: 100%;
+      padding: 1.25rem 0;
+      margin-bottom: 1.5rem;
+    }
+    .topology-line {
+      position: absolute;
+      top: 50%;
+      left: 6%;
+      right: 6%;
+      height: 4px;
+      background: var(--border);
+      transform: translateY(-50%);
+      z-index: 1;
+      border-radius: 2px;
+      transition: background 0.3s ease;
+    }
+    .topology-nodes {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+      padding: 0 4%;
+    }
+    .topology-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      outline: none;
+      transition: transform 0.2s ease;
+    }
+    .topology-node:hover {
+      transform: translateY(-2px);
+    }
+    .node-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .topology-node.active .node-icon {
+      border-color: var(--accent-primary);
+      background: var(--bg-surface);
+      box-shadow: 0 0 14px rgba(79, 70, 229, 0.45);
+      transform: scale(1.12);
+    }
+    .node-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+    }
+    .topology-node.active .node-label {
+      color: var(--accent-primary);
+    }
+    /* Tooltip */
+    .node-tooltip {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.74rem;
+      color: #cbd5e1;
+      width: 190px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      line-height: 1.5;
+      text-align: left;
+    }
+    .node-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+    }
+    .topology-node:hover .node-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+    .topology-active-stage-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+    .stage-badge {
+      background: var(--accent-primary);
+      color: white;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .stage-desc {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ── Autocomplete Dropdown ── */
+    .autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      margin-top: 0.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+    .autocomplete-dropdown.active {
+      display: block;
+    }
+    .autocomplete-item {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      transition: background 0.15s ease;
+    }
+    .autocomplete-item:last-child {
+      border-bottom: none;
+    }
+    .autocomplete-item:hover,
+    .autocomplete-item.selected {
+      background: var(--bg-card-hover);
+    }
+    .autocomplete-item-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .autocomplete-item-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .autocomplete-item mark {
+      background: rgba(79, 70, 229, 0.15);
+      color: var(--accent-primary);
+      font-weight: 600;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
   </style>
 </head>
 <body>
@@ -1246,6 +1461,77 @@
         <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
+
+    <!-- Interactive SRE Pipeline Topology Map -->
+    <div class="topology-container" id="sre-topology-map">
+      <div class="topology-title-bar">
+        <h3 class="topology-title">🗺️ SRE DevOps Pipeline Lifecycle Map</h3>
+        <p class="topology-subtitle">Click a node to highlight its stage and filter related automation studios. Hover to inspect requirements.</p>
+      </div>
+      <div class="topology-timeline">
+        <div class="topology-line"></div>
+        <div class="topology-nodes">
+          <div class="topology-node" data-stage="code" tabindex="0">
+            <div class="node-icon">🛠️</div>
+            <div class="node-label">Code & Git</div>
+            <div class="node-tooltip">
+              <strong>WHEN:</strong> Code check-in / commit<br/>
+              <strong>WHERE:</strong> Local workstation / Git<br/>
+              <strong>COMPLIANCE:</strong> Signed commits required
+            </div>
+          </div>
+          <div class="topology-node" data-stage="cicd" tabindex="0">
+            <div class="node-icon">🛡️</div>
+            <div class="node-label">CI/CD & Scan</div>
+            <div class="node-tooltip">
+              <strong>WHEN:</strong> Pull requests / builds<br/>
+              <strong>WHERE:</strong> Jenkins / Actions runners<br/>
+              <strong>COMPLIANCE:</strong> Trivy scan gates
+            </div>
+          </div>
+          <div class="topology-node" data-stage="config" tabindex="0">
+            <div class="node-icon">🔑</div>
+            <div class="node-label">Secret & IaC</div>
+            <div class="node-tooltip">
+              <strong>WHEN:</strong> IaC updates / rotation<br/>
+              <strong>WHERE:</strong> HashiCorp Vault / Terraform<br/>
+              <strong>COMPLIANCE:</strong> SOC2 KMS encryption
+            </div>
+          </div>
+          <div class="topology-node" data-stage="cloud" tabindex="0">
+            <div class="node-icon">☸️</div>
+            <div class="node-label">Compute & GKE</div>
+            <div class="node-tooltip">
+              <strong>WHEN:</strong> Cluster deployments / scaling<br/>
+              <strong>WHERE:</strong> Kubernetes clusters / KEDA<br/>
+              <strong>COMPLIANCE:</strong> NetworkPolicies enforced
+            </div>
+          </div>
+          <div class="topology-node" data-stage="observability" tabindex="0">
+            <div class="node-icon">🪵</div>
+            <div class="node-label">Observability</div>
+            <div class="node-tooltip">
+              <strong>WHEN:</strong> Continuous runtime / alerts<br/>
+              <strong>WHERE:</strong> Grafana / Prometheus / Loki<br/>
+              <strong>COMPLIANCE:</strong> PagerDuty SLO bounds
+            </div>
+          </div>
+          <div class="topology-node" data-stage="ai" tabindex="0">
+            <div class="node-icon">🧠</div>
+            <div class="node-label">AI & MLOps</div>
+            <div class="node-tooltip">
+              <strong>WHEN:</strong> LLM hosting / cache queries<br/>
+              <strong>WHERE:</strong> vLLM / Triton / Vector DBs<br/>
+              <strong>COMPLIANCE:</strong> Private LLM guardrails
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topology-active-stage-card" id="topology-active-stage-card">
+        <span class="stage-badge">Stage: All</span>
+        <span class="stage-desc">Displaying all interactive platform developer studios. Click a pipeline stage node above to filter.</span>
+      </div>
+    </div>
  
     <!-- Search & Filter Controls -->
     <div class="controls-container">
@@ -1257,6 +1543,7 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
           <input type="text" id="tools-search" class="search-input" placeholder="Search 291 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+          <div id="search-autocomplete-list" class="autocomplete-dropdown"></div>
           <span class="search-shortcut-badge">Ctrl + K</span>
         </div>
         <button id="btn-help-guide" class="filter-select" style="width: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 0.8rem 1.25rem; font-family: inherit; font-size: 0.9rem; border-radius: 50px; font-weight: 600; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); transition: var(--transition); flex-shrink: 0;" onmouseover="this.style.borderColor='var(--border-accent)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
@@ -1859,7 +2146,19 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
         const matchesCloudFilter = matchesCloud(title, desc, cloudVal);
         const matchesStackFilter = matchesStack(title, desc, tag, stackVal);
         
-        if (matchesCategory && matchesSearch && matchesCloudFilter && matchesStackFilter) {
+        const topoStage = window.activeTopologyStage || 'all';
+        const stageRules = {
+          all: () => true,
+          code: (t, d, c, tg) => c === 'cicd' && (t.includes('git') || d.includes('git') || t.includes('webhook') || d.includes('webhook') || tg.includes('git') || tg.includes('webhook')),
+          cicd: (t, d, c, tg) => c === 'cicd' && !t.includes('git') && !d.includes('git') && !t.includes('webhook') && !d.includes('webhook') && !tg.includes('git') && !tg.includes('webhook'),
+          config: (t, d, c, tg) => c === 'automation' || c === 'cloud' && (t.includes('secret') || d.includes('secret') || tg.includes('tf') || t.includes('vault') || d.includes('vault') || tg.includes('vault')),
+          cloud: (t, d, c, tg) => c === 'cloud' || c === 'automation' && (t.includes('kubernetes') || d.includes('kubernetes') || t.includes('k8s') || d.includes('k8s') || t.includes('keda') || d.includes('keda') || t.includes('mesh') || d.includes('mesh')),
+          observability: (t, d, c, tg) => c === 'observability',
+          ai: (t, d, c, tg) => c === 'ai'
+        };
+        const matchesTopologyStage = stageRules[topoStage] ? stageRules[topoStage](title, desc, cardCategory, tag) : true;
+        
+        if (matchesCategory && matchesSearch && matchesCloudFilter && matchesStackFilter && matchesTopologyStage) {
           card.classList.remove('hidden');
           matchCount++;
         } else {
@@ -2143,13 +2442,65 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
     };
 
     // Initialize all
+    function initTopologyMap() {
+      const nodes = document.querySelectorAll('.topology-node');
+      const card = document.getElementById('topology-active-stage-card');
+      if (!nodes || !card) return;
+      
+      const badge = card.querySelector('.stage-badge');
+      const desc = card.querySelector('.stage-desc');
+      
+      const stageFilters = {
+        all: { badge: 'Stage: All', desc: 'Displaying all interactive platform developer studios. Click a pipeline stage node above to filter.' },
+        code: { badge: 'Stage: Code & Git', desc: 'Version control workflows, commit audits, webhook triggers, and repository configurations.' },
+        cicd: { badge: 'Stage: CI/CD & Scan', desc: 'Continuous integration builders, Trivy/SonarQube pipeline scanners, and automated lint environments.' },
+        config: { badge: 'Stage: Secret & IaC', desc: 'Infrastructure as Code templates, HashiCorp Vault key rotation systems, and access credentials operators.' },
+        cloud: { badge: 'Stage: Compute & GKE', desc: 'Kubernetes workload configs, KEDA autoscaling rules, service mesh topologies, and ingress route gates.' },
+        observability: { badge: 'Stage: Observability', desc: 'Log streams, metric scrapers, Alertmanager notifications, and dashboards.' },
+        ai: { badge: 'Stage: AI & MLOps', desc: 'vLLM/Triton hosting profiles, Vector Database search clusters, Prompt caching cost optimization widgets, and AI routers.' }
+      };
+
+      nodes.forEach(node => {
+        node.addEventListener('click', () => {
+          const stage = node.getAttribute('data-stage');
+          const isAlreadyActive = node.classList.contains('active');
+          
+          nodes.forEach(n => n.classList.remove('active'));
+          
+          if (isAlreadyActive) {
+            window.activeTopologyStage = 'all';
+            const info = stageFilters['all'];
+            if (badge) badge.textContent = info.badge;
+            if (desc) desc.textContent = info.desc;
+          } else {
+            node.classList.add('active');
+            window.activeTopologyStage = stage;
+            const info = stageFilters[stage];
+            if (badge) badge.textContent = info.badge;
+            if (desc) desc.textContent = info.desc;
+          }
+          
+          filterTools();
+        });
+        
+        node.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            node.click();
+          }
+        });
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderToolsGrid();
       initDynamicYear();
       initLatencyTracker();
       initFinOpsCalculator();
       initToolsFilter();
+      initTopologyMap();
       initPwaInstall();
+      initSearchAutocomplete();
 
       // Help Guide Modal bindings
       const helpOverlay = document.getElementById('help-guide-overlay');
@@ -2174,6 +2525,117 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
         });
       }
     });
+
+    function initSearchAutocomplete() {
+      const searchInput = document.getElementById('tools-search');
+      const dropdown = document.getElementById('search-autocomplete-list');
+      if (!searchInput || !dropdown) return;
+
+      let selectedIndex = -1;
+      let matches = [];
+
+      function highlightText(text, q) {
+        if (!q) return text;
+        const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const regex = new RegExp(q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
+        return escaped.replace(regex, match => `<mark>${match}</mark>`);
+      }
+
+      function updateDropdown() {
+        const query = searchInput.value.toLowerCase().trim();
+        dropdown.innerHTML = '';
+        selectedIndex = -1;
+
+        if (!query) {
+          dropdown.classList.remove('active');
+          return;
+        }
+
+        matches = toolsData.filter(tool => {
+          return (
+            tool.title.toLowerCase().includes(query) ||
+            tool.desc.toLowerCase().includes(query) ||
+            (tool.tag && tool.tag.toLowerCase().includes(query)) ||
+            (tool.repository && tool.repository.toLowerCase().includes(query))
+          );
+        }).slice(0, 10);
+
+        if (matches.length === 0) {
+          const noResultItem = document.createElement('div');
+          noResultItem.className = 'autocomplete-item';
+          noResultItem.style.cursor = 'default';
+          noResultItem.style.pointerEvents = 'none';
+          noResultItem.innerHTML = `<div class="autocomplete-item-title" style="color: var(--text-muted);">No matching studios found</div>`;
+          dropdown.appendChild(noResultItem);
+        } else {
+          matches.forEach((tool, idx) => {
+            const item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.setAttribute('data-index', idx);
+            item.innerHTML = `
+              <div class="autocomplete-item-title">${highlightText(tool.title, query)}</div>
+              <div class="autocomplete-item-desc">${highlightText(tool.desc, query)}</div>
+            `;
+            item.addEventListener('click', () => {
+              searchInput.value = tool.title;
+              filterTools();
+              dropdown.classList.remove('active');
+            });
+            dropdown.appendChild(item);
+          });
+        }
+        dropdown.classList.add('active');
+      }
+
+      searchInput.addEventListener('input', updateDropdown);
+      searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim()) {
+          updateDropdown();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.remove('active');
+        }
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        const items = dropdown.querySelectorAll('.autocomplete-item:not([style*="pointer-events: none"])');
+        if (!dropdown.classList.contains('active') || items.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedIndex = (selectedIndex + 1) % items.length;
+          highlightSelection(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+          highlightSelection(items);
+        } else if (e.key === 'Enter') {
+          if (selectedIndex >= 0 && selectedIndex < items.length) {
+            e.preventDefault();
+            items[selectedIndex].click();
+          }
+        } else if (e.key === 'Escape') {
+          dropdown.classList.remove('active');
+          searchInput.blur();
+        }
+      });
+
+      function highlightSelection(items) {
+        items.forEach((item, idx) => {
+          if (idx === selectedIndex) {
+            item.classList.add('selected');
+            if (typeof item.scrollIntoView === 'function') {
+              item.scrollIntoView({ block: 'nearest' });
+            }
+          } else {
+            item.classList.remove('selected');
+          }
+        });
+      }
+    }
   </script>
 
   <!-- Onboarding Help Guide Modal -->
