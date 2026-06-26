@@ -1,13 +1,7 @@
 <!-- ══ AI PORTFOLIO CHATBOT WIDGET ══ -->
 <div class="ai-chatbot-widget" id="aiChatbotWidget">
   
-  <!-- Settings Cog button -->
-  <button id="btn-open-settings" style="position: absolute; bottom: 70px; right: 10px; width: 40px; height: 40px; border-radius: 50%; background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 999; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(45deg)'" onmouseout="this.style.transform='rotate(0deg)'">
-    <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="3"></circle>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-    </svg>
-  </button>
+
 
   <!-- ══ SRE GLOBAL BACKUP & SETTINGS MODAL ══ -->
   <div id="sre-backup-modal" class="sre-backup-modal" style="display: none;">
@@ -1082,29 +1076,48 @@
   }
 
   // Bind settings cog trigger actions
-  document.getElementById('btn-open-settings').onclick = () => {
-    document.getElementById('sre-backup-modal').style.display = 'flex';
-  };
-  document.getElementById('btn-close-backup-modal').onclick = () => {
-    document.getElementById('sre-backup-modal').style.display = 'none';
-  };
-  document.getElementById('btn-toggle-global-theme').onclick = toggleGlobalTheme;
-  document.getElementById('btn-export-backup').onclick = exportBackup;
+  const btnOpenSettings = document.getElementById('btn-open-settings');
+  if (btnOpenSettings) {
+    btnOpenSettings.onclick = () => {
+      const modal = document.getElementById('sre-backup-modal');
+      if (modal) modal.style.display = 'flex';
+    };
+  }
+  const btnCloseBackupModal = document.getElementById('btn-close-backup-modal');
+  if (btnCloseBackupModal) {
+    btnCloseBackupModal.onclick = () => {
+      const modal = document.getElementById('sre-backup-modal');
+      if (modal) modal.style.display = 'none';
+    };
+  }
+  const btnToggleGlobalTheme = document.getElementById('btn-toggle-global-theme');
+  if (btnToggleGlobalTheme) {
+    btnToggleGlobalTheme.onclick = toggleGlobalTheme;
+  }
+  const btnExportBackup = document.getElementById('btn-export-backup');
+  if (btnExportBackup) {
+    btnExportBackup.onclick = exportBackup;
+  }
   
   const triggerBtn = document.getElementById('btn-import-backup-trigger');
   const fileInput = document.getElementById('input-import-backup-file');
-  triggerBtn.onclick = () => fileInput.click();
-  fileInput.onchange = (e) => {
-    if (e.target.files.length > 0) {
-      importBackup(e.target.files[0]);
-    }
-  };
+  if (triggerBtn && fileInput) {
+    triggerBtn.onclick = () => fileInput.click();
+    fileInput.onchange = (e) => {
+      if (e.target.files.length > 0) {
+        importBackup(e.target.files[0]);
+      }
+    };
+  }
 
-  document.getElementById('sre-backup-modal').onclick = (e) => {
-    if (e.target === document.getElementById('sre-backup-modal')) {
-      document.getElementById('sre-backup-modal').style.display = 'none';
-    }
-  };
+  const sreBackupModal = document.getElementById('sre-backup-modal');
+  if (sreBackupModal) {
+    sreBackupModal.onclick = (e) => {
+      if (e.target === sreBackupModal) {
+        sreBackupModal.style.display = 'none';
+      }
+    };
+  }
 
   applyGlobalTheme();
   initCodeCopier();
