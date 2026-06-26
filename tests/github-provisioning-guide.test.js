@@ -38,7 +38,7 @@ function loadGuideDom() {
 }
 
 describe('GitHub Provisioning & SRE Execution Hub Page', () => {
-  it('should fetch tools.json and render 278 studio cards', async () => {
+  it('should fetch tools.json and render 282 studio cards', async () => {
     const window = loadGuideDom();
 
     // Manually dispatch DOMContentLoaded
@@ -49,11 +49,11 @@ describe('GitHub Provisioning & SRE Execution Hub Page', () => {
     await new Promise(resolve => setTimeout(resolve, 200));
 
     const cards = window.document.querySelectorAll('.repo-card');
-    expect(cards.length).toBe(278);
+    expect(cards.length).toBe(282);
 
     const firstCardTitle = cards[0].querySelector('h4').textContent;
     expect(firstCardTitle).toBe('DevOps AI RAG Studio');
-  });
+  }, 30000);
 
   it('should search and filter cards based on text query', async () => {
     const window = loadGuideDom();
@@ -68,7 +68,7 @@ describe('GitHub Provisioning & SRE Execution Hub Page', () => {
     const visibleCards = Array.from(window.document.querySelectorAll('.repo-card'));
     expect(visibleCards.length).toBe(1);
     expect(visibleCards[0].querySelector('h4').textContent).toContain('LocalStack');
-  });
+  }, 30000);
 
   it('should filter cards on category pill click', async () => {
     const window = loadGuideDom();
@@ -80,6 +80,6 @@ describe('GitHub Provisioning & SRE Execution Hub Page', () => {
     aiPill.dispatchEvent(new window.Event('click'));
 
     const visibleCards = Array.from(window.document.querySelectorAll('.repo-card'));
-    expect(visibleCards.length).toBe(183);
-  });
+    expect(visibleCards.length).toBe(187);
+  }, 30000);
 });

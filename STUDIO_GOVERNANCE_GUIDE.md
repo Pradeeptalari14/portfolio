@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **278 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **282 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 278 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 282 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -88,7 +88,7 @@ Do **NOT** use the Studio Catalog in these 20+ anti-patterns:
 
 ## 5. Repository Mapping
 
-The following catalog registers all **267 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
+The following catalog registers all **271 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
 
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
@@ -222,6 +222,10 @@ The following catalog registers all **267 Developer Studios** to their team owne
 | 128 | AI Security & Governance Studio | [ai-security/](file:///d:/Domain/tools/ai-security/index.html) | `tp-ai-security` | AI Security | `main` | LlamaGuard, NeMo Guardrails, YAML | LLM Guardrails, Policy-as-Code |
 | 129 | Enterprise K8s AI Platform Studio | [enterprise-ai-k8s/](file:///d:/Domain/tools/enterprise-ai-k8s/index.html) | `tp-enterprise-ai-k8s` | Cloud Infrastructure | `main` | Ray, K8s, KEDA, NVIDIA GPU | Ray Cluster, Karpenter Node |
 | 130 | Enterprise AI Stack Blueprint Studio | [enterprise-ai-stack/](file:///d:/Domain/tools/enterprise-ai-stack/index.html) | `tp-enterprise-ai-stack` | AI Engineering | `main` | React, Next.js, FastAPI, YAML | Enterprise AI Infrastructure Integration, LLM Fundamentals |
+| 131 | Snowflake Data Warehouse & Cortex AI Studio | [snowflake-warehouse/](file:///d:/Domain/tools/snowflake-warehouse/index.html) | `tp-snowflake-warehouse` | AI Engineering | `main` | SQL, Python, Snowflake Cortex, Terraform | Enterprise LLM, Vector DB |
+| 132 | Databricks Lakehouse & Mosaic AI Studio | [databricks-lakehouse/](file:///d:/Domain/tools/databricks-lakehouse/index.html) | `tp-databricks-lakehouse` | AI Engineering | `main` | PySpark, YAML, Mosaic Vector Search | Vector DB, DataOps Studio |
+| 133 | Google BigQuery & Vertex AI Studio | [google-bigquery/](file:///d:/Domain/tools/google-bigquery/index.html) | `tp-google-bigquery` | AI Engineering | `main` | SQL, BigQuery ML, Vertex AI, dbt | GCP Vertex AI, GCP Cloud Spanner |
+| 134 | Amazon Redshift & SageMaker ML Studio | [amazon-redshift/](file:///d:/Domain/tools/amazon-redshift/index.html) | `tp-amazon-redshift` | AI Engineering | `main` | SQL, Redshift ML, SageMaker, dbt | AWS Event-SRE, Terraform Architect |
 
 ---
 
@@ -229,15 +233,15 @@ The following catalog registers all **267 Developer Studios** to their team owne
 
 The catalog integrates seamlessly across all 11 phases of the Software Development Life Cycle:
 
-* **Planning:** VPC Subnetting Calculator, Crossplane Cloud, Ray Cluster, IDP Template, Enterprise K8s AI Platform, Enterprise AI Stack Blueprint.
-* **Development:** Docker Compose & LocalStack, systemd Service Builder, Go SRE Utility, Python SRE Utility, eBPF Tracing Generator, Maven Build, LLM Fundamentals & Runtime, LangChain & LlamaIndex, LangGraph & Multi-Agent Swarm, Enterprise AI Stack Blueprint.
+* **Planning:** VPC Subnetting Calculator, Crossplane Cloud, Ray Cluster, IDP Template, Enterprise K8s AI Platform, Enterprise AI Stack Blueprint, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio.
+* **Development:** Docker Compose & LocalStack, systemd Service Builder, Go SRE Utility, Python SRE Utility, eBPF Tracing Generator, Maven Build, LLM Fundamentals & Runtime, LangChain & LlamaIndex, LangGraph & Multi-Agent Swarm, Enterprise AI Stack Blueprint, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio.
 * **Code Review:** GitHub Org Governance, SonarQube Quality Gate, AI Rules Customizer.
 * **Testing:** Performance Studio (k6/Locust), AI Evaluation Studio (Ragas), Chaos Engineering.
 * **Security:** SAST Security, Falco Security Auditor, Kyverno Policy, Secret Management, Vault Secrets, Trivy Security, Cloudflare Zero Trust, AI Security & Governance.
 * **Build:** Maven Build, Docker Manager, Container Registry Studio, Dagger Pipelines.
 * **Release:** Progressive Delivery (Canaries), Webhooks Studio, ArgoCD GitOps, FluxCD GitOps.
 * **Deployment:** Advanced k8s Script Generator, Terraform Architect, AWS CloudFormation, Karpenter, KEDA, Tekton Pipeline, Jenkins, GitLab CI/CD, Bitbucket Pipelines.
-* **Operations:** Database Migration Studio, Backup & DR Studio, Database Clustering, Agile & ITSM, Vector RAG Optimizer, Enterprise AI Infrastructure Integration.
+* **Operations:** Database Migration Studio, Backup & DR Studio, Database Clustering, Agile & ITSM, Vector RAG Optimizer, Enterprise AI Infrastructure Integration, Snowflake Data Warehouse & Cortex AI Studio, Databricks Lakehouse & Mosaic AI Studio, Google BigQuery & Vertex AI Studio, Amazon Redshift & SageMaker ML Studio.
 * **Monitoring:** OpenTelemetry Collector, Advanced Monitoring Script, ELK & Loki, Vector Log Pipeline, eBPF Tracing Studio, Cilium Policy, AI Observability & Trace.
 * **Incident Response:** Status & Incident, SRE AI Agent Simulator, Strands SRE Agent, Alertmanager Visualizer, AIOps, MCP & Tool Integration.
 

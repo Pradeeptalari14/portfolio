@@ -3334,5 +3334,53 @@
     "tag": "stack_blueprint.yaml",
     "link": "enterprise-ai-stack/",
     "repository": "Pradeeptalari14/tp-enterprise-ai-stack"
+  },
+  {
+    "title": "Snowflake Data Warehouse Studio",
+    "desc": "Configure enterprise-grade Snowflake data warehouses, databases, roles, and schema pipelines with Snowflake Cortex AI integrations. Generate declarative SQL/SnowDDL scripts, secure storage integrations, and dbt profiles.",
+    "category": "ai",
+    "icon": "❄️",
+    "color": "rgb(52, 152, 219)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "snowflake_ddl.sql",
+    "link": "snowflake-warehouse/",
+    "repository": "Pradeeptalari14/tp-snowflake-warehouse"
+  },
+  {
+    "title": "Databricks Lakehouse Studio",
+    "desc": "Provision multi-user Databricks Spark clusters, Delta Lake tables, and Unity Catalog permissions with Databricks Mosaic AI integrations. Generate Databricks Asset Bundles (DABs), cluster configs, and PySpark jobs.",
+    "category": "ai",
+    "icon": "🧱",
+    "color": "rgb(255, 54, 36)",
+    "borderClass": "border-red-200",
+    "bgClass": "bg-red-50/10",
+    "tag": "databricks.yml",
+    "link": "databricks-lakehouse/",
+    "repository": "Pradeeptalari14/tp-databricks-lakehouse"
+  },
+  {
+    "title": "Google BigQuery Studio",
+    "desc": "Deploy serverless Google BigQuery datasets, partitioned/clustered tables, and row-level security policies with BigQuery ML & Vertex AI integrations. Generate DDL/SQL scripts, IAM role definitions, and dbt profile settings.",
+    "category": "ai",
+    "icon": "📊",
+    "color": "rgb(241, 196, 15)",
+    "borderClass": "border-yellow-200",
+    "bgClass": "bg-yellow-50/10",
+    "tag": "bigquery_schema.sql",
+    "link": "google-bigquery/",
+    "repository": "Pradeeptalari14/tp-google-bigquery"
+  },
+  {
+    "title": "Amazon Redshift ML Studio",
+    "desc": "Configure AWS Redshift clusters, database schemas, and IAM security profiles with Amazon Redshift ML & SageMaker integrations. Generate SQL script models, IAM execution policies, and dbt database profiles.",
+    "category": "ai",
+    "icon": "📐",
+    "color": "rgb(230, 126, 34)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "redshift_ml.sql",
+    "link": "amazon-redshift/",
+    "repository": "Pradeeptalari14/tp-amazon-redshift"
   }
 ]

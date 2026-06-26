@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tp-portfolio-cache-v4';
+const CACHE_NAME = 'tp-portfolio-cache-v5';
 
 // Assets to pre-cache immediately on service worker install
 const PRECACHE_ASSETS = [
