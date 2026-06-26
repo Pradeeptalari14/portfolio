@@ -241,6 +241,32 @@
       height: 16px;
       pointer-events: none;
     }
+    .dropdown-filters-wrap {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+      max-width: 500px;
+      justify-content: center;
+      margin-top: -0.5rem;
+    }
+    .filter-select {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-select:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+    }
     .filter-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -1177,6 +1203,27 @@
         <input type="text" id="tools-search" class="search-input" placeholder="Search 267 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
         <span class="search-shortcut-badge">Ctrl + K</span>
       </div>
+
+      <!-- Dropdown Multi-faceted Filters -->
+      <div class="dropdown-filters-wrap">
+        <select id="filter-cloud" class="filter-select">
+          <option value="all">☁️ All Clouds</option>
+          <option value="aws">AWS</option>
+          <option value="gcp">GCP</option>
+          <option value="azure">Azure</option>
+          <option value="multi">Multi-Cloud / Hybrid</option>
+        </select>
+        <select id="filter-stack" class="filter-select">
+          <option value="all">🛠️ All Stacks</option>
+          <option value="terraform">Terraform</option>
+          <option value="kubernetes">Kubernetes / Helm</option>
+          <option value="docker">Docker Compose</option>
+          <option value="python">Python</option>
+          <option value="go">Go</option>
+          <option value="ansible">Ansible</option>
+          <option value="shell">Shell Script</option>
+        </select>
+      </div>
  
       <!-- Category Filter Tabs -->
       <div class="filter-tabs">
@@ -1724,7 +1771,40 @@
       const query = $('tools-search').value.toLowerCase().trim();
       const activeBtn = document.querySelector('.filter-btn.active');
       const category = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+      const cloudVal = $('filter-cloud').value;
+      const stackVal = $('filter-stack').value;
       
+      function matchesCloud(title, desc, val) {
+        if (val === 'all') return true;
+        const text = (title + ' ' + desc).toLowerCase();
+        if (val === 'aws') {
+          return text.includes('aws') || text.includes('amazon') || text.includes('s3') || text.includes('sagemaker') || text.includes('ec2') || text.includes('eks') || text.includes('rds') || text.includes('redshift') || text.includes('cloudformation');
+        }
+        if (val === 'gcp') {
+          return text.includes('gcp') || text.includes('google') || text.includes('vertex') || text.includes('bigquery') || text.includes('gke') || text.includes('cloud run') || text.includes('secret manager');
+        }
+        if (val === 'azure') {
+          return text.includes('azure') || text.includes('app service') || text.includes('bicep') || text.includes('arm') || text.includes('monitor');
+        }
+        if (val === 'multi') {
+          return text.includes('multi-cloud') || text.includes('hybrid') || text.includes('cross-cloud') || text.includes('kubernetes') || text.includes('terraform') || text.includes('ansible');
+        }
+        return true;
+      }
+
+      function matchesStack(title, desc, tag, val) {
+        if (val === 'all') return true;
+        const text = (title + ' ' + desc + ' ' + tag).toLowerCase();
+        if (val === 'terraform') return text.includes('terraform') || tag.endsWith('.tf') || tag === 'tf';
+        if (val === 'kubernetes') return text.includes('kubernetes') || text.includes('k8s') || text.includes('helm') || tag.endsWith('.yaml') || tag === 'manifest' || text.includes('kyverno');
+        if (val === 'docker') return text.includes('docker') || text.includes('compose') || tag.includes('docker-compose');
+        if (val === 'python') return text.includes('python') || tag.endsWith('.py');
+        if (val === 'go') return text.includes('go') || text.includes('golang') || tag.endsWith('.go');
+        if (val === 'ansible') return text.includes('ansible') || text.includes('playbook') || tag.endsWith('.yml');
+        if (val === 'shell') return text.includes('bash') || text.includes('shell') || tag.endsWith('.sh') || text.includes('script') || tag.endsWith('.cmd');
+        return true;
+      }
+
       let matchCount = 0;
       const cards = document.querySelectorAll('.tool-card');
       
@@ -1736,8 +1816,10 @@
         
         const matchesCategory = (category === 'all' || cardCategory === category);
         const matchesSearch = (!query || title.includes(query) || desc.includes(query) || tag.includes(query));
+        const matchesCloudFilter = matchesCloud(title, desc, cloudVal);
+        const matchesStackFilter = matchesStack(title, desc, tag, stackVal);
         
-        if (matchesCategory && matchesSearch) {
+        if (matchesCategory && matchesSearch && matchesCloudFilter && matchesStackFilter) {
           card.classList.remove('hidden');
           matchCount++;
         } else {
@@ -1758,6 +1840,11 @@
       const filterBtns = document.querySelectorAll('.filter-btn');
       
       if (!searchInput) return;
+
+      const cloudSelect = $('filter-cloud');
+      const stackSelect = $('filter-stack');
+      if (cloudSelect) cloudSelect.addEventListener('change', filterTools);
+      if (stackSelect) stackSelect.addEventListener('change', filterTools);
       
       // Calculate dynamic counts on page load
       const cards = document.querySelectorAll('.tool-card');

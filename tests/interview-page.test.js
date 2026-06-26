@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import path from 'path';
@@ -246,6 +246,88 @@ describe('SRE Interview Page Interactivity', () => {
     expect(container.innerHTML).toContain('Questions Mastered');
     expect(container.innerHTML).toContain('Draft Answers Saved');
     expect(container.innerHTML).toContain('SRE Practices');
+  });
+
+  it('should render and run interactive SRE mock interview chatbot sessions', () => {
+    // Set active topic
+    window.selectedTopicKey = 'sre_practices';
+    
+    vi.useFakeTimers();
+
+    // Switch to mock-interview tab
+    const mockBtn = window.document.createElement('button');
+    window.switchTab('mock-interview', mockBtn);
+
+    // Advance by 100ms to allow initMockInterviewSession setTimeout(..., 50) to run
+    vi.advanceTimersByTime(100);
+
+    const container = window.document.getElementById('content-container');
+    expect(container.innerHTML).toContain('🤖 SRE Live AI Mock Interviewer');
+    expect(container.innerHTML).toContain('Active Topic Assessment:');
+
+    const viewport = window.document.getElementById('mock-chat-viewport');
+    expect(viewport).not.toBeNull();
+
+    // Verify welcome message
+    expect(viewport.innerHTML).toContain('Welcome to your live technical assessment session!');
+
+    // Type and submit user answer
+    const input = window.document.getElementById('mock-chat-input');
+    input.value = 'We will set up Prometheus and monitor SLIs/SLOs to reduce manual operations.';
+    
+    // Trigger submit
+    window.submitMockReply();
+    expect(viewport.innerHTML).toContain('We will set up Prometheus and monitor SLIs/SLOs');
+
+    // Wait for chatbot grading evaluation reply (setTimeout of 800ms)
+    vi.advanceTimersByTime(1000);
+    expect(viewport.innerHTML).toContain('Evaluator Feedback:');
+    expect(viewport.innerHTML).toContain('Score:');
+    vi.useRealTimers();
+  });
+
+  it('should display streak calendar grid and support backup actions', () => {
+    // Populate study history streak
+    const today = new Date().toISOString().split('T')[0];
+    window.localStorage.setItem('sre_study_history', JSON.stringify([today]));
+    window.localStorage.setItem('sre_current_streak', '5');
+    window.localStorage.setItem('sre_max_streak', '12');
+
+    // Switch to analytics tab
+    const analyticsBtn = window.document.querySelector('[onclick*="analytics"]');
+    window.switchTab('analytics', analyticsBtn);
+
+    const container = window.document.getElementById('content-container');
+    expect(container.innerHTML).toContain('🔥 SRE Study Streak Tracker');
+    expect(container.innerHTML).toContain('Current Study Streak: <strong style="color:var(--accent-green); font-weight:700;">5 days</strong>');
+    expect(container.innerHTML).toContain('Longest Study Streak: <strong style="color:var(--accent-purple); font-weight:700;">12 days</strong>');
+
+    // Test export and print triggers exist
+    expect(container.innerHTML).toContain('Export Progress');
+    expect(container.innerHTML).toContain('Print Study Sheets');
+
+    // Mock print
+    let printed = false;
+    window.print = () => { printed = true; };
+    window.printStudyWorkspace();
+    expect(printed).toBe(true);
+
+    // Mock URL.createObjectURL
+    window.URL.createObjectURL = () => 'blob:test';
+    let clicked = false;
+    // Mock document.createElement to intercept 'a' clicks
+    const originalCreate = window.document.createElement;
+    window.document.createElement = function(tagName) {
+      const el = originalCreate.call(window.document, tagName);
+      if (tagName === 'a') {
+        el.click = () => { clicked = true; };
+      }
+      return el;
+    };
+    window.exportStudyProgress();
+    expect(clicked).toBe(true);
+    // Restore
+    window.document.createElement = originalCreate;
   });
 });
 

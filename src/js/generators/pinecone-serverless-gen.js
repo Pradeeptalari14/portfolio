@@ -83,9 +83,31 @@ function initStudio() {
       ]
     }, null, 2);
 
+    compiledCode.github_actions_yml = "name: SRE Validation & Integration Verification\n\n" +
+      "on:\n" +
+      "  push:\n" +
+      "    branches: [ main ]\n" +
+      "  pull_request:\n" +
+      "    branches: [ main ]\n\n" +
+      "jobs:\n" +
+      "  validate:\n" +
+      "    runs-on: ubuntu-latest\n" +
+      "    steps:\n" +
+      "      - name: Checkout Code\n" +
+      "        uses: actions/checkout@v4\n\n" +
+      "      - name: Spin up Docker Compose services\n" +
+      "        run: |\n" +
+      "          docker compose up -d\n" +
+      "          echo \"Waiting for database services to boot...\"\n" +
+      "          sleep 15\n\n" +
+      "      - name: Run Environment Check\n" +
+      "        run: |\n" +
+      "          bash scripts/validate.sh\n";
+
     let filename = 'index_setup.py';
     if (activeTab === 'query_vector_py') filename = 'query_vector.py';
     if (activeTab === 'iam_policy_json') filename = 'iam_policy.json';
+    if (activeTab === 'github_actions_yml') filename = 'sre-validation.yml';
     if (document.getElementById('download-name-input')) document.getElementById('download-name-input').value = filename;
     
     updateViewportContent();
@@ -111,7 +133,7 @@ function initStudio() {
     } else {
       elements.outputBox.classList.remove('hidden');
       elements.mermaidContainer.classList.add('hidden');
-      elements.outputBox.textContent = compiledCode[activeTab];
+      elements.outputBox.textContent = compiledCode[activeTab] || '';
     }
   }
 
@@ -148,7 +170,7 @@ function initStudio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['index_setup_py', 'query_vector_py', 'iam_policy_json'],
+    ['index_setup_py', 'query_vector_py', 'iam_policy_json', 'github_actions_yml', 'terminal'],
     'index_setup_py',
     { outputBox: elements.outputBox },
     (tabName) => {
@@ -156,6 +178,9 @@ function initStudio() {
       updateViewportContent();
     }
   );
+
+  // Initialize interactive SRE terminal console
+  window.SreCore.initTerminalSupport('pinecone-serverless', 'Pinecone Serverless Vector DB Studio');
 
   // Initial Compile
   compileConfigs();

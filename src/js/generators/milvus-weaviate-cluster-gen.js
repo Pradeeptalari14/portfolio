@@ -122,9 +122,31 @@ function initStudio() {
         "    image: minio/minio:RELEASE.2023-03-20T20-16-18Z\n";
     }
 
+    compiledCode.github_actions_yml = "name: SRE Validation & Integration Verification\n\n" +
+      "on:\n" +
+      "  push:\n" +
+      "    branches: [ main ]\n" +
+      "  pull_request:\n" +
+      "    branches: [ main ]\n\n" +
+      "jobs:\n" +
+      "  validate:\n" +
+      "    runs-on: ubuntu-latest\n" +
+      "    steps:\n" +
+      "      - name: Checkout Code\n" +
+      "        uses: actions/checkout@v4\n\n" +
+      "      - name: Spin up Docker Compose services\n" +
+      "        run: |\n" +
+      "          docker compose up -d\n" +
+      "          echo \"Waiting for database services to boot...\"\n" +
+      "          sleep 15\n\n" +
+      "      - name: Run Environment Check\n" +
+      "        run: |\n" +
+      "          bash scripts/validate.sh\n";
+
     let filename = 'cluster_values.yaml';
     if (activeTab === 'collection_schema_py') filename = 'collection_schema.py';
     if (activeTab === 'docker_compose_yml') filename = 'docker-compose.yml';
+    if (activeTab === 'github_actions_yml') filename = 'sre-validation.yml';
     if (document.getElementById('download-name-input')) document.getElementById('download-name-input').value = filename;
     
     updateViewportContent();
@@ -150,7 +172,7 @@ function initStudio() {
     } else {
       elements.outputBox.classList.remove('hidden');
       elements.mermaidContainer.classList.add('hidden');
-      elements.outputBox.textContent = compiledCode[activeTab];
+      elements.outputBox.textContent = compiledCode[activeTab] || '';
     }
   }
 
@@ -187,7 +209,7 @@ function initStudio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['cluster_values_yaml', 'collection_schema_py', 'docker_compose_yml'],
+    ['cluster_values_yaml', 'collection_schema_py', 'docker_compose_yml', 'github_actions_yml', 'terminal'],
     'cluster_values_yaml',
     { outputBox: elements.outputBox },
     (tabName) => {
@@ -195,6 +217,9 @@ function initStudio() {
       updateViewportContent();
     }
   );
+
+  // Initialize interactive SRE terminal console
+  window.SreCore.initTerminalSupport('milvus-weaviate-cluster', 'Milvus & Weaviate Vector DB Clustering Studio');
 
   // Initial Compile
   compileConfigs();

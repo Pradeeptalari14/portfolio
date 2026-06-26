@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import path from 'path';
@@ -21,14 +21,10 @@ function loadToolDom(htmlRelativePath, jsRelativePath) {
     render: () => {}
   };
 
-  // Mock SreCore setupStudioTabs / window.SreCore
-  window.SreCore = {
-    setupStudioTabs: (tabs, defaultTab, elements, tabSwitchCallback) => {
-      window.switchTab = (tabId) => {
-        tabSwitchCallback(tabId);
-      };
-    }
-  };
+  // Load real SreCore helper logic
+  const coreJsPath = path.resolve(__dirname, '../src/js/core-tool.js');
+  const coreJsCode = fs.readFileSync(coreJsPath, 'utf8');
+  window.eval(coreJsCode);
 
   const jsPath = path.resolve(__dirname, jsRelativePath);
   let jsCode = fs.readFileSync(jsPath, 'utf8');
@@ -70,6 +66,25 @@ describe('GraphRAG & Neo4j Database Studio', () => {
     // Switch to docker-compose
     window.switchTab('docker_compose_yml');
     expect(outputBox.textContent).toContain('image: neo4j:5.20.0-community');
+
+    // Switch to github actions workflow
+    window.switchTab('github_actions_yml');
+    expect(outputBox.textContent).toContain('name: SRE Validation & Integration Verification');
+    expect(outputBox.textContent).toContain('uses: actions/checkout');
+
+    // Test SRE Terminal Emulator
+    vi.useFakeTimers();
+    window.switchTab('terminal');
+    window.runTerminalCommand('docker compose up -d');
+    vi.advanceTimersByTime(2000);
+    const logs = window.document.getElementById('terminal-logs');
+    expect(logs.textContent).toContain('Creating container tp-neo4j-graphrag-db-1');
+    expect(logs.textContent).toContain('running (healthy)');
+
+    window.runTerminalCommand('bash scripts/validate.sh');
+    vi.advanceTimersByTime(1500);
+    expect(logs.textContent).toContain('SRE compliance validation complete');
+    vi.useRealTimers();
   });
 });
 
@@ -97,6 +112,23 @@ describe('Supabase & pgvector Developer Studio', () => {
     // Switch to config
     window.switchTab('config_toml');
     expect(outputBox.textContent).toContain('port = 54322');
+
+    // Switch to github actions workflow
+    window.switchTab('github_actions_yml');
+    expect(outputBox.textContent).toContain('name: SRE Validation & Integration Verification');
+
+    // Test SRE Terminal Emulator
+    vi.useFakeTimers();
+    window.switchTab('terminal');
+    window.runTerminalCommand('docker compose up -d');
+    vi.advanceTimersByTime(2000);
+    const logs = window.document.getElementById('terminal-logs');
+    expect(logs.textContent).toContain('tp-supabase-pgvector-db-1 ... done');
+
+    window.runTerminalCommand('bash scripts/validate.sh');
+    vi.advanceTimersByTime(1500);
+    expect(logs.textContent).toContain('SRE compliance validation complete');
+    vi.useRealTimers();
   });
 });
 
@@ -128,6 +160,23 @@ describe('Kafka & Flink Streaming Studio', () => {
     // Switch to docker-compose
     window.switchTab('docker_compose_yml');
     expect(outputBox.textContent).toContain('image: confluentinc/cp-kafka:7.5.0');
+
+    // Switch to github actions workflow
+    window.switchTab('github_actions_yml');
+    expect(outputBox.textContent).toContain('name: SRE Validation & Integration Verification');
+
+    // Test SRE Terminal Emulator
+    vi.useFakeTimers();
+    window.switchTab('terminal');
+    window.runTerminalCommand('docker compose up -d');
+    vi.advanceTimersByTime(2000);
+    const logs = window.document.getElementById('terminal-logs');
+    expect(logs.textContent).toContain('tp-kafka-flink-streaming-db-1 ... done');
+
+    window.runTerminalCommand('bash scripts/validate.sh');
+    vi.advanceTimersByTime(1500);
+    expect(logs.textContent).toContain('SRE compliance validation complete');
+    vi.useRealTimers();
   });
 });
 
@@ -158,6 +207,23 @@ describe('Milvus & Weaviate Vector DB Clustering Studio', () => {
     window.switchTab('collection_schema_py');
     expect(outputBox.textContent).toContain('from pymilvus import connections');
     expect(outputBox.textContent).toContain('num_shards=2');
+
+    // Switch to github actions workflow
+    window.switchTab('github_actions_yml');
+    expect(outputBox.textContent).toContain('name: SRE Validation & Integration Verification');
+
+    // Test SRE Terminal Emulator
+    vi.useFakeTimers();
+    window.switchTab('terminal');
+    window.runTerminalCommand('docker compose up -d');
+    vi.advanceTimersByTime(2000);
+    const logs = window.document.getElementById('terminal-logs');
+    expect(logs.textContent).toContain('tp-milvus-weaviate-cluster-db-1 ... done');
+
+    window.runTerminalCommand('bash scripts/validate.sh');
+    vi.advanceTimersByTime(1500);
+    expect(logs.textContent).toContain('SRE compliance validation complete');
+    vi.useRealTimers();
   });
 });
 
@@ -189,5 +255,22 @@ describe('Pinecone Serverless Vector DB Studio', () => {
     // Switch to IAM policy
     window.switchTab('iam_policy_json');
     expect(outputBox.textContent).toContain('arn:aws:secretsmanager:us-west-2:123456789012:secret:pinecone-api-key-*');
+
+    // Switch to github actions workflow
+    window.switchTab('github_actions_yml');
+    expect(outputBox.textContent).toContain('name: SRE Validation & Integration Verification');
+
+    // Test SRE Terminal Emulator
+    vi.useFakeTimers();
+    window.switchTab('terminal');
+    window.runTerminalCommand('docker compose up -d');
+    vi.advanceTimersByTime(2000);
+    const logs = window.document.getElementById('terminal-logs');
+    expect(logs.textContent).toContain('tp-pinecone-serverless-db-1 ... done');
+
+    window.runTerminalCommand('bash scripts/validate.sh');
+    vi.advanceTimersByTime(1500);
+    expect(logs.textContent).toContain('Operational validation check complete');
+    vi.useRealTimers();
   });
 });

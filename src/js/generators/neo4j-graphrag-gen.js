@@ -83,9 +83,31 @@ function initStudio() {
       "  neo4j_data:\n" +
       "  neo4j_import:\n";
 
+    compiledCode.github_actions_yml = "name: SRE Validation & Integration Verification\n\n" +
+      "on:\n" +
+      "  push:\n" +
+      "    branches: [ main ]\n" +
+      "  pull_request:\n" +
+      "    branches: [ main ]\n\n" +
+      "jobs:\n" +
+      "  validate:\n" +
+      "    runs-on: ubuntu-latest\n" +
+      "    steps:\n" +
+      "      - name: Checkout Code\n" +
+      "        uses: actions/checkout@v4\n\n" +
+      "      - name: Spin up Docker Compose services\n" +
+      "        run: |\n" +
+      "          docker compose up -d\n" +
+      "          echo \"Waiting for database services to boot...\"\n" +
+      "          sleep 15\n\n" +
+      "      - name: Run Environment Check\n" +
+      "        run: |\n" +
+      "          bash scripts/validate.sh\n";
+
     let filename = 'schema_import.cypher';
     if (activeTab === 'vector_index_cypher') filename = 'vector_index.cypher';
     if (activeTab === 'docker_compose_yml') filename = 'docker-compose.yml';
+    if (activeTab === 'github_actions_yml') filename = 'sre-validation.yml';
     if (document.getElementById('download-name-input')) document.getElementById('download-name-input').value = filename;
     
     updateViewportContent();
@@ -111,7 +133,7 @@ function initStudio() {
     } else {
       elements.outputBox.classList.remove('hidden');
       elements.mermaidContainer.classList.add('hidden');
-      elements.outputBox.textContent = compiledCode[activeTab];
+      elements.outputBox.textContent = compiledCode[activeTab] || '';
     }
   }
 
@@ -148,7 +170,7 @@ function initStudio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['schema_import_cypher', 'vector_index_cypher', 'docker_compose_yml'],
+    ['schema_import_cypher', 'vector_index_cypher', 'docker_compose_yml', 'github_actions_yml', 'terminal'],
     'schema_import_cypher',
     { outputBox: elements.outputBox },
     (tabName) => {
@@ -156,6 +178,9 @@ function initStudio() {
       updateViewportContent();
     }
   );
+
+  // Initialize interactive SRE terminal console
+  window.SreCore.initTerminalSupport('neo4j-graphrag', 'GraphRAG & Neo4j Database Studio');
 
   // Initial Compile
   compileConfigs();

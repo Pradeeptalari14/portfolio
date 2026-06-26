@@ -117,6 +117,8 @@
               <button onclick="switchTab('index_setup_py')" id="tab-index_setup_py" class="tab-btn active">index_setup.py</button>
               <button onclick="switchTab('query_vector_py')" id="tab-query_vector_py" class="tab-btn">query_vector.py</button>
               <button onclick="switchTab('iam_policy_json')" id="tab-iam_policy_json" class="tab-btn text-teal-400">📊 iam_policy.json</button>
+              <button onclick="switchTab('github_actions_yml')" id="tab-github_actions_yml" class="tab-btn text-indigo-400">⚙️ validation.yml</button>
+              <button onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400">📟 SRE Terminal</button>
     
             </div>
           </div>
@@ -124,6 +126,19 @@
           <!-- Code View -->
           <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 480px; max-height: 640px;"></pre>
           <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+          <div id="terminal-viewport" class="hidden ide-viewport bg-slate-950 p-6 font-mono text-xs text-slate-300 flex flex-col" style="min-height: 480px; max-height: 640px; overflow-y: auto; line-height: 1.6;">
+            <div class="flex-1 overflow-y-auto mb-4" id="terminal-logs" style="max-height: 520px;"></div>
+            <div class="flex items-center gap-1.5 border-t border-slate-800 pt-3">
+              <span class="text-teal-400 font-bold">visitor@sre-studio:~$</span>
+              <input type="text" id="terminal-input" class="bg-transparent border-none text-slate-100 flex-1 focus:outline-none" style="font-family: inherit; font-size: inherit;" placeholder="Type help..." autocomplete="off" />
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 pt-2 border-t border-slate-900">
+              <button onclick="window.runTerminalCommand('docker compose up -d')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🐳 docker compose up</button>
+              <button onclick="window.runTerminalCommand('bash scripts/validate.sh')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🚀 validate.sh</button>
+              <button onclick="window.runTerminalCommand('gh repo view')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">📦 gh repo view</button>
+              <button onclick="window.runTerminalCommand('clear')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🧹 clear</button>
+            </div>
+          </div>
         </div>
 
         <!-- Actions -->

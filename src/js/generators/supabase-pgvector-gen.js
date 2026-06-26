@@ -87,9 +87,31 @@ function initStudio() {
       "enabled = true\n" +
       "port = 6543\n";
 
+    compiledCode.github_actions_yml = "name: SRE Validation & Integration Verification\n\n" +
+      "on:\n" +
+      "  push:\n" +
+      "    branches: [ main ]\n" +
+      "  pull_request:\n" +
+      "    branches: [ main ]\n\n" +
+      "jobs:\n" +
+      "  validate:\n" +
+      "    runs-on: ubuntu-latest\n" +
+      "    steps:\n" +
+      "      - name: Checkout Code\n" +
+      "        uses: actions/checkout@v4\n\n" +
+      "      - name: Spin up Docker Compose services\n" +
+      "        run: |\n" +
+      "          docker compose up -d\n" +
+      "          echo \"Waiting for database services to boot...\"\n" +
+      "          sleep 15\n\n" +
+      "      - name: Run Environment Check\n" +
+      "        run: |\n" +
+      "          bash scripts/validate.sh\n";
+
     let filename = 'supabase_schema.sql';
     if (activeTab === 'seed_sql') filename = 'seed.sql';
     if (activeTab === 'config_toml') filename = 'config.toml';
+    if (activeTab === 'github_actions_yml') filename = 'sre-validation.yml';
     if (document.getElementById('download-name-input')) document.getElementById('download-name-input').value = filename;
     
     updateViewportContent();
@@ -115,7 +137,7 @@ function initStudio() {
     } else {
       elements.outputBox.classList.remove('hidden');
       elements.mermaidContainer.classList.add('hidden');
-      elements.outputBox.textContent = compiledCode[activeTab];
+      elements.outputBox.textContent = compiledCode[activeTab] || '';
     }
   }
 
@@ -152,7 +174,7 @@ function initStudio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['supabase_schema_sql', 'seed_sql', 'config_toml'],
+    ['supabase_schema_sql', 'seed_sql', 'config_toml', 'github_actions_yml', 'terminal'],
     'supabase_schema_sql',
     { outputBox: elements.outputBox },
     (tabName) => {
@@ -160,6 +182,9 @@ function initStudio() {
       updateViewportContent();
     }
   );
+
+  // Initialize interactive SRE terminal console
+  window.SreCore.initTerminalSupport('supabase-pgvector', 'Supabase & pgvector Developer Studio');
 
   // Initial Compile
   compileConfigs();
