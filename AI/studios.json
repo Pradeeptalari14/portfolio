@@ -1,7 +1,7 @@
 [
   {
     "title": "DevOps AI RAG Studio",
-    "desc": "Build private enterprise knowledge bases. Customize and generate a Streamlit ChatGPT client, FastAPI backend, Langchain/ChromaDB indexing pipelines, and local LLM configurations.",
+    "desc": "Build private enterprise knowledge bases. Customize and generate a Streamlit ChatGPT client, FastAPI backend, LangChain and ChromaDB indexing pipelines, and local LLM configurations.",
     "category": "ai",
     "icon": "🤖",
     "color": "rgb(99, 102, 241)",
