@@ -503,10 +503,11 @@
     <header class="page-header">
       <div class="page-tag">Work History</div>
       <h1 class="page-title">Professional <span class="gradient-text">Experience</span></h1>
-      <p class="page-subtitle">Hands-on cloud infrastructure and DevOps engineering across enterprise healthcare systems.</p>
+      <p class="page-subtitle">Hands-on AI infrastructure, MLOps, and platform engineering across enterprise scale operations.</p>
     </header>
 
     <div class="timeline">
+      <!-- Card 1: Accenture -->
       <div class="timeline-item">
         <div class="timeline-dot"></div>
 
@@ -514,13 +515,13 @@
           <div class="exp-acc-header" role="button" tabindex="0" aria-controls="exp-body-1" aria-expanded="true">
             <div class="exp-acc-left">
               <div class="exp-acc-role-row">
-                <h2 class="exp-role">DevOps Engineer</h2>
+                <h2 class="exp-role">Infrastructure &amp; AI Engineer</h2>
                 <span class="exp-status-badge">Current</span>
               </div>
-              <p class="exp-company">🏢 Accenture · Enterprise Healthcare Project · Full-time</p>
+              <p class="exp-company">🏢 ACCENTURE · Bangalore, India · Full-time</p>
             </div>
             <div class="exp-acc-right">
-              <span class="exp-date">Mar 2024 – Present</span>
+              <span class="exp-date">Apr 2022 – Present</span>
               <div class="exp-acc-chevron" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <polyline points="6 9 12 15 18 9"/>
@@ -532,7 +533,7 @@
           <div class="exp-acc-body" id="exp-body-1" role="region">
             <div class="exp-acc-body-inner">
               <p class="exp-summary">
-                Leading infrastructure automation and CI/CD operations for enterprise healthcare applications. Designing resilient, secure, and highly scalable cloud architectures on AWS while promoting DevOps best practices across cross-functional engineering teams.
+                Leading the architecture, deployment, and optimization of enterprise-grade AI platforms, LLMOps pipelines, and cloud infrastructure operations. Bridging the gap between machine learning applications and scalable production systems.
               </p>
 
               <!-- Interactive CI/CD Pipeline Flow Widget -->
@@ -612,25 +613,81 @@
               <div class="exp-subheading">// Core Achievements</div>
 
               <ul class="exp-bullets">
-                <li><strong>CI/CD Pipelines:</strong> Architected end-to-end multi-branch Jenkins pipelines with shared libraries (Build → SonarQube/Trivy Scans → Docker Build → EKS Deployment), slashing release cycles by <strong>40%</strong>.</li>
-                <li><strong>Infrastructure as Code:</strong> Provisioned scalable AWS environments (VPC, EC2, EKS, S3, IAM, Route53, Auto Scaling) using clean, modular Terraform with remote state management.</li>
-                <li><strong>Container Orchestration:</strong> Managed Kubernetes clusters (EKS) utilizing Helm charts, and configured HPA, PV/PVC, ConfigMaps, Ingress, and Secrets across staging &amp; production namespaces.</li>
-                <li><strong>Security &amp; Compliance:</strong> Integrated container vulnerability scanning (Trivy) and static analysis (SonarQube) as mandatory pipeline gates — zero critical CVEs in production.</li>
-                <li><strong>Observability:</strong> Built Prometheus + Grafana monitoring stacks with custom dashboards and alerts, reducing production MTTR by <strong>30%</strong>.</li>
-                <li><strong>Configuration Management:</strong> Wrote modular Ansible playbooks for automated OS patching across 50+ Linux servers, eliminating <strong>70%</strong> of manual server operations.</li>
-                <li><strong>Incident Resolution:</strong> Led troubleshooting for complex production incidents (OOMKilled, CrashLoopBackOff, CNI/Ingress/DNS failures) during on-call rotation.</li>
+                <li><strong>Agentic AI Architecture:</strong> Architected and deployed an Enterprise Agentic AI Operating System integrating LangGraph multi-agent orchestration, RAG pipelines, and tool-calling capabilities across 50+ workflows—reducing manual processing time by 65% and achieving 99.8% uptime SLA.</li>
+                <li><strong>MLOps &amp; LLMOps Platform:</strong> Designed and operationalized a cloud-native platform on Azure AKS using ArgoCD GitOps, Helm, and Terraform; automated model promotion pipelines with GitHub Actions, cutting deployment lead time from 3 days to under 2 hours.</li>
+                <li><strong>Enterprise RAG Platform:</strong> Built an Enterprise RAG Platform with Weaviate vector database, OpenSearch hybrid search, and LangChain retrieval chains—delivering semantic document intelligence across 5M+ knowledge base records with &lt;200ms P99 query latency.</li>
+                <li><strong>Incident Triage Copilot:</strong> Engineered an AI Infrastructure Monitoring Copilot using Claude/GPT-4 function calling + LogicMonitor APIs, reducing MTTR by 58% and enabling natural-language incident triage that auto-generated ServiceNow tickets with root cause hypotheses.</li>
+                <li><strong>Multi-Cloud Orchestration:</strong> Implemented multi-cloud Kubernetes platforms (AKS + EKS + GKE) with Helm umbrella charts, Istio service mesh, and OPA Gatekeeper policy enforcement—supporting 200+ microservices across 15 development teams.</li>
+                <li><strong>Full-Stack Observability:</strong> Established full-stack observability platform (Prometheus, Grafana, Loki, Tempo, OpenTelemetry) with AI-powered anomaly detection, cutting P1 incidents by 42% and enabling distributed tracing across 30+ services.</li>
+                <li><strong>Voice &amp; Assistant Platform:</strong> Delivered WhatsApp + Telegram AI Assistant platform using FastAPI, LangChain agents, and Redis caching—serving 10,000+ daily interactions with sub-500ms response times.</li>
+                <li><strong>VMware Virtualization:</strong> Administered VMware vSphere 7.x/8.x environment (ESXi, vCenter, vSAN) across Dell MX7000 and Cisco UCS blade infrastructure—managing 200+ VMs, achieving 40% compute consolidation, and saving $300K annually.</li>
+                <li><strong>SRE &amp; Governance:</strong> Led Patch Management and Change Management for 500+ Windows Server instances using WSUS/SCCM and ServiceNow CAB processes, maintaining 99.2% patch compliance.</li>
+                <li><strong>Storage Infrastructure:</strong> Designed NetApp SAN/NAS storage architecture with SnapVault/SnapMirror replication—providing 50TB+ enterprise storage with 99.99% availability and RPO/RTO of 15 min/1 hour.</li>
               </ul>
 
               <div class="exp-tags">
-                <span class="exp-tag">AWS EKS</span>
+                <span class="exp-tag">LangGraph</span>
+                <span class="exp-tag">Weaviate</span>
+                <span class="exp-tag">Kubernetes (AKS/EKS)</span>
                 <span class="exp-tag">Terraform</span>
-                <span class="exp-tag">Jenkins</span>
-                <span class="exp-tag">Docker &amp; Helm</span>
+                <span class="exp-tag">ArgoCD</span>
                 <span class="exp-tag">Prometheus &amp; Grafana</span>
+                <span class="exp-tag">VMware ESXi</span>
+                <span class="exp-tag">Python (FastAPI)</span>
+                <span class="exp-tag">LogicMonitor</span>
+                <span class="exp-tag">ServiceNow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Trigent Company -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+
+        <div class="timeline-card" aria-expanded="false" id="exp-card-2">
+          <div class="exp-acc-header" role="button" tabindex="0" aria-controls="exp-body-2" aria-expanded="false">
+            <div class="exp-acc-left">
+              <div class="exp-acc-role-row">
+                <h2 class="exp-role">Infrastructure Engineer</h2>
+              </div>
+              <p class="exp-company">🏢 Trigent Company · Bangalore, India · Full-time</p>
+            </div>
+            <div class="exp-acc-right">
+              <span class="exp-date">Jun 2019 – Mar 2021</span>
+              <div class="exp-acc-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="exp-acc-body" id="exp-body-2" role="region">
+            <div class="exp-acc-body-inner">
+              <p class="exp-summary">
+                Managed virtualization clusters, systems administration, and monitoring for a large server estate. Automated deployment playbooks and executed cloud migration strategies.
+              </p>
+
+              <div class="exp-subheading">// Core Achievements</div>
+
+              <ul class="exp-bullets">
+                <li><strong>Virtualization Automation:</strong> Managed Hyper-V and VMware virtualization clusters and Windows Server 2016/2019 environments for 300+ server estate—automating lifecycle management with PowerShell DSC scripts, reducing manual effort by 50%.</li>
+                <li><strong>Enterprise Monitoring:</strong> Implemented LogicMonitor enterprise monitoring across 400+ devices with custom alerting dashboards and escalation policies—achieving 95% alert signal-to-noise ratio improvement.</li>
+                <li><strong>ITIL Incident Management:</strong> Executed end-to-end Incident and Problem Management via ServiceNow ITSM, maintaining SLA adherence at 97.5% for P1/P2 incidents and driving 30% reduction in recurring incident volume.</li>
+                <li><strong>Configuration Management:</strong> Automated server provisioning and configuration management using Ansible playbooks across 200+ Linux and Windows servers—reducing provisioning time from 4 hours to 20 minutes.</li>
+                <li><strong>Azure Workloads Migration:</strong> Led migration of 80+ on-premise workloads to Azure using Azure Migrate and Azure Site Recovery (ASR)—delivering cloud migration project 2 weeks ahead of schedule.</li>
+              </ul>
+
+              <div class="exp-tags">
+                <span class="exp-tag">Hyper-V &amp; VMware</span>
+                <span class="exp-tag">Windows Server</span>
                 <span class="exp-tag">Ansible</span>
-                <span class="exp-tag">Linux</span>
-                <span class="exp-tag">SonarQube</span>
-                <span class="exp-tag">Trivy</span>
+                <span class="exp-tag">PowerShell DSC</span>
+                <span class="exp-tag">LogicMonitor</span>
+                <span class="exp-tag">ServiceNow</span>
+                <span class="exp-tag">Azure Migrate</span>
               </div>
             </div>
           </div>
@@ -648,15 +705,18 @@
     document.getElementById('yr').textContent = new Date().getFullYear();
 
     // Accordion
-    const card   = document.getElementById('exp-card-1');
-    const header = card.querySelector('.exp-acc-header');
-    header.addEventListener('click', toggle);
-    header.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
-    function toggle() {
-      const open = card.getAttribute('aria-expanded') === 'true';
-      card.setAttribute('aria-expanded', String(!open));
-      header.setAttribute('aria-expanded', String(!open));
-    }
+    const cards = document.querySelectorAll('.timeline-card');
+    cards.forEach(card => {
+      const header = card.querySelector('.exp-acc-header');
+      if (!header) return;
+      header.addEventListener('click', toggle);
+      header.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+      function toggle() {
+        const open = card.getAttribute('aria-expanded') === 'true';
+        card.setAttribute('aria-expanded', String(!open));
+        header.setAttribute('aria-expanded', String(!open));
+      }
+    });
 
     // Pipeline Simulator Code
     const stepsData = {

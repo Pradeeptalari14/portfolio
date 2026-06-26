@@ -1,0 +1,326 @@
+<!-- Copyright (c) 2026 Talari Pradeep. All Rights Reserved. Proprietary License. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enterprise AI Technology Stack Studio | Talari Pradeep</title>
+  <meta name="description" content="Design and export your enterprise-grade AI architecture blueprint. Select standard components across 16 infrastructure layers and generate declarative deployment models." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Enterprise AI Technology Stack Studio",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "description": "Design and export your enterprise-grade AI architecture blueprint. Select standard components across 16 infrastructure layers and generate declarative deployment models."
+  }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #6366f1;
+      --accent-cyan:    #06b6d4;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.jpeg" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Kubernetes & AI Platform SRE Studio</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Enterprise AI Stack Blueprint Studio</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Interactively design, configure, and output your enterprise-grade AI architecture blueprints. Tweak options across all 16 technological layers.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Section 1: Frontend & Gateway Layer -->
+        <div class="studio-card">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+            <span>🌐</span> Frontend, Gateway &amp; Identity
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stack_ui" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">UI (User Interface)</label>
+              <select id="stack_ui" class="form-select w-full p-2.5 text-xs">
+                <option value="React">React (SPAs / Custom WebApp)</option>
+                <option value="Next.js">Next.js (SSR / Enterprise)</option>
+                <option value="Streamlit">Streamlit (Rapid Data Prototypes)</option>
+                <option value="Open WebUI">Open WebUI (Model Playground)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_api" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">API Backend</label>
+              <select id="stack_api" class="form-select w-full p-2.5 text-xs">
+                <option value="FastAPI">FastAPI (Python Native / High Performance)</option>
+                <option value="Flask">Flask (Lightweight Python)</option>
+                <option value="ASP.NET Core">ASP.NET Core (C# / Enterprise Stack)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_gateway" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">API Gateway</label>
+              <select id="stack_gateway" class="form-select w-full p-2.5 text-xs">
+                <option value="Kong">Kong (Plugin-centric)</option>
+                <option value="NGINX">NGINX (High Throughput Proxy)</option>
+                <option value="Envoy">Envoy (Service Mesh Sidecar)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_identity" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Identity Provider</label>
+              <select id="stack_identity" class="form-select w-full p-2.5 text-xs">
+                <option value="Microsoft Entra ID">Microsoft Entra ID (Active Directory)</option>
+                <option value="Keycloak">Keycloak (Open Source OIDC)</option>
+                <option value="Okta">Okta (Managed Enterprise IAM)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: AI Execution Layer -->
+        <div class="studio-card">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+            <span>🧠</span> AI Runtime, RAG &amp; Agents
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stack_router" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">AI Router / Proxy</label>
+              <select id="stack_router" class="form-select w-full p-2.5 text-xs">
+                <option value="LiteLLM">LiteLLM (Standardized OpenAI Format)</option>
+                <option value="Portkey">Portkey (Observability Routing)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_llm" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target LLM</label>
+              <select id="stack_llm" class="form-select w-full p-2.5 text-xs">
+                <option value="GPT">OpenAI GPT-4o (Commercial)</option>
+                <option value="Claude">Anthropic Claude 3.5 Sonnet</option>
+                <option value="Gemini">Google Gemini 1.5 Pro</option>
+                <option value="Llama">Meta Llama 3 (Self-Hosted)</option>
+                <option value="Qwen">Alibaba Qwen 2 (Local Edge)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_agent" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Agent Orchestrator</label>
+              <select id="stack_agent" class="form-select w-full p-2.5 text-xs">
+                <option value="LangGraph">LangGraph (Stateful / Multi-Agent Swarms)</option>
+                <option value="CrewAI">CrewAI (Role Playing Agents)</option>
+                <option value="OpenAI Agents SDK">OpenAI Agents SDK</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_rag" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">RAG Framework</label>
+              <select id="stack_rag" class="form-select w-full p-2.5 text-xs">
+                <option value="LangChain">LangChain (Chains &amp; Integrations)</option>
+                <option value="LlamaIndex">LlamaIndex (Data-Centric Context)</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label for="stack_vectordb" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Vector Database</label>
+              <select id="stack_vectordb" class="form-select w-full p-2.5 text-xs">
+                <option value="Qdrant">Qdrant (Rust / High-Performance Scaling)</option>
+                <option value="Milvus">Milvus (Highly Distributed Vector Cloud)</option>
+                <option value="Weaviate">Weaviate (GraphQL Native Hybrid Search)</option>
+                <option value="Pinecone">Pinecone (Fully Managed Cloud Database)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Data, Cache & Messaging -->
+        <div class="studio-card">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+            <span>💾</span> State, Databases &amp; Buffers
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stack_storage" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Object File Storage</label>
+              <select id="stack_storage" class="form-select w-full p-2.5 text-xs">
+                <option value="S3">AWS S3 (Cloud Storage)</option>
+                <option value="Azure Blob">Azure Blob Storage</option>
+                <option value="MinIO">MinIO (Kubernetes / Local Emulated S3)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_database" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Structured Database</label>
+              <select id="stack_database" class="form-select w-full p-2.5 text-xs">
+                <option value="PostgreSQL">PostgreSQL (Relational + JSONB)</option>
+                <option value="SQL Server">Microsoft SQL Server</option>
+                <option value="MongoDB">MongoDB (Document Database)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_cache" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Semantic Cache</label>
+              <select id="stack_cache" class="form-select w-full p-2.5 text-xs" disabled>
+                <option value="Redis">Redis (Distributed In-Memory Cache)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_messaging" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Async Queue / Bus</label>
+              <select id="stack_messaging" class="form-select w-full p-2.5 text-xs">
+                <option value="Kafka">Apache Kafka (High Throughput Event Log)</option>
+                <option value="RabbitMQ">RabbitMQ (Standard AMQP Exchange)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Pipelines, Security & Telemetry -->
+        <div class="studio-card">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+            <span>⚙️</span> Pipelines, Security &amp; Observability
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="stack_workflow" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Workflow Engine</label>
+              <select id="stack_workflow" class="form-select w-full p-2.5 text-xs">
+                <option value="Temporal">Temporal (Durable Execution Functions)</option>
+                <option value="Airflow">Apache Airflow (Data Pipeline DAGs)</option>
+                <option value="Prefect">Prefect (Modern Dynamic Workflows)</option>
+              </select>
+            </div>
+            <div>
+              <label for="stack_security" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Secret Storage</label>
+              <select id="stack_security" class="form-select w-full p-2.5 text-xs">
+                <option value="HashiCorp Vault">HashiCorp Vault (Enterprise Engine)</option>
+                <option value="AWS Secrets Manager">AWS Secrets Manager</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label for="stack_obs" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Observability Backend</label>
+              <select id="stack_obs" class="form-select w-full p-2.5 text-xs">
+                <option value="Langfuse + OpenTelemetry">Langfuse (LLM Trace) + OpenTelemetry (System Metrics)</option>
+                <option value="Prometheus + Grafana">Prometheus &amp; Grafana (Infrastructure Charts)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container bg-slate-950">
+          <div class="ide-header flex flex-col items-stretch p-0 border-b border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-44 focus:outline-none" value="stack_blueprint.yaml" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 overflow-x-auto">
+              <button onclick="switchTab('stack_blueprint_yaml')" id="tab-stack_blueprint_yaml" class="tab-btn active">stack_blueprint.yaml</button>
+              <button onclick="switchTab('deployment_plan_md')" id="tab-deployment_plan_md" class="tab-btn">deployment_plan.md</button>
+              <button onclick="switchTab('architecture_map')" id="tab-architecture_map" class="tab-btn text-teal-400">📊 Flow Diagram</button>
+            </div>
+          </div>
+
+          <!-- Code View -->
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 520px; max-height: 640px;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 520px; max-height: 640px;"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button id="btn-copy" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Output</span>
+            </button>
+            <button id="btn-download" class="py-2.5 bg-indigo-650 hover:bg-indigo-700 text-slate-700 font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5" style="background-color: var(--accent-primary); color: #ffffff;">
+              <span>⬇️ Download file</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="../../src/js/core-tool.js"></script>
+  <script type="module" src="../../src/js/generators/enterprise-ai-stack-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>

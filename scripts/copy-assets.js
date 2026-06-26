@@ -29,3 +29,6 @@ function copyFile(srcRelative, destRelative) {
 
 copyFile('src/js/core-tool.js', 'src/js/core-tool.js');
 copyFile('tools/shared-tools.js', 'tools/shared-tools.js');
+copyFile('tools/tools.json', 'tools/tools.json');
+copyFile('interview/topics.json', 'interview/topics.json');
+copyFile('AI/studios.json', 'AI/studios.json');

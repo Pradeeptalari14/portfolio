@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **267 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **278 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 267 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 278 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -212,6 +212,16 @@ The following catalog registers all **267 Developer Studios** to their team owne
 | 118 | GCP Cloud Spanner Studio | [gcp-cloud-spanner/](file:///d:/Domain/tools/gcp-cloud-spanner/index.html) | `tp-gcp-cloud-spanner` | Database Ops | `main` | SQL, DDL, gcloud CLI | Database Clustering, Vector DB |
 | 119 | Azure Monitor & Log Analytics Studio | [azure-monitor/](file:///d:/Domain/tools/azure-monitor/index.html) | `tp-azure-monitor` | SRE Team | `main` | HCL, Kusto Query Language | OpenTelemetry Collector, Logging |
 | 120 | GCP Cloud Operations Monitoring Studio | [gcp-cloud-operations/](file:///d:/Domain/tools/gcp-cloud-operations/index.html) | `tp-gcp-cloud-operations` | SRE Team | `main` | JSON, MQL, Stackdriver | OpenTelemetry Collector, Logging |
+| 121 | Enterprise AI Infrastructure Integration Studio | [enterprise-ai-infrastructure/](file:///d:/Domain/tools/enterprise-ai-infrastructure/index.html) | `tp-enterprise-ai-infrastructure` | AI Engineering | `main` | Nginx, Redis, Markdown | LLM Gateway, API Gateway |
+| 122 | LLM Fundamentals & Runtime Studio | [llm-fundamentals/](file:///d:/Domain/tools/llm-fundamentals/index.html) | `tp-llm-fundamentals` | AI Engineering | `main` | vLLM, Ollama, Bash | Enterprise LLM, Local SLM |
+| 123 | LangChain & LlamaIndex Studio | [langchain-llamaindex/](file:///d:/Domain/tools/langchain-llamaindex/index.html) | `tp-langchain-llamaindex` | AI Engineering | `main` | LangChain, LlamaIndex, Python | AI Agentic Workflow, SRE AI Agent |
+| 124 | Vector RAG Optimizer Studio | [rag-optimization/](file:///d:/Domain/tools/rag-optimization/index.html) | `tp-rag-optimization` | AI Engineering | `main` | Weaviate, Qdrant, Python | Vector Database, DevOps AI RAG |
+| 125 | MCP & Tool Integration Studio | [mcp-integration/](file:///d:/Domain/tools/mcp-integration/index.html) | `tp-mcp-integration` | Platform Engineering | `main` | MCP SDK, FastMCP, Python | MCP Studio, MCP Server Builder |
+| 126 | LangGraph & Multi-Agent Swarm Studio | [langgraph-agent/](file:///d:/Domain/tools/langgraph-agent/index.html) | `tp-langgraph-agent` | AI Engineering | `main` | LangGraph, Python | AI Agentic Workflow, Strands SRE |
+| 127 | AI Observability & Trace Studio | [ai-observability/](file:///d:/Domain/tools/ai-observability/index.html) | `tp-ai-observability` | Platform Engineering | `main` | Langfuse, OpenTelemetry, YAML | LLM Observability, OTEL Collector |
+| 128 | AI Security & Governance Studio | [ai-security/](file:///d:/Domain/tools/ai-security/index.html) | `tp-ai-security` | AI Security | `main` | LlamaGuard, NeMo Guardrails, YAML | LLM Guardrails, Policy-as-Code |
+| 129 | Enterprise K8s AI Platform Studio | [enterprise-ai-k8s/](file:///d:/Domain/tools/enterprise-ai-k8s/index.html) | `tp-enterprise-ai-k8s` | Cloud Infrastructure | `main` | Ray, K8s, KEDA, NVIDIA GPU | Ray Cluster, Karpenter Node |
+| 130 | Enterprise AI Stack Blueprint Studio | [enterprise-ai-stack/](file:///d:/Domain/tools/enterprise-ai-stack/index.html) | `tp-enterprise-ai-stack` | AI Engineering | `main` | React, Next.js, FastAPI, YAML | Enterprise AI Infrastructure Integration, LLM Fundamentals |
 
 ---
 
@@ -219,17 +229,17 @@ The following catalog registers all **267 Developer Studios** to their team owne
 
 The catalog integrates seamlessly across all 11 phases of the Software Development Life Cycle:
 
-* **Planning:** VPC Subnetting Calculator, Crossplane Cloud, Ray Cluster, IDP Template.
-* **Development:** Docker Compose & LocalStack, systemd Service Builder, Go SRE Utility, Python SRE Utility, eBPF Tracing Generator, Maven Build.
+* **Planning:** VPC Subnetting Calculator, Crossplane Cloud, Ray Cluster, IDP Template, Enterprise K8s AI Platform, Enterprise AI Stack Blueprint.
+* **Development:** Docker Compose & LocalStack, systemd Service Builder, Go SRE Utility, Python SRE Utility, eBPF Tracing Generator, Maven Build, LLM Fundamentals & Runtime, LangChain & LlamaIndex, LangGraph & Multi-Agent Swarm, Enterprise AI Stack Blueprint.
 * **Code Review:** GitHub Org Governance, SonarQube Quality Gate, AI Rules Customizer.
 * **Testing:** Performance Studio (k6/Locust), AI Evaluation Studio (Ragas), Chaos Engineering.
-* **Security:** SAST Security, Falco Security Auditor, Kyverno Policy, Secret Management, Vault Secrets, Trivy Security, Cloudflare Zero Trust.
+* **Security:** SAST Security, Falco Security Auditor, Kyverno Policy, Secret Management, Vault Secrets, Trivy Security, Cloudflare Zero Trust, AI Security & Governance.
 * **Build:** Maven Build, Docker Manager, Container Registry Studio, Dagger Pipelines.
 * **Release:** Progressive Delivery (Canaries), Webhooks Studio, ArgoCD GitOps, FluxCD GitOps.
 * **Deployment:** Advanced k8s Script Generator, Terraform Architect, AWS CloudFormation, Karpenter, KEDA, Tekton Pipeline, Jenkins, GitLab CI/CD, Bitbucket Pipelines.
-* **Operations:** Database Migration Studio, Backup & DR Studio, Database Clustering, Agile & ITSM.
-* **Monitoring:** OpenTelemetry Collector, Advanced Monitoring Script, ELK & Loki, Vector Log Pipeline, eBPF Tracing Studio, Cilium Policy.
-* **Incident Response:** Status & Incident, SRE AI Agent Simulator, Strands SRE Agent, Alertmanager Visualizer, AIOps.
+* **Operations:** Database Migration Studio, Backup & DR Studio, Database Clustering, Agile & ITSM, Vector RAG Optimizer, Enterprise AI Infrastructure Integration.
+* **Monitoring:** OpenTelemetry Collector, Advanced Monitoring Script, ELK & Loki, Vector Log Pipeline, eBPF Tracing Studio, Cilium Policy, AI Observability & Trace.
+* **Incident Response:** Status & Incident, SRE AI Agent Simulator, Strands SRE Agent, Alertmanager Visualizer, AIOps, MCP & Tool Integration.
 
 ---
 

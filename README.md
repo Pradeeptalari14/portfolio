@@ -1,7 +1,7 @@
-# Talari Pradeep · Cloud & SRE Script Tools Portfolio
+# Talari Pradeep · AI Infrastructure & Platform Engineering Portfolio
 ### 🌐 [talaripradeep.info](https://talaripradeep.info)
 
-A personal portfolio website and interactive DevOps & SRE console hub for **Talari Pradeep** — Cloud & DevOps Engineer. 
+A personal portfolio website and interactive DevOps, MLOps, & AI Infrastructure console hub for **Talari Pradeep** — AI Infrastructure & Platform Engineer. 
 
 Features **77 interactive code generators** (SRE, pipelines, infrastructure provisioning, and container setups) served dynamically from a client-side JSON database.
 

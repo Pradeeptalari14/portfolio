@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **267 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **278 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 267 Studios
+    loop For each of the 278 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -68,7 +68,7 @@ graph TD
 
 ## 2. Batch Repository Creation Automation Script
 
-You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 267 public repositories under your profile:
+You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 278 public repositories under your profile:
 
 ```javascript
 // File: scratch/create-github-repos.js
@@ -111,12 +111,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 267 target repositories have been processed!");
+console.log("🎉 All 278 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 267-Repository Execution Matrix
+## 3. Exhaustive 278-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -242,6 +242,16 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 118 | GCP Cloud Spanner Studio | `Pradeeptalari14/tp-gcp-cloud-spanner` | `spanner_ddl.sql` | `/db/spanner` | `gcloud spanner databases ddl update db --instance=inst --ddl-file=spanner_ddl.sql` | `gcloud spanner databases ddl describe db --instance=inst` |
 | 119 | Azure Monitor & Log Analytics Studio | `Pradeeptalari14/tp-azure-monitor` | `monitor_rules.tf` | `/infra/monitor` | `terraform init && terraform apply -auto-approve` | `terraform show` |
 | 120 | GCP Cloud Operations Monitoring Studio | `Pradeeptalari14/tp-gcp-cloud-operations` | `metrics_dashboard.json` | `/deploy/dashboards` | `gcloud monitoring dashboards create --config-from-file=metrics_dashboard.json` | `gcloud monitoring dashboards list` |
+| 121 | Enterprise AI Infrastructure Integration Studio | `Pradeeptalari14/tp-enterprise-ai-infrastructure` | `integration_plan.md` | `/docs/ai-integration` | `cat integration_plan.md` | `ls -la integration_plan.md` |
+| 122 | LLM Fundamentals & Runtime Studio | `Pradeeptalari14/tp-llm-fundamentals` | `Modelfile` | `/models/runtime` | `ollama create llama3-custom -f Modelfile` | `ollama list` |
+| 123 | LangChain & LlamaIndex Studio | `Pradeeptalari14/tp-langchain-llamaindex` | `pipeline.py` | `/src/pipelines` | `python3 pipeline.py` | `python3 -m pytest` |
+| 124 | Vector RAG Optimizer Studio | `Pradeeptalari14/tp-rag-optimization` | `rag_config.json` | `/config/rag` | `cat rag_config.json` | `jq . rag_config.json` |
+| 125 | MCP & Tool Integration Studio | `Pradeeptalari14/tp-mcp-integration` | `mcp_config.json` | `/config/mcp` | `cat mcp_config.json` | `jq . mcp_config.json` |
+| 126 | LangGraph & Multi-Agent Swarm Studio | `Pradeeptalari14/tp-langgraph-agent` | `swarm_graph.py` | `/src/swarm` | `python3 swarm_graph.py` | `python3 -c "import langgraph"` |
+| 127 | AI Observability & Trace Studio | `Pradeeptalari14/tp-ai-observability` | `langfuse_otel.yaml` | `/deploy/observability` | `kubectl apply -f langfuse_otel.yaml` | `kubectl get pods -l app=langfuse` |
+| 128 | AI Security & Governance Studio | `Pradeeptalari14/tp-ai-security` | `security_rules.yaml` | `/deploy/security` | `kubectl apply -f security_rules.yaml` | `kubectl get safety-policies` |
+| 129 | Enterprise K8s AI Platform Studio | `Pradeeptalari14/tp-enterprise-ai-k8s` | `k8s_platform.yaml` | `/deploy/platform` | `kubectl apply -f k8s_platform.yaml` | `kubectl get deployments -n enterprise-ai-platform` |
+| 130 | Enterprise AI Stack Blueprint Studio | `Pradeeptalari14/tp-enterprise-ai-stack` | `stack_blueprint.yaml` | `/deploy/architecture` | `kubectl apply -f stack_blueprint.yaml` | `kubectl get aistackblueprints` |
 
 ---
 

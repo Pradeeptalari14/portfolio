@@ -4,10 +4,20 @@
   <!-- Pulsing Chat Toggle Button -->
   <button class="chat-toggle-btn" id="chatToggleBtn" aria-label="Open AI Assistant">
     <div class="toggle-pulse"></div>
-    <div class="neural-core">
-      <div class="core-ring"></div>
-      <div class="core-dot"></div>
-    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="ai-chat-icon">
+      <defs>
+        <linearGradient id="ai-toggle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00f2fe" />
+          <stop offset="100%" stop-color="#4f46e5" />
+        </linearGradient>
+      </defs>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="url(#ai-toggle-grad)" />
+      <circle cx="9" cy="9" r="1.5" fill="#00f2fe" />
+      <circle cx="15" cy="9" r="1.5" fill="#00f2fe" />
+      <circle cx="12" cy="13" r="1.5" fill="#4f46e5" />
+      <line x1="9" y1="9" x2="12" y2="13" stroke="url(#ai-toggle-grad)" stroke-width="1.2" />
+      <line x1="15" y1="9" x2="12" y2="13" stroke="url(#ai-toggle-grad)" stroke-width="1.2" />
+    </svg>
     <span class="toggle-badge">AI</span>
   </button>
 
@@ -18,14 +28,13 @@
     <div class="chat-header">
       <div class="chat-header-info">
         <div class="chat-avatar">
-          <div class="neural-core" style="width:26px; height:26px;">
-            <div class="core-ring" style="border-width:1.5px; animation-duration: 6s;"></div>
-            <div class="core-dot" style="width:10px; height:10px; box-shadow: 0 0 6px #00f2fe;"></div>
-          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px; color:#00f2fe;">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
         </div>
         <div>
-          <h4 class="chat-title" id="chatPartnerTitle"><span class="gradient-glow-text">TP. DevOps AI Partner</span></h4>
-          <p class="chat-status"><span class="status-dot"></span> Online SRE Assistant</p>
+          <h4 class="chat-title" id="chatPartnerTitle"><span class="gradient-glow-text">TP. AI Platform Copilot</span></h4>
+          <p class="chat-status"><span class="status-dot"></span> Online AI &amp; MLOps Assistant</p>
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -45,12 +54,10 @@
 
     <!-- Suggestions Panel -->
     <div class="chat-suggestions" id="chatSuggestions">
-      <button class="suggestion-chip" data-query="What is DevOps?" tabindex="-1">⚙️ What is DevOps?</button>
-      <button class="suggestion-chip" data-query="What is SRE?" tabindex="-1">🛡️ What is SRE?</button>
       <button class="suggestion-chip" data-query="What is AI & MLOps?" tabindex="-1">🧠 What is AI & MLOps?</button>
       <button class="suggestion-chip" data-query="Who is Pradeep?" tabindex="-1">👤 About Pradeep</button>
-      <button class="suggestion-chip" data-query="List all interactive studios" tabindex="-1">🛠️ List SRE Tools</button>
       <button class="suggestion-chip" data-query="Show core repositories" tabindex="-1">🐙 Code Repositories</button>
+      <button class="suggestion-chip" data-query="List all interactive studios" tabindex="-1">🛠️ List Platform Tools</button>
       <button class="suggestion-chip" data-query="How to set up locally?" tabindex="-1">💻 Onboarding Setup guide</button>
       <button class="suggestion-chip" data-query="Tell me about platform architecture" tabindex="-1">🏗️ Platform Architecture</button>
       <button class="suggestion-chip" data-query="How can I contact you?" tabindex="-1">📧 Get in Touch</button>
@@ -101,37 +108,22 @@
   }
 
   /* Core design system */
-  .neural-core {
-    width: 32px;
-    height: 32px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .ai-chat-icon {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.5));
+    animation: iconPulse 3s infinite ease-in-out;
   }
-  .core-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px dashed #00f2fe;
-    border-radius: 50%;
-    animation: coreRotate 8s linear infinite;
-  }
-  .core-dot {
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, #00f2fe 0%, #4f46e5 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 10px #00f2fe;
-    animation: corePulse 2s infinite ease-in-out;
-  }
-  @keyframes coreRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  @keyframes corePulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 10px #00f2fe; }
-    50% { transform: scale(1.25); box-shadow: 0 0 18px #00f2fe, 0 0 8px #4f46e5; }
+
+  @keyframes iconPulse {
+    0%, 100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.5));
+    }
+    50% {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.8)) drop-shadow(0 0 4px rgba(79, 70, 229, 0.3));
+    }
   }
 
   .toggle-pulse {
@@ -153,7 +145,7 @@
     position: absolute;
     top: -4px;
     right: -4px;
-    background: #ef4444;
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
     color: white;
     font-size: 0.62rem;
     font-weight: 800;
@@ -161,6 +153,7 @@
     border-radius: 50px;
     border: 2px solid #0f172a;
     letter-spacing: 0.05em;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
   }
 
   /* Glassmorphic Cyber-Window */
@@ -523,7 +516,7 @@
       
       // Auto-greeting
       if (messagesBox.children.length === 0) {
-        addBotMessage("👋 Hello SRE Engineer! I am **TP DevOps AI Partner** – a futuristic, localized agent specialized in cloud operations, DevOps architectures, and SRE tools.<br><br>Ask me about **DevOps workflow loops**, **SRE reliability runbooks**, **AI/MLOps pipelines**, or click the suggestion chips below to query specific details!");
+        addBotMessage("👋 Hello! I am your **TP. AI Platform Copilot** – specialized in AI Infrastructure, LLMOps pipelines, and cloud platform engineering.<br><br>Ask me about **Agentic OS**, **GraphRAG Platforms**, **AI Monitoring**, or select a suggestion chip below!");
       }
       setTimeout(() => inputField.focus(), 150);
     }
@@ -544,7 +537,7 @@
       messagesBox.innerHTML = '';
       messagesBox.style.opacity = '1';
       messagesBox.style.transform = 'translateY(0)';
-      addBotMessage("👋 Cyber Session re-initialized! I am **TP DevOps AI Partner** – SRE digital agent active.<br><br>Ask me about **DevOps workflow loops**, **SRE reliability runbooks**, or **AI/MLOps pipelines**!");
+      addBotMessage("👋 Session re-initialized! I am your **AI Platform Copilot** — ready to assist with your AI Infra & Platform queries.");
       scrollToBottom();
     }, 250);
   }
@@ -610,7 +603,7 @@
   const qaDatabase = [
     {
       keywords: ['pradeep', 'who is', 'profile', 'about', 'accenture', 'healthcare', 'resume', 'cv'],
-      answer: "👤 **Talari Pradeep** is a DevOps & Cloud Engineer specializing in AWS, Kubernetes, Terraform, and CI/CD operations. He has experience working on enterprise healthcare projects at Accenture. You can view his skills under [Skills](/skills/) or view his projects under [Projects](/projects/)."
+      answer: "👤 **Talari Pradeep** is an **AI Infrastructure & Platform Engineer** at **Accenture** in Bangalore. At Accenture, he specializes in deploying secure, private AI models (like Mistral and Llama 3) on Kubernetes using Triton Inference Server and vLLM. This enabled bank-grade data privacy while cutting hosting costs by 40% through dynamic batching and INT4 quantization.<br><br>With 6+ years of IT operations experience, he builds scalable LLMOps pipelines (LangGraph, ArgoCD), vector databases (Weaviate, ChromaDB), and multi-cloud landing zones. You can view his skills under [Skills](/skills/) or view his projects under [Projects](/projects/)."
     },
     {
       keywords: ['devops', 'development', 'operations', 'cicd', 'deployment flow'],
@@ -627,17 +620,17 @@
               "• **How it helps**: SRE defines concrete Service Level Objectives (SLOs), triggers instant Slack alerts on disk/memory shortages, parses stack logs dynamically, and invokes self-healing playbooks (e.g. purging host caches) to eliminate production downtime."
     },
     {
-      keywords: ['ai', 'artificial intelligence', 'mlops', 'rag', 'llm', 'slm', 'agent', 'vector db', 'ollama', 'chroma'],
-      answer: "🧠 **AI & MLOps** represents the integration of machine learning pipelines, autonomous agents, and Large Language Models (LLMs) with standard DevOps operations.<br><br>" +
-              "• **Where it is used**: Detailed inside Pradeep's MLOps initiatives:<ul>" +
-              "<li>**[DevOps AI RAG Studio](/tools/ai/)**: Queries private documentation files using ChromaDB vector database and local embeddings.</li>" +
-              "<li>**[K8s Troubleshooting Agent](/tools/kubernetes/)**: Diagnoses pod CrashLoopBackOffs using LLM analysis.</li>" +
-              "<li>**[MLflow Tracking Studio](/tools/mlflow/)**: Registers model weights and tracks runs.</li>" +
-              "<li>**[Strands SRE Agent](/tools/strands/)**: Visualizes autonomous agentic loops.</li>" +
-              "<li>**[Enterprise LLM Studio](/tools/llm/)**: Provisions vLLM/Triton GPU scaling pipelines.</li>" +
-              "<li>**[SLM Local Studio](/tools/slm/)**: Generates local Ollama Modelfiles.</li>" +
-              "</ul>" +
-              "• **How it helps**: AI automates root-cause checks on application log streams, audits Terraform deployment files for scale policies, and designs diagnostic shell templates in real-time."
+      keywords: ['ai', 'artificial intelligence', 'mlops', 'rag', 'llm', 'slm', 'agent', 'vector db', 'ollama', 'chroma', 'triton', 'vllm', 'quantization'],
+      answer: "🧠 **AI & MLOps Simplified (Easy Explain)**:<br><br>" +
+              "• **Retrieval-Augmented Generation (RAG)**: Think of it as giving the AI an 'open-book exam'. Instead of guessing, the AI queries a Vector Database (like Weaviate or ChromaDB) to fetch private company docs, appends that info to your question, and gives a factual, private answer.<br>" +
+              "• **Model Quantization**: Like rounding complex decimals (e.g. $12.345 \\times 7.89$) to whole numbers ($12 \\times 8$) to do math super fast. It slashes model memory size by 75%, allowing huge models to run on cheaper GPUs.<br>" +
+              "• **vLLM & Triton Hosting**: Engines that run AI models in production. **vLLM** uses PagedAttention (like virtual memory in an OS) to stop GPU memory fragmentation, while **Triton** batches multiple queries together to keep speeds fast and avoid CUDA Out-of-Memory crashes.<br><br>" +
+              "🚀 **Pradeep's Interactive AI Studios**:<ul>" +
+              "<li>**[DevOps AI RAG Studio](/tools/ai/)**: Chat with private docs using local vector embeddings.</li>" +
+              "<li>**[Enterprise LLM Studio](/tools/llm/)**: Provision vLLM/Triton GPU scaling pipelines.</li>" +
+              "<li>**[SLM Local Studio](/tools/slm/)**: Generate local Ollama Modelfiles for offline edge AI.</li>" +
+              "<li>**[Strands SRE Agent](/tools/strands/)**: Run autonomous multi-agent troubleshooting loops.</li>" +
+              "</ul>"
     },
     {
       keywords: ['studios', 'studios list', 'all tools', 'generator', 'launchers', 'categories'],
@@ -651,13 +644,13 @@
     },
     {
       keywords: ['repos', 'repositories', 'code bases', 'github', 'source code'],
-      answer: "🐙 **GitHub Repositories**: Pradeep's DevOps projects are hosted under his GitHub space (`Pradeeptalari14`):<br><br>" +
-              "1. **[AWS DevOps Control Center](https://github.com/Pradeeptalari14/aws-devops-dashboard)**: Node/Express telemetry control center with real-time AWS CloudWatch integration. Details under [DevOps Dashboard Project](/projects/aws-devops-dashboard.html).<br>" +
-              "2. **[Enterprise AWS EKS Deployment](https://github.com/Pradeeptalari14/aws-eks-deployment)**: Multi-subnet Kubernetes infrastructure provisioned via Terraform modules. Details under [EKS Deployment Project](/projects/aws-eks-deployment.html).<br>" +
-              "3. **[Jenkins Shared Library](https://github.com/Pradeeptalari14/jenkins-shared-library)**: Reusable Groovy shared classes standardizing build/security/deploy gates. Details under [Jenkins Shared Library Project](/projects/jenkins-shared-library.html).<br>" +
-              "4. **[SRE Monitoring System](https://github.com/Pradeeptalari14/sre-monitoring-system)**: Observability stack configuring Prometheus servers and Grafana alert targets. Details under [SRE Monitoring Project](/projects/sre-monitoring-system.html).<br>" +
-              "5. **[Terraform AWS Modules](https://github.com/Pradeeptalari14/terraform-aws-modules)**: Declarative VPC, EC2, and S3 modules utilizing remote DynamoDB state locking. Details under [Terraform Modules Project](/projects/terraform-aws-modules.html).<br>" +
-              "6. **[AWS Cost Optimizer Bot](https://github.com/Pradeeptalari14/aws-cost-optimizer)**: Serverless Python Lambda pruner deleting orphaned resources daily. Details under [Cost Optimizer Project](/projects/aws-cost-optimizer.html)."
+      answer: "🐙 **GitHub Repositories**: Pradeep's AI Infrastructure and platform projects are hosted under his GitHub space (`Pradeeptalari14`):<br><br>" +
+              "1. **[Enterprise Agentic Operating System](https://github.com/Pradeeptalari14/enterprise-agentic-os)**: Multi-agent orchestration framework built with LangGraph, FastAPI, and Kubernetes. Details under [Agentic OS Project](/projects/enterprise-agentic-os.html).<br>" +
+              "2. **[Enterprise RAG Platform](https://github.com/Pradeeptalari14/enterprise-rag-platform)**: Document search and extraction using Weaviate and OpenSearch hybrid search. Details under [RAG Platform Project](/projects/enterprise-rag-platform.html).<br>" +
+              "3. **[AI Infrastructure Monitoring Copilot](https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot)**: Claude/GPT-4 function-calling copilot integrating LogicMonitor & ServiceNow. Details under [AI Monitoring Copilot Project](/projects/ai-infra-monitoring-copilot.html).<br>" +
+              "4. **[Multi-Cloud Landing Zone & IaC Platform](https://github.com/Pradeeptalari14/multi-cloud-landing-zone)**: Reusable Terraform modules provisioning multi-cloud networks. Details under [Landing Zone Project](/projects/multi-cloud-landing-zone.html).<br>" +
+              "5. **[Enterprise Observability Platform](https://github.com/Pradeeptalari14/observability-platform-k8s)**: Centralized telemetry logging & tracing stack utilizing Prometheus, Grafana Loki, and OpenTelemetry. Details under [Observability Project](/projects/observability-platform-k8s.html).<br>" +
+              "6. **[WhatsApp & Voice AI Assistant Platform](https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant)**: FastAPI agentic chat and ElevenLabs WebRTC voice streaming receiver. Details under [Voice AI Assistant Project](/projects/whatsapp-voice-ai-assistant.html)."
     },
     {
       keywords: ['onboarding', 'developer guide', 'setup local', 'npm run dev', 'npm test', 'contribution'],
@@ -680,11 +673,11 @@
     },
     {
       keywords: ['rag', 'vector db', 'embedding', 'chroma', 'nomic', 'retrieval', 'knowledge chatbot'],
-      answer: "🤖 **DevOps AI RAG (Retrieval-Augmented Generation)**: RAG combines document search with local Large Language Models (LLMs) to answer technical questions using your private infrastructure manuals.<br><br>Try Pradeep's **[DevOps AI RAG Studio](/tools/ai/)** to customize and generate Streamlit chat clients, FastAPI gateways, LangChain retrieval pipelines, Docker compose, and Kubernetes configurations!"
+      answer: "🤖 **Retrieval-Augmented Generation (RAG) - Easy Explain**: RAG is like giving the AI an 'open-book' exam. Instead of guessing from its general training, it searches your private manuals inside a Vector Database (like Weaviate/ChromaDB) to retrieve the exact page of context, then reads it to answer your prompt. This guarantees accuracy and prevents data leaks to public APIs.<br><br>Try Pradeep's **[DevOps AI RAG Studio](/tools/ai/)** to customize and generate Streamlit chat clients, FastAPI gateways, LangChain retrieval pipelines, Docker compose, and Kubernetes configurations!"
     },
     {
       keywords: ['llm', 'large language model', 'vllm', 'triton', 'gpu', 'a100', 'h100', 'tensor parallel'],
-      answer: "☸️ **Enterprise LLM Deployment**: Deploying large language models (like Llama 3 70B, Qwen 72B) in production requires GPU clusters, optimized runtime engines (vLLM, Triton), tensor parallelism, and token streaming metrics.<br><br>Scaffold production-grade Kubernetes manifests, ingress resources, and Prometheus GPU scrapers using Pradeep's **[Enterprise LLM Deployment Studio](/tools/llm/)**!"
+      answer: "☸️ **vLLM & Triton Hosting - Easy Explain**: Serving LLMs in production is hard because GPU memory (VRAM) is expensive. **vLLM** solves this with *PagedAttention* which manages memory dynamically like an operating system does, eliminating fragmentation. **Triton** optimizes throughput via *dynamic batching*, grouping different users' requests to run them on the GPU at the same time.<br><br>Try Pradeep's **[Enterprise LLM Deployment Studio](/tools/llm/)** to scaffold production-grade Kubernetes manifests, ingress resources, and Prometheus GPU scrapers!"
     },
     {
       keywords: ['slm', 'small language model', 'ollama', 'modelfile', 'phi-3', 'gemma-2', 'edge ai', 'bootstrap.sh'],
@@ -700,11 +693,11 @@
     },
     {
       keywords: ['cert', 'credential', 'certification', 'achievement', 'qualification', 'cka', 'aws cert'],
-      answer: "🎓 **Pradeep's Certifications**:<ul><li>AWS Certified DevOps Engineer – Professional</li><li>Certified Kubernetes Administrator (CKA)</li><li>AWS Certified Solutions Architect – Associate</li><li>HashiCorp Certified Terraform Associate</li><li>Linux Foundation Certified System Administrator (LFCS)</li></ul>"
+      answer: "🎓 **Pradeep's Certifications**:<ul><li>**Microsoft Certified: Azure Administrator Associate (AZ-104)** — Completed</li><li>**Microsoft Certified: Azure AI Engineer Associate (AI-102)** — In Progress</li><li>**AWS Certified Solutions Architect – Associate** — Planned</li><li>**Google Professional Cloud DevOps Engineer** — Planned</li></ul>"
     },
     {
       keywords: ['contact', 'hire', 'email', 'phone', 'linkedin', 'reach'],
-      answer: "📧 **Contact Talari Pradeep**: You can email him at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com) or connect on [LinkedIn](https://linkedin.com/in/pradeep-talari). He is currently available for DevOps/SRE roles!"
+      answer: "📧 **Contact Talari Pradeep**: You can email him at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com), call him at **+91-7330737488**, or connect on [LinkedIn](https://linkedin.com/in/pradeep-talari). He is based in **Bangalore, India**."
     },
     {
       keywords: ['argocd', 'gitops', 'git ops', 'continuous deployment'],
@@ -852,8 +845,8 @@
     const words = q.split(/[^a-zA-Z0-9]/).filter(w => w.length > 2);
     const techWords = words.map(w => `*${w}*`).join(', ');
     
-    return `🧠 **SRE Intelligent Assistant**: I analyzed your query keywords: ${techWords || 'your query'}.<br><br>` +
-           `While I don't have a direct answer pre-loaded for this exact phrase, you can ask about **DevOps workflow loops**, **SRE reliability runbooks**, or **AI/MLOps pipelines**.<br><br>` +
+    return `🧠 **AI Platform Assistant**: I analyzed your query keywords: ${techWords || 'your query'}.<br><br>` +
+           `While I don't have a direct answer pre-loaded for this, feel free to ask about **Agentic OS**, **GraphRAG Platforms**, or **AI Monitoring Copilot**.<br><br>` +
            `Feel free to check out Pradeep's work under the [Skills](/skills/) page, his [Projects](/projects/), or email him directly at [talaripradeep45@gmail.com](mailto:talaripradeep45@gmail.com).`;
   }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tp-portfolio-cache-v3';
+const CACHE_NAME = 'tp-portfolio-cache-v4';
 
 // Assets to pre-cache immediately on service worker install
 const PRECACHE_ASSETS = [
@@ -14,6 +14,9 @@ const PRECACHE_ASSETS = [
   '/tools/llm-gateway/',
   '/tools/llm-tracing/',
   '/tools/vector-db/',
+  '/tools/tools.json',
+  '/interview/topics.json',
+  '/AI/studios.json',
   '/manifest.json'
 ];
 

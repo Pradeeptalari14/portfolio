@@ -8,41 +8,51 @@
 
 ## 🧑‍💻 About Me
 
-I am a passionate **Cloud & DevOps Engineer** specializing in designing and provisioning scalable, secure, and highly reliable cloud infrastructure.
+I am an **AI Infrastructure & Platform Engineer** with 6+ years of enterprise experience, specializing in designing and deploying high-performance AI/ML platforms, LLMOps pipelines, and cloud-native DevOps/GitOps ecosystems.
 
-🚀 Cloud & DevOps Engineer | SRE Practitioner | Infrastructure as Code (IaC) | Terraform | Kubernetes | Docker | Jenkins | GitHub Actions | GitLab CI | GitOps | ArgoCD | AWS Cloud | GCP | ELK Stack | Prometheus | Grafana | Trivy | SonarQube | Linux | Bash | Python | Go | CI/CD | Monitoring | Alerting | Slack | Email Notifications
+🚀 AI Infrastructure Engineer | Platform Engineer | DevOps & MLOps | LangGraph | LangChain | Vector DBs (Weaviate, Pinecone, Neo4j GraphRAG) | Kubernetes (AKS/EKS) | Terraform | Atlantis | Prometheus | Grafana | Loki | Tempo | OpenTelemetry | FastAPI | Python | Whisper | ElevenLabs Voice AI
 
 <p align="left">
-  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=Profile%20views&color=007ec6&style=flat-square" alt="Profile views" />
+  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=Profile%20views&color=4f46e5&style=flat-square" alt="Profile views" />
 </p>
 
-- 🌐 Built multiple personal DevOps & SRE tools - **[🚀 DevOps & SRE Projects](https://talaripradeep.info/projects)**
+- 🌐 Built multiple personal AI Platforms & tools - **[🚀 Portfolio Projects](https://talaripradeep.info/projects)**
 <p align="left">
   <a href="https://talaripradeep.info/projects" target="_blank">
-    <img src="https://img.shields.io/badge/DEVOPS_&_SRE_PROJECTS-VISIT-007ec6?style=for-the-badge&logo=github&logoColor=white" alt="DevOps & SRE Projects" />
+    <img src="https://img.shields.io/badge/AI_&_PLATFORM_PROJECTS-VISIT-4f46e5?style=for-the-badge&logo=github&logoColor=white" alt="AI & Platform Projects" />
   </a>
 </p>
 
-- 📍 Based in **India**
-- 💼 Working on enterprise cloud reliability, infrastructure automation, and automated deployment architectures
-- 🎯 Deeply focused on **Infrastructure as Code (IaC)**, **Kubernetes platform engineering**, and **SRE Observability**
-- 🤝 Open to collaboration on open-source DevOps utilities and SRE tooling
+- 📍 Based in **Bangalore, India**
+- 💼 Working on enterprise AI reliability, model scaling, multi-agent frameworks, and self-healing infrastructure
+- 🎯 Deeply focused on **LLMOps/MLOps**, **Agentic AI systems**, and **MELT Observability stacks**
+- 🤝 Open to collaboration on open-source AI platform modules, MCP servers, and Kubernetes operator extensions
 
 ---
 
 ## 🛠️ Tech Stack & Tools
 
+### 🤖 AI, LLMs & RAG Systems
+<p align="left">
+  <img src="https://img.shields.io/badge/LangGraph-4f46e5?style=for-the-badge&logoColor=white" alt="LangGraph" />
+  <img src="https://img.shields.io/badge/LangChain-1c3d5a?style=for-the-badge&logoColor=white" alt="LangChain" />
+  <img src="https://img.shields.io/badge/Weaviate-green?style=for-the-badge&logoColor=white" alt="Weaviate" />
+  <img src="https://img.shields.io/badge/Neo4j-blue?style=for-the-badge&logoColor=white" alt="Neo4j GraphRAG" />
+  <img src="https://img.shields.io/badge/Whisper_STT-000000?style=for-the-badge&logo=openai&logoColor=white" alt="Whisper STT" />
+  <img src="https://img.shields.io/badge/ElevenLabs_TTS-ff69b4?style=for-the-badge&logoColor=white" alt="ElevenLabs" />
+</p>
+
 ### ☁️ Cloud Platforms & Core Orchestration
 <p align="left">
   <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS" />
-  <img src="https://img.shields.io/badge/GCP-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white" alt="GCP" />
   <img src="https://img.shields.io/badge/Azure-%230089D6.svg?style=for-the-badge&logo=microsoft-azure&logoColor=white" alt="Azure" />
+  <img src="https://img.shields.io/badge/GCP-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white" alt="GCP" />
   <img src="https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes" />
   <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
   <img src="https://img.shields.io/badge/Helm-%230F1626.svg?style=for-the-badge&logo=helm&logoColor=white" alt="Helm" />
 </p>
 
-### 🏗️ Infrastructure as Code & Automation
+### 🏗5 Infrastructure as Code & Automation
 <p align="left">
   <img src="https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform" />
   <img src="https://img.shields.io/badge/ansible-%23EE0000.svg?style=for-the-badge&logo=ansible&logoColor=white" alt="Ansible" />
@@ -54,29 +64,17 @@ I am a passionate **Cloud & DevOps Engineer** specializing in designing and prov
 ### ⚡ CI/CD Pipelines & GitOps
 <p align="left">
   <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions" />
-  <img src="https://img.shields.io/badge/jenkins-%23D24939.svg?style=for-the-badge&logo=jenkins&logoColor=white" alt="Jenkins" />
   <img src="https://img.shields.io/badge/Argo%20CD-F3C63F?style=for-the-badge&logo=argo&logoColor=white" alt="ArgoCD" />
-  <img src="https://img.shields.io/badge/GitLab%20CI-3A3A3A?style=for-the-badge&logo=gitlab&logoColor=orange" alt="GitLab CI" />
+  <img src="https://img.shields.io/badge/Atlantis-purple?style=for-the-badge&logoColor=white" alt="Atlantis GitOps" />
+  <img src="https://img.shields.io/badge/jenkins-%23D24939.svg?style=for-the-badge&logo=jenkins&logoColor=white" alt="Jenkins" />
 </p>
 
 ### 📊 Observability & Monitoring
 <p align="left">
   <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white" alt="Prometheus" />
   <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=Grafana&logoColor=white" alt="Grafana" />
-  <img src="https://img.shields.io/badge/ELK%20Stack-005571?style=for-the-badge&logo=Elastic&logoColor=white" alt="ELK Stack" />
-</p>
-
----
-
-## 🛡️ Security & DevSecOps Stack
-
-<p align="left">
-  <img src="https://img.shields.io/badge/SonarQube-4E9BCD?style=for-the-badge&logo=sonarqube&logoColor=white" alt="SonarQube" />
-  <img src="https://img.shields.io/badge/Trivy-3A3A3A?style=for-the-badge&logo=trivy&logoColor=white" alt="Trivy" />
-  <img src="https://img.shields.io/badge/Docker%20Scout-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Scout" />
-  <img src="https://img.shields.io/badge/OWASP%20ZAP-D21F3C?style=for-the-badge&logo=owasp&logoColor=white" alt="OWASP ZAP" />
-  <img src="https://img.shields.io/badge/Harbor-0084CC?style=for-the-badge&logo=harbor&logoColor=white" alt="Harbor" />
-  <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white" alt="Slack Notifications" />
+  <img src="https://img.shields.io/badge/Loki-grey?style=for-the-badge&logoColor=white" alt="Loki" />
+  <img src="https://img.shields.io/badge/Tempo-orange?style=for-the-badge&logoColor=white" alt="Tempo" />
 </p>
 
 ---
@@ -100,14 +98,14 @@ I am a passionate **Cloud & DevOps Engineer** specializing in designing and prov
 
 ---
 
-## 🚀 Featured SRE & DevOps Projects
+## 🚀 Featured AI Infrastructure & Platform Projects
 
-- 📊 **[AWS DevOps & SRE Control Center](https://github.com/Pradeeptalari14/aws-devops-dashboard)**: Real-time AWS resource monitoring panel with mock CI/CD pipeline emulator and automated telemetry sweeps.
-- ⚓ **[Enterprise AWS EKS Deployment](https://github.com/Pradeeptalari14/aws-eks-deployment)**: HA Kubernetes cluster setup across custom subnets, complete with Ingress Controllers, Auto-Scalers, and AWS IAM OIDC integrations.
-- 🏭 **[Jenkins Pipeline Shared Library](https://github.com/Pradeeptalari14/jenkins-shared-library)**: Reusable Groovy wrapper steps standardizing static quality scans, Trivy container safety verification, and Helm rollouts.
-- 📈 **[Prometheus & Grafana Observability](https://github.com/Pradeeptalari14/sre-monitoring-system)**: Telemetry stack monitoring container metrics and dispatching automated Slack alerting payloads via Alertmanager channels.
-- 🏗️ **[Automated Terraform IaC Modules](https://github.com/Pradeeptalari14/terraform-aws-modules)**: Secure HCL templates provisioning core VPC and compute components with KMS-encrypted S3 backend state locking.
-- 💰 **[AWS Cost Optimizer Bot](https://github.com/Pradeeptalari14/aws-cost-optimizer)**: Serverless Python bot sweeps regional configurations to delete unassociated elastic resources and release idle host budgets.
+- 🧠 **[Enterprise Agentic Operating System](https://github.com/Pradeeptalari14/enterprise-agentic-os)**: Stateful multi-agent graph architecture (Planner, Executor, Critic, Memory) using LangGraph, deployed on AKS autoscaled with KEDA.
+- 🔍 **[Enterprise RAG Platform](https://github.com/Pradeeptalari14/enterprise-rag-platform)**: Production-grade hybrid vector search over 5M+ document chunks with Neo4j GraphRAG, re-ranking, and low-latency storage modules.
+- 🤖 **[AI Infrastructure Monitoring Copilot](https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot)**: Natural-language incident triage utilizing Claude/GPT-4 function calling, LogicMonitor APIs, and automated ServiceNow ticketing.
+- 🏗️ **[Cloud Landing Zone & IaC Platform](https://github.com/Pradeeptalari14/multi-cloud-landing-zone)**: Multi-cloud Landing Zone bootstrap system engineered with Terraform, Pulumi, Ansible, Checkov, and Atlantis GitOps automation.
+- 📈 **[Enterprise Observability Platform](https://github.com/Pradeeptalari14/observability-platform-k8s)**: Kubernetes MELT monitoring stack combining Prometheus federation, Loki aggregation, Tempo tracing, and OpenTelemetry pipelines.
+- 📞 **[WhatsApp & Voice AI Assistant Platform](https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant)**: Real-time speech agent processing WebRTC audio payloads with Whisper STT, ElevenLabs TTS, and FastAPI websocket loops.
 
 ---
 
@@ -118,7 +116,7 @@ I am a passionate **Cloud & DevOps Engineer** specializing in designing and prov
     <img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
   <a href="https://talaripradeep.info" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio%20Website-7c3aed?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+    <img src="https://img.shields.io/badge/Portfolio%20Website-4f46e5?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
   </a>
 </p>
 

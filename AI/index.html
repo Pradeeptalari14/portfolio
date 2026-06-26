@@ -1318,126 +1318,20 @@
 
       <!-- Tab Content 1: Interview Q&A -->
       <div id="vault-tab-qa" class="vault-tab-content">
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <div class="qa-item">
-            <button class="qa-question" onclick="window.toggleAccordion(this)">
-              <span>Q1: How do you troubleshoot a Kubernetes Pod stuck in CrashLoopBackOff?</span>
-              <span class="chevron">▼</span>
-            </button>
-            <div class="qa-answer">
-              <p style="margin-bottom: 0.75rem;">A pod stuck in <code>CrashLoopBackOff</code> is repeatedly failing at runtime. Follow these diagnostic steps to resolve it:</p>
-              <ol style="margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                <li><strong>Describe Pod:</strong> Run <code>kubectl describe pod &lt;pod-name&gt;</code>. Inspect the termination status and exit code. Exit Code 137 indicates it was OOMKilled (Out-of-Memory), while exit code 1 or 255 indicates an application crash.</li>
-                <li><strong>Check Container Logs:</strong> Use <code>kubectl logs &lt;pod-name&gt; --previous</code> to read the logs from the previous crashed container cycle to locate runtime stacktraces.</li>
-                <li><strong>Inspect Health Probes:</strong> Misconfigured Liveness or Readiness probes can terminate containers if endpoints do not respond in time.</li>
-                <li><strong>Validate Configuration:</strong> Ensure ConfigMaps, secrets, and environment parameters (like database credentials) are correctly mapped.</li>
-              </ol>
-              <pre style="background: #020617; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #34d399; overflow-x: auto; margin: 0;"># Review past crashed container logs
-kubectl logs my-app-deployment-abcde-1234 --previous
-
-# Check events list in chronological order
-kubectl get events --sort-by='.metadata.creationTimestamp'</pre>
-            </div>
-          </div>
-
-          <div class="qa-item">
-            <button class="qa-question" onclick="window.toggleAccordion(this)">
-              <span>Q2: What is the difference between a Liveness Probe and a Readiness Probe?</span>
-              <span class="chevron">▼</span>
-            </button>
-            <div class="qa-answer">
-              <p style="margin-bottom: 0.75rem;">Kubernetes health probes manage the lifecycle of container pods:</p>
-              <ul style="margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style-type: disc;">
-                <li><strong>Liveness Probe:</strong> Monitors if the container is running. If it fails, Kubernetes kills the container and triggers a restart based on the policy. Used to resolve deadlocks.</li>
-                <li><strong>Readiness Probe:</strong> Monitors if the container is ready to receive network traffic. If it fails, the pod is removed from Service endpoint routing (no traffic is sent). Used during app bootups.</li>
-              </ul>
-              <pre style="background: #020617; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #38bdf8; overflow-x: auto; margin: 0;"># Example probe block in Deployment manifest:
-livenessProbe:
-  httpGet:
-    path: /healthz
-    port: 8080
-  initialDelaySeconds: 15
-  periodSeconds: 20</pre>
-            </div>
-          </div>
-
-          <div class="qa-item">
-            <button class="qa-question" onclick="window.toggleAccordion(this)">
-              <span>Q3: What is GitOps, and how does ArgoCD synchronize cluster state?</span>
-              <span class="chevron">▼</span>
-            </button>
-            <div class="qa-answer">
-              <p style="margin-bottom: 0.75rem;"><strong>GitOps</strong> is a methodology that uses Git repositories as the single source of truth for infrastructure and application configurations. ArgoCD handles deployments through a continuous reconciliation loop:</p>
-              <ol style="margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                <li><strong>Pull Model:</strong> ArgoCD runs inside the cluster and polls the target Git repository for changes.</li>
-                <li><strong>State Comparison:</strong> It compares the <strong>desired state</strong> in Git with the <strong>live state</strong> in the cluster.</li>
-                <li><strong>Synchronization:</strong> If there is state drift, ArgoCD applies the changes from Git to the cluster. If enabled, self-healing will automatically overwrite manual cluster changes with the repo configurations.</li>
-              </ol>
-            </div>
-          </div>
+        <div id="vault-qa-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="padding: 2rem; text-align: center; color: var(--text-secondary); font-family: monospace; font-size: 0.85rem;">Loading interview vault database...</div>
         </div>
       </div>
-
       <!-- Tab Content 2: Troubleshooting -->
       <div id="vault-tab-troubleshooting" class="vault-tab-content" style="display: none;">
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <div class="qa-item">
-            <button class="qa-question" onclick="window.toggleAccordion(this)">
-              <span>🔥 Runbook #104: Mitigate Container OOMKilled Outage (Exit Code 137)</span>
-              <span class="chevron">▼</span>
-            </button>
-            <div class="qa-answer">
-              <div style="margin-bottom: 0.75rem; border-left: 3px solid #ef4444; padding-left: 0.75rem; background: rgba(239, 68, 68, 0.03); padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.82rem;">
-                <strong>Incident Alert:</strong> <code>App container terminated with exit code 137. Status: OOMKilled. Pod restarting continuously.</code>
-              </div>
-              <p style="margin-bottom: 0.5rem;"><strong>Diagnosis Steps:</strong></p>
-              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem;">$ kubectl describe pod my-web-app-pod | grep -E "Terminated|Reason|Exit Code"
-State:          Terminated
-Reason:         OOMKilled
-Exit Code:      137</pre>
-              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch:</strong></p>
-              <p style="margin-bottom: 0.75rem;">Adjust container resource allocations inside the Kubernetes manifest by setting requests/limits to scale memory limit:</p>
-              <pre style="background: #020617; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981; overflow-x: auto; margin: 0;">resources:
-  requests:
-    memory: "512Mi"
-    cpu: "250m"
-  limits:
-    memory: "1Gi"  # Scaled up from 512Mi to prevent OOM
-    cpu: "500m"</pre>
-            </div>
-          </div>
-
-          <div class="qa-item">
-            <button class="qa-question" onclick="window.toggleAccordion(this)">
-              <span>🔥 Runbook #209: Reconcile Terraform Security Group State Drift</span>
-              <span class="chevron">▼</span>
-            </button>
-            <div class="qa-answer">
-              <div style="margin-bottom: 0.75rem; border-left: 3px solid #f59e0b; padding-left: 0.75rem; background: rgba(245, 158, 11, 0.03); padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.82rem;">
-                <strong>Incident Alert:</strong> <code>Auditing alert: Manual changes detected on AWS security group web-sec-group (SSH Port 22 opened).</code>
-              </div>
-              <p style="margin-bottom: 0.5rem;"><strong>Diagnosis Steps:</strong></p>
-              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem;">$ terraform plan
-# aws_security_group.web has been changed outside Terraform config:
-~ ingress {
-    ~ from_port = 0
-    ~ to_port   = 0
-    ~ protocol  = "-1"
-    # (Manual open SSH rule detected)
-  }</pre>
-              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch:</strong></p>
-              <p style="margin-bottom: 0.75rem;">Run the Terraform apply pipeline to reconcile resources back to their configured state:</p>
-              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981;">$ terraform apply -auto-approve
-# Reverting manual port rules to repository configurations...
-Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
-            </div>
-          </div>
+        <div id="vault-troubleshooting-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="padding: 2rem; text-align: center; color: var(--text-secondary); font-family: monospace; font-size: 0.85rem;">Loading troubleshooting runbooks...</div>
         </div>
       </div>
-
       <!-- Tab Content 3: Studio Directory -->
       <div id="vault-tab-directory" class="vault-tab-content" style="display: none;">
-        <div style="overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);">
+        <input type="text" id="vault-directory-search" placeholder="🔍 Search 268+ studios, categories, or repositories..." style="width: 100%; padding: 0.65rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-surface); color: var(--text-primary); font-size: 0.85rem; margin-bottom: 1rem; outline: none; box-sizing: border-box;" oninput="window.filterVaultDirectory(this)" />
+        <div style="overflow-x: auto; max-height: 500px; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);">
           <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
             <thead>
               <tr style="border-bottom: 2px solid var(--border); color: var(--text-secondary); background: var(--bg-surface);">
@@ -1447,67 +1341,8 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
                 <th style="padding: 0.75rem 1rem; font-weight: 700; text-align: right;">Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🤖 DevOps AI RAG Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-ai" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-ai</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/ai/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">☸️ Enterprise LLM Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-llm" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-llm</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/llm/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🖥️ Local SLM Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-slm" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-slm</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/slm/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">📈 MLflow Tracking Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-mlflow" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-mlflow</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/mlflow/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🤖 Strands SRE Agent Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-strands" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-strands</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/strands/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🛡️ LLM Guardrails Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-llm-guardrails" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-llm-guardrails</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/llm-guardrails/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">⚡ Ray Cluster Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-ray-cluster" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-ray-cluster</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/ray-cluster/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">📊 AI Evaluation Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-ai-eval" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-ai-eval</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/ai-eval/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🗄️ Feature Store Studio</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-feature-store" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-feature-store</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/feature-store/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border);">
-                <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">🚌 School Bus Tracking System</td>
-                <td style="padding: 0.75rem 1rem;">AI &amp; MLOps</td>
-                <td style="padding: 0.75rem 1rem; font-family: monospace;"><a href="https://github.com/Pradeeptalari14/tp-school-bus-tracker" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Pradeeptalari14/tp-school-bus-tracker</a></td>
-                <td style="padding: 0.75rem 1rem; text-align: right;"><a href="../tools/school-bus-tracker/" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a></td>
-              </tr>
+            <tbody id="vault-directory-tbody">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
         </div>
@@ -1537,7 +1372,196 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
   </footer>
 
   <script type="module">
-    import toolsData from '../tools/tools.json';
+    let toolsData = [];
+    let topicsData = {};
+
+    async function loadAllData() {
+      try {
+        const [studiosRes, topicsRes] = await Promise.all([
+          fetch('./studios.json'),
+          fetch('../interview/topics.json')
+        ]);
+        
+        if (studiosRes.ok) {
+          toolsData = await studiosRes.json();
+          renderToolsGrid();
+          renderVaultDirectory();
+          initToolsFilter();
+        } else {
+          console.error('Failed to load studios.json:', studiosRes.status);
+        }
+        
+        if (topicsRes.ok) {
+          topicsData = await topicsRes.json();
+          renderVaultQA();
+          renderVaultTroubleshooting();
+        } else {
+          console.error('Failed to load topics.json:', topicsRes.status);
+        }
+      } catch (err) {
+        console.error('Failed to load dynamic data sources', err);
+      }
+    }
+
+    function renderVaultQA() {
+      const container = document.getElementById('vault-qa-container');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      const selectedQAs = [];
+      const addQA = (pillar, topic, index, prefix) => {
+        try {
+          const t = topicsData[pillar].topics[topic];
+          if (t && t.interview && t.interview[index]) {
+            selectedQAs.push({
+              q: prefix + t.interview[index].q,
+              intent: t.interview[index].intent,
+              strong: t.interview[index].strong,
+              expert: t.interview[index].expert,
+              leadership: t.interview[index].leadership,
+              coachTips: t.interview[index].coachTips
+            });
+          }
+        } catch(e) {}
+      };
+      
+      addQA('skills', 'prod_troubleshooting', 0, 'Q1: ');
+      addQA('about', 'sre_practices', 0, 'Q2: ');
+      addQA('tools', 'gitops_argocd', 0, 'Q3: ');
+      addQA('skills', 'k8s_ha', 0, 'Q4: ');
+      addQA('projects', 'ai_infrastructure', 0, 'Q5: ');
+      
+      selectedQAs.forEach(qa => {
+        const item = document.createElement('div');
+        item.className = 'qa-item';
+        item.innerHTML = `
+          <button class="qa-question" onclick="window.toggleAccordion(this)">
+            <span>${qa.q}</span>
+            <span class="chevron">▼</span>
+          </button>
+          <div class="qa-answer" style="display: none; padding: 1.25rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; border-top: 1px solid var(--border);">
+            <p style="margin-bottom: 0.75rem;"><strong>Diagnostic Intent:</strong> ${qa.intent}</p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.75rem;">
+              <div style="border-left: 3px solid var(--border); padding-left: 0.75rem;">
+                <strong style="color: var(--text-primary);">Strong Answer:</strong><br>${qa.strong}
+              </div>
+              <div style="border-left: 3px solid var(--accent-cyan); padding-left: 0.75rem;">
+                <strong style="color: var(--accent-cyan);">Expert SRE Answer:</strong><br>${qa.expert}
+              </div>
+              <div style="border-left: 3px solid var(--accent-primary); padding-left: 0.75rem;">
+                <strong style="color: var(--accent-primary);">Architectural Leadership:</strong><br>${qa.leadership}
+              </div>
+              <div style="background: rgba(79, 70, 229, 0.04); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-accent); margin-top: 0.5rem; color: var(--accent-primary);">
+                <strong>💡 Coach Delivery Strategy:</strong> ${qa.coachTips}
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderVaultTroubleshooting() {
+      const container = document.getElementById('vault-troubleshooting-container');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      const selectedRunbooks = [];
+      const addRunbook = (pillar, topic, id) => {
+        try {
+          const t = topicsData[pillar].topics[topic];
+          if (t && t.incident) {
+            selectedRunbooks.push({
+              id: id,
+              title: t.incident.title,
+              flow: t.incident.flow,
+              symptoms: t.incident.symptoms,
+              causes: t.incident.causes,
+              verify: t.incident.verify,
+              commands: t.incident.commands,
+              fix: t.incident.fix,
+              validation: t.incident.validation,
+              prevention: t.incident.prevention
+            });
+          }
+        } catch(e) {}
+      };
+      
+      addRunbook('skills', 'prod_troubleshooting', 104);
+      addRunbook('tools', 'terraform_state', 209);
+      addRunbook('skills', 'k8s_ha', 301);
+      addRunbook('experience', 'rolling_updates', 412);
+      addRunbook('projects', 'ai_infrastructure', 503);
+      
+      selectedRunbooks.forEach(rb => {
+        const item = document.createElement('div');
+        item.className = 'qa-item';
+        item.innerHTML = `
+          <button class="qa-question" onclick="window.toggleAccordion(this)">
+            <span>🔥 Runbook #${rb.id}: ${rb.title}</span>
+            <span class="chevron">▼</span>
+          </button>
+          <div class="qa-answer" style="display: none; padding: 1.25rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; border-top: 1px solid var(--border);">
+            <div style="margin-bottom: 0.75rem; border-left: 3px solid #ef4444; padding-left: 0.75rem; background: rgba(239, 68, 68, 0.03); padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.82rem;">
+              <strong>Incident Alert Flow:</strong> ${rb.flow}
+            </div>
+            <p style="margin-bottom: 0.5rem;"><strong>Symptoms & Metrics:</strong> ${rb.symptoms}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Root Cause Analysis:</strong> ${rb.causes}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Verification Action:</strong> ${rb.verify}</p>
+            
+            ${rb.commands ? `
+            <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem;">$ ${rb.commands}</pre>
+            ` : ''}
+            
+            <p style="margin-bottom: 0.5rem;"><strong>Remediation & Fix:</strong> ${rb.fix}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Post-Remediation Validation:</strong> ${rb.validation}</p>
+            <p style="margin-bottom: 0.5rem; color: var(--accent-primary);"><strong>Architectural Prevention:</strong> ${rb.prevention}</p>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderVaultDirectory() {
+      const tbody = document.getElementById('vault-directory-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      
+      const categoryLabels = {
+        ai: 'AI & MLOps',
+        cloud: 'Cloud & Infra',
+        cicd: 'CI/CD Pipelines',
+        automation: 'Config & Auto',
+        observability: 'Observability'
+      };
+      
+      toolsData.forEach(studio => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid var(--border)';
+        const catLabel = categoryLabels[studio.category] || studio.category;
+        tr.innerHTML = `
+          <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-primary);">${studio.icon} ${studio.title}</td>
+          <td style="padding: 0.75rem 1rem;">${catLabel}</td>
+          <td style="padding: 0.75rem 1rem; font-family: monospace;">
+            <a href="https://github.com/${studio.repository}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">${studio.repository}</a>
+          </td>
+          <td style="padding: 0.75rem 1rem; text-align: right;">
+            <a href="../tools/${studio.link}" style="font-weight: bold; color: var(--accent-primary);">Launch ➜</a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.filterVaultDirectory = function(input) {
+      const query = input.value.toLowerCase().trim();
+      const rows = document.querySelectorAll('#vault-directory-tbody tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    };
+
 
     function renderToolsGrid() {
       const container = document.getElementById('tools-grid-container');
@@ -1996,12 +2020,11 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
     };
 
     // Initialize all
-    document.addEventListener('DOMContentLoaded', () => {
-      renderToolsGrid();
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadAllData();
       initDynamicYear();
       initLatencyTracker();
       initFinOpsCalculator();
-      initToolsFilter();
       initPwaInstall();
     });
   </script>

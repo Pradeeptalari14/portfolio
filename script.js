@@ -153,12 +153,12 @@ createParticles();
    TYPEWRITER
 ══════════════ */
 const roles = [
-  'DevOps Engineer',
-  'Cloud Architect',
-  'SRE Specialist',
+  'AI Infrastructure Engineer',
+  'Platform Engineer',
+  'DevOps & MLOps Engineer',
+  'Cloud-Native Architect',
   'Kubernetes Expert',
-  'Infrastructure Engineer',
-  'Automation Enthusiast'
+  'SRE & Observability Specialist'
 ];
 
 let roleIdx    = 0;
@@ -878,35 +878,35 @@ function initSRETerminal() {
                     '  terraform apply  - Apply pending Terraform changes';
           break;
         case 'about':
-          outText = 'TALARI PRADEEP - CLOUD & DEVOPS ENGINEER\n' +
-                    '------------------------------------------------\n' +
-                    'Current Focus: AWS, Kubernetes, Terraform, SRE.\n' +
-                    'Enterprise Experience: Managed enterprise EKS workloads\n' +
-                    'with Helm, Karpenter, private network subnets, and IaC.\n' +
-                    'Studios & Repos: Automated secure deployments and GitOps\n' +
-                    'monitoring for 15+ microservice repositories.\n' +
-                    'Status: Operational (SLA target: 99.99%). Open to work.';
+          outText = 'TALARI PRADEEP - AI INFRASTRUCTURE & PLATFORM ENGINEER\n' +
+                    '--------------------------------------------------------\n' +
+                    'Current Focus: LLMOps, Multi-Agent Orchestration, Observability, IaC.\n' +
+                    'Enterprise Experience: Infrastructure & AI Engineer at Accenture;\n' +
+                    'built Enterprise Agentic OS (LangGraph) & RAG Platforms.\n' +
+                    'Studios & Repos: Automating AI deployments & GitOps CI/CD pipelines\n' +
+                    'across 15+ core development repositories.\n' +
+                    'Status: Operational (SLA target: 99.9%). Open to work.';
           break;
         case 'skills':
           outText = 'KEY SKILLS & TOOLS:\n' +
                     '------------------------------------------------\n' +
-                    '[Cloud Platforms]  AWS, GCP, Azure\n' +
-                    '[Containers/Orch]  Kubernetes (EKS, GKE), Docker, Helm\n' +
-                    '[IaC & GitOps]     Terraform, Ansible, Pulumi\n' +
-                    '[CI/CD Pipelines]  Jenkins, GitHub Actions, Git\n' +
-                    '[Observability]    Prometheus, Grafana, ELK Stack, Loki\n' +
-                    '[Development]      Python, Bash, Groovy, JavaScript';
+                    '[AI / LLMs]        LangGraph, CrewAI, Ollama, vLLM, LangChain\n' +
+                    '[RAG & Search]     Weaviate, Pinecone, OpenSearch, Semantic Search\n' +
+                    '[Cloud Platforms]  Azure, AWS, GCP\n' +
+                    '[Containers & IaC] Kubernetes, Helm, Terraform, Ansible, ArgoCD\n' +
+                    '[Observability]    Prometheus, Grafana, LogicMonitor, OpenTelemetry\n' +
+                    '[Languages]        Python (FastAPI, asyncio), Bash, PowerShell, SQL';
           break;
         case 'neofetch':
           outText = '     _.._       visitor@talaripradeep.info\n' +
                     '   .\' .-\'`      --------------------------\n' +
                     '  /  /          OS: TalariOS 2.0\n' +
-                    '  |  |          Host: talaripradeep.info (SLA: 99.99%)\n' +
+                    '  |  |          Host: talaripradeep.info (SLA: 99.9%)\n' +
                     '  \\  \\__.-.     Kernel: Web Shell/v2.4\n' +
                     '   \'._`  .\'     Uptime: 100% (Continuous Integration)\n' +
                     '      ``        Shell: bash-tp-custom\n' +
-                    '                Location: India (Open to Work)\n' +
-                    '                Core Stack: AWS, Kubernetes, Terraform, SRE';
+                    '                Location: Bangalore, India (Open to Work)\n' +
+                    '                Core Stack: LangGraph, Weaviate, Terraform, Kubernetes, MLOps';
           break;
         default:
           outText = 'bash: command not found: ' + cmd + '. Type "help" for available commands.';
