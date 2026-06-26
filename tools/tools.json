@@ -3382,5 +3382,65 @@
     "tag": "redshift_ml.sql",
     "link": "amazon-redshift/",
     "repository": "Pradeeptalari14/tp-amazon-redshift"
+  },
+  {
+    "title": "GraphRAG & Neo4j Database Studio",
+    "desc": "Configure GraphRAG schemas, Neo4j graph databases, APOC imports, and similarity graph queries. Generate Cypher query scripts, vector indexes, and docker-compose files.",
+    "category": "ai",
+    "icon": "🌳",
+    "color": "rgb(26, 188, 156)",
+    "borderClass": "border-teal-200",
+    "bgClass": "bg-teal-50/10",
+    "tag": "schema_import.cypher",
+    "link": "neo4j-graphrag/",
+    "repository": "Pradeeptalari14/tp-neo4j-graphrag"
+  },
+  {
+    "title": "Supabase & pgvector Developer Studio",
+    "desc": "Deploy local Supabase databases with native pgvector vector extensions, Row-Level Security (RLS) policies, and seed data templates. Generate postgres SQL schemas, seed files, and CLI configs.",
+    "category": "ai",
+    "icon": "🟢",
+    "color": "rgb(62, 207, 142)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "supabase_schema.sql",
+    "link": "supabase-pgvector/",
+    "repository": "Pradeeptalari14/tp-supabase-pgvector"
+  },
+  {
+    "title": "Kafka & Flink Streaming Studio",
+    "desc": "Orchestrate real-time message streams with Apache Kafka topics and stream-processing aggregations using Apache Flink SQL. Generate Flink SQL jobs, Python producers, and docker-compose services.",
+    "category": "ai",
+    "icon": "🟠",
+    "color": "rgb(230, 126, 34)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "flink_job.sql",
+    "link": "kafka-flink-streaming/",
+    "repository": "Pradeeptalari14/tp-kafka-flink-streaming"
+  },
+  {
+    "title": "Milvus & Weaviate Vector DB Clustering Studio",
+    "desc": "Provision distributed, high-availability Milvus or Weaviate vector database clusters. Generate Kubernetes Helm values files, Python schema definitions, and docker-compose orchestrations.",
+    "category": "ai",
+    "icon": "🔮",
+    "color": "rgb(139, 92, 246)",
+    "borderClass": "border-violet-200",
+    "bgClass": "bg-violet-50/10",
+    "tag": "cluster_values.yaml",
+    "link": "milvus-weaviate-cluster/",
+    "repository": "Pradeeptalari14/tp-milvus-weaviate-cluster"
+  },
+  {
+    "title": "Pinecone Serverless Vector DB Studio",
+    "desc": "Configure serverless cloud-native Pinecone indexes, dimensions, distance metrics, and AWS IAM connection policies. Generate initialization scripts, vector query templates, and IAM policies.",
+    "category": "ai",
+    "icon": "🌲",
+    "color": "rgb(21, 26, 48)",
+    "borderClass": "border-slate-300",
+    "bgClass": "bg-slate-50/10",
+    "tag": "index_setup.py",
+    "link": "pinecone-serverless/",
+    "repository": "Pradeeptalari14/tp-pinecone-serverless"
   }
 ]

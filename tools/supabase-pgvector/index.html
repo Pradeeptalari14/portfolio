@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supabase & pgvector Developer Studio | Developer Studio</title>
+  <meta name="description" content="Configure local Supabase databases with native pgvector vector extensions, Row-Level Security (RLS) policies, database seeds, and configuration parameters. Generate postgres SQL schemas, API configurations, and seed tables." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="icon" type="image/png" href="/Favicon.png" />
+  
+  <style>
+    :root {
+      --accent-primary: #3ecf8e;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-slate-50">
+
+  <!-- Nav bar -->
+  <nav class="navbar border-b border-slate-200 bg-white">
+    <div class="nav-container flex justify-between items-center w-full max-w-7xl mx-auto px-6 py-4">
+      <a href="../../" class="nav-logo flex items-center gap-2">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="nav-logo-img rounded-full" width="32" height="32" loading="lazy" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <ul class="nav-links flex gap-6 text-sm font-semibold">
+        <li><a href="../../#about" class="nav-link">About</a></li>
+        <li><a href="../../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../../experience/" class="nav-link">Experience</a></li>
+        <li><a href="../../projects/" class="nav-link">Projects</a></li>
+        <li><a href="../" class="nav-link active" id="nav-tools-link">Tools</a></li>
+        <li><a href="../../AI/" class="nav-link" id="nav-ai-link">AI</a></li>
+        <li><a href="../../interview/" class="nav-link">Interview</a></li>
+        <li><a href="../../#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="pwa-install-btn" class="nav-cta" style="display: none; background: #059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2); cursor: pointer; border: none; font-family: inherit;">📲 Install App</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+    <div class="mb-10 text-center lg:text-left">
+      <span class="inline-block text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Vector Databases & Local Dev</span>
+      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Supabase & pgvector Developer Studio</h1>
+      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Configure local Supabase databases with native pgvector vector extensions, Row-Level Security (RLS) policies, database seeds, and configuration parameters. Generate postgres SQL schemas, API configurations, and seed tables.</p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+          <div class="studio-card">
+            <h3 class="studio-title text-base font-bold text-gray-900 mb-4">🟢 Supabase Local DB Config</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label for="local_port" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Local Postgres Port</label>
+                <input type="text" id="local_port" class="form-input w-full p-2.5 text-xs" value="54322" />
+              </div>
+              <div>
+                <label for="similarity_metric" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">pgvector Distance Metric</label>
+                <select id="similarity_metric" class="form-select w-full p-2.5 text-xs">
+                  <option value="cosine" selected>Cosine Similarity (<=>)</option>
+                  <option value="l2">Euclidean L2 Distance (<->)</option>
+                  <option value="inner_product">Negative Inner Product (<#>)</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label for="vector_dimensions" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Vector Dimensions</label>
+                <select id="vector_dimensions" class="form-select w-full p-2.5 text-xs">
+                  <option value="1536" selected>1536 (OpenAI, standard)</option>
+                  <option value="768">768 (Vertex AI, Cohere)</option>
+                  <option value="384">384 (MiniLM, local)</option>
+                  <option value="128">128 (compressed)</option>
+                </select>
+              </div>
+              <div>
+                <label for="enable_rls" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Enable Row-Level Security (RLS)</label>
+                <select id="enable_rls" class="form-select w-full p-2.5 text-xs">
+                  <option value="enabled" selected>Enabled (Strict RLS Policies)</option>
+                  <option value="disabled">Disabled (Development mode)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+    
+      </div>
+
+      <!-- RIGHT: Viewports (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container bg-slate-950">
+          <div class="ide-header flex flex-col items-stretch p-0 border-b border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900">
+              <div class="ide-dots">
+                <span class="ide-dot ide-dot-red"></span>
+                <span class="ide-dot ide-dot-yellow"></span>
+                <span class="ide-dot ide-dot-green"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-44 focus:outline-none" value="supabase_schema.sql" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 overflow-x-auto">
+              
+              <button onclick="switchTab('supabase_schema_sql')" id="tab-supabase_schema_sql" class="tab-btn active">supabase_schema.sql</button>
+              <button onclick="switchTab('seed_sql')" id="tab-seed_sql" class="tab-btn">seed.sql</button>
+              <button onclick="switchTab('config_toml')" id="tab-config_toml" class="tab-btn text-teal-400">📊 config.toml</button>
+    
+            </div>
+          </div>
+
+          <!-- Code View -->
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 480px; max-height: 640px;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button id="btn-copy" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+              <span>📋 Copy Output</span>
+            </button>
+            <button id="btn-download" class="py-2.5 bg-indigo-650 hover:bg-indigo-700 text-slate-700 font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5" style="background-color: var(--accent-primary); color: #ffffff;">
+              <span>⬇️ Download file</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="../../src/js/core-tool.js"></script>
+  <script type="module" src="../../src/js/generators/supabase-pgvector-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+</body>
+</html>
