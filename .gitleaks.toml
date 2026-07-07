@@ -1,0 +1,11 @@
+[[allowlists]]
+  description = "Ignore false positives in developer studio tool files"
+  paths = [
+    '''tools/.*''',
+    '''dist/.*''',
+    '''node_modules/.*''',
+    '''\.github/.*''',
+    '''\.env\.example''',
+    '''README\.md''',
+    '''SECURITY\.md'''
+  ]
