@@ -25,7 +25,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('sre_dark_mode_active');
+        if (t === 'false') {
+          document.documentElement.classList.remove('dark-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.classList.add('dark-theme');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch(e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
