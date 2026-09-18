@@ -1272,6 +1272,38 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 1.5rem;
 }
 
+/* 4-column variant for new homepage layout */
+.what-i-build-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1100px) {
+  .what-i-build-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .what-i-build-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 3-column projects grid */
+.projects-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .projects-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 .build-card {
   background: var(--bg-card);
   border: 1px solid var(--border);

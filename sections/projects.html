@@ -5,11 +5,11 @@
       <span class="section-tag">// PRODUCTION ARCHITECTURES</span>
       <h2 class="section-title">FEATURED <span class="gradient-text">PROJECTS</span></h2>
       <p class="section-subtitle">
-        Production-grade AI platforms, LLMOps pipelines, multi-agent frameworks, and cloud-native IaC solutions built for enterprise scale.
+        Production-grade AI platforms, LLMOps pipelines, and cloud-native infrastructure built for enterprise scale.
       </p>
     </div>
 
-    <div class="projects-grid">
+    <div class="projects-grid projects-grid-3">
 
       <!-- Project 1: Enterprise Agentic OS -->
       <div class="project-card featured" id="project-agentic-os">
@@ -23,8 +23,8 @@
         </div>
         <div class="project-featured-badge">⭐ Featured</div>
         <h3 class="project-title"><a href="projects/enterprise-agentic-os.html" class="project-title-link">Enterprise Agentic Operating System</a></h3>
-        <p class="project-desc">Designed a multi-agent orchestration OS with specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful graphs—handling 500+ concurrent enterprise workflows with dynamic tool routing.</p>
-        <a href="projects/enterprise-agentic-os.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <p class="project-desc">Multi-agent orchestration OS with specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful graphs — handling 500+ concurrent enterprise workflows with dynamic tool routing.</p>
+        <a href="projects/enterprise-agentic-os.html" class="project-details-link">View Architecture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         <div class="project-tech">
           <span>LangGraph</span><span>FastAPI</span><span>Kubernetes</span><span>Redis</span><span>ArgoCD</span>
         </div>
@@ -41,32 +41,14 @@
           </div>
         </div>
         <h3 class="project-title"><a href="projects/enterprise-rag-platform.html" class="project-title-link">Enterprise RAG Platform</a></h3>
-        <p class="project-desc">Built production-grade RAG pipeline with hybrid semantic + BM25 search over 5M+ documents, Weaviate vector database, and Neo4j GraphRAG, achieving 3x reduction in hallucination rates.</p>
-        <a href="projects/enterprise-rag-platform.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <p class="project-desc">Production-grade RAG pipeline with hybrid semantic + BM25 search over 5M+ documents, Weaviate vector database, and Neo4j GraphRAG — achieving 3× reduction in hallucination rates.</p>
+        <a href="projects/enterprise-rag-platform.html" class="project-details-link">View Architecture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         <div class="project-tech">
           <span>LangChain</span><span>Weaviate</span><span>OpenSearch</span><span>Neo4j</span><span>Terraform</span>
         </div>
       </div>
 
-      <!-- Project 3: AI Infrastructure Monitoring Copilot -->
-      <div class="project-card" id="project-monitoring-copilot">
-        <div class="project-card-top">
-          <div class="project-icon">📡</div>
-          <div class="project-links">
-            <a href="https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot" target="_blank" rel="noopener noreferrer" class="project-link" id="proj3-github" title="GitHub">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-            </a>
-          </div>
-        </div>
-        <h3 class="project-title"><a href="projects/ai-infra-monitoring-copilot.html" class="project-title-link">AI Infrastructure Monitoring Copilot</a></h3>
-        <p class="project-desc">Engineered AI-powered incident triage assistant with function-calling agents that query LogicMonitor telemetry, correlate alerts, auto-generate ServiceNow tickets, and integrate with MCP.</p>
-        <a href="projects/ai-infra-monitoring-copilot.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech">
-          <span>Claude / GPT-4</span><span>LogicMonitor</span><span>ServiceNow</span><span>MCP</span><span>FastAPI</span>
-        </div>
-      </div>
-
-      <!-- Project 4: Cloud Landing Zone & IaC Platform -->
+      <!-- Project 3: Cloud Landing Zone -->
       <div class="project-card" id="project-landing-zone">
         <div class="project-card-top">
           <div class="project-icon">🏗️</div>
@@ -76,56 +58,20 @@
             </a>
           </div>
         </div>
-        <h3 class="project-title"><a href="projects/multi-cloud-landing-zone.html" class="project-title-link">Cloud Landing Zone &amp; IaC Platform</a></h3>
-        <p class="project-desc">Built reusable Terraform module library for multi-cloud Landing Zone provisioning—enabling one-click environment bootstrap in under 30 minutes with GitOps pipelines and SOC2 compliance.</p>
-        <a href="projects/multi-cloud-landing-zone.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <h3 class="project-title"><a href="projects/multi-cloud-landing-zone.html" class="project-title-link">Cloud Landing Zone & IaC Platform</a></h3>
+        <p class="project-desc">Reusable Terraform module library for multi-cloud Landing Zone provisioning — one-click environment bootstrap in under 30 minutes with GitOps pipelines and SOC2 compliance built-in.</p>
+        <a href="projects/multi-cloud-landing-zone.html" class="project-details-link">View Architecture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         <div class="project-tech">
           <span>Terraform</span><span>Pulumi</span><span>Ansible</span><span>Azure</span><span>AWS</span>
-        </div>
-      </div>
-
-      <!-- Project 5: Enterprise Observability Platform -->
-      <div class="project-card" id="project-observability-platform">
-        <div class="project-card-top">
-          <div class="project-icon">🔭</div>
-          <div class="project-links">
-            <a href="https://github.com/Pradeeptalari14/observability-platform-k8s" target="_blank" rel="noopener noreferrer" class="project-link" id="proj5-github" title="GitHub">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-            </a>
-          </div>
-        </div>
-        <h3 class="project-title"><a href="projects/observability-platform-k8s.html" class="project-title-link">Enterprise Observability Platform</a></h3>
-        <p class="project-desc">Centralized Kubernetes observability stack with Prometheus federation, Loki log aggregation, and Tempo distributed tracing, providing unified MELT visibility and alert correlation.</p>
-        <a href="projects/observability-platform-k8s.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech">
-          <span>Prometheus</span><span>Grafana</span><span>Loki</span><span>Tempo</span><span>OpenTelemetry</span>
-        </div>
-      </div>
-
-      <!-- Project 6: WhatsApp & Voice AI Assistant Platform -->
-      <div class="project-card" id="project-voice-assistant">
-        <div class="project-card-top">
-          <div class="project-icon">📞</div>
-          <div class="project-links">
-            <a href="https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant" target="_blank" rel="noopener noreferrer" class="project-link" id="proj6-github" title="GitHub">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-            </a>
-          </div>
-        </div>
-        <h3 class="project-title"><a href="projects/whatsapp-voice-ai-assistant.html" class="project-title-link">WhatsApp &amp; Voice AI Assistant Platform</a></h3>
-        <p class="project-desc">Architected multi-channel assistant supporting WhatsApp, Telegram, Slack, and Teams. Integrated Whisper STT and ElevenLabs TTS via WebRTC for real-time voice streaming receptionist.</p>
-        <a href="projects/whatsapp-voice-ai-assistant.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech">
-          <span>FastAPI</span><span>Whisper</span><span>TTS</span><span>WebRTC</span><span>Redis</span>
         </div>
       </div>
 
     </div>
 
     <div class="projects-cta-row" style="text-align: center; margin-top: 2.5rem;">
-      <a href="projects/" class="btn-primary btn-lg" id="view-all-projects-btn">
-        <span>Explore All Production Projects</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <a href="projects/" class="btn-outline btn-lg" id="view-all-projects-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>View All Projects</span>
       </a>
     </div>
 
