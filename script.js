@@ -61,9 +61,12 @@ if (navThemeToggle) {
   navThemeToggle.addEventListener('click', toggleTheme);
 }
 
-// Initialize theme on load safely
+// Initialize theme on load safely: default to dark unless user explicitly chose light
 try {
-  if (typeof localStorage !== 'undefined' && localStorage.getItem('sre_dark_mode_active') === 'true') {
+  if (typeof localStorage !== 'undefined' && localStorage.getItem('sre_dark_mode_active') === 'false') {
+    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
     document.documentElement.classList.add('dark-theme');
     document.documentElement.setAttribute('data-theme', 'dark');
   }

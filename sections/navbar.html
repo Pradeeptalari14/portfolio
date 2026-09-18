@@ -2,24 +2,91 @@
   <nav class="navbar" id="navbar">
     <div class="nav-container">
       <a href="#home" class="nav-logo" id="nav-logo-link">
-        <img src="Photo.webp" alt="Talari Pradeep" class="nav-logo-img" width="32" height="32" loading="lazy" />
-        <span>TALARI PRADEEP<span style="color:var(--accent-primary)">.</span></span>
+        <img src="Photo.webp" alt="Talari Pradeep" class="nav-logo-img" width="34" height="34" loading="lazy" />
+        <span>TALARI PRADEEP<span class="logo-dot">.</span></span>
       </a>
+
       <ul class="nav-links" id="nav-links">
-        <li><a href="#about"          class="nav-link" id="nav-about">About</a></li>
-        <li><a href="experience/"     class="nav-link" id="nav-experience">Experience</a></li>
-        <li><a href="skills/"         class="nav-link" id="nav-skills">Skills</a></li>
-        <li><a href="projects/"       class="nav-link" id="nav-projects">Projects</a></li>
-        <li><a href="studios/"        class="nav-link" id="nav-studios">Studios</a></li>
-        <li><a href="AI/"             class="nav-link" id="nav-ai">AI Lab</a></li>
-        <li><a href="architecture/"   class="nav-link" id="nav-architecture">Architecture</a></li>
-        <li><a href="knowledge/"      class="nav-link" id="nav-knowledge">Knowledge</a></li>
-        <li><a href="toolbox/"        class="nav-link" id="nav-toolbox">Toolbox</a></li>
-        <li><a href="resume/"         class="nav-link" id="nav-resume">Resume</a></li>
-        <li><a href="#contact"        class="nav-link" id="nav-contact">Contact</a></li>
+        <li><a href="#about" class="nav-link" id="nav-about">About</a></li>
+        <li><a href="experience/" class="nav-link" id="nav-experience">Experience</a></li>
+        <li><a href="projects/" class="nav-link" id="nav-projects">Projects</a></li>
+        <li><a href="skills/" class="nav-link" id="nav-skills">Skills</a></li>
+        <li>
+          <a href="studios/" class="nav-link nav-link-highlight" id="nav-studios">
+            <span>Studios</span>
+            <span class="nav-badge-pill">291</span>
+          </a>
+        </li>
+        <li class="nav-dropdown-wrapper" id="navDropdownWrapper">
+          <button class="nav-link nav-dropdown-btn" id="navDropdownTrigger" aria-expanded="false" aria-haspopup="true">
+            <span>Platform</span>
+            <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown-menu" id="navDropdownMenu">
+            <a href="AI/" class="dropdown-link">
+              <span class="dd-icon">🤖</span>
+              <div class="dd-info">
+                <span class="dd-title">AI Laboratory</span>
+                <span class="dd-desc">Model scaling, RAG &amp; LLMOps</span>
+              </div>
+            </a>
+            <a href="architecture/" class="dropdown-link">
+              <span class="dd-icon">📐</span>
+              <div class="dd-info">
+                <span class="dd-title">Architecture Center</span>
+                <span class="dd-desc">Landing Zones &amp; EKS topologies</span>
+              </div>
+            </a>
+            <a href="incident/" class="dropdown-link">
+              <span class="dd-icon">🚨</span>
+              <div class="dd-info">
+                <span class="dd-title">Incident Simulator</span>
+                <span class="dd-desc">SRE production triage drills</span>
+              </div>
+            </a>
+            <a href="knowledge/" class="dropdown-link">
+              <span class="dd-icon">📚</span>
+              <div class="dd-info">
+                <span class="dd-title">Knowledge Base</span>
+                <span class="dd-desc">Production runbooks &amp; SLO math</span>
+              </div>
+            </a>
+            <a href="learning/" class="dropdown-link">
+              <span class="dd-icon">🗺️</span>
+              <div class="dd-info">
+                <span class="dd-title">Learning Paths</span>
+                <span class="dd-desc">Career milestones &amp; roadmaps</span>
+              </div>
+            </a>
+            <a href="toolbox/" class="dropdown-link">
+              <span class="dd-icon">🧰</span>
+              <div class="dd-info">
+                <span class="dd-title">Engineering Toolbox</span>
+                <span class="dd-desc">CIDR, Cron, Base64 &amp; JSON</span>
+              </div>
+            </a>
+            <a href="finops/" class="dropdown-link">
+              <span class="dd-icon">💰</span>
+              <div class="dd-info">
+                <span class="dd-title">Cloud FinOps</span>
+                <span class="dd-desc">EC2, EKS &amp; S3 rightsizing</span>
+              </div>
+            </a>
+            <a href="status/" class="dropdown-link">
+              <span class="dd-icon">🟢</span>
+              <div class="dd-info">
+                <span class="dd-title">Platform Status</span>
+                <span class="dd-desc">99.98% uptime telemetry</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li><a href="resume/" class="nav-link" id="nav-resume">Resume</a></li>
+        <li><a href="#contact" class="nav-link" id="nav-contact">Contact</a></li>
       </ul>
+
       <div class="nav-actions">
-        <button class="nav-cmd-btn" id="cmdPaletteTrigger" aria-label="Open Command Center" title="Command Center (Ctrl+K)">
+        <button class="nav-cmd-btn" id="cmdPaletteTrigger" aria-label="Open Command Center (Ctrl+K)" title="Command Center (Ctrl+K)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmd-label">Search</span>
           <kbd class="cmd-shortcut">Ctrl K</kbd>
