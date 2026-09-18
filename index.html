@@ -28,14 +28,9 @@
   <script>
     (function() {
       try {
-        var t = localStorage.getItem('sre_dark_mode_active');
-        if (t === 'false') {
-          document.documentElement.classList.remove('dark-theme');
-          document.documentElement.setAttribute('data-theme', 'light');
-        } else {
-          document.documentElement.classList.add('dark-theme');
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        localStorage.setItem('sre_dark_mode_active', 'true');
+        document.documentElement.classList.add('dark-theme');
+        document.documentElement.setAttribute('data-theme', 'dark');
       } catch(e) {}
     })();
   </script>

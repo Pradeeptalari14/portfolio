@@ -180,9 +180,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .section { padding: 100px 0; }
 
 .section-alt {
-  background: var(--bg-surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: #090d16;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .section-header {
@@ -1824,15 +1824,15 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #94a3b8;
-  font-weight: 600;
+  color: #cbd5e1;
+  font-weight: 700;
 }
 
 .contact-card-val {
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  color: #f8fafc;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1905,8 +1905,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 .form-header-sub {
-  font-size: 0.75rem;
-  color: #94a3b8;
+  font-size: 0.76rem;
+  color: #cbd5e1;
 }
 
 .form-row {
@@ -1930,8 +1930,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .form-group label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.72rem;
-  font-weight: 600;
-  color: #cbd5e1;
+  font-weight: 700;
+  color: #f1f5f9;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -1952,7 +1952,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .form-group input:focus,
@@ -3555,9 +3555,9 @@ body.modal-open {
 }
 
 .widget-desc {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  font-size: 0.84rem;
+  color: #cbd5e1;
+  line-height: 1.6;
 }
 
 .btn-widget-action {
@@ -3608,9 +3608,12 @@ body.modal-open {
   justify-content: space-between;
   font-size: 0.84rem;
   font-weight: 600;
+  color: #cbd5e1;
 }
 .sla-highlight {
-  color: var(--accent-primary);
+  color: #38bdf8;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
 }
 .sla-slider {
   -webkit-appearance: none;
@@ -3618,7 +3621,7 @@ body.modal-open {
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.12);
   outline: none;
 }
 .sla-slider::-webkit-slider-thumb {
@@ -3627,7 +3630,8 @@ body.modal-open {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent-primary);
+  background: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
   cursor: pointer;
   transition: transform 0.1s ease;
 }
@@ -3637,9 +3641,10 @@ body.modal-open {
 .sla-ticks {
   display: flex;
   justify-content: space-between;
-  font-size: 0.65rem;
-  color: var(--text-muted);
+  font-size: 0.68rem;
+  color: #94a3b8;
   font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
   padding: 0 2px;
 }
 .sla-results {
@@ -3825,13 +3830,17 @@ body.modal-open {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  padding: 0.5rem 0.75rem;
+  background: #060911;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.6rem 0.85rem;
   border-radius: var(--radius-md);
   font-size: 0.75rem;
   font-weight: 600;
   margin-top: 0.25rem;
+}
+.ingress-lbl {
+  color: #cbd5e1;
+  font-weight: 600;
 }
 .dr-controls {
   border-top: 1px solid var(--border);
@@ -3874,32 +3883,32 @@ body.modal-open {
 
 /* Chaos metrics */
 .metrics-dashboard {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: #060911;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
-  padding: 0.75rem;
+  padding: 0.85rem 1rem;
 }
 .metrics-grid {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 .metric-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
 }
 .metric-lbl {
-  width: 70px;
+  width: 78px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #cbd5e1;
 }
 .metric-bar-container {
   flex: 1;
   height: 6px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -3909,11 +3918,11 @@ body.modal-open {
   transition: width 0.3s ease;
 }
 .metric-val {
-  width: 45px;
+  width: 48px;
   text-align: right;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #f8fafc;
 }
 
 .healer-telemetry-console {
@@ -3953,6 +3962,97 @@ body.modal-open {
 @keyframes pulseScale {
   0% { transform: scale(1); }
   100% { transform: scale(1.15); box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); }
+}
+
+/* ── SRE Runbook Simulator Widget ── */
+.runbook-selector-wrap {
+  width: 100%;
+  margin-bottom: 0.6rem;
+}
+
+.runbook-select-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.runbook-select,
+#runbookSelector {
+  width: 100%;
+  background-color: #060911 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.85rem center !important;
+  background-size: 16px !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.4) !important;
+  border-radius: var(--radius-sm) !important;
+  color: #f8fafc !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  padding: 0.65rem 2.4rem 0.65rem 0.85rem !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.runbook-select:focus,
+#runbookSelector:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
+  background-color: #0c1322 !important;
+}
+
+.runbook-select option,
+#runbookSelector option {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  padding: 8px !important;
+}
+
+.runbook-steps-card {
+  background: #060911 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 0.85rem 1rem !important;
+  font-size: 0.78rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  min-height: 100px !important;
+}
+
+#runbook-empty-state {
+  color: #94a3b8 !important;
+  text-align: center !important;
+  padding: 1.5rem 0 !important;
+  font-size: 0.8rem !important;
+}
+
+.runbook-step-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  padding: 0.35rem 0.5rem !important;
+  border-radius: 4px !important;
+  transition: background 0.2s ease !important;
+}
+
+.runbook-step-item:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.runbook-step-item span {
+  color: #f8fafc !important;
+  font-size: 0.78rem !important;
+  line-height: 1.4 !important;
 }
 
 /* ── Playground Tabs Navigation ── */

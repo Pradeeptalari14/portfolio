@@ -112,9 +112,9 @@
             </div>
 
             <!-- Ingress Router Status -->
-            <div class="ingress-router-indicator" style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); border: 1px solid var(--border); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem;">
-              <span style="color: var(--text-secondary);">Ingress Route:</span>
-              <span id="ingress-target-route" class="status-badge status-green" style="font-family: 'JetBrains Mono', monospace;">us-east-1 (Primary)</span>
+            <div class="ingress-router-indicator">
+              <span class="ingress-lbl">Ingress Route:</span>
+              <span id="ingress-target-route" class="status-badge status-green">us-east-1 (Primary)</span>
             </div>
 
             <!-- Side-by-side Clusters Wrapper -->
@@ -273,9 +273,9 @@
           </div>
           <p class="widget-desc">Execute interactive checklists to triage outages, resolve state drifts, and roll back canary versions.</p>
           
-          <div class="runbook-selector-wrap" style="width: 100%;">
-            <label for="runbookSelector" class="ebpf-toggle-lbl" style="font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.25rem; display: block;">Select Runbook Scenario:</label>
-            <select id="runbookSelector" class="form-select w-full p-2 text-xs" style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary);">
+          <div class="runbook-selector-wrap">
+            <label for="runbookSelector" class="runbook-select-lbl">Select Runbook Scenario:</label>
+            <select id="runbookSelector" class="runbook-select">
               <option value="none">-- Choose an SRE Runbook --</option>
               <option value="oom">Runbook #104: Mitigate Pod OOMKilled Restarts</option>
               <option value="drift">Runbook #209: Reconcile Cloud SG Port 22 Drift</option>
@@ -283,8 +283,8 @@
             </select>
           </div>
 
-          <div class="runbook-steps-card" id="runbookStepsCard" style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.75rem; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; min-height: 100px;">
-            <div id="runbook-empty-state" style="color: var(--text-muted); text-align: center; padding: 1.5rem 0;">Select a runbook scenario to start the SRE checklist.</div>
+          <div class="runbook-steps-card" id="runbookStepsCard">
+            <div id="runbook-empty-state">Select a runbook scenario to start the SRE checklist.</div>
             <div id="runbook-steps-list" class="hidden" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <!-- Checklist populated dynamically -->
             </div>

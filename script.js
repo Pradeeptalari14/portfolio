@@ -61,15 +61,11 @@ if (navThemeToggle) {
   navThemeToggle.addEventListener('click', toggleTheme);
 }
 
-// Initialize theme on load safely: default to dark unless user explicitly chose light
+// Initialize theme on load: enforce 2026 Dark Graphite theme
 try {
-  if (typeof localStorage !== 'undefined' && localStorage.getItem('sre_dark_mode_active') === 'false') {
-    document.documentElement.classList.remove('dark-theme');
-    document.documentElement.setAttribute('data-theme', 'light');
-  } else {
-    document.documentElement.classList.add('dark-theme');
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
+  localStorage.setItem('sre_dark_mode_active', 'true');
+  document.documentElement.classList.add('dark-theme');
+  document.documentElement.setAttribute('data-theme', 'dark');
 } catch (e) {}
 
 window.addEventListener('scroll', () => {
@@ -1916,11 +1912,16 @@ function initRunbookSimulator() {
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.disabled = true;
-      checkbox.style.accentColor = 'var(--accent-primary)';
+      checkbox.style.accentColor = '#38bdf8';
+      checkbox.style.width = '14px';
+      checkbox.style.height = '14px';
+      checkbox.style.cursor = 'pointer';
 
       const spanText = document.createElement('span');
       spanText.textContent = step.text;
-      spanText.style.color = 'var(--text-secondary)';
+      spanText.style.color = '#f8fafc';
+      spanText.style.fontSize = '0.78rem';
+      spanText.style.lineHeight = '1.4';
 
       div.appendChild(spanBadge);
       div.appendChild(checkbox);
