@@ -17,6 +17,15 @@ function getToolInputs() {
     whatsappVoiceAiAssistant: resolve(__dirname, 'projects/whatsapp-voice-ai-assistant.html'),
     experience: resolve(__dirname, 'experience/index.html'),
     tools: resolve(__dirname, 'tools/index.html'),
+    studios: resolve(__dirname, 'studios/index.html'),
+    incident: resolve(__dirname, 'incident/index.html'),
+    toolbox: resolve(__dirname, 'toolbox/index.html'),
+    architecture: resolve(__dirname, 'architecture/index.html'),
+    knowledge: resolve(__dirname, 'knowledge/index.html'),
+    learning: resolve(__dirname, 'learning/index.html'),
+    finops: resolve(__dirname, 'finops/index.html'),
+    resume: resolve(__dirname, 'resume/index.html'),
+    status: resolve(__dirname, 'status/index.html'),
     aiCatalog: resolve(__dirname, 'AI/index.html'),
     interview: resolve(__dirname, 'interview/index.html'),
   };
@@ -28,8 +37,8 @@ function getToolInputs() {
     if (fs.statSync(itemPath).isDirectory()) {
       const htmlPath = join(itemPath, 'index.html');
       if (fs.existsSync(htmlPath)) {
-        // Convert folder name to camelCase for the rollup input key
-        const key = item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+        // Prefix with tool_ to prevent collision with top-level routes
+        const key = 'tool_' + item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
         inputs[key] = htmlPath;
       }
     }

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRE Incident Simulator | Production Troubleshooting Drills | Talari Pradeep</title>
+  <meta name="description" content="Interactive SRE Incident Drill Simulator. Practice triage, root-cause analysis, and mitigation of production outages including Kubernetes CrashLoopBackOff, OOMKilled, DNS timeouts, and storage latency." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root {
+      --bg-base: #080c14;
+      --bg-surface: #0f172a;
+      --bg-card: rgba(15, 23, 42, 0.7);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-red: #ef4444;
+      --accent-amber: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-cyan: #38bdf8;
+      --border: rgba(255, 255, 255, 0.08);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .hub-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 12, 20, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hub-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .hub-brand-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+    .hub-nav-links {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+    .hub-nav-links a:hover { color: var(--text-primary); }
+    .sim-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .sim-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .sim-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sim-desc {
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+    }
+    .scenario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .scenario-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .scenario-btn:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(30, 41, 59, 0.7);
+    }
+    .scenario-btn.active {
+      border-color: var(--accent-red);
+      background: rgba(239, 68, 68, 0.08);
+    }
+    .sc-sev {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      display: inline-block;
+      width: fit-content;
+    }
+    .sev-1 { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .sev-2 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .sc-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .sc-service {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .sim-workarea {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .workarea-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    .target-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+    }
+    .timer-badge {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .sim-terminal {
+      background: #040711;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      min-height: 240px;
+      max-height: 380px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+    .term-line-error { color: #f87171; }
+    .term-line-warn { color: #fbbf24; }
+    .term-line-success { color: #34d399; }
+    .term-line-cmd { color: #38bdf8; }
+    .sim-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .act-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 0.6rem 1.1rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .act-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+    .act-btn.mitigate {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .act-btn.mitigate:hover {
+      background: rgba(16, 185, 129, 0.25);
+    }
+    .postmortem-box {
+      background: rgba(8, 12, 20, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+    .pm-title {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 840px) {
+      .sim-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="hub-nav">
+    <a href="../" class="hub-brand">
+      <span>TALARI PRADEEP</span>
+      <span class="hub-brand-badge">SRE INCIDENT SIMULATOR</span>
+    </a>
+    <div class="hub-nav-links">
+      <a href="../">← Home</a>
+      <a href="../studios/">Studios Hub</a>
+      <a href="../toolbox/">Toolbox</a>
+      <a href="../architecture/">Architecture</a>
+      <a href="../knowledge/">Knowledge</a>
+      <a href="../status/">Status</a>
+    </div>
+  </nav>
+
+  <div class="sim-container">
+    <header class="sim-header">
+      <h1 class="sim-title">SRE Incident Drill Simulator</h1>
+      <p class="sim-desc">
+        Practice live production triage, command execution, and root-cause analysis across Kubernetes, distributed systems, storage latency, and hybrid infrastructure.
+      </p>
+    </header>
+
+    <div class="sim-layout">
+      <aside class="scenario-list" id="scenarioList">
+        <!-- Scenario buttons injected by JS -->
+      </aside>
+
+      <main class="sim-workarea">
+        <div class="workarea-header">
+          <div>
+            <span class="target-badge" id="incidentTarget">SERVICE: payment-auth-api.prod</span>
+            <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-top: 0.25rem;" id="incidentTitle">
+              Kubernetes CrashLoopBackOff: OOMKilled Container Exit
+            </h2>
+          </div>
+          <div class="timer-badge" id="incidentTimer">SLO BREACH IN: 04:18</div>
+        </div>
+
+        <div class="sim-terminal" id="simTerminal" role="log" aria-live="polite">
+          <!-- Terminal output -->
+        </div>
+
+        <div class="sim-actions" id="actionBtns">
+          <!-- Action buttons injected by JS -->
+        </div>
+
+        <div class="postmortem-box" id="postMortemBox">
+          <div class="pm-title">// INCIDENT POST-MORTEM &amp; ROOT CAUSE ANALYSIS</div>
+          <div id="postMortemContent" style="color: var(--text-secondary); line-height: 1.6;">
+            Execute triage actions above to identify root cause and stabilize error budget.
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const scenarios = [
+        {
+          id: 'k8s-oom',
+          title: 'Kubernetes Pod CrashLoopBackOff (OOMKilled)',
+          service: 'payment-auth-api.prod.svc.cluster.local',
+          sev: 'SEV-1',
+          sevClass: 'sev-1',
+          initialLogs: [
+            '[ALERT] firing: P99 Latency > 1200ms on payment-auth-api',
+            '[ALERT] firing: KubePodCrashLooping - pod/payment-auth-api-7b89f874c9-xk29q',
+            '$ kubectl get pods -n prod -l app=payment-auth',
+            'NAME                                READY   STATUS             RESTARTS   AGE',
+            'payment-auth-api-7b89f874c9-xk29q   0/1     CrashLoopBackOff   4 (45s)    12m',
+            'payment-auth-api-7b89f874c9-m9z4p   1/1     Running            0          12m'
+          ],
+          actions: [
+            {
+              label: '1. Describe Pod',
+              cmd: 'kubectl describe pod payment-auth-api-7b89f874c9-xk29q -n prod',
+              output: [
+                'State:          Waiting',
+                '  Reason:       CrashLoopBackOff',
+                'Last State:     Terminated',
+                '  Reason:       OOMKilled',
+                '  Exit Code:    137',
+                'Limits:         memory: 512Mi, cpu: 500m',
+                'Requests:       memory: 256Mi, cpu: 200m',
+                'Warning  OOMKilling  node/ip-10-0-4-12.ec2.internal  Memory cgroup out of memory: Kill process 28192 (node) score 1024'
+              ]
+            },
+            {
+              label: '2. Inspect Last Logs',
+              cmd: 'kubectl logs payment-auth-api-7b89f874c9-xk29q -n prod --previous --tail=50',
+              output: [
+                '{"level":"info","msg":"Ingesting payload chunk token size 42000"}',
+                '{"level":"warn","msg":"Heap usage: 498MB / 512MB threshold approaching"}',
+                'FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory',
+                '[Kubelet] Container payment-auth killed by cgroup controller'
+              ]
+            },
+            {
+              label: '3. Patch Memory Limit (Mitigate)',
+              cmd: 'kubectl set resources deployment/payment-auth-api -n prod --limits=memory=1024Mi,cpu=1000m',
+              isMitigate: true,
+              output: [
+                'deployment.apps/payment-auth-api resource requirements updated',
+                '[Rollout] Waiting for deployment "payment-auth-api" rollout to finish: 1 of 2 updated replicas are available...',
+                'deployment.apps/payment-auth-api successfully rolled out',
+                '[SLO] Error budget burn rate decreased from 14.2x to 0.05x (HEALTHY)'
+              ],
+              pm: 'ROOT CAUSE: Recent deployment introduced unbounded payload batch parsing. Under 40k token bursts, Node heap exceeded 512Mi limit triggering exit code 137 OOMKiller.<br>PREVENTIVE ACTIONS: 1) Increase memory limit to 1024Mi. 2) Implement streaming chunk validation middleware. 3) Configure V8 --max-old-space-size=896.'
+            }
+          ]
+        },
+        {
+          id: 'coredns-timeout',
+          title: 'CoreDNS Resolution Timeout & Latency Spike',
+          service: 'kube-system/coredns.cluster.local',
+          sev: 'SEV-1',
+          sevClass: 'sev-1',
+          initialLogs: [
+            '[ALERT] firing: DNSLookupsFailing > 5% on egress queries',
+            '[ALERT] firing: CoreDNSDownstreamLatencyP99 > 250ms',
+            '$ kubectl top pods -n kube-system -l k8s-app=kube-dns',
+            'NAME                       CPU(cores)   MEMORY(bytes)',
+            'coredns-55967b578c-4spt5   995m         180Mi',
+            'coredns-55967b578c-8kdp9   988m         175Mi'
+          ],
+          actions: [
+            {
+              label: '1. Inspect CoreDNS Logs',
+              cmd: 'kubectl logs -n kube-system -l k8s-app=kube-dns --tail=40',
+              output: [
+                '[WARNING] plugin/errors: 2 10.0.12.9:53 - 29194 "A api.internal.svc." SERVFAIL qr,rd 124 0.000213s',
+                '[ERROR] plugin/forward: no nameservers found for upstream fallback',
+                '[WARNING] rate limit exceeded: throttling incoming UDP 53 packets'
+              ]
+            },
+            {
+              label: '2. Scale Replicas & Autopath (Mitigate)',
+              cmd: 'kubectl scale deployment/coredns -n kube-system --replicas=6 && kubectl apply -f autopath-config.yaml',
+              isMitigate: true,
+              output: [
+                'deployment.apps/coredns scaled to 6 replicas',
+                'configmap/coredns patched with autopath optimization',
+                '[Health] CoreDNS latency dropped to 1.8ms P99',
+                '[SLO] DNS error rate returned to 0.001% (STABILIZED)'
+              ],
+              pm: 'ROOT CAUSE: Uncached ndots:5 default search paths generated 5x query amplification per service lookup, saturating 2 CoreDNS pods during morning traffic surge.<br>PREVENTIVE ACTIONS: 1) Scale CoreDNS to 6 replicas with Cluster Proportional Autoscaler. 2) Enable NodeLocal DNSCache daemonset across all worker nodes.'
+            }
+          ]
+        },
+        {
+          id: 'vmware-datastore',
+          title: 'VMware ESXi Datastore Latency Spike (>85ms)',
+          service: 'vCenter / Datastore: LUN-SSD-TIER1-PROD',
+          sev: 'SEV-2',
+          sevClass: 'sev-2',
+          initialLogs: [
+            '[vCenter Alert] Host esxi-prod-04.corp datastore LUN-SSD-TIER1-PROD total latency > 85ms',
+            '[vSphere SRE] I/O Queue depth saturated on vmhba1:C0:T2:L0',
+            'Active VMs on datastore: 28 virtual machines affected'
+          ],
+          actions: [
+            {
+              label: '1. Run esxtop Disk Inspection',
+              cmd: 'ssh root@esxi-prod-04.corp "esxtop -b -n 1 -d 2 | grep LUN-SSD-TIER1-PROD"',
+              output: [
+                'Device: naa.60002ac0000000000000002100018f2',
+                'KAVG/cmd: 2.1ms | DAVG/cmd: 84.6ms | GAVG/cmd: 86.7ms | QUEUE: 64/64 FULL',
+                'High DAVG indicates storage array controller throttling or contention on fiber channel SAN switch.'
+              ]
+            },
+            {
+              label: '2. Storage vMotion Hot VMs (Mitigate)',
+              cmd: 'pwsh -Command "Get-VM -Datastore LUN-SSD-TIER1-PROD | Select-Object -First 8 | Move-VM -Datastore LUN-NVME-TIER0-FAST"',
+              isMitigate: true,
+              output: [
+                'Migrating VM "sql-prod-node01" to LUN-NVME-TIER0-FAST ... Completed (100%)',
+                'Migrating VM "es-master-node02" to LUN-NVME-TIER0-FAST ... Completed (100%)',
+                '[Metric] LUN-SSD-TIER1-PROD DAVG dropped from 84.6ms to 3.2ms',
+                '[Status] ESXi queue depth normalized to 8/64 (RECOVERED)'
+              ],
+              pm: 'ROOT CAUSE: Co-locating high IOPS database VMs alongside batch analytics workloads on the same FC LUN saturated storage array cache.<br>PREVENTIVE ACTIONS: 1) Implement VMware Storage I/O Control (SIOC). 2) Configure automated DRS storage rules based on peak IOPS thresholds.'
+            }
+          ]
+        }
+      ];
+
+      let currentScenario = scenarios[0];
+      const listEl = document.getElementById('scenarioList');
+      const termEl = document.getElementById('simTerminal');
+      const actionEl = document.getElementById('actionBtns');
+      const titleEl = document.getElementById('incidentTitle');
+      const targetEl = document.getElementById('incidentTarget');
+      const pmEl = document.getElementById('postMortemContent');
+
+      function renderScenarios() {
+        listEl.innerHTML = scenarios.map(s => `
+          <button class="scenario-btn ${s.id === currentScenario.id ? 'active' : ''}" data-id="${s.id}">
+            <span class="sc-sev ${s.sevClass}">${s.sev}</span>
+            <span class="sc-title">${s.title}</span>
+            <span class="sc-service">${s.service}</span>
+          </button>
+        `).join('');
+
+        listEl.querySelectorAll('.scenario-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const sc = scenarios.find(x => x.id === btn.getAttribute('data-id'));
+            if (sc) loadScenario(sc);
+          });
+        });
+      }
+
+      function loadScenario(sc) {
+        currentScenario = sc;
+        renderScenarios();
+        titleEl.textContent = sc.title;
+        targetEl.textContent = `TARGET: ${sc.service}`;
+        pmEl.innerHTML = 'Execute diagnostic and mitigation actions above to resolve the incident.';
+
+        termEl.innerHTML = sc.initialLogs.map(l => {
+          if (l.includes('[ALERT]') || l.includes('FATAL') || l.includes('CrashLoopBackOff')) {
+            return `<div class="term-line-error">${l}</div>`;
+          } else if (l.startsWith('$')) {
+            return `<div class="term-line-cmd">${l}</div>`;
+          }
+          return `<div>${l}</div>`;
+        }).join('');
+
+        actionEl.innerHTML = sc.actions.map((act, i) => `
+          <button class="act-btn ${act.isMitigate ? 'mitigate' : ''}" data-act="${i}">
+            ${act.label}
+          </button>
+        `).join('');
+
+        actionEl.querySelectorAll('.act-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-act'), 10);
+            executeAction(sc.actions[idx]);
+          });
+        });
+      }
+
+      function executeAction(act) {
+        let html = termEl.innerHTML;
+        html += `<div class="term-line-cmd" style="margin-top: 0.75rem;">$ ${act.cmd}</div>`;
+        act.output.forEach(o => {
+          if (o.includes('OOMKilled') || o.includes('FATAL') || o.includes('ERROR') || o.includes('Kill process')) {
+            html += `<div class="term-line-error">${o}</div>`;
+          } else if (o.includes('Warning') || o.includes('WARNING')) {
+            html += `<div class="term-line-warn">${o}</div>`;
+          } else if (o.includes('successfully') || o.includes('Completed') || o.includes('HEALTHY') || o.includes('STABILIZED') || o.includes('RECOVERED')) {
+            html += `<div class="term-line-success">${o}</div>`;
+          } else {
+            html += `<div>${o}</div>`;
+          }
+        });
+        termEl.innerHTML = html;
+        termEl.scrollTop = termEl.scrollHeight;
+
+        if (act.pm) {
+          pmEl.innerHTML = act.pm;
+        }
+      }
+
+      loadScenario(scenarios[0]);
+    })();
+  </script>
+</body>
+</html>

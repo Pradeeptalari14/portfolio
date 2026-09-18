@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Studios Hub | 291 Interactive Developer Tools | Talari Pradeep</title>
+  <meta name="description" content="Explore and launch 291 interactive engineering studios across Cloud, DevOps, SRE, Kubernetes, AI/LLMOps, Security, Observability, and Linux systems built by Talari Pradeep." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root {
+      --bg-base: #080c14;
+      --bg-surface: #0f172a;
+      --bg-card: rgba(15, 23, 42, 0.7);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(56, 189, 248, 0.4);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+    }
+    a { color: inherit; text-decoration: none; }
+    .hub-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hub-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.05em;
+    }
+    .hub-brand-badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+    .hub-nav-links {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+    .hub-nav-links a:hover { color: var(--text-primary); }
+    .hub-hero {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #a5b4fc;
+      margin-bottom: 1.25rem;
+    }
+    .hub-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hub-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+    }
+    .hub-controls {
+      max-width: 1280px;
+      margin: 0 auto 2rem;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .search-box {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.95rem 1.25rem 0.95rem 3rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+    .search-icon {
+      position: absolute;
+      left: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+    }
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .cat-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.45rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.15s ease;
+    }
+    .cat-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .cat-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+    .stats-bar {
+      max-width: 1280px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .hub-grid {
+      max-width: 1280px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .studio-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .studio-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+    .card-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--accent-cyan);
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+      line-height: 1.5;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+    .card-tag {
+      color: var(--text-muted);
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-launch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      transition: gap 0.15s ease;
+    }
+    .card-launch-btn:hover { gap: 0.6rem; color: #fff; }
+    .hub-footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      background: rgba(8, 12, 20, 0.95);
+    }
+    @media (max-width: 640px) {
+      .hub-nav-links { display: none; }
+      .hub-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="hub-nav">
+    <a href="../" class="hub-brand">
+      <span>TALARI PRADEEP</span>
+      <span class="hub-brand-badge">STUDIOS HUB</span>
+    </a>
+    <div class="hub-nav-links">
+      <a href="../">← Home</a>
+      <a href="../experience/">Experience</a>
+      <a href="../projects/">Projects</a>
+      <a href="../toolbox/">Toolbox</a>
+      <a href="../incident/">Incident Lab</a>
+      <a href="../architecture/">Architecture</a>
+      <a href="../resume/">Resume</a>
+    </div>
+  </nav>
+
+  <header class="hub-hero">
+    <div class="hero-chip">
+      <span>⚡</span>
+      <span>291 PRODUCTION-GRADE ENGINEERING STUDIOS</span>
+    </div>
+    <h1 class="hub-title">Interactive Technology Laboratory</h1>
+    <p class="hub-desc">
+      Explore client-side interactive tooling, infrastructure template synthesizers, architecture simulators, and reliability sandboxes across cloud, DevOps, SRE, and AI engineering.
+    </p>
+  </header>
+
+  <section class="hub-controls">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="studioSearch" class="search-input" placeholder="Search 291 studios by keyword, tech, category, or file..." autocomplete="off" />
+    </div>
+
+    <div class="category-pills" id="categoryPills">
+      <button class="cat-btn active" data-cat="all">All (291)</button>
+      <button class="cat-btn" data-cat="ai">AI &amp; LLMOps</button>
+      <button class="cat-btn" data-cat="cloud">Cloud &amp; AWS</button>
+      <button class="cat-btn" data-cat="kubernetes">Kubernetes</button>
+      <button class="cat-btn" data-cat="cicd">DevOps &amp; CI/CD</button>
+      <button class="cat-btn" data-cat="sre">SRE &amp; Observability</button>
+      <button class="cat-btn" data-cat="security">Security &amp; DevSecOps</button>
+      <button class="cat-btn" data-cat="systems">Systems &amp; Linux</button>
+      <button class="cat-btn" data-cat="enterprise">Enterprise &amp; VMware</button>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <span id="showingCount">Showing 291 of 291 studios</span>
+    <span>Self-contained • Client-side • Zero external dependencies</span>
+  </div>
+
+  <main class="hub-grid" id="studioGrid">
+    <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
+      Loading interactive studio database...
+    </div>
+  </main>
+
+  <footer class="hub-footer">
+    <div>TALARI PRADEEP · CLOUD INFRASTRUCTURE &amp; SRE PLATFORM</div>
+    <div style="margin-top: 0.5rem; color: #475569;">Preserving 291 developer studios built for production excellence.</div>
+  </footer>
+
+  <script>
+    (function() {
+      let allStudios = [];
+      let activeCat = 'all';
+      const searchInput = document.getElementById('studioSearch');
+      const pills = document.getElementById('categoryPills');
+      const grid = document.getElementById('studioGrid');
+      const countEl = document.getElementById('showingCount');
+
+      async function loadStudios() {
+        try {
+          const res = await fetch('../tools/tools.json');
+          if (!res.ok) throw new Error('Status ' + res.status);
+          allStudios = await res.json();
+          render();
+        } catch (e) {
+          console.error('Failed to load studios:', e);
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #ef4444;">Failed to load studios catalog. Please check network.</div>';
+        }
+      }
+
+      function filterStudios() {
+        const q = searchInput.value.toLowerCase().trim();
+        return allStudios.filter(s => {
+          const matchesCat = activeCat === 'all' || (s.category && s.category.toLowerCase().includes(activeCat));
+          if (!matchesCat) return false;
+          if (!q) return true;
+          return (s.title && s.title.toLowerCase().includes(q)) ||
+                 (s.desc && s.desc.toLowerCase().includes(q)) ||
+                 (s.tag && s.tag.toLowerCase().includes(q)) ||
+                 (s.category && s.category.toLowerCase().includes(q));
+        });
+      }
+
+      function render() {
+        const filtered = filterStudios();
+        countEl.textContent = `Showing ${filtered.length} of ${allStudios.length} studios`;
+
+        if (filtered.length === 0) {
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">No matching studios found. Try another keyword.</div>';
+          return;
+        }
+
+        grid.innerHTML = filtered.map(s => {
+          let link = s.link || '';
+          if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('../tools/')) {
+            link = '../tools/' + link;
+          }
+          return `
+            <div class="studio-card">
+              <div>
+                <div class="card-top">
+                  <span class="card-icon">${s.icon || '🛠️'}</span>
+                  <span class="card-badge">${s.category || 'tool'}</span>
+                </div>
+                <h3 class="card-title">${s.title}</h3>
+                <p class="card-desc">${s.desc || ''}</p>
+              </div>
+              <div class="card-footer">
+                <span class="card-tag" title="${s.tag || ''}">${s.tag || 'Interactive'}</span>
+                <a href="${link}" class="card-launch-btn">Launch →</a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      searchInput.addEventListener('input', render);
+
+      pills.addEventListener('click', (e) => {
+        const btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        pills.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.getAttribute('data-cat');
+        render();
+      });
+
+      loadStudios();
+    })();
+  </script>
+</body>
+</html>

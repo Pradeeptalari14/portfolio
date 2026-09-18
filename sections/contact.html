@@ -1,48 +1,99 @@
 <!-- ══ CONTACT ══ -->
-  <section class="section section-alt" id="contact">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Contact</span>
-        <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
-        <p class="section-subtitle">Open to full-time roles, freelance contracts, and interesting collaborations. Drop me a message!</p>
-      </div>
-      <div class="contact-grid">
+<section class="section section-alt" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">// COLLABORATION &amp; CONTACT</span>
+      <h2 class="section-title">LET'S BUILD SOMETHING <span class="gradient-text">RELIABLE.</span></h2>
+      <p class="section-subtitle">Open to Cloud Infrastructure, DevOps, SRE, and AI Platform Engineering roles or technical discussions.</p>
+    </div>
 
-        <form class="contact-form" id="contactForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="contactName">Your Name</label>
-              <input type="text" id="contactName" name="name" placeholder="John Kerwin" required />
-            </div>
-            <div class="form-group">
-              <label for="contactEmail">Email Address</label>
-              <input type="email" id="contactEmail" name="email" placeholder="john@company.com" required />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="contactSubject">Subject</label>
-            <input type="text" id="contactSubject" name="subject" placeholder="Job opportunity / Collaboration / Question" />
-          </div>
-          <div class="form-group">
-            <label for="contactMessage">Message</label>
-            <textarea id="contactMessage" name="message" rows="5" placeholder="Tell me about your project, role, or how I can help..." required></textarea>
-          </div>
-          <!-- Honeypot Field to prevent spambots -->
-          <div style="display:none" aria-hidden="true">
-            <label for="contactHoneypot">Keep this field blank</label>
-            <input type="text" id="contactHoneypot" name="_honeypot" autocomplete="off" />
-          </div>
-          <button type="submit" class="btn-primary full-width" id="submit-form-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Send Message
-          </button>
-          <div class="form-success" id="formSuccess" style="display:none">
-            ✅ Message sent! I'll get back to you within 24 hours.
-          </div>
-          <div class="form-error" id="formError" style="display:none">
-            ❌ Something went wrong. Please email me directly at <a href="mailto:talaripradeep45@gmail.com">talaripradeep45@gmail.com</a>
-          </div>
-        </form>
+    <!-- Terminal-style visual banner -->
+    <div class="contact-terminal-banner">
+      <div class="term-banner-header">
+        <span class="term-banner-dot dot-red"></span>
+        <span class="term-banner-dot dot-yellow"></span>
+        <span class="term-banner-dot dot-green"></span>
+        <span class="term-banner-title">session: tcp-dial ~ Bangalore, IN</span>
+      </div>
+      <div class="term-banner-body">
+        <span class="term-banner-prompt">$</span>
+        <code class="term-banner-cmd">connect --with-pradeep --protocol=https --security=mtls</code>
+        <div class="term-banner-output">
+          <span>&gt; Connection established with Pradeep Talari [Cloud &amp; AI Infrastructure Engineer]</span>
+          <span>&gt; Channels active: Direct Email, GitHub, LinkedIn &amp; Webhook form below.</span>
+        </div>
       </div>
     </div>
-  </section>
+
+    <div class="contact-grid">
+      <!-- Quick Contact Info Cards -->
+      <div class="contact-info-cards">
+        <a href="mailto:talaripradeep45@gmail.com" class="contact-card-item">
+          <div class="contact-card-icon">✉️</div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">Direct Email</span>
+            <span class="contact-card-val">talaripradeep45@gmail.com</span>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/pradeep-talari/" target="_blank" rel="noopener noreferrer" class="contact-card-item">
+          <div class="contact-card-icon">💼</div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">LinkedIn</span>
+            <span class="contact-card-val">linkedin.com/in/pradeep-talari</span>
+          </div>
+        </a>
+        <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="contact-card-item">
+          <div class="contact-card-icon">🐙</div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">GitHub</span>
+            <span class="contact-card-val">github.com/Pradeeptalari14</span>
+          </div>
+        </a>
+        <div class="contact-card-item">
+          <div class="contact-card-icon">📍</div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">Location</span>
+            <span class="contact-card-val">Bangalore, Karnataka, India</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Message Form -->
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactName">Your Name</label>
+            <input type="text" id="contactName" name="name" placeholder="Alex Rivera" required />
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email Address</label>
+            <input type="email" id="contactEmail" name="email" placeholder="alex@company.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contactSubject">Subject</label>
+          <input type="text" id="contactSubject" name="subject" placeholder="Infrastructure Engineering Role / Collaboration" />
+        </div>
+        <div class="form-group">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="5" placeholder="Share details about your infrastructure challenges, engineering team requirements, or project vision..." required></textarea>
+        </div>
+        <!-- Honeypot Field -->
+        <div style="display:none" aria-hidden="true">
+          <label for="contactHoneypot">Keep this field blank</label>
+          <input type="text" id="contactHoneypot" name="_honeypot" autocomplete="off" />
+        </div>
+        <button type="submit" class="btn-primary full-width" id="submit-form-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          TRANSMIT MESSAGE
+        </button>
+        <div class="form-success" id="formSuccess" style="display:none">
+          ✅ Message received! I'll review your transmission and respond within 24 hours.
+        </div>
+        <div class="form-error" id="formError" style="display:none">
+          ❌ Transmission failure. Please reach out directly at <a href="mailto:talaripradeep45@gmail.com">talaripradeep45@gmail.com</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

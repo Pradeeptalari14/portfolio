@@ -3104,8 +3104,303 @@ function initCertAccordion() {
 initExpAccordion();
 initCertAccordion();
 
+/* ══════════════════════════════════════════
+   HERO INTERACTIVE ARCHITECTURE PIPELINE
+══════════════════════════════════════════ */
+const pipelineData = {
+  developer: {
+    tag: "STAGE 01 · DEVELOPER WORKSPACE",
+    title: "Local Development, Linting & SDKs",
+    desc: "Standardized developer workspaces using containerized dev environments, pre-commit hooks, and unified runtime tooling.",
+    tech: "VS Code • Docker Desktop • Python • Bash • Node.js",
+    studios: '<a href="tools/local-cloud-dev/">Local Cloud Dev Studio</a> • <a href="tools/git/">Git Learning Studio</a>'
+  },
+  git: {
+    tag: "STAGE 02 · VERSION CONTROL & TRUNK",
+    title: "Git Workflows, Branching & Conventional Commits",
+    desc: "Enforcing atomic commits, branch protection rules, signed tags, and trunk-based development with pull request automated validation.",
+    tech: "Git • GitHub • GitHub CLI • Semantic Versioning • Pre-commit",
+    studios: '<a href="tools/git/">Git Workflow Visualizer</a> • <a href="tools/github-actions/">GitHub Actions Studio</a>'
+  },
+  cicd: {
+    tag: "STAGE 03 · CONTINUOUS INTEGRATION & DELIVERY",
+    title: "Automated Build, Test & Matrix Pipelines",
+    desc: "Zero-friction automated workflows testing unit regressions, integration matrices, linting, packaging artifacts, and progressive rollout triggers.",
+    tech: "GitHub Actions • Jenkins • GitLab CI • Argo Workflows • Make",
+    studios: '<a href="tools/github-actions/">GitHub Actions Studio</a> • <a href="tools/helm/">Helm Packaging Studio</a>'
+  },
+  security: {
+    tag: "STAGE 04 · DEVSECOPS & COMPLIANCE",
+    title: "Static Analysis, SBOM & Vulnerability Scanning",
+    desc: "Shift-left vulnerability gatekeeping with container scanning, SAST/DAST checks, secrets detection, and software bill-of-materials generation.",
+    tech: "Trivy • Snyk • SonarQube • Cosign • Gitleaks",
+    studios: '<a href="tools/trivy/">Trivy Vulnerability Scanner</a> • <a href="tools/snyk/">Snyk Security Studio</a>'
+  },
+  containers: {
+    tag: "STAGE 05 · CONTAINERIZATION & RUNTIMES",
+    title: "Multi-Stage Builds, Rootless Images & Distroless",
+    desc: "High-density, minimal-footprint container images adhering to OCI standards, least privilege security contexts, and layer optimization.",
+    tech: "Docker • Podman • BuildKit • containerd • Distroless",
+    studios: '<a href="tools/docker/">Docker Studio</a> • <a href="tools/docker-compose/">Docker Compose Studio</a>'
+  },
+  kubernetes: {
+    tag: "STAGE 06 · ORCHESTRATION & CLOUD NATIVE",
+    title: "Cluster Scheduling, Self-Healing & Ingress Routing",
+    desc: "Declarative orchestration across heterogeneous worker nodes with HPA autoscaling, network policies, Istio service mesh, and GitOps sync.",
+    tech: "Kubernetes (K8s) • Helm • Kustomize • ArgoCD • Calico",
+    studios: '<a href="tools/k8s-manifest/">K8s Manifest Studio</a> • <a href="tools/kubectl/">Kubectl Interactive Studio</a>'
+  },
+  cloud: {
+    tag: "STAGE 07 · MULTI-CLOUD INFRASTRUCTURE AS CODE",
+    title: "Terraform Modules, VPC Topologies & Landing Zones",
+    desc: "Idempotent infrastructure provisioning across AWS and Hybrid clouds with automated drift detection, state locking, and policy-as-code.",
+    tech: "AWS • Terraform • Terragrunt • AWS CDK • VMware vSphere",
+    studios: '<a href="tools/terraform/">Terraform Studio</a> • <a href="tools/aws-architecture/">AWS Architecture Studio</a>'
+  },
+  observability: {
+    tag: "STAGE 08 · SRE METRICS, LOGS & TRACES",
+    title: "OpenTelemetry, Prometheus Alerting & SLO Management",
+    desc: "Comprehensive distributed tracing, synthetic canary monitoring, Grafana dashboards, automated PagerDuty escalation, and error budget tracking.",
+    tech: "Prometheus • Grafana • OpenTelemetry • Vector • Loki",
+    studios: '<a href="tools/prometheus/">Prometheus Studio</a> • <a href="tools/otel-vector/">OTel & Vector Studio</a>'
+  },
+  aillm: {
+    tag: "STAGE 09 · AI INFRASTRUCTURE & LLMOPS",
+    title: "GPU Virtualization, Vector Databases & RAG Pipelines",
+    desc: "Production infrastructure for LLM inference serving, Milvus/Qdrant vector indexing, GPU node partitioning, and prompt evaluation guardrails.",
+    tech: "NVIDIA CUDA • vLLM • Milvus • Qdrant • LangChain • Ollama",
+    studios: '<a href="tools/chunkviz/">ChunkViz Studio</a> • <a href="tools/rag-evaluator/">RAG Evaluator Studio</a>'
+  }
+};
 
+function initHeroPipeline() {
+  const track = $('heroPipelineTrack');
+  if (!track) return;
+  const nodes = track.querySelectorAll('.pipe-node');
+  const tagEl = $('pipeInspectorTag');
+  const titleEl = $('pipeInspectorTitle');
+  const descEl = $('pipeInspectorDesc');
+  const techEl = $('pipeInspectorTech');
+  const studiosEl = $('pipeInspectorStudios');
 
+  nodes.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const stage = btn.getAttribute('data-stage');
+      if (!stage || !pipelineData[stage]) return;
+      nodes.forEach(n => n.classList.remove('active'));
+      btn.classList.add('active');
 
+      const data = pipelineData[stage];
+      if (tagEl) tagEl.textContent = data.tag;
+      if (titleEl) titleEl.textContent = data.title;
+      if (descEl) descEl.textContent = data.desc;
+      if (techEl) techEl.textContent = data.tech;
+      if (studiosEl) studiosEl.innerHTML = data.studios;
+    });
+  });
+}
 
+/* ══════════════════════════════════════════
+   COMMAND PALETTE CENTER (CTRL + K)
+══════════════════════════════════════════ */
+function initCommandPalette() {
+  const modal = $('cmdPaletteModal');
+  const input = $('cmdPaletteInput');
+  const resultsContainer = $('cmdPaletteResults');
+  const closeBtn = $('cmdCloseBtn');
+  const triggerBtn = $('navCmdTrigger');
 
+  if (!modal || !input || !resultsContainer) return;
+
+  let toolsList = [];
+  let isToolsLoaded = false;
+  let activeIndex = 0;
+  let currentFiltered = [];
+
+  const staticItems = [
+    { type: 'Navigation', title: 'Home', subtitle: 'Platform overview & architecture pipeline', url: '#hero', icon: '🏠' },
+    { type: 'Navigation', title: 'About Pradeep', subtitle: 'Who I am, what I build, engineering philosophy', url: '#about', icon: '👤' },
+    { type: 'Navigation', title: 'Professional Experience', subtitle: 'Accenture & Trigent systems engineering history', url: '#experience', icon: '💼' },
+    { type: 'Navigation', title: 'Skills Matrix', subtitle: 'Cloud, DevOps, SRE, Linux, K8s, AI infrastructure', url: '#skills', icon: '⚡' },
+    { type: 'Navigation', title: 'Projects & Case Studies', subtitle: 'Production architecture implementations', url: '#projects', icon: '📁' },
+    { type: 'Navigation', title: 'Engineering Studios Hub', subtitle: 'Explore all 291 interactive developer studios', url: 'studios/', icon: '🧪' },
+    { type: 'Navigation', title: 'Universal Engineering Toolbox', subtitle: 'CIDR calculator, JSON/YAML validator, Cron generator, Base64', url: 'toolbox/', icon: '🧰' },
+    { type: 'Navigation', title: 'SRE Incident Simulator', subtitle: 'Interactive troubleshooting: CrashLoopBackOff, OOM, Latency', url: 'incident/', icon: '🚨' },
+    { type: 'Navigation', title: 'Architecture Center', subtitle: 'Interactive system topology diagrams (Landing Zone, EKS, RAG)', url: 'architecture/', icon: '📐' },
+    { type: 'Navigation', title: 'Engineering Knowledge Base', subtitle: 'Deep-dive guides on DevOps, SRE, VMware, Windows, AI', url: 'knowledge/', icon: '📚' },
+    { type: 'Navigation', title: 'Engineering Learning Paths', subtitle: 'Step-by-step career path guides for Platform & SRE', url: 'learning/', icon: '🗺️' },
+    { type: 'Navigation', title: 'Cloud FinOps Calculator', subtitle: 'Cloud cost estimation & rightsizing models', url: 'finops/', icon: '💰' },
+    { type: 'Navigation', title: 'Printable ATS Resume', subtitle: 'Clean, printable view and direct PDF download', url: 'resume/', icon: '📄' },
+    { type: 'Navigation', title: 'Platform Status & Metrics', subtitle: 'Real-time telemetry and service uptime', url: 'status/', icon: '🟢' },
+    { type: 'Navigation', title: 'Contact & Collaboration', subtitle: 'Send a message or schedule infrastructure review', url: '#contact', icon: '✉️' },
+    { type: 'Action', title: 'Toggle Theme', subtitle: 'Switch between Dark and Light mode', action: 'toggleTheme', icon: '🌓' },
+    { type: 'Action', title: 'Open SRE Terminal', subtitle: 'Run CLI commands directly in the interactive console', action: 'focusTerminal', icon: '💻' }
+  ];
+
+  async function loadTools() {
+    if (isToolsLoaded) return;
+    try {
+      const res = await fetch('tools/tools.json');
+      if (res.ok) {
+        const data = await res.json();
+        toolsList = data.map(item => {
+          let link = item.link || '';
+          if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('tools/')) {
+            link = 'tools/' + link;
+          }
+          return {
+            type: `Studio (${item.category || 'tool'})`,
+            title: item.title,
+            subtitle: item.desc || '',
+            url: link,
+            icon: item.icon || '🛠️',
+            tag: item.tag || ''
+          };
+        });
+        isToolsLoaded = true;
+      }
+    } catch (e) {
+      console.warn('Tools.json load deferred or unavailable:', e);
+    }
+  }
+
+  function openPalette() {
+    modal.style.display = 'flex';
+    input.value = '';
+    loadTools().then(() => renderResults(''));
+    renderResults('');
+    setTimeout(() => input.focus(), 50);
+  }
+
+  function closePalette() {
+    modal.style.display = 'none';
+  }
+
+  function renderResults(query) {
+    const q = query.trim().toLowerCase();
+    const all = [...staticItems, ...toolsList];
+
+    if (!q) {
+      currentFiltered = staticItems.slice(0, 10);
+    } else {
+      currentFiltered = all.filter(item => {
+        return (item.title && item.title.toLowerCase().includes(q)) ||
+               (item.subtitle && item.subtitle.toLowerCase().includes(q)) ||
+               (item.type && item.type.toLowerCase().includes(q)) ||
+               (item.tag && item.tag.toLowerCase().includes(q));
+      }).slice(0, 15);
+    }
+
+    activeIndex = 0;
+    if (currentFiltered.length === 0) {
+      resultsContainer.innerHTML = '<div class="cmd-empty">No matching tools, commands or pages found.</div>';
+      return;
+    }
+
+    resultsContainer.innerHTML = currentFiltered.map((item, idx) => `
+      <div class="cmd-item ${idx === activeIndex ? 'active' : ''}" data-idx="${idx}">
+        <span class="cmd-item-icon">${item.icon}</span>
+        <div class="cmd-item-text">
+          <div class="cmd-item-title">${item.title}</div>
+          <div class="cmd-item-sub">${item.subtitle}</div>
+        </div>
+        <span class="cmd-item-badge">${item.type}</span>
+      </div>
+    `).join('');
+
+    const items = resultsContainer.querySelectorAll('.cmd-item');
+    items.forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = parseInt(el.getAttribute('data-idx'), 10);
+        selectItem(currentFiltered[idx]);
+      });
+      el.addEventListener('mouseenter', () => {
+        items.forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        activeIndex = parseInt(el.getAttribute('data-idx'), 10);
+      });
+    });
+  }
+
+  function selectItem(item) {
+    if (!item) return;
+    closePalette();
+    if (item.action === 'toggleTheme') {
+      toggleTheme();
+    } else if (item.action === 'focusTerminal') {
+      const term = $('terminalInput');
+      if (term) {
+        term.scrollIntoView({ behavior: 'smooth' });
+        term.focus();
+      }
+    } else if (item.url) {
+      if (item.url.startsWith('#')) {
+        const target = document.querySelector(item.url);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = item.url;
+      }
+    }
+  }
+
+  // Keyboard navigation inside modal
+  input.addEventListener('keydown', (e) => {
+    const items = resultsContainer.querySelectorAll('.cmd-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (items.length > 0) {
+        activeIndex = (activeIndex + 1) % items.length;
+        items.forEach((it, i) => it.classList.toggle('active', i === activeIndex));
+        items[activeIndex]?.scrollIntoView({ block: 'nearest' });
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (items.length > 0) {
+        activeIndex = (activeIndex - 1 + items.length) % items.length;
+        items.forEach((it, i) => it.classList.toggle('active', i === activeIndex));
+        items[activeIndex]?.scrollIntoView({ block: 'nearest' });
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (currentFiltered[activeIndex]) {
+        selectItem(currentFiltered[activeIndex]);
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closePalette();
+    }
+  });
+
+  input.addEventListener('input', (e) => {
+    renderResults(e.target.value);
+  });
+
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', openPalette);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closePalette);
+  }
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closePalette();
+  });
+
+  // Global keydown for Ctrl+K / Cmd+K / Escape
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      if (modal.style.display === 'flex') {
+        closePalette();
+      } else {
+        openPalette();
+      }
+    } else if (e.key === 'Escape' && modal.style.display === 'flex') {
+      closePalette();
+    }
+  });
+}
+
+initHeroPipeline();
+initCommandPalette();

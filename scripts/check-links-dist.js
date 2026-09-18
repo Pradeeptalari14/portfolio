@@ -35,7 +35,7 @@ for (const file of htmlFiles) {
   while ((match = regex.exec(content)) !== null) {
     let link = match[1];
 
-    if (link.startsWith('http://') || link.startsWith('https://') || link.startsWith('mailto:') || link.startsWith('javascript:')) {
+    if (link.startsWith('http://') || link.startsWith('https://') || link.startsWith('mailto:') || link.startsWith('tel:') || link.startsWith('javascript:')) {
       continue;
     }
 

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Knowledge Base | Field Guides &amp; Runbooks | Talari Pradeep</title>
+  <meta name="description" content="Technical runbooks, architectural patterns, and production cheat-sheets across SRE, Kubernetes, AWS, DevOps, VMware, and AI infrastructure by Talari Pradeep." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root {
+      --bg-base: #080c14;
+      --bg-surface: #0f172a;
+      --bg-card: rgba(15, 23, 42, 0.7);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --border: rgba(255, 255, 255, 0.08);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .hub-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 12, 20, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hub-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .hub-brand-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+    .hub-nav-links {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+    .hub-nav-links a:hover { color: var(--text-primary); }
+    .kb-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+    .kb-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .kb-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .kb-desc {
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .kb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+    .article-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+    .article-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .art-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+    }
+    .art-readtime {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .art-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+    .art-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .art-key-points {
+      background: #040711;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      font-family: var(--font-mono);
+    }
+    .art-key-points li {
+      margin-left: 1.25rem;
+      margin-bottom: 0.35rem;
+    }
+    .art-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+    .art-tag { color: var(--text-muted); }
+    .art-link {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <nav class="hub-nav">
+    <a href="../" class="hub-brand">
+      <span>TALARI PRADEEP</span>
+      <span class="hub-brand-badge">KNOWLEDGE BASE</span>
+    </a>
+    <div class="hub-nav-links">
+      <a href="../">← Home</a>
+      <a href="../studios/">Studios Hub</a>
+      <a href="../toolbox/">Toolbox</a>
+      <a href="../incident/">Incident Lab</a>
+      <a href="../architecture/">Architecture</a>
+      <a href="../resume/">Resume</a>
+    </div>
+  </nav>
+
+  <div class="kb-container">
+    <header class="kb-header">
+      <h1 class="kb-title">Engineering Knowledge Base</h1>
+      <p class="kb-desc">
+        Field guides, production post-mortems, and architectural best practices distilled from building enterprise cloud, Kubernetes, SRE, and AI systems.
+      </p>
+    </header>
+
+    <div class="kb-grid">
+      <!-- Article 1 -->
+      <article class="article-card">
+        <div>
+          <div class="article-meta">
+            <span class="art-badge">SRE &amp; RELIABILITY</span>
+            <span class="art-readtime">8 MIN READ</span>
+          </div>
+          <h2 class="art-title">Mastering Multi-Window Multi-Burn-Rate Alerting</h2>
+          <p class="art-desc">
+            Eliminate alert fatigue by transitioning from static threshold CPU/memory alerts to Google SRE multi-window burn rate alerts based on user-facing SLOs.
+          </p>
+          <ul class="art-key-points">
+            <li>14.4x burn rate (2% budget in 1 hour) → Page on-call immediately</li>
+            <li>6x burn rate (5% budget in 6 hours) → Page on-call within 30 min</li>
+            <li>1x burn rate (10% budget in 3 days) → Ticket during business hours</li>
+          </ul>
+        </div>
+        <div class="art-footer">
+          <span class="art-tag">PromQL • Prometheus</span>
+          <a href="../tools/monitoring/" class="art-link">Launch Studio →</a>
+        </div>
+      </article>
+
+      <!-- Article 2 -->
+      <article class="article-card">
+        <div>
+          <div class="article-meta">
+            <span class="art-badge">KUBERNETES</span>
+            <span class="art-readtime">10 MIN READ</span>
+          </div>
+          <h2 class="art-title">Production Kubernetes Resilience Checklist</h2>
+          <p class="art-desc">
+            Essential configuration patterns to guarantee zero-downtime rolling deploys, graceful pod termination, and zone-aware scheduling.
+          </p>
+          <ul class="art-key-points">
+            <li>Configure preStop hooks (sleep 10) to drain in-flight TCP streams</li>
+            <li>Mandatory PodDisruptionBudgets (maxUnavailable: 1)</li>
+            <li>topologySpreadConstraints across zone and hostname</li>
+          </ul>
+        </div>
+        <div class="art-footer">
+          <span class="art-tag">Kubernetes • EKS</span>
+          <a href="../tools/kubernetes/" class="art-link">Launch Studio →</a>
+        </div>
+      </article>
+
+      <!-- Article 3 -->
+      <article class="article-card">
+        <div>
+          <div class="article-meta">
+            <span class="art-badge">TERRAFORM &amp; IAC</span>
+            <span class="art-readtime">7 MIN READ</span>
+          </div>
+          <h2 class="art-title">Terragrunt DRY Architecture for Multi-Account AWS</h2>
+          <p class="art-desc">
+            Structuring production Terraform code to prevent module duplication, enforce remote state locking, and automate cross-account IAM role assumption.
+          </p>
+          <ul class="art-key-points">
+            <li>Root terragrunt.hcl generating backend and provider blocks</li>
+            <li>Environment inheritance (dev, stage, prod) with mock outputs</li>
+            <li>DynamoDB state locking with KMS customer-managed keys</li>
+          </ul>
+        </div>
+        <div class="art-footer">
+          <span class="art-tag">AWS • Terragrunt</span>
+          <a href="../tools/terraform/" class="art-link">Launch Studio →</a>
+        </div>
+      </article>
+
+      <!-- Article 4 -->
+      <article class="article-card">
+        <div>
+          <div class="article-meta">
+            <span class="art-badge">AI INFRASTRUCTURE</span>
+            <span class="art-readtime">9 MIN READ</span>
+          </div>
+          <h2 class="art-title">Production LLM Inference Serving Architecture</h2>
+          <p class="art-desc">
+            Deep dive into deploying vLLM on Kubernetes with NVIDIA GPU Operators, continuous batching, PagedAttention, and distributed vector caching.
+          </p>
+          <ul class="art-key-points">
+            <li>PagedAttention eliminating KV cache memory fragmentation</li>
+            <li>vLLM Prometheus metrics (gpu_cache_usage_factor, time_to_first_token)</li>
+            <li>Milvus vector indexing trade-offs (HNSW vs IVF_FLAT vs SCaNN)</li>
+          </ul>
+        </div>
+        <div class="art-footer">
+          <span class="art-tag">vLLM • Milvus • CUDA</span>
+          <a href="../tools/llm/" class="art-link">Launch Studio →</a>
+        </div>
+      </article>
+
+      <!-- Article 5 -->
+      <article class="article-card">
+        <div>
+          <div class="article-meta">
+            <span class="art-badge">ENTERPRISE SYSTEMS</span>
+            <span class="art-readtime">6 MIN READ</span>
+          </div>
+          <h2 class="art-title">VMware vSphere &amp; Windows Server Hardening</h2>
+          <p class="art-desc">
+            Enterprise administration runbooks for VMware ESXi clusters, PowerCLI automation, and Windows Server Active Directory security baselines.
+          </p>
+          <ul class="art-key-points">
+            <li>PowerCLI automated snapshots and VM quiesced consistency checks</li>
+            <li>ESXi host Lockdown Mode and NTP synchronization validation</li>
+            <li>Kerberos ticket encryption policy and SMBv1 global deprecation</li>
+          </ul>
+        </div>
+        <div class="art-footer">
+          <span class="art-tag">VMware • Windows Server</span>
+          <a href="../tools/shellscript/" class="art-link">Launch Studio →</a>
+        </div>
+      </article>
+
+      <!-- Article 6 -->
+      <article class="article-card">
+        <div>
+          <div class="article-meta">
+            <span class="art-badge">DEVSECOPS</span>
+            <span class="art-readtime">7 MIN READ</span>
+          </div>
+          <h2 class="art-title">Shift-Left Container Security &amp; SBOM Generation</h2>
+          <p class="art-desc">
+            Automating vulnerability scans in GitHub Actions with Trivy, enforcing distroless rootless containers, and signing container images with Cosign.
+          </p>
+          <ul class="art-key-points">
+            <li>Multi-stage Docker builds using Google Distroless base images</li>
+            <li>Automated CycloneDX SBOM artifact generation in CI</li>
+            <li>Cosign keyless cryptographic image signing via GitHub OIDC</li>
+          </ul>
+        </div>
+        <div class="art-footer">
+          <span class="art-tag">Trivy • Cosign • Docker</span>
+          <a href="../tools/trivy/" class="art-link">Launch Studio →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</body>
+</html>

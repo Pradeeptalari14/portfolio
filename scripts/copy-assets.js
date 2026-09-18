@@ -32,6 +32,8 @@ copyFile('tools/shared-tools.js', 'tools/shared-tools.js');
 copyFile('tools/tools.json', 'tools/tools.json');
 copyFile('interview/topics.json', 'interview/topics.json');
 copyFile('AI/studios.json', 'AI/studios.json');
+copyFile('Talari_Pradeep.pdf', 'Talari_Pradeep.pdf');
+copyFile('Talari_Pradeep.docx', 'Talari_Pradeep.docx');
 
 // Sync tools/ to public/tools/ to prevent drift
 const root = path.resolve(__dirname, '..');
