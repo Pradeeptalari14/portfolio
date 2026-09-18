@@ -1,19 +1,19 @@
-<!-- ══ AI INFRASTRUCTURE INTERACTIVE PLAYGROUND ══ -->
+<!-- ══ FEATURED ENGINEERING INTERACTIVE PLAYGROUND ══ -->
 <section class="section section-alt" id="playground">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">Playground</span>
-      <h2 class="section-title">AI Infrastructure &amp; Platform <span class="gradient-text">Sandbox</span></h2>
-      <p class="section-subtitle" style="margin-top:0.5rem; color:var(--text-secondary); max-width:600px;">
-        Experiment with live AI infrastructure parameters, trace network flows, scale model worker nodes, and audit platform resources.
+      <span class="section-tag">// INTERACTIVE SANDBOX</span>
+      <h2 class="section-title">FEATURED <span class="gradient-text">ENGINEERING</span></h2>
+      <p class="section-subtitle">
+        Hands-on simulation labs for AI infrastructure, Kubernetes cluster orchestration, and SRE incident response.
       </p>
     </div>
 
     <!-- Playground Category Tab Bar -->
     <div class="playground-tabs-container">
-      <button id="btn-play-core" class="play-tab-btn active" onclick="switchPlaygroundTab('core')">🧠 LLMOps &amp; MLOps</button>
-      <button id="btn-play-kernel" class="play-tab-btn" onclick="switchPlaygroundTab('kernel')">⚡ Cloud &amp; IaC</button>
-      <button id="btn-play-delivery" class="play-tab-btn" onclick="switchPlaygroundTab('delivery')">☸️ Scaling &amp; Platform</button>
+      <button id="btn-play-core" class="play-tab-btn active" onclick="switchPlaygroundTab('core')">🤖 AI Infra</button>
+      <button id="btn-play-delivery" class="play-tab-btn" onclick="switchPlaygroundTab('delivery')">☸️ Kubernetes</button>
+      <button id="btn-play-kernel" class="play-tab-btn" onclick="switchPlaygroundTab('kernel')">⚡ SRE Lab</button>
     </div>
 
     <!-- Group 1: Core SRE & Pipelines -->
@@ -299,6 +299,46 @@
             <button id="btnRunbookAction" class="btn-widget-action bg-indigo disabled flex-1" disabled style="margin: 0; padding: 0.5rem;">Execute Step Action</button>
           </div>
         </div>
+
+        <!-- WIDGET 13: SRE Shell Interactive Terminal -->
+        <div class="playground-card" id="widget-sre-shell" style="grid-column: 1 / -1;">
+          <div class="widget-header">
+            <div class="widget-icon">💻</div>
+            <h3 class="widget-title">SRE Live Shell &amp; Incident Console</h3>
+          </div>
+          <p class="widget-desc">Execute SRE incident commands, inspect live container logs, mitigate OOM events, and reconcile Terraform state drifts.</p>
+
+          <div class="hero-terminal">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <span class="terminal-title">sre-shell@tp-core:~</span>
+              <div class="terminal-status">
+                <span class="status-dot"></span>
+                <span class="status-text">LIVE</span>
+              </div>
+            </div>
+            <div class="terminal-body" id="heroTerminalContent">
+              <div class="terminal-history" id="terminalHistory"></div>
+              <div class="terminal-input-line">
+                <span class="terminal-prompt">visitor@tp-shell:~$</span>
+                <input type="text" id="terminalInput" class="terminal-input" placeholder="Type help, sre-patch oom, or cat /var/log/containers/payment-service.log..." autocomplete="off" spellcheck="false" aria-label="Terminal command input" />
+              </div>
+              <div class="terminal-chips" id="terminalChips">
+                <button class="term-chip" data-cmd="help">help</button>
+                <button class="term-chip" data-cmd="about">about</button>
+                <button class="term-chip" data-cmd="skills">skills</button>
+                <button class="term-chip" data-cmd="studios">studios</button>
+                <button class="term-chip" data-cmd="sre-patch oom">sre-patch oom</button>
+                <button class="term-chip" data-cmd="clear">clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
