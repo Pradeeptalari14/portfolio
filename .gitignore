@@ -26,3 +26,7 @@ yarn-error.log*
 # Scratch & Temporary SRE files
 scratch/
 lh-report.json
+
+# Temporary Office and OS Lock Files
+~$*
+*.tmp

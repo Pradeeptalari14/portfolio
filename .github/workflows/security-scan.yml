@@ -2,9 +2,10 @@ name: Production Security Audits
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * 1' # Run weekly on Mondays
 
