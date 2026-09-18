@@ -7,13 +7,21 @@ function loadFullHTML() {
   const indexHtml = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
   
   // Resolve load tags manually to construct the full JSDOM DOM
-  const replacedHtml = indexHtml.replace(/<load\s+src="([^"]+)"\s*\/>/g, (match, src) => {
+  let replacedHtml = indexHtml.replace(/<load\s+src="([^"]+)"\s*\/>/g, (match, src) => {
     const sectionPath = path.resolve(__dirname, '..', src);
     if (fs.existsSync(sectionPath)) {
       return fs.readFileSync(sectionPath, 'utf8');
     }
     return '';
   });
+
+  // Always inject playground section directly (it may be removed from homepage
+  // but tests must still validate its logic independently)
+  const playgroundPath = path.resolve(__dirname, '../sections/playground.html');
+  if (fs.existsSync(playgroundPath) && !replacedHtml.includes('id="playground"')) {
+    const playgroundHtml = fs.readFileSync(playgroundPath, 'utf8');
+    replacedHtml = replacedHtml.replace('</body>', `${playgroundHtml}</body>`);
+  }
   
   return replacedHtml;
 }
