@@ -39,11 +39,35 @@ window.runSRETerminalCommand = function(cmd) {
 };
 
 /* ══════════════
-   NAVBAR
+   NAVBAR & THEME
 ══════════════ */
 const navbar    = $('navbar');
 const hamburger = $('hamburger');
 const navLinks  = $('nav-links');
+const navThemeToggle = $('navThemeToggle');
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark-theme');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  try {
+    localStorage.setItem('sre_dark_mode_active', isDark ? 'true' : 'false');
+  } catch (e) {}
+  if (typeof window.applyGlobalTheme === 'function') {
+    window.applyGlobalTheme();
+  }
+}
+
+if (navThemeToggle) {
+  navThemeToggle.addEventListener('click', toggleTheme);
+}
+
+// Initialize theme on load safely
+try {
+  if (typeof localStorage !== 'undefined' && localStorage.getItem('sre_dark_mode_active') === 'true') {
+    document.documentElement.classList.add('dark-theme');
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+} catch (e) {}
 
 window.addEventListener('scroll', () => {
   if (window.scrollY > 50) {

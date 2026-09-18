@@ -967,6 +967,7 @@
   // Theme override switcher
   function toggleGlobalTheme() {
     const isDark = document.documentElement.classList.toggle('dark-theme');
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     localStorage.setItem('sre_dark_mode_active', isDark ? 'true' : 'false');
     applyGlobalTheme();
   }
@@ -974,6 +975,7 @@
   const $ = (id) => document.getElementById(id);
 
   function applyGlobalTheme() {
+    window.applyGlobalTheme = applyGlobalTheme;
     const active = localStorage.getItem('sre_dark_mode_active') === 'true';
     if (active) {
       document.documentElement.classList.add('dark-theme');
