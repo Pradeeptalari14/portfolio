@@ -658,7 +658,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   justify-content: center;
   align-items: center;
   text-align: center;
-  gap: 3rem;
+  gap: 1.5rem;
   padding-top: 100px;
   padding-bottom: 60px;
   position: relative;
@@ -754,10 +754,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   align-items: center;
   gap: 2.2rem;
   padding: 1.25rem 2.5rem;
-  background: rgba(248, 249, 252, 0.65);
+  background: var(--bg-surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
   margin-bottom: 1.5rem;
@@ -897,7 +897,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ── Hero Profile Card (right column) ── */
 .hero-profile-card {
-  background: white;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 2rem;
@@ -1035,7 +1035,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 0.4rem 0.9rem;
   border-radius: 50px;
   border: 1px solid var(--border);
-  background: white;
+  background: var(--bg-card);
   transition: var(--transition);
   flex: 1;
   justify-content: center;
@@ -1583,7 +1583,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-weight: 600;
   padding: 0.36rem 0.85rem;
   border-radius: 50px;
-  background: white;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-secondary);
   box-shadow: var(--shadow-sm);
@@ -1627,7 +1627,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: var(--text-secondary);
   font-size: 0.86rem;
   padding: 0.65rem 0.9rem;
-  background: white;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   transition: var(--transition);
@@ -2056,7 +2056,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  background: white;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -2165,7 +2165,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: minmax(320px, 400px) 1fr;
   gap: 2rem;
   max-width: 1060px;
   margin: 0 auto;
@@ -5863,6 +5863,474 @@ body.modal-open {
   .contact-info-cards { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   .nav-cmd-btn .cmd-label, .nav-cmd-btn .cmd-shortcut { display: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   COMPREHENSIVE DESIGN IMPROVEMENTS 2026
+   Fixes: select styling, dark mode leaks, card polish
+═══════════════════════════════════════════════════ */
+
+/* ── Custom Select / Dropdown Styling ── */
+select,
+.runbook-select,
+select.widget-select,
+.playground-card select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: var(--transition);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+select:focus,
+.runbook-select:focus,
+.playground-card select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15), 0 2px 8px rgba(0,0,0,0.25);
+}
+
+select:hover,
+.runbook-select:hover,
+.playground-card select:hover {
+  border-color: var(--border-accent);
+}
+
+select option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 0.5rem;
+}
+
+/* ── Hero Section Improvements ── */
+.hero-badge {
+  animation: fadeSlideDown 0.6s ease forwards;
+}
+
+.hero-headline {
+  animation: fadeSlideUp 0.7s 0.1s ease both;
+}
+
+.hero-roles-bar {
+  animation: fadeSlideUp 0.7s 0.2s ease both;
+}
+
+.hero-actions {
+  animation: fadeSlideUp 0.7s 0.3s ease both;
+}
+
+.hero-social-links {
+  animation: fadeSlideUp 0.7s 0.4s ease both;
+}
+
+.hero-stack-card {
+  animation: fadeSlideUp 0.8s 0.5s ease both;
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Animated gradient border on focused cards ── */
+.build-card:hover,
+.project-card:hover,
+.timeline-card:hover {
+  background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+              linear-gradient(135deg, rgba(99,102,241,0.4), rgba(56,189,248,0.3)) border-box;
+  border-color: transparent;
+}
+
+/* ── Section alternating backgrounds (improved) ── */
+.section-alt {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Pillar cards in About section ── */
+.about-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.pillar-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--grad-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pillar-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.pillar-card:hover::before {
+  opacity: 1;
+}
+
+.pillar-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.pillar-desc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+  .about-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Contact section background — always dark ── */
+#contact.section-alt {
+  background: var(--bg-surface);
+}
+
+/* ── Contact terminal banner improvements ── */
+.contact-terminal-banner {
+  background: rgba(8, 12, 20, 0.95);
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(99,102,241,0.1);
+}
+
+.term-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.25rem;
+  background: rgba(15,23,42,0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.term-banner-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #f59e0b; }
+.dot-green { background: #10b981; }
+
+.term-banner-title {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-left: 0.5rem;
+  letter-spacing: 0.03em;
+}
+
+.term-banner-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.term-banner-prompt {
+  color: #10b981;
+  font-weight: 700;
+  margin-right: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.term-banner-cmd {
+  color: #38bdf8;
+  font-size: 0.85rem;
+}
+
+.term-banner-output {
+  margin-top: 0.75rem;
+  color: #64748b;
+  font-size: 0.76rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  line-height: 1.4;
+}
+
+/* ── Contact Form dark mode enforcement ── */
+.contact-form input,
+.contact-form textarea {
+  background: var(--bg-base) !important;
+  border: 1px solid var(--border-strong) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  width: 100%;
+  transition: var(--transition);
+  outline: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* ── Skill cards improvements ── */
+.skill-category {
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-category::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--grad-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skill-category:hover::after {
+  opacity: 0.6;
+}
+
+/* ── Build cards accent border on hover ── */
+.build-card {
+  position: relative;
+}
+
+.build-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(56,189,248,0.04));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.build-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Projects section improved ── */
+.project-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, rgba(99,102,241,0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.project-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Scroll reveal — applied via JS IntersectionObserver only ── */
+/* Elements only get opacity:0 when JS adds .reveal-init class */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-init.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Override for timeline items already marked visible */
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Navbar improvements ── */
+.navbar {
+  transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.35);
+}
+
+/* ── Back to top button ── */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--grad-primary);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: var(--transition-bounce);
+  z-index: 900;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.4);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(99,102,241,0.5);
+}
+
+.back-to-top svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Studios callout section ── */
+.studios-callout-section {
+  padding: 80px 0;
+}
+
+/* ── Footer link accent ── */
+.footer-link:hover {
+  color: var(--accent-cyan);
+}
+
+/* ── Playground card background dark lock ── */
+.playground-card {
+  background: var(--bg-card) !important;
+}
+
+/* ── Hero content gap fix for mobile ── */
+@media (max-width: 768px) {
+  .hero-inner {
+    gap: 1.25rem;
+  }
+
+  .hero-stack-card {
+    padding: 1.25rem 1.4rem;
+  }
+
+  .stack-grid-2x3 {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .what-i-build-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .skills-categories {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Section reveal observer init ── */
+/* These classes applied via JS IntersectionObserver */
+.reveal-ready {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal-ready.revealed {
+  opacity: 1;
+  transform: none;
 }
 
 

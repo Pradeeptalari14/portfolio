@@ -3408,3 +3408,52 @@ function initCommandPalette() {
 
 initHeroPipeline();
 initCommandPalette();
+
+/* ══════════════════════════════
+   SCROLL REVEAL — IntersectionObserver
+   Smoothly animates elements as they scroll into view
+══════════════════════════════ */
+function initScrollReveal() {
+  const targets = document.querySelectorAll(
+    '.section-header, .build-card, .project-card, .skill-category, .pillar-card, .studios-banner-card, .about-image-wrap'
+  );
+
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: just show everything
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-init');
+          // Slight delay to let the class apply before triggering reveal
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              entry.target.classList.add('revealed');
+            });
+          });
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px',
+    }
+  );
+
+  targets.forEach((el, i) => {
+    // Stagger delay based on position in viewport groupings
+    el.style.transitionDelay = `${(i % 3) * 0.08}s`;
+    revealObserver.observe(el);
+  });
+}
+
+// Initialize after DOM is fully loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initScrollReveal);
+} else {
+  initScrollReveal();
+}
