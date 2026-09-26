@@ -1,114 +1,105 @@
-<!-- ══ HERO ══ -->
-<section class="hero" id="home">
-  <div id="heroParticles" class="hero-particles" aria-hidden="true"></div>
+<!-- HERO -->
+<section class="hero" id="home" aria-label="Hero introduction">
+  <div class="hero-ambient" aria-hidden="true"></div>
+
   <div class="hero-inner container">
 
-    <!-- Hero Centered Content -->
-    <div class="hero-content hero-content-centered">
-      
-      <!-- Availability Badge -->
-      <div class="hero-badge" id="heroAvailabilityBadge">
-        <span class="badge-dot"></span>
-        <span>AVAILABLE FOR AI / CLOUD / DEVOPS ROLES</span>
+    <!-- Left: Identity Block -->
+    <div class="hero-identity">
+
+      <!-- Semantic Availability Signal -->
+      <div class="hero-signal" id="heroAvailabilityBadge">
+        <span class="signal-pulse" aria-hidden="true"></span>
+        <span class="signal-text">Available for AI / Platform / DevOps roles</span>
       </div>
 
-      <!-- Main Headline -->
-      <h1 class="hero-headline">
-        BUILDING RELIABLE INFRASTRUCTURE<br />
-        <span class="gradient-text">FOR THE AI ERA</span>
-      </h1>
-
-      <!-- Roles Subtitle -->
-      <div class="hero-roles-bar" id="heroRoles">
-        <span class="role-pill">Cloud Infrastructure</span>
-        <span class="role-dot">•</span>
-        <span class="role-pill">DevOps</span>
-        <span class="role-dot">•</span>
-        <span class="role-pill">SRE</span>
-        <span class="role-dot">•</span>
-        <span class="role-pill">AI</span>
+      <!-- Identity: Name-first hierarchy -->
+      <div class="hero-name-block">
+        <span class="hero-eyebrow">AI Infrastructure &amp; Platform Engineer</span>
+        <h1 class="hero-name">Talari<br><span class="hero-name-accent">Pradeep</span></h1>
       </div>
 
-      <!-- Action Buttons -->
-      <div class="hero-actions">
-        <a href="#projects" class="btn-primary" id="hero-view-work">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-          Explore My Work
+      <!-- Value proposition (restructured: no em-dash, punchy, under 25 words) -->
+      <p class="hero-value-prop">
+        I architect enterprise cloud and AI infrastructure, scaling multi-agent orchestration on Kubernetes and production RAG pipelines serving millions of queries.
+      </p>
+
+      <!-- Two-action CTA group -->
+      <div class="hero-cta-group">
+        <a href="#projects" class="hero-cta-primary" id="hero-view-work">
+          View My Work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="resume/" class="btn-outline" id="hero-resume-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-          View Resume
+        <a href="resume/" class="hero-cta-secondary" id="hero-resume-btn">
+          Resume
         </a>
       </div>
 
-      <!-- Quick Social Links -->
-      <div class="hero-social-links">
-        <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="social-chip" title="GitHub">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>GitHub</span>
+      <!-- Social channel row -->
+      <div class="hero-social-row">
+        <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="hero-social-link" id="hero-github-link">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
         </a>
-        <a href="https://www.linkedin.com/in/pradeep-talari/" target="_blank" rel="noopener noreferrer" class="social-chip" title="LinkedIn">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          <span>LinkedIn</span>
+        <span class="hero-social-sep" aria-hidden="true">/</span>
+        <a href="https://www.linkedin.com/in/pradeep-talari/" target="_blank" rel="noopener noreferrer" class="hero-social-link" id="hero-linkedin-link">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          LinkedIn
         </a>
-        <a href="#contact" class="social-chip" title="Contact">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>Contact</span>
+        <span class="hero-social-sep" aria-hidden="true">/</span>
+        <a href="#contact" class="hero-social-link" id="hero-contact-link">
+          Get in touch
         </a>
       </div>
+    </div>
 
-      <!-- ENGINEERING STACK Card -->
-      <div class="hero-stack-card" id="heroEngineeringStack">
-        <div class="stack-card-header">
-          <span class="stack-card-tag">// PRODUCTION TOOLCHAIN</span>
-          <h3 class="stack-card-title">ENGINEERING STACK</h3>
+    <!-- Right: Verified Impact Metrics + Core Stack -->
+    <div class="hero-right">
+
+      <div class="hero-metrics-card" id="heroMetricsCard">
+        <div class="metrics-card-label">Production verification</div>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <span class="metric-value" data-count="6">6+</span>
+            <span class="metric-label">Years production engineering</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value">500+</span>
+            <span class="metric-label">Concurrent AI workflows</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value">5M+</span>
+            <span class="metric-label">RAG documents indexed</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value">99.98%</span>
+            <span class="metric-label">Platform uptime target</span>
+          </div>
         </div>
-        <div class="stack-grid-2x3">
-          <div class="stack-cell">
-            <span class="stack-icon">☁️</span>
-            <div class="stack-meta">
-              <span class="stack-label">AWS</span>
-              <span class="stack-sub">Amazon Web Services</span>
-            </div>
-          </div>
-          <div class="stack-cell">
-            <span class="stack-icon">⚓</span>
-            <div class="stack-meta">
-              <span class="stack-label">Kubernetes</span>
-              <span class="stack-sub">EKS &amp; Cloud Native</span>
-            </div>
-          </div>
-          <div class="stack-cell">
-            <span class="stack-icon">🔷</span>
-            <div class="stack-meta">
-              <span class="stack-label">Azure</span>
-              <span class="stack-sub">Enterprise Cloud</span>
-            </div>
-          </div>
-          <div class="stack-cell">
-            <span class="stack-icon">⚙️</span>
-            <div class="stack-meta">
-              <span class="stack-label">Terraform</span>
-              <span class="stack-sub">Infrastructure as Code</span>
-            </div>
-          </div>
-          <div class="stack-cell">
-            <span class="stack-icon">🖥️</span>
-            <div class="stack-meta">
-              <span class="stack-label">VMware</span>
-              <span class="stack-sub">Virtualization &amp; Hybrid</span>
-            </div>
-          </div>
-          <div class="stack-cell">
-            <span class="stack-icon">🤖</span>
-            <div class="stack-meta">
-              <span class="stack-label">AI / LLMOps</span>
-              <span class="stack-sub">LangGraph, RAG &amp; Agents</span>
-            </div>
-          </div>
+      </div>
+
+      <div class="hero-stack-block" id="heroEngineeringStack">
+        <div class="stack-block-header">
+          <span class="stack-block-label">Production stack</span>
+        </div>
+        <div class="stack-chips-grid">
+          <span class="stack-chip stack-chip--ai">LangGraph</span>
+          <span class="stack-chip stack-chip--ai">LLMOps</span>
+          <span class="stack-chip stack-chip--infra">Kubernetes</span>
+          <span class="stack-chip stack-chip--infra">Terraform</span>
+          <span class="stack-chip stack-chip--cloud">AWS</span>
+          <span class="stack-chip stack-chip--cloud">Azure</span>
+          <span class="stack-chip stack-chip--obs">OpenTelemetry</span>
+          <span class="stack-chip stack-chip--obs">Prometheus</span>
+          <span class="stack-chip stack-chip--data">Weaviate</span>
+          <span class="stack-chip stack-chip--data">Neo4j</span>
+          <span class="stack-chip stack-chip--cicd">ArgoCD</span>
+          <span class="stack-chip stack-chip--cicd">GitHub Actions</span>
         </div>
       </div>
 
     </div>
+
   </div>
+
 </section>

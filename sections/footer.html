@@ -1,65 +1,78 @@
 <!-- ══ FOOTER ══ -->
-<footer class="footer">
+<footer class="footer ts-footer" aria-label="Site footer">
   <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col-brand">
-        <a href="#home" class="footer-logo">
-          <img src="Photo.webp" alt="Talari Pradeep" width="38" height="38" loading="lazy" style="width:38px;height:38px;border-radius:50%;object-fit:cover;outline:2px solid rgba(99,102,241,0.4);outline-offset:2px;" />
-          <span>TALARI <span class="gradient-text">PRADEEP</span></span>
+    <div class="footer-grid ts-footer-grid">
+
+      <!-- Column 1: Brand Identity & Manifesto -->
+      <div class="footer-col-brand ts-footer-brand">
+        <a href="#home" class="footer-logo ts-footer-logo">
+          <img src="Photo.webp" alt="Talari Pradeep" width="40" height="40" loading="lazy" class="ts-footer-avatar" />
+          <div class="ts-footer-brand-text">
+            <span class="ts-footer-name">Talari Pradeep</span>
+            <span class="ts-footer-title">AI Infrastructure &amp; Platform Engineer</span>
+          </div>
         </a>
-        <p class="footer-tagline">Cloud Infrastructure • DevOps • SRE • AI Infrastructure • LLMOps</p>
-        <p class="footer-statement">"Building Reliable Infrastructure for the AI Era."</p>
-        <div class="footer-socials">
-          <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="social-link" id="footer-github" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+
+        <p class="ts-footer-mission">
+          Engineering the resilient compute, multi-agent frameworks, and cloud-native observability stacks that empower modern enterprise AI.
+        </p>
+
+        <div class="footer-socials ts-footer-socials">
+          <a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer" class="social-link ts-social-btn" id="footer-github" aria-label="Talari Pradeep on GitHub" title="GitHub">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           </a>
-          <a href="https://linkedin.com/in/pradeep-talari" target="_blank" rel="noopener noreferrer" class="social-link" id="footer-linkedin" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          <a href="https://linkedin.com/in/pradeep-talari" target="_blank" rel="noopener noreferrer" class="social-link ts-social-btn" id="footer-linkedin" aria-label="Talari Pradeep on LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           </a>
-          <a href="mailto:talaripradeep45@gmail.com" class="social-link" id="footer-email" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <a href="mailto:talaripradeep45@gmail.com" class="social-link ts-social-btn" id="footer-email" aria-label="Email Talari Pradeep" title="Direct Email">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </a>
         </div>
       </div>
 
-      <div class="footer-col-nav">
-        <h4 class="footer-col-title">Engineering Platform</h4>
-        <ul class="footer-nav-list">
-          <li><a href="studios/">Engineering Studios (291+)</a></li>
-          <li><a href="AI/">AI Infrastructure Lab</a></li>
-          <li><a href="architecture/">Architecture Center</a></li>
-          <li><a href="incident/">SRE Incident Simulator</a></li>
-          <li><a href="toolbox/">Universal Toolbox</a></li>
-          <li><a href="finops/">Cloud FinOps Center</a></li>
+      <!-- Column 2: Engineering Platform Navigation -->
+      <div class="footer-col-nav ts-footer-col">
+        <h4 class="footer-col-title ts-col-title">Engineering Platform</h4>
+        <ul class="footer-nav-list ts-footer-links">
+          <li><a href="studios/" class="ts-footer-link">Engineering Studios <span class="ts-link-pill">291+</span></a></li>
+          <li><a href="AI/" class="ts-footer-link">AI Infrastructure Lab</a></li>
+          <li><a href="architecture/" class="ts-footer-link">Architecture Center</a></li>
+          <li><a href="incident/" class="ts-footer-link">SRE Incident Simulator</a></li>
+          <li><a href="toolbox/" class="ts-footer-link">Universal Toolbox</a></li>
+          <li><a href="finops/" class="ts-footer-link">Cloud FinOps Center</a></li>
         </ul>
       </div>
 
-      <div class="footer-col-nav">
-        <h4 class="footer-col-title">Knowledge &amp; Career</h4>
-        <ul class="footer-nav-list">
-          <li><a href="#about">About Pradeep</a></li>
-          <li><a href="experience/">Professional Experience</a></li>
-          <li><a href="skills/">Skill Matrix</a></li>
-          <li><a href="projects/">Featured Projects</a></li>
-          <li><a href="knowledge/">Technical Knowledge Base</a></li>
-          <li><a href="interview/">Interview Preparation</a></li>
-          <li><a href="learning/">Learning Paths</a></li>
-          <li><a href="resume/">ATS Resume (PDF)</a></li>
-          <li><a href="status/">Platform Status</a></li>
+      <!-- Column 3: Knowledge & Career Navigation -->
+      <div class="footer-col-nav ts-footer-col">
+        <h4 class="footer-col-title ts-col-title">Knowledge &amp; Career</h4>
+        <ul class="footer-nav-list ts-footer-links">
+          <li><a href="#about" class="ts-footer-link">About Pradeep</a></li>
+          <li><a href="experience/" class="ts-footer-link">Career Experience</a></li>
+          <li><a href="skills/" class="ts-footer-link">Skill Matrix</a></li>
+          <li><a href="projects/" class="ts-footer-link">Production Systems</a></li>
+          <li><a href="knowledge/" class="ts-footer-link">Field Runbooks &amp; SLOs</a></li>
+          <li><a href="resume/" class="ts-footer-link">ATS Resume (PDF)</a></li>
+          <li><a href="status/" class="ts-footer-link">Platform Telemetry Status</a></li>
         </ul>
       </div>
+
     </div>
 
-    <div class="footer-bottom">
-      <div class="footer-bottom-left">
-        <p>© <span class="copyright-year">2026</span> Talari Pradeep. All rights reserved.</p>
+    <!-- Bottom Bar: Status Heartbeat + Copyright -->
+    <div class="footer-bottom ts-footer-bottom">
+      <div class="footer-bottom-left ts-footer-copy">
+        <p>© <span class="copyright-year">2026</span> Talari Pradeep. Built with intentional engineering.</p>
       </div>
-      
+
       <!-- SRE Observability Heartbeat Bar -->
-      <div class="sre-heartbeat-bar" style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #cbd5e1;">
-        <span class="heartbeat-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulseDot 2s ease-in-out infinite; flex-shrink: 0;"></span>
-        <span class="heartbeat-text">SRE Metrics: Operational · Target SLA: 99.99% · Edge CDN: Active</span>
+      <div class="sre-heartbeat-bar ts-heartbeat-bar">
+        <span class="heartbeat-dot ts-heartbeat-dot" aria-hidden="true"></span>
+        <span class="heartbeat-text ts-heartbeat-text">
+          SRE Telemetry: <strong>Operational</strong> · Target SLA: <strong>99.99%</strong> · Edge CDN: <strong>Active</strong>
+        </span>
       </div>
     </div>
+
   </div>
 </footer>

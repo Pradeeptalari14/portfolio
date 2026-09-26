@@ -1,90 +1,96 @@
-<!-- ══ WHAT I BUILD ══ -->
-<section class="section" id="what-i-build">
+<!-- WHAT I BUILD -->
+<section class="section wib-section" id="what-i-build" aria-label="Core specializations">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">// CORE SPECIALIZATIONS</span>
-      <h2 class="section-title">WHAT I <span class="gradient-text">BUILD</span></h2>
-      <p class="section-subtitle">
-        Architecting resilient cloud platforms, automated delivery pipelines, and production-ready AI infrastructure.
-      </p>
+
+    <div class="wib-header">
+      <span class="wib-eyebrow">Specializations</span>
+      <h2 class="wib-title">What I build</h2>
     </div>
 
-    <div class="what-i-build-grid what-i-build-grid-4">
-      <!-- 1. Cloud -->
-      <div class="build-card">
-        <div class="build-card-header">
-          <div class="build-icon">☁️</div>
-          <span class="build-num">01</span>
-        </div>
-        <h3 class="build-title">Cloud Infrastructure</h3>
-        <p class="build-desc">
-          Multi-region AWS & Azure architectures built for 99.99% availability. Isolated VPC topologies, IAM least-privilege, and secure hybrid cloud connectivity.
-        </p>
-        <div class="build-tags">
-          <span class="build-tag">AWS</span>
-          <span class="build-tag">Azure</span>
-          <span class="build-tag">VPC</span>
-          <span class="build-tag">Transit Gateway</span>
-          <span class="build-tag">FinOps</span>
+    <div class="wib-layout">
+
+      <!-- Featured Card: Cloud Infrastructure -->
+      <div class="wib-card wib-card--featured" id="wib-cloud">
+        <div class="wib-card-number">01</div>
+        <div class="wib-card-body">
+          <div class="wib-card-icon wib-card-icon--cloud" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          </div>
+          <h3 class="wib-card-title">Cloud Infrastructure</h3>
+          <p class="wib-card-desc">
+            Multi-region AWS and Azure architectures engineered for 99.99% availability.
+            Features isolated VPC topologies, IAM least-privilege boundaries, Transit Gateway mesh,
+            and FinOps-aware resource governance.
+          </p>
+          <div class="wib-tags">
+            <span class="wib-tag">AWS</span>
+            <span class="wib-tag">Azure</span>
+            <span class="wib-tag">VPC</span>
+            <span class="wib-tag">Transit Gateway</span>
+            <span class="wib-tag">FinOps</span>
+          </div>
         </div>
       </div>
 
-      <!-- 2. AI / LLMOps -->
-      <div class="build-card">
-        <div class="build-card-header">
-          <div class="build-icon">🤖</div>
-          <span class="build-num">02</span>
-        </div>
-        <h3 class="build-title">AI Infrastructure</h3>
-        <p class="build-desc">
-          Production LLMOps pipelines, multi-agent autonomous orchestrations using LangGraph, high-performance vector search (Weaviate, pgvector), and low-latency GPU inference.
-        </p>
-        <div class="build-tags">
-          <span class="build-tag">LangGraph</span>
-          <span class="build-tag">Weaviate</span>
-          <span class="build-tag">pgvector</span>
-          <span class="build-tag">vLLM</span>
-          <span class="build-tag">LLMOps</span>
-        </div>
-      </div>
+      <!-- Right Column: 3 Compact Cards -->
+      <div class="wib-col">
 
-      <!-- 3. DevOps -->
-      <div class="build-card">
-        <div class="build-card-header">
-          <div class="build-icon">🚀</div>
-          <span class="build-num">03</span>
+        <!-- AI / LLMOps -->
+        <div class="wib-card wib-card--compact" id="wib-ai">
+          <div class="wib-card-number">02</div>
+          <div class="wib-card-icon wib-card-icon--ai" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div class="wib-card-body">
+            <h3 class="wib-card-title">AI Infrastructure</h3>
+            <p class="wib-card-desc">Production LLMOps pipelines, multi-agent orchestration with LangGraph, high-performance vector search, and low-latency GPU inference serving.</p>
+            <div class="wib-tags">
+              <span class="wib-tag">LangGraph</span>
+              <span class="wib-tag">Weaviate</span>
+              <span class="wib-tag">vLLM</span>
+              <span class="wib-tag">LLMOps</span>
+            </div>
+          </div>
         </div>
-        <h3 class="build-title">DevOps & Platform</h3>
-        <p class="build-desc">
-          Zero-touch CI/CD pipelines, GitOps with ArgoCD, container security scanning, and production Kubernetes clusters (EKS/AKS) with Helm charts and auto-scaling.
-        </p>
-        <div class="build-tags">
-          <span class="build-tag">GitHub Actions</span>
-          <span class="build-tag">ArgoCD</span>
-          <span class="build-tag">Kubernetes</span>
-          <span class="build-tag">Helm</span>
-          <span class="build-tag">Docker</span>
-        </div>
-      </div>
 
-      <!-- 4. SRE & Observability -->
-      <div class="build-card">
-        <div class="build-card-header">
-          <div class="build-icon">📊</div>
-          <span class="build-num">04</span>
+        <!-- DevOps & Platform -->
+        <div class="wib-card wib-card--compact" id="wib-devops">
+          <div class="wib-card-number">03</div>
+          <div class="wib-card-icon wib-card-icon--devops" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+          </div>
+          <div class="wib-card-body">
+            <h3 class="wib-card-title">DevOps &amp; Platform</h3>
+            <p class="wib-card-desc">Zero-touch CI/CD, GitOps with ArgoCD and Atlantis, container security scanning, and production Kubernetes clusters with KEDA auto-scaling.</p>
+            <div class="wib-tags">
+              <span class="wib-tag">GitHub Actions</span>
+              <span class="wib-tag">ArgoCD</span>
+              <span class="wib-tag">Kubernetes</span>
+              <span class="wib-tag">Helm</span>
+            </div>
+          </div>
         </div>
-        <h3 class="build-title">SRE & Observability</h3>
-        <p class="build-desc">
-          SLOs, error budget calculations, real-time metrics dashboards, distributed tracing, automated incident runbooks, and chaos engineering for production resilience.
-        </p>
-        <div class="build-tags">
-          <span class="build-tag">Prometheus</span>
-          <span class="build-tag">Grafana</span>
-          <span class="build-tag">OpenTelemetry</span>
-          <span class="build-tag">SLO/SLA</span>
-          <span class="build-tag">Chaos</span>
+
+        <!-- SRE & Observability -->
+        <div class="wib-card wib-card--compact" id="wib-sre">
+          <div class="wib-card-number">04</div>
+          <div class="wib-card-icon wib-card-icon--sre" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="wib-card-body">
+            <h3 class="wib-card-title">SRE &amp; Observability</h3>
+            <p class="wib-card-desc">SLO design, error budget dashboards, distributed tracing, automated incident runbooks, and chaos engineering for production resilience.</p>
+            <div class="wib-tags">
+              <span class="wib-tag">Prometheus</span>
+              <span class="wib-tag">Grafana</span>
+              <span class="wib-tag">OpenTelemetry</span>
+              <span class="wib-tag">Chaos</span>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
+
   </div>
 </section>

@@ -1306,7 +1306,7 @@ function initGitOpsSimulator() {
       canaryStage = 'active';
       if (targetCircles[0]) {
         targetCircles[0].className = 'pod-circle pod-pending';
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 300));
         targetCircles[0].className = 'pod-circle pod-running pod-canary-active';
       }
       
@@ -1320,7 +1320,7 @@ function initGitOpsSimulator() {
       const maxPods = targetCircles.length;
       for (let i = 0; i < maxPods; i++) {
         if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-pending';
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 300));
         if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-running';
       }
 
@@ -1348,7 +1348,7 @@ function initGitOpsSimulator() {
       
       for (let i = 1; i < targetCircles.length; i++) {
         if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-pending';
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 250));
         if (targetCircles[i]) targetCircles[i].className = 'pod-circle pod-running';
       }
       
@@ -2452,14 +2452,14 @@ function initCicdPipelineRunner() {
     
     // 1. Checkout (400ms)
     stageCheckout.classList.add('cicd-stage-active');
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise(r => setTimeout(r, 200));
     stageCheckout.classList.remove('cicd-stage-active');
     stageCheckout.classList.add('cicd-stage-success');
     appendLog('[CHECKOUT] SCM repository checked out successfully.');
 
     // 2. Lint & Test (600ms)
     stageLint.classList.add('cicd-stage-active');
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 300));
     stageLint.classList.remove('cicd-stage-active');
 
     if (toggleFailTest && toggleFailTest.checked) {
@@ -2476,7 +2476,7 @@ function initCicdPipelineRunner() {
 
     // 3. Security Scan (600ms)
     stageSecurity.classList.add('cicd-stage-active');
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 300));
     stageSecurity.classList.remove('cicd-stage-active');
 
     if (toggleVuln && toggleVuln.checked) {
@@ -2493,14 +2493,14 @@ function initCicdPipelineRunner() {
 
     // 4. Build Container (500ms)
     stageBuild.classList.add('cicd-stage-active');
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 300));
     stageBuild.classList.remove('cicd-stage-active');
     stageBuild.classList.add('cicd-stage-success');
     appendLog('[BUILD] Docker image compiled successfully. Tagged v1.2.8.');
 
     // 5. Deploy Rollout (600ms)
     stageDeploy.classList.add('cicd-stage-active');
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 300));
     stageDeploy.classList.remove('cicd-stage-active');
     stageDeploy.classList.add('cicd-stage-success');
     appendLog('[DEPLOY] Rollout completed. Pod container image deployed.');

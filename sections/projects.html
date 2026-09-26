@@ -1,77 +1,172 @@
-<!-- ══ PROJECTS ══ -->
-<section class="section section-alt" id="projects">
+<!-- PROJECTS -->
+<section class="section section-alt ts-projects-section" id="projects" aria-label="Featured engineering projects">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">// PRODUCTION ARCHITECTURES</span>
-      <h2 class="section-title">FEATURED <span class="gradient-text">PROJECTS</span></h2>
-      <p class="section-subtitle">
-        Production-grade AI platforms, LLMOps pipelines, and cloud-native infrastructure built for enterprise scale.
+
+    <div class="ts-section-header">
+      <div class="ts-section-signal">
+        <span class="signal-dot" aria-hidden="true"></span>
+        <span class="ts-section-tag">Production Architectures</span>
+      </div>
+      <h2 class="ts-section-title">Flagship Systems &amp; Platforms</h2>
+      <p class="ts-section-subtitle">
+        Production-grade AI systems, LLMOps pipelines, and cloud-native infrastructure engineered for scale, strict enterprise SLOs, and high availability.
       </p>
     </div>
 
-    <div class="projects-grid projects-grid-3">
+    <div class="ts-projects-layout">
 
-      <!-- Project 1: Enterprise Agentic OS -->
-      <div class="project-card featured" id="project-agentic-os">
-        <div class="project-card-top">
-          <div class="project-icon">🤖</div>
-          <div class="project-links">
-            <a href="https://github.com/Pradeeptalari14/enterprise-agentic-os" target="_blank" rel="noopener noreferrer" class="project-link" id="proj1-github" title="GitHub">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-            </a>
+      <!-- Project 1 (Flagship): Enterprise Agentic OS -->
+      <div class="ts-flagship-card" id="project-agentic-os">
+        <div class="ts-flagship-glow" aria-hidden="true"></div>
+        <div class="ts-flagship-inner">
+          <div class="ts-flagship-main">
+            <div class="ts-card-meta">
+              <span class="ts-status-badge">
+                <span class="ts-status-dot" aria-hidden="true"></span>
+                Production v2.4
+              </span>
+              <span class="ts-domain-tag">Multi-Agent Orchestration</span>
+              <div class="ts-card-links">
+                <a href="https://github.com/Pradeeptalari14/enterprise-agentic-os" target="_blank" rel="noopener noreferrer" class="ts-link-btn" id="proj1-github" title="View GitHub Repository" aria-label="Enterprise Agentic OS GitHub">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                  <span>Repository</span>
+                </a>
+              </div>
+            </div>
+
+            <h3 class="ts-flagship-title">
+              <a href="projects/enterprise-agentic-os.html" class="ts-title-link">
+                Enterprise Agentic Operating System
+              </a>
+            </h3>
+
+            <p class="ts-flagship-desc">
+              Multi-agent orchestration platform coordinating specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful cyclic graphs to handle 500+ concurrent enterprise workflows with dynamic tool dispatch and persistent vector state.
+            </p>
+
+            <div class="ts-proof-metrics">
+              <div class="ts-proof-item">
+                <span class="ts-proof-num">500+</span>
+                <span class="ts-proof-lbl">Concurrent Workflows</span>
+              </div>
+              <div class="ts-proof-item">
+                <span class="ts-proof-num">&lt;120ms</span>
+                <span class="ts-proof-lbl">Routing Overhead</span>
+              </div>
+              <div class="ts-proof-item">
+                <span class="ts-proof-num">99.98%</span>
+                <span class="ts-proof-lbl">Execution Reliability</span>
+              </div>
+            </div>
+
+            <div class="ts-card-footer">
+              <div class="stack-chips-grid">
+                <span class="stack-chip stack-chip--ai">LangGraph</span>
+                <span class="stack-chip stack-chip--ai">FastAPI</span>
+                <span class="stack-chip stack-chip--infra">Kubernetes (EKS)</span>
+                <span class="stack-chip stack-chip--data">Redis State</span>
+                <span class="stack-chip stack-chip--cicd">ArgoCD</span>
+              </div>
+
+              <a href="projects/enterprise-agentic-os.html" class="ts-action-link">
+                <span>View Architecture</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="project-featured-badge">⭐ Featured</div>
-        <h3 class="project-title"><a href="projects/enterprise-agentic-os.html" class="project-title-link">Enterprise Agentic Operating System</a></h3>
-        <p class="project-desc">Multi-agent orchestration OS with specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful graphs — handling 500+ concurrent enterprise workflows with dynamic tool routing.</p>
-        <a href="projects/enterprise-agentic-os.html" class="project-details-link">View Architecture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech">
-          <span>LangGraph</span><span>FastAPI</span><span>Kubernetes</span><span>Redis</span><span>ArgoCD</span>
         </div>
       </div>
 
-      <!-- Project 2: Enterprise RAG Platform -->
-      <div class="project-card" id="project-rag-platform">
-        <div class="project-card-top">
-          <div class="project-icon">🧠</div>
-          <div class="project-links">
-            <a href="https://github.com/Pradeeptalari14/enterprise-rag-platform" target="_blank" rel="noopener noreferrer" class="project-link" id="proj2-github" title="GitHub">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-            </a>
-          </div>
-        </div>
-        <h3 class="project-title"><a href="projects/enterprise-rag-platform.html" class="project-title-link">Enterprise RAG Platform</a></h3>
-        <p class="project-desc">Production-grade RAG pipeline with hybrid semantic + BM25 search over 5M+ documents, Weaviate vector database, and Neo4j GraphRAG — achieving 3× reduction in hallucination rates.</p>
-        <a href="projects/enterprise-rag-platform.html" class="project-details-link">View Architecture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech">
-          <span>LangChain</span><span>Weaviate</span><span>OpenSearch</span><span>Neo4j</span><span>Terraform</span>
-        </div>
-      </div>
+      <!-- Secondary Projects Row: 2-Column Balance -->
+      <div class="ts-subprojects-grid">
 
-      <!-- Project 3: Cloud Landing Zone -->
-      <div class="project-card" id="project-landing-zone">
-        <div class="project-card-top">
-          <div class="project-icon">🏗️</div>
-          <div class="project-links">
-            <a href="https://github.com/Pradeeptalari14/multi-cloud-landing-zone" target="_blank" rel="noopener noreferrer" class="project-link" id="proj4-github" title="GitHub">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        <!-- Project 2: Enterprise RAG Platform -->
+        <div class="ts-project-card" id="project-rag-platform">
+          <div class="ts-card-top-row">
+            <div class="ts-project-icon-box ts-project-icon--ai" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 2a4 4 0 0 1 4 4c0 .88-.28 1.7-.76 2.37L17 11a4 4 0 0 1 1 8H6a4 4 0 0 1 1-8l1.76-2.63A3.99 3.99 0 0 1 8 6a4 4 0 0 1 4-4z"/><circle cx="12" cy="15" r="1.5"/></svg>
+            </div>
+            <div class="ts-card-links">
+              <a href="https://github.com/Pradeeptalari14/enterprise-rag-platform" target="_blank" rel="noopener noreferrer" class="ts-icon-btn" id="proj2-github" title="GitHub Repository" aria-label="Enterprise RAG GitHub">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="ts-card-content">
+            <span class="ts-domain-tag">Hybrid Search · 5M+ Docs</span>
+            <h3 class="ts-card-title">
+              <a href="projects/enterprise-rag-platform.html" class="ts-title-link">
+                Enterprise Hybrid RAG Platform
+              </a>
+            </h3>
+            <p class="ts-card-desc">
+              Production retrieval pipeline combining dense semantic vector search with BM25 lexical ranking over 5M+ documents, Weaviate clustering, and Neo4j GraphRAG to reduce hallucination rates by 3×.
+            </p>
+          </div>
+
+          <div class="ts-card-bottom">
+            <div class="stack-chips-grid">
+              <span class="stack-chip stack-chip--ai">LangChain</span>
+              <span class="stack-chip stack-chip--data">Weaviate</span>
+              <span class="stack-chip stack-chip--data">Neo4j</span>
+              <span class="stack-chip stack-chip--infra">Terraform</span>
+            </div>
+            <a href="projects/enterprise-rag-platform.html" class="ts-action-link">
+              <span>Architecture</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
           </div>
         </div>
-        <h3 class="project-title"><a href="projects/multi-cloud-landing-zone.html" class="project-title-link">Cloud Landing Zone & IaC Platform</a></h3>
-        <p class="project-desc">Reusable Terraform module library for multi-cloud Landing Zone provisioning — one-click environment bootstrap in under 30 minutes with GitOps pipelines and SOC2 compliance built-in.</p>
-        <a href="projects/multi-cloud-landing-zone.html" class="project-details-link">View Architecture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech">
-          <span>Terraform</span><span>Pulumi</span><span>Ansible</span><span>Azure</span><span>AWS</span>
+
+        <!-- Project 3: Cloud Landing Zone -->
+        <div class="ts-project-card" id="project-landing-zone">
+          <div class="ts-card-top-row">
+            <div class="ts-project-icon-box ts-project-icon--cloud" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            </div>
+            <div class="ts-card-links">
+              <a href="https://github.com/Pradeeptalari14/multi-cloud-landing-zone" target="_blank" rel="noopener noreferrer" class="ts-icon-btn" id="proj4-github" title="GitHub Repository" aria-label="Landing Zone GitHub">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="ts-card-content">
+            <span class="ts-domain-tag">Multi-Cloud IaC · SOC2 Built-In</span>
+            <h3 class="ts-card-title">
+              <a href="projects/multi-cloud-landing-zone.html" class="ts-title-link">
+                Cloud Landing Zone &amp; IaC Platform
+              </a>
+            </h3>
+            <p class="ts-card-desc">
+              Modular Terraform and Pulumi library establishing hardened AWS and Azure foundations to bootstrap isolated VPC topologies, zero-trust IAM, and transit gateways in under 30 minutes.
+            </p>
+          </div>
+
+          <div class="ts-card-bottom">
+            <div class="stack-chips-grid">
+              <span class="stack-chip stack-chip--cloud">Terraform</span>
+              <span class="stack-chip stack-chip--cloud">Pulumi</span>
+              <span class="stack-chip stack-chip--infra">Ansible</span>
+              <span class="stack-chip stack-chip--cloud">AWS / Azure</span>
+            </div>
+            <a href="projects/multi-cloud-landing-zone.html" class="ts-action-link">
+              <span>Architecture</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
+
       </div>
 
     </div>
 
-    <div class="projects-cta-row" style="text-align: center; margin-top: 2.5rem;">
-      <a href="projects/" class="btn-outline btn-lg" id="view-all-projects-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        <span>View All Projects</span>
+    <!-- Section CTA Footer -->
+    <div class="ts-section-cta">
+      <a href="projects/" class="ts-btn-secondary" id="view-all-projects-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Explore All 20+ Systems &amp; Case Studies</span>
       </a>
     </div>
 
