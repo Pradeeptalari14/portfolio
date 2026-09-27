@@ -3,266 +3,595 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Talari Pradeep | Curriculum Vitae &amp; Resume | Cloud Infrastructure &amp; SRE</title>
-  <meta name="description" content="Curriculum Vitae and ATS-friendly resume of Talari Pradeep: Cloud Infrastructure Engineer, DevOps &amp; SRE Specialist at Accenture and Trigent Software." />
+  <title>Talari Pradeep | Curriculum Vitae &amp; Resume | AI Infrastructure &amp; Platform Engineer</title>
+  <meta name="description" content="Curriculum Vitae and ATS-friendly resume of Talari Pradeep: AI Infrastructure Engineer, Platform Engineer &amp; DevOps/MLOps Specialist at Accenture and Trigent Software." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" /></noscript>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" /></noscript>
   <style>
     :root {
       --bg: #ffffff;
       --text: #0f172a;
-      --muted: #475569;
-      --light-border: #cbd5e1;
+      --text-muted: #475569;
+      --light-border: #e2e8f0;
       --accent: #2563eb;
-      --font-main: 'Inter', system-ui, sans-serif;
+      --accent-dark: #1d4ed8;
+      --tag-bg: #f1f5f9;
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: var(--font-main);
-      background: #f1f5f9;
+      background: #f8fafc;
       color: var(--text);
-      line-height: 1.5;
-      padding: 2rem 1rem;
+      line-height: 1.55;
+      padding: 2rem 1rem 4rem;
+      -webkit-font-smoothing: antialiased;
     }
     .resume-actions-bar {
-      max-width: 850px;
+      max-width: 880px;
       margin: 0 auto 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .actions-group {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
     }
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 1.2rem;
+      gap: 0.45rem;
+      padding: 0.55rem 1.15rem;
       border-radius: 6px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
     .btn-primary {
       background: #0f172a;
       color: #fff;
       border: 1px solid #0f172a;
     }
-    .btn-primary:hover { background: #1e293b; }
+    .btn-primary:hover { background: #1e293b; color: #fff; }
     .btn-secondary {
       background: #ffffff;
       color: #0f172a;
       border: 1px solid #cbd5e1;
     }
-    .btn-secondary:hover { background: #f8fafc; }
+    .btn-secondary:hover { background: #f8fafc; border-color: #94a3b8; }
+    .btn svg { width: 15px; height: 15px; }
+
     .resume-sheet {
-      max-width: 850px;
+      max-width: 880px;
       margin: 0 auto;
       background: var(--bg);
-      padding: 3rem;
+      padding: 3.25rem 3.5rem;
       border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--light-border);
     }
     .r-header {
       border-bottom: 2px solid #0f172a;
       padding-bottom: 1.25rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.6rem;
     }
     .r-name {
-      font-size: 2.25rem;
+      font-family: var(--font-display);
+      font-size: 2.35rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       color: #0f172a;
+      line-height: 1.1;
     }
     .r-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 600;
       color: var(--accent);
-      margin-top: 0.25rem;
+      margin-top: 0.35rem;
+      letter-spacing: -0.01em;
     }
     .r-contact {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 0.5rem;
+      align-items: center;
+      gap: 0.4rem 0.85rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-top: 0.65rem;
       font-family: var(--font-mono);
     }
-    .r-contact a { color: inherit; text-decoration: none; }
+    .r-contact a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .r-contact a:hover { color: var(--accent); text-decoration: underline; }
+    .r-contact .sep { color: #cbd5e1; font-weight: 300; }
+
     .r-section {
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.85rem;
+      break-inside: avoid;
     }
     .r-sec-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #0f172a;
       border-bottom: 1px solid var(--light-border);
-      padding-bottom: 0.35rem;
-      margin-bottom: 0.85rem;
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+
+    /* Metric callouts */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.65rem 1rem;
+      margin-top: 0.5rem;
+      background: #f8fafc;
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--light-border);
+    }
+    .metric-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+      color: #334155;
+    }
+    .metric-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+
     .job-item {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.45rem;
+      break-inside: avoid;
     }
+    .job-item:last-child { margin-bottom: 0; }
     .job-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.35rem;
+      flex-wrap: wrap;
+      gap: 0.2rem 1rem;
     }
     .job-role {
-      font-size: 1rem;
+      font-size: 1.02rem;
       font-weight: 700;
       color: #0f172a;
     }
     .job-company {
-      font-weight: 600;
-      color: var(--muted);
+      font-weight: 700;
+      color: #334155;
+    }
+    .job-location {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
     }
     .job-period {
       font-size: 0.82rem;
       font-family: var(--font-mono);
-      color: var(--muted);
+      font-weight: 600;
+      color: var(--text-muted);
     }
     .job-bullets {
-      margin-left: 1.25rem;
+      margin-left: 1.15rem;
       font-size: 0.88rem;
       color: #334155;
+      line-height: 1.55;
     }
     .job-bullets li {
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
     }
+    .job-bullets li strong {
+      color: #0f172a;
+    }
+
+    /* Skills table */
     .skills-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: 0.86rem;
+    }
+    .sb-row {
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 160px 1fr;
       gap: 0.5rem 1rem;
-      font-size: 0.88rem;
+      align-items: baseline;
     }
     .sb-label {
-      font-weight: 600;
+      font-weight: 700;
       color: #0f172a;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
     .sb-val {
       color: #334155;
+      line-height: 1.45;
     }
+
+    /* Projects items */
+    .project-item {
+      margin-bottom: 1rem;
+      break-inside: avoid;
+    }
+    .project-item:last-child { margin-bottom: 0; }
+    .project-title-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.2rem;
+      flex-wrap: wrap;
+      gap: 0.2rem 1rem;
+    }
+    .project-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .project-tech {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--accent-dark);
+      background: #eff6ff;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #dbeafe;
+    }
+    .project-desc {
+      font-size: 0.86rem;
+      color: #334155;
+      line-height: 1.5;
+    }
+
+    /* Certifications & Education */
+    .cred-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.6rem 1.25rem;
+      font-size: 0.86rem;
+    }
+    .cred-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #334155;
+    }
+    .cred-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.12rem 0.45rem;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .status-completed { background: #dcfce7; color: #15803d; }
+    .status-progress { background: #fef3c7; color: #b45309; }
+    .status-planned { background: #f1f5f9; color: #475569; }
+
     @media print {
-      body { background: #fff; padding: 0; }
-      .resume-actions-bar { display: none; }
-      .resume-sheet { box-shadow: none; padding: 0; max-width: 100%; }
-      @page { margin: 1.5cm; }
+      body { background: #fff; padding: 0; color: #000; }
+      .resume-actions-bar { display: none !important; }
+      .resume-sheet {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        border: none;
+      }
+      .r-header { border-bottom: 1.5pt solid #000; }
+      .r-sec-title { border-bottom: 0.75pt solid #000; }
+      .metrics-grid { background: #fafafa; border: 0.5pt solid #e5e5e5; }
+      .project-tech { background: #f4f4f4; border: 0.5pt solid #ddd; color: #000; }
+      @page {
+        margin: 1.2cm 1.4cm;
+        size: A4 portrait;
+      }
+      a { color: inherit !important; text-decoration: none !important; }
+      .r-section, .job-item, .project-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .resume-sheet { padding: 1.75rem 1.25rem; }
+      .r-name { font-size: 1.85rem; }
+      .sb-row { grid-template-columns: 1fr; gap: 0.2rem; margin-bottom: 0.5rem; }
+      .job-header, .project-title-bar { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Floating Action Toolbar (Hidden during print) -->
   <div class="resume-actions-bar">
-    <a href="../" class="btn btn-secondary">← Back to Platform</a>
-    <div style="display: flex; gap: 0.75rem;">
-      <button class="btn btn-primary" onclick="window.print()">🖨️ Print Resume</button>
-      <a href="../Talari_Pradeep.pdf" download class="btn btn-secondary">⬇️ Download PDF</a>
+    <a href="../" class="btn btn-secondary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Platform
+    </a>
+    <div class="actions-group">
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / PDF
+      </button>
+      <a href="../Talari_Pradeep.pdf" download="Talari_Pradeep.pdf" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </a>
+      <a href="../Talari_Pradeep.docx" download="Talari_Pradeep.docx" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Download Word
+      </a>
     </div>
   </div>
 
+  <!-- ATS-Compliant Document Canvas -->
   <main class="resume-sheet">
+
+    <!-- Header Section -->
     <header class="r-header">
       <h1 class="r-name">TALARI PRADEEP</h1>
-      <div class="r-title">Cloud Infrastructure Engineer • DevOps • SRE • AI Infrastructure</div>
+      <div class="r-title">AI Infrastructure Engineer | Platform Engineer | DevOps &amp; MLOps Specialist</div>
       <div class="r-contact">
-        <span>Bengaluru, India</span>
-        <span>•</span>
-        <span><a href="mailto:talaripradeep14@gmail.com">talaripradeep14@gmail.com</a></span>
-        <span>•</span>
-        <span><a href="tel:+919700346853">+91 9700346853</a></span>
-        <span>•</span>
-        <span><a href="https://talaripradeep.info">talaripradeep.info</a></span>
-        <span>•</span>
-        <span><a href="https://github.com/Pradeeptalari14">github.com/Pradeeptalari14</a></span>
+        <span>Bangalore, India</span>
+        <span class="sep">•</span>
+        <span><a href="mailto:talaripradeep45@gmail.com">talaripradeep45@gmail.com</a></span>
+        <span class="sep">•</span>
+        <span><a href="tel:+917330737488">+91-7330737488</a></span>
+        <span class="sep">•</span>
+        <span><a href="https://linkedin.com/in/pradeep-talari" target="_blank" rel="noopener noreferrer">linkedin.com/in/pradeep-talari</a></span>
+        <span class="sep">•</span>
+        <span><a href="https://github.com/Pradeeptalari14" target="_blank" rel="noopener noreferrer">github.com/Pradeeptalari14</a></span>
+        <span class="sep">•</span>
+        <span><a href="https://talaripradeep.info" target="_blank" rel="noopener noreferrer">talaripradeep.info</a></span>
       </div>
     </header>
 
+    <!-- Professional Summary -->
     <section class="r-section">
       <h2 class="r-sec-title">Professional Summary</h2>
-      <p style="font-size: 0.9rem; color: #334155;">
-        Cloud Infrastructure and Reliability Engineer with comprehensive experience designing, deploying, and maintaining enterprise infrastructure across AWS, Kubernetes, Linux, VMware, and hybrid architectures. Proven track record in automated CI/CD pipelines, GitOps workflows, Prometheus/OpenTelemetry observability, infrastructure-as-code with Terraform, and AI inference serving platforms.
+      <p style="font-size: 0.88rem; color: #334155; line-height: 1.55;">
+        Results-driven <strong>AI Infrastructure &amp; Platform Engineer</strong> with <strong>6+ years of enterprise IT operations experience</strong>, architecting and deploying scalable AI/ML platforms, LLMOps pipelines, and cloud-native DevOps ecosystems. Proven track record delivering enterprise-grade Agentic AI systems, RAG platforms, and multi-agent orchestration frameworks across Azure, AWS, and GCP. Deep expertise in Infrastructure as Code (Terraform, Pulumi, Ansible), container orchestration (Kubernetes, Helm, ArgoCD), and full-stack observability (Prometheus, Grafana, OpenTelemetry). Architected GenAI platforms integrating GPT-4, Claude, Gemini, Llama, and open-source models—driving 40%+ operational efficiency gains and 58% reduction in MTTR. Passionate about building self-healing, AI-augmented infrastructure platforms that accelerate developer velocity and enable enterprise AI transformation at scale.
       </p>
-    </section>
 
-    <section class="r-section">
-      <h2 class="r-sec-title">Professional Experience</h2>
-
-      <div class="job-item">
-        <div class="job-header">
-          <div>
-            <span class="job-role">DevOps &amp; Cloud Infrastructure Engineer</span> · <span class="job-company">Accenture</span>
-          </div>
-          <span class="job-period">Apr 2022 - Present</span>
+      <!-- Key Metrics Highlights -->
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <span class="metric-val">58% MTTR Reduction</span>
+          <span>via AI monitoring copilot &amp; telemetry correlation</span>
         </div>
-        <ul class="job-bullets">
-          <li>Architected and provisioned secure multi-account AWS landing zones utilizing Terraform and Terragrunt with centralized transit gateway routing and IAM security boundaries.</li>
-          <li>Engineered continuous integration and deployment pipelines using GitHub Actions and Jenkins, cutting deployment cycle times and automating zero-downtime rolling releases.</li>
-          <li>Configured production Kubernetes (EKS) clusters with Karpenter autoscaling, Istio service mesh mTLS, Calico network policies, and Pod Disruption Budgets (PDBs).</li>
-          <li>Implemented end-to-end full-stack observability with Prometheus, Grafana, OpenTelemetry, and Vector, establishing multi-window error budget burn rate alerting.</li>
-          <li>Shifted container security left with automated Trivy CVE scans, Google Distroless base images, and Cosign cryptographic artifact verification.</li>
-        </ul>
-      </div>
-
-      <div class="job-item">
-        <div class="job-header">
-          <div>
-            <span class="job-role">Systems Engineer</span> · <span class="job-company">Trigent Software</span>
-          </div>
-          <span class="job-period">Jun 2019 - Mar 2021</span>
+        <div class="metric-item">
+          <span class="metric-val">$300K Annual Savings</span>
+          <span>via VMware compute consolidation &amp; cloud FinOps</span>
         </div>
-        <ul class="job-bullets">
-          <li>Administered enterprise infrastructure comprising VMware vSphere ESXi clusters, vCenter Server, and Windows/Linux server fleets.</li>
-          <li>Automated routine administrative procedures, VM snapshot hygiene, and backup validations via PowerCLI and Bash scripts.</li>
-          <li>Managed Active Directory Domain Services, Group Policy Objects (GPOs), Kerberos authentication policies, and network service configurations (DNS/DHCP).</li>
-          <li>Executed root cause analysis (RCA) for hardware and storage datastore I/O latency alerts, maintaining strict 99.9% uptime SLAs.</li>
-        </ul>
+        <div class="metric-item">
+          <span class="metric-val">99.8% Platform Uptime</span>
+          <span>for multi-agent OS supporting 50+ workflows</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val">94% Lead Time Cut</span>
+          <span>(3 days → 2 hours) via GitOps ArgoCD &amp; Helm</span>
+        </div>
       </div>
     </section>
 
+    <!-- Technical Skills -->
     <section class="r-section">
       <h2 class="r-sec-title">Core Technical Proficiencies</h2>
       <div class="skills-block">
-        <div class="sb-label">Cloud &amp; Infra:</div>
-        <div class="sb-val">AWS (VPC, Transit Gateway, EKS, EC2, S3, IAM, CloudWatch, Route 53), VMware vSphere (ESXi, vCenter, PowerCLI)</div>
-
-        <div class="sb-label">Container &amp; K8s:</div>
-        <div class="sb-val">Kubernetes, Helm, Docker, Podman, Karpenter, Istio, Calico, ArgoCD</div>
-
-        <div class="sb-label">IaC &amp; CI/CD:</div>
-        <div class="sb-val">Terraform, Terragrunt, CloudFormation, GitHub Actions, Jenkins, GitLab CI, Make</div>
-
-        <div class="sb-label">Observability:</div>
-        <div class="sb-val">Prometheus, Grafana, OpenTelemetry (OTel), Vector, Loki, Alertmanager, Datadog</div>
-
-        <div class="sb-label">Systems &amp; Script:</div>
-        <div class="sb-val">Linux (Ubuntu, RHEL), Windows Server, Active Directory, Bash, Python, PowerShell, Go</div>
-
-        <div class="sb-label">AI &amp; LLMOps:</div>
-        <div class="sb-val">vLLM, Milvus, Qdrant, Ollama, LangChain, GPU Scheduling &amp; Virtualization (CUDA)</div>
+        <div class="sb-row">
+          <div class="sb-label">AI / LLMs &amp; Agents</div>
+          <div class="sb-val">GPT-4o, Claude 3.5, Gemini 1.5, Llama 3, Mistral, DeepSeek, Ollama, vLLM, LangChain, LangGraph, LlamaIndex, CrewAI, AutoGen, Haystack, DSPy</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">RAG &amp; Vector Search</div>
+          <div class="sb-val">Vector DBs (Weaviate, Pinecone, Qdrant, Milvus, ChromaDB), OpenSearch, Elasticsearch, Semantic/Hybrid Search, GraphRAG, Knowledge Graphs, Metadata Filtering</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">AI Techniques &amp; LLMOps</div>
+          <div class="sb-val">Prompt Engineering, Function/Tool Calling, Structured Outputs, Embeddings, Chunking, Multi-Agent Systems, MCP (Model Context Protocol), LLMOps, MLOps, AI Governance</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">Cloud Platforms</div>
+          <div class="sb-val">Microsoft Azure, Amazon Web Services (AWS), Google Cloud Platform (GCP) — Multi-Account Landing Zones, IAM Boundaries, Transit Gateway, FinOps Cost Optimization</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">DevOps &amp; IaC</div>
+          <div class="sb-val">Docker, Kubernetes (AKS, EKS, GKE), Helm, ArgoCD, Terraform, Terragrunt, Pulumi, Ansible, GitHub Actions, Jenkins, GitOps Pipelines</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">Observability &amp; SRE</div>
+          <div class="sb-val">Prometheus, Grafana, OpenTelemetry (OTel), Loki, Tempo, LogicMonitor, Alertmanager, Distributed Tracing, SLO/SLI Monitoring &amp; Error Budgets</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">Systems &amp; Virtualization</div>
+          <div class="sb-val">Windows Server (2012–2022), VMware vSphere 7.x/8.x (ESXi, vCenter, vSAN), Hyper-V, Dell MX7000, Cisco UCS, NetApp SAN/NAS, PowerShell DSC, Linux (Ubuntu, RHEL)</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">Databases &amp; Caching</div>
+          <div class="sb-val">PostgreSQL, pgvector, Redis, MySQL, MongoDB, Neo4j, Vector Databases — Schema Design, High Availability, Query Optimization</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">Languages &amp; Scripts</div>
+          <div class="sb-val">Python (FastAPI, asyncio), Bash, PowerShell, Go, YAML, HCL, SQL</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">ITSM &amp; Governance</div>
+          <div class="sb-val">ServiceNow ITSM (Incident, Problem, Change, Patch Management, CAB), ITIL v4 processes, SOC2 compliance</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-label">Voice &amp; Realtime AI</div>
+          <div class="sb-val">Whisper STT, ElevenLabs TTS, WebRTC, Voice AI Receptionist, Real-Time Audio Streaming, Speech AI</div>
+        </div>
       </div>
     </section>
 
+    <!-- Professional Experience -->
     <section class="r-section">
-      <h2 class="r-sec-title">Education &amp; Credentials</h2>
+      <h2 class="r-sec-title">Professional Experience</h2>
+
+      <!-- Role 1: Accenture -->
+      <div class="job-item">
+        <div class="job-header">
+          <div>
+            <span class="job-role">Infrastructure &amp; AI Engineer</span> · <span class="job-company">Accenture</span>
+            <span class="job-location">· Bangalore, India</span>
+          </div>
+          <span class="job-period">Apr 2022 – Present</span>
+        </div>
+        <ul class="job-bullets">
+          <li><strong>Enterprise Agentic AI OS:</strong> Architected and deployed an Enterprise Agentic AI Operating System integrating LangGraph multi-agent orchestration, RAG pipelines, and tool-calling capabilities across 50+ enterprise workflows—reducing manual processing time by 65% and achieving 99.8% uptime SLA.</li>
+          <li><strong>Cloud-Native MLOps &amp; GitOps:</strong> Designed and operationalized a cloud-native MLOps/LLMOps platform on Azure AKS using ArgoCD GitOps, Helm charts, and Terraform IaC; automated model promotion pipelines with GitHub Actions, cutting deployment lead time from 3 days to under 2 hours.</li>
+          <li><strong>Enterprise RAG Platform:</strong> Built an Enterprise RAG Platform with Weaviate vector database, OpenSearch hybrid search, and LangChain retrieval chains—delivering semantic document intelligence across 5M+ enterprise knowledge base records with &lt;200ms P99 query latency.</li>
+          <li><strong>AI Incident Copilot:</strong> Engineered an AI Infrastructure Monitoring Copilot using Claude/GPT-4 function calling + LogicMonitor APIs, reducing MTTR by 58% and enabling natural-language incident triage that auto-generated ServiceNow tickets with root cause hypotheses.</li>
+          <li><strong>Multi-Cloud Kubernetes Fleet:</strong> Implemented multi-cloud Kubernetes platform (AKS + EKS + GKE) with Helm umbrella charts, Istio service mesh, and OPA Gatekeeper policy enforcement—supporting 200+ microservices across 15 development teams with zero-touch provisioning.</li>
+          <li><strong>Full-Stack Observability:</strong> Established full-stack observability platform (Prometheus, Grafana, Loki, Tempo, OpenTelemetry) with AI-powered anomaly detection, cutting P1 incidents by 42% and enabling distributed tracing across 30+ services.</li>
+          <li><strong>Voice &amp; Messaging Platform:</strong> Delivered WhatsApp + Telegram AI Assistant platform using FastAPI, LangChain agents, and Redis caching—serving 10,000+ daily interactions with sub-500ms response times and 99.5% message delivery rate.</li>
+          <li><strong>Compute Consolidation:</strong> Administered VMware vSphere 7.x/8.x environment (ESXi, vCenter, vSAN) across Dell MX7000 and Cisco UCS blade infrastructure—managing 200+ VMs, achieving 40% compute consolidation ratio, and saving $300K annually.</li>
+          <li><strong>Patch &amp; Change Governance:</strong> Led Patch Management and Change Management for 500+ Windows Server instances using WSUS/SCCM and ServiceNow CAB process—maintaining 99.2% patch compliance and zero unplanned outages from change-related incidents.</li>
+          <li><strong>Storage Architecture:</strong> Designed NetApp SAN/NAS storage architecture with SnapVault/SnapMirror replication—providing 50TB+ enterprise storage with 99.99% availability and RPO/RTO of 15 min/1 hour for critical workloads.</li>
+        </ul>
+      </div>
+
+      <!-- Role 2: Trigent Software -->
+      <div class="job-item">
+        <div class="job-header">
+          <div>
+            <span class="job-role">Infrastructure Engineer</span> · <span class="job-company">Trigent Software</span>
+            <span class="job-location">· Bangalore, India</span>
+          </div>
+          <span class="job-period">Jun 2019 – Mar 2021</span>
+        </div>
+        <ul class="job-bullets">
+          <li><strong>Virtualization Automation:</strong> Managed Hyper-V and VMware virtualization clusters and Windows Server 2016/2019 environments for 300+ server estate—automating lifecycle management with PowerShell DSC scripts, reducing manual effort by 50%.</li>
+          <li><strong>Enterprise Monitoring:</strong> Implemented LogicMonitor enterprise monitoring across 400+ devices with custom alerting dashboards and escalation policies—achieving 95% alert signal-to-noise ratio improvement through AI-assisted threshold tuning.</li>
+          <li><strong>Incident &amp; Problem Management:</strong> Executed end-to-end Incident and Problem Management via ServiceNow ITSM, maintaining SLA adherence at 97.5% for P1/P2 incidents and driving 30% reduction in recurring incident volume through root cause elimination.</li>
+          <li><strong>Configuration as Code:</strong> Automated server provisioning and configuration management using Ansible playbooks across 200+ Linux and Windows servers—reducing provisioning time from 4 hours to 20 minutes per server.</li>
+          <li><strong>Azure Cloud Migration:</strong> Led migration of 80+ on-premise workloads to Azure using Azure Migrate and Azure Site Recovery (ASR)—delivering cloud migration project 2 weeks ahead of schedule with zero production data loss.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Key Production Projects -->
+    <section class="r-section">
+      <h2 class="r-sec-title">Key Architectural Projects</h2>
+
+      <div class="project-item">
+        <div class="project-title-bar">
+          <span class="project-name">Enterprise Agentic Operating System</span>
+          <span class="project-tech">LangGraph • FastAPI • Kubernetes • Redis • PostgreSQL • ArgoCD • OpenTelemetry</span>
+        </div>
+        <p class="project-desc">
+          Multi-agent orchestration platform coordinating specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful cyclic graphs to handle 500+ concurrent enterprise workflows. Implemented persistent Redis and vector state with &lt;120ms routing overhead.
+        </p>
+      </div>
+
+      <div class="project-item">
+        <div class="project-title-bar">
+          <span class="project-name">Enterprise RAG Platform</span>
+          <span class="project-tech">LangChain • Weaviate • OpenSearch • FastAPI • Terraform • Grafana</span>
+        </div>
+        <p class="project-desc">
+          Production RAG pipeline with hybrid semantic + BM25 search over 5M+ enterprise documents, metadata filtering, and re-ranking (45% retrieval precision boost). Integrated GraphRAG with Neo4j knowledge graph for entity traversal, reducing hallucinations by 3x.
+        </p>
+      </div>
+
+      <div class="project-item">
+        <div class="project-title-bar">
+          <span class="project-name">AI Infrastructure Monitoring Copilot</span>
+          <span class="project-tech">Claude/GPT-4 • LogicMonitor API • ServiceNow • FastAPI • LangChain • MCP</span>
+        </div>
+        <p class="project-desc">
+          SRE copilot with function-calling agents that ingest LogicMonitor telemetry, correlate alerts across topologies, and auto-generate enriched ServiceNow incidents with root cause hypotheses—cutting MTTR by 58% across 500+ servers.
+        </p>
+      </div>
+
+      <div class="project-item">
+        <div class="project-title-bar">
+          <span class="project-name">Multi-Cloud Landing Zone &amp; IaC Platform</span>
+          <span class="project-tech">Terraform • Pulumi • Ansible • GitHub Actions • Azure • AWS • GCP</span>
+        </div>
+        <p class="project-desc">
+          Reusable Terraform module library (50+ modules) for multi-cloud Landing Zone provisioning. Automated GitOps PR validation with Checkov security scanning and Atlantis, establishing 100% compliance auditability.
+        </p>
+      </div>
+
+      <div class="project-item">
+        <div class="project-title-bar">
+          <span class="project-name">WhatsApp &amp; Voice AI Assistant Platform</span>
+          <span class="project-tech">FastAPI • LangChain • Whisper STT • ElevenLabs TTS • WebRTC • Redis</span>
+        </div>
+        <p class="project-desc">
+          Multi-channel AI assistant supporting WhatsApp, Telegram, and WebRTC real-time voice calls. Processes 10,000+ daily interactions and 500+ voice receptionist calls/day with &lt;1s end-to-end response latency.
+        </p>
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="r-section">
+      <h2 class="r-sec-title">Certifications &amp; Professional Development</h2>
+      <div class="cred-grid">
+        <div class="cred-item">
+          <span class="cred-status status-completed">Completed</span>
+          <span>Microsoft Certified: Azure Administrator Associate (AZ-104)</span>
+        </div>
+        <div class="cred-item">
+          <span class="cred-status status-progress">In Progress</span>
+          <span>Microsoft Certified: Azure AI Engineer Associate (AI-102)</span>
+        </div>
+        <div class="cred-item">
+          <span class="cred-status status-planned">Planned</span>
+          <span>AWS Certified Solutions Architect – Associate</span>
+        </div>
+        <div class="cred-item">
+          <span class="cred-status status-planned">Planned</span>
+          <span>Google Professional Cloud DevOps Engineer</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="r-section" style="margin-bottom: 0;">
+      <h2 class="r-sec-title">Education</h2>
       <div class="job-header">
         <div>
-          <span class="job-role">Bachelor of Technology (B.Tech)</span>
+          <span class="job-role">Bachelor of Technology (B.Tech) — Electronics &amp; Communication Engineering</span>
+          <div style="font-size: 0.88rem; color: #475569; margin-top: 0.15rem;">
+            Jawaharlal Nehru Technological University (JNTU), Anantapur
+          </div>
         </div>
-        <span class="job-period">Graduated 2019</span>
+        <span class="job-period">2013 – 2017</span>
       </div>
-      <p style="font-size: 0.88rem; color: #475569; margin-top: 0.25rem;">
-        Specialized coursework in Computer Networks, Operating Systems, Cloud Computing, and Distributed Systems.
-      </p>
     </section>
+
   </main>
+
 </body>
 </html>
