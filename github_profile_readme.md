@@ -1,125 +1,235 @@
 <!--
-  This is a custom GitHub Profile README for Talari Pradeep (Pradeeptalari14).
-  Copy the contents of this file and paste it into the README.md of your special
-  profile repository: https://github.com/Pradeeptalari14/Pradeeptalari14
+  ═══════════════════════════════════════════════════════════════════════════
+  PRADEEP TALARI · GITHUB PROFILE README
+  Senior AI Infrastructure, Platform & Cloud SRE Lead
+  Special repository: https://github.com/Pradeeptalari14/Pradeeptalari14
+  ═══════════════════════════════════════════════════════════════════════════
 -->
 
-![Talari Pradeep Banner](https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/profile-header.svg)
-
-## 🧑‍💻 About Me
-
-I am an **AI Infrastructure & Platform Engineer** with 6+ years of enterprise experience, specializing in designing and deploying high-performance AI/ML platforms, LLMOps pipelines, and cloud-native DevOps/GitOps ecosystems.
-
-🚀 AI Infrastructure Engineer | Platform Engineer | DevOps & MLOps | LangGraph | LangChain | Vector DBs (Weaviate, Pinecone, Neo4j GraphRAG) | Kubernetes (AKS/EKS) | Terraform | Atlantis | Prometheus | Grafana | Loki | Tempo | OpenTelemetry | FastAPI | Python | Whisper | ElevenLabs Voice AI
-
-<p align="left">
-  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=Profile%20views&color=4f46e5&style=flat-square" alt="Profile views" />
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/profile-header.svg" alt="Talari Pradeep Header Banner" width="100%" />
 </p>
 
-- 🌐 Built multiple personal AI Platforms & tools - **[🚀 Portfolio Projects](https://talaripradeep.info/projects)**
-<p align="left">
-  <a href="https://talaripradeep.info/projects" target="_blank">
-    <img src="https://img.shields.io/badge/AI_&_PLATFORM_PROJECTS-VISIT-4f46e5?style=for-the-badge&logo=github&logoColor=white" alt="AI & Platform Projects" />
+<p align="center">
+  <a href="https://talaripradeep.info" target="_blank">
+    <img src="https://img.shields.io/badge/Portfolio%20Website-291_Studios-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+  </a>
+  &nbsp;
+  <a href="https://linkedin.com/in/pradeep-talari" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  &nbsp;
+  <a href="https://talaripradeep.info/Talari_Pradeep.pdf" target="_blank">
+    <img src="https://img.shields.io/badge/Resume-PDF_Download-10b981?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="Resume" />
+  </a>
+  &nbsp;
+  <a href="mailto:talaripradeep14@gmail.com">
+    <img src="https://img.shields.io/badge/Email-Get_in_Touch-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
   </a>
 </p>
 
-- 📍 Based in **Bangalore, India**
-- 💼 Working on enterprise AI reliability, model scaling, multi-agent frameworks, and self-healing infrastructure
-- 🎯 Deeply focused on **LLMOps/MLOps**, **Agentic AI systems**, and **MELT Observability stacks**
-- 🤝 Open to collaboration on open-source AI platform modules, MCP servers, and Kubernetes operator extensions
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=PROFILE%20VIEWS&color=6366f1&style=flat-square" alt="Profile views" />
+  <img src="https://img.shields.io/badge/EXPERIENCE-6%2B%20YEARS-0ea5e9?style=flat-square" alt="Experience" />
+  <img src="https://img.shields.io/badge/FOCUS-AI%20INFRA%20%7C%20PLATFORM%20SRE-8b5cf6?style=flat-square" alt="Focus" />
+  <img src="https://img.shields.io/badge/LOCATION-BANGALORE%2C%20INDIA-10b981?style=flat-square" alt="Location" />
+</p>
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 🎯 Executive Summary
 
-### 🤖 AI, LLMs & RAG Systems
-<p align="left">
-  <img src="https://img.shields.io/badge/LangGraph-4f46e5?style=for-the-badge&logoColor=white" alt="LangGraph" />
-  <img src="https://img.shields.io/badge/LangChain-1c3d5a?style=for-the-badge&logoColor=white" alt="LangChain" />
-  <img src="https://img.shields.io/badge/Weaviate-green?style=for-the-badge&logoColor=white" alt="Weaviate" />
-  <img src="https://img.shields.io/badge/Neo4j-blue?style=for-the-badge&logoColor=white" alt="Neo4j GraphRAG" />
-  <img src="https://img.shields.io/badge/Whisper_STT-000000?style=for-the-badge&logo=openai&logoColor=white" alt="Whisper STT" />
-  <img src="https://img.shields.io/badge/ElevenLabs_TTS-ff69b4?style=for-the-badge&logoColor=white" alt="ElevenLabs" />
-</p>
+Senior **AI Infrastructure & Platform Engineer** with **6+ years of enterprise experience** architecting, scaling, and automating mission-critical cloud and AI infrastructure across AWS, Azure, and GCP. Specializing in:
 
-### ☁️ Cloud Platforms & Core Orchestration
-<p align="left">
-  <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS" />
-  <img src="https://img.shields.io/badge/Azure-%230089D6.svg?style=for-the-badge&logo=microsoft-azure&logoColor=white" alt="Azure" />
-  <img src="https://img.shields.io/badge/GCP-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white" alt="GCP" />
-  <img src="https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes" />
-  <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-  <img src="https://img.shields.io/badge/Helm-%230F1626.svg?style=for-the-badge&logo=helm&logoColor=white" alt="Helm" />
-</p>
+- 🧠 **Autonomous Multi-Agent AI Platforms**: Production LangGraph, CrewAI, AutoGen, and semantic caching graphs with strict sub-second P95 latencies.
+- ⚡ **LLMOps & High-Throughput Model Serving**: Distributed vLLM, LiteLLM, Ollama, and Triton inference clusters on GPU-accelerated Kubernetes (NVIDIA A100/H100/L4).
+- ☸️ **Cloud-Native Kubernetes & Platform Engineering**: Multi-region EKS/AKS clusters, Karpenter intelligent autoscaling, KEDA event-driven scaling, and Cilium eBPF zero-trust networking.
+- 🏗️ **Enterprise IaC & GitOps Automation**: Production-scale Terraform & Crossplane modules, HashiCorp Vault secrets lifecycle, Atlantis pull-request automation, and ArgoCD continuous delivery.
+- 📊 **Full-Stack MELT SRE Observability**: End-to-end telemetry engineering with OpenTelemetry, Prometheus federation, Grafana Loki, Tempo distributed tracing, and automated self-healing runbooks.
 
-### 🏗5 Infrastructure as Code & Automation
-<p align="left">
-  <img src="https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform" />
-  <img src="https://img.shields.io/badge/ansible-%23EE0000.svg?style=for-the-badge&logo=ansible&logoColor=white" alt="Ansible" />
-  <img src="https://img.shields.io/badge/Pulumi-%238A3391.svg?style=for-the-badge&logo=pulumi&logoColor=white" alt="Pulumi" />
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
-  <img src="https://img.shields.io/badge/Shell_Script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Bash" />
-</p>
+---
 
-### ⚡ CI/CD Pipelines & GitOps
-<p align="left">
-  <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions" />
-  <img src="https://img.shields.io/badge/Argo%20CD-F3C63F?style=for-the-badge&logo=argo&logoColor=white" alt="ArgoCD" />
-  <img src="https://img.shields.io/badge/Atlantis-purple?style=for-the-badge&logoColor=white" alt="Atlantis GitOps" />
-  <img src="https://img.shields.io/badge/jenkins-%23D24939.svg?style=for-the-badge&logo=jenkins&logoColor=white" alt="Jenkins" />
-</p>
+## 🚀 Live Interactive Simulators & 291 Developer Studios
 
-### 📊 Observability & Monitoring
-<p align="left">
-  <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white" alt="Prometheus" />
-  <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=Grafana&logoColor=white" alt="Grafana" />
-  <img src="https://img.shields.io/badge/Loki-grey?style=for-the-badge&logoColor=white" alt="Loki" />
-  <img src="https://img.shields.io/badge/Tempo-orange?style=for-the-badge&logoColor=white" alt="Tempo" />
-</p>
+The entire engineering ecosystem is backed by an open-source hub of **291 Interactive Developer Studios & SRE Simulators** built into the portfolio:
+
+| Interactive Tool / Center | What You Can Explore & Simulate | Launch Live |
+| :--- | :--- | :---: |
+| 🗺️ **SRE Production Topology Flow** | In-browser vector packet flows, node inspector HUD, and chaos fault injection | [**Launch**](https://talaripradeep.info/architecture/) |
+| 🎬 **Programmatic Manim Video Generator** | Auto-generates runnable 3Blue1Brown/Manim 4K video Python scripts (`manim_flow.py`) | [**Explore**](https://talaripradeep.info/tools/) |
+| 💥 **SRE Production Incident Simulator** | Real-world PagerDuty outage drills, OOM troubleshooting, and automated failover | [**Launch**](https://talaripradeep.info/incident/) |
+| 💰 **Cloud FinOps Rightsizing Center** | Live multi-cloud AWS cost calculator, idle resource reclamation & Karpenter ROI | [**Launch**](https://talaripradeep.info/finops/) |
+| 📚 **SRE Interview & Knowledge Vault** | 50+ enterprise architectural scenarios, incident runbooks, and deep-dive question banks | [**Launch**](https://talaripradeep.info/interview/) |
+| 🛠️ **291 Developer Studios Hub** | Unified console of 291 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
+
+---
+
+## 🛠️ Tech Stack & Architecture Ecosystem
+
+<table>
+  <tr>
+    <td width="22%" valign="top"><b>🧠 AI &amp; LLMOps</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/LangGraph-4f46e5?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/vLLM-0284c7?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/LiteLLM-8b5cf6?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/LangChain-1c3d5a?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Qdrant-dc2626?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Weaviate-10b981?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Neo4j_GraphRAG-008cc1?style=flat-square&logo=neo4j&logoColor=white" />
+      <img src="https://img.shields.io/badge/Redis_Vector_Cache-dc2626?style=flat-square&logo=redis&logoColor=white" />
+      <img src="https://img.shields.io/badge/Whisper_STT-000000?style=flat-square&logo=openai&logoColor=white" />
+      <img src="https://img.shields.io/badge/ElevenLabs_TTS-f43f5e?style=flat-square&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>☁️ Cloud &amp; Containers</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazon-aws&logoColor=white" />
+      <img src="https://img.shields.io/badge/Azure-0089D6?style=flat-square&logo=microsoft-azure&logoColor=white" />
+      <img src="https://img.shields.io/badge/GCP-4285F4?style=flat-square&logo=google-cloud&logoColor=white" />
+      <img src="https://img.shields.io/badge/Kubernetes-326ce5?style=flat-square&logo=kubernetes&logoColor=white" />
+      <img src="https://img.shields.io/badge/Karpenter-FF9900?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/KEDA-e11d48?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Docker-0db7ed?style=flat-square&logo=docker&logoColor=white" />
+      <img src="https://img.shields.io/badge/Helm-0F1626?style=flat-square&logo=helm&logoColor=white" />
+      <img src="https://img.shields.io/badge/Cilium_eBPF-f59e0b?style=flat-square&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>🏗️ IaC &amp; GitOps</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Terraform-844FBA?style=flat-square&logo=terraform&logoColor=white" />
+      <img src="https://img.shields.io/badge/Crossplane-e11d48?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/HashiCorp_Vault-000000?style=flat-square&logo=vault&logoColor=white" />
+      <img src="https://img.shields.io/badge/Ansible-EE0000?style=flat-square&logo=ansible&logoColor=white" />
+      <img src="https://img.shields.io/badge/ArgoCD-F3C63F?style=flat-square&logo=argo&logoColor=white" />
+      <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white" />
+      <img src="https://img.shields.io/badge/Atlantis-6366f1?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Linux_Kernel-FCC624?style=flat-square&logo=linux&logoColor=black" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>📊 SRE &amp; Observability</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=Prometheus&logoColor=white" />
+      <img src="https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=Grafana&logoColor=white" />
+      <img src="https://img.shields.io/badge/Loki-475569?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Tempo-ea580c?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/OpenTelemetry-0284c7?style=flat-square&logo=opentelemetry&logoColor=white" />
+      <img src="https://img.shields.io/badge/PagerDuty-006600?style=flat-square&logo=pagerduty&logoColor=white" />
+      <img src="https://img.shields.io/badge/Falco-00aec7?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/Trivy-10b981?style=flat-square&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>💻 Languages &amp; Tools</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+      <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
+      <img src="https://img.shields.io/badge/Bash_Shell-121011?style=flat-square&logo=gnu-bash&logoColor=white" />
+      <img src="https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white" />
+      <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" />
+      <img src="https://img.shields.io/badge/Manim_CE-030712?style=flat-square&logoColor=white" />
+      <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" />
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🌟 Featured Enterprise Architecture Projects
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🧠 <a href="https://github.com/Pradeeptalari14/enterprise-agentic-os">Enterprise Agentic Operating System</a></h3>
+      <p>Stateful multi-agent autonomous graph platform (Planner, Reasoning, Executor, Memory, Human-in-the-Loop) engineered with LangGraph, vLLM, and Redis Semantic Cache. Auto-scales on AKS via KEDA custom queue metrics.</p>
+      <p>
+        <img src="https://img.shields.io/badge/LangGraph-4f46e5?style=flat-square" />
+        <img src="https://img.shields.io/badge/vLLM-0284c7?style=flat-square" />
+        <img src="https://img.shields.io/badge/KEDA-e11d48?style=flat-square" />
+        <img src="https://img.shields.io/badge/Redis-dc2626?style=flat-square" />
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔍 <a href="https://github.com/Pradeeptalari14/enterprise-rag-platform">Enterprise Hybrid GraphRAG Platform</a></h3>
+      <p>Production hybrid knowledge retrieval engine indexing 5M+ document chunks with Qdrant vector embeddings and Neo4j graph entity relationships. Features Cohere re-ranking with sub-45ms p99 query latency.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Qdrant-dc2626?style=flat-square" />
+        <img src="https://img.shields.io/badge/Neo4j-008cc1?style=flat-square" />
+        <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square" />
+        <img src="https://img.shields.io/badge/Hybrid_Search-10b981?style=flat-square" />
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🏗️ <a href="https://github.com/Pradeeptalari14/multi-cloud-landing-zone">Multi-Cloud Enterprise Landing Zone</a></h3>
+      <p>Production Landing Zone framework bootstrapping multi-account AWS Organizations &amp; Azure Tenants with automated Terraform modules, HashiCorp Vault dynamic credentials, and Atlantis GitOps review automation.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Terraform-844FBA?style=flat-square" />
+        <img src="https://img.shields.io/badge/AWS_Org-FF9900?style=flat-square" />
+        <img src="https://img.shields.io/badge/Vault-000000?style=flat-square" />
+        <img src="https://img.shields.io/badge/Atlantis-6366f1?style=flat-square" />
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🤖 <a href="https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot">AI Infrastructure Monitoring Copilot</a></h3>
+      <p>Autonomous LLM incident triage system for Kubernetes clusters. Ingests Falco kernel alerts and Prometheus telemetry, correlates root causes using Claude/GPT-4 function calls, and generates automated remediation PRs.</p>
+      <p>
+        <img src="https://img.shields.io/badge/OpenTelemetry-0284c7?style=flat-square" />
+        <img src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square" />
+        <img src="https://img.shields.io/badge/Falco-00aec7?style=flat-square" />
+        <img src="https://img.shields.io/badge/Self--Healing-10b981?style=flat-square" />
+      </p>
+    </td>
+  </tr>
+</table>
 
 ---
 
 ## 📊 GitHub Contribution Metrics & Activity
 
-<table align="center" border="0" cellpadding="10">
+<table align="center" border="0" cellpadding="8" cellspacing="0" width="100%">
   <tr>
     <td valign="top" width="50%">
-      <img src="https://github-stats-alpha.vercel.app/api?username=Pradeeptalari14&show_icons=true&theme=radical&hide_border=true" alt="Pradeep's GitHub Stats" width="100%" />
+      <img src="https://github-stats-alpha.vercel.app/api?username=Pradeeptalari14&show_icons=true&theme=radical&hide_border=true" alt="GitHub Stats" width="100%" />
     </td>
     <td valign="top" width="50%">
-      <img src="https://github-readme-streak-stats.herokuapp.com/?user=Pradeeptalari14&theme=radical&hide_border=true" alt="Pradeep's GitHub Streak" width="100%" />
+      <img src="https://github-readme-streak-stats.herokuapp.com/?user=Pradeeptalari14&theme=radical&hide_border=true" alt="GitHub Streak Stats" width="100%" />
     </td>
   </tr>
 </table>
 
 <p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Pradeeptalari14&theme=radical" alt="Pradeep's GitHub Activity Overview" width="100%" />
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Pradeeptalari14&theme=radical" alt="GitHub Profile Summary" width="100%" />
 </p>
 
 ---
 
-## 🚀 Featured AI Infrastructure & Platform Projects
+## 📬 Let's Connect & Collaborate!
 
-- 🧠 **[Enterprise Agentic Operating System](https://github.com/Pradeeptalari14/enterprise-agentic-os)**: Stateful multi-agent graph architecture (Planner, Executor, Critic, Memory) using LangGraph, deployed on AKS autoscaled with KEDA.
-- 🔍 **[Enterprise RAG Platform](https://github.com/Pradeeptalari14/enterprise-rag-platform)**: Production-grade hybrid vector search over 5M+ document chunks with Neo4j GraphRAG, re-ranking, and low-latency storage modules.
-- 🤖 **[AI Infrastructure Monitoring Copilot](https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot)**: Natural-language incident triage utilizing Claude/GPT-4 function calling, LogicMonitor APIs, and automated ServiceNow ticketing.
-- 🏗️ **[Cloud Landing Zone & IaC Platform](https://github.com/Pradeeptalari14/multi-cloud-landing-zone)**: Multi-cloud Landing Zone bootstrap system engineered with Terraform, Pulumi, Ansible, Checkov, and Atlantis GitOps automation.
-- 📈 **[Enterprise Observability Platform](https://github.com/Pradeeptalari14/observability-platform-k8s)**: Kubernetes MELT monitoring stack combining Prometheus federation, Loki aggregation, Tempo tracing, and OpenTelemetry pipelines.
-- 📞 **[WhatsApp & Voice AI Assistant Platform](https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant)**: Real-time speech agent processing WebRTC audio payloads with Whisper STT, ElevenLabs TTS, and FastAPI websocket loops.
+I am always interested in discussing **AI Infrastructure, Large Language Model Optimization, Multi-Agent Operating Systems, and Cloud-Native Resilience**:
 
----
-
-## 🔗 Let's Connect!
-
-<p align="left">
+<p align="center">
   <a href="https://linkedin.com/in/pradeep-talari" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
+  &nbsp;
   <a href="https://talaripradeep.info" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio%20Website-4f46e5?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+    <img src="https://img.shields.io/badge/Portfolio%20Website-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+  </a>
+  &nbsp;
+  <a href="https://talaripradeep.info/Talari_Pradeep.pdf" target="_blank">
+    <img src="https://img.shields.io/badge/Curriculum%20Vitae-10b981?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="Resume" />
+  </a>
+  &nbsp;
+  <a href="mailto:talaripradeep14@gmail.com">
+    <img src="https://img.shields.io/badge/Email%20Me-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
   </a>
 </p>
 
 <p align="center">
-  <i>Built with ❤️ & SRE standards. Last updated: 2026</i>
+  <sub>Architected with Enterprise SRE Standards · 291 Interactive Developer Studios · 99.99% Reliability</sub>
 </p>
