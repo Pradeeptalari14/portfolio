@@ -767,13 +767,236 @@ tmp/
     }, 1000);
   }
 
-  const categorySvgs = {
-    ai: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Prompt</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">LLM Router</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Cache (Redis)</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">vLLM Host</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">RAG</text></g></svg>`,
-    cloud: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">IaC Push</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">TF/Crossplane</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Vault Sec</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Compute</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Mesh</text></g></svg>`,
-    cicd: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Commit</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Webhook</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Lint/Scan</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Trivy Scan</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">GitOps</text></g></svg>`,
-    automation: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Scheduler</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Ansible Run</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Env Sync</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Daemon</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Verify</text></g></svg>`,
-    observability: `<svg viewBox="0 0 400 120" style="width: 100%; height: auto;"><defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#818cf8"/></marker></defs><g transform="translate(10, 10)"><rect x="0" y="30" width="60" height="40" rx="6" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="1.5"/><text x="30" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Scraper</text><line x1="60" y1="50" x2="85" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="90" y="30" width="65" height="40" rx="6" fill="rgba(14, 165, 233, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/><text x="122" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Ingest</text><line x1="155" y1="50" x2="175" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="180" y="30" width="60" height="40" rx="6" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5"/><text x="210" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Evaluator</text><line x1="240" y1="50" x2="260" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="265" y="30" width="60" height="40" rx="6" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="1.5"/><text x="295" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Escalation</text><line x1="325" y1="50" x2="345" y2="50" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow)"/><rect x="350" y="30" width="30" height="40" rx="6" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5"/><text x="365" y="55" font-family="sans-serif" font-size="9" fill="#f8fafc" text-anchor="middle">Slack</text></g></svg>`
+  const categoryTopologies = {
+    ai: {
+      name: "Generative AI Inference & Vector RAG Mesh",
+      badge: "LLM INFERENCE & RAG",
+      png: "/sre_architecture_flow_ai.png",
+      nodes: {
+        client: { name: "Client / Prompt", layer: "Edge Ingress", port: ":443", proto: "HTTPS / REST", latency: "1.8ms", health: "HEALTHY (200 OK)", logs: "[INGRESS] TLS 1.3 handshakes ok. Token bucket rate limiter active (450 req/min/user)." },
+        gateway: { name: "Kong / Envoy Gateway", layer: "API Gateway", port: ":443", proto: "HTTP/2 mTLS", latency: "3.2ms", health: "HEALTHY (200 OK)", logs: "[GATEWAY] Validated JWT bearer token. Ingress routing to LLM router cluster." },
+        cache: { name: "Redis Semantic Cache", layer: "Vector Cache", port: ":6379", proto: "RESP / TCP", latency: "1.4ms", health: "HEALTHY (HIT 74%)", logs: "[CACHE] Vector cosine similarity match = 0.94. Returning cached embedding response." },
+        router: { name: "LiteLLM Router", layer: "Model Routing", port: ":8000", proto: "REST / gRPC", latency: "6.8ms", health: "HEALTHY (BALANCED)", logs: "[ROUTER] Dispatched inference prompt to vLLM Worker Pool 2 (lowest load index)." },
+        vllm: { name: "vLLM GPU Cluster", layer: "Model Inference", port: ":8000", proto: "CUDA / PagedAttn", latency: "38.2ms", health: "HEALTHY (8 GPUs)", logs: "[vLLM] Tensor-parallel=8, kv_cache=82% alloc. Generated 186 tokens @ 48 tok/sec." },
+        rag: { name: "Qdrant Vector DB", layer: "Knowledge Index", port: ":6333", proto: "gRPC", latency: "11.5ms", health: "HEALTHY (INDEXED)", logs: "[QDRANT] Hybrid HNSW query matched 4 document chunks in collection 'sre_knowledgebase'." }
+      },
+      commands: [
+        {
+          cmd: "curl -s -X POST https://ai.internal/v1/chat/completions -d '{\"model\":\"llama-3\",\"prompt\":\"SRE health\"}'",
+          label: "🚀 Send AI Prompt",
+          pulse: "gateway",
+          output: "HTTP/2 200 OK\ncontent-type: application/json\nx-cache-status: HIT (Redis Semantic)\nx-latency: 42ms\n\n{\n  \"id\": \"chatcmpl-914a82\",\n  \"model\": \"meta-llama/Llama-3-70b-instruct\",\n  \"choices\": [{\"message\": {\"role\": \"assistant\", \"content\": \"Cluster topology healthy. SLO: 99.98%.\"}}],\n  \"usage\": {\"prompt_tokens\": 14, \"completion_tokens\": 9, \"total_tokens\": 23}\n}"
+        },
+        {
+          cmd: "kubectl get pods -n vllm-inference -o wide",
+          label: "📦 K8s GPU Pods",
+          pulse: "vllm",
+          output: "NAME                             READY   STATUS    RESTARTS   AGE   IP             NODE\nvllm-worker-gpu-0                1/1     Running   0          42h   10.244.3.18    g5.12xlarge-node-a\nvllm-worker-gpu-1                1/1     Running   0          42h   10.244.4.22    g5.12xlarge-node-b\nvllm-router-deployment-7f89b    2/2     Running   0          14d   10.244.1.9     c6i.2xlarge-master"
+        },
+        {
+          cmd: "redis-cli -h cache.internal info stats | grep -E 'keyspace_hits|used_memory_human'",
+          label: "⚡ Cache Hit Rate",
+          pulse: "cache",
+          output: "keyspace_hits: 1482910\nkeyspace_misses: 492011\nhit_rate: 75.08%\nused_memory_human: 4.18G"
+        }
+      ]
+    },
+    cloud: {
+      name: "Multi-Region Cloud & GitOps Control Fabric",
+      badge: "INFRASTRUCTURE AS CODE",
+      png: "/sre_architecture_flow_cloud.png",
+      nodes: {
+        git: { name: "Developer IaC PR", layer: "Version Control", port: ":443", proto: "HTTPS / SSH", latency: "8.5ms", health: "MERGED / VERIFIED", logs: "[GIT] Commit verified by GPG key. Branch 'main' trigger received." },
+        engine: { name: "Terraform / Crossplane", layer: "Control Engine", port: ":8443", proto: "gRPC", latency: "14.2ms", health: "SYNCED (LOCKED)", logs: "[IAC] State lock acquired in DynamoDB. Resource diff: 0 to add, 1 to change, 0 to destroy." },
+        vault: { name: "HashiCorp Vault", layer: "Secrets Engine", port: ":8200", proto: "HTTPS mTLS", latency: "2.6ms", health: "HEALTHY (SEALED: FALSE)", logs: "[VAULT] Issued short-lived AWS STS token for Karpenter role (TTL: 3600s)." },
+        cloud_api: { name: "Cloud Fabric (AWS/GCP)", layer: "Provider API", port: ":443", proto: "HTTPS REST", latency: "21.0ms", health: "AVAILABLE (MULTI-AZ)", logs: "[CLOUD] Multi-AZ VPC subnets reconciled. Transit Gateway route tables active." },
+        karpenter: { name: "EKS & Karpenter", layer: "Compute Cluster", port: ":6443", proto: "Kube-API", latency: "7.4ms", health: "HEALTHY (18 NODES)", logs: "[KARPENTER] Provisioned 2x m6i.xlarge Spot instances for incoming batch workload." },
+        mesh: { name: "Istio / Cilium eBPF", layer: "Zero-Trust Mesh", port: ":15000", proto: "eBPF / Envoy", latency: "1.2ms", health: "HEALTHY (mTLS STRICT)", logs: "[MESH] WireGuard encryption tunnel active. 0 drops detected on L7 ingress filter." }
+      },
+      commands: [
+        {
+          cmd: "terraform plan -detailed-exitcode -out=tfplan",
+          label: "📋 Terraform Plan",
+          pulse: "engine",
+          output: "Acquiring state lock in DynamoDB table 'terraform-locks'...\nTerraform Cloud Backend: Synchronizing workspace 'production-us-east-1'\n\nPlan: 0 to add, 2 to change, 0 to destroy.\n  ~ module.eks_nodepool.aws_autoscaling_group.workers\n      max_size: 24 -> 32\n\nNo unexpected drift. Lock released."
+        },
+        {
+          cmd: "kubectl get nodes -l karpenter.sh/nodepool=default -o wide",
+          label: "☸️ Karpenter Nodes",
+          pulse: "karpenter",
+          output: "NAME                         STATUS   ROLES    AGE   VERSION   INTERNAL-IP    INSTANCE-TYPE   ZONE\nip-10-0-12-44.ec2.internal   Ready    node     3d    v1.29.3   10.0.12.44     m6i.xlarge      us-east-1a\nip-10-0-14-88.ec2.internal   Ready    node     4h    v1.29.3   10.0.14.88     m6i.xlarge      us-east-1b\nip-10-0-18-91.ec2.internal   Ready    node     12m   v1.29.3   10.0.18.91     c6i.2xlarge     us-east-1c"
+        },
+        {
+          cmd: "aws elbv2 describe-target-health --target-group-arn arn:aws:tg:prod-mesh",
+          label: "🛡️ Target Health",
+          pulse: "cloud_api",
+          output: "{\n  \"TargetHealthDescriptions\": [\n    {\"Target\": {\"Id\": \"10.0.12.44\", \"Port\": 8080}, \"HealthCheckPort\": \"8080\", \"TargetHealth\": {\"State\": \"healthy\"}},\n    {\"Target\": {\"Id\": \"10.0.14.88\", \"Port\": 8080}, \"HealthCheckPort\": \"8080\", \"TargetHealth\": {\"State\": \"healthy\"}}\n  ]\n}"
+        }
+      ]
+    },
+    cicd: {
+      name: "Automated Continuous Delivery & DevSecOps",
+      badge: "GITOPS & ZERO-TRUST CI",
+      png: "/sre_architecture_flow_cicd.png",
+      nodes: {
+        git: { name: "Git SCM Webhook", layer: "Source Control", port: ":443", proto: "HTTPS / HMAC", latency: "4.2ms", health: "VERIFIED (SHA-256)", logs: "[WEBHOOK] GitHub event 'push' delivered. Payload verified against secret HMAC." },
+        runner: { name: "Ephemeral CI Runner", layer: "Build Worker", port: ":443", proto: "Containerized", latency: "11.0ms", health: "HEALTHY (IDLE: 0)", logs: "[RUNNER] Mounted isolated Docker socket. Cloned commit 39abc8d in 0.8s." },
+        linter: { name: "SonarQube & SAST", layer: "Code Governance", port: ":9000", proto: "REST API", latency: "16.4ms", health: "PASSED (0 BUGS)", logs: "[SAST] Static analysis finished. 0 critical vulnerabilities. Test coverage: 94.2%." },
+        trivy: { name: "Trivy Container Gate", layer: "Security Scanner", port: ":8080", proto: "Daemon / CLI", latency: "22.8ms", health: "PASSED (0 CRIT)", logs: "[TRIVY] Scanning layer blobs for CVE-2024-xxx. SBOM signed with Cosign key." },
+        argocd: { name: "ArgoCD Controller", layer: "GitOps Reconciler", port: ":8080", proto: "gRPC", latency: "5.1ms", health: "Synced / Healthy", logs: "[ARGOCD] Target Git repo matched live cluster state. Diff: 0 resources out-of-sync." },
+        k8s_pods: { name: "Canary K8s Pods", layer: "Production Runtime", port: ":8080", proto: "HTTP/2", latency: "1.8ms", health: "HEALTHY (100%)", logs: "[ROLLOUT] Canary promotion 100% complete. Automated rollback sentinel on standby." }
+      },
+      commands: [
+        {
+          cmd: "trivy image --severity HIGH,CRITICAL registry.internal/app:v2.4.1",
+          label: "🛡️ Trivy Scan",
+          pulse: "trivy",
+          output: "2026-09-27T16:08:14Z INFO Vulnerability database is up to date\nregistry.internal/app:v2.4.1 (debian 12.5)\n==========================================\nTotal: 0 (HIGH: 0, CRITICAL: 0)\nResult: PASSED. Zero vulnerabilities blocking deployment."
+        },
+        {
+          cmd: "argocd app sync production-web --prune",
+          label: "🔄 ArgoCD Sync",
+          pulse: "argocd",
+          output: "TIMESTAMP                  GROUP        KIND         NAMESPACE     NAME              STATUS    HEALTH       HOOK  MESSAGE\n2026-09-27T16:08:15Z   apps         Deployment   production    web-service       Synced    Progressing        deployment.apps/web-service configured\n2026-09-27T16:08:18Z   apps         Deployment   production    web-service       Synced    Healthy            Deployment is up to date"
+        },
+        {
+          cmd: "kubectl rollout status deployment/web-service -n production",
+          label: "🚀 Rollout Status",
+          pulse: "k8s_pods",
+          output: "Waiting for deployment \"web-service\" rollout to finish: 1 of 3 updated replicas are available...\nWaiting for deployment \"web-service\" rollout to finish: 2 of 3 updated replicas are available...\ndeployment \"web-service\" successfully rolled out."
+        }
+      ]
+    },
+    automation: {
+      name: "Infrastructure Automation & Fleet Orchestration",
+      badge: "ANSIBLE & SENTINEL",
+      png: "/sre_architecture_flow_automation.png",
+      nodes: {
+        trigger: { name: "Event Scheduler", layer: "Event Trigger", port: ":443", proto: "Cron / Event", latency: "1.0ms", health: "ACTIVE (SCHEDULED)", logs: "[TRIGGER] Scheduled cron maintenance fired: 'reconcile-compliance-baseline'." },
+        ansible: { name: "Ansible Control Node", layer: "Automation Core", port: ":22", proto: "SSH / Python", latency: "12.8ms", health: "IDEMPOTENT (0 ERR)", logs: "[ANSIBLE] Executing playbook site.yml across 48 target inventory hosts in parallel." },
+        vault_sec: { name: "KMS / SSH Bastion", layer: "Secrets & Certs", port: ":8200", proto: "HTTPS mTLS", latency: "2.4ms", health: "ISSUED (SHORT-LIVED)", logs: "[KMS] Decrypted inventory secrets using AWS KMS key 'alias/ansible-prod'." },
+        fleet: { name: "Target Linux Fleet", layer: "Target Systems", port: ":22", proto: "SSH / TCP", latency: "8.2ms", health: "HEALTHY (48/48)", logs: "[FLEET] Package updates installed. Kernel sysctl parameters verified: net.ipv4.tcp_tw_reuse=1." },
+        sentinel: { name: "Systemd Sentinel Loop", layer: "Local Daemon", port: "local", proto: "Unix Socket", latency: "0.8ms", health: "ACTIVE (RUNNING)", logs: "[SENTINEL] Drift verification complete. No configuration drift detected." },
+        probe: { name: "Blackbox Health Prober", layer: "Verification Gate", port: ":9115", proto: "HTTP/TCP Probe", latency: "3.5ms", health: "PROBE SUCCEEDED", logs: "[PROBE] Synthetic HTTP GET probe returned 200 OK in 14ms. Canary verification passed." }
+      },
+      commands: [
+        {
+          cmd: "ansible-playbook -i production.inv site.yml --check",
+          label: "🤖 Run Ansible",
+          pulse: "ansible",
+          output: "PLAY [Enforce Production Security Baselines] **********************************\n\nTASK [security : Ensure SSH root login disabled] ******************************\nok: [node-prod-01]\nok: [node-prod-02]\nok: [node-prod-03]\n\nPLAY RECAP ********************************************************************\nnode-prod-01 : ok=14   changed=0    unreachable=0    failed=0    skipped=0\nnode-prod-02 : ok=14   changed=0    unreachable=0    failed=0    skipped=0\nnode-prod-03 : ok=14   changed=0    unreachable=0    failed=0    skipped=0"
+        },
+        {
+          cmd: "systemctl status sentinel-agent.service",
+          label: "⚙️ Systemd Status",
+          pulse: "sentinel",
+          output: "● sentinel-agent.service - Production SRE Fleet Drift Sentinel\n     Loaded: loaded (/etc/systemd/system/sentinel-agent.service; enabled; vendor preset: enabled)\n     Active: active (running) since Thu 2026-09-24 10:14:02 UTC; 3 days ago\n   Main PID: 18492 (sentinel)\n      Tasks: 4 (limit: 9410)\n     Memory: 24.8M\n        CPU: 1.2%"
+        },
+        {
+          cmd: "curl -s http://prober:9115/probe?target=http://localhost:8080&module=http_2xx",
+          label: "🔍 Blackbox Probe",
+          pulse: "probe",
+          output: "probe_success 1\nprobe_duration_seconds 0.0142\nprobe_http_status_code 200\nprobe_ip_protocol 4\nprobe_ssl_earliest_cert_expiry 1.7829e+09"
+        }
+      ]
+    },
+    observability: {
+      name: "Full-Stack SRE Telemetry & Escalation Pipeline",
+      badge: "METRICS, LOGS & TRACES",
+      png: "/sre_architecture_flow_observability.png",
+      nodes: {
+        probes: { name: "eBPF & Kernel Probes", layer: "Data Ingestion", port: "kernel", proto: "eBPF Sockets", latency: "0.4ms", health: "RECORDING (0.01% CPU)", logs: "[eBPF] Capturing syscalls and HTTP/2 packet headers with zero context switch overhead." },
+        collector: { name: "Vector / OTEL Collector", layer: "Telemetry Buffer", port: ":4317", proto: "OTLP gRPC", latency: "2.5ms", health: "HEALTHY (BUFFER 4%)", logs: "[VECTOR] Ingest rate: 14,200 events/sec. Batching 2MB chunks to Prometheus and Loki." },
+        prometheus: { name: "Prometheus TSDB", layer: "Metrics Engine", port: ":9090", proto: "PromQL / HTTP", latency: "6.8ms", health: "HEALTHY (HEAD OK)", logs: "[PROM] Evaluated 184 recording rules in 42ms. 0 alerts firing." },
+        loki: { name: "Grafana Loki Store", layer: "Log Aggregator", port: ":3100", proto: "LogQL / HTTP", latency: "9.2ms", health: "HEALTHY (S3 BACKED)", logs: "[LOKI] Stream chunk index synced with MinIO bucket. Retention: 30 days." },
+        alertmanager: { name: "Alertmanager Router", layer: "Notification Engine", port: ":9093", proto: "HTTP Webhook", latency: "3.1ms", health: "HEALTHY (0 SILENCES)", logs: "[ALERTS] Deduplication window: 30s. Routing alerts by cluster='production-us-east'." },
+        escalation: { name: "PagerDuty / Slack", layer: "Incident On-Call", port: ":443", proto: "HTTPS Webhook", latency: "14.5ms", health: "CONNECTED (ON-CALL)", logs: "[ON-CALL] Incident routing ready. Escalation tier 1: Pradeep Talari (SRE Lead)." }
+      },
+      commands: [
+        {
+          cmd: "promtool check rules /etc/prometheus/rules/alerts.yml",
+          label: "📊 Promtool Check",
+          pulse: "prometheus",
+          output: "Checking /etc/prometheus/rules/alerts.yml\n  SUCCESS: 8 rules found\n\nRule Syntax: VALID\nRecording Rules: 4\nAlerting Rules: 4\nDuration Checks: PASSED"
+        },
+        {
+          cmd: "curl -s -G 'http://prometheus:9090/api/v1/query' --data-urlencode 'query=rate(http_requests_total[2m])'",
+          label: "📈 Query Metric",
+          pulse: "prometheus",
+          output: "{\"status\":\"success\",\"data\":{\"resultType\":\"vector\",\"result\":[{\"metric\":{\"app\":\"api\",\"handler\":\"/v1/status\",\"instance\":\"10.0.1.4:8080\"},\"value\":[1782914000,\"145.28\"]}]}}"
+        },
+        {
+          cmd: "logcli query '{namespace=\"production\"} |= \"CRITICAL\"' --limit=5",
+          label: "📜 LogCLI Stream",
+          pulse: "loki",
+          output: "http://loki:3100 > query '{namespace=\"production\"} |= \"CRITICAL\"' (limit 5)\n2026-09-27T16:04:18Z [ALERT] Latency spike detected on payment-service: p99 > 850ms (auto-healed)\n2026-09-27T16:01:02Z [INFO] Zero critical unhandled exceptions in the last 15 minutes."
+        }
+      ]
+    }
   };
+
+  function buildTopologySvg(cat) {
+    const topo = categoryTopologies[cat] || categoryTopologies.cloud;
+    const nodeKeys = Object.keys(topo.nodes);
+    const nodeWidth = 96;
+    const spacing = 124;
+    const startX = 14;
+    const y = 30;
+
+    let defs = `
+      <defs>
+        <marker id="arrow-flow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 2 L 8 5 L 0 8 z" fill="#38bdf8"/>
+        </marker>
+        <linearGradient id="gn-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#090d16" stop-opacity="0.95"/>
+        </linearGradient>
+      </defs>
+    `;
+
+    let wiresSvg = '';
+    let nodesSvg = '';
+
+    nodeKeys.forEach((key, i) => {
+      const n = topo.nodes[key];
+      const curX = startX + i * spacing;
+
+      if (i < nodeKeys.length - 1) {
+        const nextX = startX + (i + 1) * spacing;
+        const x1 = curX + nodeWidth;
+        const x2 = nextX - 4;
+        const midY = y + 36;
+        wiresSvg += `
+          <g class="sre-flow-wire-group">
+            <path class="sre-flow-wire" d="M ${x1} ${midY} L ${x2} ${midY}" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-flow)" />
+            <circle r="3.5" fill="#fde047">
+              <animateMotion dur="2.4s" repeatCount="indefinite" path="M ${x1} ${midY} L ${x2} ${midY}" />
+            </circle>
+          </g>
+        `;
+      }
+
+      nodesSvg += `
+        <g class="sre-svg-node" data-node-id="${key}" transform="translate(${curX}, ${y})">
+          <rect width="${nodeWidth}" height="72" rx="8" fill="url(#gn-bg)" stroke="#4338ca" stroke-width="1.5" />
+          <circle cx="16" cy="18" r="4" fill="#10b981" />
+          <rect x="50" y="11" width="38" height="14" rx="3" fill="rgba(255,255,255,0.06)" />
+          <text x="69" y="21" font-family="monospace" font-size="8" fill="#94a3b8" text-anchor="middle">${n.port}</text>
+          <text x="48" y="44" font-family="sans-serif" font-weight="bold" font-size="10" fill="#f8fafc" text-anchor="middle">${n.name}</text>
+          <text x="48" y="58" font-family="sans-serif" font-size="8" fill="#818cf8" text-anchor="middle">${n.layer}</text>
+        </g>
+      `;
+    });
+
+    return `
+      <svg viewBox="0 0 740 135" style="width: 100%; height: auto; display: block; overflow: visible;">
+        ${defs}
+        ${wiresSvg}
+        ${nodesSvg}
+      </svg>
+    `;
+  }
 
   const lifecycles = {
     ai: {
@@ -798,32 +1021,112 @@ tmp/
     }
   };
 
+  let activeFaultTimeout = null;
+
   function renderSystemFlowContent() {
     const viewport = $('system-flow-viewport');
     if (!viewport) return;
 
     const cat = getStudioCategory();
-    const svg = categorySvgs[cat] || categorySvgs.cloud;
+    const topo = categoryTopologies[cat] || categoryTopologies.cloud;
     const life = lifecycles[cat] || lifecycles.cloud;
+    const svg = buildTopologySvg(cat);
+    const initialNodeKey = Object.keys(topo.nodes)[0];
+    const initialNode = topo.nodes[initialNodeKey];
 
     viewport.innerHTML = `
-      <div class="sre-panel-container" style="text-align: left;">
-        <div class="sre-panel-header">
-          <h3 class="sre-panel-title">
-            <span>🗺️</span> Production Topology &amp; Flow Guide
-          </h3>
-          <button id="btn-print-cheatsheet" class="sre-button-pill">📄 Print Cheatsheet</button>
+      <div class="sre-panel-container" style="text-align: left; display: flex; flex-direction: column; gap: 1rem;">
+        
+        <!-- Header Toolbar -->
+        <div class="sre-panel-header" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem;">
+          <div>
+            <h3 class="sre-panel-title" style="margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🗺️</span> Production Topology &amp; Flow Guide
+            </h3>
+            <span class="manim-badge" style="margin-top: 0.25rem;">${topo.badge}</span>
+          </div>
+          
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+            <button id="btn-toggle-flow-anim" class="sre-quick-cmd-btn" title="Toggle Wire Animations">⏸ Pause Flow</button>
+            <button id="btn-inject-flow-chaos" class="sre-quick-cmd-btn" style="color: #f87171; border-color: rgba(239,68,68,0.3);">💥 Inject Chaos</button>
+            <button id="btn-view-blueprint" class="sre-quick-cmd-btn" style="color: #38bdf8; border-color: rgba(56,189,248,0.3);">🖼️ Blueprint PNG</button>
+            <button id="btn-print-cheatsheet" class="sre-button-pill">📄 Print Cheatsheet</button>
+          </div>
         </div>
         
-        <div style="background: #020617; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; text-align: center;">
+        <!-- Interactive Manim-Style Architecture Canvas -->
+        <div class="sre-flow-canvas-wrapper" id="flow-canvas-container">
           ${svg}
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; background: #020617; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; font-size: 11px;">
+        <!-- Node Deep-Dive HUD Inspector -->
+        <div id="flow-node-inspector" class="flow-hud-inspector">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.4rem;">
+            <span id="hud-node-title" style="font-weight: bold; color: #f8fafc; font-size: 12px;">🔍 Node: ${initialNode.name}</span>
+            <span id="hud-node-health" style="font-family: monospace; font-size: 10px; color: #4ade80;">● ${initialNode.health}</span>
+          </div>
+          
+          <div class="flow-hud-grid">
+            <div class="flow-hud-stat">
+              <span class="flow-hud-stat-label">Architecture Layer</span>
+              <span id="hud-node-layer" class="flow-hud-stat-val">${initialNode.layer}</span>
+            </div>
+            <div class="flow-hud-stat">
+              <span class="flow-hud-stat-label">Internal Endpoint</span>
+              <span id="hud-node-port" class="flow-hud-stat-val" style="color: #fde047;">${initialNode.port}</span>
+            </div>
+            <div class="flow-hud-stat">
+              <span class="flow-hud-stat-label">Protocol</span>
+              <span id="hud-node-proto" class="flow-hud-stat-val">${initialNode.proto}</span>
+            </div>
+            <div class="flow-hud-stat">
+              <span class="flow-hud-stat-label">p99 Latency</span>
+              <span id="hud-node-latency" class="flow-hud-stat-val" style="color: #10b981;">${initialNode.latency}</span>
+            </div>
+          </div>
+          
+          <div style="background: rgba(2, 6, 23, 0.7); border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; padding: 0.5rem; font-family: monospace; font-size: 10px; color: #94a3b8; overflow-x: auto;">
+            <div style="color: #64748b; font-size: 9px; margin-bottom: 2px;">COMPONENT DIAGNOSTIC LOGS</div>
+            <pre id="hud-node-logs" style="margin: 0; white-space: pre-wrap;">${initialNode.logs}</pre>
+          </div>
+        </div>
+
+        <!-- Lifecycle Guidance Guidelines -->
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; background: #020617; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.05); padding: 0.85rem 1rem; font-size: 11px;">
           <div><strong>WHEN to Use:</strong> <span style="color: #cbd5e1;">${life.when}</span></div>
           <div style="margin-top: 0.25rem;"><strong>WHERE to Deploy:</strong> <span style="color: #cbd5e1;">${life.where}</span></div>
         </div>
 
+        <!-- Interactive SRE Terminal Playground -->
+        <div class="sre-terminal-emulator" id="sre-interactive-terminal">
+          <div class="sre-terminal-header">
+            <div class="sre-terminal-dots">
+              <span class="sre-terminal-dot red"></span>
+              <span class="sre-terminal-dot yellow"></span>
+              <span class="sre-terminal-dot green"></span>
+            </div>
+            <span class="sre-terminal-title">sre@prod-mesh:~ (zsh) · Interactive Playground</span>
+            <span style="font-size: 9px; color: #64748b; font-family: monospace;">ESC to clear</span>
+          </div>
+
+          <!-- Quick Action Commands -->
+          <div class="sre-terminal-quick-pills">
+            ${topo.commands.map((c, idx) => `
+              <button class="sre-quick-cmd-btn" data-cmd-idx="${idx}">${c.label}</button>
+            `).join('')}
+          </div>
+
+          <div class="sre-terminal-body" id="sre-term-output">
+            <pre style="color: #38bdf8;">[SYSTEM] Production mesh initialized. Click quick commands or type CLI commands below.</pre>
+          </div>
+
+          <div class="sre-terminal-prompt-line">
+            <span class="sre-terminal-prompt-user">sre@prod-cluster:~$</span>
+            <input type="text" id="sre-term-cmd-input" class="sre-terminal-input" placeholder="Type command (e.g. curl, kubectl, terraform)..." spellcheck="false" autocomplete="off" />
+          </div>
+        </div>
+
+        <!-- Live SRE Telemetry Metrics (Simulation) -->
         <div class="live-sre-stats-grid">
           <div class="live-sre-stat-card">
             <span class="live-sre-stat-label">Active Users</span>
@@ -849,12 +1152,202 @@ tmp/
           </div>
         </div>
       </div>
+
+      <!-- Blueprint Lightbox Modal Overlay -->
+      <div id="blueprint-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div style="background: #0f172a; border: 1px solid rgba(99,102,241,0.3); border-radius: 12px; max-width: 900px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1); background: #020617;">
+            <span style="font-weight: bold; color: #f8fafc; font-size: 13px;">🖼️ Reference Blueprint: ${topo.name}</span>
+            <button id="btn-close-blueprint" style="background: transparent; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; padding: 4px 8px;">✕</button>
+          </div>
+          <div style="padding: 1rem; overflow: auto; text-align: center; background: #030712;">
+            <img id="blueprint-modal-img" src="${topo.png}" onerror="this.src='/sre_architecture_flow.png'" alt="Architecture Blueprint" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);" />
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding: 0.75rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.05); background: #020617;">
+            <a href="${topo.png}" target="_blank" download class="sre-button-pill" style="text-decoration: none;">💾 Download PNG</a>
+          </div>
+        </div>
+      </div>
     `;
 
+    // 1. Cheatsheet Print
     const printBtn = $('btn-print-cheatsheet');
     if (printBtn) {
       printBtn.onclick = () => window.print();
     }
+
+    // 2. Blueprint Lightbox
+    const viewBpBtn = $('btn-view-blueprint');
+    const bpModal = $('blueprint-modal');
+    const closeBpBtn = $('btn-close-blueprint');
+    if (viewBpBtn && bpModal) {
+      viewBpBtn.onclick = () => {
+        bpModal.classList.remove('hidden');
+        bpModal.style.display = 'flex';
+      };
+    }
+    if (closeBpBtn && bpModal) {
+      closeBpBtn.onclick = () => {
+        bpModal.classList.add('hidden');
+        bpModal.style.display = 'none';
+      };
+    }
+    if (bpModal) {
+      bpModal.onclick = (e) => {
+        if (e.target === bpModal) {
+          bpModal.classList.add('hidden');
+          bpModal.style.display = 'none';
+        }
+      };
+    }
+
+    // 3. Node HUD Inspector on Click
+    const nodeEls = viewport.querySelectorAll('.sre-svg-node');
+    nodeEls.forEach(el => {
+      el.addEventListener('click', () => {
+        const nodeId = el.getAttribute('data-node-id');
+        const nodeData = topo.nodes[nodeId];
+        if (!nodeData) return;
+
+        nodeEls.forEach(n => n.classList.remove('active-node'));
+        el.classList.add('active-node');
+
+        const titleEl = $('hud-node-title');
+        const healthEl = $('hud-node-health');
+        const layerEl = $('hud-node-layer');
+        const portEl = $('hud-node-port');
+        const protoEl = $('hud-node-proto');
+        const latEl = $('hud-node-latency');
+        const logsEl = $('hud-node-logs');
+
+        if (titleEl) titleEl.textContent = `🔍 Node: ${nodeData.name}`;
+        if (healthEl) healthEl.textContent = `● ${nodeData.health}`;
+        if (layerEl) layerEl.textContent = nodeData.layer;
+        if (portEl) portEl.textContent = nodeData.port;
+        if (protoEl) protoEl.textContent = nodeData.proto;
+        if (latEl) latEl.textContent = nodeData.latency;
+        if (logsEl) logsEl.textContent = nodeData.logs;
+      });
+    });
+
+    // 4. Toggle Animation Pause / Play
+    const toggleAnimBtn = $('btn-toggle-flow-anim');
+    if (toggleAnimBtn) {
+      let isPaused = false;
+      toggleAnimBtn.onclick = () => {
+        isPaused = !isPaused;
+        viewport.querySelectorAll('.sre-flow-wire').forEach(w => {
+          if (isPaused) w.classList.add('paused');
+          else w.classList.remove('paused');
+        });
+        toggleAnimBtn.textContent = isPaused ? '▶ Play Flow' : '⏸ Pause Flow';
+      };
+    }
+
+    // 5. Chaos Fault Injection
+    const chaosBtn = $('btn-inject-flow-chaos');
+    if (chaosBtn) {
+      chaosBtn.onclick = () => {
+        if (activeFaultTimeout) clearTimeout(activeFaultTimeout);
+
+        const nodeKeys = Object.keys(topo.nodes);
+        const faultKey = nodeKeys[Math.min(2, nodeKeys.length - 1)];
+        const faultNode = topo.nodes[faultKey];
+        const faultEl = viewport.querySelector(`[data-node-id="${faultKey}"]`);
+
+        if (faultEl) {
+          faultEl.classList.add('chaos-fault');
+          faultEl.querySelector('rect').setAttribute('stroke', '#ef4444');
+        }
+
+        // Terminal Log Incident
+        const termOut = $('sre-term-output');
+        if (termOut) {
+          const alertLine = document.createElement('pre');
+          alertLine.style.color = '#ef4444';
+          alertLine.textContent = `\n🔥 [CHAOS FAULT INJECTED] Node '${faultNode.name}' unresponsive! HTTP 504 Gateway Timeout.\n🚨 [PAGERDUTY ALERT] Incident INC-9418 firing: Latency spike > 3,500ms.\n🛡️ [CIRCUIT BREAKER] Tripping open circuit breaker on route [${faultKey}]. Re-routing traffic to standby replica.`;
+          termOut.appendChild(alertLine);
+          termOut.scrollTop = termOut.scrollHeight;
+        }
+
+        // Drop Telemetry SLO temporarily
+        const sloEl = $('stat-slo-status');
+        if (sloEl) sloEl.textContent = '94.12%';
+
+        // Auto-heal after 6 seconds
+        activeFaultTimeout = setTimeout(() => {
+          if (faultEl) {
+            faultEl.classList.remove('chaos-fault');
+            faultEl.querySelector('rect').setAttribute('stroke', '#4338ca');
+          }
+          if (termOut) {
+            const healLine = document.createElement('pre');
+            healLine.style.color = '#4ade80';
+            healLine.textContent = `\n💚 [AUTO-REMEDIATION] Sentinel operator spawned replacement replica for '${faultNode.name}'.\n✓ [HEALTH RESTORED] SLO recovered: 99.99% | Latency normalized: ${faultNode.latency} | Circuit closed.`;
+            termOut.appendChild(healLine);
+            termOut.scrollTop = termOut.scrollHeight;
+          }
+          if (sloEl) sloEl.textContent = '99.99%';
+          activeFaultTimeout = null;
+        }, 6000);
+      };
+    }
+
+    // 6. Interactive Terminal Quick Commands & Execution
+    const termOut = $('sre-term-output');
+    const termInput = $('sre-term-cmd-input');
+
+    function executeTerminalCommand(cmdText, outputText, pulseNodeId) {
+      if (!termOut) return;
+      
+      const cmdLine = document.createElement('pre');
+      cmdLine.style.color = '#f8fafc';
+      cmdLine.style.fontWeight = 'bold';
+      cmdLine.textContent = `\nsre@prod-cluster:~$ ${cmdText}`;
+      termOut.appendChild(cmdLine);
+
+      const outLine = document.createElement('pre');
+      outLine.style.color = '#cbd5e1';
+      outLine.textContent = outputText || 'Command executed successfully.';
+      termOut.appendChild(outLine);
+
+      termOut.scrollTop = termOut.scrollHeight;
+
+      if (pulseNodeId) {
+        const pEl = viewport.querySelector(`[data-node-id="${pulseNodeId}"]`);
+        if (pEl) {
+          pEl.classList.add('active-node');
+          setTimeout(() => pEl.classList.remove('active-node'), 1800);
+        }
+      }
+    }
+
+    viewport.querySelectorAll('.sre-quick-cmd-btn[data-cmd-idx]').forEach(btn => {
+      btn.onclick = () => {
+        const idx = parseInt(btn.getAttribute('data-cmd-idx'), 10);
+        const cmdObj = topo.commands[idx];
+        if (cmdObj) {
+          executeTerminalCommand(cmdObj.cmd, cmdObj.output, cmdObj.pulse);
+        }
+      };
+    });
+
+    if (termInput) {
+      termInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && termInput.value.trim()) {
+          const val = termInput.value.trim();
+          termInput.value = '';
+          
+          const matchedCmd = topo.commands.find(c => c.cmd.toLowerCase().includes(val.toLowerCase()) || val.toLowerCase().includes(c.cmd.split(' ')[0]));
+          if (matchedCmd) {
+            executeTerminalCommand(val, matchedCmd.output, matchedCmd.pulse);
+          } else {
+            executeTerminalCommand(val, `Executing [${val}] across production cluster...\n✓ Task completed with exit code 0.`);
+          }
+        }
+      });
+    }
+
     startTelemetrySim();
   }
 
@@ -1048,6 +1541,262 @@ tmp/
     $('btn-sandbox-send').onclick = sendApiRequestSim;
   }
 
+  function generateManimPythonCode(cat, studioTitle) {
+    const topo = categoryTopologies[cat] || categoryTopologies.cloud;
+    const nodeKeys = Object.keys(topo.nodes);
+    
+    return `"""
+═══════════════════════════════════════════════════════════════════════════
+  PRODUCTION SRE ARCHITECTURE FLOW ANIMATION
+  Topology: ${topo.name}
+  Generated by Developer Studio | Talari Pradeep Portfolio
+═══════════════════════════════════════════════════════════════════════════
+
+PREREQUISITES:
+  1. Python 3.9+
+  2. Install Manim Community Edition:
+     pip install manim
+  3. Ensure ffmpeg is installed and available on your system PATH.
+
+EXECUTION INSTRUCTIONS:
+  # Fast low-quality preview (480p @ 15fps):
+  manim -pql manim_flow.py SREArchitectureFlow
+
+  # Full HD 1080p presentation video (60fps):
+  manim -pqh --fps 60 manim_flow.py SREArchitectureFlow
+
+  # 4K Ultra-HD broadcast video (2160p @ 60fps):
+  manim -pqk -r 3840,2160 --fps 60 manim_flow.py SREArchitectureFlow
+"""
+
+from manim import *
+
+class SREArchitectureFlow(Scene):
+    def construct(self):
+        # 1. Dark Enterprise Canvas Theme
+        self.camera.background_color = "#030712"
+
+        # 2. Header Title Banner
+        header = Text(
+            "${topo.name}",
+            font_size=26,
+            weight=BOLD,
+            color="#f8fafc"
+        ).to_edge(UP, buff=0.4)
+        
+        subtitle = Text(
+            "Topology Stage Flow & Automated Failover Circuit Breaker",
+            font_size=14,
+            color="#94a3b8"
+        ).next_to(header, DOWN, buff=0.15)
+
+        self.play(FadeIn(header, shift=DOWN * 0.3), FadeIn(subtitle), run_time=1.0)
+
+        # 3. Construct Architecture Stage Nodes
+        node_configs = [
+${nodeKeys.map(k => {
+  const n = topo.nodes[k];
+  return `            {"id": "${k}", "title": "${n.name}", "layer": "${n.layer}", "port": "${n.port}"},`;
+}).join('\n')}
+        ]
+
+        node_mobjects = []
+        for cfg in node_configs:
+            box = RoundedRectangle(
+                corner_radius=0.12,
+                height=1.2,
+                width=1.85,
+                color="#6366f1",
+                fill_color="#0f172a",
+                fill_opacity=0.95,
+                stroke_width=2
+            )
+            title = Text(cfg["title"], font_size=10, weight=BOLD, color=WHITE).shift(UP * 0.2)
+            layer = Text(cfg["layer"], font_size=8, color="#818cf8").shift(DOWN * 0.1)
+            port = Text(cfg["port"], font_size=7, font="Courier", color="#38bdf8").shift(DOWN * 0.35)
+            
+            group = VGroup(box, title, layer, port)
+            node_mobjects.append(group)
+
+        # Arrange nodes linearly across the canvas
+        nodes_group = VGroup(*node_mobjects).arrange(RIGHT, buff=0.45).scale(0.85).shift(UP * 0.3)
+
+        # 4. Connecting Directed Arrows
+        arrows = []
+        for i in range(len(node_mobjects) - 1):
+            arrow = Arrow(
+                start=node_mobjects[i].get_right(),
+                end=node_mobjects[i + 1].get_left(),
+                buff=0.08,
+                color="#38bdf8",
+                stroke_width=2.5,
+                max_tip_length_to_length_ratio=0.25
+            )
+            arrows.append(arrow)
+
+        # Animate Assembly
+        self.play(LaggedStart(*[FadeIn(n, shift=UP * 0.2) for n in node_mobjects], lag_ratio=0.15), run_time=1.8)
+        self.play(*[GrowArrow(a) for a in arrows], run_time=1.2)
+        self.wait(0.5)
+
+        # 5. Live Request Packet Flow Animation (Forward Traverse)
+        packet_dots = []
+        for arrow in arrows:
+            dot = Dot(color="#fde047", radius=0.08).move_to(arrow.get_start())
+            packet_dots.append((dot, arrow))
+
+        for dot, arrow in packet_dots:
+            self.play(FadeIn(dot, scale=0.5), run_time=0.15)
+            self.play(MoveAlongPath(dot, arrow), rate_func=linear, run_time=0.6)
+            self.play(FadeOut(dot, scale=0.5), run_time=0.15)
+
+        # 6. Simulate SRE Chaos Incident (Node Failure on Stage 2)
+        target_node = node_mobjects[min(2, len(node_mobjects) - 1)]
+        fault_highlight = SurroundingRectangle(target_node, color=RED, buff=0.08, stroke_width=3)
+        alarm_text = Text("504 GATEWAY TIMEOUT", font_size=9, weight=BOLD, color=RED).next_to(target_node, UP, buff=0.1)
+
+        self.play(
+            Create(fault_highlight),
+            Write(alarm_text),
+            target_node[0].animate.set_stroke(color=RED),
+            run_time=0.8
+        )
+        self.play(Indicate(target_node, color=RED_E, scale_factor=1.1), run_time=0.8)
+        self.wait(0.6)
+
+        # 7. Automated Circuit-Breaker Traffic Re-Route to Standby Replica
+        replica_box = RoundedRectangle(
+            corner_radius=0.12,
+            height=1.0,
+            width=1.85,
+            color="#10b981",
+            fill_color="#022c22",
+            fill_opacity=0.9,
+            stroke_width=2
+        ).next_to(target_node, DOWN, buff=0.6)
+        replica_txt = Text("Hot Standby Replica\\n:8080 (Synced)", font_size=9, color=WHITE).move_to(replica_box.get_center())
+        replica_group = VGroup(replica_box, replica_txt)
+
+        reroute_arrow_in = CurvedArrow(node_mobjects[1].get_bottom(), replica_box.get_left(), color=GREEN, angle=-TAU/6)
+        reroute_arrow_out = CurvedArrow(replica_box.get_right(), node_mobjects[min(3, len(node_mobjects) - 1)].get_bottom(), color=GREEN, angle=-TAU/6)
+
+        self.play(FadeIn(replica_group, shift=UP * 0.2), GrowArrow(reroute_arrow_in), GrowArrow(reroute_arrow_out), run_time=1.2)
+
+        # Route Traffic via Standby Replica
+        standby_dot = Dot(color="#4ade80", radius=0.08)
+        self.play(MoveAlongPath(standby_dot, reroute_arrow_in), rate_func=linear, run_time=0.6)
+        self.play(MoveAlongPath(standby_dot, reroute_arrow_out), rate_func=linear, run_time=0.6)
+        self.play(FadeOut(standby_dot))
+
+        # 8. SRE Telemetry & Recovery Badge
+        slo_banner = Text(
+            "✓ INCIDENT MITIGATED · SLO: 99.99% · MTTR: 3.8s · Traffic Re-Routed",
+            font_size=12,
+            weight=BOLD,
+            color="#4ade80"
+        ).to_edge(DOWN, buff=0.5)
+
+        self.play(
+            FadeOut(fault_highlight),
+            FadeOut(alarm_text),
+            FadeIn(slo_banner, shift=UP * 0.2),
+            run_time=1.0
+        )
+        self.wait(2.0)
+`;
+  }
+
+  function renderManimFlowContent() {
+    const viewport = $('manim-flow-viewport');
+    if (!viewport) return;
+
+    const cat = getStudioCategory();
+    const topo = categoryTopologies[cat] || categoryTopologies.cloud;
+    const titleText = document.title || 'DevOps & SRE Studio';
+    const manimPythonCode = generateManimPythonCode(cat, titleText);
+
+    viewport.innerHTML = `
+      <div class="sre-panel-container" style="text-align: left; display: flex; flex-direction: column; gap: 1rem;">
+        
+        <!-- Header Toolbar -->
+        <div class="sre-panel-header" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem;">
+          <div>
+            <h3 class="sre-panel-title" style="margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🎬</span> Manim Video Generator (manim_flow.py)
+            </h3>
+            <span class="manim-badge" style="margin-top: 0.25rem;">MANIM COMMUNITY EDITION</span>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+            <button id="btn-copy-manim" class="sre-button-pill">📋 Copy Script</button>
+            <button id="btn-download-manim" class="sre-button-pill" style="background: #10b981;">💾 Download .py</button>
+            <button id="btn-run-sim-flow" class="sre-quick-cmd-btn" style="color: #38bdf8; border-color: rgba(56,189,248,0.3);">▶ In-Browser Flow</button>
+          </div>
+        </div>
+
+        <!-- Quick Execution Instructions -->
+        <div style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: var(--radius-md); padding: 0.85rem 1rem; font-family: monospace; font-size: 11px; color: #cbd5e1;">
+          <div style="color: #38bdf8; font-weight: bold; margin-bottom: 0.35rem;">🚀 HOW TO RUN LOCALLY:</div>
+          <div style="color: #94a3b8; margin-bottom: 0.25rem;">1. Ensure Python &amp; ffmpeg are installed, then install Manim:</div>
+          <pre style="margin: 0 0 0.5rem 0; padding: 4px 8px; background: rgba(255,255,255,0.03); border-radius: 4px; color: #a5b4fc;">pip install manim</pre>
+          <div style="color: #94a3b8; margin-bottom: 0.25rem;">2. Render fast 480p preview (15fps) or 1080p 60fps presentation:</div>
+          <pre style="margin: 0; padding: 4px 8px; background: rgba(255,255,255,0.03); border-radius: 4px; color: #4ade80;">manim -pql manim_flow.py SREArchitectureFlow\n# Full 1080p 60fps:\nmanim -pqh --fps 60 manim_flow.py SREArchitectureFlow</pre>
+        </div>
+
+        <!-- Script Viewer -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <span style="font-size: 11px; font-weight: bold; color: #cbd5e1;">Generated Python Source Code:</span>
+            <span id="manim-copy-toast" style="font-size: 10px; color: #4ade80; font-family: monospace; display: none;">✓ Copied to clipboard!</span>
+          </div>
+          <div class="manim-code-viewport" style="max-height: 280px; overflow-y: auto;">
+            <pre><code id="manim-code-text">${manimPythonCode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Copy Button
+    const copyBtn = $('btn-copy-manim');
+    const toast = $('manim-copy-toast');
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(manimPythonCode).then(() => {
+            if (toast) {
+              toast.style.display = 'inline';
+              setTimeout(() => toast.style.display = 'none', 2000);
+            }
+          });
+        }
+      };
+    }
+
+    // Download Button
+    const dlBtn = $('btn-download-manim');
+    if (dlBtn) {
+      dlBtn.onclick = () => {
+        const blob = new Blob([manimPythonCode], { type: 'text/x-python;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'manim_flow.py';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      };
+    }
+
+    // Switch to System Flow Button
+    const runSimBtn = $('btn-run-sim-flow');
+    if (runSimBtn) {
+      runSimBtn.onclick = () => {
+        selectCustomTab('system-flow');
+      };
+    }
+  }
+
   function injectPrintStyle() {
     if ($('cheatsheet-print-style')) return;
     const style = document.createElement('style');
@@ -1090,6 +1839,20 @@ tmp/
     tabContainer.appendChild(btn);
   }
 
+  function injectManimFlowTab() {
+    const tabContainer = document.querySelector('.tabs-scrollable') ||
+                         (document.querySelector('.tab-btn') ? document.querySelector('.tab-btn').parentElement : null);
+    if (!tabContainer || $('tab-manim-flow')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'tab-manim-flow';
+    btn.className = 'tab-btn';
+    btn.type = 'button';
+    btn.innerHTML = '🎬 manim_flow.py';
+    btn.onclick = () => selectCustomTab('manim-flow');
+    tabContainer.appendChild(btn);
+  }
+
   function injectRestSandboxTab() {
     const tabContainer = document.querySelector('.tabs-scrollable') ||
                          (document.querySelector('.tab-btn') ? document.querySelector('.tab-btn').parentElement : null);
@@ -1118,6 +1881,14 @@ tmp/
     flowDiv.style.overflowY = 'auto';
     parent.appendChild(flowDiv);
 
+    const manimDiv = document.createElement('div');
+    manimDiv.id = 'manim-flow-viewport';
+    manimDiv.className = 'hidden ide-viewport flex flex-col bg-slate-950 p-6 border border-slate-800 rounded-lg text-slate-300';
+    manimDiv.style.minHeight = '380px';
+    manimDiv.style.maxHeight = '520px';
+    manimDiv.style.overflowY = 'auto';
+    parent.appendChild(manimDiv);
+
     const sandboxDiv = document.createElement('div');
     sandboxDiv.id = 'rest-sandbox-viewport';
     sandboxDiv.className = 'hidden ide-viewport flex flex-col bg-slate-950 p-6 border border-slate-800 rounded-lg text-slate-300';
@@ -1143,6 +1914,11 @@ tmp/
     if (flowViewport) flowViewport.classList.add('hidden');
     const flowTab = $('tab-system-flow');
     if (flowTab) flowTab.classList.remove('active');
+
+    const manimViewport = $('manim-flow-viewport');
+    if (manimViewport) manimViewport.classList.add('hidden');
+    const manimTab = $('tab-manim-flow');
+    if (manimTab) manimTab.classList.remove('active');
 
     const sandboxViewport = $('rest-sandbox-viewport');
     if (sandboxViewport) sandboxViewport.classList.add('hidden');
@@ -1171,6 +1947,8 @@ tmp/
       renderSystemFlowContent();
     } else if (tabId === 'rest-sandbox') {
       renderRestSandboxContent();
+    } else if (tabId === 'manim-flow') {
+      renderManimFlowContent();
     }
 
     const fileExtensionTag = $('file-extension-tag');
@@ -1332,6 +2110,11 @@ tmp/
         const flowViewport = $('system-flow-viewport');
         if (flowViewport) flowViewport.classList.add('hidden');
 
+        const manimTab = $('tab-manim-flow');
+        if (manimTab) manimTab.classList.remove('active');
+        const manimViewport = $('manim-flow-viewport');
+        if (manimViewport) manimViewport.classList.add('hidden');
+
         const sandboxTab = $('tab-rest-sandbox');
         if (sandboxTab) sandboxTab.classList.remove('active');
         const sandboxViewport = $('rest-sandbox-viewport');
@@ -1343,7 +2126,7 @@ tmp/
         }
 
         const fileExtensionTag = $('file-extension-tag');
-        if (fileExtensionTag && tabId !== 'webhooks' && tabId !== 'linter' && tabId !== 'system-flow' && tabId !== 'rest-sandbox') {
+        if (fileExtensionTag && tabId !== 'webhooks' && tabId !== 'linter' && tabId !== 'system-flow' && tabId !== 'rest-sandbox' && tabId !== 'manim-flow') {
           if (tabId === 'flow' || tabId === 'sandbox') {
             fileExtensionTag.textContent = '';
           } else if (tabId === 'script' || tabId === 'bash') {
@@ -1366,7 +2149,7 @@ tmp/
         }
 
         // Cache the compiled code if switching to a code tab
-        if (tabId !== 'webhooks' && tabId !== 'linter' && tabId !== 'system-flow' && tabId !== 'rest-sandbox') {
+        if (tabId !== 'webhooks' && tabId !== 'linter' && tabId !== 'system-flow' && tabId !== 'rest-sandbox' && tabId !== 'manim-flow') {
           setTimeout(() => {
             const outputBox = $('output-box');
             if (outputBox) {
@@ -1389,8 +2172,9 @@ tmp/
     injectLinterTab();
     injectNetworkStatusBadge();
 
-    // Inject Phase 14 Custom Features
+    // Inject Phase 14 & 15 Custom Features
     injectSystemFlowTab();
+    injectManimFlowTab();
     injectRestSandboxTab();
     injectCustomViewports();
     injectPrintStyle();

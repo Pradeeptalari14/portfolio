@@ -235,6 +235,87 @@ describe('Individual SRE Studio Pages (tools/kubernetes/index.html)', () => {
       printBtn.click();
       expect(window.print).toHaveBeenCalled();
     });
+
+    it('should support interactive node HUD inspection, chaos injection, and terminal playground', () => {
+      const viewport = document.getElementById('system-flow-viewport');
+      expect(viewport).not.toBeNull();
+
+      // 1. Click an SVG node to update HUD inspector
+      const firstNode = viewport.querySelector('.sre-svg-node');
+      expect(firstNode).not.toBeNull();
+      firstNode.dispatchEvent(new window.Event('click'));
+
+      const hudTitle = document.getElementById('hud-node-title');
+      const hudLogs = document.getElementById('hud-node-logs');
+      expect(hudTitle).not.toBeNull();
+      expect(hudTitle.textContent).toContain('Node:');
+      expect(hudLogs).not.toBeNull();
+
+      // 2. Test Quick Action Command Execution in SRE Terminal
+      const quickBtn = viewport.querySelector('.sre-quick-cmd-btn[data-cmd-idx]');
+      expect(quickBtn).not.toBeNull();
+      quickBtn.click();
+
+      const termOut = document.getElementById('sre-term-output');
+      expect(termOut).not.toBeNull();
+      expect(termOut.textContent).toContain('sre@prod-cluster:~$');
+
+      // 3. Test Chaos Fault Injector
+      const chaosBtn = document.getElementById('btn-inject-flow-chaos');
+      expect(chaosBtn).not.toBeNull();
+      chaosBtn.click();
+      expect(termOut.textContent).toContain('CHAOS FAULT INJECTED');
+
+      // 4. Test Blueprint Lightbox Modal
+      const viewBpBtn = document.getElementById('btn-view-blueprint');
+      const bpModal = document.getElementById('blueprint-modal');
+      expect(viewBpBtn).not.toBeNull();
+      expect(bpModal).not.toBeNull();
+      viewBpBtn.click();
+      expect(bpModal.classList.contains('hidden')).toBe(false);
+
+      const closeBpBtn = document.getElementById('btn-close-blueprint');
+      expect(closeBpBtn).not.toBeNull();
+      closeBpBtn.click();
+      expect(bpModal.classList.contains('hidden')).toBe(true);
+    });
+
+    it('should inject Programmatic Manim Python tab, generate runnable code, and support copy/download', () => {
+      const manimTab = document.getElementById('tab-manim-flow');
+      expect(manimTab).not.toBeNull();
+
+      // Switch to Manim tab
+      manimTab.click();
+      expect(manimTab.className).toContain('active');
+
+      const manimViewport = document.getElementById('manim-flow-viewport');
+      expect(manimViewport).not.toBeNull();
+      expect(manimViewport.classList.contains('hidden')).toBe(false);
+
+      // Verify generated Python script content
+      const codeBlock = document.getElementById('manim-code-text');
+      expect(codeBlock).not.toBeNull();
+      expect(codeBlock.textContent).toContain('from manim import *');
+      expect(codeBlock.textContent).toContain('class SREArchitectureFlow(Scene):');
+      expect(codeBlock.textContent).toContain('manim -pql manim_flow.py SREArchitectureFlow');
+      expect(codeBlock.textContent).toContain('pip install manim');
+
+      // Test Copy Script Button
+      const copyBtn = document.getElementById('btn-copy-manim');
+      expect(copyBtn).not.toBeNull();
+      copyBtn.click();
+      expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith(
+        expect.stringContaining('class SREArchitectureFlow(Scene):')
+      );
+
+      // Test Switch to in-browser flow button
+      const runSimBtn = document.getElementById('btn-run-sim-flow');
+      expect(runSimBtn).not.toBeNull();
+      runSimBtn.click();
+
+      const flowTab = document.getElementById('tab-system-flow');
+      expect(flowTab.className).toContain('active');
+    });
   });
 
   describe('4. REST API Sandbox & Configuration Auditor Validation', () => {
