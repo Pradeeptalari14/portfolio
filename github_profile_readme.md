@@ -49,19 +49,22 @@ Senior **AI Infrastructure & Platform Engineer** with **6+ years of enterprise e
 
 ---
 
-## 🚀 Live Interactive Simulators & 292 Developer Studios
+## 🚀 Live Interactive Simulators & 293 Developer Studios
 
-The entire engineering ecosystem is backed by an open-source hub of **292 Interactive Developer Studios & SRE Simulators** built into the portfolio:
+The entire engineering ecosystem is backed by an open-source hub of **293 Interactive Developer Studios & SRE Simulators** built into the portfolio:
 
 | Interactive Tool / Center | What You Can Explore & Simulate | Launch Live |
 | :--- | :--- | :---: |
+| ⚡ **DeepSeek-R1 Speculative Decoding Studio** | 3.2x reasoning speedup with lightweight Qwen-2.5-Coder drafting & parallel verification | [**Launch**](https://talaripradeep.info/tools/deepseek-speculative-decoding/) |
 | ⚡ **TypeSafe Jev: System 1 AI Studio** | Sub-100ms non-autoregressive reflex engine, RLCD calibration & System 2 fallback | [**Launch**](https://talaripradeep.info/tools/jev-system1/) |
+| 🕸️ **Knowledge Graph & GraphRAG Studio** | Zero-shot GLiNER extraction, NetworkX topology & Neo4j Cypher constraints | [**Launch**](https://talaripradeep.info/tools/knowledge-graph/) |
+| 🔍 **Vectorless RAG & Sparse Search Studio** | PostgreSQL GIN tsvector search, BM25 TF-IDF saturation & RRF ranker | [**Launch**](https://talaripradeep.info/tools/vectorless-rag/) |
+| 🔑 **Production Secrets & Rotation Studio** | HashiCorp Vault dynamic leases, AWS KMS envelope encryption & K8s ESO | [**Launch**](https://talaripradeep.info/tools/production-secrets/) |
 | 🗺️ **SRE Production Topology Flow** | In-browser vector packet flows, node inspector HUD, and chaos fault injection | [**Launch**](https://talaripradeep.info/architecture/) |
 | 🎬 **Programmatic Manim Video Generator** | Auto-generates runnable 3Blue1Brown/Manim 4K video Python scripts (`manim_flow.py`) | [**Explore**](https://talaripradeep.info/tools/) |
 | 💥 **SRE Production Incident Simulator** | Real-world PagerDuty outage drills, OOM troubleshooting, and automated failover | [**Launch**](https://talaripradeep.info/incident/) |
 | 💰 **Cloud FinOps Rightsizing Center** | Live multi-cloud AWS cost calculator, idle resource reclamation & Karpenter ROI | [**Launch**](https://talaripradeep.info/finops/) |
-| 📚 **SRE Interview & Knowledge Vault** | 50+ enterprise architectural scenarios, incident runbooks, and deep-dive question banks | [**Launch**](https://talaripradeep.info/interview/) |
-| 🛠️ **292 Developer Studios Hub** | Unified console of 292 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
+| 🛠️ **293 Developer Studios Hub** | Unified console of 293 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
 
 ---
 
