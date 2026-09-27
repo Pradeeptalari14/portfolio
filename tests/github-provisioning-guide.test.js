@@ -3,6 +3,9 @@ import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import path from 'path';
 
+const toolsJsonPath = path.resolve(__dirname, '../tools/tools.json');
+const toolsJson = JSON.parse(fs.readFileSync(toolsJsonPath, 'utf8'));
+
 function loadGuideDom() {
   const htmlPath = path.resolve(__dirname, '../tools/github-provisioning-guide/index.html');
   const htmlText = fs.readFileSync(htmlPath, 'utf8');
@@ -22,9 +25,6 @@ function loadGuideDom() {
   };
 
   // Mock fetch to return tools.json
-  const toolsJsonPath = path.resolve(__dirname, '../tools/tools.json');
-  const toolsJson = JSON.parse(fs.readFileSync(toolsJsonPath, 'utf8'));
-  
   window.fetch = vi.fn().mockImplementation((url) => {
     if (url.includes('tools.json')) {
       return Promise.resolve({
@@ -49,7 +49,7 @@ describe('GitHub Provisioning & SRE Execution Hub Page', () => {
     await new Promise(resolve => setTimeout(resolve, 200));
 
     const cards = window.document.querySelectorAll('.repo-card');
-    expect(cards.length).toBe(291);
+    expect(cards.length).toBe(toolsJson.length);
 
     const firstCardTitle = cards[0].querySelector('h4').textContent;
     expect(firstCardTitle).toBe('DevOps AI RAG Studio');
@@ -80,6 +80,6 @@ describe('GitHub Provisioning & SRE Execution Hub Page', () => {
     aiPill.dispatchEvent(new window.Event('click'));
 
     const visibleCards = Array.from(window.document.querySelectorAll('.repo-card'));
-    expect(visibleCards.length).toBe(195);
+    expect(visibleCards.length).toBe(toolsJson.filter(t => t.category === 'ai').length);
   }, 30000);
 });

@@ -12,6 +12,18 @@
     "repository": "Pradeeptalari14/tp-ai"
   },
   {
+    "title": "TypeSafe Jev: System 1 AI Studio",
+    "desc": "Orchestrate TypeSafe AI's Jev System 1 model. Configure non-autoregressive sub-100ms reflex routing, calibrated decision thresholds (RLCD), schema-constrained Pydantic triage, and System 2 LLM escalation fallbacks.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(234, 88, 12)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "jev_engine.py",
+    "link": "jev-system1/",
+    "repository": "Pradeeptalari14/tp-typesafe-jev"
+  },
+  {
     "title": "Enterprise LLM Studio",
     "desc": "Orchestrate scalable, GPU-accelerated environments for Large Models. Generate production Kubernetes manifests, high-performance vLLM configurations, and Prometheus telemetry dashboards.",
     "category": "ai",

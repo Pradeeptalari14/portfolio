@@ -1,0 +1,439 @@
+<!-- Copyright (c) 2026 Talari Pradeep. All Rights Reserved. Proprietary License. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TypeSafe Jev: System 1 AI Decision Studio | Talari Pradeep</title>
+  <meta name="description" content="Orchestrate TypeSafe AI's Jev System 1 model. Configure non-autoregressive sub-100ms reflex routing, calibrated decision thresholds (RLCD), schema-constrained Pydantic triage, and System 2 LLM escalation fallbacks." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TypeSafe Jev: System 1 AI Decision Studio",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "description": "Configure TypeSafe AI's non-autoregressive Jev System 1 decision engine. Build high-speed reflex routers, RLCD confidence-calibrated gates, and sub-100ms schema-constrained SRE pipelines."
+  }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <style>
+    :root {
+      --accent-primary: #ea580c; /* High-speed Reflex Orange */
+      --accent-amber:   #f59e0b;
+      --accent-cyan:    #0ea5e9;
+      --accent-violet:  #8b5cf6;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --border:         #e2e8f0;
+      --bg-surface:     #f8f9fc;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+      --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .form-select, .form-input, .form-textarea {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border) !important;
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-radius: var(--radius-md) !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15) !important;
+    }
+    .studio-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: all 0.22s ease;
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .tab-btn.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+      font-weight: 600;
+    }
+    .ide-container {
+      border-radius: var(--radius-lg);
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .custom-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .pulse-beacon {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse-green 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+    }
+    @keyframes pulse-green {
+      to {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+    }
+    .scenario-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: left;
+    }
+    .scenario-btn:hover {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+    .scenario-btn.active {
+      background: #fff7ed;
+      border-color: #f97316;
+      color: #c2410c;
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.12);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-orange-200 outline-offset-2" width="32" height="32" loading="lazy" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
+        <a href="../../#home" class="hover:text-orange-600 transition">🏠 Home</a>
+        <a href="../" class="hover:text-orange-600 transition">🛠️ Tools Hub</a>
+        <a href="../../studios/" class="hover:text-orange-600 transition">🧪 292 Studios</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    
+    <!-- Hero / Header -->
+    <div class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-orange-700 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase tracking-wider font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon"></span>
+          TypeSafe AI · System 1 Reflex Engine
+        </span>
+        <span class="text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2.5 py-1 rounded-full font-mono">
+          70ms - 250ms P99
+        </span>
+        <span class="text-[11px] font-bold text-cyan-700 bg-cyan-50 border border-cyan-200 px-2.5 py-1 rounded-full font-mono">
+          RLCD Calibrated Probabilities
+        </span>
+        <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-mono">
+          Non-Autoregressive
+        </span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+        TypeSafe Jev: <span class="bg-gradient-to-r from-orange-600 via-amber-500 to-purple-600 bg-clip-text text-transparent">System 1 AI Decision Studio</span>
+      </h1>
+      <p class="text-sm text-gray-600 mt-2 max-w-3xl leading-relaxed">
+        Orchestrate <strong>TypeSafe AI's Jev</strong>, the pioneering <strong>System 1 non-autoregressive decision model</strong> (founded by ex-OpenAI researcher Diogo Almeida). Unlike slow, generative System 2 LLMs (Claude 3.7 / GPT-4o), Jev performs immediate, schema-constrained reflex judgements in <strong>sub-100 milliseconds</strong> with calibrated confidence scores (RLCD), saving up to 99% compute and latency.
+      </p>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs & Interactive Simulator (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- SECTION 1: Preset Real-World Scenarios -->
+        <div class="studio-card border-orange-100 bg-gradient-to-br from-white to-orange-50/20">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <span>⚡ Live Preset Scenarios</span>
+            </h3>
+            <span class="text-[10px] text-gray-400 font-mono">One-click benchmark loads</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button type="button" class="scenario-btn active" id="preset-agent" data-scenario="agent">
+              <div class="font-bold">🤖 Agent Reflex Router</div>
+              <div class="text-[10px] text-gray-500 font-normal">Sub-second FAQ reflex vs Deep Contract LLM</div>
+            </button>
+            <button type="button" class="scenario-btn" id="preset-sre" data-scenario="sre">
+              <div class="font-bold">🚨 SRE Incident Triage</div>
+              <div class="text-[10px] text-gray-500 font-normal">Kafka OOMKill & PagerDuty Sev1 escalation</div>
+            </button>
+            <button type="button" class="scenario-btn" id="preset-security" data-scenario="security">
+              <div class="font-bold">🛡️ Zero-Latency Guardrail</div>
+              <div class="text-[10px] text-gray-500 font-normal">85ms Prompt Injection & Jailbreak Firewall</div>
+            </button>
+            <button type="button" class="scenario-btn" id="preset-finops" data-scenario="finops">
+              <div class="font-bold">💰 FinOps GPU Anomaly</div>
+              <div class="text-[10px] text-gray-500 font-normal">Spike detection & automated spot remediation</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Model Configuration & Cognitive Thresholds -->
+        <div class="studio-card">
+          <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span>⚙️ Jev System 1 Execution Parameters</span>
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="jev_decision_mode" class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Cognitive Decision Task</label>
+              <select id="jev_decision_mode" class="form-select w-full p-2.5 text-xs">
+                <option value="agent_router" selected>Dual-Process Agent Router (System 1 vs System 2)</option>
+                <option value="sre_triage">SRE High-Velocity Alert & Log Triage</option>
+                <option value="guardrail_gate">Prompt Injection & Guardrail Gatekeeper</option>
+                <option value="finops_remediation">FinOps Cloud Anomaly & Policy Classifier</option>
+              </select>
+            </div>
+            <div>
+              <label for="jev_target_schema" class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Target Decision Schema</label>
+              <select id="jev_target_schema" class="form-select w-full p-2.5 text-xs">
+                <option value="pydantic_v2" selected>Pydantic v2 (Strict Python BaseModel)</option>
+                <option value="zod">Zod v3 (TypeScript Schema)</option>
+                <option value="json_schema">JSON Schema Draft 2020-12</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Threshold Slider -->
+          <div class="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+            <div class="flex items-center justify-between mb-1">
+              <label for="jev_confidence_threshold" class="text-xs font-bold text-gray-800">
+                System 2 Escalation Confidence Threshold (RLCD)
+              </label>
+              <span id="threshold-display" class="font-mono text-xs font-bold text-orange-600 bg-orange-100 px-2 py-0.5 rounded">0.85 (85%)</span>
+            </div>
+            <p class="text-[11px] text-gray-500 mb-2">If Jev's calibrated confidence is ≥ threshold, execute immediate reflex. If &lt; threshold, escalate to deliberative System 2 LLM.</p>
+            <input type="range" id="jev_confidence_threshold" min="0.50" max="0.99" step="0.01" value="0.85" class="w-full accent-orange-600 cursor-pointer" />
+            <div class="flex justify-between text-[10px] text-gray-400 font-mono mt-1">
+              <span>0.50 (Aggressive Reflex)</span>
+              <span>0.85 (Recommended SRE)</span>
+              <span>0.99 (Extreme Conservative)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label for="jev_latency_sla" class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Latency SLA Target</label>
+              <select id="jev_latency_sla" class="form-select w-full p-2 text-xs">
+                <option value="85ms" selected>⚡ 85ms (P95 Extreme)</option>
+                <option value="150ms">⏱️ 150ms (Balanced)</option>
+                <option value="300ms">🔍 300ms (High Context)</option>
+              </select>
+            </div>
+            <div>
+              <label for="jev_system2_fallback" class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">System 2 Deliberative LLM</label>
+              <select id="jev_system2_fallback" class="form-select w-full p-2 text-xs">
+                <option value="claude-3-7-sonnet" selected>Claude 3.7 Sonnet</option>
+                <option value="gpt-4o">OpenAI GPT-4o</option>
+                <option value="deepseek-r1">DeepSeek R1</option>
+              </select>
+            </div>
+            <div>
+              <label for="jev_calibration_profile" class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">RLCD Profile</label>
+              <select id="jev_calibration_profile" class="form-select w-full p-2 text-xs">
+                <option value="strict_rlcd" selected>Strict RLCD Calibrated</option>
+                <option value="high_recall">High Recall Sensitivity</option>
+                <option value="cost_finops">Max FinOps Offload</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Live Interactive Reflex Playground -->
+        <div class="studio-card border-orange-200 bg-white">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <span>⚡ Live Jev Reflex Simulator (Interactive)</span>
+            </h3>
+            <span class="text-[10px] font-mono text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">Ready</span>
+          </div>
+          <p class="text-xs text-gray-500 mb-3">Provide arbitrary unstructured state. Run Jev's non-autoregressive forward pass to inspect latency, calibrated score, and decision routing.</p>
+          
+          <div class="mb-3">
+            <label for="jev_input_payload" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Incoming Unstructured State (Payload / Ticket / Query)</label>
+            <textarea id="jev_input_payload" rows="4" class="form-textarea w-full p-3 font-mono text-xs text-slate-800 bg-slate-50 border rounded-lg focus:bg-white" placeholder="Paste incoming event payload or text query..."></textarea>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-3 mb-4">
+            <button type="button" id="btn-run-simulation" class="w-full sm:w-auto flex-1 py-3 px-6 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-xs rounded-lg transition shadow-md shadow-orange-100 flex items-center justify-center gap-2 cursor-pointer">
+              <span>⚡ Fire Jev System 1 Reflex (Sub-100ms)</span>
+            </button>
+            <button type="button" id="btn-toggle-ambiguous" class="w-full sm:w-auto py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition border border-slate-200 flex items-center justify-center gap-1.5 cursor-pointer" title="Simulate low confidence to test System 2 escalation fallback">
+              <span>🎲 Test Ambiguous Edge Case</span>
+            </button>
+          </div>
+
+          <!-- Real-Time Telemetry HUD -->
+          <div id="simulation-hud" class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-slate-100">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 text-center">
+              
+              <!-- Metric 1: Latency -->
+              <div class="p-2.5 bg-slate-900/90 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-mono tracking-wider">End-to-End Latency</div>
+                <div id="sim-latency" class="text-xl font-extrabold text-emerald-400 font-mono mt-0.5">78 ms</div>
+                <div class="text-[9px] text-emerald-500 font-mono">18x faster than GPT-4o</div>
+              </div>
+
+              <!-- Metric 2: Calibrated Score -->
+              <div class="p-2.5 bg-slate-900/90 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-mono tracking-wider">RLCD Calibration</div>
+                <div id="sim-confidence" class="text-xl font-extrabold text-amber-400 font-mono mt-0.5">0.942</div>
+                <div class="text-[9px] text-amber-400 font-mono">High Confidence</div>
+              </div>
+
+              <!-- Metric 3: Decision Route -->
+              <div class="p-2.5 bg-slate-900/90 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-mono tracking-wider">Cognitive Route</div>
+                <div id="sim-route" class="text-xs font-bold text-orange-400 font-mono mt-1.5 uppercase">⚡ SYSTEM 1 REFLEX</div>
+                <div id="sim-subroute" class="text-[9px] text-slate-400 font-mono truncate">ROUTE_DIRECT_API</div>
+              </div>
+
+              <!-- Metric 4: FinOps Cost -->
+              <div class="p-2.5 bg-slate-900/90 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-mono tracking-wider">FinOps Cost</div>
+                <div id="sim-cost" class="text-xl font-extrabold text-cyan-400 font-mono mt-0.5">$0.000078</div>
+                <div id="sim-savings" class="text-[9px] text-cyan-400 font-mono">99.35% Savings</div>
+              </div>
+
+            </div>
+
+            <!-- Calibrated Progress Meter -->
+            <div class="mb-3">
+              <div class="flex justify-between text-[10px] font-mono text-slate-400 mb-1">
+                <span>Confidence vs Escalation Threshold (<span id="meter-threshold-val">0.85</span>)</span>
+                <span id="meter-status-text" class="text-emerald-400 font-semibold">PASS: Retained by System 1</span>
+              </div>
+              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden relative">
+                <div id="confidence-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-400 transition-all duration-300" style="width: 94%;"></div>
+              </div>
+            </div>
+
+            <!-- Typed JSON Result -->
+            <div class="mt-2">
+              <div class="text-[10px] font-mono text-slate-400 uppercase mb-1 flex items-center justify-between">
+                <span>Schema-Constrained Typed Output</span>
+                <span class="text-[10px] text-slate-500">Non-Autoregressive Result</span>
+              </div>
+              <pre id="sim-json-output" class="p-3 bg-slate-900 rounded-lg font-mono text-[11px] text-slate-200 overflow-x-auto max-h-48 border border-slate-800/80"></pre>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports & Code Generatables (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+        
+        <!-- IDE Viewport -->
+        <div class="ide-container bg-slate-950">
+          <div class="ide-header flex flex-col items-stretch p-0 border-b border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900">
+              <div class="ide-dots flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-44 focus:outline-none" value="jev_decision_engine.py" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-850 px-2 overflow-x-auto border-t border-slate-800/50">
+              <button onclick="switchTab('jev_py')" id="tab-jev_py" class="tab-btn active">jev_client.py</button>
+              <button onclick="switchTab('jev_ts')" id="tab-jev_ts" class="tab-btn">system1_router.ts</button>
+              <button onclick="switchTab('jev_graph')" id="tab-jev_graph" class="tab-btn">hybrid_agent_graph.py</button>
+              <button onclick="switchTab('jev_k8s')" id="tab-jev_k8s" class="tab-btn">k8s-sidecar.yaml</button>
+              <button onclick="switchTab('jev_flow')" id="tab-jev_flow" class="tab-btn text-orange-400">📊 Dual-Process Flow</button>
+            </div>
+          </div>
+
+          <!-- Code View -->
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 480px; max-height: 640px;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="studio-card">
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button id="btn-copy-jev" class="py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer">
+              <span>📋 Copy Output</span>
+            </button>
+            <button id="btn-download-jev" class="py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm shadow-orange-100 cursor-pointer">
+              <span>⬇️ Download file</span>
+            </button>
+          </div>
+          <div class="text-[11px] text-gray-500 leading-tight">
+            💡 <strong>Architecture Note:</strong> Jev delivers sub-100ms decisions without token-by-token stream latency. Pair it in front of heavy reasoning agents to eliminate 90%+ of redundant System 2 token costs.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="../../src/js/core-tool.js"></script>
+  <script type="module" src="../../src/js/generators/jev-system1-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+  <script src="/tools/shared-tools.js"></script>
+</body>
+</html>

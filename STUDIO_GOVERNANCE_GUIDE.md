@@ -93,7 +93,8 @@ The following catalog registers all **276 Developer Studios** to their team owne
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
 | 1 | DevOps AI RAG Studio | [ai/](file:///d:/Domain/tools/ai/index.html) | `tp-devops-ai-rag` | AI Engineering | `main` | Python, Streamlit, Langchain | Enterprise LLM, Vector DB |
-| 2 | Enterprise LLM Studio | [llm/](file:///d:/Domain/tools/llm/index.html) | `tp-enterprise-llm` | AI Engineering | `main` | K8s, vLLM, Prometheus | Ray Cluster, LLM Gateway |
+| 2 | TypeSafe Jev: System 1 AI Studio | [jev-system1/](file:///d:/Domain/tools/jev-system1/index.html) | `tp-typesafe-jev` | AI Engineering | `main` | TypeSafe AI, Python, Zod, K8s | Enterprise LLM, LLM Gateway |
+| 3 | Enterprise LLM Studio | [llm/](file:///d:/Domain/tools/llm/index.html) | `tp-enterprise-llm` | AI Engineering | `main` | K8s, vLLM, Prometheus | Ray Cluster, LLM Gateway |
 | 3 | Local SLM Studio | [slm/](file:///d:/Domain/tools/slm/index.html) | `tp-local-slm` | Edge Compute | `main` | Ollama, systemd, Bash | Systemd Builder, Linux Studio |
 | 4 | MLflow Tracking Studio | [mlflow/](file:///d:/Domain/tools/mlflow/index.html) | `tp-mlflow-tracker` | ML Platform | `main` | Docker Compose, Python | Feature Store, DataOps Studio |
 | 5 | Strands SRE Agent Studio | [strands/](file:///d:/Domain/tools/strands/index.html) | `tp-strands-sre-agent` | SRE Swarm | `main` | Strands SDK, MCP, OTel | SRE Simulator, MCP Studio |
