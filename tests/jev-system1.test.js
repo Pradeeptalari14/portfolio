@@ -87,6 +87,17 @@ describe('TypeSafe Jev: System 1 AI Decision Studio', () => {
     expect(outputBox.textContent).toContain('--max-latency-sla=85ms');
   });
 
+  it('should compile manim_system1_flow.py with 3Blue1Brown animation scene', () => {
+    const window = loadToolDom('../tools/jev-system1/index.html', '../src/js/generators/jev-system1-gen.js');
+    const outputBox = window.document.getElementById('output-box');
+
+    window.switchTab('jev_manim');
+    expect(outputBox.textContent).toContain('from manim import *');
+    expect(outputBox.textContent).toContain('class JevDualProcessArchitectureScene(Scene):');
+    expect(outputBox.textContent).toContain('TypeSafe AI Jev: System 1 Dual-Process Architecture');
+    expect(outputBox.textContent).toContain('manim -pqh manim_system1_flow.py JevDualProcessArchitectureScene');
+  });
+
   it('should execute live interactive reflex simulation and update telemetry HUD', () => {
     const window = loadToolDom('../tools/jev-system1/index.html', '../src/js/generators/jev-system1-gen.js');
     

@@ -130,6 +130,7 @@ function initJevSystem1Studio() {
     jev_ts: '',
     jev_graph: '',
     jev_k8s: '',
+    jev_manim: '',
     jev_flow: ''
   };
 
@@ -573,6 +574,80 @@ function initJevSystem1Studio() {
     return mmd;
   }
 
+  function compileManimScript(opts) {
+    let script = `#!/usr/bin/env python3\n`;
+    script += `"""\n`;
+    script += `🎬 3Blue1Brown / Manim Programmatic Video Animation\n`;
+    script += `TypeSafe AI Jev: Dual-Process Cognitive Architecture & System 1 Reflex Engine\n\n`;
+    script += `Render Commands:\n`;
+    script += `  - Fast 480p preview:    manim -pql manim_system1_flow.py JevDualProcessArchitectureScene\n`;
+    script += `  - Full HD 1080p 60fps:  manim -pqh manim_system1_flow.py JevDualProcessArchitectureScene\n`;
+    script += `  - Ultra HD 4K 60fps:    manim -pqk manim_system1_flow.py JevDualProcessArchitectureScene\n`;
+    script += `"""\n\n`;
+    script += `from manim import *\n\n`;
+    script += `class JevDualProcessArchitectureScene(Scene):\n`;
+    script += `    def construct(self):\n`;
+    script += `        BG_COLOR = "#0B0F19"\n`;
+    script += `        ORANGE_NEON = "#EA580C"\n`;
+    script += `        AMBER_NEON = "#F59E0B"\n`;
+    script += `        GREEN_NEON = "#10B981"\n`;
+    script += `        PURPLE_NEON = "#8B5CF6"\n`;
+    script += `        CYAN_NEON = "#0EA5E9"\n`;
+    script += `        SLATE_CARD = "#1E293B"\n\n`;
+    script += `        self.camera.background_color = BG_COLOR\n\n`;
+    script += `        # ── 1. Title Header ──\n`;
+    script += `        title = Text("TypeSafe AI Jev: System 1 Dual-Process Architecture", font_size=28, weight=BOLD, color=WHITE)\n`;
+    script += `        title.to_edge(UP, buff=0.4)\n`;
+    script += `        subtitle = Text("Sub-100ms Non-Autoregressive Decision Engine (RLCD)", font_size=15, color=CYAN_NEON)\n`;
+    script += `        subtitle.next_to(title, DOWN, buff=0.15)\n`;
+    script += `        self.play(FadeIn(title, shift=DOWN*0.3), FadeIn(subtitle, shift=UP*0.2), run_time=1.0)\n\n`;
+    script += `        # ── 2. Component Groups ──\n`;
+    script += `        input_box = RoundedRectangle(corner_radius=0.15, width=2.4, height=3.8, fill_color=SLATE_CARD, fill_opacity=0.85, stroke_color=CYAN_NEON, stroke_width=2).shift(LEFT * 4.8 + DOWN * 0.4)\n`;
+    script += `        input_title = Text("High-Velocity\\nInput Stream", font_size=14, weight=BOLD, color=CYAN_NEON, line_spacing=0.8).move_to(input_box.get_top() + DOWN * 0.5)\n`;
+    script += `        input_events = VGroup(\n`;
+    script += `            Text("• K8s OOM Events", font_size=11, color=LIGHT_GRAY),\n`;
+    script += `            Text("• User Prompts", font_size=11, color=LIGHT_GRAY),\n`;
+    script += `            Text("• Kafka Lag Spikes", font_size=11, color=LIGHT_GRAY),\n`;
+    script += `            Text("• REST Webhooks", font_size=11, color=LIGHT_GRAY)\n`;
+    script += `        ).arrange(DOWN, aligned_edge=LEFT, buff=0.25).next_to(input_title, DOWN, buff=0.35)\n`;
+    script += `        input_group = VGroup(input_box, input_title, input_events)\n\n`;
+    script += `        jev_box = RoundedRectangle(corner_radius=0.2, width=3.0, height=4.2, fill_color=SLATE_CARD, fill_opacity=0.95, stroke_color=ORANGE_NEON, stroke_width=3).shift(LEFT * 1.5 + DOWN * 0.4)\n`;
+    script += `        jev_title = Text("TypeSafe AI Jev", font_size=17, weight=BOLD, color=ORANGE_NEON).move_to(jev_box.get_top() + DOWN * 0.45)\n`;
+    script += `        jev_sub = Text("System 1 Non-Autoregressive", font_size=10, color=AMBER_NEON).next_to(jev_title, DOWN, buff=0.08)\n`;
+    script += `        jev_group = VGroup(jev_box, jev_title, jev_sub)\n\n`;
+    script += `        gate = Polygon([-0.7, 0, 0], [0, 0.7, 0], [0.7, 0, 0], [0, -0.7, 0], fill_color=SLATE_CARD, fill_opacity=0.95, stroke_color=AMBER_NEON, stroke_width=2.5).shift(RIGHT * 1.5 + DOWN * 0.4)\n`;
+    script += `        gate_text = Text("Confidence\\n>= ${opts.threshold.toFixed(2)}?", font_size=11, weight=BOLD, color=WHITE, line_spacing=0.8).move_to(gate)\n`;
+    script += `        gate_group = VGroup(gate, gate_text)\n\n`;
+    script += `        fast_box = RoundedRectangle(corner_radius=0.15, width=2.9, height=1.9, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=GREEN_NEON, stroke_width=2.5).shift(RIGHT * 4.6 + UP * 0.8)\n`;
+    script += `        fast_title = Text("⚡ Fast Deterministic Path", font_size=12, weight=BOLD, color=GREEN_NEON).move_to(fast_box.get_top() + DOWN * 0.35)\n`;
+    script += `        fast_desc = Text("Microservices, APIs, SRE Runbooks\\nZero LLM Tokens · 78ms Latency", font_size=9, color=LIGHT_GRAY, line_spacing=0.8).next_to(fast_title, DOWN, buff=0.15)\n`;
+    script += `        fast_group = VGroup(fast_box, fast_title, fast_desc)\n\n`;
+    script += `        sys2_box = RoundedRectangle(corner_radius=0.15, width=2.9, height=1.9, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=PURPLE_NEON, stroke_width=2.5).shift(RIGHT * 4.6 + DOWN * 1.6)\n`;
+    script += `        sys2_title = Text("🧠 System 2 Deliberation", font_size=12, weight=BOLD, color=PURPLE_NEON).move_to(sys2_box.get_top() + DOWN * 0.35)\n`;
+    script += `        sys2_desc = Text("${opts.system2.toUpperCase().replace(/-/g, ' ')}\\nMulti-Step Reasoning · ~2,500ms", font_size=9, color=LIGHT_GRAY, line_spacing=0.8).next_to(sys2_title, DOWN, buff=0.15)\n`;
+    script += `        sys2_group = VGroup(sys2_box, sys2_title, sys2_desc)\n\n`;
+    script += `        # ── 3. Connectors & Arrows ──\n`;
+    script += `        arrow1 = Arrow(input_box.get_right(), jev_box.get_left(), color=CYAN_NEON, buff=0.1, stroke_width=3)\n`;
+    script += `        arrow2 = Arrow(jev_box.get_right(), gate.get_left(), color=ORANGE_NEON, buff=0.1, stroke_width=3)\n`;
+    script += `        arrow_yes = Arrow(gate.get_top(), fast_box.get_left(), color=GREEN_NEON, path_arc=-0.4, buff=0.1, stroke_width=3)\n`;
+    script += `        arrow_no = Arrow(gate.get_bottom(), sys2_box.get_left(), color=PURPLE_NEON, path_arc=0.4, buff=0.1, stroke_width=3)\n\n`;
+    script += `        self.play(FadeIn(input_group), FadeIn(jev_group), GrowArrow(arrow1), GrowArrow(arrow2), FadeIn(gate_group), run_time=1.5)\n`;
+    script += `        self.play(GrowArrow(arrow_yes), FadeIn(fast_group), GrowArrow(arrow_no), FadeIn(sys2_group), run_time=1.2)\n\n`;
+    script += `        # ── 4. Particle Animation: 78ms Reflex Path ──\n`;
+    script += `        packet = Dot(radius=0.12, color=GREEN_NEON).move_to(input_box.get_center())\n`;
+    script += `        self.play(FadeIn(packet), packet.animate.move_to(jev_box.get_center()), run_time=0.7)\n`;
+    script += `        self.play(Flash(jev_box, color=ORANGE_NEON, flash_radius=1.6), run_time=0.4)\n`;
+    script += `        self.play(packet.animate.move_to(gate.get_center()), run_time=0.5)\n`;
+    script += `        self.play(Flash(gate, color=GREEN_NEON), MoveAlongPath(packet, arrow_yes), run_time=0.8)\n`;
+    script += `        self.play(Flash(fast_box, color=GREEN_NEON, flash_radius=1.5), FadeOut(packet), run_time=0.6)\n\n`;
+    script += `        # ── 5. ROI Banner ──\n`;
+    script += `        banner = RoundedRectangle(corner_radius=0.15, width=9.6, height=0.75, fill_color="#0F172A", fill_opacity=0.95, stroke_color=AMBER_NEON, stroke_width=1.5).to_edge(DOWN, buff=0.25)\n`;
+    script += `        banner_text = Text("⚡ 36x Latency Reduction (78ms vs 2,840ms)   |   💰 99.38% FinOps Cost Savings", font_size=11, weight=BOLD, color=WHITE).move_to(banner)\n`;
+    script += `        self.play(FadeIn(banner), FadeIn(banner_text), run_time=0.8)\n`;
+    script += `        self.wait(2.0)\n`;
+    return script;
+  }
+
   function compileConfigs() {
     const opts = getSelectedOptions();
 
@@ -588,7 +663,10 @@ function initJevSystem1Studio() {
     // 4. Kubernetes Sidecar
     compiledCode.jev_k8s = compileKubernetesSidecar(opts);
 
-    // 5. Mermaid Architecture
+    // 5. 3Blue1Brown / Manim Animation Script
+    compiledCode.jev_manim = compileManimScript(opts);
+
+    // 6. Mermaid Architecture
     compiledCode.jev_flow = compileMermaidFlow(opts);
 
     updateViewportContent();
@@ -601,7 +679,12 @@ function initJevSystem1Studio() {
       elements.outputBox.classList.add('hidden');
       if (elements.mermaidContainer) {
         elements.mermaidContainer.classList.remove('hidden');
-        elements.mermaidContainer.innerHTML = `<div class="mermaid">${compiledCode.jev_flow}</div>`;
+        elements.mermaidContainer.innerHTML = `
+          <div class="flex flex-col items-center gap-4 w-full">
+            <img src="jev_architecture_flow.png" alt="TypeSafe AI Jev Dual-Process Cognitive Architecture" class="rounded-xl border border-slate-700 shadow-2xl max-w-full" style="max-height: 280px;" />
+            <div class="mermaid w-full">${compiledCode.jev_flow}</div>
+          </div>
+        `;
         if (window.mermaid) {
           try {
             window.mermaid.run({ nodes: elements.mermaidContainer.querySelectorAll('.mermaid') });
@@ -620,6 +703,7 @@ function initJevSystem1Studio() {
       if (activeTab === 'jev_ts') filename = 'system1_router.ts';
       if (activeTab === 'jev_graph') filename = 'hybrid_agent_graph.py';
       if (activeTab === 'jev_k8s') filename = 'k8s-jev-sidecar.yaml';
+      if (activeTab === 'jev_manim') filename = 'manim_system1_flow.py';
       if (elements.downloadInput) elements.downloadInput.value = filename;
     }
   }
@@ -869,7 +953,7 @@ function initJevSystem1Studio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['jev_py', 'jev_ts', 'jev_graph', 'jev_k8s', 'jev_flow'],
+    ['jev_py', 'jev_ts', 'jev_graph', 'jev_k8s', 'jev_manim', 'jev_flow'],
     'jev_py',
     { outputBox: elements.outputBox },
     (tabName) => {
