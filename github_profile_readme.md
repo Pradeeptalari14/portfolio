@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://talaripradeep.info" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio%20Website-292_Studios-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+    <img src="https://img.shields.io/badge/Portfolio%20Website-296_Studios-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
   </a>
   &nbsp;
   <a href="https://linkedin.com/in/pradeep-talari" target="_blank">
@@ -42,19 +42,22 @@
 Senior **AI Infrastructure & Platform Engineer** with **6+ years of enterprise experience** architecting, scaling, and automating mission-critical cloud and AI infrastructure across AWS, Azure, and GCP. Specializing in:
 
 - 🧠 **Autonomous Multi-Agent AI Platforms**: Production LangGraph, CrewAI, AutoGen, and semantic caching graphs with strict sub-second P95 latencies.
-- ⚡ **LLMOps & High-Throughput Model Serving**: Distributed vLLM, LiteLLM, Ollama, and Triton inference clusters on GPU-accelerated Kubernetes (NVIDIA A100/H100/L4).
+- ⚡ **LLMOps & High-Throughput Model Serving**: Distributed vLLM, SGLang, LiteLLM, and Triton inference clusters on GPU-accelerated Kubernetes (NVIDIA A100/H100/L4).
 - ☸️ **Cloud-Native Kubernetes & Platform Engineering**: Multi-region EKS/AKS clusters, Karpenter intelligent autoscaling, KEDA event-driven scaling, and Cilium eBPF zero-trust networking.
 - 🏗️ **Enterprise IaC & GitOps Automation**: Production-scale Terraform & Crossplane modules, HashiCorp Vault secrets lifecycle, Atlantis pull-request automation, and ArgoCD continuous delivery.
 - 📊 **Full-Stack MELT SRE Observability**: End-to-end telemetry engineering with OpenTelemetry, Prometheus federation, Grafana Loki, Tempo distributed tracing, and automated self-healing runbooks.
 
 ---
 
-## 🚀 Live Interactive Simulators & 293 Developer Studios
+## 🚀 Live Interactive Simulators & 296 Developer Studios
 
-The entire engineering ecosystem is backed by an open-source hub of **293 Interactive Developer Studios & SRE Simulators** built into the portfolio:
+The entire engineering ecosystem is backed by an open-source hub of **296 Interactive Developer Studios & SRE Simulators** built into the portfolio:
 
 | Interactive Tool / Center | What You Can Explore & Simulate | Launch Live |
 | :--- | :--- | :---: |
+| ⚡ **SGLang RadixAttention Studio** | Radix Tree KV-cache sharing across hierarchical agent prompts for 5.1x throughput | [**Launch**](https://talaripradeep.info/tools/sglang-radix-attention/) |
+| 🔀 **DeepSeek-V3 MoE & DualPipe Studio** | 256 routed experts + 1 shared expert, DualPipe forward/backward communication overlap | [**Launch**](https://talaripradeep.info/tools/deepseek-v3-moe/) |
+| 💻 **WebGPU In-Browser Small LM Studio** | 100% client-side zero-server SmolLM2/Phi-3.5 inference with WebGPU WGSL compute shaders | [**Launch**](https://talaripradeep.info/tools/webgpu-browser-slm/) |
 | ⚡ **DeepSeek-R1 Speculative Decoding Studio** | 3.2x reasoning speedup with lightweight Qwen-2.5-Coder drafting & parallel verification | [**Launch**](https://talaripradeep.info/tools/deepseek-speculative-decoding/) |
 | ⚡ **TypeSafe Jev: System 1 AI Studio** | Sub-100ms non-autoregressive reflex engine, RLCD calibration & System 2 fallback | [**Launch**](https://talaripradeep.info/tools/jev-system1/) |
 | 🕸️ **Knowledge Graph & GraphRAG Studio** | Zero-shot GLiNER extraction, NetworkX topology & Neo4j Cypher constraints | [**Launch**](https://talaripradeep.info/tools/knowledge-graph/) |
@@ -64,7 +67,7 @@ The entire engineering ecosystem is backed by an open-source hub of **293 Intera
 | 🎬 **Programmatic Manim Video Generator** | Auto-generates runnable 3Blue1Brown/Manim 4K video Python scripts (`manim_flow.py`) | [**Explore**](https://talaripradeep.info/tools/) |
 | 💥 **SRE Production Incident Simulator** | Real-world PagerDuty outage drills, OOM troubleshooting, and automated failover | [**Launch**](https://talaripradeep.info/incident/) |
 | 💰 **Cloud FinOps Rightsizing Center** | Live multi-cloud AWS cost calculator, idle resource reclamation & Karpenter ROI | [**Launch**](https://talaripradeep.info/finops/) |
-| 🛠️ **293 Developer Studios Hub** | Unified console of 293 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
+| 🛠️ **296 Developer Studios Hub** | Unified console of 296 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
 
 ---
 

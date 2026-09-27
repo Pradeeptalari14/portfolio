@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGLang RadixAttention & Prefix Caching Studio | SRE & AI Engineering</title>
+  <meta name="description" content="Simulate SGLang RadixAttention dynamic prefix caching for multi-turn agent chats and shared prompt KV-cache reuse with up to 5.1x throughput speedup." />
+  <link rel="stylesheet" href="../../src/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            }
+          }
+        }
+      };
+    }
+  </script>
+</head>
+<body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#0B0F19]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../" class="text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          SRE & AI Architecture Platform
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-800/60 text-cyan-300">
+          ⚡ SGLang RadixAttention Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/Pradeeptalari14/tp-sglang-radix-attention" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-cyan-400 transition flex items-center gap-1.5 border border-slate-800 hover:border-slate-700 bg-slate-900 px-3 py-1.5 rounded-lg">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          tp-sglang-radix-attention
+        </a>
+        <a href="../../tools/" class="text-xs text-slate-400 hover:text-white transition">All Studios →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <div class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-900/40 text-cyan-300 border border-cyan-700/50">Radix Tree KV Cache</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-900/40 text-purple-300 border border-purple-700/50">SGLang Runtime</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-900/40 text-emerald-300 border border-emerald-700/50">5.1x High Throughput</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-700/50">🎬 3Blue1Brown Manim</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">
+        SGLang RadixAttention & Prefix-Caching Studio
+      </h1>
+      <p class="text-slate-400 mt-2 text-sm max-w-3xl">
+        Simulate dynamic Radix Tree KV-cache sharing across multi-turn agent conversations, few-shot prompt templates, and complex reasoning trees. Reuses token attention states to eliminate redundant GPU computation.
+      </p>
+    </div>
+
+    <!-- Architecture Visual Card -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 mb-8">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-cyan-400 mb-3 flex items-center gap-2">
+        <span>🏛️</span> Architecture Flow Diagram
+      </h2>
+      <img src="sglang_architecture_flow.png" alt="SGLang RadixAttention Architecture Diagram" class="w-full rounded-lg border border-slate-800 shadow-2xl" />
+    </div>
+
+    <!-- Interactive Simulation Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5">
+        <h3 class="text-base font-semibold text-white mb-3">Radix Cache Parameters</h3>
+        <div class="space-y-4 text-xs">
+          <div>
+            <label class="block text-slate-400 mb-1">Prompt Pattern:</label>
+            <select id="promptSelect" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-slate-200">
+              <option value="system_chat">Multi-Turn Agent (Shared 1,200 token System Prompt)</option>
+              <option value="few_shot">Few-Shot In-Context Examples (850 tokens)</option>
+              <option value="branching_tree">Tree-of-Thoughts Reasoning (Branched Hypotheses)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Max Cache Pool (Tokens):</label>
+            <input type="range" id="cachePool" min="32768" max="262144" step="16384" value="131072" class="w-full accent-cyan-400" />
+            <span id="poolVal" class="text-cyan-400 font-mono">131,072 tokens</span>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">LRU Eviction Policy:</label>
+            <span class="inline-block px-2 py-1 bg-slate-800 rounded text-slate-300 font-mono">Recursive Leaf Eviction</span>
+          </div>
+          <button id="runSimBtn" class="w-full py-2.5 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 font-semibold text-white rounded-lg transition shadow-lg shadow-cyan-500/20">
+            ⚡ Evaluate Radix Cache Match
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 bg-slate-900/80 border border-slate-800 rounded-xl p-5 flex flex-col">
+        <h3 class="text-base font-semibold text-white mb-3 flex items-center justify-between">
+          <span>Radix Tree Visualizer & Metrics</span>
+          <span id="speedupBadge" class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">Speedup: 4.8x</span>
+        </h3>
+        <div id="terminal" class="bg-black/80 rounded-lg p-4 font-mono text-xs text-slate-300 flex-1 overflow-y-auto space-y-1.5 border border-slate-800 min-h-[220px]">
+          <div class="text-cyan-400">=== SGLang RadixAttention Prefix Cache Engine Initialized ===</div>
+          <div class="text-slate-500">[TREE] Root node initialized. Capacity: 131,072 tokens.</div>
+          <div class="text-emerald-400">[HIT] Matched 1,200 / 1,450 prompt tokens in Radix cache branch.</div>
+          <div class="text-cyan-300">[EXEC] TTFT: 14.2ms (Zero recompute for prefix). Latency saved: 82.7%.</div>
+          <div class="text-slate-400">[CACHE] Inserted 250 novel continuation tokens to leaf node #4.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const runBtn = document.getElementById('runSimBtn');
+    const term = document.getElementById('terminal');
+    const speedBadge = document.getElementById('speedupBadge');
+
+    runBtn.addEventListener('click', () => {
+      const p = document.getElementById('promptSelect').value;
+      let matched = p === 'system_chat' ? 1200 : (p === 'few_shot' ? 850 : 2100);
+      let total = matched + 180;
+      let rate = ((matched / total) * 100).toFixed(1);
+      let speed = (1 + (matched / total) * 4.2).toFixed(1);
+
+      speedBadge.textContent = `Speedup: ${speed}x`;
+      const time = new Date().toLocaleTimeString();
+      term.innerHTML += `
+        <div class="text-purple-400 mt-2">[${time}] Processing new request with pattern: <b>${p}</b></div>
+        <div class="text-emerald-400">  ✓ Radix Prefix Hit: ${matched} / ${total} tokens (${rate}%)</div>
+        <div class="text-cyan-300">  ✓ TTFT: ${(80 * (1 - matched/total) + 12).toFixed(1)}ms | Effective Speedup: <b>${speed}x</b></div>
+        <div class="text-slate-400">  ✓ Branch updated. No GPU memory fragmentation.</div>
+      `;
+      term.scrollTop = term.scrollHeight;
+    });
+  </script>
+</body>
+</html>
