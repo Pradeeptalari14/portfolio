@@ -3502,5 +3502,17 @@
     "tag": "prompt_caching.py",
     "link": "prompt-caching/",
     "repository": "Pradeeptalari14/tp-prompt-caching"
+  },
+  {
+    "title": "DeepSeek-R1 Speculative Decoding & Reasoning Studio",
+    "desc": "Orchestrate DeepSeek-R1 speculative decoding pipelines. Configure lightweight draft models (Qwen-2.5-Coder), parallel token verification, 3.2x latency speedup, and 3Blue1Brown/Manim programmatic video animation.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "speculative_engine.py",
+    "link": "deepseek-speculative-decoding/",
+    "repository": "Pradeeptalari14/tp-deepseek-speculative-decoding"
   }
 ]
