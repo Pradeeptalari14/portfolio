@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://talaripradeep.info" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio%20Website-291_Studios-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+    <img src="https://img.shields.io/badge/Portfolio%20Website-292_Studios-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
   </a>
   &nbsp;
   <a href="https://linkedin.com/in/pradeep-talari" target="_blank">
@@ -49,18 +49,19 @@ Senior **AI Infrastructure & Platform Engineer** with **6+ years of enterprise e
 
 ---
 
-## 🚀 Live Interactive Simulators & 291 Developer Studios
+## 🚀 Live Interactive Simulators & 292 Developer Studios
 
-The entire engineering ecosystem is backed by an open-source hub of **291 Interactive Developer Studios & SRE Simulators** built into the portfolio:
+The entire engineering ecosystem is backed by an open-source hub of **292 Interactive Developer Studios & SRE Simulators** built into the portfolio:
 
 | Interactive Tool / Center | What You Can Explore & Simulate | Launch Live |
 | :--- | :--- | :---: |
+| ⚡ **TypeSafe Jev: System 1 AI Studio** | Sub-100ms non-autoregressive reflex engine, RLCD calibration & System 2 fallback | [**Launch**](https://talaripradeep.info/tools/jev-system1/) |
 | 🗺️ **SRE Production Topology Flow** | In-browser vector packet flows, node inspector HUD, and chaos fault injection | [**Launch**](https://talaripradeep.info/architecture/) |
 | 🎬 **Programmatic Manim Video Generator** | Auto-generates runnable 3Blue1Brown/Manim 4K video Python scripts (`manim_flow.py`) | [**Explore**](https://talaripradeep.info/tools/) |
 | 💥 **SRE Production Incident Simulator** | Real-world PagerDuty outage drills, OOM troubleshooting, and automated failover | [**Launch**](https://talaripradeep.info/incident/) |
 | 💰 **Cloud FinOps Rightsizing Center** | Live multi-cloud AWS cost calculator, idle resource reclamation & Karpenter ROI | [**Launch**](https://talaripradeep.info/finops/) |
 | 📚 **SRE Interview & Knowledge Vault** | 50+ enterprise architectural scenarios, incident runbooks, and deep-dive question banks | [**Launch**](https://talaripradeep.info/interview/) |
-| 🛠️ **291 Developer Studios Hub** | Unified console of 291 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
+| 🛠️ **292 Developer Studios Hub** | Unified console of 292 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
 
 ---
 
@@ -231,5 +232,5 @@ I am always interested in discussing **AI Infrastructure, Large Language Model O
 </p>
 
 <p align="center">
-  <sub>Architected with Enterprise SRE Standards · 291 Interactive Developer Studios · 99.99% Reliability</sub>
+  <sub>Architected with Enterprise SRE Standards · 292 Interactive Developer Studios · 99.99% Reliability</sub>
 </p>

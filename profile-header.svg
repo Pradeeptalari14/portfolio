@@ -115,6 +115,6 @@
   <!-- Pill 5: Studios -->
   <g transform="translate(672, 172)">
     <rect width="140" height="34" rx="8" fill="url(#pill-grad)" stroke="rgba(244, 63, 94, 0.3)" stroke-width="1" />
-    <text x="70" y="21" text-anchor="middle" class="body-text" font-size="11" font-weight="600" fill="#fda4af">🚀 291 Live Studios</text>
+    <text x="70" y="21" text-anchor="middle" class="body-text" font-size="11" font-weight="600" fill="#fda4af">🚀 292 Live Studios</text>
   </g>
 </svg>
