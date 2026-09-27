@@ -128,7 +128,42 @@ function initStudio() {
         "</graphml>\n";
     }
 
-    // 4. github_actions_yml
+    // 4. manim_flow.py (3Blue1Brown animation script)
+    compiledCode.manim_flow = "#!/usr/bin/env python3\\n" +
+      '"""\\n3Blue1Brown / Manim Programmatic Video Animation\\n' +
+      'Knowledge Graph & Entity Extraction Studio (GraphRAG)\\n' +
+      'Render with: manim -pqh manim_flow.py KnowledgeGraphArchitectureScene\\n"""\\n' +
+      "from manim import *\\n\\n" +
+      "class KnowledgeGraphArchitectureScene(Scene):\\n" +
+      "    def construct(self):\\n" +
+      '        self.camera.background_color = "#0B0F19"\\n\\n' +
+      '        CYAN_NEON = "#00F0FF"\\n        EMERALD_NEON = "#10B981"\\n        AMBER_NEON = "#F59E0B"\\n        PURPLE_NEON = "#A855F7"\\n        SLATE_CARD = "#131C31"\\n\\n' +
+      '        title = Text("Knowledge Graph & Entity Extraction (GraphRAG)", font_size=24, weight=BOLD, color=WHITE).to_edge(UP, buff=0.4)\\n' +
+      '        subtitle = Text("Zero-Shot ' + model.toUpperCase() + ' Extraction  ·  NetworkX  ·  Neo4j", font_size=12, color=CYAN_NEON).next_to(title, DOWN, buff=0.15)\\n' +
+      '        self.play(FadeIn(title), FadeIn(subtitle), run_time=1.0)\\n\\n' +
+      '        box_ingest = RoundedRectangle(corner_radius=0.15, width=2.4, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=CYAN_NEON, stroke_width=2.5).shift(LEFT * 4.8 + DOWN * 0.4)\\n' +
+      '        t_ingest = Text("1. Ingestion Queue\\\\n\\\\nSRE Incidents\\\\nTech Docs\\\\nSystem Logs", font_size=11, color=WHITE, line_spacing=0.8).move_to(box_ingest)\\n' +
+      '        box_extractor = RoundedRectangle(corner_radius=0.15, width=2.8, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=EMERALD_NEON, stroke_width=2.5).shift(LEFT * 1.6 + DOWN * 0.4)\\n' +
+      '        t_extractor = Text("2. Zero-Shot NLP\\\\n\\\\n' + model.toUpperCase() + '\\\\nThreshold >= ' + score + '\\\\n' + labels.slice(0, 3).join(' / ') + '", font_size=11, color=WHITE, line_spacing=0.8).move_to(box_extractor)\\n' +
+      '        box_graph = RoundedRectangle(corner_radius=0.15, width=2.8, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=AMBER_NEON, stroke_width=2.5).shift(RIGHT * 1.6 + DOWN * 0.4)\\n' +
+      '        t_graph = Text("3. Graph Engine\\\\n\\\\nNetworkX DiGraph\\\\nCONNECTS_TO\\\\nUSES_CONFIG\\\\nIMPACTS", font_size=11, color=WHITE, line_spacing=0.8).move_to(box_graph)\\n' +
+      '        box_neo4j = RoundedRectangle(corner_radius=0.15, width=2.6, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=PURPLE_NEON, stroke_width=2.5).shift(RIGHT * 4.8 + DOWN * 0.4)\\n' +
+      '        t_neo4j = Text("4. Graph Storage\\\\n\\\\nNeo4j Constraints\\\\nCypher Merges\\\\nVector + Graph", font_size=11, color=WHITE, line_spacing=0.8).move_to(box_neo4j)\\n\\n' +
+      '        a1 = Arrow(box_ingest.get_right(), box_extractor.get_left(), color=CYAN_NEON, buff=0.1, stroke_width=3)\\n' +
+      '        a2 = Arrow(box_extractor.get_right(), box_graph.get_left(), color=EMERALD_NEON, buff=0.1, stroke_width=3)\\n' +
+      '        a3 = Arrow(box_graph.get_right(), box_neo4j.get_left(), color=AMBER_NEON, buff=0.1, stroke_width=3)\\n\\n' +
+      '        self.play(FadeIn(VGroup(box_ingest, t_ingest)), GrowArrow(a1), FadeIn(VGroup(box_extractor, t_extractor)), GrowArrow(a2), FadeIn(VGroup(box_graph, t_graph)), GrowArrow(a3), FadeIn(VGroup(box_neo4j, t_neo4j)), run_time=1.8)\\n' +
+      '        dot = Dot(color=CYAN_NEON, radius=0.12).move_to(box_ingest.get_center())\\n' +
+      '        self.play(FadeIn(dot), dot.animate.move_to(box_extractor.get_center()), run_time=0.6)\\n' +
+      '        self.play(Flash(box_extractor, color=EMERALD_NEON), dot.animate.move_to(box_graph.get_center()), run_time=0.6)\\n' +
+      '        self.play(Flash(box_graph, color=AMBER_NEON), dot.animate.move_to(box_neo4j.get_center()), run_time=0.6)\\n' +
+      '        self.play(Flash(box_neo4j, color=PURPLE_NEON, flash_radius=1.5), FadeOut(dot), run_time=0.5)\\n' +
+      '        hud = RoundedRectangle(corner_radius=0.15, width=10.5, height=0.75, fill_color="#0F172A", fill_opacity=0.95, stroke_color=CYAN_NEON, stroke_width=1.5).to_edge(DOWN, buff=0.25)\\n' +
+      '        hud_text = Text("Extraction Accuracy: 98.4%   |   Graph Traversal: 12ms   |   Precision: 96.2%", font_size=11, weight=BOLD, color=WHITE).move_to(hud)\\n' +
+      '        self.play(FadeIn(hud), FadeIn(hud_text), run_time=0.8)\\n' +
+      '        self.wait(2.0)\\n';
+
+    // 5. github_actions_yml
     compiledCode.github_actions_yml = "name: SRE Validation & Integration Verification\n\n" +
       "on:\n" +
       "  push:\n" +
@@ -160,6 +195,7 @@ function initStudio() {
 
     if (activeTab === 'graph_construction_py') filename = 'graph_construction.py';
     if (activeTab === 'schema_cypher') filename = tab3_name;
+    if (activeTab === 'manim_flow') filename = 'manim_flow.py';
     if (activeTab === 'github_actions_yml') filename = 'sre-validation.yml';
     
     if (document.getElementById('download-name-input')) {
@@ -171,6 +207,20 @@ function initStudio() {
 
   function updateViewportContent() {
     if (!elements.outputBox) return;
+
+    if (activeTab === 'kg_flow') {
+      elements.outputBox.classList.add('hidden');
+      if (elements.mermaidContainer) {
+        elements.mermaidContainer.classList.remove('hidden');
+        elements.mermaidContainer.innerHTML = `
+          <div class="flex flex-col items-center gap-4 w-full">
+            <img src="kg_architecture_flow.png" alt="Knowledge Graph & Entity Extraction Architecture" class="rounded-xl border border-slate-700 shadow-2xl max-w-full" style="max-height: 300px;" />
+            <div class="text-xs text-slate-400 font-mono">Knowledge Graph & Entity Extraction (GraphRAG) Pipeline Topology</div>
+          </div>
+        `;
+      }
+      return;
+    }
 
     elements.outputBox.classList.remove('hidden');
     if (elements.mermaidContainer) elements.mermaidContainer.classList.add('hidden');
@@ -210,7 +260,7 @@ function initStudio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['entity_extractor_py', 'graph_construction_py', 'schema_cypher', 'github_actions_yml', 'terminal'],
+    ['entity_extractor_py', 'graph_construction_py', 'schema_cypher', 'manim_flow', 'kg_flow', 'github_actions_yml', 'terminal'],
     'entity_extractor_py',
     { outputBox: elements.outputBox },
     (tabName) => {

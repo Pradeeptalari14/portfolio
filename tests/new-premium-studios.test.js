@@ -79,6 +79,12 @@ describe('Knowledge Graph & Entity Extraction Studio', () => {
     expect(outputBox.textContent).toContain('@prefix rdf:');
     expect(outputBox.textContent).toContain('kg:ServiceNode rdf:type kg:Entity');
 
+    // Switch to manim_flow.py animation script
+    window.switchTab('manim_flow');
+    expect(outputBox.textContent).toContain('from manim import *');
+    expect(outputBox.textContent).toContain('class KnowledgeGraphArchitectureScene(Scene):');
+    expect(outputBox.textContent).toContain('manim -pqh manim_flow.py KnowledgeGraphArchitectureScene');
+
     // Switch to github actions workflow
     window.switchTab('github_actions_yml');
     expect(outputBox.textContent).toContain('name: SRE Validation & Integration Verification');
@@ -145,6 +151,12 @@ describe('Vectorless RAG & Sparse Search Studio', () => {
     expect(config.hyperparameters.b).toBe(0.5);
     expect(config.indexing_pipeline.method).toBe('relational_fts');
 
+    // Switch to manim_flow.py animation script
+    window.switchTab('manim_flow');
+    expect(outputBox.textContent).toContain('from manim import *');
+    expect(outputBox.textContent).toContain('class VectorlessRagArchitectureScene(Scene):');
+    expect(outputBox.textContent).toContain('manim -pqh manim_flow.py VectorlessRagArchitectureScene');
+
     // Switch to github actions workflow
     window.switchTab('github_actions_yml');
     expect(outputBox.textContent).toContain('Spin up SQL database container');
@@ -173,6 +185,12 @@ describe('Production Secrets & Rotation Studio', () => {
     expect(outputBox.textContent).toContain('resource "vault_database_secrets_mount" "db"');
     expect(outputBox.textContent).toContain('default_ttl         = 3600');
 
+    // Switch to manim_flow.py animation script
+    window.switchTab('manim_flow');
+    expect(outputBox.textContent).toContain('from manim import *');
+    expect(outputBox.textContent).toContain('class ProductionSecretsArchitectureScene(Scene):');
+    expect(outputBox.textContent).toContain('manim -pqh manim_flow.py ProductionSecretsArchitectureScene');
+
     // Test form controls changes
     const providerSelect = window.document.getElementById('secrets_provider');
     const intervalSelect = window.document.getElementById('rotation_interval');
@@ -189,7 +207,8 @@ describe('Production Secrets & Rotation Studio', () => {
     syncSelect.dispatchEvent(new window.Event('change'));
     pathInput.dispatchEvent(new window.Event('input'));
 
-    // Assert AWS rotation terraform
+    // Switch to Terraform tab and assert AWS rotation terraform
+    window.switchTab('vault_rotation_tf');
     expect(outputBox.textContent).toContain('resource "aws_secretsmanager_secret" "prod_secret"');
     expect(outputBox.textContent).toContain('name = "production/rds-credentials"');
     expect(outputBox.textContent).toContain('automatically_after_days = 30');

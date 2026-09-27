@@ -168,7 +168,42 @@ function initStudio() {
         "    return json.loads(response['SecretString'])\n";
     }
 
-    // 4. github_actions_yml
+    // 4. manim_flow.py (3Blue1Brown animation script)
+    compiledCode.manim_flow = "#!/usr/bin/env python3\\n" +
+      '"""\\n3Blue1Brown / Manim Programmatic Video Animation\\n' +
+      'Production Secrets & Rotation Studio\\n' +
+      'Render with: manim -pqh manim_flow.py ProductionSecretsArchitectureScene\\n"""\\n' +
+      "from manim import *\\n\\n" +
+      "class ProductionSecretsArchitectureScene(Scene):\\n" +
+      "    def construct(self):\\n" +
+      '        self.camera.background_color = "#0B0F19"\\n\\n' +
+      '        CYAN_NEON = "#00F0FF"\\n        AMBER_NEON = "#F59E0B"\\n        EMERALD_NEON = "#10B981"\\n        VIOLET_NEON = "#8B5CF6"\\n        SLATE_CARD = "#131C31"\\n\\n' +
+      '        title = Text("Production Secrets & Automated Rotation Architecture", font_size=23, weight=BOLD, color=WHITE).to_edge(UP, buff=0.4)\\n' +
+      '        subtitle = Text("' + provider.toUpperCase() + ' Engine  ·  ESO Operator  ·  ' + interval + ' Rotation", font_size=12, color=AMBER_NEON).next_to(title, DOWN, buff=0.15)\\n' +
+      '        self.play(FadeIn(title), FadeIn(subtitle), run_time=1.0)\\n\\n' +
+      '        box1 = RoundedRectangle(corner_radius=0.15, width=2.4, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=AMBER_NEON, stroke_width=2.5).shift(LEFT * 4.8 + DOWN * 0.4)\\n' +
+      '        t1 = Text("1. Identity Layer\\\\n\\\\nK8s ServiceAccount\\\\nApp Deployment\\\\nIAM Authenticator", font_size=11, color=WHITE, line_spacing=0.8).move_to(box1)\\n' +
+      '        box2 = RoundedRectangle(corner_radius=0.15, width=2.8, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=VIOLET_NEON, stroke_width=2.5).shift(LEFT * 1.6 + DOWN * 0.4)\\n' +
+      '        t2 = Text("2. Dynamic Engine\\\\n\\\\n' + provider.toUpperCase() + '\\\\nDynamic Leases\\\\nInterval: ' + interval + '", font_size=11, color=WHITE, line_spacing=0.8).move_to(box2)\\n' +
+      '        box3 = RoundedRectangle(corner_radius=0.15, width=2.8, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=CYAN_NEON, stroke_width=2.5).shift(RIGHT * 1.6 + DOWN * 0.4)\\n' +
+      '        t3 = Text("3. Injection Sync\\\\n\\\\nExternal Secrets (' + syncType.toUpperCase() + ')\\\\nSealedSecrets\\\\nSidecar Injector", font_size=11, color=WHITE, line_spacing=0.8).move_to(box3)\\n' +
+      '        box4 = RoundedRectangle(corner_radius=0.15, width=2.6, height=3.0, fill_color=SLATE_CARD, fill_opacity=0.9, stroke_color=EMERALD_NEON, stroke_width=2.5).shift(RIGHT * 4.8 + DOWN * 0.4)\\n' +
+      '        t4 = Text("4. Target Service\\\\n\\\\nPostgreSQL Engine\\\\nShort-Lived Roles\\\\nZero Static Secrets", font_size=11, color=WHITE, line_spacing=0.8).move_to(box4)\\n\\n' +
+      '        a1 = Arrow(box1.get_right(), box2.get_left(), color=AMBER_NEON, buff=0.1, stroke_width=3)\\n' +
+      '        a2 = Arrow(box2.get_right(), box3.get_left(), color=VIOLET_NEON, buff=0.1, stroke_width=3)\\n' +
+      '        a3 = Arrow(box3.get_right(), box4.get_left(), color=CYAN_NEON, buff=0.1, stroke_width=3)\\n\\n' +
+      '        self.play(FadeIn(VGroup(box1, t1)), GrowArrow(a1), FadeIn(VGroup(box2, t2)), GrowArrow(a2), FadeIn(VGroup(box3, t3)), GrowArrow(a3), FadeIn(VGroup(box4, t4)), run_time=1.8)\\n' +
+      '        packet = Dot(color=AMBER_NEON, radius=0.12).move_to(box1.get_center())\\n' +
+      '        self.play(FadeIn(packet), packet.animate.move_to(box2.get_center()), run_time=0.6)\\n' +
+      '        self.play(Flash(box2, color=VIOLET_NEON), packet.animate.move_to(box3.get_center()), run_time=0.6)\\n' +
+      '        self.play(Flash(box3, color=CYAN_NEON), packet.animate.move_to(box4.get_center()), run_time=0.6)\\n' +
+      '        self.play(Flash(box4, color=EMERALD_NEON, flash_radius=1.5), FadeOut(packet), run_time=0.5)\\n' +
+      '        hud = RoundedRectangle(corner_radius=0.15, width=10.5, height=0.75, fill_color="#0F172A", fill_opacity=0.95, stroke_color=AMBER_NEON, stroke_width=1.5).to_edge(DOWN, buff=0.25)\\n' +
+      '        hud_text = Text("Lifespan: ' + interval + ' Ephemeral   |   Lease Revocation: 100%   |   Static Exposure: 0%", font_size=11, weight=BOLD, color=WHITE).move_to(hud)\\n' +
+      '        self.play(FadeIn(hud), FadeIn(hud_text), run_time=0.8)\\n' +
+      '        self.wait(2.0)\\n';
+
+    // 5. github_actions_yml
     compiledCode.github_actions_yml = "name: SRE Validation & Integration Verification\n\n" +
       "on:\n" +
       "  push:\n" +
@@ -196,10 +231,11 @@ function initStudio() {
     const tab1Btn = document.getElementById('tab-vault_rotation_tf');
     if (tab1Btn) tab1Btn.innerHTML = `📊 ${filename}`;
 
-    if (activeTab === 'vault_rotation_tf') activeTab = 'vault_rotation_tf'; // keep binding key
+    if (activeTab === 'vault_rotation_tf') activeTab = 'vault_rotation_tf';
     let downloadName = filename;
     if (activeTab === 'external_secrets_yaml') downloadName = 'external_secrets.yaml';
     if (activeTab === 'credential_retriever_py') downloadName = 'credential_retriever.py';
+    if (activeTab === 'manim_flow') downloadName = 'manim_flow.py';
     if (activeTab === 'github_actions_yml') downloadName = 'sre-validation.yml';
     
     if (document.getElementById('download-name-input')) {
@@ -211,6 +247,20 @@ function initStudio() {
 
   function updateViewportContent(tfFilename) {
     if (!elements.outputBox) return;
+
+    if (activeTab === 'secrets_flow') {
+      elements.outputBox.classList.add('hidden');
+      if (elements.mermaidContainer) {
+        elements.mermaidContainer.classList.remove('hidden');
+        elements.mermaidContainer.innerHTML = `
+          <div class="flex flex-col items-center gap-4 w-full">
+            <img src="production_secrets_flow.png" alt="Production Secrets and Automated Rotation Architecture" class="rounded-xl border border-slate-700 shadow-2xl max-w-full" style="max-height: 300px;" />
+            <div class="text-xs text-slate-400 font-mono">Production Secrets and Automated Rotation Architecture Topology</div>
+          </div>
+        `;
+      }
+      return;
+    }
 
     elements.outputBox.classList.remove('hidden');
     if (elements.mermaidContainer) elements.mermaidContainer.classList.add('hidden');
@@ -250,7 +300,7 @@ function initStudio() {
 
   // Setup tab routing
   window.SreCore.setupStudioTabs(
-    ['vault_rotation_tf', 'external_secrets_yaml', 'credential_retriever_py', 'github_actions_yml', 'terminal'],
+    ['vault_rotation_tf', 'external_secrets_yaml', 'credential_retriever_py', 'manim_flow', 'secrets_flow', 'github_actions_yml', 'terminal'],
     'vault_rotation_tf',
     { outputBox: elements.outputBox },
     (tabName) => {
