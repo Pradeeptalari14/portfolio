@@ -3924,5 +3924,83 @@
     "link": "webgpu-browser-slm/",
     "repository": "Pradeeptalari14/tp-webgpu-browser-slm",
     "id": "webgpu-browser-slm"
+  },
+  {
+    "title": "Continuous eBPF Kernel Profiler & FlameGraph Studio",
+    "desc": "Zero-overhead continuous CPU and memory profiling via Linux kernel eBPF ring buffers. Resolves DWARF frames and tracks off-CPU scheduler contention without application restart.",
+    "category": "observability",
+    "icon": "🔥",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "ebpf_profiler_daemon.py",
+    "link": "ebpf-continuous-profiler/",
+    "repository": "Pradeeptalari14/tp-ebpf-continuous-profiler",
+    "id": "ebpf-continuous-profiler"
+  },
+  {
+    "title": "Anthropic Model Context Protocol (MCP) Multi-Agent Gateway Studio",
+    "desc": "Enterprise Model Context Protocol gateway providing dynamic tool discovery, fine-grained OAuth2/RBAC security gates, and bi-directional SSE streaming across multi-agent fleets.",
+    "category": "ai",
+    "icon": "🔌",
+    "color": "rgb(168, 85, 247)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "mcp_gateway_router.py",
+    "link": "mcp-universal-gateway/",
+    "repository": "Pradeeptalari14/tp-mcp-agentic-bridge",
+    "id": "mcp-universal-gateway"
+  },
+  {
+    "title": "Speculative RAG & Self-Correction Studio",
+    "desc": "Dual-stage Speculative RAG orchestrator: fast 1.5B edge SLM drafts parallel hypotheses verified in a single forward pass by a 70B judge, eliminating hallucinations and slashing TTFT.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(14, 165, 233)",
+    "borderClass": "border-sky-200",
+    "bgClass": "bg-sky-50/10",
+    "tag": "speculative_rag_engine.py",
+    "link": "speculative-rag-pipeline/",
+    "repository": "Pradeeptalari14/tp-speculative-rag-verifier",
+    "id": "speculative-rag-pipeline"
+  },
+  {
+    "title": "Microsoft DeepSpeed ZeRO-3 & NVMe Offload Studio",
+    "desc": "Extreme-scale distributed model training engine partitioning optimizer states, gradients, and parameters across multi-node clusters with ZeRO-Infinity NVMe asynchronous prefetching.",
+    "category": "cloud",
+    "icon": "💾",
+    "color": "rgb(16, 185, 129)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "zero3_offload_engine.py",
+    "link": "deepspeed-zero-offload/",
+    "repository": "Pradeeptalari14/tp-deepspeed-zero-offload",
+    "id": "deepspeed-zero-offload"
+  },
+  {
+    "title": "Confidential AI & NVIDIA H100 TEE Attestation Studio",
+    "desc": "Hardware-enforced confidential computing with NVIDIA Hopper H100 GPU TEE, AMD SEV-SNP enclaves, SPDM cryptographic remote attestation, and encrypted VRAM weight protection.",
+    "category": "automation",
+    "icon": "🛡️",
+    "color": "rgb(245, 158, 11)",
+    "borderClass": "border-amber-200",
+    "bgClass": "bg-amber-50/10",
+    "tag": "tee_attestation_verifier.py",
+    "link": "confidential-ai-tee/",
+    "repository": "Pradeeptalari14/tp-confidential-ai-tee",
+    "id": "confidential-ai-tee"
+  },
+  {
+    "title": "Quantum-Classical Hybrid RAG & Embedding Studio",
+    "desc": "Quantum Kernel Feature Maps and Variational Quantum Classifiers (VQC) in Hilbert space, eliminating classical cosine saturation and enhancing semantic discrimination.",
+    "category": "ai",
+    "icon": "⚛️",
+    "color": "rgb(99, 102, 241)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "quantum_kernel_rag.py",
+    "link": "quantum-hybrid-rag/",
+    "repository": "Pradeeptalari14/tp-quantum-hybrid-rag",
+    "id": "quantum-hybrid-rag"
   }
 ]

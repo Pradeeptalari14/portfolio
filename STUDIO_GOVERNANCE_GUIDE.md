@@ -1,12 +1,12 @@
 # Platform Engineering Catalog: Universal Studio Governance & Usage Guide
 
-This document serves as the authoritative governance framework, repository registry, and usage guide for all **302 Interactive Developer Studios** in the platform engineering catalog.
+This document serves as the authoritative governance framework, repository registry, and usage guide for all **308 Interactive Developer Studios** in the platform engineering catalog.
 
 ---
 
 ## 1. Studio Overview
 
-The Developer Studio platform is a centralized collection of 302 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
+The Developer Studio platform is a centralized collection of 308 interactive engineering utilities designed to eliminate developer friction, automate boilerplate generation, and prevent configuration drift across all lifecycle stages. 
 
 ### Core Taxonomy & Categories
 The catalog is structured into six strategic functional divisions:
@@ -88,7 +88,7 @@ Do **NOT** use the Studio Catalog in these 20+ anti-patterns:
 
 ## 5. Repository Mapping
 
-The following catalog registers all **276 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
+The following catalog registers all **308 Developer Studios** to their team owners, repositories, branch policies, core dependencies, and related utilities:
 
 | # | Studio Name | Directory Link | Target Code Repository | Team Owner | Branch | Core Dependencies | Related Studio(s) |
 |---|---|---|---|---|---|---|---|
@@ -259,7 +259,7 @@ The catalog integrates seamlessly across all 11 phases of the Software Developme
 
 ## 7. Input Requirements
 
-Across the 91 Developer Studios, inputs are standardized to enforce reproducibility:
+Across all 308 Developer Studios, inputs are standardized to enforce reproducibility:
 1. **Target Config Selection:** Dropdown menus representing stack configurations (e.g. S3 + SQS vs All Core Services).
 2. **Resource Naming:** Validation strings ensuring standard syntax rules (lowercase alphanumeric for bucket names, database names).
 3. **Toggle Controls:** Boolean checkboxes mapping optional components (e.g., caching layers like Redis, queue creation scripts).

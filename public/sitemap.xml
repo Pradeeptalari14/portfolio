@@ -111,7 +111,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- All 302 Interactive Developer Studios & SRE Tools -->
+  <!-- All 308 Interactive Developer Studios & SRE Tools -->
   <url>
     <loc>https://talaripradeep.info/tools/ai/</loc>
     <lastmod>2026-09-28</lastmod>
@@ -1920,6 +1920,42 @@
   </url>
   <url>
     <loc>https://talaripradeep.info/tools/tensorrt-llm-engine/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/ebpf-continuous-profiler/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/mcp-universal-gateway/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/speculative-rag-pipeline/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/deepspeed-zero-offload/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/confidential-ai-tee/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/quantum-hybrid-rag/</loc>
     <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
