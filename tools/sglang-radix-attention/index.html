@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SGLang RadixAttention & Prefix Caching Studio | SRE & AI Engineering</title>
   <meta name="description" content="Orchestrate SGLang RadixTree KV-cache prefix reuse, hierarchical agent multi-turn prompt caching, 5.1x throughput speedup, and 3Blue1Brown/Manim programmatic video animation." />
-  <link rel="stylesheet" href="../../src/css/style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -30,6 +31,54 @@
       };
     }
   </script>
+  <style>
+    .tabs-scrollable {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease-in-out !important;
+      line-height: 1.25 !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: #475569 !important;
+    }
+    .tab-btn.active {
+      color: #38bdf8 !important;
+      border-bottom-color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
 </head>
 <body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
 
@@ -201,14 +250,14 @@
               </div>
             </div>
             
-            <div class="flex bg-slate-950 px-2 overflow-x-auto">
-              <button onclick="switchTab('radix_engine_py')" id="tab-radix_engine_py" class="tab-btn active">radix_engine.py</button>
-              <button onclick="switchTab('radix_tree_ts')" id="tab-radix_tree_ts" class="tab-btn">radix_tree.ts</button>
-              <button onclick="switchTab('k8s_sglang_yaml')" id="tab-k8s_sglang_yaml" class="tab-btn text-teal-400">k8s-sglang.yaml</button>
-              <button onclick="switchTab('manim_flow')" id="tab-manim_flow" class="tab-btn text-cyan-400">🎬 manim_flow.py</button>
-              <button onclick="switchTab('architecture_flow')" id="tab-architecture_flow" class="tab-btn text-orange-400">📊 Architecture Flow</button>
-              <button onclick="switchTab('sre_validation_yml')" id="tab-sre_validation_yml" class="tab-btn text-indigo-400">⚙️ validation.yml</button>
-              <button onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400">📟 SRE Terminal</button>
+            <div class="tabs-scrollable flex items-center bg-slate-950 px-2 overflow-x-auto border-t border-slate-800/60 gap-1">
+              <button type="button" onclick="switchTab('radix_engine_py')" id="tab-radix_engine_py" class="tab-btn active"><span>radix_engine.py</span></button>
+              <button type="button" onclick="switchTab('radix_tree_ts')" id="tab-radix_tree_ts" class="tab-btn"><span>radix_tree.ts</span></button>
+              <button type="button" onclick="switchTab('k8s_sglang_yaml')" id="tab-k8s_sglang_yaml" class="tab-btn text-teal-400"><span>k8s-sglang.yaml</span></button>
+              <button type="button" onclick="switchTab('manim_flow')" id="tab-manim_flow" class="tab-btn text-cyan-400"><span>🎬</span> <span>manim_flow.py</span></button>
+              <button type="button" onclick="switchTab('architecture_flow')" id="tab-architecture_flow" class="tab-btn text-orange-400"><span>📊</span> <span>Architecture Flow</span></button>
+              <button type="button" onclick="switchTab('sre_validation_yml')" id="tab-sre_validation_yml" class="tab-btn text-indigo-400"><span>⚙️</span> <span>validation.yml</span></button>
+              <button type="button" onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400"><span>📟</span> <span>SRE Terminal</span></button>
             </div>
           </div>
 

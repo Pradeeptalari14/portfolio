@@ -300,9 +300,9 @@ tmp/
 
     const btn = document.createElement('button');
     btn.id = 'tab-webhooks';
-    btn.className = 'tab-btn';
+    btn.className = 'tab-btn text-rose-400';
     btn.type = 'button';
-    btn.innerHTML = '🚨 webhooks.json';
+    btn.innerHTML = '<span>🚨</span> <span>webhooks.json</span>';
 
     btn.onclick = () => {
       // Deactivate all other tabs

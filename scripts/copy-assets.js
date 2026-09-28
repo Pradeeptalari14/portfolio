@@ -54,3 +54,29 @@ function syncFile(srcRel, destRel) {
 syncFile('tools/shared-tools.js', 'public/tools/shared-tools.js');
 syncFile('tools/shared-tools.css', 'public/tools/shared-tools.css');
 
+// Sync all architecture flow diagrams to public and dist
+const toolDirs = [
+  'sglang-radix-attention',
+  'deepseek-v3-moe',
+  'webgpu-browser-slm',
+  'deepseek-speculative-decoding',
+  'jev-system1',
+  'knowledge-graph',
+  'production-secrets'
+];
+
+toolDirs.forEach(tool => {
+  const dirPath = path.join(rootDir, 'tools', tool);
+  if (fs.existsSync(dirPath)) {
+    const files = fs.readdirSync(dirPath);
+    files.forEach(file => {
+      if (file.endsWith('.png') || file.endsWith('.jpg')) {
+        syncFile(`tools/${tool}/${file}`, `public/tools/${tool}/${file}`);
+        copyFile(`tools/${tool}/${file}`, `tools/${tool}/${file}`);
+        copyFile(`tools/${tool}/${file}`, file);
+      }
+    });
+  }
+});
+
+

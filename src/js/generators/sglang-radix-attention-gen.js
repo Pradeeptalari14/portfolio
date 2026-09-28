@@ -320,8 +320,14 @@ jobs:
       if (elements.mermaidContainer) {
         elements.mermaidContainer.classList.remove('hidden');
         elements.mermaidContainer.innerHTML = `
-          <div class="flex flex-col items-center gap-4 w-full">
-            <img src="sglang_architecture_flow.png" alt="SGLang RadixAttention Architecture Diagram" class="rounded-xl border border-slate-700 shadow-2xl max-w-full" style="max-height: 340px;" />
+          <div class="flex flex-col items-center gap-4 w-full py-4 text-center">
+            <img 
+              src="sglang_architecture_flow.png" 
+              onerror="if (this.dataset.tried !== '1') { this.dataset.tried = '1'; this.src = '/tools/sglang-radix-attention/sglang_architecture_flow.png'; } else if (this.dataset.tried !== '2') { this.dataset.tried = '2'; this.src = '/sglang_architecture_flow.png'; }" 
+              alt="SGLang RadixAttention Architecture Diagram" 
+              class="rounded-xl border border-slate-700 shadow-2xl max-w-full object-contain" 
+              style="max-height: 420px;" 
+            />
             <div class="text-xs text-slate-400 font-mono">SGLang Radix Tree Prefix Caching & Automatic Subtree Reuse Topology</div>
           </div>
         `;

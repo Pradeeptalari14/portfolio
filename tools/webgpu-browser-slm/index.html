@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WebGPU In-Browser Small LM Studio | SRE & AI Engineering</title>
   <meta name="description" content="Execute 100% client-side zero-server Small Language Models (SmolLM2/Phi-3.5) directly inside web browsers using native WebGPU WGSL compute shaders and air-gapped privacy." />
-  <link rel="stylesheet" href="../../src/css/style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -30,6 +31,54 @@
       };
     }
   </script>
+  <style>
+    .tabs-scrollable {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease-in-out !important;
+      line-height: 1.25 !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: #475569 !important;
+    }
+    .tab-btn.active {
+      color: #2dd4bf !important;
+      border-bottom-color: #2dd4bf !important;
+      background: rgba(45, 212, 191, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
 </head>
 <body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-teal-500 selection:text-white">
 
@@ -190,14 +239,14 @@
               </div>
             </div>
             
-            <div class="flex bg-slate-950 px-2 overflow-x-auto">
-              <button onclick="switchTab('webgpu_engine_ts')" id="tab-webgpu_engine_ts" class="tab-btn active">webgpu_engine.ts</button>
-              <button onclick="switchTab('server_fallback_py')" id="tab-server_fallback_py" class="tab-btn">server_fallback.py</button>
-              <button onclick="switchTab('k8s_webgpu_client_yaml')" id="tab-k8s_webgpu_client_yaml" class="tab-btn text-teal-400">k8s-cdn.yaml</button>
-              <button onclick="switchTab('manim_flow')" id="tab-manim_flow" class="tab-btn text-cyan-400">🎬 manim_flow.py</button>
-              <button onclick="switchTab('architecture_flow')" id="tab-architecture_flow" class="tab-btn text-orange-400">📊 Architecture Flow</button>
-              <button onclick="switchTab('sre_validation_yml')" id="tab-sre_validation_yml" class="tab-btn text-indigo-400">⚙️ validation.yml</button>
-              <button onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400">📟 SRE Terminal</button>
+            <div class="tabs-scrollable flex items-center bg-slate-950 px-2 overflow-x-auto border-t border-slate-800/60 gap-1">
+              <button type="button" onclick="switchTab('webgpu_engine_ts')" id="tab-webgpu_engine_ts" class="tab-btn active"><span>webgpu_engine.ts</span></button>
+              <button type="button" onclick="switchTab('server_fallback_py')" id="tab-server_fallback_py" class="tab-btn"><span>server_fallback.py</span></button>
+              <button type="button" onclick="switchTab('k8s_webgpu_client_yaml')" id="tab-k8s_webgpu_client_yaml" class="tab-btn text-teal-400"><span>k8s-cdn.yaml</span></button>
+              <button type="button" onclick="switchTab('manim_flow')" id="tab-manim_flow" class="tab-btn text-cyan-400"><span>🎬</span> <span>manim_flow.py</span></button>
+              <button type="button" onclick="switchTab('architecture_flow')" id="tab-architecture_flow" class="tab-btn text-orange-400"><span>📊</span> <span>Architecture Flow</span></button>
+              <button type="button" onclick="switchTab('sre_validation_yml')" id="tab-sre_validation_yml" class="tab-btn text-indigo-400"><span>⚙️</span> <span>validation.yml</span></button>
+              <button type="button" onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400"><span>📟</span> <span>SRE Terminal</span></button>
             </div>
           </div>
 
