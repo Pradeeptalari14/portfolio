@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BitNet 1.58-bit Ternary LLM Inference Studio | SRE & AI Engineering</title>
+  <meta name="description" content="Simulate Microsoft BitNet b1.58 ternary weights {-1, 0, +1} replacing FP16 matrix multiplications with pure integer additions, delivering 71% DRAM energy reduction and zero GPU requirement." />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: {
+                850: '#131b2e',
+                950: '#070b14',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <style>
+    .tabs-scrollable {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease-in-out !important;
+      line-height: 1.25 !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: #475569 !important;
+    }
+    .tab-btn.active {
+      color: #38bdf8 !important;
+      border-bottom-color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
+</head>
+<body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#0B0F19]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../" class="text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          SRE & AI Architecture Platform
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-orange-950/80 border border-orange-800/60 text-orange-300">
+          🧮 BitNet 1.58-bit Ternary LLM Inference Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/Pradeeptalari14/tp-bitnet-ternary-inference" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-orange-400 transition flex items-center gap-1.5 border border-slate-800 hover:border-slate-700 bg-slate-900 px-3 py-1.5 rounded-lg">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          tp-bitnet-ternary-inference
+        </a>
+        <a href="../../tools/" class="text-xs text-slate-400 hover:text-white transition">All Studios →</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <!-- Title Banner -->
+    <div class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-orange-900/40 text-orange-300 border border-orange-700/50">1.58-Bit Ternary</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-orange-900/40 text-orange-300 border border-orange-700/50">BitLinear GEMM-Free</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-orange-900/40 text-orange-300 border border-orange-700/50">71% Energy Saved</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-orange-900/40 text-orange-300 border border-orange-700/50">🎬 3Blue1Brown Manim</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">
+        BitNet 1.58-bit Ternary LLM Inference Studio
+      </h1>
+      <p class="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
+        Simulate Microsoft BitNet b1.58 ternary weights {-1, 0, +1} replacing FP16 matrix multiplications with pure integer additions, delivering 71% DRAM energy reduction and zero GPU requirement.
+      </p>
+    </div>
+
+    <!-- Live Telemetry HUD -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">DRAM Energy Saved</span>
+        <div class="text-2xl font-black text-orange-400 font-mono mt-1" id="hud-energy">71.2%</div>
+        <span class="text-[10px] text-slate-500 mt-1">Zero Multipliers</span>
+      </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Memory Bandwidth</span>
+        <div class="text-2xl font-black text-orange-400 font-mono mt-1" id="hud-bandwidth">8.9x</div>
+        <span class="text-[10px] text-slate-500 mt-1">Throughput Efficiency</span>
+      </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Required GPUs</span>
+        <div class="text-2xl font-black text-orange-400 font-mono mt-1" id="hud-gpus">0 GPUs</div>
+        <span class="text-[10px] text-slate-500 mt-1">Pure CPU SIMD</span>
+      </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">VRAM Footprint</span>
+        <div class="text-2xl font-black text-orange-400 font-mono mt-1" id="hud-footprint">1.8 GB</div>
+        <span class="text-[10px] text-slate-500 mt-1">vs 14 GB Baseline</span>
+      </div>
+    </div>
+
+    <!-- Main Studio Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- LEFT: Control Parameters -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-6 shadow-xl">
+          <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+            System Engine Parameters
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <label for="workload_profile" class="block text-xs font-semibold text-slate-300 mb-1">Target Production Workload</label>
+              <select id="workload_profile" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-orange-500 focus:outline-none">
+                <option value="Enterprise High-Concurrency API" selected>Enterprise High-Concurrency API (Tier 1)</option>
+                <option value="Long-Context Agent Reasoning">Long-Context Agent Reasoning Chain</option>
+                <option value="Air-Gapped Edge Cluster">Air-Gapped Edge Cluster</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="precision_select" class="block text-xs font-semibold text-slate-300 mb-1">Execution Precision</label>
+                <select id="precision_select" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-orange-500 focus:outline-none">
+                  <option value="FP8 Tensor Core" selected>FP8 Tensor Core</option>
+                  <option value="BF16 Native">BF16 Native</option>
+                  <option value="1.58-Bit Ternary">1.58-Bit Ternary</option>
+                </select>
+              </div>
+              <div>
+                <label for="sla_target" class="block text-xs font-semibold text-slate-300 mb-1">Latency SLA Target</label>
+                <select id="sla_target" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-orange-500 focus:outline-none">
+                  <option value="<15ms P99" selected>&lt;15ms P99 Strict</option>
+                  <option value="<50ms P95">&lt;50ms P95 Balanced</option>
+                  <option value="Batch Throughput">Max Token Throughput</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="concurrency_slider" class="block text-xs font-semibold text-slate-300 mb-1">Concurrency / Parallelism Factor</label>
+              <input type="range" id="concurrency_slider" class="w-full accent-orange-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer" min="1" max="64" step="1" value="16" />
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono mt-1">
+                <span>1 node</span>
+                <span>16 streams</span>
+                <span>64 shards</span>
+              </div>
+            </div>
+
+            <button id="btn-run-simulation" class="mt-4 w-full py-2.5 bg-gradient-to-r from-orange-600 to-indigo-600 hover:from-orange-500 hover:to-indigo-500 text-white font-bold text-xs rounded-lg transition shadow-lg shadow-orange-900/20 flex items-center justify-center gap-1.5">
+              <span>⚡ Execute Engine Simulation</span>
+            </button>
+            <div id="sim-status" class="text-[10px] text-slate-400 text-center truncate">Engine initialized and ready for execution</div>
+          </div>
+        </div>
+
+        <!-- FinOps ROI Card -->
+        <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl">
+          <h3 class="text-xs font-bold text-orange-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span>💰</span> SRE FinOps & Infrastructure ROI
+          </h3>
+          <ul class="text-xs text-slate-300 space-y-2">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Hardware Optimization:</strong> Eliminates cloud infrastructure overprovisioning by maximizing per-core and per-GPU compute efficiency.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Sub-Millisecond Overhead:</strong> Ultra-fast kernel scheduling guarantees deterministic tail latencies under peak traffic.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Production Guardrails:</strong> Includes validated CI integration checks asserting zero regression in operational workflows.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: Viewports & Code IDE -->
+      <div class="lg:col-span-7 flex flex-col gap-6 sticky top-20">
+        <div class="ide-container bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+          <div class="ide-header flex flex-col items-stretch p-0 border-b border-slate-800 bg-slate-900/90">
+            <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-950 text-[10px] text-slate-300 font-mono px-2.5 py-1 rounded border border-slate-700 w-48 focus:outline-none" value="bitlinear_kernel.py" readonly />
+              </div>
+            </div>
+            
+            <div class="tabs-scrollable flex items-center bg-slate-950 px-2 overflow-x-auto border-t border-slate-800/60 gap-1">
+              <button type="button" onclick="switchTab('bitlinear_kernel_py')" id="tab-bitlinear_kernel_py" class="tab-btn active "><span>bitlinear_kernel.py</span></button>
+              <button type="button" onclick="switchTab('ternary_quantizer_ts')" id="tab-ternary_quantizer_ts" class="tab-btn "><span>ternary_quantizer.ts</span></button>
+              <button type="button" onclick="switchTab('docker_compose_yml')" id="tab-docker_compose_yml" class="tab-btn text-teal-400"><span>docker-compose.yml</span></button>
+              <button type="button" onclick="switchTab('manim_flow')" id="tab-manim_flow" class="tab-btn text-cyan-400"><span>🎬 manim_flow.py</span></button>
+              <button type="button" onclick="switchTab('architecture_flow')" id="tab-architecture_flow" class="tab-btn text-orange-400"><span>📊 Architecture Flow</span></button>
+              <button type="button" onclick="switchTab('sre_validation_yml')" id="tab-sre_validation_yml" class="tab-btn text-indigo-400"><span>⚙️ validation.yml</span></button>
+              <button type="button" onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400"><span>📟 SRE Terminal</span></button>
+            </div>
+          </div>
+
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 480px; max-height: 640px;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+          
+          <div id="terminal-viewport" class="hidden ide-viewport bg-slate-950 p-6 font-mono text-xs text-slate-300 flex flex-col" style="min-height: 480px; max-height: 640px; overflow-y: auto; line-height: 1.6;">
+            <div class="flex-1 overflow-y-auto mb-4" id="terminal-logs" style="max-height: 520px;"></div>
+            <div class="flex items-center gap-1.5 border-t border-slate-800 pt-3">
+              <span class="text-orange-400 font-bold">visitor@bitnet-sre:~$</span>
+              <input type="text" id="terminal-input" class="bg-transparent border-none text-slate-100 flex-1 focus:outline-none" style="font-family: inherit; font-size: inherit;" placeholder="Type help..." autocomplete="off" />
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 pt-2 border-t border-slate-900">
+              <button onclick="window.runTerminalCommand('docker compose up -d')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🐳 docker compose up</button>
+              <button onclick="window.runTerminalCommand('bash scripts/validate.sh')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🚀 validate.sh</button>
+              <button onclick="window.runTerminalCommand('gh repo view')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">📦 gh repo view</button>
+              <button onclick="window.runTerminalCommand('clear')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🧹 clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button id="btn-copy" class="flex-1 py-2.5 border border-slate-800 hover:border-slate-700 bg-slate-900 hover:bg-slate-850 text-slate-300 font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2">
+            <span>📋 Copy Code</span>
+          </button>
+          <button id="btn-download" class="flex-1 py-2.5 bg-gradient-to-r from-orange-600 to-indigo-600 hover:from-orange-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-orange-900/30">
+            <span>⬇️ Download Active File</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../src/js/core-tool.js"></script>
+  <script type="module" src="../../src/js/generators/bitnet-ternary-inference-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+  <script src="/tools/shared-tools.js"></script>
+</body>
+</html>

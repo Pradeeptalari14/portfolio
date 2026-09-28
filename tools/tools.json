@@ -3550,5 +3550,77 @@
     "tag": "WebGPU Zero-Server",
     "link": "webgpu-browser-slm/",
     "repository": "Pradeeptalari14/tp-webgpu-browser-slm"
+  },
+  {
+    "title": "vLLM PagedAttention & Chunked Prefill Studio",
+    "desc": "Simulate vLLM PagedAttention v2 virtual memory block mapping, eliminate KV-cache fragmentation down to <4%, and co-schedule chunked prefill with FlashAttention-3 for 2.8x higher concurrency.",
+    "category": "ai",
+    "icon": "\u26a1",
+    "color": "rgb(14, 165, 233)",
+    "borderClass": "border-sky-200",
+    "bgClass": "bg-sky-50/10",
+    "tag": "paged_cache_engine.py",
+    "link": "vllm-paged-attention/",
+    "repository": "Pradeeptalari14/tp-vllm-paged-attention"
+  },
+  {
+    "title": "BitNet 1.58-bit Ternary LLM Inference Studio",
+    "desc": "Simulate Microsoft BitNet b1.58 ternary weights {-1, 0, +1} replacing FP16 matrix multiplications with pure integer additions, delivering 71% DRAM energy reduction and zero GPU requirement.",
+    "category": "ai",
+    "icon": "\ud83e\uddee",
+    "color": "rgb(249, 115, 22)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "bitlinear_kernel.py",
+    "link": "bitnet-ternary-inference/",
+    "repository": "Pradeeptalari14/tp-bitnet-ternary-inference"
+  },
+  {
+    "title": "DSPy Algorithmic Prompt Optimizer (MIPROv2) Studio",
+    "desc": "Orchestrate Stanford DSPy MIPROv2 algorithmic prompt optimization. Replace hand-written prompt crafting with Bayesian search over instruction candidates and few-shot exemplars with +19.4% accuracy.",
+    "category": "ai",
+    "icon": "\ud83c\udfaf",
+    "color": "rgb(99, 102, 241)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "dspy_compiler.py",
+    "link": "dspy-optimizer/",
+    "repository": "Pradeeptalari14/tp-dspy-optimizer"
+  },
+  {
+    "title": "Agentic Temporal Memory & Episodic Graph Studio",
+    "desc": "Simulate stateful agentic episodic memory combining Neo4j relational knowledge graph edges, Qdrant dense vector embeddings, Ebbinghaus forgetting decay, and sub-15ms prompt injection.",
+    "category": "ai",
+    "icon": "\ud83e\udde0",
+    "color": "rgb(168, 85, 247)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "temporal_memory_engine.py",
+    "link": "agentic-temporal-memory/",
+    "repository": "Pradeeptalari14/tp-agentic-temporal-memory"
+  },
+  {
+    "title": "Multi-Agent Swarm RAFT Consensus Studio",
+    "desc": "Orchestrate Byzantine-resilient autonomous multi-agent swarms with distributed RAFT leader elections, append-entries heartbeats, cryptographic voting logs, and >66% quorum execution gates.",
+    "category": "ai",
+    "icon": "\ud83d\udc1d",
+    "color": "rgb(234, 179, 8)",
+    "borderClass": "border-amber-200",
+    "bgClass": "bg-amber-50/10",
+    "tag": "raft_node_agent.py",
+    "link": "agent-swarm-consensus/",
+    "repository": "Pradeeptalari14/tp-agent-swarm-consensus"
+  },
+  {
+    "title": "TensorRT-LLM Multi-GPU Tensor Parallelism Studio",
+    "desc": "Configure NVIDIA TensorRT-LLM 8-way Tensor Parallelism (TP=8) across H100 SXM5 GPUs. Maximize 900 GB/s NVLink All-Reduce bandwidth with FP8 quantization and in-flight continuous batching.",
+    "category": "ai",
+    "icon": "\ud83d\ude80",
+    "color": "rgb(34, 197, 94)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "trtllm_engine_builder.py",
+    "link": "tensorrt-llm-engine/",
+    "repository": "Pradeeptalari14/tp-tensorrt-llm-engine"
   }
 ]

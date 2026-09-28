@@ -56,6 +56,12 @@ syncFile('tools/shared-tools.css', 'public/tools/shared-tools.css');
 
 // Sync all architecture flow diagrams to public and dist
 const toolDirs = [
+  'tensorrt-llm-engine',
+  'agent-swarm-consensus',
+  'agentic-temporal-memory',
+  'dspy-optimizer',
+  'bitnet-ternary-inference',
+  'vllm-paged-attention',
   'sglang-radix-attention',
   'deepseek-v3-moe',
   'webgpu-browser-slm',
