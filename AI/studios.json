@@ -3,3576 +3,3926 @@
     "title": "DevOps AI RAG Studio",
     "desc": "Build private enterprise knowledge bases. Customize and generate a Streamlit ChatGPT client, FastAPI backend, LangChain and ChromaDB indexing pipelines, and local LLM configurations.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rag_engine.py",
     "link": "ai/",
-    "repository": "Pradeeptalari14/tp-ai"
+    "repository": "Pradeeptalari14/tp-ai",
+    "id": "ai"
   },
   {
     "title": "TypeSafe Jev: System 1 AI Studio",
     "desc": "Orchestrate TypeSafe AI's Jev System 1 model. Configure non-autoregressive sub-100ms reflex routing, calibrated decision thresholds (RLCD), schema-constrained Pydantic triage, and System 2 LLM escalation fallbacks.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(234, 88, 12)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "jev_engine.py",
     "link": "jev-system1/",
-    "repository": "Pradeeptalari14/tp-typesafe-jev"
+    "repository": "Pradeeptalari14/tp-typesafe-jev",
+    "id": "jev-system1"
   },
   {
     "title": "Enterprise LLM Studio",
     "desc": "Orchestrate scalable, GPU-accelerated environments for Large Models. Generate production Kubernetes manifests, high-performance vLLM configurations, and Prometheus telemetry dashboards.",
     "category": "ai",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(124, 58, 237)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "deployment.yaml",
     "link": "llm/",
-    "repository": "Pradeeptalari14/tp-llm"
+    "repository": "Pradeeptalari14/tp-llm",
+    "id": "llm"
   },
   {
     "title": "Local SLM Studio",
     "desc": "Build high-performance, containerized or edge environments for Small Models. Generate customized Ollama Modelfiles, systemd service units, and edge bootstrapping scripts.",
     "category": "ai",
-    "icon": "\ud83d\udda5\ufe0f",
+    "icon": "🖥️",
     "color": "rgb(236, 72, 153)",
     "borderClass": "border-pink-200",
     "bgClass": "bg-pink-50/10",
     "tag": "Modelfile",
     "link": "slm/",
-    "repository": "Pradeeptalari14/tp-slm"
+    "repository": "Pradeeptalari14/tp-slm",
+    "id": "slm"
   },
   {
     "title": "MLflow Tracking Studio",
     "desc": "Deploy centralized model training registries. Generate database-backed experiment trackers, Docker Compose service meshes, Kubernetes manifests, and Python metrics logs.",
     "category": "ai",
-    "icon": "\ud83d\udcc8",
+    "icon": "📈",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "docker-compose.yml",
     "link": "mlflow/",
-    "repository": "Pradeeptalari14/tp-mlflow"
+    "repository": "Pradeeptalari14/tp-mlflow",
+    "id": "mlflow"
   },
   {
     "title": "Strands SRE Agent Studio",
     "desc": "Orchestrate autonomous SRE troubleshooters. Generate single-agent or swarm workflows, Model Context Protocol (MCP) integrations, and OpenTelemetry logging traces using the Strands SDK.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(139, 92, 246)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "agent.py",
     "link": "strands/",
-    "repository": "Pradeeptalari14/tp-strands"
+    "repository": "Pradeeptalari14/tp-strands",
+    "id": "strands"
   },
   {
     "title": "LLM Guardrails Studio",
     "desc": "Configure input/output validation, prompt injection shields, and SRE safety rules (NeMo/Llama Guard).",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(236, 72, 153)",
     "borderClass": "border-pink-200",
     "bgClass": "bg-pink-50/10",
     "tag": "config.yaml",
     "link": "llm-guardrails/",
-    "repository": "Pradeeptalari14/tp-llm-guardrails"
+    "repository": "Pradeeptalari14/tp-llm-guardrails",
+    "id": "llm-guardrails"
   },
   {
     "title": "Ray Cluster Studio",
     "desc": "Orchestrate multi-node distributed training jobs, Ray clusters, and GPU autoscaling policies.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "ray_cluster.yaml",
     "link": "ray-cluster/",
-    "repository": "Pradeeptalari14/tp-ray-cluster"
+    "repository": "Pradeeptalari14/tp-ray-cluster",
+    "id": "ray-cluster"
   },
   {
     "title": "AI Evaluation Studio",
     "desc": "Scaffold automated Ragas pipelines, model accuracy tests, and hallucination metrics logs.",
     "category": "ai",
-    "icon": "\ud83d\udcca",
+    "icon": "📊",
     "color": "rgb(124, 58, 237)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "eval_pipeline.py",
     "link": "ai-eval/",
-    "repository": "Pradeeptalari14/tp-ai-eval"
+    "repository": "Pradeeptalari14/tp-ai-eval",
+    "id": "ai-eval"
   },
   {
     "title": "Feature Store Studio",
     "desc": "Generate Feast feature registries, offline/online database configurations, and feature definition scripts.",
     "category": "ai",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "feature_store.yaml",
     "link": "feature-store/",
-    "repository": "Pradeeptalari14/tp-feature-store"
+    "repository": "Pradeeptalari14/tp-feature-store",
+    "id": "feature-store"
   },
   {
     "title": "LLM Gateway & API Router Studio",
     "desc": "Optimize model serving gateways. Scaffold LiteLLM routing configurations, semantic prompt caches, and client API scripts.",
     "category": "ai",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(155, 89, 182)",
     "borderClass": "border-purple-200",
     "bgClass": "bg-purple-50/10",
     "tag": "litellm-config.yaml",
     "link": "llm-gateway/",
-    "repository": "Pradeeptalari14/tp-llm-gateway"
+    "repository": "Pradeeptalari14/tp-llm-gateway",
+    "id": "llm-gateway"
   },
   {
     "title": "LLM Observability & Tracing Studio",
     "desc": "Scaffold self-hosted LLM tracing collectors. Generate Langfuse services deployments, PyOpenTelemetry instrumentation, and trace spans.",
     "category": "ai",
-    "icon": "\ud83d\udd2c",
+    "icon": "🔬",
     "color": "rgb(46, 204, 113)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "langfuse-compose.yml",
     "link": "llm-tracing/",
-    "repository": "Pradeeptalari14/tp-llm-tracing"
+    "repository": "Pradeeptalari14/tp-llm-tracing",
+    "id": "llm-tracing"
   },
   {
     "title": "Vector Database Optimizer Studio",
     "desc": "Optimize search accuracy and index latency. Generate custom pgvector SQL schemas and Qdrant segment tuning configurations.",
     "category": "ai",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(230, 126, 34)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "qdrant-config.yaml",
     "link": "vector-db/",
-    "repository": "Pradeeptalari14/tp-vector-db"
+    "repository": "Pradeeptalari14/tp-vector-db",
+    "id": "vector-db"
   },
   {
     "title": "SRE AI Agent Simulator",
     "desc": "Run autonomous incident response diagnostics. Trigger mock failures (memory leaks, deadlocks) and view the AI agent's reasoning traces and RCAs.",
     "category": "ai",
-    "icon": "\ud83e\ude7a",
+    "icon": "🩺",
     "color": "rgb(139, 92, 246)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "triage_agent.py",
     "link": "sre-simulator/",
-    "repository": "Pradeeptalari14/tp-sre-simulator"
+    "repository": "Pradeeptalari14/tp-sre-simulator",
+    "id": "sre-simulator"
   },
   {
     "title": "MCP Studio",
     "desc": "Build and configure Model Context Protocol (MCP) ecosystems. Generate agent server configurations, safety guidelines, and 300+ infra automation recipes.",
     "category": "ai",
-    "icon": "\ud83d\udd0c",
+    "icon": "🔌",
     "color": "rgb(168, 85, 247)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "mcp_config.json",
     "link": "mcp-studio/",
-    "repository": "Pradeeptalari14/tp-mcp-studio"
+    "repository": "Pradeeptalari14/tp-mcp-studio",
+    "id": "mcp-studio"
   },
   {
     "title": "Ansible Playbook Builder",
     "desc": "Deploy applications instantly. Generate highly structured system updates, secure installation recipes, and customized role parameters in YAML syntax.",
     "category": "automation",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(234, 27, 37)",
     "borderClass": "",
     "bgClass": "",
     "tag": "playbook.yml",
     "link": "ansible/",
-    "repository": "Pradeeptalari14/tp-ansible"
+    "repository": "Pradeeptalari14/tp-ansible",
+    "id": "ansible"
   },
   {
     "title": "Docker Manager",
     "desc": "Containerize workloads correctly. Build clean production-grade Dockerfiles with validation checks and automated configuration maps.",
     "category": "automation",
-    "icon": "\ud83d\udc33",
+    "icon": "🐳",
     "color": "rgb(36, 150, 237)",
     "borderClass": "",
     "bgClass": "",
     "tag": "Dockerfile",
     "link": "docker/",
-    "repository": "Pradeeptalari14/tp-docker"
+    "repository": "Pradeeptalari14/tp-docker",
+    "id": "docker"
   },
   {
     "title": "Git Learning Studio",
     "desc": "Master Git operations from beginner to SRE levels. Learn version control differences, commands, interactive rebasing, tags, merge conflicts, and enterprise workflows.",
     "category": "cicd",
-    "icon": "\ud83d\uddc2\ufe0f",
+    "icon": "🗂️",
     "color": "rgb(240, 80, 50)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "git_guide.md",
     "link": "git/",
-    "repository": "Pradeeptalari14/tp-git"
+    "repository": "Pradeeptalari14/tp-git",
+    "id": "git"
   },
   {
     "title": "Jenkins CI/CD Pipeline",
     "desc": "Standardize continuous integration cycles. Write automated multi-branch Jenkins pipelines with integrated static scanning triggers.",
     "category": "cicd",
-    "icon": "\ud83c\udfed",
+    "icon": "🏭",
     "color": "rgb(210, 73, 57)",
     "borderClass": "",
     "bgClass": "",
     "tag": "Jenkinsfile",
     "link": "jenkins/",
-    "repository": "Pradeeptalari14/tp-jenkins"
+    "repository": "Pradeeptalari14/tp-jenkins",
+    "id": "jenkins"
   },
   {
     "title": "Terraform Architect",
     "desc": "Automate multi-tier environment setups. Provision VPC layers, server infrastructure scales, and bucket access configurations dynamically in HCL syntax.",
     "category": "cloud",
-    "icon": "\ud83c\udfd7\ufe0f",
+    "icon": "🏗️",
     "color": "rgb(123, 66, 188)",
     "borderClass": "",
     "bgClass": "",
     "tag": "main.tf",
     "link": "terraform/",
-    "repository": "Pradeeptalari14/tp-terraform"
+    "repository": "Pradeeptalari14/tp-terraform",
+    "id": "terraform"
   },
   {
     "title": "Advanced k8s Script Generator",
     "desc": "Deploy scalable container workloads. Orchestrate deployment sets, load-balancing discovery service rules, ingress path routes, and pod autoscaling configurations dynamically in YAML manifests.",
     "category": "cloud",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(50, 108, 229)",
     "borderClass": "",
     "bgClass": "",
     "tag": "deployment.yaml",
     "link": "kubernetes/",
-    "repository": "Pradeeptalari14/tp-kubernetes"
+    "repository": "Pradeeptalari14/tp-kubernetes",
+    "id": "kubernetes"
   },
   {
     "title": "Advanced Monitoring Script Generator",
     "desc": "Deploy secure telemetry layers. Generate production-ready bash installation recipes for Prometheus, node_exporter daemon metrics, and Grafana dashboard charts.",
     "category": "observability",
-    "icon": "\ud83d\udcc8",
+    "icon": "📈",
     "color": "rgb(230, 82, 44)",
     "borderClass": "",
     "bgClass": "",
     "tag": "install.sh",
     "link": "monitoring/",
-    "repository": "Pradeeptalari14/tp-monitoring"
+    "repository": "Pradeeptalari14/tp-monitoring",
+    "id": "monitoring"
   },
   {
     "title": "GitHub Actions Workflow Studio",
     "desc": "Generate high-level, production-ready CI/CD pipelines with integrated Snyk/Trivy scans and secure multi-platform container pushes.",
     "category": "cicd",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(234, 74, 170)",
     "borderClass": "",
     "bgClass": "",
     "tag": "ci.yml",
     "link": "github-actions/",
-    "repository": "Pradeeptalari14/tp-github-actions"
+    "repository": "Pradeeptalari14/tp-github-actions",
+    "id": "github-actions"
   },
   {
     "title": "Helm Chart Scaffold Studio",
     "desc": "Generate full package structures including Charts definitions, custom overrides values files, dynamic template deployments and ingresses.",
     "category": "cloud",
-    "icon": "\u26f5",
+    "icon": "⛵",
     "color": "rgb(12, 154, 229)",
     "borderClass": "",
     "bgClass": "",
     "tag": "Chart.yaml",
     "link": "helm/",
-    "repository": "Pradeeptalari14/tp-helm"
+    "repository": "Pradeeptalari14/tp-helm",
+    "id": "helm"
   },
   {
     "title": "ArgoCD GitOps App Studio",
     "desc": "Orchestrate automated continuous GitOps synchronizations. Generate declarative Application manifests, secure projects wrappers, and CLI setups.",
     "category": "cloud",
-    "icon": "\ud83d\ude80",
+    "icon": "🚀",
     "color": "rgb(239, 60, 62)",
     "borderClass": "",
     "bgClass": "",
     "tag": "application.yaml",
     "link": "argocd/",
-    "repository": "Pradeeptalari14/tp-argocd"
+    "repository": "Pradeeptalari14/tp-argocd",
+    "id": "argocd"
   },
   {
     "title": "ELK & Loki Logging Studio",
     "desc": "Deploy secure system aggregators. Compile customized Logstash filtering configs, Loki scrapers, and automated installer pipelines.",
     "category": "observability",
-    "icon": "\ud83d\udd0d",
+    "icon": "🔍",
     "color": "rgb(11, 163, 127)",
     "borderClass": "",
     "bgClass": "",
     "tag": "install.sh",
     "link": "logging/",
-    "repository": "Pradeeptalari14/tp-logging"
+    "repository": "Pradeeptalari14/tp-logging",
+    "id": "logging"
   },
   {
     "title": "Linux & PowerShell Studio",
     "desc": "Orchestrate raw infrastructure tasks. Generate robust Linux Bash script files or Windows PowerShell cmdlets with built-in telemetry, logging, and cron/scheduler setups.",
     "category": "observability",
-    "icon": "\ud83d\udc1a",
+    "icon": "🐚",
     "color": "rgb(0, 122, 204)",
     "borderClass": "",
     "bgClass": "",
     "tag": "sre-script.sh",
     "link": "linux/",
-    "repository": "Pradeeptalari14/tp-linux"
+    "repository": "Pradeeptalari14/tp-linux",
+    "id": "linux"
   },
   {
     "title": "Python SRE Utility Studio",
     "desc": "Deploy script tasks with SDK integrations. Generate automated Python scripts for AWS FinOps sweeps, Kubernetes health APIs, SSL certificate audits, or API load pings.",
     "category": "observability",
-    "icon": "\ud83d\udc0d",
+    "icon": "🐍",
     "color": "rgb(255, 212, 59)",
     "borderClass": "",
     "bgClass": "",
     "tag": "sre_utility.py",
     "link": "python/",
-    "repository": "Pradeeptalari14/tp-python"
+    "repository": "Pradeeptalari14/tp-python",
+    "id": "python"
   },
   {
     "title": "ShellScript SRE Studio",
     "desc": "Deploy production Bash automation scripts. Generate robust shell commands, automated health audits, logs rotations, and alert notifications.",
     "category": "observability",
-    "icon": "\ud83d\udcb2",
+    "icon": "💲",
     "color": "rgb(78, 184, 42)",
     "borderClass": "",
     "bgClass": "",
     "tag": "sre-script.sh",
     "link": "shellscript/",
-    "repository": "Pradeeptalari14/tp-shellscript"
+    "repository": "Pradeeptalari14/tp-shellscript",
+    "id": "shellscript"
   },
   {
     "title": "GitLab CI/CD Pipeline Studio",
     "desc": "Generate robust GitLab CI/CD pipelines (.gitlab-ci.yml) with SRE stages, dependency caching, container builds, and security scans.",
     "category": "cicd",
-    "icon": "\ud83e\udd8a",
+    "icon": "🦊",
     "color": "rgb(252, 109, 38)",
     "borderClass": "",
     "bgClass": "",
     "tag": ".gitlab-ci.yml",
     "link": "gitlab/",
-    "repository": "Pradeeptalari14/tp-gitlab"
+    "repository": "Pradeeptalari14/tp-gitlab",
+    "id": "gitlab"
   },
   {
     "title": "Webhooks Studio",
     "desc": "Generate secure HMAC-verified webhook receivers, Slack/Teams notification layouts, and automated PagerDuty alerting triggers.",
     "category": "cicd",
-    "icon": "\ud83e\ude9d",
+    "icon": "🪝",
     "color": "rgb(79, 70, 229)",
     "borderClass": "",
     "bgClass": "",
     "tag": "receiver.py",
     "link": "webhooks/",
-    "repository": "Pradeeptalari14/tp-webhooks"
+    "repository": "Pradeeptalari14/tp-webhooks",
+    "id": "webhooks"
   },
   {
     "title": "Secret Management Studio",
     "desc": "Generate secure HashiCorp Vault policies, dynamic Python secrets retrieval utilities, and Kubernetes Sealed Secrets.",
     "category": "automation",
-    "icon": "\ud83d\udd11",
+    "icon": "🔑",
     "color": "rgb(99, 102, 241)",
     "borderClass": "",
     "bgClass": "",
     "tag": "policy.hcl",
     "link": "secrets/",
-    "repository": "Pradeeptalari14/tp-secrets"
+    "repository": "Pradeeptalari14/tp-secrets",
+    "id": "secrets"
   },
   {
     "title": "Chaos Engineering Studio",
     "desc": "Scaffold Chaos Mesh experiment definitions, container stress simulations, and resilience validation runbooks.",
     "category": "observability",
-    "icon": "\ud83d\udca5",
+    "icon": "💥",
     "color": "rgb(239, 68, 68)",
     "borderClass": "",
     "bgClass": "",
     "tag": "experiment.yaml",
     "link": "chaos/",
-    "repository": "Pradeeptalari14/tp-chaos"
+    "repository": "Pradeeptalari14/tp-chaos",
+    "id": "chaos"
   },
   {
     "title": "Service Mesh Studio",
     "desc": "Configure Istio/Linkerd canary traffic rules, Envoy circuit breakers, and mutual TLS (mTLS) egress gateways.",
     "category": "cloud",
-    "icon": "\ud83d\udd78\ufe0f",
+    "icon": "🕸️",
     "color": "rgb(16, 185, 129)",
     "borderClass": "",
     "bgClass": "",
     "tag": "routing.yaml",
     "link": "mesh/",
-    "repository": "Pradeeptalari14/tp-mesh"
+    "repository": "Pradeeptalari14/tp-mesh",
+    "id": "mesh"
   },
   {
     "title": "Distributed Tracing Studio",
     "desc": "Generate OpenTelemetry collector configs, dynamic Python/Go/Node instrumentation scripts, and span latency guides.",
     "category": "observability",
-    "icon": "\ud83d\udd75\ufe0f",
+    "icon": "🕵️",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "otel_config.yaml",
     "link": "tracing/",
-    "repository": "Pradeeptalari14/tp-tracing"
+    "repository": "Pradeeptalari14/tp-tracing",
+    "id": "tracing"
   },
   {
     "title": "Policy-as-Code Studio",
     "desc": "Scaffold OPA Rego security policies, Kyverno Kubernetes validation rules, and automated compliance scan runners.",
     "category": "observability",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(124, 58, 237)",
     "borderClass": "",
     "bgClass": "",
     "tag": "policy.rego",
     "link": "compliance/",
-    "repository": "Pradeeptalari14/tp-compliance"
+    "repository": "Pradeeptalari14/tp-compliance",
+    "id": "compliance"
   },
   {
     "title": "Database Migration Studio",
     "desc": "Scaffold Liquibase YAML changesets, Flyway SQL DDL migrations, and automated schema rollback recovery scripts.",
     "category": "automation",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(245, 158, 11)",
     "borderClass": "",
     "bgClass": "",
     "tag": "migration.sql",
     "link": "db-migration/",
-    "repository": "Pradeeptalari14/tp-db-migration"
+    "repository": "Pradeeptalari14/tp-db-migration",
+    "id": "db-migration"
   },
   {
     "title": "Performance Studio",
     "desc": "Generate k6 Javascript loads, Locust Python tasks, and execution runbooks for system scalability benchmarking.",
     "category": "observability",
-    "icon": "\ud83d\udcc8",
+    "icon": "📈",
     "color": "rgb(16, 185, 129)",
     "borderClass": "",
     "bgClass": "",
     "tag": "load_test.js",
     "link": "performance/",
-    "repository": "Pradeeptalari14/tp-performance"
+    "repository": "Pradeeptalari14/tp-performance",
+    "id": "performance"
   },
   {
     "title": "SLO & Error Budget Studio",
     "desc": "Scaffold Prometheus alert rules, ServiceLevelObjective Kubernetes CRDs, and SRE incident response rules.",
     "category": "observability",
-    "icon": "\ud83c\udfaf",
+    "icon": "🎯",
     "color": "rgb(236, 72, 153)",
     "borderClass": "",
     "bgClass": "",
     "tag": "slo_rules.yaml",
     "link": "slo/",
-    "repository": "Pradeeptalari14/tp-slo"
+    "repository": "Pradeeptalari14/tp-slo",
+    "id": "slo"
   },
   {
     "title": "SAST Security Studio",
     "desc": "Generate custom Semgrep rules, Trivy ignores, and automated CI security scanning workflows.",
     "category": "observability",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(239, 68, 68)",
     "borderClass": "",
     "bgClass": "",
     "tag": "rules.yaml",
     "link": "sast/",
-    "repository": "Pradeeptalari14/tp-sast"
+    "repository": "Pradeeptalari14/tp-sast",
+    "id": "sast"
   },
   {
     "title": "FinOps Studio",
     "desc": "Generate Cloud Custodian sweep policies, AWS/GCP resource cleaner scripts, and cost anomaly alerts.",
     "category": "automation",
-    "icon": "\ud83d\udcb0",
+    "icon": "💰",
     "color": "rgb(16, 185, 129)",
     "borderClass": "",
     "bgClass": "",
     "tag": "cleanup.py",
     "link": "finops/",
-    "repository": "Pradeeptalari14/tp-finops"
+    "repository": "Pradeeptalari14/tp-finops",
+    "id": "finops"
   },
   {
     "title": "DNS & SSL PKI Studio",
     "desc": "Scaffold Certbot Let's Encrypt cron renewal scripts, Route53/Cloudflare record templates, and domain expiry checks.",
     "category": "automation",
-    "icon": "\ud83c\udf10",
+    "icon": "🌐",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "renew_certs.sh",
     "link": "dns-ssl/",
-    "repository": "Pradeeptalari14/tp-dns-ssl"
+    "repository": "Pradeeptalari14/tp-dns-ssl",
+    "id": "dns-ssl"
   },
   {
     "title": "Backup & DR Studio",
     "desc": "Generate Velero Kubernetes backup policies, database snapshot automation, and disaster recovery restore runbooks.",
     "category": "automation",
-    "icon": "\ud83d\udcbe",
+    "icon": "💾",
     "color": "rgb(99, 102, 241)",
     "borderClass": "",
     "bgClass": "",
     "tag": "backup_job.yaml",
     "link": "backup-dr/",
-    "repository": "Pradeeptalari14/tp-backup-dr"
+    "repository": "Pradeeptalari14/tp-backup-dr",
+    "id": "backup-dr"
   },
   {
     "title": "AWS Event-Driven & Messaging SRE Studio",
     "desc": "Orchestrate enterprise event routing and queue networks. Generate secure SQS policies, EventBridge bus rules, event simulators, and visual topologies.",
     "category": "cloud",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(235, 94, 85)",
     "borderClass": "",
     "bgClass": "",
     "tag": "sqs-policy.json",
     "link": "event-sre/",
-    "repository": "Pradeeptalari14/tp-event-sre"
+    "repository": "Pradeeptalari14/tp-event-sre",
+    "id": "event-sre"
   },
   {
     "title": "GitHub Org Governance & CodeOwners Studio",
     "desc": "Automate repository configuration and review standards. Generate CODEOWNERS controls, branch protection API payloads, and pipeline security rules.",
     "category": "automation",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(41, 128, 185)",
     "borderClass": "",
     "bgClass": "",
     "tag": "CODEOWNERS",
     "link": "github-gov/",
-    "repository": "Pradeeptalari14/tp-github-gov"
+    "repository": "Pradeeptalari14/tp-github-gov",
+    "id": "github-gov"
   },
   {
     "title": "Cloudflare Zero Trust & Tunneling Studio",
     "desc": "Design secure, VPN-less access to local and cloud resources. Generate cloudflared daemon settings, access authentication policies, and ingress mapping scripts.",
     "category": "cloud",
-    "icon": "\u2601\ufe0f",
+    "icon": "☁️",
     "color": "rgb(230, 126, 34)",
     "borderClass": "",
     "bgClass": "",
     "tag": "config.yml",
     "link": "cloudflare-zero-trust/",
-    "repository": "Pradeeptalari14/tp-cloudflare-zero-trust"
+    "repository": "Pradeeptalari14/tp-cloudflare-zero-trust",
+    "id": "cloudflare-zero-trust"
   },
   {
     "title": "Docker Compose & LocalStack Dev Studio",
     "desc": "Scaffold sandbox emulation networks for fast local development. Generate compose stacks with PostgreSQL, Redis, and bootstrap scripts for offline AWS S3/SQS/DynamoDB services.",
     "category": "automation",
-    "icon": "\ud83d\udc33",
+    "icon": "🐳",
     "color": "rgb(26, 188, 156)",
     "borderClass": "",
     "bgClass": "",
     "tag": "docker-compose.yml",
     "link": "localstack-dev/",
-    "repository": "Pradeeptalari14/tp-localstack-dev"
+    "repository": "Pradeeptalari14/tp-localstack-dev",
+    "id": "localstack-dev"
   },
   {
     "title": "Docker Compose & Local Cloud Dev Studio",
     "desc": "Scaffold custom multi-cloud local sandboxes (AWS, Azure, GCP APIs). Generate private, telemetry-free compose stacks with Postgres, Redis, and setup scripts using custom 7-series ports.",
     "category": "automation",
-    "icon": "\u2601\ufe0f",
+    "icon": "☁️",
     "color": "rgb(14, 165, 233)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "docker-compose.yml",
     "link": "local-cloud-dev/",
-    "repository": "Pradeeptalari14/tp-local-cloud-dev"
+    "repository": "Pradeeptalari14/tp-local-cloud-dev",
+    "id": "local-cloud-dev"
   },
   {
     "title": "Status & Incident Studio",
     "desc": "Scaffold PagerDuty/Opsgenie escalation chains, status dashboard config schemas, and incident triage runbooks.",
     "category": "automation",
-    "icon": "\ud83d\udea8",
+    "icon": "🚨",
     "color": "rgb(239, 68, 68)",
     "borderClass": "",
     "bgClass": "",
     "tag": "status_page.json",
     "link": "status-incident/",
-    "repository": "Pradeeptalari14/tp-status-incident"
+    "repository": "Pradeeptalari14/tp-status-incident",
+    "id": "status-incident"
   },
   {
     "title": "API Gateway Studio",
     "desc": "Scaffold Nginx ingress, Traefik routes, rate limit headers, and routing proxies.",
     "category": "cloud",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "nginx.conf",
     "link": "api-gateway/",
-    "repository": "Pradeeptalari14/tp-api-gateway"
+    "repository": "Pradeeptalari14/tp-api-gateway",
+    "id": "api-gateway"
   },
   {
     "title": "GitOps Secrets Studio",
     "desc": "Generate Mozilla SOPS configs, Age encrypted keys, and GitOps decryption runners.",
     "category": "automation",
-    "icon": "\ud83d\udd10",
+    "icon": "🔐",
     "color": "rgb(139, 92, 246)",
     "borderClass": "",
     "bgClass": "",
     "tag": ".sops.yaml",
     "link": "gitops-secrets/",
-    "repository": "Pradeeptalari14/tp-gitops-secrets"
+    "repository": "Pradeeptalari14/tp-gitops-secrets",
+    "id": "gitops-secrets"
   },
   {
     "title": "IDP Template Studio",
     "desc": "Scaffold Backstage service catalog metadata and developer software scaffolding templates.",
     "category": "automation",
-    "icon": "\ud83d\udce6",
+    "icon": "📦",
     "color": "rgb(236, 72, 153)",
     "borderClass": "",
     "bgClass": "",
     "tag": "template.yaml",
     "link": "idp-template/",
-    "repository": "Pradeeptalari14/tp-idp-template"
+    "repository": "Pradeeptalari14/tp-idp-template",
+    "id": "idp-template"
   },
   {
     "title": "Progressive Delivery Studio",
     "desc": "Generate Argo Rollouts canary releases, metrics analysis templates, and OpenFeature flag schemas.",
     "category": "cloud",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(79, 70, 229)",
     "borderClass": "",
     "bgClass": "",
     "tag": "rollout.yaml",
     "link": "progressive-delivery/",
-    "repository": "Pradeeptalari14/tp-progressive-delivery"
+    "repository": "Pradeeptalari14/tp-progressive-delivery",
+    "id": "progressive-delivery"
   },
   {
     "title": "Edge WASM Studio",
     "desc": "Orchestrate WebAssembly edge functions, Fermyon Spin configurations, and lightweight serverless runtimes.",
     "category": "cloud",
-    "icon": "\ud83c\udf10",
+    "icon": "🌐",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "spin.toml",
     "link": "edge-wasm/",
-    "repository": "Pradeeptalari14/tp-edge-wasm"
+    "repository": "Pradeeptalari14/tp-edge-wasm",
+    "id": "edge-wasm"
   },
   {
     "title": "Container Registry Studio",
     "desc": "Generate Cosign image signing scripts, Harbor tag retention rules, and registry configurations.",
     "category": "automation",
-    "icon": "\ud83c\udff7\ufe0f",
+    "icon": "🏷️",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "sign_image.sh",
     "link": "container-registry/",
-    "repository": "Pradeeptalari14/tp-container-registry"
+    "repository": "Pradeeptalari14/tp-container-registry",
+    "id": "container-registry"
   },
   {
     "title": "Database Clustering Studio",
     "desc": "Scaffold Postgres Patroni failover configurations, Redis Sentinel topologies, and cluster sync guides.",
     "category": "automation",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(245, 158, 11)",
     "borderClass": "",
     "bgClass": "",
     "tag": "patroni.yaml",
     "link": "db-clustering/",
-    "repository": "Pradeeptalari14/tp-db-clustering"
+    "repository": "Pradeeptalari14/tp-db-clustering",
+    "id": "db-clustering"
   },
   {
     "title": "eBPF Tracing Studio",
     "desc": "Generate kernel-level socket filters, Cilium network policies, and bpftrace performance scripts.",
     "category": "observability",
-    "icon": "\ud83d\udc1d",
+    "icon": "🐝",
     "color": "rgb(16, 185, 129)",
     "borderClass": "",
     "bgClass": "",
     "tag": "ebpf_program.c",
     "link": "ebpf-tracing/",
-    "repository": "Pradeeptalari14/tp-ebpf-tracing"
+    "repository": "Pradeeptalari14/tp-ebpf-tracing",
+    "id": "ebpf-tracing"
   },
   {
     "title": "GreenOps Studio",
     "desc": "Generate Kepler telemetry rules, carbon-intensity scheduling crons, and cost/carbon-offset SRE runbooks.",
     "category": "observability",
-    "icon": "\ud83c\udf31",
+    "icon": "🌱",
     "color": "rgb(5, 150, 105)",
     "borderClass": "",
     "bgClass": "",
     "tag": "kepler_policy.yaml",
     "link": "greenops/",
-    "repository": "Pradeeptalari14/tp-greenops"
+    "repository": "Pradeeptalari14/tp-greenops",
+    "id": "greenops"
   },
   {
     "title": "Confidential Enclave Studio",
     "desc": "Orchestrate Intel SGX, AMD SEV, and AWS Nitro Enclaves. Generate attestation scripts and key-rotation pipelines.",
     "category": "cloud",
-    "icon": "\ud83d\udd12",
+    "icon": "🔒",
     "color": "rgb(124, 58, 237)",
     "borderClass": "",
     "bgClass": "",
     "tag": "enclave_config.json",
     "link": "confidential-enclave/",
-    "repository": "Pradeeptalari14/tp-confidential-enclave"
+    "repository": "Pradeeptalari14/tp-confidential-enclave",
+    "id": "confidential-enclave"
   },
   {
     "title": "Decentralized Infrastructure Studio",
     "desc": "Monitor IPFS and blockchain nodes. Generate validator check scripts, peer discovery rules, and status alerts.",
     "category": "observability",
-    "icon": "\u26d3\ufe0f",
+    "icon": "⛓️",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "ipfs_daemon.json",
     "link": "decentralized-infra/",
-    "repository": "Pradeeptalari14/tp-decentralized-infra"
+    "repository": "Pradeeptalari14/tp-decentralized-infra",
+    "id": "decentralized-infra"
   },
   {
     "title": "DataOps Studio",
     "desc": "Scaffold Apache Airflow / Prefect pipeline DAGs, Great Expectations data quality test schemas, and database sync verification.",
     "category": "observability",
-    "icon": "\ud83d\udd00",
+    "icon": "🔀",
     "color": "rgb(245, 158, 11)",
     "borderClass": "",
     "bgClass": "",
     "tag": "airflow_dag.py",
     "link": "dataops/",
-    "repository": "Pradeeptalari14/tp-dataops"
+    "repository": "Pradeeptalari14/tp-dataops",
+    "id": "dataops"
   },
   {
     "title": "AIOps Studio",
     "desc": "Generate Prometheus PromQL anomaly detection rules (double exponential smoothing, z-scores), Logstash filters, and Python anomaly checkers.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(99, 102, 241)",
     "borderClass": "",
     "bgClass": "",
     "tag": "prometheus_anomaly.yaml",
     "link": "aiops/",
-    "repository": "Pradeeptalari14/tp-aiops"
+    "repository": "Pradeeptalari14/tp-aiops",
+    "id": "aiops"
   },
   {
     "title": "Systemd Service Builder",
     "desc": "Generate robust systemd unit files (Services, Timers, Sockets, Paths). Test systemctl lifecycle transitions, status checks, and unit logs dynamically in a simulated Linux terminal.",
     "category": "observability",
-    "icon": "\u2699\ufe0f",
+    "icon": "⚙️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "",
     "bgClass": "",
     "tag": "systemd.service",
     "link": "systemd-builder/",
-    "repository": "Pradeeptalari14/tp-systemd-builder"
+    "repository": "Pradeeptalari14/tp-systemd-builder",
+    "id": "systemd-builder"
   },
   {
     "title": "VPC Subnetting Calculator",
     "desc": "Slice CIDR blocks into optimized public and private subnets across multi-AZ configurations. Visualize real-time SVG network topologies with routing, NAT gateways, and export HCL/CLI blueprints.",
     "category": "cloud",
-    "icon": "\ud83c\udf10",
+    "icon": "🌐",
     "color": "rgb(14, 165, 233)",
     "borderClass": "",
     "bgClass": "",
     "tag": "vpc_config.tf",
     "link": "vpc-subnetter/",
-    "repository": "Pradeeptalari14/tp-vpc-subnetter"
+    "repository": "Pradeeptalari14/tp-vpc-subnetter",
+    "id": "vpc-subnetter"
   },
   {
     "title": "Nginx Configurator",
     "desc": "Build production-grade nginx.conf files. Configure upstreams, rate limiters, security headers, SSL, compression, and visualize live traffic routing flowcharts via dynamic Mermaid diagrams.",
     "category": "automation",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(16, 185, 129)",
     "borderClass": "",
     "bgClass": "",
     "tag": "nginx.conf",
     "link": "nginx-config/",
-    "repository": "Pradeeptalari14/tp-nginx-config"
+    "repository": "Pradeeptalari14/tp-nginx-config",
+    "id": "nginx-config"
   },
   {
     "title": "Kubernetes CRD Studio",
     "desc": "Design Custom Resource Definitions (CRDs) with strict OpenAPI validation schemas. Generate custom resource custom YAML templates and Go controller struct boilerplate definitions.",
     "category": "cloud",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(50, 108, 229)",
     "borderClass": "",
     "bgClass": "",
     "tag": "crd.yaml",
     "link": "k8s-crd/",
-    "repository": "Pradeeptalari14/tp-k8s-crd"
+    "repository": "Pradeeptalari14/tp-k8s-crd",
+    "id": "k8s-crd"
   },
   {
     "title": "Trivy Security Studio",
     "desc": "Configure supply chain vulnerability scans. Generate CLI execution strings, trivy.yaml config files, CI actions, whitelist ignores, and simulate CVE reports in real-time.",
     "category": "observability",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(16, 185, 129)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "trivy.yaml",
     "link": "trivy/",
-    "repository": "Pradeeptalari14/tp-trivy"
+    "repository": "Pradeeptalari14/tp-trivy",
+    "id": "trivy"
   },
   {
     "title": "AI Rules Customizer",
     "desc": "Design custom guardrails and instructions for AI agents. Customize Next.js/FastAPI framework directives, strict styles, and simulate output modifications.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": ".cursorrules",
     "link": "ai-rules-customizer/",
-    "repository": "Pradeeptalari14/tp-ai-rules-customizer"
+    "repository": "Pradeeptalari14/tp-ai-rules-customizer",
+    "id": "ai-rules-customizer"
   },
   {
     "title": "Falco Security Auditor",
     "desc": "Build real-time container threat detection rules. Configure syscall conditions, rules macros, alert macros, and simulate runtime violation alerts.",
     "category": "observability",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(244, 63, 94)",
     "borderClass": "border-rose-200",
     "bgClass": "bg-rose-50/10",
     "tag": "falco_rules.yaml",
     "link": "falco-auditor/",
-    "repository": "Pradeeptalari14/tp-falco-auditor"
+    "repository": "Pradeeptalari14/tp-falco-auditor",
+    "id": "falco-auditor"
   },
   {
     "title": "Alertmanager Visualizer",
     "desc": "Design nested alert dispatch trees. Map matching labels, PagerDuty receivers, grouping windows, and visualize alert escalation paths in real-time.",
     "category": "observability",
-    "icon": "\ud83d\udd78\ufe0f",
+    "icon": "🕸️",
     "color": "rgb(234, 88, 12)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "alertmanager.yaml",
     "link": "alertmanager-visualizer/",
-    "repository": "Pradeeptalari14/tp-alertmanager-visualizer"
+    "repository": "Pradeeptalari14/tp-alertmanager-visualizer",
+    "id": "alertmanager-visualizer"
   },
   {
     "title": "Dagger Pipelines Studio",
     "desc": "Construct container-based pipelines running on local docker engines. Generate Go/Python build SDKs, and simulate stages execution workflows.",
     "category": "cicd",
-    "icon": "\ud83d\udd00",
+    "icon": "🔀",
     "color": "rgb(14, 165, 233)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "dagger.go",
     "link": "dagger-pipelines/",
-    "repository": "Pradeeptalari14/tp-dagger-pipelines"
+    "repository": "Pradeeptalari14/tp-dagger-pipelines",
+    "id": "dagger-pipelines"
   },
   {
     "title": "eBPF Tracing Generator",
     "desc": "Generate eBPF C program filters and Python/Go loader scripts. Monitor kprobes and tracepoints, and view live tracing logs output simulations.",
     "category": "observability",
-    "icon": "\ud83d\udc1d",
+    "icon": "🐝",
     "color": "rgb(139, 92, 246)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "kprobe.bpf.c",
     "link": "ebpf-generator/",
-    "repository": "Pradeeptalari14/tp-ebpf-generator"
+    "repository": "Pradeeptalari14/tp-ebpf-generator",
+    "id": "ebpf-generator"
   },
   {
     "title": "Crossplane Cloud Studio",
     "desc": "Build compostable cloud resources. Generate composite resource definitions (XRDs), cross-cloud compositions, and claims maps visualizer.",
     "category": "cloud",
-    "icon": "\ud83c\udf10",
+    "icon": "🌐",
     "color": "rgb(6, 182, 212)",
     "borderClass": "border-cyan-200",
     "bgClass": "bg-cyan-50/10",
     "tag": "composition.yaml",
     "link": "crossplane-studio/",
-    "repository": "Pradeeptalari14/tp-crossplane-studio"
+    "repository": "Pradeeptalari14/tp-crossplane-studio",
+    "id": "crossplane-studio"
   },
   {
     "title": "Knative Serverless Studio",
     "desc": "Configure serverless knative services with scale-to-zero thresholds. Map event-driven broker triggers and simulate live scaling container logs.",
     "category": "cloud",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(16, 185, 129)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "service.yaml",
     "link": "knative-routing/",
-    "repository": "Pradeeptalari14/tp-knative-routing"
+    "repository": "Pradeeptalari14/tp-knative-routing",
+    "id": "knative-routing"
   },
   {
     "title": "Karpenter Node Autoscaler",
     "desc": "Provision rapid Kubernetes nodes based on pending workload constraints. Pack pods dynamically by GPU, architecture, spot/on-demand ratios, and simulate EKS costs.",
     "category": "cloud",
-    "icon": "\ud83c\udfce\ufe0f",
+    "icon": "🏎️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "nodepool.yaml",
     "link": "karpenter-autoscaler/",
-    "repository": "Pradeeptalari14/tp-karpenter-autoscaler"
+    "repository": "Pradeeptalari14/tp-karpenter-autoscaler",
+    "id": "karpenter-autoscaler"
   },
   {
     "title": "KEDA Autoscaling Studio",
     "desc": "Deploy event-driven horizontal pod autoscaling. Configure scaling bounds from zero based on active queue lag, db tables count, or Prometheus metrics triggers.",
     "category": "cloud",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(6, 182, 212)",
     "borderClass": "border-cyan-200",
     "bgClass": "bg-cyan-50/10",
     "tag": "scaledobject.yaml",
     "link": "keda-scaling/",
-    "repository": "Pradeeptalari14/tp-keda-scaling"
+    "repository": "Pradeeptalari14/tp-keda-scaling",
+    "id": "keda-scaling"
   },
   {
     "title": "OpenTelemetry Collector",
     "desc": "Design high-performance telemetry pipelines. Build nested configurations for traces/metrics processors, custom exporter endpoints, and verify logs routes.",
     "category": "observability",
-    "icon": "\ud83c\udf9b\ufe0f",
+    "icon": "🎛️",
     "color": "rgb(234, 88, 12)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "otel-collector.yaml",
     "link": "otel-configurator/",
-    "repository": "Pradeeptalari14/tp-otel-configurator"
+    "repository": "Pradeeptalari14/tp-otel-configurator",
+    "id": "otel-configurator"
   },
   {
     "title": "Vector Log Pipeline Studio",
     "desc": "Build Rust-powered, high-throughput log routing streams. Write Vector Remap Language (VRL) rules, mask sensitive PII/IP fields, and verify JSON transforms.",
     "category": "observability",
-    "icon": "\ud83e\udeb5",
+    "icon": "🪵",
     "color": "rgb(16, 185, 129)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "vector.toml",
     "link": "vector-pipeline/",
-    "repository": "Pradeeptalari14/tp-vector-pipeline"
+    "repository": "Pradeeptalari14/tp-vector-pipeline",
+    "id": "vector-pipeline"
   },
   {
     "title": "Kyverno Policy Studio",
     "desc": "Design Kubernetes-native policies. Configure validation rules for security contexts, labels, resource requests, and test pod compliance in real-time.",
     "category": "automation",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(219, 39, 119)",
     "borderClass": "border-pink-200",
     "bgClass": "bg-pink-50/10",
     "tag": "policy.yaml",
     "link": "kyverno-policy/",
-    "repository": "Pradeeptalari14/tp-kyverno-policy"
+    "repository": "Pradeeptalari14/tp-kyverno-policy",
+    "id": "kyverno-policy"
   },
   {
     "title": "GitHub ARC Studio",
     "desc": "Deploy event-driven horizontal actions runners using Actions Runner Controller (ARC). Define runner boundaries and simulate dynamic container scaling.",
     "category": "cicd",
-    "icon": "\ud83c\udfc3",
+    "icon": "🏃",
     "color": "rgb(124, 58, 237)",
     "borderClass": "border-purple-200",
     "bgClass": "bg-purple-50/10",
     "tag": "runnerset.yaml",
     "link": "github-arc/",
-    "repository": "Pradeeptalari14/tp-github-arc"
+    "repository": "Pradeeptalari14/tp-github-arc",
+    "id": "github-arc"
   },
   {
     "title": "Terraform Drift Auditor",
     "desc": "Track cloud resource discrepancies. Generate scheduled CronJob auditors, custom drift checks, and trigger auto-reconciliation runbooks.",
     "category": "automation",
-    "icon": "\ud83d\udd0d",
+    "icon": "🔍",
     "color": "rgb(217, 119, 6)",
     "borderClass": "border-amber-200",
     "bgClass": "bg-amber-50/10",
     "tag": "drift_audit.sh",
     "link": "terraform-drift/",
-    "repository": "Pradeeptalari14/tp-terraform-drift"
+    "repository": "Pradeeptalari14/tp-terraform-drift",
+    "id": "terraform-drift"
   },
   {
     "title": "FluxCD GitOps Studio",
     "desc": "Configure source controllers and GitOps reconciliation pipelines. Build Repository sources, Kustomizations, and simulate automated cluster sync loops.",
     "category": "cicd",
-    "icon": "\ud83d\udd04",
+    "icon": "🔄",
     "color": "rgb(6, 182, 212)",
     "borderClass": "border-cyan-200",
     "bgClass": "bg-cyan-50/10",
     "tag": "gitrepository.yaml",
     "link": "fluxcd-gitops/",
-    "repository": "Pradeeptalari14/tp-fluxcd-gitops"
+    "repository": "Pradeeptalari14/tp-fluxcd-gitops",
+    "id": "fluxcd-gitops"
   },
   {
     "title": "Cilium Policy Studio",
     "desc": "Design secure L3-L7 Kubernetes container networking rules. Scaffold CiliumNetworkPolicies, inspect live traffic flows, and debug DNS blocks using Hubble flow telemetry.",
     "category": "observability",
-    "icon": "\ud83d\udc1d",
+    "icon": "🐝",
     "color": "rgb(13, 148, 136)",
     "borderClass": "border-teal-200",
     "bgClass": "bg-teal-50/10",
     "tag": "cilium-policy.yaml",
     "link": "cilium-policy/",
-    "repository": "Pradeeptalari14/tp-cilium-policy"
+    "repository": "Pradeeptalari14/tp-cilium-policy",
+    "id": "cilium-policy"
   },
   {
     "title": "AWS IAM Policy Analyzer",
     "desc": "Build secure IAM identity-based policies and permission boundaries. Evaluate API call permissions through a step-by-step evaluation logic flow simulator.",
     "category": "automation",
-    "icon": "\ud83d\udd11",
+    "icon": "🔑",
     "color": "rgb(234, 88, 12)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "iam-policy.json",
     "link": "aws-iam/",
-    "repository": "Pradeeptalari14/tp-aws-iam"
+    "repository": "Pradeeptalari14/tp-aws-iam",
+    "id": "aws-iam"
   },
   {
     "title": "Vault Secrets Studio",
     "desc": "Configure dynamic secrets engines and PKI certificate authorities. Manage dynamic credentials databases roles, and simulate automated lease TTL countdowns.",
     "category": "automation",
-    "icon": "\ud83d\udd12",
+    "icon": "🔒",
     "color": "rgb(220, 38, 38)",
     "borderClass": "border-red-200",
     "bgClass": "bg-red-50/10",
     "tag": "vault-policy.hcl",
     "link": "vault-secrets/",
-    "repository": "Pradeeptalari14/tp-vault-secrets"
+    "repository": "Pradeeptalari14/tp-vault-secrets",
+    "id": "vault-secrets"
   },
   {
     "title": "Tekton Pipeline Studio",
     "desc": "Author declarative Kubernetes-native CI/CD build definitions. Scaffold Tekton Tasks, Pipelines, and PipelineRuns, and execute interactive DAG steps runs.",
     "category": "cicd",
-    "icon": "\ud83c\udfd7\ufe0f",
+    "icon": "🏗️",
     "color": "rgb(124, 58, 237)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "pipeline.yaml",
     "link": "tekton-pipeline/",
-    "repository": "Pradeeptalari14/tp-tekton-pipeline"
+    "repository": "Pradeeptalari14/tp-tekton-pipeline",
+    "id": "tekton-pipeline"
   },
   {
     "title": "Go SRE Utility Studio",
     "desc": "Deploy high-performance Golang script tasks. Generate parallel HTTP health checkers, log parsing engines, or system metrics exporters with concurrent channels, Dockerfiles, and Makefiles.",
     "category": "observability",
-    "icon": "\ud83d\udc39",
+    "icon": "🐹",
     "color": "rgb(0, 173, 216)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "main.go",
     "link": "go-utility/",
-    "repository": "Pradeeptalari14/tp-go-utility"
+    "repository": "Pradeeptalari14/tp-go-utility",
+    "id": "go-utility"
   },
   {
     "title": "AWS CloudFormation Studio",
     "desc": "Orchestrate full AWS stacks dynamically. Generate YAML/JSON templates for VPCs, EC2 instances, ECS clusters, S3 buckets, IAM roles, ELB load balancers, CloudWatch metrics, and Route53 DNS records.",
     "category": "cloud",
-    "icon": "\u2601\ufe0f",
+    "icon": "☁️",
     "color": "rgb(255, 153, 0)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "template.yaml",
     "link": "cloudformation/",
-    "repository": "Pradeeptalari14/tp-cloudformation"
+    "repository": "Pradeeptalari14/tp-cloudformation",
+    "id": "cloudformation"
   },
   {
     "title": "Bitbucket Pipelines Studio",
     "desc": "Design automated continuous integration workflows. Generate .bitbucket-pipelines.yml configs with parallel steps, build caching, Trivy security gates, and SonarQube quality checks.",
     "category": "cicd",
-    "icon": "\ud83e\udea3",
+    "icon": "🪣",
     "color": "rgb(0, 82, 204)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "bitbucket-pipelines.yml",
     "link": "bitbucket/",
-    "repository": "Pradeeptalari14/tp-bitbucket"
+    "repository": "Pradeeptalari14/tp-bitbucket",
+    "id": "bitbucket"
   },
   {
     "title": "Apache Tomcat Tuning Studio",
     "desc": "Tune and optimize Apache Tomcat middleware services. Generate server.xml connectors, JNDI database connection pools in context.xml, and JVM memory setenv.sh configurations.",
     "category": "automation",
-    "icon": "\ud83d\ude3a",
+    "icon": "😺",
     "color": "rgb(243, 156, 18)",
     "borderClass": "border-yellow-200",
     "bgClass": "bg-yellow-50/10",
     "tag": "server.xml",
     "link": "tomcat/",
-    "repository": "Pradeeptalari14/tp-tomcat"
+    "repository": "Pradeeptalari14/tp-tomcat",
+    "id": "tomcat"
   },
   {
     "title": "Maven Build Studio",
     "desc": "Orchestrate standard Maven builds. Scaffold structured POM.xml configurations, settings.xml access credentials, compiler plugin rules, and dependency scanning gates.",
     "category": "automation",
-    "icon": "\ud83d\udce6",
+    "icon": "📦",
     "color": "rgb(192, 57, 43)",
     "borderClass": "border-red-200",
     "bgClass": "bg-red-50/10",
     "tag": "pom.xml",
     "link": "maven/",
-    "repository": "Pradeeptalari14/tp-maven"
+    "repository": "Pradeeptalari14/tp-maven",
+    "id": "maven"
   },
   {
     "title": "SonarQube Quality Gate Studio",
     "desc": "Configure automated static code quality analysis. Generate sonar-project.properties specifications, define directory exclusions, coverage minimum targets, and check gates.",
     "category": "observability",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(52, 152, 219)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "sonar-project.properties",
     "link": "sonarqube/",
-    "repository": "Pradeeptalari14/tp-sonarqube"
+    "repository": "Pradeeptalari14/tp-sonarqube",
+    "id": "sonarqube"
   },
   {
     "title": "Agile & ITSM Studio",
     "desc": "Automate IT service management delivery. Generate REST API request payloads and scripts to automate ServiceNow changes, Jira issue trackers, and PagerDuty alert triggers.",
     "category": "automation",
-    "icon": "\ud83d\udea8",
+    "icon": "🚨",
     "color": "rgb(46, 204, 113)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "servicenow-change.json",
     "link": "agile-itsm/",
-    "repository": "Pradeeptalari14/tp-agile-itsm"
+    "repository": "Pradeeptalari14/tp-agile-itsm",
+    "id": "agile-itsm"
   },
   {
     "title": "Pulumi Infrastructure Studio",
     "desc": "Compile cloud native infrastructure. Generate Pulumi stack configurations, write deployment scripts in TypeScript, Python, or Go, manage state backends, and configure deployment pipelines.",
     "category": "cloud",
-    "icon": "\ud83c\udfd7\ufe0f",
+    "icon": "🏗️",
     "color": "rgb(138, 51, 145)",
     "borderClass": "border-purple-200",
     "bgClass": "bg-purple-50/10",
     "tag": "Pulumi.yaml",
     "link": "pulumi/",
-    "repository": "Pradeeptalari14/tp-pulumi"
+    "repository": "Pradeeptalari14/tp-pulumi",
+    "id": "pulumi"
   },
   {
     "title": "SLM Fine-Tuning & Quantization Studio",
     "desc": "Design parameter-efficient fine-tuning pipelines. Generate PEFT QLoRA python scripts, select base models, configure quantization boundaries, and compile GGUF outputs.",
     "category": "ai",
-    "icon": "\ud83c\udf9b\ufe0f",
+    "icon": "🎛️",
     "color": "rgb(155, 89, 182)",
     "borderClass": "border-purple-200",
     "bgClass": "bg-purple-50/10",
     "tag": "finetune.py",
     "link": "qlora-tuning/",
-    "repository": "Pradeeptalari14/tp-qlora-tuning"
+    "repository": "Pradeeptalari14/tp-qlora-tuning",
+    "id": "qlora-tuning"
   },
   {
     "title": "Prompt Registry & Versioning Studio",
     "desc": "Manage prompts as code. Generate prompt models yaml configurations, manage system and user templates versions, route models dynamically, and configure GitOps prompt integrations.",
     "category": "ai",
-    "icon": "\ud83d\udcdd",
+    "icon": "📝",
     "color": "rgb(26, 188, 156)",
     "borderClass": "border-teal-200",
     "bgClass": "bg-teal-50/10",
     "tag": "prompts.yaml",
     "link": "promptops/",
-    "repository": "Pradeeptalari14/tp-promptops"
+    "repository": "Pradeeptalari14/tp-promptops",
+    "id": "promptops"
   },
   {
     "title": "Hugging Face & GitLFS Sync Studio",
     "desc": "Automate large models retrieval. Generate GitLFS sync scripts, Kubernetes model storage mount manifests, and checksum hash verification workflows for Hugging Face repositories.",
     "category": "ai",
-    "icon": "\ud83e\udd17",
+    "icon": "🤗",
     "color": "rgb(241, 196, 15)",
     "borderClass": "border-yellow-200",
     "bgClass": "bg-yellow-50/10",
     "tag": "sync-model.sh",
     "link": "modelops-gitops/",
-    "repository": "Pradeeptalari14/tp-modelops-gitops"
+    "repository": "Pradeeptalari14/tp-modelops-gitops",
+    "id": "modelops-gitops"
   },
   {
     "title": "LLM Red Teaming & Vulnerability Scanner Studio",
     "desc": "Design automated red-teaming pipelines for LLM security audits. Generate Garak vulnerability scan configs, select security probe targets, and verify alignment thresholds.",
     "category": "ai",
-    "icon": "\ud83c\udfaf",
+    "icon": "🎯",
     "color": "rgb(231, 76, 60)",
     "borderClass": "border-red-200",
     "bgClass": "bg-red-50/10",
     "tag": "garak-config.yaml",
     "link": "llm-redteaming/",
-    "repository": "Pradeeptalari14/tp-llm-redteaming"
+    "repository": "Pradeeptalari14/tp-llm-redteaming",
+    "id": "llm-redteaming"
   },
   {
     "title": "AI Synthetic Data Generator Studio",
     "desc": "Design synthetic training datasets pipelines. Generate python scripts for programmatic data synthesis, select pipeline topologies, configure schemas, and format output streams.",
     "category": "ai",
-    "icon": "\ud83e\uddea",
+    "icon": "🧪",
     "color": "rgb(52, 152, 219)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "generate-dataset.py",
     "link": "synthetic-data/",
-    "repository": "Pradeeptalari14/tp-synthetic-data"
+    "repository": "Pradeeptalari14/tp-synthetic-data",
+    "id": "synthetic-data"
   },
   {
     "title": "GPU Scheduler & K8s Allocator Studio",
     "desc": "Optimize multi-instance GPU partitions, configure dynamic resource allocations, and customize Kueue fair-share batch scheduling policies in Kubernetes configurations.",
     "category": "ai",
-    "icon": "\ud83c\udfce\ufe0f",
+    "icon": "🏎️",
     "color": "rgb(46, 204, 113)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "gpu-policy.yaml",
     "link": "gpu-scheduler/",
-    "repository": "Pradeeptalari14/tp-gpu-scheduler"
+    "repository": "Pradeeptalari14/tp-gpu-scheduler",
+    "id": "gpu-scheduler"
   },
   {
     "title": "MCP Server Builder Studio",
     "desc": "Build custom Model Context Protocol (MCP) servers. Register local execution tools, configure SRE metrics databases as resource schemas, and export runnable server scripts.",
     "category": "ai",
-    "icon": "\ud83d\udd0c",
+    "icon": "🔌",
     "color": "rgb(230, 126, 34)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "mcp-server.py",
     "link": "mcp-server/",
-    "repository": "Pradeeptalari14/tp-mcp-server"
+    "repository": "Pradeeptalari14/tp-mcp-server",
+    "id": "mcp-server"
   },
   {
     "title": "AI Agentic Workflow Compiler Studio",
     "desc": "Design robust multi-agent orchestration frameworks. Generate workflow graph execution files, define agent persona capabilities, select communication protocols, and register tools hooks.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(142, 68, 173)",
     "borderClass": "border-fuchsia-200",
     "bgClass": "bg-fuchsia-50/10",
     "tag": "agent-workflow.py",
     "link": "agent-workflow/",
-    "repository": "Pradeeptalari14/tp-agent-workflow"
+    "repository": "Pradeeptalari14/tp-agent-workflow",
+    "id": "agent-workflow"
   },
   {
     "title": "Azure Cognitive Search AI Studio",
     "desc": "Build and tune Azure Cognitive Search indexes with integrated Azure OpenAI embeddings. Generate search index schemas, indexing pull pipelines, and vector semantic configs.",
     "category": "ai",
-    "icon": "\ud83d\udd0d",
+    "icon": "🔍",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "search_config.json",
     "link": "azure-search-ai/",
-    "repository": "Pradeeptalari14/tp-azure-search-ai"
+    "repository": "Pradeeptalari14/tp-azure-search-ai",
+    "id": "azure-search-ai"
   },
   {
     "title": "GCP Vertex AI Model Registry Studio",
     "desc": "Deploy and track models in Vertex AI Model Registry. Generate batch prediction pipelines, model endpoint deployment specifications, and IAM service account bindings.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "vertex_deploy.py",
     "link": "gcp-vertex-ai/",
-    "repository": "Pradeeptalari14/tp-gcp-vertex-ai"
+    "repository": "Pradeeptalari14/tp-gcp-vertex-ai",
+    "id": "gcp-vertex-ai"
   },
   {
     "title": "Azure AKS Cluster Studio",
     "desc": "Orchestrate enterprise AKS clusters. Generate Terraform HCL, AKS network policies, azure-cni overlays, and Active Directory pod identity bindings.",
     "category": "cloud",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "aks_cluster.tf",
     "link": "azure-aks/",
-    "repository": "Pradeeptalari14/tp-azure-aks"
+    "repository": "Pradeeptalari14/tp-azure-aks",
+    "id": "azure-aks"
   },
   {
     "title": "Azure App Service Deployer",
     "desc": "Configure highly available Azure App Service plans. Generate slot deployments configurations, custom domain binds, dynamic logging profiles, and scaling templates.",
     "category": "cloud",
-    "icon": "\u2601\ufe0f",
+    "icon": "☁️",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "webapp_config.tf",
     "link": "azure-app-service/",
-    "repository": "Pradeeptalari14/tp-azure-app-service"
+    "repository": "Pradeeptalari14/tp-azure-app-service",
+    "id": "azure-app-service"
   },
   {
     "title": "Azure Arc Hybrid Management Studio",
     "desc": "Extend Azure control plane to external Kubernetes and bare-metal nodes. Generate onboarding scripts, policy assignments, and Azure Monitor telemetry agents bindings.",
     "category": "cloud",
-    "icon": "\ud83c\udf10",
+    "icon": "🌐",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "arc_onboard.sh",
     "link": "azure-arc/",
-    "repository": "Pradeeptalari14/tp-azure-arc"
+    "repository": "Pradeeptalari14/tp-azure-arc",
+    "id": "azure-arc"
   },
   {
     "title": "GCP GKE Autopilot Cluster Studio",
     "desc": "Provision fully managed Kubernetes setups in GCP GKE Autopilot. Generate terraform manifests, workload identity pools, and target regional load balancer rules.",
     "category": "cloud",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "gke_autopilot.tf",
     "link": "gcp-gke-autopilot/",
-    "repository": "Pradeeptalari14/tp-gcp-gke-autopilot"
+    "repository": "Pradeeptalari14/tp-gcp-gke-autopilot",
+    "id": "gcp-gke-autopilot"
   },
   {
     "title": "GCP Cloud Run Serverless Studio",
     "desc": "Configure serverless container applications on Google Cloud Run. Generate service definitions, VPC connectors, custom Domain mappings, and scaling limits configs.",
     "category": "cloud",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-cyan-200",
     "bgClass": "bg-cyan-50/10",
     "tag": "cloud_run.tf",
     "link": "gcp-cloud-run/",
-    "repository": "Pradeeptalari14/tp-gcp-cloud-run"
+    "repository": "Pradeeptalari14/tp-gcp-cloud-run",
+    "id": "gcp-cloud-run"
   },
   {
     "title": "GCP Anthos Service Mesh Studio",
     "desc": "Orchestrate multi-cluster service mesh across hybrid clouds. Generate mesh configs, mTLS egress/ingress rules, and telemetry log dashboards configurations.",
     "category": "cloud",
-    "icon": "\ud83d\udd78\ufe0f",
+    "icon": "🕸️",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-teal-200",
     "bgClass": "bg-teal-50/10",
     "tag": "asm_policy.yaml",
     "link": "gcp-anthos/",
-    "repository": "Pradeeptalari14/tp-gcp-anthos"
+    "repository": "Pradeeptalari14/tp-gcp-anthos",
+    "id": "gcp-anthos"
   },
   {
     "title": "Azure DevOps Pipelines Studio",
     "desc": "Author robust pipeline tasks for Azure DevOps. Generate multi-stage YAML pipelines, agent pool targets, secret library links, and sonarqube scans gates.",
     "category": "cicd",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "azure-pipelines.yml",
     "link": "azure-devops-pipelines/",
-    "repository": "Pradeeptalari14/tp-azure-devops-pipelines"
+    "repository": "Pradeeptalari14/tp-azure-devops-pipelines",
+    "id": "azure-devops-pipelines"
   },
   {
     "title": "GCP Cloud Build Studio",
     "desc": "Configure secure continuous build tasks on GCP. Generate cloudbuild.yaml workflows, Artifact Registry push stages, and secrets decrypter triggers.",
     "category": "cicd",
-    "icon": "\ud83c\udfd7\ufe0f",
+    "icon": "🏗️",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "cloudbuild.yaml",
     "link": "gcp-cloud-build/",
-    "repository": "Pradeeptalari14/tp-gcp-cloud-build"
+    "repository": "Pradeeptalari14/tp-gcp-cloud-build",
+    "id": "gcp-cloud-build"
   },
   {
     "title": "Azure Bicep/ARM Studio",
     "desc": "Design modular declarative configurations for Azure. Generate Bicep templates, nested parameter configuration files, and target resource group scopes definitions.",
     "category": "automation",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "main.bicep",
     "link": "azure-bicep-arm/",
-    "repository": "Pradeeptalari14/tp-azure-bicep-arm"
+    "repository": "Pradeeptalari14/tp-azure-bicep-arm",
+    "id": "azure-bicep-arm"
   },
   {
     "title": "Azure ACR Security Guardrails",
     "desc": "Secure Azure Container Registries. Generate ACR access controls, content trust validation settings, image signing tasks, and Defender security triggers.",
     "category": "automation",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "acr_policy.tf",
     "link": "azure-acr-secure/",
-    "repository": "Pradeeptalari14/tp-azure-acr-secure"
+    "repository": "Pradeeptalari14/tp-azure-acr-secure",
+    "id": "azure-acr-secure"
   },
   {
     "title": "Azure Key Vault Secret Manager",
     "desc": "Manage cloud credentials securely. Generate Key Vault policies configurations, certificate rotation schedulers, and dynamic secrets retrieval scripts.",
     "category": "automation",
-    "icon": "\ud83d\udd11",
+    "icon": "🔑",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "keyvault.tf",
     "link": "azure-key-vault/",
-    "repository": "Pradeeptalari14/tp-azure-key-vault"
+    "repository": "Pradeeptalari14/tp-azure-key-vault",
+    "id": "azure-key-vault"
   },
   {
     "title": "Azure Functions Studio",
     "desc": "Scaffold event-driven Azure Function apps. Generate serverless trigger bindings (Http, Queue, Timer), host settings configurations, and deployment packages.",
     "category": "automation",
-    "icon": "\ud83d\udce6",
+    "icon": "📦",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-purple-200",
     "bgClass": "bg-purple-50/10",
     "tag": "function.json",
     "link": "azure-functions/",
-    "repository": "Pradeeptalari14/tp-azure-functions"
+    "repository": "Pradeeptalari14/tp-azure-functions",
+    "id": "azure-functions"
   },
   {
     "title": "GCP Deployment Manager Studio",
     "desc": "Build declarative layout sheets for GCP. Generate Python/YAML templates, specify resource properties, and manage nested deployment structures.",
     "category": "automation",
-    "icon": "\ud83c\udfd7\ufe0f",
+    "icon": "🏗️",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "deployment.yaml",
     "link": "gcp-deployment-manager/",
-    "repository": "Pradeeptalari14/tp-gcp-deployment-manager"
+    "repository": "Pradeeptalari14/tp-gcp-deployment-manager",
+    "id": "gcp-deployment-manager"
   },
   {
     "title": "GCP Secret Manager Studio",
     "desc": "Store and manage API keys and keys versions on Google Cloud. Generate secret replication configurations, access permission maps, and programmatic retrieval SDKs.",
     "category": "automation",
-    "icon": "\ud83d\udd11",
+    "icon": "🔑",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-amber-200",
     "bgClass": "bg-amber-50/10",
     "tag": "secret_config.tf",
     "link": "gcp-secret-manager/",
-    "repository": "Pradeeptalari14/tp-gcp-secret-manager"
+    "repository": "Pradeeptalari14/tp-gcp-secret-manager",
+    "id": "gcp-secret-manager"
   },
   {
     "title": "GCP Cloud Functions Studio",
     "desc": "Scaffold Google Cloud serverless triggers. Generate Node.js/Python functions, Pub/Sub trigger configurations, IAM access permissions, and deploy scripts.",
     "category": "automation",
-    "icon": "\ud83d\udce6",
+    "icon": "📦",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "main.py",
     "link": "gcp-cloud-functions/",
-    "repository": "Pradeeptalari14/tp-gcp-cloud-functions"
+    "repository": "Pradeeptalari14/tp-gcp-cloud-functions",
+    "id": "gcp-cloud-functions"
   },
   {
     "title": "GCP Cloud Spanner Studio",
     "desc": "Design globally distributed Cloud Spanner SQL schemas. Generate instance configurations, DDL database setups, and optimized database session pool limits.",
     "category": "automation",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "spanner_ddl.sql",
     "link": "gcp-cloud-spanner/",
-    "repository": "Pradeeptalari14/tp-gcp-cloud-spanner"
+    "repository": "Pradeeptalari14/tp-gcp-cloud-spanner",
+    "id": "gcp-cloud-spanner"
   },
   {
     "title": "Azure Monitor & Log Analytics Studio",
     "desc": "Configure enterprise diagnostic logs sinks. Generate Log Analytics workspaces templates, Kusto Query Language (KQL) SRE alert monitors, and diagnostic metrics bindings.",
     "category": "observability",
-    "icon": "\ud83d\udcc8",
+    "icon": "📈",
     "color": "rgb(0, 120, 212)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "monitor_rules.tf",
     "link": "azure-monitor/",
-    "repository": "Pradeeptalari14/tp-azure-monitor"
+    "repository": "Pradeeptalari14/tp-azure-monitor",
+    "id": "azure-monitor"
   },
   {
     "title": "GCP Cloud Operations Monitoring Studio",
     "desc": "Design alert policies and dashboards for Google Cloud (Stackdriver). Generate MQL metric alerts, uptime checkpoints, and webhook warning routes.",
     "category": "observability",
-    "icon": "\ud83e\udeb5",
+    "icon": "🪵",
     "color": "rgb(66, 133, 244)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "metrics_dashboard.json",
     "link": "gcp-cloud-operations/",
-    "repository": "Pradeeptalari14/tp-gcp-cloud-operations"
+    "repository": "Pradeeptalari14/tp-gcp-cloud-operations",
+    "id": "gcp-cloud-operations"
   },
   {
     "title": "User Genie (Enhanced Agentic RAG)",
     "desc": "Internal on-call engineering copilot deployed within Slack. Connects to Kubernetes clusters and provides fast-or-deep retrieval.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rag_engine.py",
     "link": "user-genie/",
-    "repository": "Pradeeptalari14/tp-user-genie"
+    "repository": "Pradeeptalari14/tp-user-genie",
+    "id": "user-genie"
   },
   {
     "title": "KnowledgeOps AI",
     "desc": "Production RAG with full observability, hybrid retrieval pipelines, and integrated Prometheus/Grafana logging templates.",
     "category": "ai",
-    "icon": "\ud83d\udcc8",
+    "icon": "📈",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "observability_config.yaml",
     "link": "knowledgeops-ai/",
-    "repository": "Pradeeptalari14/tp-knowledgeops-ai"
+    "repository": "Pradeeptalari14/tp-knowledgeops-ai",
+    "id": "knowledgeops-ai"
   },
   {
     "title": "MonVisor",
     "desc": "AI monitoring configurator that automates local RAG settings and generates Alertmanager YAML alert definitions.",
     "category": "ai",
-    "icon": "\ud83e\ude7a",
+    "icon": "🩺",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "alerts_config.yaml",
     "link": "monvisor/",
-    "repository": "Pradeeptalari14/tp-monvisor"
+    "repository": "Pradeeptalari14/tp-monvisor",
+    "id": "monvisor"
   },
   {
     "title": "RAGrificant",
     "desc": "Docker Compose RAG system with health monitoring, automatic restart policies, and Slack notification integrations.",
     "category": "ai",
-    "icon": "\ud83d\udc33",
+    "icon": "🐳",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "docker-compose.yml",
     "link": "ragrificant/",
-    "repository": "Pradeeptalari14/tp-ragrificant"
+    "repository": "Pradeeptalari14/tp-ragrificant",
+    "id": "ragrificant"
   },
   {
     "title": "KubeRAG Operator",
     "desc": "Kubernetes operator managing RAG pipeline health, custom resource definitions (CRDs), and canary rollback loops.",
     "category": "ai",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "operator_deployment.yaml",
     "link": "kuberag-operator/",
-    "repository": "Pradeeptalari14/tp-kuberag-operator"
+    "repository": "Pradeeptalari14/tp-kuberag-operator",
+    "id": "kuberag-operator"
   },
   {
     "title": "bifrost-rag",
     "desc": "Configurable chunking and retrieval evaluation harness assessing Hit Rate, MRR, and Precision@K metrics.",
     "category": "ai",
-    "icon": "\ud83c\udf08",
+    "icon": "🌈",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "retrieval_harness.py",
     "link": "bifrost-rag/",
-    "repository": "Pradeeptalari14/tp-bifrost-rag"
+    "repository": "Pradeeptalari14/tp-bifrost-rag",
+    "id": "bifrost-rag"
   },
   {
     "title": "rag-select",
     "desc": "Experimentation playground for comparing different vector database search and retrieval pipeline architectures.",
     "category": "ai",
-    "icon": "\ud83d\udd00",
+    "icon": "🔀",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "architecture_compare.py",
     "link": "rag-select/",
-    "repository": "Pradeeptalari14/tp-rag-select"
+    "repository": "Pradeeptalari14/tp-rag-select",
+    "id": "rag-select"
   },
   {
     "title": "RAG Educational Microservices",
     "desc": "ChromaDB-backed microservices engineered for educational content indexing, adaptive chunking, and text vector representation.",
     "category": "ai",
-    "icon": "\ud83c\udf93",
+    "icon": "🎓",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "chroma_indexer.py",
     "link": "rag-edu/",
-    "repository": "Pradeeptalari14/tp-rag-edu"
+    "repository": "Pradeeptalari14/tp-rag-edu",
+    "id": "rag-edu"
   },
   {
     "title": "RetroRAG",
     "desc": "Diagnostic toolkit for locating weak search queries, generating recall heatmaps, and detecting missing clusters.",
     "category": "ai",
-    "icon": "\ud83d\udd75\ufe0f",
+    "icon": "🕵️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "recall_diagnostics.py",
     "link": "retrorag/",
-    "repository": "Pradeeptalari14/tp-retrorag"
+    "repository": "Pradeeptalari14/tp-retrorag",
+    "id": "retrorag"
   },
   {
     "title": "RecallBoost",
     "desc": "Automated retrieval parameter tuner using Bayesian optimization for optimal Top-K retrieval thresholds.",
     "category": "ai",
-    "icon": "\ud83d\ude80",
+    "icon": "🚀",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "tuner_params.json",
     "link": "recallboost/",
-    "repository": "Pradeeptalari14/tp-recallboost"
+    "repository": "Pradeeptalari14/tp-recallboost",
+    "id": "recallboost"
   },
   {
     "title": "DeepEval + Pytest",
     "desc": "CI/CD friendly validation testing suite using native Pytest assertions and G-Eval context checks.",
     "category": "ai",
-    "icon": "\ud83e\uddea",
+    "icon": "🧪",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "eval_test.py",
     "link": "deepeval-pytest/",
-    "repository": "Pradeeptalari14/tp-deepeval-pytest"
+    "repository": "Pradeeptalari14/tp-deepeval-pytest",
+    "id": "deepeval-pytest"
   },
   {
     "title": "RAGAS Evaluator",
     "desc": "Reference-free RAG evaluation framework measuring faithfulness, context precision, and response recall.",
     "category": "ai",
-    "icon": "\ud83d\udcca",
+    "icon": "📊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "ragas_eval.py",
     "link": "ragas/",
-    "repository": "Pradeeptalari14/tp-ragas"
+    "repository": "Pradeeptalari14/tp-ragas",
+    "id": "ragas"
   },
   {
     "title": "Cleanlab RAG Evaluator",
     "desc": "Groundedness and trustworthiness scoring harness validating context retrieval quality scores.",
     "category": "ai",
-    "icon": "\ud83e\uddfc",
+    "icon": "🧼",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "trust_evaluator.py",
     "link": "cleanlab-evaluator/",
-    "repository": "Pradeeptalari14/tp-cleanlab-evaluator"
+    "repository": "Pradeeptalari14/tp-cleanlab-evaluator",
+    "id": "cleanlab-evaluator"
   },
   {
     "title": "TruthTeller Evaluator",
     "desc": "LLM & class-based pipeline evaluator operating without ground truth references using confidence intervals.",
     "category": "ai",
-    "icon": "\ud83d\udd2e",
+    "icon": "🔮",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "evaluator_config.yaml",
     "link": "truthteller/",
-    "repository": "Pradeeptalari14/tp-truthteller"
+    "repository": "Pradeeptalari14/tp-truthteller",
+    "id": "truthteller"
   },
   {
     "title": "RAG-Bench",
     "desc": "CLI benchmarking suite featuring predefined datasets (Natural Questions, HotpotQA) and Weights & Biases integrations.",
     "category": "ai",
-    "icon": "\ud83e\ude91",
+    "icon": "🪑",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "benchmark_runner.py",
     "link": "rag-bench/",
-    "repository": "Pradeeptalari14/tp-rag-bench"
+    "repository": "Pradeeptalari14/tp-rag-bench",
+    "id": "rag-bench"
   },
   {
     "title": "Four-i Level-1 Observability (AWS)",
     "desc": "CloudWatch RAG observability framework capturing retrieval latency metrics and collecting user feedback logs.",
     "category": "ai",
-    "icon": "\u2601\ufe0f",
+    "icon": "☁️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cloudwatch_dashboard.json",
     "link": "aws-level1-observability/",
-    "repository": "Pradeeptalari14/tp-aws-level1-observability"
+    "repository": "Pradeeptalari14/tp-aws-level1-observability",
+    "id": "aws-level1-observability"
   },
   {
     "title": "Open Monitor AI Agent Monitoring",
     "desc": "Open-source Prometheus observability stack mapping agent token costs, latency, and response accuracy in real-time.",
     "category": "ai",
-    "icon": "\ud83d\udd2c",
+    "icon": "🔬",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "grafana_dashboard.json",
     "link": "open-monitor-agent/",
-    "repository": "Pradeeptalari14/tp-open-monitor-agent"
+    "repository": "Pradeeptalari14/tp-open-monitor-agent",
+    "id": "open-monitor-agent"
   },
   {
     "title": "OpenLIT-RAG & Stack",
     "desc": "Production playground for modular telemetry collector configurations and OpenTelemetry traces.",
     "category": "ai",
-    "icon": "\ud83d\udd25",
+    "icon": "🔥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "openlit_telemetry.py",
     "link": "openlit-rag/",
-    "repository": "Pradeeptalari14/tp-openlit-rag"
+    "repository": "Pradeeptalari14/tp-openlit-rag",
+    "id": "openlit-rag"
   },
   {
     "title": "RAG Radar",
     "desc": "Embedding drift and query anomaly detector establishing dynamic performance baselines over Elasticsearch indexes.",
     "category": "ai",
-    "icon": "\ud83d\udce1",
+    "icon": "📡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "drift_detector.py",
     "link": "rag-radar/",
-    "repository": "Pradeeptalari14/tp-rag-radar"
+    "repository": "Pradeeptalari14/tp-rag-radar",
+    "id": "rag-radar"
   },
   {
     "title": "VigilRAG",
     "desc": "Streamlit-backed telemetry dashboard pulling from Prometheus and Redis to review search performance weekly.",
     "category": "ai",
-    "icon": "\ud83d\udea8",
+    "icon": "🚨",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "monitoring_dashboard.py",
     "link": "vigilrag/",
-    "repository": "Pradeeptalari14/tp-vigilrag"
+    "repository": "Pradeeptalari14/tp-vigilrag",
+    "id": "vigilrag"
   },
   {
     "title": "tclp Text Fingerprinting",
     "desc": "High-performance text deduplication utility written in Rust. Supports MinHash, LSH, SimHash, and TLSH.",
     "category": "ai",
-    "icon": "\u2699\ufe0f",
+    "icon": "⚙️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "fingerprint_utils.rs",
     "link": "tclp/",
-    "repository": "Pradeeptalari14/tp-tclp"
+    "repository": "Pradeeptalari14/tp-tclp",
+    "id": "tclp"
   },
   {
     "title": "dedup4pg",
     "desc": "Database-level duplicate chunk reducer using PostgreSQL LSH buckets and Jaccard threshold SQL queries.",
     "category": "ai",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "dedup_trigger.sql",
     "link": "dedup4pg/",
-    "repository": "Pradeeptalari14/tp-dedup4pg"
+    "repository": "Pradeeptalari14/tp-dedup4pg",
+    "id": "dedup4pg"
   },
   {
     "title": "DedupFlow",
     "desc": "n8n workflow for exact and semantic document deduplication using MD5 hashes and Redis caches.",
     "category": "ai",
-    "icon": "\ud83d\udd04",
+    "icon": "🔄",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "dedup_workflow.json",
     "link": "dedupflow/",
-    "repository": "Pradeeptalari14/tp-dedupflow"
+    "repository": "Pradeeptalari14/tp-dedupflow",
+    "id": "dedupflow"
   },
   {
     "title": "SemanticClean",
     "desc": "Background dedup service mapping doc_hash columns and executing auto-merge policies using Celery and pgvector.",
     "category": "ai",
-    "icon": "\ud83e\uddfc",
+    "icon": "🧼",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "celery_task.py",
     "link": "semantic-clean/",
-    "repository": "Pradeeptalari14/tp-semantic-clean"
+    "repository": "Pradeeptalari14/tp-semantic-clean",
+    "id": "semantic-clean"
   },
   {
     "title": "Multi-Tenant RAG with Metadata Filtering (AWS)",
     "desc": "Secure tenant isolation with AWS Bedrock and Cognito groups. Filters queries dynamically by tenant ID.",
     "category": "ai",
-    "icon": "\ud83d\udd10",
+    "icon": "🔐",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cognito_policy.json",
     "link": "aws-multitenant-rag/",
-    "repository": "Pradeeptalari14/tp-aws-multitenant-rag"
+    "repository": "Pradeeptalari14/tp-aws-multitenant-rag",
+    "id": "aws-multitenant-rag"
   },
   {
     "title": "SharePoint Document Permissions Pipeline",
     "desc": "Ingestion pipeline propagating SharePoint ACL metadata and Entra ID object identifiers for secure search.",
     "category": "ai",
-    "icon": "\ud83d\udce6",
+    "icon": "📦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "entra_permissions.json",
     "link": "sharepoint-permissions-pipeline/",
-    "repository": "Pradeeptalari14/tp-sharepoint-permissions-pipeline"
+    "repository": "Pradeeptalari14/tp-sharepoint-permissions-pipeline",
+    "id": "sharepoint-permissions-pipeline"
   },
   {
     "title": "Metadata-Aware RAG for RBAC",
     "desc": "Chunk-level RBAC enforcement matching user role access attributes inside vector databases payloads.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rbac_metadata.json",
     "link": "metadata-aware-rbac/",
-    "repository": "Pradeeptalari14/tp-metadata-aware-rbac"
+    "repository": "Pradeeptalari14/tp-metadata-aware-rbac",
+    "id": "metadata-aware-rbac"
   },
   {
     "title": "OPAL & OPA Policy Controller",
     "desc": "Open Policy Agent integration templates. Evaluates document visibility policies as code in real-time.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "policy.rego",
     "link": "opal-opa/",
-    "repository": "Pradeeptalari14/tp-opal-opa"
+    "repository": "Pradeeptalari14/tp-opal-opa",
+    "id": "opal-opa"
   },
   {
     "title": "Permify RAG Filter",
     "desc": "Permify authorization filter blocking unauthorized retrieval payloads in PostgreSQL and vector databases.",
     "category": "ai",
-    "icon": "\ud83d\udd11",
+    "icon": "🔑",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "permify_rules.json",
     "link": "permify-filter/",
-    "repository": "Pradeeptalari14/tp-permify-filter"
+    "repository": "Pradeeptalari14/tp-permify-filter",
+    "id": "permify-filter"
   },
   {
     "title": "Role-Based Filtering in Vector DBs",
     "desc": "Metadata enforcement rules for Pinecone, Milvus, and Qdrant to filter out document records by role flags.",
     "category": "ai",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "vector_filter.json",
     "link": "vector-db-rbac/",
-    "repository": "Pradeeptalari14/tp-vector-db-rbac"
+    "repository": "Pradeeptalari14/tp-vector-db-rbac",
+    "id": "vector-db-rbac"
   },
   {
     "title": "Amazon Bedrock Knowledge Bases Filtering",
     "desc": "Metadata search filters compiler for Bedrock Knowledge Bases using relational key-value configurations.",
     "category": "ai",
-    "icon": "\u2601\ufe0f",
+    "icon": "☁️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "kb_filter.json",
     "link": "bedrock-metadata-filtering/",
-    "repository": "Pradeeptalari14/tp-bedrock-metadata-filtering"
+    "repository": "Pradeeptalari14/tp-bedrock-metadata-filtering",
+    "id": "bedrock-metadata-filtering"
   },
   {
     "title": "MetaGuard",
     "desc": "Pydantic schemas validating metadata query templates and rejecting malformed search requests.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "schema_validation.py",
     "link": "metaguard/",
-    "repository": "Pradeeptalari14/tp-metaguard"
+    "repository": "Pradeeptalari14/tp-metaguard",
+    "id": "metaguard"
   },
   {
     "title": "Filter Optimizer",
     "desc": "Query log analyzer recommending composite indexes and filter overrides for vector database clients.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "filter_recommendation.py",
     "link": "filter-optimizer/",
-    "repository": "Pradeeptalari14/tp-filter-optimizer"
+    "repository": "Pradeeptalari14/tp-filter-optimizer",
+    "id": "filter-optimizer"
   },
   {
     "title": "rag-fallback (Adaptive Thresholding)",
     "desc": "Dynamic similarity search and reranker thresholds tuned dynamically based on query profile scores.",
     "category": "ai",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "adaptive_thresholds.py",
     "link": "rag-fallback-adaptive/",
-    "repository": "Pradeeptalari14/tp-rag-fallback-adaptive"
+    "repository": "Pradeeptalari14/tp-rag-fallback-adaptive",
+    "id": "rag-fallback-adaptive"
   },
   {
     "title": "superRAG",
     "desc": "Unified RAG search engine with hybrid weighting scores and similarity cutoff tuning limits.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "hybrid_search.py",
     "link": "superrag/",
-    "repository": "Pradeeptalari14/tp-superrag"
+    "repository": "Pradeeptalari14/tp-superrag",
+    "id": "superrag"
   },
   {
     "title": "Adaptive-RAG",
     "desc": "Search complexity classifier selecting thin-vs-dense retrieval based on query token entropy.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "complexity_classifier.py",
     "link": "adaptive-rag/",
-    "repository": "Pradeeptalari14/tp-adaptive-rag"
+    "repository": "Pradeeptalari14/tp-adaptive-rag",
+    "id": "adaptive-rag"
   },
   {
     "title": "Threshold Tuner",
     "desc": "NumPy Grid search script parsing query evaluation datasets to optimize cosine similarity boundaries.",
     "category": "ai",
-    "icon": "\ud83c\udf9b\ufe0f",
+    "icon": "🎛️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "grid_search.py",
     "link": "threshold-tuner/",
-    "repository": "Pradeeptalari14/tp-threshold-tuner"
+    "repository": "Pradeeptalari14/tp-threshold-tuner",
+    "id": "threshold-tuner"
   },
   {
     "title": "Cohere Rerank (API-based)",
     "desc": "Reranker connector interface leveraging the Cohere rerank API endpoints to extract top-N items.",
     "category": "ai",
-    "icon": "\ud83d\udd0c",
+    "icon": "🔌",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cohere_rerank.py",
     "link": "cohere-rerank/",
-    "repository": "Pradeeptalari14/tp-cohere-rerank"
+    "repository": "Pradeeptalari14/tp-cohere-rerank",
+    "id": "cohere-rerank"
   },
   {
     "title": "BGE Reranker v2-gte3",
     "desc": "Local cross-encoder loader running BGE model weights for high-precision local sentence scores.",
     "category": "ai",
-    "icon": "\ud83d\ude80",
+    "icon": "🚀",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "bge_reranker.py",
     "link": "bge-reranker/",
-    "repository": "Pradeeptalari14/tp-bge-reranker"
+    "repository": "Pradeeptalari14/tp-bge-reranker",
+    "id": "bge-reranker"
   },
   {
     "title": "Synthesis Reranking Service",
     "desc": "Hybrid reranking aggregator blending Cohere API and local BGE model scores for optimal MRR@10.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "hybrid_reranker.py",
     "link": "synthesis-reranking-service/",
-    "repository": "Pradeeptalari14/tp-synthesis-reranking-service"
+    "repository": "Pradeeptalari14/tp-synthesis-reranking-service",
+    "id": "synthesis-reranking-service"
   },
   {
     "title": "FlashRank Studio",
     "desc": "Ultra-lightweight CPU-optimized sentence reranker running local ONNX structures.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "flashrank_onnx.py",
     "link": "flashrank/",
-    "repository": "Pradeeptalari14/tp-flashrank"
+    "repository": "Pradeeptalari14/tp-flashrank",
+    "id": "flashrank"
   },
   {
     "title": "Rerank Gateway",
     "desc": "Unified FastAPI routing gateway mediating traffic across multiple third-party reranking endpoints.",
     "category": "ai",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rerank_gateway.py",
     "link": "rerank-gateway/",
-    "repository": "Pradeeptalari14/tp-rerank-gateway"
+    "repository": "Pradeeptalari14/tp-rerank-gateway",
+    "id": "rerank-gateway"
   },
   {
     "title": "ProtecRAG",
     "desc": "LlamaGuard pipeline scanning retrieved contexts for toxic content and prompt injection payloads.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "guardrails_rules.yaml",
     "link": "protecrag/",
-    "repository": "Pradeeptalari14/tp-protecrag"
+    "repository": "Pradeeptalari14/tp-protecrag",
+    "id": "protecrag"
   },
   {
     "title": "PromptSecurity (Firewall)",
     "desc": "JSON-configured proxy firewall auditing raw prompts for bypass patterns and jailbreak attempts.",
     "category": "ai",
-    "icon": "\ud83d\udd25",
+    "icon": "🔥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "firewall_config.json",
     "link": "prompt-security-firewall/",
-    "repository": "Pradeeptalari14/tp-prompt-security-firewall"
+    "repository": "Pradeeptalari14/tp-prompt-security-firewall",
+    "id": "prompt-security-firewall"
   },
   {
     "title": "RAG Guardrails Action (GitHub Action)",
     "desc": "Vulnerability assessment action auditing repo files for context poisoning vulnerabilities.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "action.yml",
     "link": "rag-guardrails-action/",
-    "repository": "Pradeeptalari14/tp-rag-guardrails-action"
+    "repository": "Pradeeptalari14/tp-rag-guardrails-action",
+    "id": "rag-guardrails-action"
   },
   {
     "title": "Injection Catcher",
     "desc": "Local transformer classifier running lightweight models to flag malicious inputs under 50ms.",
     "category": "ai",
-    "icon": "\ud83c\udfa3",
+    "icon": "🎣",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "injection_detector.py",
     "link": "injection-catcher/",
-    "repository": "Pradeeptalari14/tp-injection-catcher"
+    "repository": "Pradeeptalari14/tp-injection-catcher",
+    "id": "injection-catcher"
   },
   {
     "title": "Guardian Shield Proxy",
     "desc": "NGINX reverse proxy leveraging custom Lua scripts to scan prompt payloads at the gateway layer.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "nginx_shield.conf",
     "link": "guardian-shield/",
-    "repository": "Pradeeptalari14/tp-guardian-shield"
+    "repository": "Pradeeptalari14/tp-guardian-shield",
+    "id": "guardian-shield"
   },
   {
     "title": "Awesome-Chunker",
     "desc": "Scaffolding utility generating fixed-size, recursive, or semantic sentence chunking configurations.",
     "category": "ai",
-    "icon": "\ud83d\udcd0",
+    "icon": "📐",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "chunking_harness.py",
     "link": "awesome-chunker/",
-    "repository": "Pradeeptalari14/tp-awesome-chunker"
+    "repository": "Pradeeptalari14/tp-awesome-chunker",
+    "id": "awesome-chunker"
   },
   {
     "title": "Late Chunking with Jina",
     "desc": "Vector indexing configs implementing late token chunking for improved document context retention.",
     "category": "ai",
-    "icon": "\ud83d\udd17",
+    "icon": "🔗",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "late_chunking.py",
     "link": "late-chunking-jina/",
-    "repository": "Pradeeptalari14/tp-late-chunking-jina"
+    "repository": "Pradeeptalari14/tp-late-chunking-jina",
+    "id": "late-chunking-jina"
   },
   {
     "title": "RAG Finance Chunking",
     "desc": "Custom text extractor splitting corporate reports and tables into semantic sections with 20% overlap.",
     "category": "ai",
-    "icon": "\ud83d\udcb0",
+    "icon": "💰",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "finance_chunking.py",
     "link": "rag-finance-chunking/",
-    "repository": "Pradeeptalari14/tp-rag-finance-chunking"
+    "repository": "Pradeeptalari14/tp-rag-finance-chunking",
+    "id": "rag-finance-chunking"
   },
   {
     "title": "ChunkViz",
     "desc": "Visualizer interface for reviewing chunk splits, sentence token spans, and overlapping boundaries.",
     "category": "ai",
-    "icon": "\ud83d\udc41\ufe0f",
+    "icon": "👁️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "boundary_viz.py",
     "link": "chunkviz/",
-    "repository": "Pradeeptalari14/tp-chunkviz"
+    "repository": "Pradeeptalari14/tp-chunkviz",
+    "id": "chunkviz"
   },
   {
     "title": "SmartChunk",
     "desc": "NLTK-guided semantic segmenter preserving markdown headers, lists, and tables intact.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "smart_chunker.py",
     "link": "smartchunk/",
-    "repository": "Pradeeptalari14/tp-smartchunk"
+    "repository": "Pradeeptalari14/tp-smartchunk",
+    "id": "smartchunk"
   },
   {
     "title": "Q-Embed (Quantized Embedding)",
     "desc": "Utility for initializing 1-bit binary and Int8 quantized embedding models for memory optimization.",
     "category": "ai",
-    "icon": "\ud83d\udcd0",
+    "icon": "📐",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "quantized_embedding.py",
     "link": "q-embed/",
-    "repository": "Pradeeptalari14/tp-q-embed"
+    "repository": "Pradeeptalari14/tp-q-embed",
+    "id": "q-embed"
   },
   {
     "title": "bge-telecom (Telecom Embedding)",
     "desc": "Triplet loss configuration files optimized for tuning embeddings on telecommunication documentation.",
     "category": "ai",
-    "icon": "\ud83d\udcde",
+    "icon": "📞",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "telecom_triplet.py",
     "link": "bge-telecom/",
-    "repository": "Pradeeptalari14/tp-bge-telecom"
+    "repository": "Pradeeptalari14/tp-bge-telecom",
+    "id": "bge-telecom"
   },
   {
     "title": "CSH-v2 Models",
     "desc": "Clinical, security, and legal domain embedding models initialization and deployment specifications.",
     "category": "ai",
-    "icon": "\ud83c\udfe5",
+    "icon": "🏥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "domain_embeddings.py",
     "link": "csh-v2-models/",
-    "repository": "Pradeeptalari14/tp-csh-v2-models"
+    "repository": "Pradeeptalari14/tp-csh-v2-models",
+    "id": "csh-v2-models"
   },
   {
     "title": "Embedding Registry",
     "desc": "Versioned database repository template linking SQLite model indexes with static cloud storage buckets.",
     "category": "ai",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "registry_schema.sql",
     "link": "embedding-registry/",
-    "repository": "Pradeeptalari14/tp-embedding-registry"
+    "repository": "Pradeeptalari14/tp-embedding-registry",
+    "id": "embedding-registry"
   },
   {
     "title": "Model Drift Detector",
     "desc": "Audit collector running Kolmogorov-Smirnov statistical tests on embedding output distributions.",
     "category": "ai",
-    "icon": "\ud83e\ude7a",
+    "icon": "🩺",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "drift_detector.py",
     "link": "model-drift-detector/",
-    "repository": "Pradeeptalari14/tp-model-drift-detector"
+    "repository": "Pradeeptalari14/tp-model-drift-detector",
+    "id": "model-drift-detector"
   },
   {
     "title": "Redis-CESC",
     "desc": "Semantic prompt cache leveraging cosine similarity scoring inside Redis vector keys.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "semantic_cache.py",
     "link": "redis-cesc/",
-    "repository": "Pradeeptalari14/tp-redis-cesc"
+    "repository": "Pradeeptalari14/tp-redis-cesc",
+    "id": "redis-cesc"
   },
   {
     "title": "LangChain + n8n Template",
     "desc": "Production-ready n8n RAG workflow template with semantic caching and cache hit tracking dashboards.",
     "category": "ai",
-    "icon": "\ud83d\udd04",
+    "icon": "🔄",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "workflow_cache.json",
     "link": "langchain-n8n-template/",
-    "repository": "Pradeeptalari14/tp-langchain-n8n-template"
+    "repository": "Pradeeptalari14/tp-langchain-n8n-template",
+    "id": "langchain-n8n-template"
   },
   {
     "title": "Enterprise-Grade RAG with Semantic Cache",
     "desc": "Modular caching architecture separating prompt validation, schema hashing, and Redis storage calls.",
     "category": "ai",
-    "icon": "\u2699\ufe0f",
+    "icon": "⚙️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "redis_cache.py",
     "link": "enterprise-semantic-cache/",
-    "repository": "Pradeeptalari14/tp-enterprise-semantic-cache"
+    "repository": "Pradeeptalari14/tp-enterprise-semantic-cache",
+    "id": "enterprise-semantic-cache"
   },
   {
     "title": "GPTSafe (Semantic Cache)",
     "desc": "Open-source prompt cache using local FAISS indexes and SQLite to bypass repetitive model calls.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "semantic_cache.py",
     "link": "gptsafe-cache/",
-    "repository": "Pradeeptalari14/tp-gptsafe-cache"
+    "repository": "Pradeeptalari14/tp-gptsafe-cache",
+    "id": "gptsafe-cache"
   },
   {
     "title": "CacheWarmer",
     "desc": "Scheduler script pre-computing vector index mappings for frequent queries to reduce latency.",
     "category": "ai",
-    "icon": "\ud83d\udd25",
+    "icon": "🔥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cache_warmer.py",
     "link": "cachewarmer/",
-    "repository": "Pradeeptalari14/tp-cachewarmer"
+    "repository": "Pradeeptalari14/tp-cachewarmer",
+    "id": "cachewarmer"
   },
   {
     "title": "Langfuse",
     "desc": "Complete open-source LLM engineering pipeline providing prompt traces, evaluations, and metrics.",
     "category": "ai",
-    "icon": "\ud83d\udd2c",
+    "icon": "🔬",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "docker-compose.yml",
     "link": "langfuse-observability/",
-    "repository": "Pradeeptalari14/tp-langfuse-observability"
+    "repository": "Pradeeptalari14/tp-langfuse-observability",
+    "id": "langfuse-observability"
   },
   {
     "title": "RAG Logger",
     "desc": "Lightweight utility logger compiling queries, search metadata, and token completion counts.",
     "category": "ai",
-    "icon": "\ud83d\udcdd",
+    "icon": "📝",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rag_logger.py",
     "link": "rag-logger/",
-    "repository": "Pradeeptalari14/tp-rag-logger"
+    "repository": "Pradeeptalari14/tp-rag-logger",
+    "id": "rag-logger"
   },
   {
     "title": "Opal (Comet)",
     "desc": "Comet ML integration scripts tracking prompt modifications, token costs, and output scores.",
     "category": "ai",
-    "icon": "\u2604\ufe0f",
+    "icon": "☄️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "comet_eval.py",
     "link": "opal-comet/",
-    "repository": "Pradeeptalari14/tp-opal-comet"
+    "repository": "Pradeeptalari14/tp-opal-comet",
+    "id": "opal-comet"
   },
   {
     "title": "TraceRAG",
     "desc": "OpenTelemetry instrumentation scripts logging search latencies directly to Jaeger tracing backends.",
     "category": "ai",
-    "icon": "\ud83d\udd75\ufe0f",
+    "icon": "🕵️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "opentelemetry_traces.py",
     "link": "tracerag/",
-    "repository": "Pradeeptalari14/tp-tracerag"
+    "repository": "Pradeeptalari14/tp-tracerag",
+    "id": "tracerag"
   },
   {
     "title": "SRE logging Decorator",
     "desc": "JSON decorator redacting PII data and outputting logs configured for AWS CloudWatch and Grafana.",
     "category": "ai",
-    "icon": "\ud83e\ude7a",
+    "icon": "🩺",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "json_logger.py",
     "link": "sre-logging-decorator/",
-    "repository": "Pradeeptalari14/tp-sre-logging-decorator"
+    "repository": "Pradeeptalari14/tp-sre-logging-decorator",
+    "id": "sre-logging-decorator"
   },
   {
     "title": "modelab",
     "desc": "API-agnostic Python evaluation harness routing query traffic across multiple model providers.",
     "category": "ai",
-    "icon": "\ud83e\uddea",
+    "icon": "🧪",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "ab_testing.py",
     "link": "modelab/",
-    "repository": "Pradeeptalari14/tp-modelab"
+    "repository": "Pradeeptalari14/tp-modelab",
+    "id": "modelab"
   },
   {
     "title": "Raindrop Experiments",
     "desc": "A/B testing integration configurations managing model variants, system prompt updates, and PostHog logs.",
     "category": "ai",
-    "icon": "\ud83d\udca7",
+    "icon": "💧",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "posthog_config.json",
     "link": "raindrop-experiments/",
-    "repository": "Pradeeptalari14/tp-raindrop-experiments"
+    "repository": "Pradeeptalari14/tp-raindrop-experiments",
+    "id": "raindrop-experiments"
   },
   {
     "title": "RAG Splitter",
     "desc": "n8n workflow node dividing prompt requests 50/50 via user ID hashes and logging runs in Google Sheets.",
     "category": "ai",
-    "icon": "\u2702\ufe0f",
+    "icon": "✂️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "traffic_splitter.json",
     "link": "rag-splitter/",
-    "repository": "Pradeeptalari14/tp-rag-splitter"
+    "repository": "Pradeeptalari14/tp-rag-splitter",
+    "id": "rag-splitter"
   },
   {
     "title": "ConductRAG",
     "desc": "Statistical calculator analyzing sample size requirements and model accuracy variations.",
     "category": "ai",
-    "icon": "\ud83d\udcca",
+    "icon": "📊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "stats_calculator.py",
     "link": "conductrag/",
-    "repository": "Pradeeptalari14/tp-conductrag"
+    "repository": "Pradeeptalari14/tp-conductrag",
+    "id": "conductrag"
   },
   {
     "title": "Real-Time CDC Pipeline for RAG",
     "desc": "CDC pipeline loader streaming database mutations to vector indexes via RisingWave configurations.",
     "category": "ai",
-    "icon": "\ud83d\udd04",
+    "icon": "🔄",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cdc_pipeline.yaml",
     "link": "realtime-cdc-pipeline/",
-    "repository": "Pradeeptalari14/tp-realtime-cdc-pipeline"
+    "repository": "Pradeeptalari14/tp-realtime-cdc-pipeline",
+    "id": "realtime-cdc-pipeline"
   },
   {
     "title": "LiveVector Lake",
     "desc": "Temporal retrieval engine maintaining versioned indexes for real-time document search.",
     "category": "ai",
-    "icon": "\ud83c\udf0a",
+    "icon": "🌊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "versioned_index.py",
     "link": "livevector-lake/",
-    "repository": "Pradeeptalari14/tp-livevector-lake"
+    "repository": "Pradeeptalari14/tp-livevector-lake",
+    "id": "livevector-lake"
   },
   {
     "title": "vpage3-core",
     "desc": "Fast incremental crawler checking content hashes and invalidating stale indexes.",
     "category": "ai",
-    "icon": "\u2699\ufe0f",
+    "icon": "⚙️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "change_detector.ts",
     "link": "vpage3-core/",
-    "repository": "Pradeeptalari14/tp-vpage3-core"
+    "repository": "Pradeeptalari14/tp-vpage3-core",
+    "id": "vpage3-core"
   },
   {
     "title": "CleanVector",
     "desc": "Index cleaner script finding and purging deleted or expired document vectors from registries.",
     "category": "ai",
-    "icon": "\ud83e\uddfc",
+    "icon": "🧼",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cleanup_cron.py",
     "link": "cleanvector/",
-    "repository": "Pradeeptalari14/tp-cleanvector"
+    "repository": "Pradeeptalari14/tp-cleanvector",
+    "id": "cleanvector"
   },
   {
     "title": "WebWatcher",
     "desc": "BeautifulSoup crawler checking site ETag updates and enqueueing changed files for re-indexing.",
     "category": "ai",
-    "icon": "\ud83d\udc41\ufe0f",
+    "icon": "👁️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "url_watcher.py",
     "link": "webwatcher/",
-    "repository": "Pradeeptalari14/tp-webwatcher"
+    "repository": "Pradeeptalari14/tp-webwatcher",
+    "id": "webwatcher"
   },
   {
     "title": "Fastest-Multimodal-Rag",
     "desc": "Extractor dividing text, tables, and image elements into separate document stores using LlamaIndex.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "multimodal_rag.py",
     "link": "fastest-multimodal-rag/",
-    "repository": "Pradeeptalari14/tp-fastest-multimodal-rag"
+    "repository": "Pradeeptalari14/tp-fastest-multimodal-rag",
+    "id": "fastest-multimodal-rag"
   },
   {
     "title": "PDF-RAG",
     "desc": "High-performance PDF parser parsing formatting grids and retrieving visual details using Streamlit.",
     "category": "ai",
-    "icon": "\ud83d\udcc4",
+    "icon": "📄",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "pdf_rag.py",
     "link": "pdf-rag/",
-    "repository": "Pradeeptalari14/tp-pdf-rag"
+    "repository": "Pradeeptalari14/tp-pdf-rag",
+    "id": "pdf-rag"
   },
   {
     "title": "Multimodal RAG Chatbot (AWS)",
     "desc": "AWS Bedrock assistant mapping multi-format documents using Amazon Textract and OpenSearch.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "textract_pipeline.py",
     "link": "aws-multimodal-chatbot/",
-    "repository": "Pradeeptalari14/tp-aws-multimodal-chatbot"
+    "repository": "Pradeeptalari14/tp-aws-multimodal-chatbot",
+    "id": "aws-multimodal-chatbot"
   },
   {
     "title": "ChartRAG",
     "desc": "Specialized chart image reader querying data labels and layout coordinates using GPT-4o.",
     "category": "ai",
-    "icon": "\ud83d\udcca",
+    "icon": "📊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "chart_retriever.py",
     "link": "chartrag/",
-    "repository": "Pradeeptalari14/tp-chartrag"
+    "repository": "Pradeeptalari14/tp-chartrag",
+    "id": "chartrag"
   },
   {
     "title": "AudioRAG",
     "desc": "Speech transcript extractor matching search queries via Whisper and CLAP embedding spaces.",
     "category": "ai",
-    "icon": "\ud83d\udd0a",
+    "icon": "🔊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "audio_retriever.py",
     "link": "audiorag/",
-    "repository": "Pradeeptalari14/tp-audiorag"
+    "repository": "Pradeeptalari14/tp-audiorag",
+    "id": "audiorag"
   },
   {
     "title": "AdaGate",
     "desc": "Token-budgeted search proxy limiting retrieval costs dynamically for expensive multi-turn loops.",
     "category": "ai",
-    "icon": "\ud83d\udcb0",
+    "icon": "💰",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "evidence_controller.py",
     "link": "adagate/",
-    "repository": "Pradeeptalari14/tp-adagate"
+    "repository": "Pradeeptalari14/tp-adagate",
+    "id": "adagate"
   },
   {
     "title": "Context-Engine",
     "desc": "Context orchestrator calculating token lengths to prevent context limit errors.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "context_manager.py",
     "link": "context-engine/",
-    "repository": "Pradeeptalari14/tp-context-engine"
+    "repository": "Pradeeptalari14/tp-context-engine",
+    "id": "context-engine"
   },
   {
     "title": "RAG-Cost-OS",
     "desc": "Cost tracker compiling detailed model token usage statistics and outputting JSON dashboards.",
     "category": "ai",
-    "icon": "\ud83d\udcb0",
+    "icon": "💰",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cost_tracker.ts",
     "link": "rag-cost-os/",
-    "repository": "Pradeeptalari14/tp-rag-cost-os"
+    "repository": "Pradeeptalari14/tp-rag-cost-os",
+    "id": "rag-cost-os"
   },
   {
     "title": "BudgetGuard",
     "desc": "Rate limiter decorator monitoring active API credentials and triggering Slack warning webhooks.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "budget_decorator.py",
     "link": "budgetguard/",
-    "repository": "Pradeeptalari14/tp-budgetguard"
+    "repository": "Pradeeptalari14/tp-budgetguard",
+    "id": "budgetguard"
   },
   {
     "title": "Cost-Aware Router",
     "desc": "Lightweight classifier routing queries to cheaper models based on semantic difficulty.",
     "category": "ai",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "cost_router.py",
     "link": "cost-aware-router/",
-    "repository": "Pradeeptalari14/tp-cost-aware-router"
+    "repository": "Pradeeptalari14/tp-cost-aware-router",
+    "id": "cost-aware-router"
   },
   {
     "title": "EU PII Anonymization (Multilingual)",
     "desc": "CPU-optimized PII redaction pipeline validating document contexts for GDPR compliance.",
     "category": "ai",
-    "icon": "\ud83c\uddea\ud83c\uddfa",
+    "icon": "🇪🇺",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "pii_redactor.py",
     "link": "eu-pii-anonymization/",
-    "repository": "Pradeeptalari14/tp-eu-pii-anonymization"
+    "repository": "Pradeeptalari14/tp-eu-pii-anonymization",
+    "id": "eu-pii-anonymization"
   },
   {
     "title": "gdpr-safe-rag",
     "desc": "GDPR audit toolkit tracking retrieval pathways and sanitizing prompt logs prior to external APIs calls.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "gdpr_toolkit.py",
     "link": "gdpr-safe-rag/",
-    "repository": "Pradeeptalari14/tp-gdpr-safe-rag"
+    "repository": "Pradeeptalari14/tp-gdpr-safe-rag",
+    "id": "gdpr-safe-rag"
   },
   {
     "title": "Enforcer-Reg-Patterns",
     "desc": "Regulatory pattern compliance scanner filtering out sensitive data tags from indexed text chunks.",
     "category": "ai",
-    "icon": "\ud83d\udccf",
+    "icon": "📏",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "regulatory_enforcer.py",
     "link": "enforcer-reg-patterns/",
-    "repository": "Pradeeptalari14/tp-enforcer-reg-patterns"
+    "repository": "Pradeeptalari14/tp-enforcer-reg-patterns",
+    "id": "enforcer-reg-patterns"
   },
   {
     "title": "Anonymizer Proxy",
     "desc": "Envoy reverse proxy running Presidio scripts to mask private data fields inside HTTP flows.",
     "category": "ai",
-    "icon": "\ud83d\udd75\ufe0f",
+    "icon": "🕵️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "envoy_proxy.yaml",
     "link": "anonymizer-proxy/",
-    "repository": "Pradeeptalari14/tp-anonymizer-proxy"
+    "repository": "Pradeeptalari14/tp-anonymizer-proxy",
+    "id": "anonymizer-proxy"
   },
   {
     "title": "AuditRAG",
     "desc": "Tamper-evident query logger storing cryptographic hash chains inside local SQLite instances.",
     "category": "ai",
-    "icon": "\ud83d\udcdd",
+    "icon": "📝",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "immutable_log.py",
     "link": "auditrag/",
-    "repository": "Pradeeptalari14/tp-auditrag"
+    "repository": "Pradeeptalari14/tp-auditrag",
+    "id": "auditrag"
   },
   {
     "title": "Granite Guardian",
     "desc": "Model checker pipeline evaluating response alignment, bias flags, and hallucination scores.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "guardian_eval.py",
     "link": "granite-guardian/",
-    "repository": "Pradeeptalari14/tp-granite-guardian"
+    "repository": "Pradeeptalari14/tp-granite-guardian",
+    "id": "granite-guardian"
   },
   {
     "title": "doxa",
     "desc": "Provenance verifier cross-checking context claims without invoking external LLM models.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "provenance_checker.py",
     "link": "doxa/",
-    "repository": "Pradeeptalari14/tp-doxa"
+    "repository": "Pradeeptalari14/tp-doxa",
+    "id": "doxa"
   },
   {
     "title": "HalluGuard",
-    "desc": "\u8f7b\u91cf\u7ea7 reasoning model fine-tuned for automated response factuality validation.",
+    "desc": "轻量级 reasoning model fine-tuned for automated response factuality validation.",
     "category": "ai",
-    "icon": "\ud83e\ude7a",
+    "icon": "🩺",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "hallucination_mitigator.py",
     "link": "halluguard/",
-    "repository": "Pradeeptalari14/tp-halluguard"
+    "repository": "Pradeeptalari14/tp-halluguard",
+    "id": "halluguard"
   },
   {
     "title": "RefusaRAG",
     "desc": "System prompt builder ensuring refusal responses when context details are insufficient.",
     "category": "ai",
-    "icon": "\ud83d\udeab",
+    "icon": "🚫",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "refusal_prompts.py",
     "link": "refusarag/",
-    "repository": "Pradeeptalari14/tp-refusarag"
+    "repository": "Pradeeptalari14/tp-refusarag",
+    "id": "refusarag"
   },
   {
     "title": "CitationEnforcer",
     "desc": "Entailment evaluator ensuring output citations map directly to valid source indices.",
     "category": "ai",
-    "icon": "\ud83d\udcdd",
+    "icon": "📝",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "citation_verifier.py",
     "link": "citationenforcer/",
-    "repository": "Pradeeptalari14/tp-citationenforcer"
+    "repository": "Pradeeptalari14/tp-citationenforcer",
+    "id": "citationenforcer"
   },
   {
     "title": "ragfallback (Full Pipeline Fallback)",
     "desc": "Configurable pipeline framework switching search providers dynamically on connection timeouts.",
     "category": "ai",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "pipeline_fallback.py",
     "link": "ragfallback-pipeline/",
-    "repository": "Pradeeptalari14/tp-ragfallback-pipeline"
+    "repository": "Pradeeptalari14/tp-ragfallback-pipeline",
+    "id": "ragfallback-pipeline"
   },
   {
     "title": "Production-Ready RAG with FAISS",
     "desc": "Resilient search utility implementing prompt caching, performance thresholds, and FAISS database fallbacks.",
     "category": "ai",
-    "icon": "\ud83d\udce6",
+    "icon": "📦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "faiss_fallback.py",
     "link": "production-faiss-rag/",
-    "repository": "Pradeeptalari14/tp-production-faiss-rag"
+    "repository": "Pradeeptalari14/tp-production-faiss-rag",
+    "id": "production-faiss-rag"
   },
   {
     "title": "Query Regeneration Fallback",
     "desc": "Semantic query optimizer rewriting search terms when initial result scores fall under 0.2.",
     "category": "ai",
-    "icon": "\ud83d\udd04",
+    "icon": "🔄",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "query_regenerator.py",
     "link": "query-regeneration-fallback/",
-    "repository": "Pradeeptalari14/tp-query-regeneration-fallback"
+    "repository": "Pradeeptalari14/tp-query-regeneration-fallback",
+    "id": "query-regeneration-fallback"
   },
   {
     "title": "CircuitBreakerRAG",
     "desc": "Fault isolation controller using pybreaker to block failing API requests after consecutive losses.",
     "category": "ai",
-    "icon": "\ud83d\udd0c",
+    "icon": "🔌",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "circuit_breaker.py",
     "link": "circuitbreaker-rag/",
-    "repository": "Pradeeptalari14/tp-circuitbreaker-rag"
+    "repository": "Pradeeptalari14/tp-circuitbreaker-rag",
+    "id": "circuitbreaker-rag"
   },
   {
     "title": "Hybrid Fallback",
     "desc": "Performance monitor switching from elasticsearch to local keyword indexes under high DB loads.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "hybrid_fallback.py",
     "link": "hybrid-fallback/",
-    "repository": "Pradeeptalari14/tp-hybrid-fallback"
+    "repository": "Pradeeptalari14/tp-hybrid-fallback",
+    "id": "hybrid-fallback"
   },
   {
     "title": "Agentic RAG Security Lab",
     "desc": "Automated workflow executing security scans and evaluating responses against prompt injection payloads.",
     "category": "ai",
-    "icon": "\ud83e\uddea",
+    "icon": "🧪",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "security_lab.py",
     "link": "agentic-rag-security-lab/",
-    "repository": "Pradeeptalari14/tp-agentic-rag-security-lab"
+    "repository": "Pradeeptalari14/tp-agentic-rag-security-lab",
+    "id": "agentic-rag-security-lab"
   },
   {
     "title": "RAG Pipeline Stress Tester",
     "desc": "Adversarial load tester generating concurrent queries to measure search latency and system drifts.",
     "category": "ai",
-    "icon": "\ud83c\udfcb\ufe0f",
+    "icon": "🏋️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "stress_tester.py",
     "link": "rag-stress-tester/",
-    "repository": "Pradeeptalari14/tp-rag-stress-tester"
+    "repository": "Pradeeptalari14/tp-rag-stress-tester",
+    "id": "rag-stress-tester"
   },
   {
     "title": "Chaos Engineering for GenAI",
     "desc": "Chaos Mesh manifests simulating API response errors, container restarts, and embedding server delays.",
     "category": "ai",
-    "icon": "\ud83d\udca5",
+    "icon": "💥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "chaos_mesh.yaml",
     "link": "chaos-genai/",
-    "repository": "Pradeeptalari14/tp-chaos-genai"
+    "repository": "Pradeeptalari14/tp-chaos-genai",
+    "id": "chaos-genai"
   },
   {
     "title": "RAG-Chaos",
     "desc": "Kubernetes chaos experiments injecting network delays inside vector database instances.",
     "category": "ai",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "chaos_experiment.yaml",
     "link": "rag-chaos/",
-    "repository": "Pradeeptalari14/tp-rag-chaos"
+    "repository": "Pradeeptalari14/tp-rag-chaos",
+    "id": "rag-chaos"
   },
   {
     "title": "PoisonPill",
     "desc": "Pytest test fixtures validating that model queries successfully ignore malicious context documents.",
     "category": "ai",
-    "icon": "\ud83d\udc8a",
+    "icon": "💊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "poison_pill_test.py",
     "link": "poisonpill/",
-    "repository": "Pradeeptalari14/tp-poisonpill"
+    "repository": "Pradeeptalari14/tp-poisonpill",
+    "id": "poisonpill"
   },
   {
     "title": "RAG-Pipeline Documentation Template",
     "desc": "Exhaustive markdown documentation layouts detailing pipeline specifications and compliance metrics.",
     "category": "ai",
-    "icon": "\ud83d\udcdd",
+    "icon": "📝",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "pipeline_docs.md",
     "link": "rag-pipeline-docs-template/",
-    "repository": "Pradeeptalari14/tp-rag-pipeline-docs-template"
+    "repository": "Pradeeptalari14/tp-rag-pipeline-docs-template",
+    "id": "rag-pipeline-docs-template"
   },
   {
     "title": "Architecture Decision Record (ADR)",
     "desc": "Standardized design log templates recording framework selections and vector index schema versions.",
     "category": "ai",
-    "icon": "\ud83d\udcd0",
+    "icon": "📐",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "adr_decision.md",
     "link": "architecture-decision-record/",
-    "repository": "Pradeeptalari14/tp-architecture-decision-record"
+    "repository": "Pradeeptalari14/tp-architecture-decision-record",
+    "id": "architecture-decision-record"
   },
   {
     "title": "AI Orchestration Layer Diagram",
     "desc": "Detailed architectural drawings representing RAG storage layers, indexes, and reasoning pipelines.",
     "category": "ai",
-    "icon": "\ud83d\udcca",
+    "icon": "📊",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "architecture_diagram.md",
     "link": "ai-orchestration-diagram/",
-    "repository": "Pradeeptalari14/tp-ai-orchestration-diagram"
+    "repository": "Pradeeptalari14/tp-ai-orchestration-diagram",
+    "id": "ai-orchestration-diagram"
   },
   {
     "title": "Doc-RAG",
     "desc": "Python utility scanning script folders and building structured markdown document guides.",
     "category": "ai",
-    "icon": "\ud83d\udcd6",
+    "icon": "📖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "doc_generator.py",
     "link": "doc-rag/",
-    "repository": "Pradeeptalari14/tp-doc-rag"
+    "repository": "Pradeeptalari14/tp-doc-rag",
+    "id": "doc-rag"
   },
   {
     "title": "Knowledge Base Exporter",
     "desc": "Exporter script mapping vector registry schemas and exporting document fields into markdown.",
     "category": "ai",
-    "icon": "\ud83d\udce4",
+    "icon": "📤",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "kb_exporter.py",
     "link": "knowledge-base-exporter/",
-    "repository": "Pradeeptalari14/tp-knowledge-base-exporter"
+    "repository": "Pradeeptalari14/tp-knowledge-base-exporter",
+    "id": "knowledge-base-exporter"
   },
   {
     "title": "Multi-Agent Regulatory Compliance (NIC)",
     "desc": "Multi-agent developer studio for Indian regulations compliance checks (SEBI & RBI). Integrates Slack alerts.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "compliance_agent.py",
     "link": "multiagent-regulatory-compliance/",
-    "repository": "Pradeeptalari14/tp-multiagent-regulatory-compliance"
+    "repository": "Pradeeptalari14/tp-multiagent-regulatory-compliance",
+    "id": "multiagent-regulatory-compliance"
   },
   {
     "title": "Civic Sight",
     "desc": "Citizen service portal with multilingual translation templates. Integrates WhatsApp Business API and Telegram channels for grievance routing.",
     "category": "ai",
-    "icon": "\ud83c\udfdb\ufe0f",
+    "icon": "🏛️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "whatsapp_grievance.json",
     "link": "civic-sight/",
-    "repository": "Pradeeptalari14/tp-civic-sight"
+    "repository": "Pradeeptalari14/tp-civic-sight",
+    "id": "civic-sight"
   },
   {
     "title": "Agentic AI for Forest Applications",
     "desc": "AI remote sensing analyst utilizing PyTorch satellite models. Integrates Telegram reports for wildfire and cover updates.",
     "category": "ai",
-    "icon": "\ud83c\udf32",
+    "icon": "🌲",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "forest_sensing.py",
     "link": "forest-sensing-agent/",
-    "repository": "Pradeeptalari14/tp-forest-sensing-agent"
+    "repository": "Pradeeptalari14/tp-forest-sensing-agent",
+    "id": "forest-sensing-agent"
   },
   {
     "title": "SABHAPATI: Multi-Agent for Judicial Deliberation",
     "desc": "Courtroom deliberation simulator traversing Indian Evidence Act contexts and compiling case citations.",
     "category": "ai",
-    "icon": "\ud83c\udfdb\ufe0f",
+    "icon": "🏛️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "court_deliberation.py",
     "link": "sabhapati-judicial-deliberation/",
-    "repository": "Pradeeptalari14/tp-sabhapati-judicial-deliberation"
+    "repository": "Pradeeptalari14/tp-sabhapati-judicial-deliberation",
+    "id": "sabhapati-judicial-deliberation"
   },
   {
     "title": "NyayaRAG (Indian SC Judgments)",
     "desc": "Graph-structured legal reasoning engine processing Indian Supreme Court case histories.",
     "category": "ai",
-    "icon": "\u26d3\ufe0f",
+    "icon": "⛓️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "nyaya_graph_rag.py",
     "link": "nyayarag/",
-    "repository": "Pradeeptalari14/tp-nyayarag"
+    "repository": "Pradeeptalari14/tp-nyayarag",
+    "id": "nyayarag"
   },
   {
     "title": "NyayaAI",
     "desc": "Constitution & IPC legal assistant for automated student workflows. Configured with secure Telegram bot interfaces.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "nyaya_assistant.py",
     "link": "nyaya-ai/",
-    "repository": "Pradeeptalari14/tp-nyaya-ai"
+    "repository": "Pradeeptalari14/tp-nyaya-ai",
+    "id": "nyaya-ai"
   },
   {
     "title": "VakilGPT - IPC Legal Copilot",
     "desc": "IPC case assistant traversing legal codes. Supports custom webhook and Slack notification hooks.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "vakil_copilot.py",
     "link": "vakilgpt/",
-    "repository": "Pradeeptalari14/tp-vakilgpt"
+    "repository": "Pradeeptalari14/tp-vakilgpt",
+    "id": "vakilgpt"
   },
   {
     "title": "nyaya-gpt (Constitution & BNS)",
     "desc": "ReAct-based agent processing Bharatiya Nyaya Sanhita (BNS) queries. Connects to Slack alerting channels.",
     "category": "ai",
-    "icon": "\ud83d\udcd6",
+    "icon": "📖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "nyaya_gpt.py",
     "link": "nyaya-gpt/",
-    "repository": "Pradeeptalari14/tp-nyaya-gpt"
+    "repository": "Pradeeptalari14/tp-nyaya-gpt",
+    "id": "nyaya-gpt"
   },
   {
     "title": "Intelligent Agents for Tamil Law",
     "desc": "Graph RAG legal reviewer optimized for Tamil translation. Connects to Telegram channels for output sharing.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "tamil_law_agent.py",
     "link": "tamil-law-agents/",
-    "repository": "Pradeeptalari14/tp-tamil-law-agents"
+    "repository": "Pradeeptalari14/tp-tamil-law-agents",
+    "id": "tamil-law-agents"
   },
   {
     "title": "Agentic AI OS for BFSI (Indian Context)",
     "desc": "Compliance advisor for banking regulations. Sends instant Telegram notifications on audit failures.",
     "category": "ai",
-    "icon": "\ud83d\udcb0",
+    "icon": "💰",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "bfsi_agent_os.py",
     "link": "bfsi-regulatory-os/",
-    "repository": "Pradeeptalari14/tp-bfsi-regulatory-os"
+    "repository": "Pradeeptalari14/tp-bfsi-regulatory-os",
+    "id": "bfsi-regulatory-os"
   },
   {
     "title": "AI-Powered Assistant for Chartered Accountants",
     "desc": "GST and tax audit assistant referencing ICAI rulebooks. Generates warning messages for custom Slack webhooks.",
     "category": "ai",
-    "icon": "\ud83d\udcbc",
+    "icon": "💼",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "icai_assistant.py",
     "link": "icai-ca-assistant/",
-    "repository": "Pradeeptalari14/tp-icai-ca-assistant"
+    "repository": "Pradeeptalari14/tp-icai-ca-assistant",
+    "id": "icai-ca-assistant"
   },
   {
     "title": "Generative AI Healthcare Chatbot (Minds of India)",
     "desc": "Haryapada health assistant chatbot referencing verified Indian medical articles. Sends alerts via email/SMS templates.",
     "category": "ai",
-    "icon": "\ud83c\udfe5",
+    "icon": "🏥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "healthcare_chatbot.py",
     "link": "haryapada-healthcare-chatbot/",
-    "repository": "Pradeeptalari14/tp-haryapada-healthcare-chatbot"
+    "repository": "Pradeeptalari14/tp-haryapada-healthcare-chatbot",
+    "id": "haryapada-healthcare-chatbot"
   },
   {
     "title": "Krishi Bodh (Indian Agriculture Chatbot)",
     "desc": "Voice assistant for farmers. Integrates WhatsApp and Telegram voice notes and provides farming answers.",
     "category": "ai",
-    "icon": "\ud83c\udf3e",
+    "icon": "🌾",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "krishi_bodh.py",
     "link": "krishi-bodh/",
-    "repository": "Pradeeptalari14/tp-krishi-bodh"
+    "repository": "Pradeeptalari14/tp-krishi-bodh",
+    "id": "krishi-bodh"
   },
   {
     "title": "Nayanpay Unified Agent",
     "desc": "Multi-agent system handling UPI transaction scenarios. Integrates WhatsApp API alerts for payment approvals.",
     "category": "ai",
-    "icon": "\ud83d\udcb3",
+    "icon": "💳",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "nayanpay_agent.py",
     "link": "nayanpay-agent/",
-    "repository": "Pradeeptalari14/tp-nayanpay-agent"
+    "repository": "Pradeeptalari14/tp-nayanpay-agent",
+    "id": "nayanpay-agent"
   },
   {
     "title": "RupeeLink",
     "desc": "Neuro-symbolic LLM query engine for Indian commerce. Includes Telegram and WhatsApp integration scripts.",
     "category": "ai",
-    "icon": "\ud83d\udd17",
+    "icon": "🔗",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rupeelink_framework.py",
     "link": "rupeelink/",
-    "repository": "Pradeeptalari14/tp-rupeelink"
+    "repository": "Pradeeptalari14/tp-rupeelink",
+    "id": "rupeelink"
   },
   {
     "title": "BharatAPI Gateway",
     "desc": "Gateway routing queries to Aadhaar, PAN, and banking APIs. Configured with auto-failover Slack warnings.",
     "category": "ai",
-    "icon": "\ud83d\udea6",
+    "icon": "🚦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "bharat_gateway.py",
     "link": "bharatapi-gateway/",
-    "repository": "Pradeeptalari14/tp-bharatapi-gateway"
+    "repository": "Pradeeptalari14/tp-bharatapi-gateway",
+    "id": "bharatapi-gateway"
   },
   {
     "title": "Vernacular Robot for Indian Farmers",
     "desc": "Agricultural advisor with speech-to-text. Connects to WhatsApp Business API channels to answer voice questions.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "vernacular_robot.py",
     "link": "vernacular-farming-robot/",
-    "repository": "Pradeeptalari14/tp-vernacular-farming-robot"
+    "repository": "Pradeeptalari14/tp-vernacular-farming-robot",
+    "id": "vernacular-farming-robot"
   },
   {
     "title": "All-India Citizen Grievance Chatbot",
     "desc": "Municipal portal automatically routing local grievances. Integrates WhatsApp API and email templates.",
     "category": "ai",
-    "icon": "\ud83c\udfdb\ufe0f",
+    "icon": "🏛️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "citizen_grievance.json",
     "link": "citizen-grievance-chatbot/",
-    "repository": "Pradeeptalari14/tp-citizen-grievance-chatbot"
+    "repository": "Pradeeptalari14/tp-citizen-grievance-chatbot",
+    "id": "citizen-grievance-chatbot"
   },
   {
     "title": "Multi-Lingual RAG for Indian Citizen Services",
     "desc": "L10n assistant handling public registrations. Connects to WhatsApp/Telegram to deliver updates.",
     "category": "ai",
-    "icon": "\ud83d\udde3\ufe0f",
+    "icon": "🗣️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "citizen_services_rag.py",
     "link": "multilingual-citizen-services/",
-    "repository": "Pradeeptalari14/tp-multilingual-citizen-services"
+    "repository": "Pradeeptalari14/tp-multilingual-citizen-services",
+    "id": "multilingual-citizen-services"
   },
   {
     "title": "LifeSave Assistant for Indian Rural Communities",
     "desc": "Offline-first health advisor. Generates SMS/telephony alert templates for critical patient triage.",
     "category": "ai",
-    "icon": "\ud83c\udfe5",
+    "icon": "🏥",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "lifesave_assistant.py",
     "link": "lifesave-rural-assistant/",
-    "repository": "Pradeeptalari14/tp-lifesave-rural-assistant"
+    "repository": "Pradeeptalari14/tp-lifesave-rural-assistant",
+    "id": "lifesave-rural-assistant"
   },
   {
     "title": "Personalized AI Tutor for Indian Local Languages",
     "desc": "Curriculum tutor handling regional accents. Sends study milestones to Telegram parent channels.",
     "category": "ai",
-    "icon": "\ud83d\udcd6",
+    "icon": "📖",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "vernacular_tutor.py",
     "link": "regional-accent-tutor/",
-    "repository": "Pradeeptalari14/tp-regional-accent-tutor"
+    "repository": "Pradeeptalari14/tp-regional-accent-tutor",
+    "id": "regional-accent-tutor"
   },
   {
     "title": "Offline AI for Indian Legal Information (Rural)",
     "desc": "Offline application for searching Indian Evidence Act indices. Includes local SMS export options.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "offline_legal_advisor.py",
     "link": "offline-rural-legal-advisor/",
-    "repository": "Pradeeptalari14/tp-offline-rural-legal-advisor"
+    "repository": "Pradeeptalari14/tp-offline-rural-legal-advisor",
+    "id": "offline-rural-legal-advisor"
   },
   {
     "title": "Kisan-Seva (Indian Agriculture RAG)",
     "desc": "Weather and soil analytics RAG system. Sends daily farming recommendations to Telegram channels.",
     "category": "ai",
-    "icon": "\ud83c\udf3e",
+    "icon": "🌾",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "kisan_seva.py",
     "link": "kisan-seva-rag/",
-    "repository": "Pradeeptalari14/tp-kisan-seva-rag"
+    "repository": "Pradeeptalari14/tp-kisan-seva-rag",
+    "id": "kisan-seva-rag"
   },
   {
     "title": "Indian Local Language Issue Reporting via WhatsApp",
     "desc": "WhatsApp Business bot extracting local civic issues and creating grievance tickets.",
     "category": "ai",
-    "icon": "\ud83e\ude9d",
+    "icon": "🪝",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "whatsapp_issue_reporter.py",
     "link": "whatsapp-grievance-reporter/",
-    "repository": "Pradeeptalari14/tp-whatsapp-grievance-reporter"
+    "repository": "Pradeeptalari14/tp-whatsapp-grievance-reporter",
+    "id": "whatsapp-grievance-reporter"
   },
   {
     "title": "Multi-Agent Legal Dispute Resolver",
     "desc": "Negotiation system recommending settlements. Delivers agreements directly to legal team Slack slots.",
     "category": "ai",
-    "icon": "\u2696\ufe0f",
+    "icon": "⚖️",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "mediation_resolver.py",
     "link": "nyaya-mediation-resolver/",
-    "repository": "Pradeeptalari14/tp-nyaya-mediation-resolver"
+    "repository": "Pradeeptalari14/tp-nyaya-mediation-resolver",
+    "id": "nyaya-mediation-resolver"
   },
   {
     "title": "Agentic AI OS for Indian BFSI (Customer)",
     "desc": "Personal banking assistant bot. Integrates WhatsApp multi-factor approval workflows.",
     "category": "ai",
-    "icon": "\ud83c\udfe6",
+    "icon": "🏦",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "customer_bfsi.py",
     "link": "customer-banking-copilot/",
-    "repository": "Pradeeptalari14/tp-customer-banking-copilot"
+    "repository": "Pradeeptalari14/tp-customer-banking-copilot",
+    "id": "customer-banking-copilot"
   },
   {
     "title": "TaxGPT",
     "desc": "GST & Income Tax computation assistant. Sends tax warnings and summaries to Telegram bot clients.",
     "category": "ai",
-    "icon": "\ud83d\udcc8",
+    "icon": "📈",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "tax_gpt.py",
     "link": "taxgpt/",
-    "repository": "Pradeeptalari14/tp-taxgpt"
+    "repository": "Pradeeptalari14/tp-taxgpt",
+    "id": "taxgpt"
   },
   {
     "title": "Aadhaar-authenticated Agentic Workflow System",
     "desc": "Secure workflow executor verifying citizen identity via UIDAI sandboxes. Emits MFA webhooks.",
     "category": "ai",
-    "icon": "\ud83d\udd12",
+    "icon": "🔒",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "aadhaar_verification.py",
     "link": "aadhaar-agentic-workflows/",
-    "repository": "Pradeeptalari14/tp-aadhaar-agentic-workflows"
+    "repository": "Pradeeptalari14/tp-aadhaar-agentic-workflows",
+    "id": "aadhaar-agentic-workflows"
   },
   {
     "title": "Ayush RAG (Traditional Medicine Advisor)",
     "desc": "Information advisor on traditional Ayuverda remedies and drug interactions. Emits warnings to Slack.",
     "category": "ai",
-    "icon": "\ud83c\udf3f",
+    "icon": "🌿",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "ayush_advisor.py",
     "link": "ayush-rag-advisor/",
-    "repository": "Pradeeptalari14/tp-ayush-rag-advisor"
+    "repository": "Pradeeptalari14/tp-ayush-rag-advisor",
+    "id": "ayush-rag-advisor"
   },
   {
     "title": "Bharat Shikshak (Vernacular AI Tutor)",
     "desc": "Multilingual science tutor with whiteboard overlays. Transmits study progress logs to Telegram.",
     "category": "ai",
-    "icon": "\ud83c\udf93",
+    "icon": "🎓",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "bharat_shikshak.py",
     "link": "bharat-shikshak/",
-    "repository": "Pradeeptalari14/tp-bharat-shikshak"
+    "repository": "Pradeeptalari14/tp-bharat-shikshak",
+    "id": "bharat-shikshak"
   },
   {
     "title": "RTI Query Assistant for Indian Citizens",
     "desc": "Form builder draft writing RTI requests. Exports formatted files and updates users via SMS.",
     "category": "ai",
-    "icon": "\ud83d\udcdd",
+    "icon": "📝",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "rti_assistant.py",
     "link": "rti-assistant/",
-    "repository": "Pradeeptalari14/tp-rti-assistant"
+    "repository": "Pradeeptalari14/tp-rti-assistant",
+    "id": "rti-assistant"
   },
   {
     "title": "Swasthya Mitra (Rural Health Companion)",
     "desc": "Offline symptom checker for remote clinics. Exports diagnosis summaries to WhatsApp API.",
     "category": "ai",
-    "icon": "\ud83e\ude7a",
+    "icon": "🩺",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "swasthya_mitra.py",
     "link": "swasthya-mitra/",
-    "repository": "Pradeeptalari14/tp-swasthya-mitra"
+    "repository": "Pradeeptalari14/tp-swasthya-mitra",
+    "id": "swasthya-mitra"
   },
   {
     "title": "Agentic Fleet Manager for Indian Roads",
     "desc": "Route optimizer parsing traffic maps. Triggers warning webhook pings on routing alerts.",
     "category": "ai",
-    "icon": "\ud83d\ude9a",
+    "icon": "🚚",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "fleet_manager.py",
     "link": "indian-roads-fleet-manager/",
-    "repository": "Pradeeptalari14/tp-indian-roads-fleet-manager"
+    "repository": "Pradeeptalari14/tp-indian-roads-fleet-manager",
+    "id": "indian-roads-fleet-manager"
   },
   {
     "title": "Kirana Assistant (Inventory & Sales)",
     "desc": "Voice-enabled inventory manager. Automatically sends restocking reminders via WhatsApp.",
     "category": "ai",
-    "icon": "\ud83c\udfea",
+    "icon": "🏪",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "kirana_assistant.py",
     "link": "kirana-assistant/",
-    "repository": "Pradeeptalari14/tp-kirana-assistant"
+    "repository": "Pradeeptalari14/tp-kirana-assistant",
+    "id": "kirana-assistant"
   },
   {
     "title": "Campus Counsel (AI Admission Guide)",
     "desc": "Admission assistant answering registration steps. Sends reminders to Telegram student chats.",
     "category": "ai",
-    "icon": "\ud83c\udfe2",
+    "icon": "🏢",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "campus_counsel.py",
     "link": "campus-counsel/",
-    "repository": "Pradeeptalari14/tp-campus-counsel"
+    "repository": "Pradeeptalari14/tp-campus-counsel",
+    "id": "campus-counsel"
   },
   {
     "title": "School Bus Tracking System Studio",
     "desc": "Real-time location, ETA notifications via WhatsApp, geofencing, driver tap logs, and route optimization.",
     "category": "ai",
-    "icon": "\ud83d\ude8c",
+    "icon": "🚌",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "bus_tracker.py",
     "link": "school-bus-tracker/",
-    "repository": "Pradeeptalari14/tp-school-bus-tracker"
+    "repository": "Pradeeptalari14/tp-school-bus-tracker",
+    "id": "school-bus-tracker"
   },
   {
     "title": "Enterprise AI Infrastructure Integration Studio",
     "desc": "Systematically integrate AI models into legacy enterprise infrastructure. Generate API gateway configurations, legacy proxy layers, and hybrid network routes.",
     "category": "ai",
-    "icon": "\ud83c\udfe2",
+    "icon": "🏢",
     "color": "rgb(79, 70, 229)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "integration_plan.md",
     "link": "enterprise-ai-infrastructure/",
-    "repository": "Pradeeptalari14/tp-enterprise-ai-infrastructure"
+    "repository": "Pradeeptalari14/tp-enterprise-ai-infrastructure",
+    "id": "enterprise-ai-infrastructure"
   },
   {
     "title": "LLM Fundamentals & Runtime Studio",
     "desc": "Scaffold local and cloud model runtimes. Generate OpenAI API proxies, Ollama runtimes Modelfiles, and high-performance vLLM configurations.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(124, 58, 237)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "Modelfile",
     "link": "llm-fundamentals/",
-    "repository": "Pradeeptalari14/tp-llm-fundamentals"
+    "repository": "Pradeeptalari14/tp-llm-fundamentals",
+    "id": "llm-fundamentals"
   },
   {
     "title": "LangChain & LlamaIndex Studio",
     "desc": "Orchestrate application workflows using LangChain and LlamaIndex. Generate prompt routing templates, hybrid query pipelines, and document loaders.",
     "category": "ai",
-    "icon": "\u26d3\ufe0f",
+    "icon": "⛓️",
     "color": "rgb(14, 165, 233)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "pipeline.py",
     "link": "langchain-llamaindex/",
-    "repository": "Pradeeptalari14/tp-langchain-llamaindex"
+    "repository": "Pradeeptalari14/tp-langchain-llamaindex",
+    "id": "langchain-llamaindex"
   },
   {
     "title": "Vector RAG Optimizer Studio",
     "desc": "Configure advanced RAG pipelines. Optimize document embedding models, text chunking sizes, and vector database indexing schemas.",
     "category": "ai",
-    "icon": "\ud83d\uddc4\ufe0f",
+    "icon": "🗄️",
     "color": "rgb(16, 185, 129)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "rag_config.json",
     "link": "rag-optimization/",
-    "repository": "Pradeeptalari14/tp-rag-optimization"
+    "repository": "Pradeeptalari14/tp-rag-optimization",
+    "id": "rag-optimization"
   },
   {
     "title": "MCP & Tool Integration Studio",
     "desc": "Scaffold Model Context Protocol (MCP) ecosystems. Expose custom tools, configure resource routers, and write secure execution handlers.",
     "category": "ai",
-    "icon": "\ud83d\udd0c",
+    "icon": "🔌",
     "color": "rgb(245, 158, 11)",
     "borderClass": "border-amber-200",
     "bgClass": "bg-amber-50/10",
     "tag": "mcp_tools.json",
     "link": "mcp-integration/",
-    "repository": "Pradeeptalari14/tp-mcp-integration"
+    "repository": "Pradeeptalari14/tp-mcp-integration",
+    "id": "mcp-integration"
   },
   {
     "title": "LangGraph & Multi-Agent Swarm Studio",
     "desc": "Build stateful multi-agent workflows. Design swarm orchestration hierarchies, conditional state transitions, and loops triage scripts.",
     "category": "ai",
-    "icon": "\ud83e\udd16",
+    "icon": "🤖",
     "color": "rgb(236, 72, 153)",
     "borderClass": "border-pink-200",
     "bgClass": "bg-pink-50/10",
     "tag": "swarm_graph.py",
     "link": "langgraph-agent/",
-    "repository": "Pradeeptalari14/tp-langgraph-agent"
+    "repository": "Pradeeptalari14/tp-langgraph-agent",
+    "id": "langgraph-agent"
   },
   {
     "title": "AI Observability & Trace Studio",
     "desc": "Deploy trace instrumentation meshes. Generate Langfuse backend docker-compose structures, OpenTelemetry custom spans, and token budget alerts.",
     "category": "ai",
-    "icon": "\ud83d\udd2c",
+    "icon": "🔬",
     "color": "rgb(46, 204, 113)",
     "borderClass": "border-green-200",
     "bgClass": "bg-green-50/10",
     "tag": "langfuse_otel.yaml",
     "link": "ai-observability/",
-    "repository": "Pradeeptalari14/tp-ai-observability"
+    "repository": "Pradeeptalari14/tp-ai-observability",
+    "id": "ai-observability"
   },
   {
     "title": "AI Security & Governance Studio",
     "desc": "Configure prompt injection shields and SRE governance boundaries. Generate input/output safety classifiers and semantic access control guards.",
     "category": "ai",
-    "icon": "\ud83d\udee1\ufe0f",
+    "icon": "🛡️",
     "color": "rgb(231, 76, 60)",
     "borderClass": "border-red-200",
     "bgClass": "bg-red-50/10",
     "tag": "security_rules.yaml",
     "link": "ai-security/",
-    "repository": "Pradeeptalari14/tp-ai-security"
+    "repository": "Pradeeptalari14/tp-ai-security",
+    "id": "ai-security"
   },
   {
     "title": "Enterprise K8s AI Platform Studio",
     "desc": "Orchestrate end-to-end AI platform environments on Kubernetes. Provision Ray clusters, GPU node pools, and vLLM scale rules.",
     "category": "ai",
-    "icon": "\u2638\ufe0f",
+    "icon": "☸️",
     "color": "rgb(59, 130, 246)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "k8s_platform.yaml",
     "link": "enterprise-ai-k8s/",
-    "repository": "Pradeeptalari14/tp-enterprise-ai-k8s"
+    "repository": "Pradeeptalari14/tp-enterprise-ai-k8s",
+    "id": "enterprise-ai-k8s"
   },
   {
     "title": "Enterprise AI Stack Blueprint Studio",
     "desc": "Design and export your enterprise-grade AI architecture blueprint. Select standard components across 16 infrastructure layers and generate declarative deployment models.",
     "category": "ai",
-    "icon": "\ud83e\udd5e",
+    "icon": "🥞",
     "color": "rgb(79, 70, 229)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "stack_blueprint.yaml",
     "link": "enterprise-ai-stack/",
-    "repository": "Pradeeptalari14/tp-enterprise-ai-stack"
+    "repository": "Pradeeptalari14/tp-enterprise-ai-stack",
+    "id": "enterprise-ai-stack"
   },
   {
     "title": "Snowflake Data Warehouse Studio",
     "desc": "Configure enterprise-grade Snowflake data warehouses, databases, roles, and schema pipelines with Snowflake Cortex AI integrations. Generate declarative SQL/SnowDDL scripts, secure storage integrations, and dbt profiles.",
     "category": "ai",
-    "icon": "\u2744\ufe0f",
+    "icon": "❄️",
     "color": "rgb(52, 152, 219)",
     "borderClass": "border-blue-200",
     "bgClass": "bg-blue-50/10",
     "tag": "snowflake_ddl.sql",
     "link": "snowflake-warehouse/",
-    "repository": "Pradeeptalari14/tp-snowflake-warehouse"
+    "repository": "Pradeeptalari14/tp-snowflake-warehouse",
+    "id": "snowflake-warehouse"
   },
   {
     "title": "Databricks Lakehouse Studio",
     "desc": "Provision multi-user Databricks Spark clusters, Delta Lake tables, and Unity Catalog permissions with Databricks Mosaic AI integrations. Generate Databricks Asset Bundles (DABs), cluster configs, and PySpark jobs.",
     "category": "ai",
-    "icon": "\ud83e\uddf1",
+    "icon": "🧱",
     "color": "rgb(255, 54, 36)",
     "borderClass": "border-red-200",
     "bgClass": "bg-red-50/10",
     "tag": "databricks.yml",
     "link": "databricks-lakehouse/",
-    "repository": "Pradeeptalari14/tp-databricks-lakehouse"
+    "repository": "Pradeeptalari14/tp-databricks-lakehouse",
+    "id": "databricks-lakehouse"
   },
   {
     "title": "Google BigQuery Studio",
     "desc": "Deploy serverless Google BigQuery datasets, partitioned/clustered tables, and row-level security policies with BigQuery ML & Vertex AI integrations. Generate DDL/SQL scripts, IAM role definitions, and dbt profile settings.",
     "category": "ai",
-    "icon": "\ud83d\udcca",
+    "icon": "📊",
     "color": "rgb(241, 196, 15)",
     "borderClass": "border-yellow-200",
     "bgClass": "bg-yellow-50/10",
     "tag": "bigquery_schema.sql",
     "link": "google-bigquery/",
-    "repository": "Pradeeptalari14/tp-google-bigquery"
+    "repository": "Pradeeptalari14/tp-google-bigquery",
+    "id": "google-bigquery"
   },
   {
     "title": "Amazon Redshift ML Studio",
     "desc": "Configure AWS Redshift clusters, database schemas, and IAM security profiles with Amazon Redshift ML & SageMaker integrations. Generate SQL script models, IAM execution policies, and dbt database profiles.",
     "category": "ai",
-    "icon": "\ud83d\udcd0",
+    "icon": "📐",
     "color": "rgb(230, 126, 34)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "redshift_ml.sql",
     "link": "amazon-redshift/",
-    "repository": "Pradeeptalari14/tp-amazon-redshift"
+    "repository": "Pradeeptalari14/tp-amazon-redshift",
+    "id": "amazon-redshift"
   },
   {
     "title": "GraphRAG & Neo4j Database Studio",
     "desc": "Configure GraphRAG schemas, Neo4j graph databases, APOC imports, and similarity graph queries. Generate Cypher query scripts, vector indexes, and docker-compose files.",
     "category": "ai",
-    "icon": "\ud83c\udf33",
+    "icon": "🌳",
     "color": "rgb(26, 188, 156)",
     "borderClass": "border-teal-200",
     "bgClass": "bg-teal-50/10",
     "tag": "schema_import.cypher",
     "link": "neo4j-graphrag/",
-    "repository": "Pradeeptalari14/tp-neo4j-graphrag"
+    "repository": "Pradeeptalari14/tp-neo4j-graphrag",
+    "id": "neo4j-graphrag"
   },
   {
     "title": "Supabase & pgvector Developer Studio",
     "desc": "Deploy local Supabase databases with native pgvector vector extensions, Row-Level Security (RLS) policies, and seed data templates. Generate postgres SQL schemas, seed files, and CLI configs.",
     "category": "ai",
-    "icon": "\ud83d\udfe2",
+    "icon": "🟢",
     "color": "rgb(62, 207, 142)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "supabase_schema.sql",
     "link": "supabase-pgvector/",
-    "repository": "Pradeeptalari14/tp-supabase-pgvector"
+    "repository": "Pradeeptalari14/tp-supabase-pgvector",
+    "id": "supabase-pgvector"
   },
   {
     "title": "Kafka & Flink Streaming Studio",
     "desc": "Orchestrate real-time message streams with Apache Kafka topics and stream-processing aggregations using Apache Flink SQL. Generate Flink SQL jobs, Python producers, and docker-compose services.",
     "category": "ai",
-    "icon": "\ud83d\udfe0",
+    "icon": "🟠",
     "color": "rgb(230, 126, 34)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "flink_job.sql",
     "link": "kafka-flink-streaming/",
-    "repository": "Pradeeptalari14/tp-kafka-flink-streaming"
+    "repository": "Pradeeptalari14/tp-kafka-flink-streaming",
+    "id": "kafka-flink-streaming"
   },
   {
     "title": "Milvus & Weaviate Vector DB Clustering Studio",
     "desc": "Provision distributed, high-availability Milvus or Weaviate vector database clusters. Generate Kubernetes Helm values files, Python schema definitions, and docker-compose orchestrations.",
     "category": "ai",
-    "icon": "\ud83d\udd2e",
+    "icon": "🔮",
     "color": "rgb(139, 92, 246)",
     "borderClass": "border-violet-200",
     "bgClass": "bg-violet-50/10",
     "tag": "cluster_values.yaml",
     "link": "milvus-weaviate-cluster/",
-    "repository": "Pradeeptalari14/tp-milvus-weaviate-cluster"
+    "repository": "Pradeeptalari14/tp-milvus-weaviate-cluster",
+    "id": "milvus-weaviate-cluster"
   },
   {
     "title": "Pinecone Serverless Vector DB Studio",
     "desc": "Configure serverless cloud-native Pinecone indexes, dimensions, distance metrics, and AWS IAM connection policies. Generate initialization scripts, vector query templates, and IAM policies.",
     "category": "ai",
-    "icon": "\ud83c\udf32",
+    "icon": "🌲",
     "color": "rgb(21, 26, 48)",
     "borderClass": "border-slate-300",
     "bgClass": "bg-slate-50/10",
     "tag": "index_setup.py",
     "link": "pinecone-serverless/",
-    "repository": "Pradeeptalari14/tp-pinecone-serverless"
+    "repository": "Pradeeptalari14/tp-pinecone-serverless",
+    "id": "pinecone-serverless"
   },
   {
     "title": "Knowledge Graph & Entity Extraction Studio",
     "desc": "Extract entities and construct semantic graph structures from unstructured texts. Programmatically compile node extraction pipelines, graph databases seeds, and entity mapping configurations.",
     "category": "ai",
-    "icon": "\ud83d\udd78\ufe0f",
+    "icon": "🕸️",
     "color": "rgb(16, 185, 129)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "entity_extractor.py",
     "link": "knowledge-graph/",
-    "repository": "Pradeeptalari14/tp-knowledge-graph"
+    "repository": "Pradeeptalari14/tp-knowledge-graph",
+    "id": "knowledge-graph"
   },
   {
     "title": "Vectorless RAG & Sparse Search Studio",
     "desc": "Build high-speed keyword retrieval pipelines utilizing BM25 algorithms, TF-IDF representations, and relational SQL queries. Generate sparse indexes, relational schemas, and query analyzers.",
     "category": "ai",
-    "icon": "\ud83d\udd0d",
+    "icon": "🔍",
     "color": "rgb(6, 182, 212)",
     "borderClass": "border-cyan-200",
     "bgClass": "bg-cyan-50/10",
     "tag": "bm25_retriever.py",
     "link": "vectorless-rag/",
-    "repository": "Pradeeptalari14/tp-vectorless-rag"
+    "repository": "Pradeeptalari14/tp-vectorless-rag",
+    "id": "vectorless-rag"
   },
   {
     "title": "Production Secrets & Rotation Studio",
     "desc": "Manage enterprise credentials and dynamic keys rotation. Configure Vault databases connection leases, dynamic credentials providers, and Kubernetes External Secrets configurations.",
     "category": "automation",
-    "icon": "\ud83d\udd11",
+    "icon": "🔑",
     "color": "rgb(245, 158, 11)",
     "borderClass": "border-amber-200",
     "bgClass": "bg-amber-50/10",
     "tag": "vault_rotation.tf",
     "link": "production-secrets/",
-    "repository": "Pradeeptalari14/tp-production-secrets"
+    "repository": "Pradeeptalari14/tp-production-secrets",
+    "id": "production-secrets"
   },
   {
     "title": "Prompt Caching & Cost Optimization Studio",
     "desc": "Optimize AI API costs and latency using prompt caching. Compile Python SDK wrappers with cache decorators, raw HTTP JSON payloads with cache-control headers, and validation setups.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "prompt_caching.py",
     "link": "prompt-caching/",
-    "repository": "Pradeeptalari14/tp-prompt-caching"
+    "repository": "Pradeeptalari14/tp-prompt-caching",
+    "id": "prompt-caching"
   },
   {
     "title": "vLLM PagedAttention & Chunked Prefill Studio",
     "desc": "Simulate vLLM PagedAttention v2 virtual memory block mapping, eliminate KV-cache fragmentation down to <4%, and co-schedule chunked prefill with FlashAttention-3 for 2.8x higher concurrency.",
     "category": "ai",
-    "icon": "\u26a1",
+    "icon": "⚡",
     "color": "rgb(14, 165, 233)",
     "borderClass": "border-sky-200",
     "bgClass": "bg-sky-50/10",
     "tag": "paged_cache_engine.py",
     "link": "vllm-paged-attention/",
-    "repository": "Pradeeptalari14/tp-vllm-paged-attention"
+    "repository": "Pradeeptalari14/tp-vllm-paged-attention",
+    "id": "vllm-paged-attention"
   },
   {
     "title": "BitNet 1.58-bit Ternary LLM Inference Studio",
     "desc": "Simulate Microsoft BitNet b1.58 ternary weights {-1, 0, +1} replacing FP16 matrix multiplications with pure integer additions, delivering 71% DRAM energy reduction and zero GPU requirement.",
     "category": "ai",
-    "icon": "\ud83e\uddee",
+    "icon": "🧮",
     "color": "rgb(249, 115, 22)",
     "borderClass": "border-orange-200",
     "bgClass": "bg-orange-50/10",
     "tag": "bitlinear_kernel.py",
     "link": "bitnet-ternary-inference/",
-    "repository": "Pradeeptalari14/tp-bitnet-ternary-inference"
+    "repository": "Pradeeptalari14/tp-bitnet-ternary-inference",
+    "id": "bitnet-ternary-inference"
   },
   {
     "title": "DSPy Algorithmic Prompt Optimizer (MIPROv2) Studio",
     "desc": "Orchestrate Stanford DSPy MIPROv2 algorithmic prompt optimization. Replace hand-written prompt crafting with Bayesian search over instruction candidates and few-shot exemplars with +19.4% accuracy.",
     "category": "ai",
-    "icon": "\ud83c\udfaf",
+    "icon": "🎯",
     "color": "rgb(99, 102, 241)",
     "borderClass": "border-indigo-200",
     "bgClass": "bg-indigo-50/10",
     "tag": "dspy_compiler.py",
     "link": "dspy-optimizer/",
-    "repository": "Pradeeptalari14/tp-dspy-optimizer"
+    "repository": "Pradeeptalari14/tp-dspy-optimizer",
+    "id": "dspy-optimizer"
   },
   {
     "title": "Agentic Temporal Memory & Episodic Graph Studio",
     "desc": "Simulate stateful agentic episodic memory combining Neo4j relational knowledge graph edges, Qdrant dense vector embeddings, Ebbinghaus forgetting decay, and sub-15ms prompt injection.",
     "category": "ai",
-    "icon": "\ud83e\udde0",
+    "icon": "🧠",
     "color": "rgb(168, 85, 247)",
     "borderClass": "border-purple-200",
     "bgClass": "bg-purple-50/10",
     "tag": "temporal_memory_engine.py",
     "link": "agentic-temporal-memory/",
-    "repository": "Pradeeptalari14/tp-agentic-temporal-memory"
+    "repository": "Pradeeptalari14/tp-agentic-temporal-memory",
+    "id": "agentic-temporal-memory"
   },
   {
     "title": "Multi-Agent Swarm RAFT Consensus Studio",
     "desc": "Orchestrate Byzantine-resilient autonomous multi-agent swarms with distributed RAFT leader elections, append-entries heartbeats, cryptographic voting logs, and >66% quorum execution gates.",
     "category": "ai",
-    "icon": "\ud83d\udc1d",
+    "icon": "🐝",
     "color": "rgb(234, 179, 8)",
     "borderClass": "border-amber-200",
     "bgClass": "bg-amber-50/10",
     "tag": "raft_node_agent.py",
     "link": "agent-swarm-consensus/",
-    "repository": "Pradeeptalari14/tp-agent-swarm-consensus"
+    "repository": "Pradeeptalari14/tp-agent-swarm-consensus",
+    "id": "agent-swarm-consensus"
   },
   {
     "title": "TensorRT-LLM Multi-GPU Tensor Parallelism Studio",
     "desc": "Configure NVIDIA TensorRT-LLM 8-way Tensor Parallelism (TP=8) across H100 SXM5 GPUs. Maximize 900 GB/s NVLink All-Reduce bandwidth with FP8 quantization and in-flight continuous batching.",
     "category": "ai",
-    "icon": "\ud83d\ude80",
+    "icon": "🚀",
     "color": "rgb(34, 197, 94)",
     "borderClass": "border-emerald-200",
     "bgClass": "bg-emerald-50/10",
     "tag": "trtllm_engine_builder.py",
     "link": "tensorrt-llm-engine/",
-    "repository": "Pradeeptalari14/tp-tensorrt-llm-engine"
+    "repository": "Pradeeptalari14/tp-tensorrt-llm-engine",
+    "id": "tensorrt-llm-engine"
+  },
+  {
+    "title": "DeepSeek-R1 Speculative Decoding & Reasoning Studio",
+    "desc": "Orchestrate DeepSeek-R1 speculative decoding pipelines. Configure lightweight draft models (Qwen-2.5-Coder), parallel token verification, 3.2x latency speedup, and 3Blue1Brown/Manim programmatic video animation.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "speculative_engine.py",
+    "link": "deepseek-speculative-decoding/",
+    "repository": "Pradeeptalari14/tp-deepseek-speculative-decoding",
+    "id": "deepseek-speculative-decoding"
+  },
+  {
+    "title": "SGLang RadixAttention & Prefix-Caching Studio",
+    "desc": "Simulate high-throughput Radix Tree KV-cache sharing across multi-turn agent chats, hierarchical system prompts, and tree-search decodings.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "cyan",
+    "borderClass": "border-cyan-500/20",
+    "bgClass": "bg-cyan-500/5",
+    "tag": "SGLang KV-Cache",
+    "link": "sglang-radix-attention/",
+    "repository": "Pradeeptalari14/tp-sglang-radix-attention",
+    "id": "sglang-radix-attention"
+  },
+  {
+    "title": "DeepSeek-V3 DualPipe & MoE Router Studio",
+    "desc": "Simulate DeepSeek-V3 fine-grained expert routing (K=8 of 256), Multi-Head Latent Attention (MLA) 14x KV compression, and DualPipe communication overlap.",
+    "category": "ai",
+    "icon": "🔀",
+    "color": "purple",
+    "borderClass": "border-purple-500/20",
+    "bgClass": "bg-purple-500/5",
+    "tag": "DeepSeek-V3 MoE",
+    "link": "deepseek-v3-moe/",
+    "repository": "Pradeeptalari14/tp-deepseek-v3-moe-router",
+    "id": "deepseek-v3-moe"
+  },
+  {
+    "title": "WebGPU In-Browser Small LM Studio",
+    "desc": "Execute 4-bit quantized Small Language Models (SmolLM2/Phi-3.5) directly inside client web browsers with WebGPU WGSL compute shaders and air-gapped privacy.",
+    "category": "ai",
+    "icon": "💻",
+    "color": "teal",
+    "borderClass": "border-teal-500/20",
+    "bgClass": "bg-teal-500/5",
+    "tag": "WebGPU Zero-Server",
+    "link": "webgpu-browser-slm/",
+    "repository": "Pradeeptalari14/tp-webgpu-browser-slm",
+    "id": "webgpu-browser-slm"
   }
 ]
