@@ -4,12 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeepSeek-V3 DualPipe & 256-Expert MoE Router Studio | SRE & AI Engineering</title>
-  <meta name="description" content="Simulate DeepSeek-V3 256 fine-grained routed experts, Multi-Head Latent Attention (MLA) 14x KV compression, and DualPipe bidirectional communication overlap." />
+  <meta name="description" content="Simulate DeepSeek-V3 256 fine-grained routed experts, Multi-Head Latent Attention (MLA) 14x KV compression, DualPipe communication overlap, and 3Blue1Brown/Manim animation." />
   <link rel="stylesheet" href="../../src/css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: {
+                850: '#131b2e',
+                950: '#070b14',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
 </head>
 <body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
 
@@ -35,7 +55,10 @@
     </div>
   </header>
 
+  <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    
+    <!-- Title Banner -->
     <div class="mb-8">
       <div class="flex flex-wrap items-center gap-2 mb-3">
         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-900/40 text-purple-300 border border-purple-700/50">256 Routed Experts</span>
@@ -44,75 +67,173 @@
         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-700/50">🎬 3Blue1Brown Manim</span>
       </div>
       <h1 class="text-3xl font-extrabold text-white tracking-tight">
-        DeepSeek-V3 DualPipe & MoE Router Studio
+        DeepSeek-V3 DualPipe & 256-Expert MoE Router Studio
       </h1>
-      <p class="text-slate-400 mt-2 text-sm max-w-3xl">
-        Simulate DeepSeek-V3 fine-grained expert routing (K=8 of 256), Multi-Head Latent Attention (MLA) 14x KV cache compression, and DualPipe bidirectional pipeline parallelism that overlaps computation with communication bubbles.
+      <p class="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
+        Orchestrate DeepSeek-V3 fine-grained Mixture-of-Experts routing (<span class="text-purple-400 font-mono">Top-8 of 256</span>), Multi-Head Latent Attention (MLA) 14x KV compression, and DualPipe bidirectional pipeline parallelism that overlaps forward/backward computation with all-to-all communication.
       </p>
     </div>
 
-    <!-- Architecture Visual Card -->
-    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 mb-8">
-      <h2 class="text-sm font-semibold uppercase tracking-wider text-purple-400 mb-3 flex items-center gap-2">
-        <span>🏛️</span> Architecture Flow Diagram
-      </h2>
-      <img src="deepseek_v3_moe_flow.png" alt="DeepSeek-V3 MoE Architecture Diagram" class="w-full rounded-lg border border-slate-800 shadow-2xl" />
+    <!-- Live Telemetry HUD -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Parameters</span>
+        <div class="text-2xl font-black text-purple-400 font-mono mt-1" id="hud-active-params">37B / 671B</div>
+        <span class="text-[10px] text-slate-500 mt-1">Sparse Activation (Top-8)</span>
+      </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">MLA KV Compression</span>
+        <div class="text-2xl font-black text-cyan-400 font-mono mt-1" id="hud-mla-compression">14.0x</div>
+        <span class="text-[10px] text-slate-500 mt-1">7,168 -> 512 Latent Dim</span>
+      </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">DualPipe Overlap</span>
+        <div class="text-2xl font-black text-emerald-400 font-mono mt-1" id="hud-overlap-ratio">95.4%</div>
+        <span class="text-[10px] text-slate-500 mt-1">Comm Bubble &lt; 4.8%</span>
+      </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">FP8 MMA Compute</span>
+        <div class="text-2xl font-black text-pink-400 font-mono mt-1" id="hud-tflops">1,840 TFLOPS</div>
+        <span class="text-[10px] text-slate-500 mt-1">Near Peak Hardware Utilization</span>
+      </div>
     </div>
 
-    <!-- Simulation Controls -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5">
-        <h3 class="text-base font-semibold text-white mb-3">MoE Router Configuration</h3>
-        <div class="space-y-4 text-xs">
-          <div>
-            <label class="block text-slate-400 mb-1">Top-K Experts per Token:</label>
-            <input type="number" id="topKInput" min="2" max="16" value="8" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-slate-200" />
+    <!-- Main Studio Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Control Parameters -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-6 shadow-xl">
+          <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+            MoE Router & Parallel Pipeline Controls
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <label for="top_k_experts" class="block text-xs font-semibold text-slate-300 mb-1">Top-K Routed Experts per Token</label>
+              <select id="top_k_experts" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-purple-500 focus:outline-none">
+                <option value="4">Top-4 of 256 (Extreme Sparsity ~19B params)</option>
+                <option value="8" selected>Top-8 of 256 (DeepSeek-V3 Standard ~37B params)</option>
+                <option value="16">Top-16 of 256 (High Reasoning Capacity ~74B params)</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="mla_latent_dim" class="block text-xs font-semibold text-slate-300 mb-1">MLA Latent Dim</label>
+                <select id="mla_latent_dim" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-purple-500 focus:outline-none">
+                  <option value="512" selected>512 (14.0x compression)</option>
+                  <option value="1024">1024 (7.0x compression)</option>
+                </select>
+              </div>
+              <div>
+                <label for="dualpipe_stages" class="block text-xs font-semibold text-slate-300 mb-1">DualPipe Stages</label>
+                <select id="dualpipe_stages" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-purple-500 focus:outline-none">
+                  <option value="8">8 Pipeline Stages</option>
+                  <option value="16" selected>16 Pipeline Stages</option>
+                  <option value="32">32 Pipeline Stages</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="precision_mode" class="block text-xs font-semibold text-slate-300 mb-1">Numerical Precision</label>
+              <select id="precision_mode" class="form-select w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 font-mono focus:border-purple-500 focus:outline-none">
+                <option value="FP8 Mixed Precision" selected>FP8 Mixed Precision (E4M3 / FP32 Accumulation)</option>
+                <option value="BF16 Native">BF16 Native (Standard)</option>
+              </select>
+            </div>
+
+            <button id="btn-run-simulation" class="mt-4 w-full py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs rounded-lg transition shadow-lg shadow-purple-900/20 flex items-center justify-center gap-1.5">
+              <span>🔀 Dispatch Token Batch & DualPipe</span>
+            </button>
+            <div id="sim-status" class="text-[10px] text-slate-400 text-center truncate">Ready for MoE token dispatch</div>
           </div>
-          <div>
-            <label class="block text-slate-400 mb-1">MLA Compression Dim:</label>
-            <span class="block font-mono text-cyan-400">7168 -> 512 (14.0x compression)</span>
+        </div>
+
+        <!-- FinOps & ROI Box -->
+        <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl">
+          <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span>💰</span> DeepSeek-V3 Infrastructure & FinOps ROI
+          </h3>
+          <ul class="text-xs text-slate-300 space-y-2">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>94% Cost Reduction:</strong> Activating only 37B params out of 671B yields frontier-grade reasoning at a fraction of dense model compute costs.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Zero Comm Bottleneck:</strong> DualPipe bidirectional scheduling hides all-to-all expert network transfers behind tensor compute.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>MLA Efficiency:</strong> Multi-Head Latent Attention compresses KV caches by 14x, fitting long contexts into standard GPU RAM.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: Viewports & Code IDE -->
+      <div class="lg:col-span-7 flex flex-col gap-6 sticky top-20">
+        <div class="ide-container bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+          <div class="ide-header flex flex-col items-stretch p-0 border-b border-slate-800 bg-slate-900/90">
+            <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="download-name-input" class="bg-slate-950 text-[10px] text-slate-300 font-mono px-2.5 py-1 rounded border border-slate-700 w-48 focus:outline-none" value="moe_router.py" readonly />
+              </div>
+            </div>
+            
+            <div class="flex bg-slate-950 px-2 overflow-x-auto">
+              <button onclick="switchTab('moe_router_py')" id="tab-moe_router_py" class="tab-btn active">moe_router.py</button>
+              <button onclick="switchTab('dualpipe_scheduler_py')" id="tab-dualpipe_scheduler_py" class="tab-btn">dualpipe_scheduler.py</button>
+              <button onclick="switchTab('k8s_deepseek_v3_yaml')" id="tab-k8s_deepseek_v3_yaml" class="tab-btn text-teal-400">k8s-deepseek-v3.yaml</button>
+              <button onclick="switchTab('manim_flow')" id="tab-manim_flow" class="tab-btn text-cyan-400">🎬 manim_flow.py</button>
+              <button onclick="switchTab('architecture_flow')" id="tab-architecture_flow" class="tab-btn text-orange-400">📊 Architecture Flow</button>
+              <button onclick="switchTab('sre_validation_yml')" id="tab-sre_validation_yml" class="tab-btn text-indigo-400">⚙️ validation.yml</button>
+              <button onclick="switchTab('terminal')" id="tab-terminal" class="tab-btn text-amber-400">📟 SRE Terminal</button>
+            </div>
           </div>
-          <div>
-            <label class="block text-slate-400 mb-1">DualPipe Stages:</label>
-            <span class="block font-mono text-purple-400">16 Stages (Bidirectional Microbatches)</span>
+
+          <pre id="output-box" class="ide-viewport text-xs p-6 bg-slate-950 text-slate-300 font-mono overflow-auto" style="min-height: 480px; max-height: 640px;"></pre>
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+          
+          <div id="terminal-viewport" class="hidden ide-viewport bg-slate-950 p-6 font-mono text-xs text-slate-300 flex flex-col" style="min-height: 480px; max-height: 640px; overflow-y: auto; line-height: 1.6;">
+            <div class="flex-1 overflow-y-auto mb-4" id="terminal-logs" style="max-height: 520px;"></div>
+            <div class="flex items-center gap-1.5 border-t border-slate-800 pt-3">
+              <span class="text-purple-400 font-bold">visitor@deepseek-moe:~$</span>
+              <input type="text" id="terminal-input" class="bg-transparent border-none text-slate-100 flex-1 focus:outline-none" style="font-family: inherit; font-size: inherit;" placeholder="Type help..." autocomplete="off" />
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 pt-2 border-t border-slate-900">
+              <button onclick="window.runTerminalCommand('docker compose up -d')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🐳 docker compose up</button>
+              <button onclick="window.runTerminalCommand('bash scripts/validate.sh')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🚀 validate.sh</button>
+              <button onclick="window.runTerminalCommand('gh repo view')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">📦 gh repo view</button>
+              <button onclick="window.runTerminalCommand('clear')" class="px-2.5 py-1 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-[10px] text-slate-400 font-mono transition">🧹 clear</button>
+            </div>
           </div>
-          <button id="routeBtn" class="w-full py-2.5 px-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 font-semibold text-white rounded-lg transition shadow-lg shadow-purple-500/20">
-            🔀 Route Token & Dispatch
+        </div>
+
+        <div class="flex gap-3">
+          <button id="btn-copy" class="flex-1 py-2.5 border border-slate-800 hover:border-slate-700 bg-slate-900 hover:bg-slate-850 text-slate-300 font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2">
+            <span>📋 Copy Code</span>
+          </button>
+          <button id="btn-download" class="flex-1 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-purple-900/30">
+            <span>⬇️ Download Active File</span>
           </button>
         </div>
       </div>
 
-      <div class="lg:col-span-2 bg-slate-900/80 border border-slate-800 rounded-xl p-5 flex flex-col">
-        <h3 class="text-base font-semibold text-white mb-3 flex items-center justify-between">
-          <span>Expert Affinity Allocation & Pipeline Overlap</span>
-          <span class="text-xs px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">Pipeline Bubble: &lt; 4.8%</span>
-        </h3>
-        <div id="moeTerm" class="bg-black/80 rounded-lg p-4 font-mono text-xs text-slate-300 flex-1 overflow-y-auto space-y-1.5 border border-slate-800 min-h-[220px]">
-          <div class="text-purple-400">=== DeepSeek-V3 MoE Dynamic Router Initialized ===</div>
-          <div class="text-slate-500">[MLA] Input query projected to 512-dim latent space.</div>
-          <div class="text-pink-400">[GATING] Selected K=8 experts: [E14, E62, E98, E112, E154, E189, E214, E249]</div>
-          <div class="text-cyan-300">[DUALPIPE] Overlapping forward compute (12.4ms) with backward gradient All-to-All.</div>
-          <div class="text-emerald-400">[SHARED] Shared expert #1 executing dense base knowledge path.</div>
-        </div>
-      </div>
     </div>
   </main>
 
-  <script>
-    document.getElementById('routeBtn').addEventListener('click', () => {
-      const k = document.getElementById('topKInput').value;
-      const term = document.getElementById('moeTerm');
-      const time = new Date().toLocaleTimeString();
-      let picked = [];
-      for(let i=0; i<k; i++) picked.push('E' + Math.floor(Math.random() * 256));
-      term.innerHTML += `
-        <div class="text-purple-400 mt-2">[${time}] Token routed through Top-${k} affinity gate:</div>
-        <div class="text-pink-300">  ✓ Experts Assigned: [${picked.join(', ')}]</div>
-        <div class="text-cyan-300">  ✓ DualPipe Communication Overlap: 95.4% efficiency | Bubble: &lt; 4.6%</div>
-        <div class="text-emerald-400">  ✓ FP8 MMA Tensor Cores: 1,840 TFLOPS utilized</div>
-      `;
-      term.scrollTop = term.scrollHeight;
-    });
-  </script>
+  <script src="../../src/js/core-tool.js"></script>
+  <script type="module" src="../../src/js/generators/deepseek-v3-moe-gen.js"></script>
+  <load src="../../sections/chatbot.html" />
+  <script src="/tools/shared-tools.js"></script>
 </body>
 </html>
