@@ -32,6 +32,7 @@ copyFile('tools/shared-tools.js', 'tools/shared-tools.js');
 copyFile('tools/tools.json', 'tools/tools.json');
 copyFile('interview/topics.json', 'interview/topics.json');
 copyFile('AI/studios.json', 'AI/studios.json');
+copyFile('studios/learn/studios-learning.json', 'studios/learn/studios-learning.json');
 copyFile('Talari_Pradeep.pdf', 'Talari_Pradeep.pdf');
 copyFile('Talari_Pradeep.docx', 'Talari_Pradeep.docx');
 
@@ -53,6 +54,7 @@ function syncFile(srcRel, destRel) {
 
 syncFile('tools/shared-tools.js', 'public/tools/shared-tools.js');
 syncFile('tools/shared-tools.css', 'public/tools/shared-tools.css');
+syncFile('studios/learn/studios-learning.json', 'public/studios/learn/studios-learning.json');
 
 // Sync all architecture flow diagrams and media across all tools to public and dist
 const toolsBaseDir = path.join(rootDir, 'tools');

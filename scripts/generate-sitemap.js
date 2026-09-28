@@ -18,6 +18,7 @@ const corePages = [
   { url: 'resume/', priority: '0.8', changefreq: 'monthly' },
   { url: 'architecture/', priority: '0.8', changefreq: 'monthly' },
   { url: 'studios/', priority: '0.9', changefreq: 'weekly' },
+  { url: 'studios/learn/', priority: '0.9', changefreq: 'weekly' },
   { url: 'incident/', priority: '0.8', changefreq: 'monthly' },
   { url: 'toolbox/', priority: '0.8', changefreq: 'monthly' },
   { url: 'finops/', priority: '0.8', changefreq: 'monthly' },

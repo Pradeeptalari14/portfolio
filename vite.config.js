@@ -18,6 +18,7 @@ function getToolInputs() {
     experience: resolve(__dirname, 'experience/index.html'),
     tools: resolve(__dirname, 'tools/index.html'),
     studios: resolve(__dirname, 'studios/index.html'),
+    studiosLearn: resolve(__dirname, 'studios/learn/index.html'),
     incident: resolve(__dirname, 'incident/index.html'),
     toolbox: resolve(__dirname, 'toolbox/index.html'),
     architecture: resolve(__dirname, 'architecture/index.html'),
