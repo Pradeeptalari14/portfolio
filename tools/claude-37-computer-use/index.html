@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude 3.7 Computer Use 2.0 & OS Operator Studio | Pradeep Talari</title>
+  <meta name="description" content="High-precision GUI automation, dual-display virtual desktop sandboxes, and hybrid reasoning operator with Anthropic Claude 3.7.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-desktop"></i> Anthropic Frontier</span>
+        <h1 class="tool-title">Claude 3.7 Computer Use 2.0 & OS Operator Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-claude-37-computer-use" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> OS Sandbox & Computer Use 2.0</h2>
+        <p class="card-desc">Configure X11/Wayland display servers, mouse click precision, hybrid reasoning budgets, and action safety barriers.</p>
+
+        <div class="form-group">
+          <label for="displayResolution">Virtual Display Resolution</label>
+          <select id="displayResolution" class="form-control">
+            <option value="1920x1080" selected>1920x1080 (FHD High Fidelity)</option>
+            <option value="1280x800">1280x800 (Token FinOps Optimized)</option>
+            <option value="2560x1440">2560x1440 (QHD Multi-Window Desktop)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="thinkingBudget">Extended Thinking Budget (Tokens)</label>
+          <input type="number" id="thinkingBudget" class="form-control" value="8192" min="1024" max="32768" step="1024">
+        </div>
+
+        <div class="form-group">
+          <label for="actionValidation">Human-in-the-Loop Safeguard</label>
+          <select id="actionValidation" class="form-control">
+            <option value="dangerous_only" selected>Prompt on Dangerous Actions (sudo, rm, transfer)</option>
+            <option value="full_autonomous">Fully Autonomous (Isolated Disposable Sandbox)</option>
+            <option value="step_by_step">Step-by-Step Approval</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="screenshotFormat">Screen Capture Encoding</label>
+          <select id="screenshotFormat" class="form-control">
+            <option value="png_lossless" selected>PNG Lossless (Pixel-Perfect Coordinate Mapping)</option>
+            <option value="jpeg_compressed">JPEG Compressed (Low Token Consumption)</option>
+          </select>
+        </div>
+
+        <button id="btnGenerateClaudeOperator" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-robot"></i> Configure OS Operator Session
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-crosshairs"></i> Operator Action Loop & Coordinate Telemetry</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Click Accuracy</span>
+            <span class="metric-value" id="valAccuracy">99.4%</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Reasoning Budget</span>
+            <span class="metric-value" id="valReasoning">8.1k Tokens</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Sandbox Isolation</span>
+            <span class="metric-value" id="valIsolation">Firecracker VM</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="toolDefTab">Computer 2.0 Tool Spec</button>
+            <button class="tab-btn" data-tab="operatorTab">Python OS Operator Loop</button>
+            <button class="tab-btn" data-tab="dockerTab">VNC Sandbox Dockerfile</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">Click "Configure OS Operator Session" to generate the Claude 3.7 Computer Use blueprint...</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-sitemap"></i> Computer Use 2.0 Execution Topology</h2>
+      <div class="diagram-container">
+        <img src="claude_37_computer_use_flow.png" alt="Claude 3.7 Computer Use 2.0 Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0;">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview & Key Advancements</h3>
+        <p>Anthropic Claude 3.7 introduces Computer Use 2.0, uniting hybrid test-time reasoning with pixel-precise GUI navigation. By dynamically adjusting its chain-of-thought budget, Claude 3.7 can resolve complex multi-step user interface workflows—such as handling nested modal dialogs, parsing complex legacy SAP ERP menus, and recovering from unexpected GUI errors.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Legacy ERP & Desktop Software Automation:</strong> Automate data entry and invoice extraction across desktop software lacking REST APIs or modern automation hooks.</li>
+          <li><strong>Autonomous End-to-End QA Testing:</strong> Test cross-browser web and native desktop applications by mimicking real human mouse, keyboard, and drag interactions.</li>
+          <li><strong>DevSecOps Remediation in GUI Dashboards:</strong> Navigate complex cloud consoles (AWS, GCP, Datadog) to verify IAM policy drifts and generate audited screenshots.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(217, 119, 6, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #f59e0b; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-desktop"></i> Desktop Sandbox Infra</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Display Server:</strong> X11 / Xvfb Virtual Framebuffer (1920x1080 @ 96 DPI)</li>
+              <li><strong>Window Manager:</strong> Openbox / Fluxbox Lightweight Desktop Shell</li>
+              <li><strong>Streaming:</strong> x11vnc / TigerVNC with websockify HTML5 client</li>
+              <li><strong>Orchestrator:</strong> Kubernetes Pod with isolated PID &amp; network namespaces</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #60a5fa; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-microchip"></i> AI Engine &amp; Automation</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Foundation Model:</strong> Anthropic Claude 3.7 Sonnet (Hybrid Reasoning)</li>
+              <li><strong>Computer Use API:</strong> Anthropic Beta Computer Tool 2024-10-22 / 2025-01</li>
+              <li><strong>GUI Automation:</strong> PyAutoGUI, python-xlib, xdotool native inputs</li>
+              <li><strong>Image Processing:</strong> Pillow (PIL), NumPy, OpenCV coordinate transform</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(52, 211, 153, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-shield"></i> Security Guardrails</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Kernel Isolation:</strong> Linux Seccomp-BPF profiles &amp; AppArmor sandboxing</li>
+              <li><strong>Interception:</strong> Human-in-the-Loop approval for destructive shell actions</li>
+              <li><strong>Network Egress:</strong> Cilium network policies blocking unauthorized outbound connections</li>
+              <li><strong>Telemetry:</strong> Real-time action audit logging with video replay buffers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { Claude37ComputerUseGenerator } from '../../src/js/generators/claude-37-computer-use-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new Claude37ComputerUseGenerator();
+      const btn = document.getElementById('btnGenerateClaudeOperator');
+      const output = document.getElementById('codeOutput');
+
+      btn.addEventListener('click', () => {
+        const config = {
+          resolution: document.getElementById('displayResolution').value,
+          thinkingBudget: parseInt(document.getElementById('thinkingBudget').value, 10),
+          validation: document.getElementById('actionValidation').value,
+          format: document.getElementById('screenshotFormat').value
+        };
+
+        const result = generator.generate(config);
+        output.textContent = JSON.stringify(result, null, 2);
+      });
+    });
+  </script>
+</body>
+</html>

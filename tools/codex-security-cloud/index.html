@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenAI Codex Security Cloud &amp; Automated Repo Scanner Studio | SRE &amp; AI Engineering</title>
+  <meta name="description" content="Deploy OpenAI Codex Security Cloud: enterprise repository scanner detecting zero-day CVEs, hardcoded secrets, and AST semantic bugs with automated verified PR remediations." />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: {
+                850: '#131b2e',
+                950: '#070b14',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <style>
+    .tabs-scrollable {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease-in-out !important;
+      line-height: 1.25 !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: #475569 !important;
+    }
+    .tab-btn.active {
+      color: #ef4444 !important;
+      border-bottom-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
+</head>
+<body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-red-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#0B0F19]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../" class="text-xl font-bold bg-gradient-to-r from-red-400 via-rose-400 to-amber-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          SRE & AI Architecture Platform
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-950/80 border border-red-800/60 text-red-300">
+          🛡️ Codex Security Cloud Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/Pradeeptalari14/tp-codex-security-cloud" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-red-400 transition flex items-center gap-1.5 border border-slate-800 hover:border-slate-700 bg-slate-900 px-3 py-1.5 rounded-lg">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          tp-codex-security-cloud
+        </a>
+        <a href="../../tools/" class="text-xs text-slate-400 hover:text-white transition">All Studios →</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <!-- Title Banner -->
+    <div class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-900/40 text-red-300 border border-red-700/50">OpenAI DevDay 2026</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-700/50">Codex Security Cloud</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-900/40 text-emerald-300 border border-emerald-700/50">Autonomous PR Fixes</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-900/40 text-purple-300 border border-purple-700/50">AST Semantic SAST</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-900/40 text-blue-300 border border-blue-700/50">Secret Leakage Buster</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">
+        OpenAI Codex Security Cloud &amp; Automated Repo Scanner Studio
+      </h1>
+      <p class="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
+        Automate corporate security protocols across GitHub and GitLab repositories. Eliminate static scan alert fatigue through Codex AST semantic flow analysis, instant leaked secret revocation, and automated verified pull request remediations.
+      </p>
+    </div>
+
+    <!-- HUD Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Vulnerability Resolution Time</div>
+        <div id="metric-resolution" class="text-2xl font-bold text-red-400 font-mono">&lt; 3.5 Minutes</div>
+        <div class="text-[11px] text-slate-500 mt-1">Autonomous scan-to-PR cycle</div>
+      </div>
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">False-Positive Filter</div>
+        <div id="metric-accuracy" class="text-2xl font-bold text-emerald-400 font-mono">99.1% High Precision</div>
+        <div class="text-[11px] text-slate-500 mt-1">AST semantic reachability</div>
+      </div>
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Secret Revocation Lag</div>
+        <div id="metric-secret" class="text-2xl font-bold text-amber-400 font-mono">&lt; 8.0 Seconds</div>
+        <div class="text-[11px] text-slate-500 mt-1">Instant KMS/Vault token invalidation</div>
+      </div>
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Compliance Framework</div>
+        <div id="metric-compliance" class="text-2xl font-bold text-cyan-400 font-mono">SOC2 &amp; ISO 27001</div>
+        <div class="text-[11px] text-slate-500 mt-1">Audited pull request trail</div>
+      </div>
+    </div>
+
+    <!-- Interactive Architecture Diagram -->
+    <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-6 mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-2">
+          <span>🏗️</span> Codex Security Cloud Architecture &amp; Autonomous Fix Flow
+        </h2>
+        <span class="text-xs text-slate-400 font-mono">Autonomous DevSecOps Engine</span>
+      </div>
+      <div class="w-full flex justify-center bg-slate-950/80 rounded-lg p-4 border border-slate-800/80 overflow-hidden">
+        <img src="codex_security_cloud_flow.png" alt="Codex Security Cloud Architecture Flow" class="max-h-96 w-auto object-contain rounded-md shadow-lg" />
+      </div>
+
+      <!-- Infrastructure & Software Technology Stack -->
+      <div class="mt-6 border-t border-slate-800 pt-5">
+        <h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+          <span>💻</span> Infrastructure &amp; Software Technology Stack
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3.5">
+            <h4 class="text-xs font-bold text-red-400 font-mono mb-2 flex items-center gap-1.5">
+              <span>🛡️</span> Security Scanning Engine
+            </h4>
+            <ul class="text-[12px] text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
+              <li><strong>AST &amp; Taint Engine:</strong> Semgrep OSS 1.70+ with custom rule packs</li>
+              <li><strong>Secret Detection:</strong> Gitleaks / Trufflehog high-entropy token detectors</li>
+              <li><strong>Dependency Audit:</strong> OSV (Open Source Vulnerabilities) &amp; Trivy DB</li>
+              <li><strong>Standard Output:</strong> SARIF v2.1.0 (OASIS Static Analysis Results Format)</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3.5">
+            <h4 class="text-xs font-bold text-amber-400 font-mono mb-2 flex items-center gap-1.5">
+              <span>🤖</span> AI Remediation &amp; Patch Core
+            </h4>
+            <ul class="text-[12px] text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
+              <li><strong>Synthesis Model:</strong> OpenAI Codex / GPT-4o Code Remediation Engine</li>
+              <li><strong>Verification:</strong> Sandboxed unit test runner before PR creation</li>
+              <li><strong>Diff Generation:</strong> Unified GNU diff with AST syntax validation</li>
+              <li><strong>Policy Bounds:</strong> Maximum modification radius to avoid regression</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3.5">
+            <h4 class="text-xs font-bold text-cyan-400 font-mono mb-2 flex items-center gap-1.5">
+              <span>☸️</span> CI/CD &amp; Cloud Gateways
+            </h4>
+            <ul class="text-[12px] text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
+              <li><strong>Integration:</strong> GitHub Actions, GitLab CI, and Bitbucket Pipelines</li>
+              <li><strong>Reporting Target:</strong> GitHub Code Scanning &amp; Security Tab API</li>
+              <li><strong>Orchestration:</strong> Kubernetes CronJobs &amp; Event-driven Webhooks</li>
+              <li><strong>Quality Gate:</strong> Enforced PR blocking on Critical/High severity CVEs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Studio Grid: Controls & Code Output -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Control Panel -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-5 space-y-4">
+          <h2 class="text-base font-semibold text-white flex items-center gap-2">
+            <span>⚙️</span> Security Scanner &amp; Remediation Settings
+          </h2>
+
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Scan Target Scope</label>
+            <select id="scanScope" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-red-500">
+              <option value="monorepo_all" selected>All Organization Repositories (Monorepos + Services)</option>
+              <option value="ci_pre_merge">CI Pre-Merge Pull Request Diffs Only</option>
+              <option value="nightly_deep_audit">Nightly Deep AST Semantic Taint Scan</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Automated Fix Strategy</label>
+            <select id="remediationMode" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-red-500">
+              <option value="auto_pr_verified" selected>Auto-Generate Pull Request with Passing Tests</option>
+              <option value="auto_merge_semver_patch">Auto-Merge Patch Version Dependencies</option>
+              <option value="slack_approval_gate">Slack Interactive Approval Gate</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Secret Leakage Enforcement</label>
+            <select id="secretAction" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-red-500">
+              <option value="instant_revoke" selected>Instant API Key Revocation &amp; Dynamic Rotation</option>
+              <option value="block_push_precommit">Block Push via Pre-Commit eBPF Hook</option>
+              <option value="alert_security_soc">Notify Security SOC Team Only</option>
+            </select>
+          </div>
+
+          <button id="btn-recalculate" class="w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-medium py-2 px-4 rounded-lg transition duration-200 text-sm flex items-center justify-center gap-2">
+            <span>⚡</span> Recompute Security Scanner &amp; Workflows
+          </button>
+        </div>
+
+        <!-- FinOps & Risk Card -->
+        <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-5">
+          <h2 class="text-sm font-semibold text-slate-200 mb-2 flex items-center gap-2 font-mono">
+            <span>💡</span> Risk Elimination &amp; MTTR Compression
+          </h2>
+          <p id="finops-text" class="text-xs text-slate-400 leading-relaxed">
+            By eliminating false-positive noise with AST taint tracking and synthesizing unit-tested PR fixes in 3.5 minutes, Codex Security Cloud slashes Mean-Time-to-Remediate (MTTR) by 92% across enterprise codebases.
+          </p>
+        </div>
+      </div>
+
+      <!-- Code & Manifest Output Panel -->
+      <div class="lg:col-span-7 flex flex-col">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl flex-1 flex flex-col overflow-hidden shadow-2xl">
+          <!-- Code Tabs Navigation -->
+          <div class="border-b border-slate-800 bg-slate-950/60 px-2 flex items-center justify-between">
+            <div class="tabs-scrollable" role="tablist">
+              <button class="tab-btn active" data-tab="python">
+                <span>🐍</span> codex_security_scanner.py
+              </button>
+              <button class="tab-btn" data-tab="remediator">
+                <span>⚡</span> pr_patch_remediator.py
+              </button>
+              <button class="tab-btn" data-tab="manifest">
+                <span>☸️</span> k8s-security-cronjob.yaml
+              </button>
+              <button class="tab-btn" data-tab="docker">
+                <span>🐳</span> Dockerfile
+              </button>
+              <button class="tab-btn" data-tab="workflow">
+                <span>⚙️</span> security-cloud-ci.yml
+              </button>
+              <button class="tab-btn" data-tab="script">
+                <span>📜</span> validate.sh
+              </button>
+            </div>
+            <div class="flex items-center gap-2 pr-2">
+              <button id="btn-copy-code" class="text-xs font-mono text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded transition flex items-center gap-1">
+                <span>📋</span> Copy
+              </button>
+              <button id="btn-download-code" class="text-xs font-mono text-red-400 hover:text-red-300 bg-red-950/80 border border-red-800/80 px-2.5 py-1 rounded transition flex items-center gap-1">
+                <span>⬇️</span> Download
+              </button>
+            </div>
+          </div>
+
+          <!-- Code View Area -->
+          <div class="flex-1 p-4 bg-slate-950/95 overflow-auto max-h-[560px]">
+            <pre class="font-mono text-xs text-slate-300 leading-relaxed whitespace-pre" id="codeOutput"><code>Loading Codex Security Cloud configuration...</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-[#0B0F19] py-6 mt-12 text-center text-xs text-slate-500">
+    <p>© 2026 Pradeep Talari. Frontier AI Architecture &amp; Production Systems. MIT Licensed.</p>
+  </footer>
+
+  <script src="../../src/js/generators/codex-security-cloud-gen.js"></script>
+</body>
+</html>

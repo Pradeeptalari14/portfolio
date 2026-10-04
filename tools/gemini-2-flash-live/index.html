@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini 2.0 Flash Multimodal Live API Studio | Pradeep Talari</title>
+  <meta name="description" content="Sub-100ms real-time audio/video streaming, bidirectional WebSockets, and multimodal tool use with Google Gemini 2.0 Flash Live API.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-microphone-lines"></i> Multi-Provider Frontier</span>
+        <h1 class="tool-title">Gemini 2.0 Flash Multimodal Live API Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-gemini-2-flash-live" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Multimodal Stream Engine</h2>
+        <p class="card-desc">Configure duplex WebSockets, camera frame FPS, native audio codecs, and tool declaration bindings.</p>
+
+        <div class="form-group">
+          <label for="streamModality">Stream Modality Pipeline</label>
+          <select id="streamModality" class="form-control">
+            <option value="audio_video_duplex" selected>Audio + Video Bidirectional Duplex (WebRTC/WSS)</option>
+            <option value="audio_only_duplex">Ultra-Low Latency Duplex Voice (Opus 24kHz)</option>
+            <option value="video_inspection_only">High-Resolution Video Screen Inspection (1 FPS)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="geminiVoice">Gemini Voice Persona</label>
+          <select id="geminiVoice" class="form-control">
+            <option value="Aoede" selected>Aoede (Deep, Expressive & Conversational)</option>
+            <option value="Charon">Charon (Technical & Precise)</option>
+            <option value="Fenrir">Fenrir (Authoritative & Crisp)</option>
+            <option value="Kore">Kore (Warm & Engaging)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="videoFps">Camera Video Sample Rate</label>
+          <select id="videoFps" class="form-control">
+            <option value="1">1 Frame / Second (FinOps Cost Optimized)</option>
+            <option value="2" selected>2 Frames / Second (Balanced Realtime Vision)</option>
+            <option value="5">5 Frames / Second (High Precision Robotics)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="groundingSearch">Google Search Dynamic Grounding</label>
+          <select id="groundingSearch" class="form-control">
+            <option value="true" selected>Enabled (Live Web Grounding)</option>
+            <option value="false">Disabled (Private Local Context Only)</option>
+          </select>
+        </div>
+
+        <button id="btnGenerateGeminiStream" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-satellite-dish"></i> Generate Live Stream Session
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-wave-square"></i> Live Telemetry & Session Blueprint</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Glass-to-Glass Latency</span>
+            <span class="metric-value" id="valLatency">74.5 ms</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Audio Codec</span>
+            <span class="metric-value" id="valCodec">PCM 24kHz</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Multimodal Context</span>
+            <span class="metric-value" id="valCtx">1.04M Tokens</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="wsTab">WebSocket Session Config</button>
+            <button class="tab-btn" data-tab="pyTab">Python Async Client</button>
+            <button class="tab-btn" data-tab="toolTab">Function Call Schema</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">Click "Generate Live Stream Session" to assemble the Gemini 2.0 Flash configuration...</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> Gemini 2.0 Flash Live Multimodal Topology</h2>
+      <div class="diagram-container">
+        <img src="gemini_2_flash_live_flow.png" alt="Gemini 2.0 Flash Live Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0;">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview & Production Capabilities</h3>
+        <p>Google Gemini 2.0 Flash Multimodal Live API provides bidirectional native audio and visual streaming over persistent WebSockets. Unlike turn-based pipelines that stitch together separate STT, LLM, and TTS models, Gemini 2.0 Flash natively ingests PCM audio and video frames directly, delivering sub-100ms interruptions and human-like natural cadence.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Industrial Field Maintenance with AR Smart Glasses:</strong> Technicians stream live camera video while discussing schematics hands-free with the AI assistant.</li>
+          <li><strong>Autonomous Contact Center Voice Agents:</strong> Handle complex caller interactions with real-time barge-in, background noise rejection, and live database lookups.</li>
+          <li><strong>Real-Time Code & Screen Walkthroughs:</strong> Developers share their IDE screens as live video, conversing verbally with the model to diagnose bugs and refactor code.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #60a5fa; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-tower-broadcast"></i> Streaming Protocol &amp; Ingress</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Protocol:</strong> Full-Duplex WebSockets (BidiGenerateContent API)</li>
+              <li><strong>Audio Ingress:</strong> Raw PCM 16kHz 16-bit Mono (Little-Endian)</li>
+              <li><strong>Audio Egress:</strong> Raw PCM 24kHz audio stream with sub-100ms latency</li>
+              <li><strong>Video Stream:</strong> 1-5 FPS JPEG frames (0.5-2.0 Mbps bandwidth)</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #c084fc; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-microchip"></i> Multimodal AI &amp; Grounding</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Foundation Model:</strong> Google Gemini 2.0 Flash Multimodal Live</li>
+              <li><strong>Live Grounding:</strong> Dynamic Google Search with attribution citations</li>
+              <li><strong>Tool Calling:</strong> Async parallel function calling with JSON schemas</li>
+              <li><strong>Barge-In Interruption:</strong> Native acoustic interruption handling</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-cloud"></i> Gateway &amp; Edge Infrastructure</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Edge Termination:</strong> Cloudflare Workers / Envoy Proxy WebSocket router</li>
+              <li><strong>Gateway Runtime:</strong> Python 3.11+ / Google GenAI SDK (v0.8+)</li>
+              <li><strong>Session State:</strong> Ephemeral Redis 7.2 stream session buffer</li>
+              <li><strong>Container:</strong> Kubernetes 1.30+ Pod with sticky WebSocket ingress</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { Gemini2FlashLiveGenerator } from '../../src/js/generators/gemini-2-flash-live-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new Gemini2FlashLiveGenerator();
+      const btn = document.getElementById('btnGenerateGeminiStream');
+      const output = document.getElementById('codeOutput');
+
+      btn.addEventListener('click', () => {
+        const config = {
+          modality: document.getElementById('streamModality').value,
+          voice: document.getElementById('geminiVoice').value,
+          videoFps: parseInt(document.getElementById('videoFps').value, 10),
+          grounding: document.getElementById('groundingSearch').value === 'true'
+        };
+
+        const result = generator.generate(config);
+        output.textContent = JSON.stringify(result, null, 2);
+      });
+    });
+  </script>
+</body>
+</html>

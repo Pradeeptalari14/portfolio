@@ -10,8 +10,8 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
   const rawData = fs.readFileSync(jsonPath, 'utf8');
   const studios = JSON.parse(rawData);
 
-  it('should contain all 324 developer studios', () => {
-    expect(studios.length).toBe(324);
+  it('should contain all 334 developer studios', () => {
+    expect(studios.length).toBe(334);
   });
 
   it('should match category distributions across platform studios', () => {
@@ -20,7 +20,7 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
       return acc;
     }, {});
 
-    expect(counts['ai']).toBe(224);
+    expect(counts['ai']).toBe(234);
     expect(counts['automation']).toBe(33);
     expect(counts['observability']).toBe(29);
     expect(counts['cloud']).toBe(26);
@@ -95,10 +95,10 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
 
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
-    expect(cards.length).toBe(324);
+    expect(cards.length).toBe(334);
 
     const catalogCount = document.getElementById('catalogCount');
-    expect(catalogCount.textContent).toContain('324 of 324');
+    expect(catalogCount.textContent).toContain('334 of 334');
   });
 
   it('should filter cards when searching by keyword', async () => {
@@ -114,7 +114,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
     expect(cards.length).toBeGreaterThan(0);
-    expect(cards.length).toBeLessThan(324);
+    expect(cards.length).toBeLessThan(334);
 
     const firstCard = cards[0];
     expect(firstCard.textContent.toLowerCase()).toContain('vllm');
@@ -169,7 +169,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
   });
 });
 
-describe('Individual Studio Learning Documents Across All 324 Studios', () => {
+describe('Individual Studio Learning Documents Across All 334 Studios', () => {
   const jsonPath = path.resolve(__dirname, '../studios/learn/studios-learning.json');
   const studios = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pages Dynamic Canvas & Live Script Execution Studio | Pradeep Talari</title>
+  <meta name="description" content="Interactive multi-agent computational canvas, live Python/Wasm execution sandboxes, and collaborative reactive notebooks.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-bolt"></i> OpenAI DevDay Frontier</span>
+        <h1 class="tool-title">Pages Dynamic Canvas & Live Execution Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-ai-pages-canvas" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Dynamic Canvas Sandbox Engine</h2>
+        <p class="card-desc">Configure reactive execution blocks, Wasm kernel runtimes, and multi-agent artifact bridges.</p>
+
+        <div class="form-group">
+          <label for="cellLanguage">Execution Kernel / Sandbox</label>
+          <select id="cellLanguage" class="form-control">
+            <option value="python_wasm" selected>Pyodide / Python Wasm (In-Browser Edge Sandbox)</option>
+            <option value="node_worker">Node.js V8 Isolated Worker</option>
+            <option value="sql_duckdb">DuckDB Analytical Wasm Engine</option>
+            <option value="bash_container">gVisor Ephemeral Container Sandbox</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="agentAutopilot">Autonomous Cell Authoring Agent</label>
+          <select id="agentAutopilot" class="form-control">
+            <option value="gpt6_sol" selected>GPT-6.1 Sol (Realtime Code & Canvas Control)</option>
+            <option value="gpt6_luna">GPT-6 Luna (Lightweight Synthesizer)</option>
+            <option value="hybrid_ensemble">Hybrid Ensemble (Sol + Luna)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="canvasMemoryLimit">Memory Limit / Canvas Pod (MB)</label>
+          <input type="number" id="canvasMemoryLimit" class="form-control" value="512" min="128" max="4096" step="128">
+        </div>
+
+        <div class="form-group">
+          <label for="reactiveRecompute">Reactive Dependency Recompute</label>
+          <select id="reactiveRecompute" class="form-control">
+            <option value="true" selected>Enabled (Directed Acyclic Graph Topological Sync)</option>
+            <option value="false">Disabled (Manual Execution Only)</option>
+          </select>
+        </div>
+
+        <button id="btnGenerateCanvas" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-play"></i> Generate Canvas Specification
+        </button>
+      </section>
+
+      <!-- Right Output & Execution Terminal -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-terminal"></i> Live Canvas Graph & Execution Runtime</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Execution Latency</span>
+            <span class="metric-value" id="valLatency">14.2 ms</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">DAG Reactive Nodes</span>
+            <span class="metric-value" id="valNodes">8 Active</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Sandbox Security</span>
+            <span class="metric-value" id="valSecurity">ZDR Isolated</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="jsonTab">Canvas DAG Spec</button>
+            <button class="tab-btn" data-tab="pythonTab">Reactive Kernel Script</button>
+            <button class="tab-btn" data-tab="k8sTab">gVisor Sandbox Manifest</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">Click "Generate Canvas Specification" to compile the reactive execution graph...</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-sitemap"></i> High-Throughput Canvas Architecture</h2>
+      <div class="diagram-container">
+        <img src="ai_pages_canvas_flow.png" alt="Pages Dynamic Canvas Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0;">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview & Production Capabilities</h3>
+        <p>Pages Dynamic Canvas turns static AI responses into interactive, reactive micro-applications. Rather than reading Markdown code snippets, users and autonomous agents execute Python/Wasm computations, render live interactive graphs, and inspect live data frames directly on the page.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Autonomous Financial Risk Modeling:</strong> Analysts pose scenarios and the model dynamically spins up Monte Carlo simulation blocks, rendering interactive VaR curves.</li>
+          <li><strong>DevSecOps Infrastructure Automation:</strong> Live canvas cells execute dry-run Terraform plans and visualize drift topologies before human signoff.</li>
+          <li><strong>Biomedical Data Exploration:</strong> Scientists interact with protein structure viewers and statistical analysis blocks computed locally via WebAssembly.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-bolt"></i> Reactive Compute Engine</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Client Wasm:</strong> Pyodide 0.26+ (In-Browser CPython 3.12 WebAssembly)</li>
+              <li><strong>Analytical SQL:</strong> DuckDB Wasm with columnar Parquet acceleration</li>
+              <li><strong>Visual Canvas:</strong> Vega-Lite &amp; Observable Plot reactive charting</li>
+              <li><strong>DAG Resolver:</strong> Topological sort reactive dependency graph engine</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #60a5fa; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-shield-halved"></i> Sandboxing &amp; MicroVMs</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Server Sandboxes:</strong> gVisor (runsc) user-space kernel microVMs</li>
+              <li><strong>Kernel Security:</strong> Seccomp-BPF filters &amp; network namespace isolation</li>
+              <li><strong>Privacy Flag:</strong> Zero Data Retention (ZDR) validation on state commits</li>
+              <li><strong>Resource Quotas:</strong> Strict cgroups v2 memory (512MB) &amp; CPU limits</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #c084fc; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-network-wired"></i> APIs &amp; Coordination</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>API Framework:</strong> FastAPI (ASGI) with Arrow IPC memory streaming</li>
+              <li><strong>Agent Protocol:</strong> OpenAI Canvas Artifact Protocol &amp; Model Context Protocol</li>
+              <li><strong>State Bus:</strong> Full-duplex WebSocket live cell state broadcasting</li>
+              <li><strong>UI Framework:</strong> Modern Vanilla JS / ES Modules with Shadow DOM</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { AIPagesDynamicCanvasGenerator } from '../../src/js/generators/ai-pages-dynamic-canvas-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new AIPagesDynamicCanvasGenerator();
+      const btn = document.getElementById('btnGenerateCanvas');
+      const output = document.getElementById('codeOutput');
+
+      btn.addEventListener('click', () => {
+        const config = {
+          kernel: document.getElementById('cellLanguage').value,
+          agent: document.getElementById('agentAutopilot').value,
+          memoryLimitMb: parseInt(document.getElementById('canvasMemoryLimit').value, 10),
+          reactive: document.getElementById('reactiveRecompute').value === 'true'
+        };
+
+        const result = generator.generate(config);
+        output.textContent = JSON.stringify(result, null, 2);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in with ChatGPT & Identity Token Gateway Studio | Pradeep Talari</title>
+  <meta name="description" content="Enterprise OAuth2 / OIDC authentication gateway, Zero Data Retention identity claims, and JWT token verification for OpenAI ChatGPT SSO.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-shield-halved"></i> OpenAI DevDay Frontier</span>
+        <h1 class="tool-title">Sign in with ChatGPT & Identity Gateway Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-signin-chatgpt-identity" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-key"></i> OIDC & Identity Broker Configuration</h2>
+        <p class="card-desc">Configure OAuth2 PKCE authorization flows, ZDR verification scopes, and token exchange gateways.</p>
+
+        <div class="form-group">
+          <label for="clientId">Client ID (Application Audience)</label>
+          <input type="text" id="clientId" class="form-control" value="app_chatgpt_enterprise_prod">
+        </div>
+
+        <div class="form-group">
+          <label for="authScopes">Requested OpenID Scopes</label>
+          <select id="authScopes" class="form-control">
+            <option value="openid_profile_email" selected>openid profile email (Standard User Identity)</option>
+            <option value="enterprise_zdr">openid profile email chatgpt.zdr.enforce (Zero Data Retention)</option>
+            <option value="agent_delegation">openid chatgpt.agents.delegate chatgpt.spaces.write (Agent Delegation)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="tokenExpirySec">Access Token TTL (Seconds)</label>
+          <input type="number" id="tokenExpirySec" class="form-control" value="3600" min="300" max="86400" step="300">
+        </div>
+
+        <div class="form-group">
+          <label for="pkceChallenge">Proof Key for Code Exchange (PKCE)</label>
+          <select id="pkceChallenge" class="form-control">
+            <option value="S256" selected>SHA-256 (Enforced High-Security)</option>
+            <option value="plain">Plain (Testing Only)</option>
+          </select>
+        </div>
+
+        <button id="btnGenerateIdentityConfig" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-fingerprint"></i> Generate Identity Gateway Config
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-code"></i> Verified Claims & OIDC Discovery Metadata</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Token Handshake</span>
+            <span class="metric-value" id="valHandshake">18.5 ms</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Security Tier</span>
+            <span class="metric-value" id="valSecTier">FIPS 140-3</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">ZDR Attestation</span>
+            <span class="metric-value" id="valAttestation">Cryptographic</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="oidcTab">OIDC Discovery</button>
+            <button class="tab-btn" data-tab="jwtTab">Decoded JWT Claims</button>
+            <button class="tab-btn" data-tab="fastapiTab">FastAPI Token Verifier</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">Click "Generate Identity Gateway Config" to compile OIDC provider metadata...</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> ChatGPT Identity Gateway Topology</h2>
+      <div class="diagram-container">
+        <img src="signin_chatgpt_flow.png" alt="Sign in with ChatGPT Identity Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0;">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview & Production Standards</h3>
+        <p>"Sign in with ChatGPT" allows enterprise platforms, internal tooling, and B2B SaaS products to leverage OpenAI's verified identity credentials. Rather than managing independent user credentials, apps receive signed JWTs with explicit Zero Data Retention (ZDR) policy flags and agent delegation scopes.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Zero-Trust Internal Developer Portals:</strong> Authenticate engineers using their enterprise ChatGPT credentials, inheriting corporate organization entitlements.</li>
+          <li><strong>Agent Impersonation & Delegation Control:</strong> Grant autonomous agents ephemeral user delegation tokens that strictly expire upon task completion.</li>
+          <li><strong>Single-Sign-On for Multi-Tenant AI Applications:</strong> Seamlessly onboard enterprise teams with instant OAuth2 authorization and SCIM group mapping.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #38bdf8; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-cubes"></i> Infrastructure Stack</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Orchestration:</strong> Kubernetes Deployment &amp; ClusterIP Service</li>
+              <li><strong>Ingress &amp; Gateway:</strong> Envoy Proxy / Traefik with TLS 1.3 termination</li>
+              <li><strong>Container Engine:</strong> Docker OCI Distroless Python 3.11 Runtime</li>
+              <li><strong>Session Cache:</strong> Redis 7.2 Cluster (Ephemeral token &amp; JWKS cache)</li>
+              <li><strong>Zero-Trust Mesh:</strong> Cloudflare Access &amp; Istio mTLS Policy</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(129, 140, 248, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #818cf8; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-code"></i> Software &amp; Frameworks</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>API Framework:</strong> FastAPI 0.110+ (Asynchronous ASGI Router)</li>
+              <li><strong>Cryptographic Core:</strong> PyJWT 2.8+ &amp; Cryptography (RS256 Signature)</li>
+              <li><strong>Data Contracts:</strong> Pydantic v2 (Strict ZDR Claims Validation)</li>
+              <li><strong>HTTP Engine:</strong> HTTPX / AsyncIO Non-blocking Connection Pooling</li>
+              <li><strong>Web Application:</strong> Vanilla JS / ES Modules (Zero Build Overhead)</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(52, 211, 153, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-lock"></i> Identity &amp; Auth Protocols</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Protocol:</strong> OpenID Connect (OIDC Core 1.0) &amp; OAuth 2.0 (RFC 6749)</li>
+              <li><strong>Handshake Security:</strong> PKCE with SHA-256 (RFC 7636 S256)</li>
+              <li><strong>Token Assertions:</strong> Signed JWT (RFC 7519) &amp; JWKS Key Rotation (RFC 7517)</li>
+              <li><strong>Enterprise Privacy:</strong> Zero Data Retention (ZDR) Cryptographic Flag</li>
+              <li><strong>Delegation:</strong> Downstream Scoped Agent Delegation Claims</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { SignInChatGPTIdentityGenerator } from '../../src/js/generators/signin-chatgpt-identity-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new SignInChatGPTIdentityGenerator();
+      const btn = document.getElementById('btnGenerateIdentityConfig');
+      const output = document.getElementById('codeOutput');
+
+      btn.addEventListener('click', () => {
+        const config = {
+          clientId: document.getElementById('clientId').value,
+          scopes: document.getElementById('authScopes').value,
+          ttl: parseInt(document.getElementById('tokenExpirySec').value, 10),
+          pkce: document.getElementById('pkceChallenge').value
+        };
+
+        const result = generator.generate(config);
+        output.textContent = JSON.stringify(result, null, 2);
+      });
+    });
+  </script>
+</body>
+</html>

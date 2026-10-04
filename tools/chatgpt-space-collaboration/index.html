@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatGPT Space &amp; Multi-Agent Coworking Rooms Studio | SRE &amp; AI Engineering</title>
+  <meta name="description" content="Deploy ChatGPT Space: shared virtual rooms where human engineering teams and autonomous Dots coordinate projects, build software, and sync real-time state via CRDTs." />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: {
+                850: '#131b2e',
+                950: '#070b14',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <style>
+    .tabs-scrollable {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease-in-out !important;
+      line-height: 1.25 !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: #475569 !important;
+    }
+    .tab-btn.active {
+      color: #6366f1 !important;
+      border-bottom-color: #6366f1 !important;
+      background: rgba(99, 102, 241, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
+</head>
+<body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#0B0F19]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../" class="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          SRE & AI Architecture Platform
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-950/80 border border-indigo-800/60 text-indigo-300">
+          🤝 ChatGPT Space Collaboration Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/Pradeeptalari14/tp-chatgpt-space-collab" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-indigo-400 transition flex items-center gap-1.5 border border-slate-800 hover:border-slate-700 bg-slate-900 px-3 py-1.5 rounded-lg">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          tp-chatgpt-space-collab
+        </a>
+        <a href="../../tools/" class="text-xs text-slate-400 hover:text-white transition">All Studios →</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <!-- Title Banner -->
+    <div class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-900/40 text-indigo-300 border border-indigo-700/50">OpenAI DevDay 2026</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-900/40 text-purple-300 border border-purple-700/50">ChatGPT Space</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-900/40 text-emerald-300 border border-emerald-700/50">CRDT Real-Time Sync</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-900/40 text-amber-300 border border-amber-700/50">Dots Team Workers</span><span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-pink-900/40 text-pink-300 border border-pink-700/50">Multi-User Pair Coding</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">
+        OpenAI ChatGPT Space &amp; Multi-Agent Coworking Rooms Studio
+      </h1>
+      <p class="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
+        Orchestrate shared virtual spaces where distributed engineering squads and autonomous background Dots collaborate simultaneously. Synchronize active state via Conflict-Free Replicated Data Types (CRDTs), live shared terminals, and consensus gates.
+      </p>
+    </div>
+
+    <!-- HUD Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Document Sync Latency</div>
+        <div id="metric-latency" class="text-2xl font-bold text-indigo-400 font-mono">&lt; 15ms CRDT</div>
+        <div class="text-[11px] text-slate-500 mt-1">Multi-peer WebSocket deltas</div>
+      </div>
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Max Concurrent Peers</div>
+        <div id="metric-peers" class="text-2xl font-bold text-purple-400 font-mono">250 Humans + Dots</div>
+        <div class="text-[11px] text-slate-500 mt-1">Sub-room partitioned mesh</div>
+      </div>
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Consensus Model</div>
+        <div id="metric-consensus" class="text-2xl font-bold text-emerald-400 font-mono">Human Signoff Gate</div>
+        <div class="text-[11px] text-slate-500 mt-1">Audited PR deployment lock</div>
+      </div>
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
+        <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Omnichannel Sync</div>
+        <div id="metric-omni" class="text-2xl font-bold text-amber-400 font-mono">Slack &amp; Teams Native</div>
+        <div class="text-[11px] text-slate-500 mt-1">Bi-directional event mirroring</div>
+      </div>
+    </div>
+
+    <!-- Interactive Architecture Diagram -->
+    <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-6 mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-2">
+          <span>🏗️</span> ChatGPT Space Coworking Architecture &amp; State Mesh
+        </h2>
+        <span class="text-xs text-slate-400 font-mono">Multi-Agent Collaboration Engine</span>
+      </div>
+      <div class="w-full flex justify-center bg-slate-950/80 rounded-lg p-4 border border-slate-800/80 overflow-hidden">
+        <img src="chatgpt_space_flow.png" alt="ChatGPT Space Architecture Flow" class="max-h-96 w-auto object-contain rounded-md shadow-lg" />
+      </div>
+
+      <!-- Infrastructure & Software Technology Stack -->
+      <div class="mt-6 border-t border-slate-800 pt-5">
+        <h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+          <span>💻</span> Infrastructure &amp; Software Technology Stack
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3.5">
+            <h4 class="text-xs font-bold text-indigo-400 font-mono mb-2 flex items-center gap-1.5">
+              <span>🔄</span> Real-Time State Mesh &amp; CRDT
+            </h4>
+            <ul class="text-[12px] text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
+              <li><strong>CRDT Engine:</strong> Yjs / Automerge with sub-15ms delta conflict resolution</li>
+              <li><strong>Transport:</strong> Full-Duplex WebSockets (WSS) &amp; gRPC bidirectional streams</li>
+              <li><strong>Pub/Sub State:</strong> Redis 7.2 Cluster with Redis Streams &amp; pub/sub channels</li>
+              <li><strong>Distributed Locking:</strong> Redlock algorithm &amp; lease management for canvas elements</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3.5">
+            <h4 class="text-xs font-bold text-purple-400 font-mono mb-2 flex items-center gap-1.5">
+              <span>🤖</span> Multi-Agent Orchestration &amp; AI
+            </h4>
+            <ul class="text-[12px] text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
+              <li><strong>Foundation Agents:</strong> OpenAI GPT-6.1 Sol (Code Agent) &amp; GPT-6 Luna (Router)</li>
+              <li><strong>Agent Protocol:</strong> OpenAI Realtime Canvas Protocol &amp; Model Context Protocol (MCP)</li>
+              <li><strong>Canvas Graph:</strong> Distributed Canvas DAG state store with schema versioning</li>
+              <li><strong>Permissions &amp; RBAC:</strong> Token-scoped participant roles with human signoff gates</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3.5">
+            <h4 class="text-xs font-bold text-emerald-400 font-mono mb-2 flex items-center gap-1.5">
+              <span>☸️</span> Cloud Infra &amp; Omnichannel
+            </h4>
+            <ul class="text-[12px] text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
+              <li><strong>Sandboxes:</strong> Kubernetes ephemeral pods isolated with gVisor microVMs</li>
+              <li><strong>Ingress Proxy:</strong> Envoy Proxy with sticky session WebSocket connection pooling</li>
+              <li><strong>Chat Bridges:</strong> Slack &amp; Microsoft Teams Bot Framework bi-directional sync</li>
+              <li><strong>Observability:</strong> Prometheus peer metrics &amp; OpenTelemetry distributed traces</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Studio Grid: Controls & Code Output -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Control Panel -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-5 space-y-4">
+          <h2 class="text-base font-semibold text-white flex items-center gap-2">
+            <span>⚙️</span> Collaboration Room Configurations
+          </h2>
+
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Room Archetype</label>
+            <select id="roomType" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="engineering_war_room" selected>Engineering SRE War Room &amp; Triage</option>
+              <option value="architecture_pair_coding">Architecture RFC &amp; Pair Coding Space</option>
+              <option value="product_squad_room">Cross-Functional Product &amp; Slides Squad</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Dots Agent Allocation</label>
+            <select id="dotAgents" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="three_active_dots" selected>3 Assigned Dots (SRE Sentinel, Builder, Reviewer)</option>
+              <option value="single_lead_dot">Single Lead Dot Agent (Facilitator Only)</option>
+              <option value="swarm_ten_dots">Swarm Fleet (10 Parallel Specialized Dots)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">State Replication Engine</label>
+            <select id="syncEngine" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="yjs_crdt_websocket" selected>Yjs CRDT Delta Streaming over WebSockets</option>
+              <option value="automerge_crdt">Automerge JSON-CRDT with Git Versioning</option>
+              <option value="ot_operational_transform">Operational Transform (Google Docs Style)</option>
+            </select>
+          </div>
+
+          <button id="btn-recalculate" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium py-2 px-4 rounded-lg transition duration-200 text-sm flex items-center justify-center gap-2">
+            <span>⚡</span> Recompute Coworking Room &amp; Mesh
+          </button>
+        </div>
+
+        <!-- FinOps & Velocity Card -->
+        <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-5">
+          <h2 class="text-sm font-semibold text-slate-200 mb-2 flex items-center gap-2 font-mono">
+            <span>💡</span> Squad Multiplier &amp; Context Cohesion
+          </h2>
+          <p id="finops-text" class="text-xs text-slate-400 leading-relaxed">
+            By embedding autonomous Dots into shared ChatGPT Spaces, cross-functional squads eliminate asynchronous communication lags, resolving system incidents 4x faster while keeping humans continuously in the approval loop.
+          </p>
+        </div>
+      </div>
+
+      <!-- Code & Manifest Output Panel -->
+      <div class="lg:col-span-7 flex flex-col">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl flex-1 flex flex-col overflow-hidden shadow-2xl">
+          <!-- Code Tabs Navigation -->
+          <div class="border-b border-slate-800 bg-slate-950/60 px-2 flex items-center justify-between">
+            <div class="tabs-scrollable" role="tablist">
+              <button class="tab-btn active" data-tab="python">
+                <span>🐍</span> chatgpt_space_broker.py
+              </button>
+              <button class="tab-btn" data-tab="crdt">
+                <span>⚡</span> yjs_crdt_sync_worker.py
+              </button>
+              <button class="tab-btn" data-tab="manifest">
+                <span>☸️</span> k8s-chatgpt-space.yaml
+              </button>
+              <button class="tab-btn" data-tab="docker">
+                <span>🐳</span> Dockerfile
+              </button>
+              <button class="tab-btn" data-tab="workflow">
+                <span>⚙️</span> space-collab-ci.yml
+              </button>
+              <button class="tab-btn" data-tab="script">
+                <span>📜</span> validate.sh
+              </button>
+            </div>
+            <div class="flex items-center gap-2 pr-2">
+              <button id="btn-copy-code" class="text-xs font-mono text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded transition flex items-center gap-1">
+                <span>📋</span> Copy
+              </button>
+              <button id="btn-download-code" class="text-xs font-mono text-indigo-400 hover:text-indigo-300 bg-indigo-950/80 border border-indigo-800/80 px-2.5 py-1 rounded transition flex items-center gap-1">
+                <span>⬇️</span> Download
+              </button>
+            </div>
+          </div>
+
+          <!-- Code View Area -->
+          <div class="flex-1 p-4 bg-slate-950/95 overflow-auto max-h-[560px]">
+            <pre class="font-mono text-xs text-slate-300 leading-relaxed whitespace-pre" id="codeOutput"><code>Loading ChatGPT Space configuration...</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-[#0B0F19] py-6 mt-12 text-center text-xs text-slate-500">
+    <p>© 2026 Pradeep Talari. Frontier AI Architecture &amp; Production Systems. MIT Licensed.</p>
+  </footer>
+
+  <script src="../../src/js/generators/chatgpt-space-collaboration-gen.js"></script>
+</body>
+</html>

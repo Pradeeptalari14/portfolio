@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01.AI Yi-Lightning MoE Studio | Pradeep Talari</title>
+  <meta name="description" content="Frontier Mixture-of-Experts inference runtime, dynamic bilingual tokenization, and high-throughput serving for 01.AI Yi-Lightning.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-bolt"></i> Frontier MoE Engine</span>
+        <h1 class="tool-title">01.AI Yi-Lightning MoE Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-yi-lightning-moe" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> MoE Cluster Architecture</h2>
+        <p class="card-desc">Configure dynamic expert routing, bilingual tokenizer caches, and FP8 tensor/expert parallelism.</p>
+
+        <div class="form-group">
+          <label for="expertRouting">Expert Routing Algorithm</label>
+          <select id="expertRouting" class="form-control">
+            <option value="top_k_gating" selected>Top-8 Sparse Gating (64 Total Experts, 18B Active)</option>
+            <option value="aux_loss_free">Auxiliary-Loss-Free Dynamic Load Balancer</option>
+            <option value="radix_moe_cache">SGLang RadixAttention Cross-Lingual KV Cache</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="moeQuantization">Precision & Quantization</label>
+          <select id="moeQuantization" class="form-control">
+            <option value="fp8_e4m3" selected>FP8 E4M3 (Ultra-High Throughput - 4x H100 GPUs)</option>
+            <option value="fp8_e5m2">FP8 E5M2 (Higher Dynamic Range Math)</option>
+            <option value="bfloat16">BF16 Unquantized (8x H100 Full Precision)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="contextLength">Context Window Length</label>
+          <select id="contextLength" class="form-control">
+            <option value="131072" selected>128K Tokens (Full Enterprise Long-Context)</option>
+            <option value="65536">64K Tokens (Fast Document Summarization)</option>
+            <option value="32768">32K Tokens (Low-Latency Conversational)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="bilingualTokenizer">Tokenizer & CJK Compression</label>
+          <select id="bilingualTokenizer" class="form-control">
+            <option value="tiktoken_extended_cjk" selected>Extended CJK + Latin (2.4x Token Compression)</option>
+            <option value="native_byte_pair">Native 01.AI Byte-Pair Encoder</option>
+            <option value="code_specialized">Code & Mathematics Optimized Tokenizer</option>
+          </select>
+        </div>
+
+        <button id="btnGenerateYiArchitecture" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-bolt"></i> Generate Yi-Lightning Serving Spec
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> MoE Telemetry & Inference Blueprint</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Token Generation Throughput</span>
+            <span class="metric-value" id="valGenRate">184.2 tok/s</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Active / Total Params (Ref.)</span>
+            <span class="metric-value" id="valParams">18B / 110B</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">LMSYS Arena Standing</span>
+            <span class="metric-value" id="valArena">Global Top 5</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="specTab">MoE Architecture Spec</button>
+            <button class="tab-btn" data-tab="pyTab">Python SGLang Cluster</button>
+            <button class="tab-btn" data-tab="k8sTab">K8s Deployment Manifest</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">Click "Generate Yi-Lightning Serving Spec" to construct the cluster blueprint...</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Deep Dive -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> 01.AI Yi-Lightning MoE Cluster Topology</h2>
+      <div class="diagram-container">
+        <img src="yi_lightning_moe_flow.png" alt="01.AI Yi-Lightning MoE Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0;">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview & Frontier Capabilities</h3>
+        <p>01.AI Yi-Lightning is a frontier Mixture-of-Experts (MoE) model that ranked among the top models on the LMSYS Chatbot Arena at launch, offering strong bilingual (English &amp; Chinese) reasoning at low serving cost. It is served through the 01.AI API; its weights and exact parameter counts are not public.</p>
+        <p><em>Note:</em> The expert counts, parameter sizes and throughput figures in this studio are an <strong>illustrative reference blueprint</strong> for self-hosting a comparable fine-grained MoE model (e.g. on SGLang with expert parallelism), not official Yi-Lightning specifications.</p>
+
+        <h3>Core Technical Innovations</h3>
+        <ul>
+          <li><strong>Auxiliary-Loss-Free Load Balancing:</strong> Eliminates model quality degradation caused by artificial routing penalties, allowing experts to naturally specialize across mathematics, code synthesis, and multilingual nuances.</li>
+          <li><strong>Extended CJK Bilingual Tokenizer:</strong> Compresses Chinese and East Asian text by up to 2.4x compared to conventional tokenizers, slashing inference latency and KV cache footprint in half.</li>
+          <li><strong>SGLang RadixAttention with MoE Paging:</strong> Enables sub-millisecond prefix caching across multi-turn enterprise conversations and agent tool chains.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #c084fc; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-server"></i> Distributed Cluster Infra</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>GPU Nodes:</strong> 4x NVIDIA H100 (80GB SXM5) / 8x A100 Cluster</li>
+              <li><strong>Interconnect:</strong> 400Gb/s InfiniBand / RoCE v2 with NCCL backend</li>
+              <li><strong>Orchestrator:</strong> Kubernetes StatefulSet &amp; KubeRay RayCluster</li>
+              <li><strong>Storage:</strong> Shared NVMe Lustre / GPFS for weight checkpoints</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #60a5fa; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-microchip"></i> MoE Serving Engine</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Serving Framework:</strong> SGLang v0.4+ with RadixAttention KV Cache</li>
+              <li><strong>Parallelism:</strong> Tensor Parallel (TP=4) &amp; Expert Parallel (EP=4)</li>
+              <li><strong>Quantization:</strong> FP8 E4M3 / E5M2 GEMM Kernels (FlashAttention-3)</li>
+              <li><strong>Router Architecture:</strong> Top-8 Sparse Gating with Aux-Loss-Free Bias</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(52, 211, 153, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-language"></i> Bilingual NLP &amp; APIs</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Tokenizer:</strong> Extended CJK Byte-Pair Encoder (TikToken format)</li>
+              <li><strong>API Protocol:</strong> OpenAI Compatible <code>/v1/chat/completions</code></li>
+              <li><strong>Context Length:</strong> 131,072 tokens (128K enterprise window)</li>
+              <li><strong>Language Coverage:</strong> Native Chinese (Simplified/Traditional) &amp; English</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { YiLightningMoEGenerator } from '../../src/js/generators/yi-lightning-moe-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new YiLightningMoEGenerator();
+      const btn = document.getElementById('btnGenerateYiArchitecture');
+      const output = document.getElementById('codeOutput');
+
+      let currentSpec = generator.generate();
+      output.textContent = JSON.stringify(currentSpec, null, 2);
+
+      btn.addEventListener('click', () => {
+        const config = {
+          expertRouting: document.getElementById('expertRouting').value,
+          quantization: document.getElementById('moeQuantization').value,
+          contextWindow: parseInt(document.getElementById('contextLength').value, 10),
+          bilingualTokenizer: document.getElementById('bilingualTokenizer').value
+        };
+
+        currentSpec = generator.generate(config);
+        output.textContent = JSON.stringify(currentSpec, null, 2);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          const tabType = e.target.getAttribute('data-tab');
+
+          if (tabType === 'specTab') {
+            output.textContent = JSON.stringify(currentSpec, null, 2);
+          } else if (tabType === 'pyTab') {
+            output.textContent = generator.generatePythonServingSnippet();
+          } else if (tabType === 'k8sTab') {
+            output.textContent = `apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: yi-lightning-moe-cluster
+spec:
+  replicas: 4
+  serviceName: yi-lightning-service
+  template:
+    spec:
+      containers:
+      - name: yi-moe-engine
+        image: ghcr.io/pradeeptalari14/tp-yi-lightning-moe:latest
+        resources:
+          limits:
+            nvidia.com/gpu: "4"
+            memory: 128Gi
+        env:
+        - name: TP_SIZE
+          value: "4"
+        - name: EP_SIZE
+          value: "4"
+        - name: QUANTIZATION
+          value: "fp8"`;
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

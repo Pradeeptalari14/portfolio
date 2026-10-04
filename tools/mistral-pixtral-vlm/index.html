@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mistral Pixtral 12B Edge Vision-Language Studio | Pradeep Talari</title>
+  <meta name="description" content="128k context native multimodal reasoning, dynamic resolution image tokenization, and high-throughput document OCR with Mistral Pixtral 12B.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-eye"></i> Mistral AI Frontier</span>
+        <h1 class="tool-title">Mistral Pixtral 12B Edge VLM Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-mistral-pixtral-vlm" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Pixtral Vision-Language Pipeline</h2>
+        <p class="card-desc">Configure dynamic image patch tokenizers, 128k context windows, and vLLM / SGLang edge serving engines.</p>
+
+        <div class="form-group">
+          <label for="quantizationScheme">Precision & Quantization</label>
+          <select id="quantizationScheme" class="form-control">
+            <option value="bfloat16" selected>BF16 (Full Precision - 24GB VRAM Single GPU)</option>
+            <option value="fp8">FP8 E4M3 (High Throughput - 14GB VRAM Edge GPU)</option>
+            <option value="int4_awq">AWQ INT4 (Ultra-Edge - 8GB Consumer GPU)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="imageResolutionMode">Image Tokenizer Mode</label>
+          <select id="imageResolutionMode" class="form-control">
+            <option value="dynamic_aspect_ratio" selected>Dynamic Aspect Ratio (No Distortion, 1024x1024 Native Patches)</option>
+            <option value="fixed_tile_512">Fixed Tile (512x512 Fast Document Scanning)</option>
+            <option value="multi_image_interleaved">Multi-Image Interleaved (Up to 16 High-Res Photos)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="vllmEngine">Serving Runtime Backend</label>
+          <select id="vllmEngine" class="form-control">
+            <option value="vllm_multimodal" selected>vLLM PagedAttention Multimodal Backend</option>
+            <option value="sglang_radix">SGLang RadixAttention Vision Router</option>
+            <option value="mistral_inference">Mistral-Inference Native Reference Runner</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="structuredOcrSchema">Structured Output Format</label>
+          <select id="structuredOcrSchema" class="form-control">
+            <option value="json_schema_enforced" selected>Enforced JSON Schema (Pydantic / Guidance)</option>
+            <option value="markdown_table">Markdown Table & Technical Formulas</option>
+            <option value="freeform_reasoning">Freeform Multimodal Chain-of-Thought</option>
+          </select>
+        </div>
+
+        <button id="btnGeneratePixtralEngine" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-brain"></i> Generate Pixtral VLM Architecture
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-image"></i> Tokenizer Telemetry & Inference Blueprint</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Token Generation Rate</span>
+            <span class="metric-value" id="valGenRate">118 tok/s</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Context Capacity</span>
+            <span class="metric-value" id="valContext">128,000</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Patch Token Count</span>
+            <span class="metric-value" id="valPatches">1,024 Tokens</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="vllmTab">vLLM Serving Spec</button>
+            <button class="tab-btn" data-tab="pyTab">Python Multimodal Pipeline</button>
+            <button class="tab-btn" data-tab="k8sTab">K8s GPU Deployment</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">Click "Generate Pixtral VLM Architecture" to build the Pixtral 12B serving pipeline...</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> Mistral Pixtral 12B Edge Topology</h2>
+      <div class="diagram-container">
+        <img src="mistral_pixtral_vlm_flow.png" alt="Mistral Pixtral 12B Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0;">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview & Architectural Superiority</h3>
+        <p>Mistral Pixtral 12B is an open-weights frontier Vision-Language model featuring a native 400M parameter vision encoder coupled with a 12B decoder model. Pixtral processes arbitrary image aspect ratios dynamically without cropping or distortion, natively handling 128,000 tokens of interleaved multi-image text contexts.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>High-Fidelity Document & Diagram OCR:</strong> Parse dense engineering schematics, legal contracts, and financial balance sheets into structured JSON.</li>
+          <li><strong>Edge Retail & Drone Surveillance:</strong> Deploy locally on NVIDIA Jetson or single A10G/L4 GPUs to analyze live camera feeds without sending telemetry to cloud providers.</li>
+          <li><strong>Multi-Page PDF Ingestion for Agentic RAG:</strong> Ingest full 50-page technical manuals in a single prompt, preserving layout and cross-diagram references.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #f97316; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-microchip"></i> Hardware &amp; Serving Infra</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>GPU Acceleration:</strong> NVIDIA L4 (24GB) / A10G / RTX 4090 / A100</li>
+              <li><strong>Serving Engine:</strong> vLLM v0.6+ PagedAttention Multimodal Backend</li>
+              <li><strong>Inference Router:</strong> SGLang RadixAttention with Vision Cache</li>
+              <li><strong>Orchestration:</strong> Kubernetes Deployment with NVIDIA GPU Operator</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #38bdf8; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-layer-group"></i> Architecture &amp; Quantization</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Foundation Model:</strong> mistralai/Pixtral-12B-2409 (12B text + 400M vision)</li>
+              <li><strong>Context Window:</strong> 128,000 native multimodal tokens</li>
+              <li><strong>Precision:</strong> FP8 E4M3 (15.8GB VRAM) &amp; BF16 (25.4GB VRAM)</li>
+              <li><strong>Vision Tokenizer:</strong> Dynamic 16x16 2D Convolutional Patching</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #c084fc; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-brackets-curly"></i> Structured Extraction &amp; APIs</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li><strong>Guided Decoding:</strong> Outlines / Guidance JSON Schema enforcement</li>
+              <li><strong>API Standard:</strong> OpenAI-compatible <code>/v1/chat/completions</code> endpoint</li>
+              <li><strong>Client Libraries:</strong> Official OpenAI Python SDK, Pillow (PIL), NumPy</li>
+              <li><strong>Container:</strong> vLLM official multimodal Docker image</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { MistralPixtralVLMGenerator } from '../../src/js/generators/mistral-pixtral-vlm-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new MistralPixtralVLMGenerator();
+      const btn = document.getElementById('btnGeneratePixtralEngine');
+      const output = document.getElementById('codeOutput');
+
+      btn.addEventListener('click', () => {
+        const config = {
+          quantization: document.getElementById('quantizationScheme').value,
+          resolution: document.getElementById('imageResolutionMode').value,
+          backend: document.getElementById('vllmEngine').value,
+          schema: document.getElementById('structuredOcrSchema').value
+        };
+
+        const result = generator.generate(config);
+        output.textContent = JSON.stringify(result, null, 2);
+      });
+    });
+  </script>
+</body>
+</html>

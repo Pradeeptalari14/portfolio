@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5 Days to Learn Any Tool &amp; Course Roadmap | Talari Pradeep</title>
+  <meta name="description" content="Accelerated 5-Day Engineering Mastery Blueprint to master any developer studio, understand failure modes, run real-time incident drills, and complete capstone production projects." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.35);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-red: #f87171;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      padding-bottom: 5rem;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 9, 17, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-brand { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; }
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-btn {
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .nav-btn-doc { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.35); color: #93c5fd; }
+    .nav-btn-doc:hover { background: #3b82f6; color: #fff; }
+    .nav-btn-home { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-secondary); }
+    .nav-btn-home:hover { color: #fff; }
+
+    .container { max-width: 1080px; margin: 2.5rem auto 0; padding: 0 1.5rem; }
+
+    .hero-banner {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .hero-desc { font-size: 1.05rem; color: var(--text-secondary); max-width: 880px; margin-bottom: 1.5rem; }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .day-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--accent-cyan);
+    }
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .day-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+    }
+    .day-deliverable {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .day-title { font-weight: 700; color: #fff; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .day-content { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; }
+
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .track-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .track-item:hover { border-color: var(--border-accent); }
+    .track-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      width: fit-content;
+      margin-bottom: 0.75rem;
+    }
+    .track-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .track-studios { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .track-capstone { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; margin-bottom: 1.25rem; }
+
+    pre.code-block {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+    }
+    .table-custom th, .table-custom td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-custom th {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Video Academy */
+    .yt-channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .yt-channel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .yt-channel-card:hover {
+      border-color: rgba(239, 68, 68, 0.4);
+      transform: translateY(-2px);
+    }
+    .yt-channel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #f87171;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      width: fit-content;
+    }
+    .yt-channel-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.35rem;
+    }
+    .yt-channel-domain {
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      margin-bottom: 0.5rem;
+    }
+    .yt-channel-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
+    .btn-yt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-yt:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+    .track-yt-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .track-yt-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .track-yt-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .track-yt-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .track-yt-list li:last-child {
+      border-bottom: none;
+    }
+    .track-yt-day {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      min-width: 170px;
+    }
+    .track-yt-topic {
+      color: #e2e8f0;
+      font-size: 0.88rem;
+      flex: 1;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+    .checklist li {
+      padding: 0.45rem 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-brand">TALARI PRADEEP &bull; 5-DAY MASTERY ACCELERATOR</div>
+    <div class="nav-actions">
+      <a href="5_Days_To_Learn_Any_Tool_Course_Roadmap.docx" download class="nav-btn nav-btn-doc">📥 Download Course (.docx)</a>
+      <a href="5_Days_To_Learn_Any_Tool_Course_Roadmap.doc" download class="nav-btn nav-btn-doc">📥 Download Course (.doc)</a>
+      <a href="308_Studios_Complete_Learning_Guide.docx" download class="nav-btn nav-btn-doc">📄 All 308 Studios (.docx)</a>
+      <a href="index.html" class="nav-btn nav-btn-home">← Pradeep Home</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="hero-banner">
+      <h1 class="hero-title">5 Days to Learn Any Tool &amp; Course Roadmap</h1>
+      <p class="hero-desc">
+        A structured, hands-on engineering syllabus to master any of the 308+ Developer Studios in 5 days. Learn enterprise use cases, diagnose failure modes ("Understand Best How to Treat"), execute real-time terminal drills, and ship an end-to-end capstone production project.
+      </p>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="5_Days_To_Learn_Any_Tool_Course_Roadmap.docx" download class="nav-btn nav-btn-doc">📥 Download Complete Word Document (.docx)</a>
+        <a href="5_Days_To_Learn_Any_Tool_Course_Roadmap.doc" download class="nav-btn nav-btn-doc">📥 Download Word Document (.doc)</a>
+        <a href="../studios/learn/" class="nav-btn nav-btn-home">⚡ Interactive Studios Lab</a>
+      </div>
+    </div>
+
+    <!-- The 5-Day Framework -->
+    <section class="card">
+      <h2 class="card-title">1. The Universal 5-Day Accelerated Learning Framework</h2>
+      <div class="timeline">
+        <div class="day-box">
+          <div class="day-header">
+            <span class="day-badge">Day 1</span>
+            <span class="day-deliverable">Deliverable: Verified Local Sandbox</span>
+          </div>
+          <h3 class="day-title">Architectural Foundations, System Mental Model &amp; Sandbox Bootstrapping</h3>
+          <p class="day-content">
+            Deconstruct why this tool exists in production topologies. Clone the verified repository, inspect the declarative configuration artifact (e.g. deployment.yaml, rag_engine.py, profile.bt), spin up the local Docker/Python environment, and verify initial process health.
+          </p>
+        </div>
+
+        <div class="day-box">
+          <div class="day-header">
+            <span class="day-badge">Day 2</span>
+            <span class="day-deliverable">Deliverable: Working Production Config</span>
+          </div>
+          <h3 class="day-title">Enterprise Production Use Cases &amp; High-Scale Scenarios</h3>
+          <p class="day-content">
+            Implement production use cases: high-concurrency request paths, multi-tenant isolation, automated failover resilience, and GitOps governance. Configure tuning levers (worker concurrency, buffer sizes, caching strategies, and timeout budgets).
+          </p>
+        </div>
+
+        <div class="day-box">
+          <div class="day-header">
+            <span class="day-badge">Day 3</span>
+            <span class="day-deliverable">Deliverable: Root-Cause Incident Runbook</span>
+          </div>
+          <h3 class="day-title">SRE Triage, Operational Failure Modes &amp; "Understand Best How to Treat"</h3>
+          <p class="day-content">
+            Analyze critical failure symptoms (P1 alerts, P99 latency spikes, OOM kills, kernel lock contention). Identify the naive anti-patterns that exacerbate outages, and implement the Architectural Best Treatment to achieve durable root-cause resolution.
+          </p>
+        </div>
+
+        <div class="day-box">
+          <div class="day-header">
+            <span class="day-badge">Day 4</span>
+            <span class="day-deliverable">Deliverable: Telemetry &amp; SLO Verification</span>
+          </div>
+          <h3 class="day-title">Real-Time "Do to Learn" Practice Drills &amp; Fault Injection</h3>
+          <p class="day-content">
+            Execute real-time hands-on terminal drills. Inject simulated load, thread starvation, or configuration drift. Query SRE Golden Signals (Latency, Traffic, Errors, Saturation) via curl and Prometheus to verify healthy recovery.
+          </p>
+        </div>
+
+        <div class="day-box">
+          <div class="day-header">
+            <span class="day-badge">Day 5</span>
+            <span class="day-deliverable">Deliverable: Production-Certified Capstone</span>
+          </div>
+          <h3 class="day-title">End-to-End Capstone Project, Runbook Authoring &amp; Production Certification</h3>
+          <p class="day-content">
+            Assemble the full capstone repository with CI/CD validation, automated smoke tests, operational runbooks, and SRE SLO metrics. Verify the 10-point production readiness checklist and commit to your portfolio.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 Specialized Tracks -->
+    <section class="card">
+      <h2 class="card-title">2. Choose Your Track: 5 Specialization Course Roadmaps</h2>
+      <div class="track-grid">
+        <div class="track-item">
+          <div class="track-badge">Track 1</div>
+          <h3 class="track-name">AI, LLMOps &amp; Agentic Engineering</h3>
+          <div class="track-studios">vLLM, DeepSeek Speculative, DSPy, MCP Gateway, TypeSafe Jev</div>
+          <p class="track-capstone">
+            <strong>Capstone Project:</strong> Deploy an autonomous multi-agent assistant with vLLM PagedAttention v2, sub-500ms TTFT, zero external KV fragmentation, and audited MCP tool calling.
+          </p>
+          <a href="../tools/vllm-paged-attention/learn.html" class="nav-btn nav-btn-doc" style="display: block; text-align: center;">Explore Track 1 Studios →</a>
+        </div>
+
+        <div class="track-item">
+          <div class="track-badge">Track 2</div>
+          <h3 class="track-name">SRE, Kernel Telemetry &amp; Observability</h3>
+          <div class="track-studios">eBPF Continuous Profiler, eBPF Tracing, Otel Pipeline, Falco, SRE Simulator</div>
+          <p class="track-capstone">
+            <strong>Capstone Project:</strong> Build and verify an in-kernel observability pipeline capturing CPU hotspots with &lt;0.8% host overhead and automated P1 alert dispatch.
+          </p>
+          <a href="../tools/ebpf-continuous-profiler/learn.html" class="nav-btn nav-btn-doc" style="display: block; text-align: center;">Explore Track 2 Studios →</a>
+        </div>
+
+        <div class="track-item">
+          <div class="track-badge">Track 3</div>
+          <h3 class="track-name">Cloud Infrastructure &amp; Kubernetes Platforms</h3>
+          <div class="track-studios">Karpenter, KEDA Event Scaling, Cilium Network Policy, Terraform</div>
+          <p class="track-capstone">
+            <strong>Capstone Project:</strong> Deploy a production Kubernetes landing zone capable of scaling from 5 to 500 pods in under 45 seconds using Karpenter and KEDA.
+          </p>
+          <a href="../tools/karpenter-autoscaler/learn.html" class="nav-btn nav-btn-doc" style="display: block; text-align: center;">Explore Track 3 Studios →</a>
+        </div>
+
+        <div class="track-item">
+          <div class="track-badge">Track 4</div>
+          <h3 class="track-name">DevSecOps &amp; Zero-Trust Governance</h3>
+          <div class="track-studios">Vault Secrets, Trivy Scanner, SAST, Confidential AI TEE, Kyverno</div>
+          <p class="track-capstone">
+            <strong>Capstone Project:</strong> Construct an automated DevSecOps gate that verifies container SBOMs, rotates database credentials hourly, and guarantees TEE enclave attestation.
+          </p>
+          <a href="../tools/vault-secrets/learn.html" class="nav-btn nav-btn-doc" style="display: block; text-align: center;">Explore Track 4 Studios →</a>
+        </div>
+
+        <div class="track-item">
+          <div class="track-badge">Track 5</div>
+          <h3 class="track-name">Cloud Delivery &amp; GitOps CI/CD Pipelines</h3>
+          <div class="track-studios">ArgoCD, Tekton Pipeline, FluxCD Drift Detector, GitHub Governance</div>
+          <p class="track-capstone">
+            <strong>Capstone Project:</strong> Deploy an end-to-end GitOps pipeline managing multi-environment rollouts with zero-downtime canary progression and automated rollback on &gt;0.5% errors.
+          </p>
+          <a href="../tools/argocd/learn.html" class="nav-btn nav-btn-doc" style="display: block; text-align: center;">Explore Track 5 Studios →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Video Learning Academy & Curated YouTube Course Directory -->
+    <section class="card" id="video-academy">
+      <h2 class="card-title">3. Video Learning Academy &amp; Curated YouTube Course Directory</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+        Accelerate your visual comprehension with world-class engineering talks, deep dive tutorials, and conference keynotes directly on YouTube:
+      </p>
+
+      <h3 style="font-family: var(--font-display); color: #fff; font-size: 1.2rem; margin-bottom: 1rem;">
+        📺 Authoritative YouTube Engineering Channels &amp; Conferences
+      </h3>
+
+      <div class="yt-channels-grid">
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ AI &amp; LLM Foundations</div>
+            <div class="yt-channel-name">Andrej Karpathy</div>
+            <div class="yt-channel-domain">Deep Learning &bull; Neural Networks &bull; NanoGPT</div>
+            <div class="yt-channel-desc">World-renowned deep dives from OpenAI founding member. Building GPT from scratch, tokenization, backpropagation, and transformer mechanics.</div>
+          </div>
+          <a href="https://www.youtube.com/@AndrejKarpathy" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Paper Walkthroughs</div>
+            <div class="yt-channel-name">Umar Jamil</div>
+            <div class="yt-channel-domain">AI Papers &bull; Attention &bull; LLaMA &bull; LoRA</div>
+            <div class="yt-channel-desc">Rigorous line-by-line PyTorch walkthroughs of landmark research papers including PagedAttention, FlashAttention, and RoPE positional embeddings.</div>
+          </div>
+          <a href="https://www.youtube.com/@umarjamilai" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Production LLMs</div>
+            <div class="yt-channel-name">AI Engineer Summit</div>
+            <div class="yt-channel-domain">Agentic Systems &bull; vLLM &bull; DSPy &bull; MCP</div>
+            <div class="yt-channel-desc">Keynotes and tech talks on production inference serving, speculative decoding, multi-agent frameworks, and eval benchmarks.</div>
+          </div>
+          <a href="https://www.youtube.com/@aiengineersummit" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Cloud &amp; Kubernetes</div>
+            <div class="yt-channel-name">CNCF (Cloud Native)</div>
+            <div class="yt-channel-domain">KubeCon &bull; Karpenter &bull; Cilium &bull; KEDA</div>
+            <div class="yt-channel-desc">Official Cloud Native Computing Foundation channel featuring thousands of KubeCon presentations on Kubernetes internals, eBPF, and GitOps.</div>
+          </div>
+          <a href="https://www.youtube.com/@cloudnativefdn" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ SRE &amp; Systems</div>
+            <div class="yt-channel-name">USENIX Association</div>
+            <div class="yt-channel-domain">SREcon &bull; Postmortems &bull; Distributed Reliability</div>
+            <div class="yt-channel-desc">Real-world production outage postmortems, SLO design principles, kernel observability, and incident retrospectives from global tech leaders.</div>
+          </div>
+          <a href="https://www.youtube.com/@USENIXAssociation" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Architecture &amp; Scale</div>
+            <div class="yt-channel-name">ByteByteGo (Alex Xu)</div>
+            <div class="yt-channel-domain">System Design &bull; Microservices &bull; Caches</div>
+            <div class="yt-channel-desc">Visual animations illustrating distributed caching, high-concurrency rate limiters, message queues, and planetary-scale cloud architecture.</div>
+          </div>
+          <a href="https://www.youtube.com/@ByteByteGo" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Backend &amp; Protocols</div>
+            <div class="yt-channel-name">Hussein Nasser</div>
+            <div class="yt-channel-domain">HTTP/3 &bull; gRPC &bull; TCP/IP &bull; Database Engines</div>
+            <div class="yt-channel-desc">In-depth engineering lectures dissecting networking sockets, proxy mechanics, database indexing, and backend communication protocols.</div>
+          </div>
+          <a href="https://www.youtube.com/@hnasr" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Kernel &amp; eBPF</div>
+            <div class="yt-channel-name">Brendan Gregg (eBPF)</div>
+            <div class="yt-channel-domain">FlameGraphs &bull; BPF Tracing &bull; Profiling</div>
+            <div class="yt-channel-desc">The industry authority on Linux performance analysis, BPF tracepoints, and in-kernel continuous CPU and memory saturation profiling.</div>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Brendan+Gregg+eBPF+performance" target="_blank" rel="noopener" class="btn-yt">▶ Search Brendan Gregg</a>
+        </div>
+
+        <div class="yt-channel-card">
+          <div>
+            <div class="yt-channel-badge">▶ Security &amp; IaC</div>
+            <div class="yt-channel-name">HashiCorp</div>
+            <div class="yt-channel-domain">Vault Secrets &bull; Terraform &bull; Zero Trust</div>
+            <div class="yt-channel-desc">Official engineering deep dives on dynamic secrets leases, PKI engine automation, Consul service mesh, and multi-cloud Terraform pipelines.</div>
+          </div>
+          <a href="https://www.youtube.com/@HashiCorp" target="_blank" rel="noopener" class="btn-yt">▶ Visit YouTube Channel</a>
+        </div>
+      </div>
+
+      <h3 style="font-family: var(--font-display); color: #fff; font-size: 1.2rem; margin-top: 2rem; margin-bottom: 1rem;">
+        🎯 Day-by-Day Curated YouTube Video Deep Dives Across 5 Specialization Tracks
+      </h3>
+
+      <!-- Track 1 Video Box -->
+      <div class="track-yt-box">
+        <div class="track-yt-title">
+          <span>🤖</span> Track 1: AI, LLMOps &amp; Agentic Engineering Video Roadmap
+        </div>
+        <ul class="track-yt-list">
+          <li>
+            <span class="track-yt-day">Day 1 &bull; Architecture</span>
+            <span class="track-yt-topic">vLLM PagedAttention Virtual Memory &amp; KV Cache Internals</span>
+            <a href="https://www.youtube.com/results?search_query=vLLM+PagedAttention+deep+dive+architecture" target="_blank" rel="noopener" class="btn-yt">▶ Watch Deep Dive</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 2 &bull; Setup &amp; Config</span>
+            <span class="track-yt-topic">Speculative Decoding, Draft Models &amp; Medusa Serving</span>
+            <a href="https://www.youtube.com/results?search_query=Speculative+Decoding+LLM+serving+explained" target="_blank" rel="noopener" class="btn-yt">▶ Watch Tutorial</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 3 &bull; Incident Triage</span>
+            <span class="track-yt-topic">DSPy MIPRO Prompt Optimization &amp; Self-Refining Pipelines</span>
+            <a href="https://www.youtube.com/results?search_query=DSPy+prompt+optimization+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Masterclass</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 4 &bull; Practice Drills</span>
+            <span class="track-yt-topic">Model Context Protocol (MCP) Anthropic Tool Calling</span>
+            <a href="https://www.youtube.com/results?search_query=Model+Context+Protocol+MCP+Anthropic+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Hands-on</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 5 &bull; Capstone Delivery</span>
+            <span class="track-yt-topic">Building Production Multi-Agent Swarms with LangGraph &amp; AutoGen</span>
+            <a href="https://www.youtube.com/results?search_query=LangGraph+multi+agent+production+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Capstone</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Track 2 Video Box -->
+      <div class="track-yt-box">
+        <div class="track-yt-title">
+          <span>📊</span> Track 2: SRE, Kernel Telemetry &amp; Observability Video Roadmap
+        </div>
+        <ul class="track-yt-list">
+          <li>
+            <span class="track-yt-day">Day 1 &bull; Architecture</span>
+            <span class="track-yt-topic">eBPF In-Kernel Performance Profiling &amp; FlameGraphs (Brendan Gregg)</span>
+            <a href="https://www.youtube.com/results?search_query=Brendan+Gregg+eBPF+profiling+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Deep Dive</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 2 &bull; Setup &amp; Config</span>
+            <span class="track-yt-topic">OpenTelemetry Distributed Tracing &amp; Collector Pipelines</span>
+            <a href="https://www.youtube.com/results?search_query=OpenTelemetry+distributed+tracing+collector+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Tutorial</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 3 &bull; Incident Triage</span>
+            <span class="track-yt-topic">Falco Runtime Threat Detection with eBPF in Kubernetes</span>
+            <a href="https://www.youtube.com/results?search_query=Falco+eBPF+Kubernetes+runtime+security" target="_blank" rel="noopener" class="btn-yt">▶ Watch Masterclass</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 4 &bull; Practice Drills</span>
+            <span class="track-yt-topic">Prometheus PromQL Golden Signals (Latency, Traffic, Errors, Saturation)</span>
+            <a href="https://www.youtube.com/results?search_query=Prometheus+PromQL+SRE+golden+signals+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Hands-on</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 5 &bull; Capstone Delivery</span>
+            <span class="track-yt-topic">USENIX SREcon Real-World Incident Postmortem Retrospectives</span>
+            <a href="https://www.youtube.com/results?search_query=SREcon+incident+postmortem+outage+analysis" target="_blank" rel="noopener" class="btn-yt">▶ Watch Capstone</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Track 3 Video Box -->
+      <div class="track-yt-box">
+        <div class="track-yt-title">
+          <span>☁️</span> Track 3: Cloud Infrastructure &amp; Kubernetes Platforms Video Roadmap
+        </div>
+        <ul class="track-yt-list">
+          <li>
+            <span class="track-yt-day">Day 1 &bull; Architecture</span>
+            <span class="track-yt-topic">Terraform Modular Architecture, State Locking &amp; Remote Backends</span>
+            <a href="https://www.youtube.com/results?search_query=Terraform+modular+architecture+best+practices" target="_blank" rel="noopener" class="btn-yt">▶ Watch Deep Dive</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 2 &bull; Setup &amp; Config</span>
+            <span class="track-yt-topic">AWS Karpenter vs Cluster Autoscaler Kubernetes Deep Dive</span>
+            <a href="https://www.youtube.com/results?search_query=AWS+Karpenter+Kubernetes+autoscaling+deep+dive" target="_blank" rel="noopener" class="btn-yt">▶ Watch Tutorial</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 3 &bull; Incident Triage</span>
+            <span class="track-yt-topic">KEDA Event-Driven Autoscaling with Redis &amp; Kafka Triggers</span>
+            <a href="https://www.youtube.com/results?search_query=KEDA+Kubernetes+event+driven+autoscaling" target="_blank" rel="noopener" class="btn-yt">▶ Watch Masterclass</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 4 &bull; Practice Drills</span>
+            <span class="track-yt-topic">Cilium eBPF CNI &amp; Microsegmentation Zero-Trust Network Policies</span>
+            <a href="https://www.youtube.com/results?search_query=Cilium+eBPF+Kubernetes+networking+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Hands-on</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 5 &bull; Capstone Delivery</span>
+            <span class="track-yt-topic">Production Multi-Region High-Availability Kubernetes Cluster</span>
+            <a href="https://www.youtube.com/results?search_query=Kubernetes+multi+region+high+availability+architecture" target="_blank" rel="noopener" class="btn-yt">▶ Watch Capstone</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Track 4 Video Box -->
+      <div class="track-yt-box">
+        <div class="track-yt-title">
+          <span>🛡️</span> Track 4: DevSecOps &amp; Zero-Trust Governance Video Roadmap
+        </div>
+        <ul class="track-yt-list">
+          <li>
+            <span class="track-yt-day">Day 1 &bull; Architecture</span>
+            <span class="track-yt-topic">HashiCorp Vault Production Architecture &amp; Dynamic Database Secrets</span>
+            <a href="https://www.youtube.com/results?search_query=HashiCorp+Vault+dynamic+secrets+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Deep Dive</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 2 &bull; Setup &amp; Config</span>
+            <span class="track-yt-topic">Aqua Trivy Container Vulnerability &amp; Misconfiguration Scanning</span>
+            <a href="https://www.youtube.com/results?search_query=Trivy+container+security+scanning+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Tutorial</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 3 &bull; Incident Triage</span>
+            <span class="track-yt-topic">Kyverno Policy-as-Code Admission Controller vs OPA Gatekeeper</span>
+            <a href="https://www.youtube.com/results?search_query=Kyverno+Kubernetes+policy+as+code+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Masterclass</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 4 &bull; Practice Drills</span>
+            <span class="track-yt-topic">Confidential Computing &amp; Hardware Enclave Attestation (TEE)</span>
+            <a href="https://www.youtube.com/results?search_query=Confidential+Computing+TEE+enclaves+explained" target="_blank" rel="noopener" class="btn-yt">▶ Watch Hands-on</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 5 &bull; Capstone Delivery</span>
+            <span class="track-yt-topic">Software Supply Chain Security: Sigstore Cosign, SLSA &amp; SBOMs</span>
+            <a href="https://www.youtube.com/results?search_query=Cosign+Sigstore+SBOM+supply+chain+security" target="_blank" rel="noopener" class="btn-yt">▶ Watch Capstone</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Track 5 Video Box -->
+      <div class="track-yt-box">
+        <div class="track-yt-title">
+          <span>🚀</span> Track 5: Cloud Delivery &amp; GitOps CI/CD Pipelines Video Roadmap
+        </div>
+        <ul class="track-yt-list">
+          <li>
+            <span class="track-yt-day">Day 1 &bull; Architecture</span>
+            <span class="track-yt-topic">ArgoCD Production GitOps Masterclass (KubeCon Keynote)</span>
+            <a href="https://www.youtube.com/results?search_query=ArgoCD+GitOps+production+tutorial+KubeCon" target="_blank" rel="noopener" class="btn-yt">▶ Watch Deep Dive</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 2 &bull; Setup &amp; Config</span>
+            <span class="track-yt-topic">Tekton Pipelines Cloud-Native CI/CD Building Blocks</span>
+            <a href="https://www.youtube.com/results?search_query=Tekton+Pipelines+Kubernetes+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Tutorial</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 3 &bull; Incident Triage</span>
+            <span class="track-yt-topic">FluxCD vs ArgoCD Comparison &amp; Automated Drift Reconciliation</span>
+            <a href="https://www.youtube.com/results?search_query=FluxCD+vs+ArgoCD+GitOps+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Masterclass</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 4 &bull; Practice Drills</span>
+            <span class="track-yt-topic">Progressive Canary Delivery with Argo Rollouts &amp; Analysis Templates</span>
+            <a href="https://www.youtube.com/results?search_query=Argo+Rollouts+canary+deployment+tutorial" target="_blank" rel="noopener" class="btn-yt">▶ Watch Hands-on</a>
+          </li>
+          <li>
+            <span class="track-yt-day">Day 5 &bull; Capstone Delivery</span>
+            <span class="track-yt-topic">GitHub Actions Enterprise CI/CD Hardening &amp; OIDC Security</span>
+            <a href="https://www.youtube.com/results?search_query=GitHub+Actions+enterprise+security+best+practices" target="_blank" rel="noopener" class="btn-yt">▶ Watch Capstone</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 10-Point Readiness Checklist -->
+    <section class="card" id="checklist">
+      <h2 class="card-title">4. 10-Point Production Readiness Checklist</h2>
+      <ul class="checklist">
+        <li>✅ 1. Infrastructure-as-Code (IaC) declarations committed to Git with zero manual mutations.</li>
+        <li>✅ 2. Automated CI/CD pipeline enforces syntax linting, security policy checks, and unit tests.</li>
+        <li>✅ 3. Secrets managed via dynamic leases with zero hardcoded credentials or plaintext tokens.</li>
+        <li>✅ 4. Container health probes (readiness, liveness, startup) explicitly defined and tested.</li>
+        <li>✅ 5. Resource requests and limits configured with cgroup memory limits to prevent host node eviction.</li>
+        <li>✅ 6. SRE Golden Signals (Latency, Traffic, Errors, Saturation) mapped to Prometheus telemetry metrics.</li>
+        <li>✅ 7. Critical alerts routed to PagerDuty / Slack with actionable operational runbook URLs.</li>
+        <li>✅ 8. Failure modes simulated with verified automated recovery (graceful degradation, circuit breakers).</li>
+        <li>✅ 9. Zero-downtime rolling update strategy verified with maxSurge: 1 and maxUnavailable: 0.</li>
+        <li>✅ 10. Disaster recovery rollback plan tested with clean state restoration under 60 seconds.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
