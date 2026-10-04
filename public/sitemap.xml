@@ -117,7 +117,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- All 314 Interactive Developer Studios & SRE Tools -->
+  <!-- All 319 Interactive Developer Studios & SRE Tools -->
   <url>
     <loc>https://talaripradeep.info/tools/ai/</loc>
     <lastmod>2026-10-04</lastmod>
@@ -1998,6 +1998,36 @@
   </url>
   <url>
     <loc>https://talaripradeep.info/tools/amd-rocm-mi300x/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/claude-hybrid-reasoning/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/openai-realtime-voice/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/deepseek-mla-dualpipe/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/qwen-agentic-coder/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/kimi-long-context/</loc>
     <lastmod>2026-10-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

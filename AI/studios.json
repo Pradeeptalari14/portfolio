@@ -4080,5 +4080,70 @@
     "link": "amd-rocm-mi300x/",
     "repository": "Pradeeptalari14/tp-rocm-mi300x",
     "id": "amd-rocm-mi300x"
+  },
+  {
+    "title": "Claude 3.7 Sonnet Hybrid Reasoning Studio",
+    "desc": "Deploy Anthropic's flagship hybrid reasoning model with dynamic thinking budgets, sub-agent tool orchestrators, and prompt complexity routers.",
+    "category": "ai",
+    "icon": "🧠",
+    "color": "rgb(217, 119, 6)",
+    "borderClass": "border-amber-200",
+    "bgClass": "bg-amber-50/10",
+    "tag": "claude_reasoner.py",
+    "link": "claude-hybrid-reasoning/",
+    "repository": "Pradeeptalari14/tp-claude-hybrid-reasoning",
+    "id": "claude-hybrid-reasoning"
+  },
+  {
+    "title": "OpenAI Realtime WebRTC Voice Studio",
+    "desc": "Orchestrate bidirectional sub-300ms multimodal audio streams with WebRTC data channels, Whisper speech-to-speech, and function call execution.",
+    "category": "ai",
+    "icon": "🎙️",
+    "color": "rgb(16, 185, 129)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "openai_realtime_webrtc.py",
+    "link": "openai-realtime-voice/",
+    "repository": "Pradeeptalari14/tp-openai-realtime-voice",
+    "id": "openai-realtime-voice"
+  },
+  {
+    "title": "DeepSeek-R1 Multi-Head Latent Attention & DualPipe Studio",
+    "desc": "Deploy DeepSeek-R1 / V3 671B MoE architecture with Multi-Head Latent Attention (MLA) 93.3% KV-cache compression, DualPipe computation overlap, and native FP8 GEMM.",
+    "category": "ai",
+    "icon": "🐋",
+    "color": "rgb(59, 130, 246)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "deepseek_mla_engine.py",
+    "link": "deepseek-mla-dualpipe/",
+    "repository": "Pradeeptalari14/tp-deepseek-mla-dualpipe",
+    "id": "deepseek-mla-dualpipe"
+  },
+  {
+    "title": "Qwen2.5-Coder-32B Enterprise Agentic Coding Studio",
+    "desc": "Deploy Alibaba Cloud's state-of-the-art coding model with 128k context YaRN, autonomous ReAct loops, AST syntax verification, and AWQ 4-bit vLLM serving.",
+    "category": "ai",
+    "icon": "💻",
+    "color": "rgb(99, 102, 241)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "qwen_coder_agent.py",
+    "link": "qwen-agentic-coder/",
+    "repository": "Pradeeptalari14/tp-qwen-agentic-coder",
+    "id": "qwen-agentic-coder"
+  },
+  {
+    "title": "Moonshot Kimi K1.5 2M Ultra-Long Context Studio",
+    "desc": "Deploy Moonshot Kimi K1.5 2-Million token ultra-long context reasoning engine with hierarchical NVMe KV-cache offload, radix prefix caching, and 100% NIAH accuracy.",
+    "category": "ai",
+    "icon": "🌙",
+    "color": "rgb(168, 85, 247)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "kimi_long_context_engine.py",
+    "link": "kimi-long-context/",
+    "repository": "Pradeeptalari14/tp-kimi-long-context",
+    "id": "kimi-long-context"
   }
 ]

@@ -3227,7 +3227,7 @@ function initCommandPalette() {
     { type: 'Navigation', title: 'Professional Experience', subtitle: 'Accenture & Trigent systems engineering history', url: '#experience', icon: '💼' },
     { type: 'Navigation', title: 'Skills Matrix', subtitle: 'Cloud, DevOps, SRE, Linux, K8s, AI infrastructure', url: '#skills', icon: '⚡' },
     { type: 'Navigation', title: 'Projects & Case Studies', subtitle: 'Production architecture implementations', url: '#projects', icon: '📁' },
-    { type: 'Navigation', title: 'Engineering Studios Hub', subtitle: 'Explore all 314 interactive developer studios', url: 'studios/', icon: '🧪' },
+    { type: 'Navigation', title: 'Engineering Studios Hub', subtitle: 'Explore all 319 interactive developer studios', url: 'studios/', icon: '🧪' },
     { type: 'Navigation', title: 'Universal Engineering Toolbox', subtitle: 'CIDR calculator, JSON/YAML validator, Cron generator, Base64', url: 'toolbox/', icon: '🧰' },
     { type: 'Navigation', title: 'SRE Incident Simulator', subtitle: 'Interactive troubleshooting: CrashLoopBackOff, OOM, Latency', url: 'incident/', icon: '🚨' },
     { type: 'Navigation', title: 'Architecture Center', subtitle: 'Interactive system topology diagrams (Landing Zone, EKS, RAG)', url: 'architecture/', icon: '📐' },
