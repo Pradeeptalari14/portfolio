@@ -10,8 +10,8 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
   const rawData = fs.readFileSync(jsonPath, 'utf8');
   const studios = JSON.parse(rawData);
 
-  it('should contain all 308 developer studios', () => {
-    expect(studios.length).toBe(308);
+  it('should contain all 309 developer studios', () => {
+    expect(studios.length).toBe(309);
   });
 
   it('should match category distributions across platform studios', () => {
@@ -20,7 +20,7 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
       return acc;
     }, {});
 
-    expect(counts['ai']).toBe(209);
+    expect(counts['ai']).toBe(210);
     expect(counts['automation']).toBe(33);
     expect(counts['observability']).toBe(28);
     expect(counts['cloud']).toBe(26);
@@ -95,10 +95,10 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
 
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
-    expect(cards.length).toBe(308);
+    expect(cards.length).toBe(309);
 
     const catalogCount = document.getElementById('catalogCount');
-    expect(catalogCount.textContent).toContain('308 of 308');
+    expect(catalogCount.textContent).toContain('309 of 309');
   });
 
   it('should filter cards when searching by keyword', async () => {
@@ -114,7 +114,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
     expect(cards.length).toBeGreaterThan(0);
-    expect(cards.length).toBeLessThan(308);
+    expect(cards.length).toBeLessThan(309);
 
     const firstCard = cards[0];
     expect(firstCard.textContent.toLowerCase()).toContain('vllm');
@@ -168,3 +168,103 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
     expect(resultTitle.textContent).toContain('DeepSpeed ZeRO-3');
   });
 });
+
+describe('Individual Studio Learning Documents Across All 309 Studios', () => {
+  const jsonPath = path.resolve(__dirname, '../studios/learn/studios-learning.json');
+  const studios = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+
+  it('should verify all 309 studios contain learn.html, learn.docx, and learn.word', () => {
+    studios.forEach((studio) => {
+      const link = studio.link.replace(/^\/+|\/+$/g, '');
+      const studioDir = path.resolve(__dirname, '../tools', link);
+
+      const htmlPath = path.join(studioDir, 'learn.html');
+      const docxPath = path.join(studioDir, 'learn.docx');
+      const wordPath = path.join(studioDir, 'learn.word');
+
+      expect(fs.existsSync(htmlPath), `Missing learn.html for ${studio.title} (${link})`).toBe(true);
+      expect(fs.existsSync(docxPath), `Missing learn.docx for ${studio.title} (${link})`).toBe(true);
+      expect(fs.existsSync(wordPath), `Missing learn.word for ${studio.title} (${link})`).toBe(true);
+
+      const docxStat = fs.statSync(docxPath);
+      expect(docxStat.size, `Corrupt or empty docx for ${studio.title}`).toBeGreaterThan(15000);
+    });
+  });
+
+  it('should verify learn.html contains complete production learning sections', () => {
+    const sampleStudio = studios.find(s => s.link.includes('vllm-paged-attention')) || studios[0];
+    const link = sampleStudio.link.replace(/^\/+|\/+$/g, '');
+    const htmlPath = path.resolve(__dirname, '../tools', link, 'learn.html');
+    const content = fs.readFileSync(htmlPath, 'utf8');
+
+    expect(content).toContain('1. Real-World Enterprise Production Use Cases');
+    expect(content).toContain('2. Concrete Production Implementation');
+    expect(content).toContain('3. Understand Best How to Treat &amp; Resolve Failures');
+    expect(content).toContain('The Architectural Best Treatment');
+    expect(content).toContain('The Dangerous Anti-Pattern to Avoid');
+    expect(content).toContain('4. Real-Time \"Do to Learn\" Practice Drills');
+    expect(content).toContain('5. SRE Golden Signals &amp; Verification Matrix');
+    expect(content).toContain('6. Video Learning &amp; Curated YouTube Tutorials');
+    expect(content).toContain('youtube.com/results?search_query=');
+    expect(content).toContain('learn.docx');
+  });
+
+  it('should verify the pradeep/ folder contains master Word documents and individual studio files', () => {
+    const pradeepDir = path.resolve(__dirname, '../pradeep');
+    expect(fs.existsSync(pradeepDir), 'pradeep directory must exist').toBe(true);
+
+    const masterDocx = path.join(pradeepDir, '308_Studios_Complete_Learning_Guide.docx');
+    const masterWord = path.join(pradeepDir, '308_Studios_Complete_Learning_Guide.word');
+    const catalogDocx = path.join(pradeepDir, '308_Studios_Master_Catalog.docx');
+    const catalogWord = path.join(pradeepDir, '308_Studios_Master_Catalog.word');
+    const indexHtml = path.join(pradeepDir, 'index.html');
+
+    expect(fs.existsSync(masterDocx)).toBe(true);
+    expect(fs.existsSync(masterWord)).toBe(true);
+    expect(fs.existsSync(catalogDocx)).toBe(true);
+    expect(fs.existsSync(catalogWord)).toBe(true);
+    expect(fs.existsSync(indexHtml)).toBe(true);
+
+    expect(fs.statSync(masterDocx).size).toBeGreaterThan(80000);
+    expect(fs.statSync(catalogDocx).size).toBeGreaterThan(30000);
+
+    const allStudiosDir = path.join(pradeepDir, 'all_studios');
+    expect(fs.existsSync(allStudiosDir)).toBe(true);
+    const allFiles = fs.readdirSync(allStudiosDir);
+    const docxCount = allFiles.filter(f => f.endsWith('.docx')).length;
+    const wordCount = allFiles.filter(f => f.endsWith('.word')).length;
+
+    expect(docxCount).toBe(309);
+    expect(wordCount).toBe(309);
+
+    // 5-Day Course Roadmap Document assertions
+    const courseDocx = path.join(pradeepDir, '5_Days_To_Learn_Any_Tool_Course_Roadmap.docx');
+    const courseDoc = path.join(pradeepDir, '5_Days_To_Learn_Any_Tool_Course_Roadmap.doc');
+    const courseWord = path.join(pradeepDir, '5_Days_To_Learn_Any_Tool_Course_Roadmap.word');
+    const courseHtml = path.join(pradeepDir, '5_Days_To_Learn_Any_Tool_Course_Roadmap.html');
+
+    expect(fs.existsSync(courseDocx), 'Missing 5-day course docx').toBe(true);
+    expect(fs.existsSync(courseDoc), 'Missing 5-day course doc').toBe(true);
+    expect(fs.existsSync(courseWord), 'Missing 5-day course word').toBe(true);
+    expect(fs.existsSync(courseHtml), 'Missing 5-day course html').toBe(true);
+
+    expect(fs.statSync(courseDocx).size).toBeGreaterThan(30000);
+    expect(fs.statSync(courseDoc).size).toBeGreaterThan(30000);
+
+    const courseHtmlContent = fs.readFileSync(courseHtml, 'utf8');
+    expect(courseHtmlContent).toContain('1. The Universal 5-Day Accelerated Learning Framework');
+    expect(courseHtmlContent).toContain('2. Choose Your Track: 5 Specialization Course Roadmaps');
+    expect(courseHtmlContent).toContain('Track 1');
+    expect(courseHtmlContent).toContain('Track 5');
+    expect(courseHtmlContent).toContain('10-Point Production Readiness Checklist');
+    // YouTube Video Academy assertions
+    expect(courseHtmlContent).toContain('3. Video Learning Academy');
+    expect(courseHtmlContent).toContain('youtube.com/@AndrejKarpathy');
+    expect(courseHtmlContent).toContain('youtube.com/@cloudnativefdn');
+    expect(courseHtmlContent).toContain('youtube.com/@USENIXAssociation');
+    expect(courseHtmlContent).toContain('vLLM+PagedAttention+deep+dive+architecture');
+    expect(courseHtmlContent).toContain('ArgoCD+GitOps+production+tutorial+KubeCon');
+  });
+});
+
+

@@ -3694,5 +3694,17 @@
     "tag": "quantum_kernel_rag.py",
     "link": "quantum-hybrid-rag/",
     "repository": "Pradeeptalari14/tp-quantum-hybrid-rag"
+  },
+  {
+    "title": "KubeRay Operator Studio",
+    "desc": "Generate production KubeRay RayCluster, RayJob and RayService manifests with GCS fault tolerance, autoscaler v2, GPU worker groups and zero-downtime Ray Serve upgrades on Kubernetes.",
+    "category": "ai",
+    "icon": "☸️",
+    "color": "rgb(14, 165, 233)",
+    "borderClass": "border-sky-200",
+    "bgClass": "bg-sky-50/10",
+    "tag": "kuberay.yaml",
+    "link": "kuberay/",
+    "repository": "Pradeeptalari14/tp-kuberay"
   }
 ]
