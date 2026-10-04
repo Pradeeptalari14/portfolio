@@ -4015,5 +4015,70 @@
     "link": "kuberay/",
     "repository": "Pradeeptalari14/tp-kuberay",
     "id": "kuberay"
+  },
+  {
+    "title": "ColPali Vision-Language Multi-Vector RAG Studio",
+    "desc": "Eliminate OCR pipelines by indexing PDF pages directly as PaliGemma-3B vision-language patch embeddings with Qdrant multi-vector store and late-interaction MaxSim retrieval.",
+    "category": "ai",
+    "icon": "👁️",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "colpali_retriever.py",
+    "link": "colpali-vlm-rag/",
+    "repository": "Pradeeptalari14/tp-colpali-rag",
+    "id": "colpali-vlm-rag"
+  },
+  {
+    "title": "Disaggregated Prefill & Decode Serving Studio",
+    "desc": "Split LLM inference into compute-bound prefill and memory-bound decode worker pools with Mooncake KV cache chunk transfer over RoCEv2/InfiniBand RDMA.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(168, 85, 247)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "pd_disaggregated_router.py",
+    "link": "disaggregated-prefill-decode/",
+    "repository": "Pradeeptalari14/tp-disaggregated-serving",
+    "id": "disaggregated-prefill-decode"
+  },
+  {
+    "title": "Cilium Tetragon eBPF Kernel Runtime Security Studio",
+    "desc": "Enforce zero-overhead kernel-level security observability and automated SIGKILL runtime prevention for Kubernetes clusters using Cilium Tetragon eBPF TracingPolicies.",
+    "category": "observability",
+    "icon": "🛡️",
+    "color": "rgb(16, 185, 129)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "tracingpolicy-k8s.yaml",
+    "link": "ebpf-tetragon-security/",
+    "repository": "Pradeeptalari14/tp-ebpf-tetragon",
+    "id": "ebpf-tetragon-security"
+  },
+  {
+    "title": "Autonomous Computer-Use & OS Operator Agent Studio",
+    "desc": "Deploy sandboxed autonomous OS operator agents with Anthropic/OpenAI Computer Use APIs, Xvfb virtual displays, visual GUI grounding, and zero-trust Kubernetes execution walls.",
+    "category": "ai",
+    "icon": "🖥️",
+    "color": "rgb(59, 130, 246)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "computer_use_agent.py",
+    "link": "computer-use-agent/",
+    "repository": "Pradeeptalari14/tp-computer-use-agent",
+    "id": "computer-use-agent"
+  },
+  {
+    "title": "AMD ROCm 6.2 & Instinct MI300X AI Studio",
+    "desc": "Scale open-weights LLMs on AMD Instinct MI300X accelerators (192GB HBM3, 5.3 TB/s) with vLLM ROCm FlashAttention-2, PyTorch FSDP multi-node, and Triton gfx942 kernels.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(244, 63, 94)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "vllm_mi300x_serve.py",
+    "link": "amd-rocm-mi300x/",
+    "repository": "Pradeeptalari14/tp-rocm-mi300x",
+    "id": "amd-rocm-mi300x"
   }
 ]

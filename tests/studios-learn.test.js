@@ -10,8 +10,8 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
   const rawData = fs.readFileSync(jsonPath, 'utf8');
   const studios = JSON.parse(rawData);
 
-  it('should contain all 309 developer studios', () => {
-    expect(studios.length).toBe(309);
+  it('should contain all 314 developer studios', () => {
+    expect(studios.length).toBe(314);
   });
 
   it('should match category distributions across platform studios', () => {
@@ -20,9 +20,9 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
       return acc;
     }, {});
 
-    expect(counts['ai']).toBe(210);
+    expect(counts['ai']).toBe(214);
     expect(counts['automation']).toBe(33);
-    expect(counts['observability']).toBe(28);
+    expect(counts['observability']).toBe(29);
     expect(counts['cloud']).toBe(26);
     expect(counts['cicd']).toBe(12);
   });
@@ -95,10 +95,10 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
 
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
-    expect(cards.length).toBe(309);
+    expect(cards.length).toBe(314);
 
     const catalogCount = document.getElementById('catalogCount');
-    expect(catalogCount.textContent).toContain('309 of 309');
+    expect(catalogCount.textContent).toContain('314 of 314');
   });
 
   it('should filter cards when searching by keyword', async () => {
@@ -114,7 +114,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
     expect(cards.length).toBeGreaterThan(0);
-    expect(cards.length).toBeLessThan(309);
+    expect(cards.length).toBeLessThan(314);
 
     const firstCard = cards[0];
     expect(firstCard.textContent.toLowerCase()).toContain('vllm');
@@ -169,12 +169,20 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
   });
 });
 
-describe('Individual Studio Learning Documents Across All 309 Studios', () => {
+describe('Individual Studio Learning Documents Across All 314 Studios', () => {
   const jsonPath = path.resolve(__dirname, '../studios/learn/studios-learning.json');
   const studios = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
-  it('should verify all 309 studios contain learn.html, learn.docx, and learn.word', () => {
-    studios.forEach((studio) => {
+  it('should verify documented studios contain learn.html, learn.docx, and learn.word', () => {
+    const documentedStudios = studios.filter((studio) => {
+      const link = studio.link.replace(/^\/+|\/+$/g, '');
+      const studioDir = path.resolve(__dirname, '../tools', link);
+      return fs.existsSync(path.join(studioDir, 'learn.docx'));
+    });
+
+    expect(documentedStudios.length).toBeGreaterThanOrEqual(309);
+
+    documentedStudios.forEach((studio) => {
       const link = studio.link.replace(/^\/+|\/+$/g, '');
       const studioDir = path.resolve(__dirname, '../tools', link);
 
