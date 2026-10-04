@@ -117,7 +117,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- All 319 Interactive Developer Studios & SRE Tools -->
+  <!-- All 324 Interactive Developer Studios & SRE Tools -->
   <url>
     <loc>https://talaripradeep.info/tools/ai/</loc>
     <lastmod>2026-10-04</lastmod>
@@ -2028,6 +2028,36 @@
   </url>
   <url>
     <loc>https://talaripradeep.info/tools/kimi-long-context/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/gpt-6-sol-computer-control/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/dots-autonomous-cloud-agents/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/gpt-6-luna-decisions/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/private-intelligence-zdr/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/codex-cloud-sandboxes/</loc>
     <lastmod>2026-10-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

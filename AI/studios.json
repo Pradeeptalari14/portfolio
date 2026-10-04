@@ -4145,5 +4145,70 @@
     "link": "kimi-long-context/",
     "repository": "Pradeeptalari14/tp-kimi-long-context",
     "id": "kimi-long-context"
+  },
+  {
+    "title": "OpenAI GPT-6.1 Sol Computer Control & Software Engineering Studio",
+    "desc": "Deploy OpenAI GPT-6.1 Sol: frontier AI tailored for complex software engineering, 80% cost reduction, and human-like desktop graphical computer use.",
+    "category": "ai",
+    "icon": "☀️",
+    "color": "rgb(234, 88, 12)",
+    "borderClass": "border-orange-200",
+    "bgClass": "bg-orange-50/10",
+    "tag": "gpt6_sol_agent.py",
+    "link": "gpt-6-sol-computer-control/",
+    "repository": "Pradeeptalari14/tp-gpt-6-sol-computer-control",
+    "id": "gpt-6-sol-computer-control"
+  },
+  {
+    "title": "OpenAI Dots 24/7 Autonomous Cloud Agents Studio",
+    "desc": "Deploy 24/7 background AI agents running in isolated cloud sandboxes, orchestrating autonomous workflows across 4,000+ linked enterprise applications.",
+    "category": "ai",
+    "icon": "⚡",
+    "color": "rgb(16, 185, 129)",
+    "borderClass": "border-emerald-200",
+    "bgClass": "bg-emerald-50/10",
+    "tag": "dots_agent_worker.py",
+    "link": "dots-autonomous-cloud-agents/",
+    "repository": "Pradeeptalari14/tp-dots-autonomous-agents",
+    "id": "dots-autonomous-cloud-agents"
+  },
+  {
+    "title": "OpenAI GPT-6 Luna Decisions API & Structural Router Studio",
+    "desc": "Deploy OpenAI GPT-6 Luna: lightweight, sub-second classification engine processing strict JSON schemas to execute low-latency branch routing decisions.",
+    "category": "ai",
+    "icon": "🌙",
+    "color": "rgb(168, 85, 247)",
+    "borderClass": "border-purple-200",
+    "bgClass": "bg-purple-50/10",
+    "tag": "luna_decisions_router.py",
+    "link": "gpt-6-luna-decisions/",
+    "repository": "Pradeeptalari14/tp-gpt-6-luna-decisions",
+    "id": "gpt-6-luna-decisions"
+  },
+  {
+    "title": "OpenAI Private Intelligence & Zero Data Retention (ZDR) Studio",
+    "desc": "Deploy OpenAI Private Intelligence: enterprise security layer featuring Zero Data Retention (ZDR), confidential computing enclaves (AMD SEV-SNP), and ephemeral key shredding.",
+    "category": "ai",
+    "icon": "🔒",
+    "color": "rgb(236, 72, 153)",
+    "borderClass": "border-pink-200",
+    "bgClass": "bg-pink-50/10",
+    "tag": "zdr_enclave_gateway.py",
+    "link": "private-intelligence-zdr/",
+    "repository": "Pradeeptalari14/tp-private-intelligence-zdr",
+    "id": "private-intelligence-zdr"
+  },
+  {
+    "title": "OpenAI Codex in the Cloud & Ultrafast Sandboxes Studio",
+    "desc": "Deploy OpenAI Codex in the Cloud: isolated remote programming sandboxes featuring Ultrafast Mode 8x token generation and safe deployment pipelines.",
+    "category": "ai",
+    "icon": "💻",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "codex_cloud_runner.py",
+    "link": "codex-cloud-sandboxes/",
+    "repository": "Pradeeptalari14/tp-codex-cloud-sandboxes",
+    "id": "codex-cloud-sandboxes"
   }
 ]
