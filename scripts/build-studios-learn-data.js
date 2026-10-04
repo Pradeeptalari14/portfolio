@@ -188,7 +188,9 @@ function generateLearningProfile(tool) {
   }
 
   return {
+    id: tool.link.replace(/\/$/, ''),
     ...tool,
+    repo: tool.repository,
     domain,
     skillLevel: level,
     useCase,
