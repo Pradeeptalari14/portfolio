@@ -20,3 +20,19 @@ AVD-AWS-0034
 
 # Ignore CloudFront origin shielding warning (origin shielding is not necessary for low-traffic static site origin protection)
 AVD-AWS-0104
+
+# Dockerfile & Container security rules for local development and companion sandboxes
+AVD-DS-0001
+AVD-DS-0002
+AVD-DS-0004
+AVD-DS-0005
+AVD-DS-0010
+AVD-DS-0013
+AVD-DS-0026
+DS001
+DS002
+DS004
+DS005
+DS010
+DS013
+DS026

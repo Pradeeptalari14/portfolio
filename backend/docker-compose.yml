@@ -6,9 +6,9 @@ services:
     container_name: studios_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: studios_hub
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-studios_dev_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-studios_hub}
     ports:
       - "5432:5432"
     volumes:
@@ -49,12 +49,10 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:postgrespassword@postgres:5432/studios_hub
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-studios_dev_pass}@postgres:5432/${POSTGRES_DB:-studios_hub}
       - OLLAMA_HOST=http://ollama:11434
       - VALKEY_HOST=valkey:6379
       - EMBEDDING_DIM=768
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       postgres:
         condition: service_healthy
