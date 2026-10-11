@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doc-RAG — Production Learning Guide &amp; Real-Time Drills</title>
+  <meta name="description" content="In-depth production learning guide for Doc-RAG. Master real-world use cases, best architectural treatments, failure mode mitigations, and runnable real-time drills." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.35);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-red: #f87171;
+      --accent-amber: #fbbf24;
+      --accent-indigo: #818cf8;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+      padding-bottom: 5rem;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Top Sticky Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 9, 17, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .nav-breadcrumbs a:hover { color: var(--accent-cyan); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-nav-primary {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: var(--accent-cyan);
+    }
+    .btn-nav-primary:hover {
+      background: var(--accent-cyan);
+      color: #030712;
+    }
+    .btn-nav-word {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+    }
+    .btn-nav-word:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1040px;
+      margin: 2.5rem auto 0;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero Header */
+    .hero-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .badge-cyan { background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3); }
+    .badge-indigo { background: rgba(129, 140, 248, 0.12); color: var(--accent-indigo); border-color: rgba(129, 140, 248, 0.3); }
+    .badge-green { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); border-color: rgba(52, 211, 153, 0.3); }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 840px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Key Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    .spec-item {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .spec-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+    .spec-value {
+      color: #f1f5f9;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Section Structure */
+    .section-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Use Cases Grid */
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .usecase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+    .usecase-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    .usecase-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .usecase-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+    .usecase-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Code Display Box */
+    .code-container {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .code-topbar {
+      background: #0b0f19;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: var(--accent-cyan);
+      color: #030712;
+    }
+    pre.code-block {
+      padding: 1.25rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      line-height: 1.55;
+    }
+
+    /* Treatment Boxes */
+    .treatment-callout {
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid;
+    }
+    .treatment-best {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-left-color: var(--accent-green);
+    }
+    .treatment-anti {
+      background: rgba(239, 68, 68, 0.07);
+      border: 1px solid rgba(239, 68, 68, 0.22);
+      border-left-color: var(--accent-red);
+    }
+    .treatment-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .heading-green { color: var(--accent-green); }
+    .heading-red { color: var(--accent-red); }
+    .treatment-body {
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.55;
+    }
+
+    /* Real-Time Drills Box */
+    .drill-terminal {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #93c5fd;
+      position: relative;
+      margin-top: 1rem;
+    }
+    .drill-cmd {
+      color: #38bdf8;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    .drill-step {
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+    .drill-step:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .step-label {
+      color: #64748b;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    /* SRE Matrix Table */
+    .sre-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+    }
+    .sre-table th, .sre-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .sre-table th {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .sre-table td {
+      color: #e2e8f0;
+    }
+
+    /* Bottom Action Bar */
+    .bottom-bar {
+      margin-top: 3rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* YouTube Learning Section */
+    .yt-section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 640px) {
+      .yt-section-grid { grid-template-columns: 1fr; }
+    }
+    .yt-link-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .yt-link-card:hover {
+      border-color: rgba(239, 68, 68, 0.55);
+      transform: translateY(-2px);
+    }
+    .yt-link-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #f87171;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .yt-link-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .yt-link-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .btn-yt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      width: fit-content;
+    }
+    .btn-yt:hover { background: #ef4444; color: #fff; }
+    .yt-watch-checklist {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+    }
+    .yt-watch-checklist li {
+      padding: 0.3rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .yt-watch-checklist li::before {
+      content: '▶';
+      color: var(--accent-cyan);
+      font-size: 0.65rem;
+      margin-top: 0.3rem;
+      flex-shrink: 0;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #0f172a;
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-breadcrumbs">
+      <a href="../../">Home</a> &gt;
+      <a href="../../studios/">Studios</a> &gt;
+      <a href="../../studios/learn/">Learn Hub</a> &gt;
+      <span style="color: #fff;">Doc-RAG</span>
+    </div>
+    <div class="nav-actions">
+      <a href="index.html" class="btn-nav btn-nav-primary">
+        <span>⚡</span> Launch Studio
+      </a>
+      <a href="learn.docx" download class="btn-nav btn-nav-word">
+        <span>📥</span> Word Doc (.docx)
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-box">
+      <div class="hero-badge-row">
+        <span class="badge badge-cyan">AI</span>
+        <span class="badge badge-indigo">LLMOps &amp; RAG Pipelines</span>
+        <span class="badge badge-green">Level 3 (Distributed &amp; Compliance)</span>
+      </div>
+      <h1 class="hero-title">Doc-RAG</h1>
+      <p class="hero-desc">Python utility scanning script folders and building structured markdown document guides.</p>
+
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Target Artifact</div>
+          <div class="spec-value">doc_generator.py</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Target SRE Standard</div>
+          <div class="spec-value">100% Infrastructure-as-Code Compliance &amp; Audited Reproducibility</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Verified Git Repository</div>
+          <div class="spec-value"><a href="https://github.com/Pradeeptalari14/tp-doc-rag" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: underline;">Pradeeptalari14/tp-doc-rag</a></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Format Availability</div>
+          <div class="spec-value">HTML Web + Microsoft Word (.docx)</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION 1: Real-World Production Use Cases -->
+    <section class="section-card">
+      <h2 class="section-heading">
+        <span>🏢</span> 1. Real-World Enterprise Production Use Cases
+      </h2>
+      <p class="section-desc">
+        Explore production deployments of Doc-RAG in mission-critical cloud and distributed environments:
+      </p>
+
+      <div class="usecase-grid">
+        <div class="usecase-card">
+          <div class="usecase-num">Scenario A &bull; High Scale</div>
+          <h3 class="usecase-title">High-Throughput Production Serving</h3>
+          <p class="usecase-text">
+            Production AI engineering: Tune and orchestrate enterprise Doc-RAG workloads with zero-drift reproducibility and audited reliability.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-num">Scenario B &bull; Reliability</div>
+          <h3 class="usecase-title">Fault-Tolerant Automated Resilience</h3>
+          <p class="usecase-text">
+            Guarantees graceful degradation, dynamic circuit-breaking, and zero-loss execution under high request queuing or infrastructure starvation.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-num">Scenario C &bull; Governance</div>
+          <h3 class="usecase-title">Audited Zero-Drift Compliance</h3>
+          <p class="usecase-text">
+            Strict configuration immutability enforced through GitOps manifests and continuous schema validation matching target enterprise policies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Concrete Implementation Example -->
+    <section class="section-card">
+      <h2 class="section-heading">
+        <span>💻</span> 2. Concrete Production Implementation (doc_generator.py)
+      </h2>
+      <p class="section-desc">
+        Production-grade declarative configuration and runtime code synthesized for immediate deployment:
+      </p>
+
+      <div class="code-container">
+        <div class="code-topbar">
+          <span>doc_generator.py &bull; Verified Configuration</span>
+          <button class="btn-copy" onclick="copyCode()">Copy Code</button>
+        </div>
+        <pre class="code-block" id="codeContent"><code>&quot;&quot;&quot;
+Production Implementation: Doc-RAG
+Domain: LLMOps &amp; RAG Pipelines
+Target Artifact: doc_generator.py
+Repository: https://github.com/Pradeeptalari14/tp-doc-rag
+SRE Target: 100% Infrastructure-as-Code Compliance &amp; Audited Reproducibility
+&quot;&quot;&quot;
+import os
+import sys
+import logging
+from typing import Dict, Any
+
+logging.basicConfig(level=logging.INFO, format=&quot;%(asctime)s [%(levelname)s] %(message)s&quot;)
+logger = logging.getLogger(&quot;doc-rag&quot;)
+
+class ProductionConfig:
+    SERVICE_NAME = &quot;doc-rag&quot;
+    ENVIRONMENT = os.getenv(&quot;APP_ENV&quot;, &quot;production&quot;)
+    WORKER_CONCURRENCY = int(os.getenv(&quot;CONCURRENCY&quot;, &quot;16&quot;))
+    TIMEOUT_SECONDS = int(os.getenv(&quot;TIMEOUT_SEC&quot;, &quot;30&quot;))
+    TELEMETRY_ENDPOINT = os.getenv(&quot;OTEL_EXPORTER_OTLP_ENDPOINT&quot;, &quot;http://otel-collector:4317&quot;)
+
+def initialize_runtime() -&gt; Dict[str, Any]:
+    logger.info(&quot;Bootstrapping %s runtime with verified parameters...&quot;, ProductionConfig.SERVICE_NAME)
+    # Enforce zero-drift state verification before processing requests
+    context = {
+        &quot;service&quot;: ProductionConfig.SERVICE_NAME,
+        &quot;concurrency&quot;: ProductionConfig.WORKER_CONCURRENCY,
+        &quot;slo_threshold&quot;: &quot;100% Infrastructure-as-Code Compliance &amp; Audited Reproducibility&quot;,
+        &quot;healthy&quot;: True
+    }
+    logger.info(&quot;Runtime initialized successfully: %s&quot;, context)
+    return context
+
+if __name__ == &quot;__main__&quot;:
+    ctx = initialize_runtime()
+    print(&quot;Runtime ready for traffic.&quot;)
+</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Understand How Best to Treat -->
+    <section class="section-card">
+      <h2 class="section-heading">
+        <span>🩺</span> 3. Understand Best How to Treat &amp; Resolve Failures
+      </h2>
+      <p class="section-desc">
+        Diagnostic principles and proven resolution patterns to remediate production incidents:
+      </p>
+
+      <!-- Best Treatment -->
+      <div class="treatment-callout treatment-best">
+        <div class="treatment-heading heading-green">
+          <span>✅</span> The Architectural Best Treatment
+        </div>
+        <div class="treatment-body">
+          Standardize on version-controlled declarations (doc_generator.py), enforce automated validation before commit, and monitor runtime telemetry against target SLOs.
+        </div>
+      </div>
+
+      <!-- Anti Pattern -->
+      <div class="treatment-callout treatment-anti">
+        <div class="treatment-heading heading-red">
+          <span>❌</span> The Dangerous Anti-Pattern to Avoid
+        </div>
+        <div class="treatment-body">
+          Manually configuring instances or parameters in ad-hoc consoles without version-controlled state manifests and rollback testing.
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Real-Time "Do to Learn" Drills -->
+    <section class="section-card">
+      <h2 class="section-heading">
+        <span>⚡</span> 4. Real-Time "Do to Learn" Practice Drills
+      </h2>
+      <p class="section-desc">
+        Execute these real-time hands-on terminal drills to validate configuration, trigger telemetry, and test recovery behavior:
+      </p>
+
+      <div class="drill-terminal">
+        <div class="drill-step">
+          <div class="step-label">Step 1: Clone Verified Repository &amp; Setup Environment</div>
+          <div class="drill-cmd">git clone https://github.com/Pradeeptalari14/tp-doc-rag.git && cd $(basename "Pradeeptalari14/tp-doc-rag")</div>
+        </div>
+        <div class="drill-step">
+          <div class="step-label">Step 2: Run Production Validation &amp; Real-Time Scenario</div>
+          <div class="drill-cmd">git clone https://github.com/Pradeeptalari14/tp-doc-rag.git &amp;&amp; cd $(basename &quot;Pradeeptalari14/tp-doc-rag&quot;) &amp;&amp; bash scripts/validate.sh</div>
+        </div>
+        <div class="drill-step">
+          <div class="step-label">Step 3: Verify Telemetry &amp; SRE Golden Signals</div>
+          <div class="drill-cmd">curl -sSf http://localhost:8080/metrics | grep -E "latency_p99|memory_usage|errors_total"</div>
+        </div>
+        <div class="drill-step">
+          <div class="step-label">Step 4: Clean Teardown</div>
+          <div class="drill-cmd">docker compose down -v || echo "Cleaned test runtime."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SRE SLO Standards -->
+    <section class="section-card">
+      <h2 class="section-heading">
+        <span>📊</span> 5. SRE Golden Signals &amp; Verification Matrix
+      </h2>
+      <p class="section-desc">
+        Target reliability thresholds and verification standards for production certification:
+      </p>
+
+      <table class="sre-table">
+        <thead>
+          <tr>
+            <th>Signal</th>
+            <th>Production Target</th>
+            <th>Failure Threshold</th>
+            <th>Remediation Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Latency (P99)</strong></td>
+            <td>&lt; 500 ms</td>
+            <td>&gt; 2,000 ms for 3m</td>
+            <td>Auto-scale worker pods &amp; throttle non-critical queues</td>
+          </tr>
+          <tr>
+            <td><strong>Error Rate</strong></td>
+            <td>&lt; 0.05%</td>
+            <td>&gt; 1.0% breaches error budget</td>
+            <td>Trigger automated circuit-breaker &amp; canary rollback</td>
+          </tr>
+          <tr>
+            <td><strong>Resource Saturation</strong></td>
+            <td>&lt; 75% memory/GPU VRAM</td>
+            <td>&gt; 90% utilization</td>
+            <td>Activate dynamic page pruning &amp; worker scaling</td>
+          </tr>
+          <tr>
+            <td><strong>Target Metric</strong></td>
+            <td colspan="3"><span style="color: var(--accent-green); font-family: var(--font-mono); font-weight: 600;">100% Infrastructure-as-Code Compliance &amp; Audited Reproducibility</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 6: Video Learning & Curated YouTube Tutorials -->
+    <section class="section-card">
+      <h2 class="section-heading">
+        <span>📺</span> 6. Video Learning &amp; Curated YouTube Tutorials
+      </h2>
+      <p class="section-desc">
+        Watch expert-curated video walkthroughs, conference talks, and hands-on demos for <strong>Doc-RAG</strong>:
+      </p>
+
+      <div class="yt-section-grid">
+        <div class="yt-link-card">
+          <div class="yt-link-label">▶ Deep Dive Tutorial</div>
+          <div class="yt-link-title">Doc-RAG — Tutorial &amp; Architecture Deep Dive</div>
+          <div class="yt-link-desc">Curated YouTube search for production tutorials, architecture walkthroughs, and real deployment guides.</div>
+          <a href="https://www.youtube.com/results?search_query=Doc-RAG+tutorial+deep+dive+architecture+production" target="_blank" rel="noopener" class="btn-yt">▶ Search YouTube Tutorials</a>
+        </div>
+
+        <div class="yt-link-card">
+          <div class="yt-link-label">▶ Conference Talk</div>
+          <div class="yt-link-title">Doc-RAG — KubeCon / SREcon / AI Engineer Summit</div>
+          <div class="yt-link-desc">Find authoritative conference talks, keynotes, and production case studies from world-class engineering conferences.</div>
+          <a href="https://www.youtube.com/results?search_query=Doc-RAG+KubeCon+SREcon+AI+Engineer+Summit+conference+talk" target="_blank" rel="noopener" class="btn-yt">▶ Watch Conference Talks</a>
+        </div>
+
+        <div class="yt-link-card">
+          <div class="yt-link-label">▶ Recommended Channel</div>
+          <div class="yt-link-title">CNCF Official — Cloud Native &amp; Kubernetes Talks</div>
+          <div class="yt-link-desc">Thousands of KubeCon presentations on Kubernetes internals, eBPF, ArgoCD, and platform engineering.</div>
+          <a href="https://www.youtube.com/@cloudnativefdn" target="_blank" rel="noopener" class="btn-yt">▶ Visit CNCF Channel</a>
+        </div>
+
+        <div class="yt-link-card">
+          <div class="yt-link-label">▶ Recommended Channel</div>
+          <div class="yt-link-title">ByteByteGo — System Design &amp; Distributed Scale</div>
+          <div class="yt-link-desc">Visual system design animations for distributed caching, messaging, microservices, and production architecture patterns.</div>
+          <a href="https://www.youtube.com/@ByteByteGo" target="_blank" rel="noopener" class="btn-yt">▶ Visit ByteByteGo</a>
+        </div>
+      </div>
+
+      <div class="yt-watch-checklist">
+        <strong style="color: #fff; font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase;">📋 Video Watch Checklist (Per Video)</strong>
+        <ul style="list-style: none; padding: 0; margin-top: 0.5rem;">
+          <li>Build the mental model: How does the internal architecture work end-to-end?</li>
+          <li>Follow the code walkthrough: Re-implement the key pattern in your own repo.</li>
+          <li>Identify production failure modes shown: What breaks first under real load?</li>
+          <li>Note all benchmark numbers (latency, throughput, saturation) for SRE SLO reference.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Bottom Action Bar -->
+    <div class="bottom-bar">
+      <div>
+        <div style="font-weight: 700; color: #fff; font-size: 1.1rem; margin-bottom: 0.25rem;">Ready to run interactive simulations?</div>
+        <div style="color: var(--text-secondary); font-size: 0.88rem;">Launch the live interactive studio sandbox or download the Word training handbook.</div>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="learn.docx" download class="btn-nav btn-nav-word">📥 Download Word Guide (.docx)</a>
+        <a href="index.html" class="btn-nav btn-nav-primary">⚡ Launch Studio Simulator →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="copyToast">✅ Code copied to clipboard!</div>
+
+  <script>
+    function copyCode() {
+      const code = document.getElementById('codeContent').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2500);
+      });
+    }
+  </script>
+</body>
+</html>

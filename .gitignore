@@ -31,3 +31,4 @@ link_validation_report.json
 # Temporary Office and OS Lock Files
 ~$*
 *.tmp
+__pycache__/

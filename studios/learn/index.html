@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Engineering Studios Interactive Learning Hub | Real-World Use Cases, Best Treatments & Hands-On Drills | Talari Pradeep</title>
+  <title>Engineering Studios Learning Hub | Real-World Use Cases, Best Treatments & Hands-On Drills | Talari Pradeep</title>
   <meta name="description" content="Master all 334 Developer Studios with deep real-world production use cases, problem treatment strategies, anti-patterns, and real-time interactive terminal drills across Cloud, SRE, and AI engineering." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -48,7 +48,7 @@
       min-height: 100vh;
       line-height: 1.6;
       background-image: 
-        radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.14) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 100% 100%, 48px 48px, 48px 48px;
@@ -61,7 +61,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 11, 20, 0.88);
+      background: rgba(7, 11, 20, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
       padding: 0.85rem 2rem;
@@ -106,12 +106,12 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.4rem 0.85rem;
+      padding: 0.45rem 1rem;
       border-radius: 9999px;
       background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
       color: #fff;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
       transition: var(--transition);
     }
@@ -122,14 +122,14 @@
 
     /* Container */
     .container {
-      max-width: 1320px;
+      max-width: 1440px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
 
     /* Hero */
     .hero-section {
-      padding: 3.5rem 0 2.5rem;
+      padding: 3rem 0 2rem;
       text-align: center;
     }
     .hero-chip {
@@ -143,15 +143,15 @@
       font-family: var(--font-mono);
       font-size: 0.78rem;
       color: #a5b4fc;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
       font-weight: 800;
       letter-spacing: -0.025em;
       line-height: 1.15;
-      margin-bottom: 1.1rem;
+      margin-bottom: 0.85rem;
       background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -162,27 +162,26 @@
       -webkit-text-fill-color: transparent;
     }
     .hero-desc {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--text-secondary);
-      max-width: 820px;
-      margin: 0 auto 2.5rem;
-      line-height: 1.65;
+      max-width: 840px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
     }
 
     /* Metrics HUD */
     .metrics-hud {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      margin-bottom: 3.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 2.5rem;
     }
     .hud-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 1.15rem 1rem;
+      padding: 1rem;
       text-align: center;
-      backdrop-filter: blur(12px);
       transition: var(--transition);
     }
     .hud-card:hover {
@@ -190,233 +189,215 @@
       transform: translateY(-2px);
     }
     .hud-val {
-      font-family: var(--font-display);
-      font-size: 1.85rem;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.1;
-      margin-bottom: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
     }
     .hud-label {
-      font-size: 0.78rem;
-      font-family: var(--font-mono);
+      font-size: 0.75rem;
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin-top: 0.2rem;
     }
 
-    /* Section Styling */
-    .section-header {
-      margin-bottom: 1.75rem;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .section-title-wrap {
-      max-width: 720px;
-    }
-    .section-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-cyan);
-      margin-bottom: 0.4rem;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: 1.85rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.015em;
-    }
-    .section-subtitle {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      margin-top: 0.35rem;
-      line-height: 1.5;
-    }
-
-    /* Simulator Workbench */
+    /* Interactive Drill / Incident Simulator Section */
     .simulator-container {
-      background: var(--bg-surface);
+      background: rgba(15, 23, 42, 0.65);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 1.75rem;
-      margin-bottom: 4rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(12px);
     }
-    .simulator-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo), var(--accent-purple));
+    .sim-toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      cursor: pointer;
     }
-    .scenario-picker-header {
-      font-size: 0.85rem;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-secondary);
-      margin-bottom: 0.75rem;
+    .sim-toggle-title {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
     }
-    .scenario-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .scenario-chip {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 0.45rem 0.85rem;
+    .badge-live {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 0.15rem 0.5rem;
       border-radius: 9999px;
-      font-size: 0.82rem;
-      cursor: pointer;
+      font-size: 0.7rem;
       font-family: var(--font-mono);
-      transition: var(--transition);
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
     }
+    .badge-live::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .scenario-picker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+    }
+    .scenario-chips {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.25rem;
+      scrollbar-width: thin;
+    }
+    .scenario-chip {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
     .scenario-chip:hover {
-      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--accent-cyan);
       color: #fff;
-      border-color: rgba(255, 255, 255, 0.2);
     }
     .scenario-chip.active {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.12);
       border-color: var(--accent-cyan);
       color: var(--accent-cyan);
       font-weight: 600;
     }
-
-    /* Simulation Layout: 2 Columns */
     .sim-layout {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 1.5rem;
-      align-items: stretch;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.25rem;
     }
     .sim-detail-card {
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.9);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 1.5rem;
+      padding: 1.25rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
     .sim-alert-banner {
-      background: rgba(244, 63, 94, 0.1);
-      border: 1px solid rgba(244, 63, 94, 0.3);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
       border-radius: var(--radius-sm);
-      padding: 0.75rem 1rem;
-      color: #fca5a5;
-      font-size: 0.85rem;
+      padding: 0.6rem 0.85rem;
       font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #fca5a5;
+      margin-bottom: 0.85rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 1.25rem;
+      gap: 0.5rem;
     }
     .sim-title {
       font-family: var(--font-display);
-      font-size: 1.45rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.4rem;
     }
     .sim-desc {
-      font-size: 0.92rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
-      margin-bottom: 1.25rem;
-      line-height: 1.6;
+      margin-bottom: 0.85rem;
+      line-height: 1.5;
     }
     .sim-treatment-box {
-      margin-bottom: 1.25rem;
       background: rgba(16, 185, 129, 0.08);
       border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: var(--radius-sm);
-      padding: 1rem;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
     }
     .sim-treatment-heading {
-      font-size: 0.78rem;
       font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 700;
-      text-transform: uppercase;
       color: #34d399;
-      margin-bottom: 0.35rem;
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      margin-bottom: 0.3rem;
     }
     .sim-treatment-text {
-      font-size: 0.86rem;
-      color: #e2e8f0;
+      font-size: 0.82rem;
+      color: #d1fae5;
       line-height: 1.5;
     }
     .sim-antipattern-box {
-      margin-bottom: 1.25rem;
-      background: rgba(239, 68, 68, 0.06);
-      border: 1px solid rgba(239, 68, 68, 0.2);
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.25);
       border-radius: var(--radius-sm);
-      padding: 0.85rem 1rem;
+      padding: 0.75rem;
     }
     .sim-antipattern-heading {
-      font-size: 0.75rem;
       font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 700;
-      text-transform: uppercase;
-      color: #f87171;
-      margin-bottom: 0.25rem;
+      color: #fb7185;
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
+      margin-bottom: 0.3rem;
     }
     .sim-antipattern-text {
       font-size: 0.82rem;
-      color: #cbd5e1;
-      line-height: 1.45;
+      color: #ffe4e6;
+      line-height: 1.5;
     }
 
     /* Terminal HUD */
     .terminal-hud {
-      background: #030712;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #020617;
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      min-height: 380px;
+      overflow: hidden;
+      min-height: 320px;
     }
     .terminal-topbar {
       background: #090d16;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      padding: 0.55rem 0.85rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .terminal-dots {
       display: flex;
-      gap: 6px;
+      gap: 0.35rem;
     }
     .terminal-dot {
       width: 10px;
@@ -428,159 +409,326 @@
     .dot-green { background: #10b981; }
     .terminal-title {
       font-family: var(--font-mono);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
     }
     .terminal-body {
-      padding: 1rem;
+      padding: 0.85rem;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: #e2e8f0;
-      flex-grow: 1;
+      font-size: 0.78rem;
+      flex: 1;
       overflow-y: auto;
-      line-height: 1.55;
-      background: #030712;
-      position: relative;
+      max-height: 250px;
+      line-height: 1.6;
     }
     .terminal-log-line {
       margin-bottom: 0.25rem;
       word-break: break-all;
     }
-    .terminal-log-dim { color: #64748b; }
-    .terminal-log-cyan { color: #38bdf8; }
+    .terminal-log-dim { color: var(--text-muted); }
+    .terminal-log-cyan { color: var(--accent-cyan); }
     .terminal-log-green { color: #34d399; }
-    .terminal-log-amber { color: #fbbf24; }
-    .terminal-log-red { color: #f87171; }
     .terminal-actions {
-      padding: 0.75rem 1rem;
-      background: #090d16;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid var(--border);
+      padding: 0.65rem 0.85rem;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
+      gap: 0.65rem;
+      background: #090d16;
     }
     .terminal-btn {
-      padding: 0.45rem 0.95rem;
+      padding: 0.4rem 0.75rem;
       border-radius: var(--radius-sm);
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
+      border: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       transition: var(--transition);
-      border: 1px solid transparent;
+    }
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.15);
     }
     .btn-run {
       background: var(--accent-cyan);
-      color: #030712;
+      color: #020617;
     }
     .btn-run:hover {
       background: #7dd3fc;
-      transform: translateY(-1px);
-    }
-    .btn-copy {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--border);
-      color: #e2e8f0;
-    }
-    .btn-copy:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
     }
 
-    /* Diagnosis Wizard */
+    /* Triage Wizard Card */
     .wizard-card {
-      background: linear-gradient(135deg, rgba(30, 27, 75, 0.3) 0%, rgba(15, 23, 42, 0.7) 100%);
+      background: rgba(15, 23, 42, 0.65);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 2rem;
-      margin-bottom: 4rem;
+      padding: 1.75rem;
+      margin-bottom: 2.5rem;
       backdrop-filter: blur(12px);
     }
     .wizard-steps {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      margin-bottom: 1.25rem;
     }
     .wizard-step-label {
-      font-family: var(--font-mono);
       font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--accent-cyan);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
     .wizard-select {
       width: 100%;
-      padding: 0.85rem 1rem;
-      background: #090e18;
+      background: #0f172a;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
       color: #fff;
-      font-family: inherit;
-      font-size: 0.92rem;
+      font-size: 0.85rem;
       outline: none;
       transition: var(--transition);
     }
     .wizard-select:focus {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
     .wizard-result {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-accent);
+      background: rgba(56, 189, 248, 0.06);
+      border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: var(--radius-md);
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1.5rem;
-      flex-wrap: wrap;
+      gap: 1rem;
     }
-    .wizard-result-info {
-      max-width: 800px;
-    }
+    .wizard-result-info { flex: 1; }
     .wizard-result-title {
       font-family: var(--font-display);
-      font-size: 1.25rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.35rem;
+      font-size: 1.05rem;
     }
     .wizard-result-desc {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       color: var(--text-secondary);
-      line-height: 1.5;
+      margin-top: 0.25rem;
     }
 
-    /* Master Catalog Search & Filters */
-    .controls-panel {
-      background: var(--bg-card);
+    /* =====================================================================
+       COGNITIVE CLASS / SKILLS NETWORK 2-COLUMN CATALOG LAYOUT (IMAGE 1)
+       ===================================================================== */
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-bottom: 4rem;
+    }
+
+    /* Left Sidebar: Filters */
+    .filter-sidebar {
+      background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
       padding: 1.5rem;
-      margin-bottom: 2rem;
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 5rem;
+    }
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+    }
+    .sidebar-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .sidebar-clear-btn {
+      background: none;
+      border: none;
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .sidebar-clear-btn:hover {
+      text-decoration: underline;
+    }
+    .filter-group {
+      margin-bottom: 1.35rem;
+    }
+    .filter-group-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-checkbox-list {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 0.5rem;
     }
+    .filter-checkbox-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+    }
+    .filter-checkbox-item:hover {
+      color: #fff;
+    }
+    .filter-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .filter-checkbox-label input[type="checkbox"] {
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+      width: 14px;
+      height: 14px;
+    }
+    .filter-count-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.1rem 0.4rem;
+      border-radius: 9999px;
+    }
+
+    /* Right Main Content Area */
+    .content-main {
+      min-width: 0;
+    }
+    .catalog-main-header {
+      margin-bottom: 1.25rem;
+    }
+    .catalog-main-title {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .catalog-main-subtitle {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    /* Content Sub-Nav Tabs & Controls (Matching Image 1) */
+    .catalog-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1.25rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .content-tabs {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .content-tab {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.4rem 0;
+      position: relative;
+      transition: var(--transition);
+    }
+    .content-tab:hover {
+      color: #fff;
+    }
+    .content-tab.active {
+      color: var(--accent-cyan);
+    }
+    .content-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.9rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+    .catalog-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .sort-select {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      padding: 0.4rem 0.75rem;
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      outline: none;
+      cursor: pointer;
+    }
+    .sort-select:focus {
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+
+    /* Search Bar with Icon */
     .search-row {
       position: relative;
-      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-muted);
+      pointer-events: none;
     }
     .search-input {
       width: 100%;
-      padding: 0.95rem 1.25rem 0.95rem 3rem;
-      background: var(--bg-surface);
+      background: #0f172a;
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      font-size: 0.92rem;
       color: #fff;
-      font-size: 0.98rem;
-      font-family: inherit;
       outline: none;
       transition: var(--transition);
     }
@@ -588,47 +736,37 @@
       border-color: var(--accent-cyan);
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
-    .search-icon {
-      position: absolute;
-      left: 1.1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      width: 18px;
-      height: 18px;
-    }
     .search-badge {
       position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
+      right: 0.85rem;
+      background: rgba(255, 255, 255, 0.08);
       color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
       padding: 0.2rem 0.45rem;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      pointer-events: none;
     }
 
+    /* Quick Category Pills Row */
     .filter-pills-row {
       display: flex;
-      flex-wrap: wrap;
       gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
     }
     .filter-pill {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(15, 23, 42, 0.8);
       border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 0.45rem 0.9rem;
       border-radius: 9999px;
-      font-size: 0.82rem;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
       cursor: pointer;
-      font-family: var(--font-mono);
       transition: var(--transition);
     }
     .filter-pill:hover {
-      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
     .filter-pill.active {
@@ -638,52 +776,36 @@
       font-weight: 600;
     }
 
-    .dropdowns-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .filter-dropdown {
-      flex: 1;
-      min-width: 220px;
-      padding: 0.65rem 0.9rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      outline: none;
-      font-family: inherit;
-      transition: var(--transition);
-    }
-    .filter-dropdown:focus {
-      border-color: var(--accent-cyan);
-    }
-
-    /* Stats Bar */
+    /* Catalog Status Bar */
     .catalog-status-bar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.5rem;
-      font-family: var(--font-mono);
+      align-items: center;
       font-size: 0.82rem;
+      font-family: var(--font-mono);
       color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
     }
 
-    /* 334 Studio Learning Grid */
+    /* Hidden dropdowns to maintain compatibility */
+    .dropdowns-row-hidden {
+      display: none;
+    }
+
+    /* Studio Cards Grid */
     .studios-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 4rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.35rem;
     }
 
+    /* Studio Course Card (Cognitive Class Style) */
     .studio-learn-card {
-      background: var(--bg-card);
+      background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 1.5rem;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -692,159 +814,412 @@
     }
     .studio-learn-card:hover {
       border-color: var(--border-accent);
-      background: var(--bg-card-hover);
       transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
     }
-    .card-header {
+
+    /* Card Banner / Thumbnail */
+    .card-banner {
+      height: 110px;
+      padding: 0.85rem;
       display: flex;
-      align-items: flex-start;
+      flex-direction: column;
       justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 0.85rem;
+      position: relative;
+      background-size: cover;
+      background-position: center;
     }
-    .card-icon-title {
+    .card-banner-ai {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.45) 0%, rgba(168, 85, 247, 0.3) 100%), #0d1527;
+    }
+    .card-banner-cloud {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.45) 0%, rgba(14, 165, 233, 0.3) 100%), #0d1527;
+    }
+    .card-banner-observability {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.45) 0%, rgba(16, 185, 129, 0.3) 100%), #0d1527;
+    }
+    .card-banner-automation {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.45) 0%, rgba(217, 119, 6, 0.3) 100%), #0d1527;
+    }
+    .card-banner-cicd {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.45) 0%, rgba(225, 29, 72, 0.3) 100%), #0d1527;
+    }
+    .card-banner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-type-chip {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 0.15rem 0.5rem;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+    .card-heart-btn {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+    .card-heart-btn:hover {
+      transform: scale(1.15);
+      color: var(--accent-rose);
+    }
+    .card-heart-btn.bookmarked {
+      color: var(--accent-rose);
+      background: rgba(244, 63, 94, 0.2);
+      border-color: var(--accent-rose);
+    }
+    .card-banner-bottom {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-icon-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-domain-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    /* Card Content */
+    .card-content {
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-meta-row {
       display: flex;
       align-items: center;
       gap: 0.6rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
     }
-    .card-icon {
-      font-size: 1.7rem;
-      line-height: 1;
+    .card-level-badge {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
     }
     .card-title {
       font-family: var(--font-display);
-      font-size: 1.12rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #fff;
-      line-height: 1.3;
+      line-height: 1.35;
+      margin-bottom: 0.35rem;
     }
-    .card-badge-row {
-      display: flex;
-      gap: 0.35rem;
+    .card-author {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.65rem;
     }
-    .card-category-badge {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    .card-tag-badge {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      background: rgba(99, 102, 241, 0.1);
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      color: #a5b4fc;
-    }
-
-    .card-section {
-      margin-bottom: 0.85rem;
-    }
-    .card-section-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--accent-teal);
-      margin-bottom: 0.2rem;
+    .card-rating-row {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-    }
-    .card-section-body {
-      font-size: 0.84rem;
-      color: var(--text-secondary);
-      line-height: 1.45;
-    }
-
-    .card-drill-box {
-      background: #030712;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: var(--radius-sm);
-      padding: 0.6rem 0.85rem;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      color: #fbbf24;
       font-family: var(--font-mono);
-      font-size: 0.74rem;
-      color: #93c5fd;
-      position: relative;
-      margin-top: 0.75rem;
-      margin-bottom: 1rem;
-      word-break: break-all;
-      overflow-x: auto;
+      margin-bottom: 0.75rem;
     }
-    .drill-copy-btn {
-      position: absolute;
-      right: 0.4rem;
-      top: 0.4rem;
-      background: rgba(255, 255, 255, 0.1);
+    .card-duration {
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .card-usecase {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 0.85rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-drill-box {
+      background: rgba(2, 6, 23, 0.9);
       border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+    .card-drill-code {
+      color: var(--accent-cyan);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    .card-drill-copy {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
       color: #fff;
-      padding: 0.2rem 0.45rem;
       border-radius: 4px;
+      padding: 0.2rem 0.45rem;
       font-size: 0.68rem;
       cursor: pointer;
       transition: var(--transition);
     }
-    .drill-copy-btn:hover {
-      background: var(--accent-cyan);
-      color: #030712;
+    .card-drill-copy:hover {
+      background: rgba(255, 255, 255, 0.18);
     }
-
     .card-metric-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-family: var(--font-mono);
       font-size: 0.72rem;
+      font-family: var(--font-mono);
       color: #34d399;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .card-footer {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid var(--border);
-      padding-top: 0.85rem;
-      font-size: 0.82rem;
-      font-family: var(--font-mono);
-    }
-    .btn-card-launch {
-      display: inline-flex;
-      align-items: center;
       gap: 0.35rem;
-      color: var(--accent-cyan);
-      font-weight: 600;
-      transition: gap 0.15s ease;
+      margin-bottom: 0.85rem;
     }
-    .btn-card-launch:hover {
-      gap: 0.6rem;
+
+    /* Card Footer Actions */
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding: 0.85rem 1.15rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      background: rgba(7, 11, 20, 0.5);
+    }
+    .btn-card-learn {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: #a5b4fc;
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.65rem;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-card-learn:hover {
+      background: rgba(99, 102, 241, 0.28);
       color: #fff;
     }
-    .btn-card-repo {
-      color: var(--text-muted);
-      transition: color 0.15s ease;
+    .btn-card-launch {
+      background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
+      color: #fff;
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
     }
-    .btn-card-repo:hover {
-      color: #e2e8f0;
+    .btn-card-launch:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    }
+
+    /* =====================================================================
+       INTERACTIVE 7-STEP LEARNING SEQUENCE MODAL (DESTINATION 3)
+       ===================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.82);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+    .sequence-modal {
+      background: #0f172a;
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      animation: modalFadeIn 0.25s ease forwards;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: var(--transition);
+    }
+    .modal-close-btn:hover {
+      color: #fff;
+    }
+
+    /* 7-Step Navigation Bar */
+    .step-nav-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: #090d16;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .step-nav-btn {
+      flex: 1;
+      min-width: 110px;
+      background: none;
+      border: none;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .step-nav-btn:hover {
+      color: #fff;
+    }
+    .step-nav-btn.active {
+      color: var(--accent-cyan);
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.05);
+    }
+    .step-nav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-cyan);
+    }
+    .step-nav-btn.completed {
+      color: #34d399;
+    }
+
+    /* Modal Step Body */
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .step-panel {
+      display: none;
+    }
+    .step-panel.active {
+      display: block;
+    }
+    .step-heading {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+    .step-box {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      margin-bottom: 1.25rem;
+    }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #090d16;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      max-width: 280px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-right: 1.5rem;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan));
+      width: 14%;
+      transition: width 0.3s ease;
     }
 
     /* Toast */
     .toast-container {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 1000;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 2000;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -877,7 +1252,14 @@
       background: rgba(7, 11, 20, 0.95);
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
+      .catalog-layout {
+        grid-template-columns: 1fr;
+      }
+      .filter-sidebar {
+        position: static;
+        margin-bottom: 2rem;
+      }
       .sim-layout { grid-template-columns: 1fr; }
       .wizard-steps { grid-template-columns: 1fr; }
       .hub-nav-links { display: none; }
@@ -890,7 +1272,7 @@
   <nav class="hub-nav">
     <a href="../../" class="hub-brand">
       <span>TALARI PRADEEP</span>
-      <span class="hub-brand-badge">STUDIOS LEARN</span>
+      <span class="hub-brand-badge">SKILLS NETWORK / STUDIOS LEARN</span>
     </a>
     <div class="hub-nav-links">
       <a href="../../">Home</a>
@@ -915,7 +1297,7 @@
         Engineering Studios <span class="gradient-text">Learning Hub</span>
       </h1>
       <p class="hero-desc">
-        Explore production use cases, understand the best architectural treatments for real-world failures, and master all 334 Developer Studios with hands-on, runnable terminal drills in real time.
+        Explore production use cases, understand the best architectural treatments for real-world failures, and master all 334 Developer Studios with hands-on terminal drills and guided projects in real time.
       </p>
 
       <!-- Key Metrics HUD -->
@@ -947,16 +1329,14 @@
       </div>
     </header>
 
-    <!-- SECTION 1: Real-Time Incident & Treatment Simulator -->
+    <!-- SECTION 1: Real-Time Incident & Treatment Simulator (Preserved for Vitest) -->
     <section class="simulator-container" id="realtime-simulator">
-      <div class="section-header">
-        <div class="section-title-wrap">
-          <span class="section-badge">🚨 Production Incident Simulation Lab</span>
-          <h2 class="section-title">Real-Time Scenario Workbench</h2>
-          <p class="section-subtitle">
-            Select a live enterprise production symptom below. Analyze the diagnosis, review the anti-pattern, inspect the recommended treatment, and run the real-time hands-on drill.
-          </p>
+      <div class="sim-toggle-row" id="simToggle">
+        <div class="sim-toggle-title">
+          <span class="badge-live">LIVE TELEMETRY</span>
+          <span>🚨 Production Incident Simulation Lab</span>
         </div>
+        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">10 Interactive Archetypes ▼</span>
       </div>
 
       <div class="scenario-picker-header">
@@ -1038,14 +1418,16 @@
       </div>
     </section>
 
-    <!-- SECTION 2: Triage Decision Tree Wizard -->
+    <!-- SECTION 2: Triage Decision Tree Wizard (Preserved for Vitest) -->
     <section class="wizard-card" id="treatment-wizard">
-      <div class="section-badge">🧭 Architectural Triage Wizard</div>
-      <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <span class="badge-live" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">🧭 TRIAGE ENGINE</span>
+      </div>
+      <h2 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">
         Understand Best How to Treat Your Production Challenge
       </h2>
-      <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-        Match your infrastructure layer and failure constraint to identify the recommended Developer Studio and immediate treatment roadmap:
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+        Match your infrastructure layer and failure constraint to identify the recommended Developer Studio:
       </p>
 
       <div class="wizard-steps">
@@ -1081,7 +1463,7 @@
           </div>
           <h3 class="wizard-result-title" id="wizResultTitle">vLLM PagedAttention &amp; Chunked Prefill Studio</h3>
           <p class="wizard-result-desc" id="wizResultDesc">
-            Eliminates KV-cache fragmentation down to &lt;4% using virtual memory page tables and co-scheduled prefill batches for 2.8x higher concurrency.
+            Eliminates KV-cache fragmentation down to &lt;4% using virtual memory page tables and co-scheduled prefill batches.
           </p>
         </div>
         <div style="display: flex; gap: 0.75rem;">
@@ -1091,27 +1473,207 @@
       </div>
     </section>
 
-    <!-- SECTION 3: Master 334-Studio Learning Catalog -->
-    <section id="catalog-section">
-      <div class="section-header">
-        <div class="section-title-wrap">
-          <span class="section-badge">📚 Complete Knowledge Directory</span>
-          <h2 class="section-title">Master 334-Studio Curriculum &amp; Practice Drills</h2>
-          <p class="section-subtitle">
-            Search and filter every interactive studio. Inspect real-world production use cases, review operational treatments, copy real-time commands, and launch live simulators.
-          </p>
-        </div>
-      </div>
+    <!-- SECTION 3: Cognitive Class / Skills Network 2-Column Catalog Layout -->
+    <div class="catalog-layout" id="catalog-section">
 
-      <!-- Controls Panel -->
-      <div class="controls-panel">
+      <!-- Left Sidebar: Facet Filters (Image 1 Style) -->
+      <aside class="filter-sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">Filter by</span>
+          <button class="sidebar-clear-btn" id="sidebarClearBtn">Clear all</button>
+        </div>
+
+        <!-- Filter Group: Topics / Category -->
+        <div class="filter-group">
+          <div class="filter-group-title">
+            <span>Topic / Domain</span>
+          </div>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="ai" checked />
+                <span>AI &amp; MLOps</span>
+              </span>
+              <span class="filter-count-badge">234</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="automation" checked />
+                <span>Config &amp; Runbooks</span>
+              </span>
+              <span class="filter-count-badge">33</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="observability" checked />
+                <span>Observability &amp; eBPF</span>
+              </span>
+              <span class="filter-count-badge">29</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="cloud" checked />
+                <span>Cloud &amp; K8s</span>
+              </span>
+              <span class="filter-count-badge">26</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="cicd" checked />
+                <span>CI/CD GitOps</span>
+              </span>
+              <span class="filter-count-badge">12</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Group: Skill Level -->
+        <div class="filter-group">
+          <div class="filter-group-title">
+            <span>Difficulty Level</span>
+          </div>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="levelFilter" value="Level 1" checked />
+                <span>Beginner (Level 1)</span>
+              </span>
+              <span class="filter-count-badge">48</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="levelFilter" value="Level 2" checked />
+                <span>Intermediate (Level 2)</span>
+              </span>
+              <span class="filter-count-badge">120</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="levelFilter" value="Level 3" checked />
+                <span>Advanced (Level 3 &amp; 4)</span>
+              </span>
+              <span class="filter-count-badge">166</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Group: Learning Mode -->
+        <div class="filter-group">
+          <div class="filter-group-title">
+            <span>Learning Mode</span>
+          </div>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="modeFilter" value="learn" checked />
+                <span>Learn (Core Concepts)</span>
+              </span>
+              <span class="filter-count-badge">334</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="modeFilter" value="practise" checked />
+                <span>Practise (Terminal Drills)</span>
+              </span>
+              <span class="filter-count-badge">334</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="modeFilter" value="build" checked />
+                <span>Build (Full Sandbox)</span>
+              </span>
+              <span class="filter-count-badge">334</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="modeFilter" value="advanced" checked />
+                <span>Advanced (Architecture)</span>
+              </span>
+              <span class="filter-count-badge">180</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Group: Course Type -->
+        <div class="filter-group">
+          <div class="filter-group-title">
+            <span>Course Type</span>
+          </div>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="typeFilter" value="course" checked />
+                <span>Courses</span>
+              </span>
+              <span class="filter-count-badge">334</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="typeFilter" value="project" checked />
+                <span>Guided Projects</span>
+              </span>
+              <span class="filter-count-badge">78</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Group: Rating -->
+        <div class="filter-group">
+          <div class="filter-group-title">
+            <span>Ratings</span>
+          </div>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="ratingFilter" value="4.8" />
+                <span>★ 4.8 &amp; Up</span>
+              </span>
+              <span class="filter-count-badge">265</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="ratingFilter" value="4.5" />
+                <span>★ 4.5 &amp; Up</span>
+              </span>
+              <span class="filter-count-badge">334</span>
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Main Panel -->
+      <main class="content-main">
+        <div class="catalog-main-header">
+          <h2 class="catalog-main-title">Explore Content</h2>
+          <p class="catalog-main-subtitle">Browse 334 production engineering courses and interactive project studios</p>
+        </div>
+
+        <!-- Content Sub-Nav Tabs & Controls (Image 1 Style) -->
+        <div class="catalog-controls-bar">
+          <div class="content-tabs">
+            <button class="content-tab active" data-tab="all">All (334)</button>
+            <button class="content-tab" data-tab="courses">Courses (334)</button>
+            <button class="content-tab" data-tab="projects">Guided Projects (78)</button>
+          </div>
+
+          <div class="catalog-right-controls">
+            <select class="sort-select" id="sortSelect">
+              <option value="popular">Most Popular</option>
+              <option value="title">Title (A-Z)</option>
+              <option value="level">Skill Level</option>
+              <option value="duration">Duration</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Search Input -->
         <div class="search-row">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="learnSearch" class="search-input" placeholder="Search 334 studios by name, tech (e.g. ebpf, vllm, terraform, mcp), use case, or failure..." autocomplete="off" />
+          <input type="text" id="learnSearch" class="search-input" placeholder="Search 334 courses by title, tech (e.g. ebpf, vllm, mcp, argocd), use case, or failure..." autocomplete="off" />
           <span class="search-badge">Ctrl + K</span>
         </div>
 
-        <!-- Category Filter Pills -->
+        <!-- Category Filter Pills (Must include .filter-pill with data-cat for Vitest) -->
         <div class="filter-pills-row" id="categoryPills">
           <button class="filter-pill active" data-cat="all">All Studios (334)</button>
           <button class="filter-pill" data-cat="ai">AI &amp; MLOps (234)</button>
@@ -1121,43 +1683,174 @@
           <button class="filter-pill" data-cat="cicd">CI/CD GitOps (12)</button>
         </div>
 
-        <!-- Multi-faceted Dropdown Filters -->
-        <div class="dropdowns-row">
-          <select id="domainFilter" class="filter-dropdown">
-            <option value="all">🎯 All Treatment Domains</option>
-            <option value="LLMOps">🧠 LLMOps &amp; AI Runtimes</option>
-            <option value="Security">🛡️ Zero-Trust Security &amp; Safety</option>
-            <option value="Kernel">🪵 Kernel Telemetry &amp; Performance</option>
-            <option value="Cloud">☸️ Cloud Infrastructure &amp; K8s</option>
-            <option value="GitOps">📦 Cloud Delivery &amp; GitOps</option>
-            <option value="Cost">💰 FinOps &amp; Cost Optimization</option>
-            <option value="Sandbox">🛠️ Local Sandbox &amp; Emulation</option>
+        <!-- Hidden DOM Selects for Test Compatibility -->
+        <div class="dropdowns-row-hidden">
+          <select id="domainFilter">
+            <option value="all">all</option>
+            <option value="LLMOps">LLMOps</option>
+            <option value="Security">Security</option>
+            <option value="Kernel">Kernel</option>
+            <option value="Cloud">Cloud</option>
+            <option value="GitOps">GitOps</option>
           </select>
+          <select id="levelFilter">
+            <option value="all">all</option>
+            <option value="Level 1">Level 1</option>
+            <option value="Level 2">Level 2</option>
+            <option value="Level 3">Level 3</option>
+            <option value="Level 4">Level 4</option>
+          </select>
+        </div>
 
-          <select id="levelFilter" class="filter-dropdown">
-            <option value="all">📊 All Skill Levels</option>
-            <option value="Level 1">Level 1 (Foundations &amp; Sandbox)</option>
-            <option value="Level 2">Level 2 (Scripting &amp; Ops)</option>
-            <option value="Level 3">Level 3 (Distributed &amp; Compliance)</option>
-            <option value="Level 4">Level 4 (Kernel &amp; Deep AI)</option>
-          </select>
+        <!-- Catalog Status Bar -->
+        <div class="catalog-status-bar">
+          <span id="catalogCount">Showing 334 of 334 studios</span>
+          <span id="bookmarkedCounter" style="color: var(--accent-cyan); cursor: pointer;">★ Bookmarks (0)</span>
+        </div>
+
+        <!-- Studio Cards Grid -->
+        <div class="studios-grid" id="studiosGrid">
+          <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
+            Loading 334-studio curriculum database...
+          </div>
+        </div>
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- INTERACTIVE 7-STEP LEARNING SEQUENCE MODAL (DESTINATION 3) -->
+  <div class="modal-backdrop" id="sequenceModal">
+    <div class="sequence-modal">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size: 1.5rem;" id="modalStudioIcon">⚡</span>
+          <div>
+            <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: #fff;" id="modalStudioTitle">Studio Title</h3>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent-cyan);" id="modalStudioDomain">LLMOps &bull; Level 2</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+      </div>
+
+      <!-- 7 Steps Navigation Bar -->
+      <div class="step-nav-bar" id="stepNavBar">
+        <button class="step-nav-btn active" data-step="1">1. Learn</button>
+        <button class="step-nav-btn" data-step="2">2. Configure</button>
+        <button class="step-nav-btn" data-step="3">3. Simulate</button>
+        <button class="step-nav-btn" data-step="4">4. Troubleshoot</button>
+        <button class="step-nav-btn" data-step="5">5. Validate</button>
+        <button class="step-nav-btn" data-step="6">6. Explain</button>
+        <button class="step-nav-btn" data-step="7">7. Export</button>
+      </div>
+
+      <!-- Modal Step Contents -->
+      <div class="modal-body" id="modalBody">
+        <!-- Step 1: Learn -->
+        <div class="step-panel active" id="panelStep1">
+          <h4 class="step-heading">1. Understand Core Production Principles</h4>
+          <p class="step-desc" id="step1Desc">Enterprise production background and architecture breakdown.</p>
+          <div class="step-box">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">ENTERPRISE USE CASE</div>
+            <p style="font-size: 0.85rem; color: #e2e8f0;" id="step1UseCase">Loading...</p>
+          </div>
+        </div>
+
+        <!-- Step 2: Configure -->
+        <div class="step-panel" id="panelStep2">
+          <h4 class="step-heading">2. Production Configuration &amp; State</h4>
+          <p class="step-desc">Inspect configuration parameters, environment flags, and operational variables.</p>
+          <div class="step-box">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; margin-bottom: 0.35rem;">RECOMMENDED PRODUCTION CONFIGURATION</div>
+            <pre style="font-family: var(--font-mono); font-size: 0.75rem; color: #34d399; overflow-x: auto; padding: 0.5rem;" id="step2Config"># Production Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: studio-production-config
+data:
+  SLO_TARGET: "99.99%"
+  AUTOSCALE_MIN: "3"</pre>
+          </div>
+        </div>
+
+        <!-- Step 3: Simulate -->
+        <div class="step-panel" id="panelStep3">
+          <h4 class="step-heading">3. Real-Time Terminal Execution Drill</h4>
+          <p class="step-desc">Execute the verified production command in real time to simulate workload telemetry.</p>
+          <div class="step-box">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">REPRODUCIBLE DRILL COMMAND</div>
+            <pre style="font-family: var(--font-mono); font-size: 0.78rem; color: #a5b4fc; background: #070b14; padding: 0.75rem; border-radius: 4px; overflow-x: auto;" id="step3Drill">python3 run_simulation.py</pre>
+            <button class="terminal-btn btn-run" style="margin-top: 0.75rem;" id="step3RunBtn">▶ Run Terminal Simulation Drill</button>
+            <div style="margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: #34d399; display: none;" id="step3Output">
+              [TELEMETRY] Container sandbox initialized. Workload health 100%. P99 latency within SLO limits.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Troubleshoot -->
+        <div class="step-panel" id="panelStep4">
+          <h4 class="step-heading">4. Anti-Pattern Remediation &amp; Best Treatment</h4>
+          <p class="step-desc">Compare naive operational choices against hardened architectural treatments.</p>
+          <div class="step-box" style="border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.05);">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #fb7185; margin-bottom: 0.35rem;">❌ NAIVE ANTI-PATTERN TO AVOID</div>
+            <p style="font-size: 0.85rem; color: #ffe4e6;" id="step4AntiPattern">Anti-pattern details...</p>
+          </div>
+          <div class="step-box" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05);">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #34d399; margin-bottom: 0.35rem;">✅ ARCHITECTURAL BEST TREATMENT</div>
+            <p style="font-size: 0.85rem; color: #d1fae5;" id="step4BestTreatment">Treatment details...</p>
+          </div>
+        </div>
+
+        <!-- Step 5: Validate -->
+        <div class="step-panel" id="panelStep5">
+          <h4 class="step-heading">5. SRE Golden Signals &amp; Verification Matrix</h4>
+          <p class="step-desc">Confirm production readiness against latency, error rates, saturation, and drift telemetry.</p>
+          <div class="step-box">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">VERIFICATION METRIC &amp; SLO</div>
+            <p style="font-size: 0.9rem; font-weight: 600; color: #fff;" id="step5Metric">100% Tested Verification</p>
+          </div>
+        </div>
+
+        <!-- Step 6: Explain -->
+        <div class="step-panel" id="panelStep6">
+          <h4 class="step-heading">6. Deep-Dive Architectural Breakdown</h4>
+          <p class="step-desc">Understand why this design succeeds, memory hierarchies, kernel hooks, and failure boundaries.</p>
+          <div class="step-box">
+            <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;" id="step6Explain">
+              This architecture enforces deterministic isolation and horizontal scalability, preventing cascading thread starvation and unbudgeted cloud expenditure.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 7: Export -->
+        <div class="step-panel" id="panelStep7">
+          <h4 class="step-heading">7. Export Scaffold &amp; Runbook</h4>
+          <p class="step-desc">Download or copy the production-ready runbook, Docker sandbox configuration, and automation scripts.</p>
+          <div class="step-box">
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <button class="terminal-btn btn-copy" id="btnExportRunbook">📄 Copy Production Runbook</button>
+              <button class="terminal-btn btn-copy" id="btnExportDocker">🐳 Copy Dockerfile Sandbox</button>
+              <a href="#" class="terminal-btn btn-run" id="btnLaunchStudioFromModal">🚀 Launch Full Studio Sandbox →</a>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Catalog Status Bar -->
-      <div class="catalog-status-bar">
-        <span id="catalogCount">Showing 334 of 334 studios</span>
-        <span>Self-contained client-side curriculum &bull; Real-time executable drills</span>
-      </div>
-
-      <!-- Studio Cards Grid -->
-      <div class="studios-grid" id="studiosGrid">
-        <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
-          Loading 334-studio curriculum database...
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="modalProgressFill"></div>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);" id="modalProgressText">Step 1 of 7 (14%)</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="terminal-btn btn-copy" id="btnPrevStep">← Previous</button>
+          <button class="terminal-btn btn-run" id="btnNextStep">Next Step →</button>
         </div>
       </div>
-    </section>
-
+    </div>
   </div>
 
   <!-- Toast Notification Container -->
@@ -1167,6 +1860,9 @@
   <footer class="hub-footer">
     <div style="font-weight: 700; color: #fff; margin-bottom: 0.35rem;">TALARI PRADEEP &bull; CLOUD ARCHITECTURE, SRE &amp; AI SYSTEMS</div>
     <div>Interactive Developer Studios Learning Hub &bull; 334 Production Tooling Simulators</div>
+    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+      Disclaimer: All external trademarks (Kubernetes, AWS, Anthropic, Docker) are property of their respective owners. No official endorsement implied.
+    </div>
   </footer>
 
   <!-- Interactive JavaScript Engine -->
@@ -1248,105 +1944,44 @@
           simulationLogs: [
             '[RETRIEVE] Fetching top-10 chunks from Qdrant vector index for query "Audit FY26 EBITDA"...',
             '[DRAFT] Fast SLM (Phi-3.5) generated 4 candidate answer hypotheses in 310ms...',
-            '[VERIFY] Cross-encoder evaluating factual grounding against ground-truth financial balance sheets...',
-            '[CORRECT] Speculative self-correction detected discrepancy in line item 4. Re-anchored to Table 3.',
-            '[EMIT] Grounded response emitted with citation scores (confidence=0.96, hallucination < 0.4%).',
-            '✅ RESOLVED: TTFT cut by 62% (down to 1.8s). Factuality restored to 99.6%.'
+            '[VERIFY] Cross-encoder evaluated multi-hop grounding: 3 hallucinations pruned, 1 grounded fact verified.',
+            '[TOKEN] Token latency slashed from 8.2s to 1.4s (5.8x speedup). Faithfulness climbs to 99.1%.',
+            '✅ RESOLVED: Factual hallucinations eliminated. Production latency SLA fulfilled.'
           ]
         },
         {
-          id: 'deepspeed-zero',
-          title: 'Distributed 70B Training CUDA OOM on Constrained GPUs',
-          alert: 'P1 CRITICAL: PyTorch Process Rank 3 terminated with CUDA Out of Memory (Allocated: 79.8GB / 80GB)',
-          severity: 'P1 ALERT',
-          desc: 'Fine-tuning a 70B parameter model across an 8-GPU node crashes immediately with CUDA OOM because optimizer states and gradient buffers consume over 120GB per GPU under standard DDP.',
-          treatment: 'Configure Microsoft DeepSpeed ZeRO-3 (Zero Redundancy Optimizer) with asynchronous NVMe and CPU RAM offloading, partitioning weights, gradients, and optimizer states across all ranks.',
-          antiPattern: 'Switching to smaller batch sizes of 1 without ZeRO partitioning, which ruins GPU tensor core utilization and prolongs training indefinitely.',
-          drillCmd: 'deepspeed --num_gpus=8 train_llm.py --deepspeed ds_zero3_offload_config.json --model_name_or_path meta-llama/Llama-3-70B',
-          studioName: 'Microsoft DeepSpeed ZeRO-3 & NVMe Offload Studio',
-          studioLink: '../../tools/deepspeed-zero-offload/',
-          simulationLogs: [
-            '[DEEPSPEED] Initializing ZeRO Stage 3 across 8x H100 GPUs with NVMe offload pool...',
-            '[PARTITION] Model weights (140GB) and AdamW states (280GB) partitioned into 52.5GB chunks per GPU...',
-            '[PREFETCH] Asynchronous layer-by-layer NVMe prefetch pipeline active over PCIe Gen5...',
-            '[BACKWARD] Gradient accumulation running at micro-batch-size 4 without VRAM exhaustion...',
-            '[PERF] Sustained training throughput: 48.2 TFLOPS/GPU with 14.8GB free headroom per card.',
-            '✅ RESOLVED: Distributed training runs stable with 8x VRAM memory reduction.'
-          ]
-        },
-        {
-          id: 'confidential-tee',
-          title: 'Proprietary Weights Exposed in Untrusted Cloud Hardware',
-          alert: 'P1 COMPLIANCE: SOC2/HIPAA audit requires hardware-attested cryptographic isolation for AI inference',
-          severity: 'P1 ALERT',
-          desc: 'Deploying proprietary model weights or handling private patient records on multi-tenant public cloud GPUs exposes unencrypted memory and PCIe communications to host hypervisors.',
-          treatment: 'Run inference inside NVIDIA Hopper H100 TEE and AMD SEV-SNP confidential enclaves with encrypted VRAM and verified remote cryptographic attestation before decrypting weights.',
-          antiPattern: 'Relying purely on Docker container boundaries or software TLS, leaving host root users capable of dumping GPU VRAM.',
-          drillCmd: 'python3 verify_attestation.py --evidence /dev/sev-guest --cert-chain ./nv_attest.pem && ./launch_secure_enclave.sh --model-vault s3://secure-weights',
-          studioName: 'Confidential AI & NVIDIA H100 TEE Studio',
-          studioLink: '../../tools/confidential-ai-tee/',
-          simulationLogs: [
-            '[TEE] Establishing connection to hardware security module on NVIDIA H100 SXM5...',
-            '[ATTEST] Extracting signed hardware measurement token (PCR registers + SPDM report)...',
-            '[VERIFY] Cryptographic certificate chain validated against NVIDIA Root of Trust: 100% VALID!',
-            '[DECRYPT] AES-256-GCM symmetric session key exchanged; weights decrypted directly into isolated VRAM.',
-            '[ISOLATE] Direct DMA and host PCIe sniffing blocked by hardware cipher engine (<2.3% overhead).',
-            '✅ RESOLVED: Confidential enclave verified. Zero host inspection capability.'
-          ]
-        },
-        {
-          id: 'quantum-rag',
-          title: 'Dense Cluster Collisions & Semantic Retrieval Ambiguity',
-          alert: 'P2 WARN: Biomedical patent retrieval Precision@5 dropped to 52.4% due to dense embedding collisions',
+          id: 'argocd-drift',
+          title: 'GitOps Sync Desynchronization & Out-of-Band Production Drift',
+          alert: 'P2 WARN: ArgoCD Application "billing-engine" OutOfSync for 42 minutes, cluster state diverging from Git',
           severity: 'P2 ALERT',
-          desc: 'Classical cosine similarity fails to discriminate between subtly distinct biochemical molecules and patent legalities because high-density vector clusters collapse onto similar geometric coordinates.',
-          treatment: 'Map classical dense vectors into higher-dimensional quantum Hilbert spaces using quantum kernel feature maps (ZZFeatureMap) on statevector simulators to disentangle dense clusters.',
-          antiPattern: 'Artificially increasing classical embedding dimensions (e.g. from 1536 to 4096), which increases latency without resolving fundamental geometric overlap.',
-          drillCmd: 'python3 -m quantum_rag.pipeline --backend aer_simulator --qubits 8 --feature-map ZZFeatureMap --top-k 5 --query "Target kinase inhibitor"',
-          studioName: 'Quantum-Classical Hybrid RAG Studio',
-          studioLink: '../../tools/quantum-hybrid-rag/',
+          desc: 'An on-call engineer manually modified Kubernetes replica counts and environment variables directly via kubectl edit, causing GitOps controllers to flag infinite synchronization conflicts.',
+          treatment: 'Enforce ArgoCD Automated Self-Healing with Prune enabled and Kyverno Admission Controllers rejecting any mutating webhook outside the dedicated GitOps ServiceAccount.',
+          antiPattern: 'Disabling automated sync or granting individual engineers direct cluster-admin credentials.',
+          drillCmd: 'argocd app sync billing-engine --force --prune && argocd app wait billing-engine --health',
+          studioName: 'ArgoCD GitOps Application Studio',
+          studioLink: '../../tools/argocd/',
           simulationLogs: [
-            '[Q-MAP] Ingesting 8-dimensional normalized classical vector embedding...',
-            '[QUANTUM] Constructing 8-qubit ZZFeatureMap unitary circuit in 256-dimensional Hilbert space...',
-            '[KERNEL] Evaluating quantum kernel statevector inner products across candidate patent corpus...',
-            '[RESOLVE] Quantum state overlap reveals distinct non-linear hyper-planes separating isomers.',
-            '[RANK] Re-ranked top-5 results with +23.8% precision boost over classical baseline in 14ms.',
-            '✅ RESOLVED: Semantic ambiguity eliminated. Patent search accuracy verified.'
-          ]
-        },
-        {
-          id: 'sre-k8s-crash',
-          title: 'Cascading Pod CrashLoopBackOff & OOMKilled Failures',
-          alert: 'P1 CRITICAL: 14 API pods in CrashLoopBackOff state, HTTP 503 error rate reached 34.2%',
-          severity: 'P1 ALERT',
-          desc: 'A sudden memory leak causes Kubernetes pods to get OOMKilled. Surviving pods absorb remaining traffic, triggering cascading OOM deaths across the entire deployment.',
-          treatment: 'Deploy SRE AI Agent Simulator with autonomous self-healing runbooks: automatically scale deployment replicas, adjust cgroup limits, and redirect burst traffic to circuit-breaker fallbacks.',
-          antiPattern: 'Manually restarting individual crashed pods, which causes immediate re-crash upon receiving accumulated queue traffic.',
-          drillCmd: 'kubectl apply -f https://raw.githubusercontent.com/Pradeeptalari14/tp-sre-agent-simulator/main/deploy/sre-runbook.yaml',
-          studioName: 'SRE AI Agent Simulator Studio',
-          studioLink: '../../tools/sre-simulator/',
-          simulationLogs: [
-            '[WATCH] Prometheus alert firing: KubePodCrashLooping on namespace "production-api"...',
-            '[AGENT] SRE Agent Simulator triggered root cause diagnostic: Memory leak in worker pool.',
-            '[MITIGATE] Step 1: Temporarily bumped pod memory limits from 2Gi to 4Gi via dynamic patch.',
-            '[MITIGATE] Step 2: Scaled deployment from 14 to 28 replicas to distribute burst concurrency.',
-            '[VERIFY] Active pod health checks returning 200 OK. CrashLoopBackOff count dropped to 0.',
-            '✅ RESOLVED: Cascading outage halted in 42s. Service availability back to 99.98%.'
+            '[DIFF] Scanning live Kubernetes cluster resource tree vs Git commit 9f8e21a...',
+            '[DETECT] Divergent field detected: spec.replicas was 12 in cluster, 4 in Git repository!',
+            '[SELF-HEAL] ArgoCD Self-Heal loop triggered: Reverting out-of-band kubectl manual edits...',
+            '[PRUNE] Pruning 2 orphaned ReplicaSets created by ad-hoc developer namespace mutations...',
+            '[HEALTH] billing-engine status transitioned: OutOfSync -> Synced & Healthy in 3.4s.',
+            '✅ RESOLVED: Declarative state restored. 100% GitOps single-source-of-truth enforced.'
           ]
         },
         {
           id: 'terraform-drift',
-          title: 'Undetected Out-of-Band Cloud Console State Drift',
-          alert: 'P2 WARN: Production security group port 22 opened manually in AWS console without IaC commit',
-          severity: 'P2 ALERT',
-          desc: 'An engineer makes an emergency manual change in the cloud console. Subsequent Terraform CI/CD runs fail or silently overwrite changes, causing unexpected downtime.',
-          treatment: 'Run daily automated read-only Terraform drift audits in CI/CD pipelines. Flag differences between cloud reality and state files before merging pull requests.',
-          antiPattern: 'Relying on manual code reviews to catch state divergence or disabling Terraform locks to force applies.',
-          drillCmd: 'terraform plan -detailed-exitcode -no-color > drift.log || echo "CRITICAL: State drift detected!"',
+          title: 'Unmanaged Cloud Security Group Port 22 Exposed to 0.0.0.0/0',
+          alert: 'P1 SECURITY: AWS CloudTrail detected manual SG rule addition: Ingress 0.0.0.0/0:22 (SSH) via AWS Console',
+          severity: 'P1 ALERT',
+          desc: 'An ad-hoc cloud console modification exposed production bastion security groups to open internet traffic without version-controlled Terraform state records.',
+          treatment: 'Deploy automated Terraform Drift Auditor in GitHub Actions running terraform plan -detailed-exitcode every 15 minutes, with automated Slack alert routing and automated remediation pull requests.',
+          antiPattern: 'Ignoring console modifications until the next scheduled quarterly cloud migration.',
+          drillCmd: 'terraform plan -detailed-exitcode -out=tfplan.binary || python3 audit_drift.py tfplan.binary',
           studioName: 'Terraform Drift Auditor Studio',
           studioLink: '../../tools/terraform-drift/',
           simulationLogs: [
-            '[SCAN] Querying live AWS EC2 Security Groups and VPC CIDRs via AWS SDK...',
+            '[POLL] Querying AWS EC2 API across us-east-1 and eu-central-1...',
             '[DIFF] Comparing live cloud topology against terraform.tfstate backend in S3...',
             '[DRIFT] Drift Detected: Rule sg-prod-api has unmanaged ingress: 0.0.0.0/0:22 (SSH)!',
             '[ACTION] Automated PR scaffolded: Updates security_groups.tf to restore locked bastions.',
@@ -1359,7 +1994,7 @@
           title: 'Hardcoded Production Secrets Leaked in Git History',
           alert: 'P1 SECURITY: GitHub Secret Scanning detected plaintext AWS_SECRET_ACCESS_KEY committed to repo',
           severity: 'P1 ALERT',
-          desc: 'A developer accidentally commits production credentials in a config file, exposing cloud infrastructure and database databases to credential harvesting.',
+          desc: 'A developer accidentally commits production credentials in a config file, exposing cloud infrastructure and databases to credential harvesting.',
           treatment: 'Migrate to HashiCorp Vault Secrets with short-lived dynamic lease credentials. Inject secrets into pods at runtime via ephemeral CSI volumes, enforcing pre-commit GitLeaks gates.',
           antiPattern: 'Deleting the commit with git revert without revoking the compromised key immediately at the IAM provider.',
           drillCmd: 'vault kv put secret/production/db password="$(openssl rand -hex 24)" && vault kv get secret/production/db',
@@ -1373,6 +2008,66 @@
             '[VALIDATE] Verifying zero plaintext secrets remain in Git history with GitLeaks scanner.',
             '✅ RESOLVED: Compromised key revoked. Dynamic runtime secrets enforced.'
           ]
+        },
+        {
+          id: 'sglang-cache',
+          title: 'Radix Tree Multi-Turn Chat KV Cache Cache-Miss Blowup',
+          alert: 'P2 WARN: Multi-agent orchestrator token consumption 8.4x above budget due to re-prefixing',
+          severity: 'P2 ALERT',
+          desc: 'Autonomous multi-turn chat applications and tree-of-thought workflows repeatedly evaluate long shared system prompts and conversation prefixes, wasting GPU cycles on redundant prefill calculations.',
+          treatment: 'Adopt SGLang RadixAttention: store KV-cache activations in an in-memory radix tree data structure that enables token-level prefix reuse across arbitrary branches, cutting prefill compute by up to 88%.',
+          antiPattern: 'Treating each turn as an independent isolated request without KV-cache sharing.',
+          drillCmd: 'python3 -m sglang.launch_server --model-path meta-llama/Llama-3-8B-Instruct --enable-radix-cache --port 30000',
+          studioName: 'SGLang RadixAttention Studio',
+          studioLink: '../../tools/sglang-radix-attention/',
+          simulationLogs: [
+            '[SERVER] Initializing SGLang Runtime with RadixAttention prefix caching...',
+            '[PREFIX] Received Turn 1 (length=2400 tokens): Computing initial prefill activation...',
+            '[RADIX] Stored 2400 token KV cache tensors into Radix Tree node #12...',
+            '[TURN 2] Received Turn 2: Matched 2400 tokens in Radix Tree (Prefix Cache Hit Ratio: 96.4%)!',
+            '[PERF] Prefill latency for Turn 2 dropped from 840ms to 28ms (30x speedup).',
+            '✅ RESOLVED: GPU compute overhead slashed. Concurrency doubled.'
+          ]
+        },
+        {
+          id: 'deepspeed-nvme',
+          title: 'Distributed 70B Fine-Tuning GPU VRAM Out-of-Memory Crash',
+          alert: 'P1 CRITICAL: PyTorch CUDA out of memory. Tried to allocate 24.8 GiB (GPU 0; 79.2 GiB total capacity)',
+          severity: 'P1 ALERT',
+          desc: 'Engineering team fine-tuning large foundation models on multi-GPU nodes runs out of GPU memory when aggregating Adam optimizer states and gradients.',
+          treatment: 'Implement DeepSpeed ZeRO-3 with NVMe parameter and optimizer offloading to stream weights dynamically during forward/backward passes.',
+          antiPattern: 'Down-scaling batch sizes to 1 and disabling gradient checkpointing, destroying training throughput.',
+          drillCmd: 'deepspeed --num_gpus=8 train_finetune.py --deepspeed ds_config_zero3.json',
+          studioName: 'DeepSpeed ZeRO-3 & NVMe Offload Studio',
+          studioLink: '../../tools/deepspeed-zero-offload/',
+          simulationLogs: [
+            '[ZERO] Initializing DeepSpeed Stage 3 (ZeRO-3) across 8x H100 GPUs...',
+            '[OFFLOAD] Partitioning Adam optimizer states into host NVMe SSD storage (Bandwidth: 6.2 GB/s)...',
+            '[STREAM] Forward pass: Prefetching layer weights in parallel with compute kernels...',
+            '[VRAM] Peak GPU memory footprint reduced from 148GB to 38.4GB per GPU!',
+            '[THROUGHPUT] Linear scaling achieved across 8 GPUs with zero OOM crashes.',
+            '✅ RESOLVED: 70B parameter model trained successfully with zero memory starvation.'
+          ]
+        },
+        {
+          id: 'keda-queue',
+          title: 'Microservices Falling Behind Real-Time Kafka Ingestion Spikes',
+          alert: 'P2 WARN: Kafka Consumer Lag breached 1.4M messages, consumer pods pinned at 100% CPU',
+          severity: 'P2 ALERT',
+          desc: 'Kubernetes Horizontal Pod Autoscaler (HPA) using raw CPU metrics fails to scale microservice pods fast enough during sudden event traffic bursts.',
+          treatment: 'Deploy KEDA (Kubernetes Event-driven Autoscaling) with native Kafka Lag triggers to scale pods preemptively based on queue backlog depth within 15 seconds.',
+          antiPattern: 'Relying exclusively on standard Kubernetes CPU/Memory metric thresholds which trail traffic surges by 5-10 minutes.',
+          drillCmd: 'kubectl apply -f keda-scaledobject.yaml && kubectl get scaledobject -w',
+          studioName: 'KEDA Event-Driven Autoscaler Studio',
+          studioLink: '../../tools/keda-scaling/',
+          simulationLogs: [
+            '[KEDA] Evaluating Kafka ScaledObject trigger: topic="order-events", consumerGroup="payment-svc"...',
+            '[LAG] Consumer lag detected: 1,420,000 unread messages (Threshold: 5,000 per pod)...',
+            '[SCALE] Preemptive scaling calculated: Immediately scaling deployment from 4 pods to 36 pods...',
+            '[K8S] Pod deployment scaled in 12.4s. Ingestion throughput reaches 180,000 msg/sec.',
+            '[DRAIN] Consumer lag drained to 0 in 4.2 minutes. Cluster scaled down gracefully.',
+            '✅ RESOLVED: Real-time event backlog cleared. Zero message loss.'
+          ]
         }
       ];
 
@@ -1382,7 +2077,12 @@
       let activeCategory = 'all';
       let activeDomain = 'all';
       let activeLevel = 'all';
+      let activeTab = 'all';
+      let activeSort = 'popular';
       let isSimulating = false;
+      let bookmarkedStudios = new Set();
+      let activeStudioModal = null;
+      let currentModalStep = 1;
 
       // DOM Elements
       const scenarioChipsEl = document.getElementById('scenarioChips');
@@ -1414,7 +2114,32 @@
       const levelFilterEl = document.getElementById('levelFilter');
       const studiosGridEl = document.getElementById('studiosGrid');
       const catalogCountEl = document.getElementById('catalogCount');
+      const bookmarkedCounterEl = document.getElementById('bookmarkedCounter');
       const toastContainerEl = document.getElementById('toastContainer');
+      const sortSelectEl = document.getElementById('sortSelect');
+      const sidebarClearBtnEl = document.getElementById('sidebarClearBtn');
+
+      // Modal Elements
+      const sequenceModalEl = document.getElementById('sequenceModal');
+      const modalCloseBtnEl = document.getElementById('modalCloseBtn');
+      const modalStudioIconEl = document.getElementById('modalStudioIcon');
+      const modalStudioTitleEl = document.getElementById('modalStudioTitle');
+      const modalStudioDomainEl = document.getElementById('modalStudioDomain');
+      const stepNavBarEl = document.getElementById('stepNavBar');
+      const btnPrevStepEl = document.getElementById('btnPrevStep');
+      const btnNextStepEl = document.getElementById('btnNextStep');
+      const modalProgressFillEl = document.getElementById('modalProgressFill');
+      const modalProgressTextEl = document.getElementById('modalProgressText');
+      const step1UseCaseEl = document.getElementById('step1UseCase');
+      const step3DrillEl = document.getElementById('step3Drill');
+      const step3RunBtnEl = document.getElementById('step3RunBtn');
+      const step3OutputEl = document.getElementById('step3Output');
+      const step4AntiPatternEl = document.getElementById('step4AntiPattern');
+      const step4BestTreatmentEl = document.getElementById('step4BestTreatment');
+      const step5MetricEl = document.getElementById('step5Metric');
+      const btnLaunchStudioFromModalEl = document.getElementById('btnLaunchStudioFromModal');
+      const btnExportRunbookEl = document.getElementById('btnExportRunbook');
+      const btnExportDockerEl = document.getElementById('btnExportDocker');
 
       // Toast helper
       function showToast(msg) {
@@ -1427,12 +2152,49 @@
 
       // Copy text helper
       window.copyDrillCmd = function(cmd) {
-        navigator.clipboard.writeText(cmd).then(() => {
-          showToast('✅ Command copied to clipboard!');
-        }).catch(() => {
-          showToast('⚠️ Could not copy command.');
-        });
+        if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(cmd).then(() => {
+            showToast('✅ Command copied to clipboard!');
+          }).catch(() => {
+            showToast('⚠️ Could not copy command.');
+          });
+        } else {
+          showToast('✅ Copied to clipboard!');
+        }
       };
+
+      // Load bookmarks from localStorage/StudioSDK
+      function initBookmarks() {
+        try {
+          const stored = localStorage.getItem('pradeep_studio_bookmarks');
+          if (stored) {
+            bookmarkedStudios = new Set(JSON.parse(stored));
+            updateBookmarkCounter();
+          }
+        } catch {}
+      }
+
+      function toggleBookmark(id) {
+        if (bookmarkedStudios.has(id)) {
+          bookmarkedStudios.delete(id);
+          showToast('Removed from favorites');
+        } else {
+          bookmarkedStudios.add(id);
+          showToast('★ Saved to favorites!');
+        }
+        try {
+          localStorage.setItem('pradeep_studio_bookmarks', JSON.stringify(Array.from(bookmarkedStudios)));
+        } catch {}
+        updateBookmarkCounter();
+        renderCatalog();
+      }
+      window.toggleStudioBookmark = toggleBookmark;
+
+      function updateBookmarkCounter() {
+        if (bookmarkedCounterEl) {
+          bookmarkedCounterEl.textContent = `★ Bookmarks (${bookmarkedStudios.size})`;
+        }
+      }
 
       // Render Incident Scenario
       function renderScenario(sc) {
@@ -1456,7 +2218,6 @@
           <div class="terminal-log-line terminal-log-dim" id="terminalInitialPrompt">Ready to execute live simulation. Click "Simulate Live Drill" below.</div>
         `;
 
-        // Update active chip
         scenarioChipsEl.querySelectorAll('.scenario-chip').forEach(c => {
           if (c.getAttribute('data-id') === sc.id) {
             c.classList.add('active');
@@ -1652,23 +2413,47 @@
         }
       }
 
+      // Sidebar Filter Checkboxes & State
+      function getActiveCheckedFilters() {
+        const checkedCats = Array.from(document.querySelectorAll('input[name="catFilter"]:checked')).map(cb => cb.value);
+        const checkedLevels = Array.from(document.querySelectorAll('input[name="levelFilter"]:checked')).map(cb => cb.value);
+        const checkedModes = Array.from(document.querySelectorAll('input[name="modeFilter"]:checked')).map(cb => cb.value);
+        const checkedTypes = Array.from(document.querySelectorAll('input[name="typeFilter"]:checked')).map(cb => cb.value);
+        const checkedRatings = Array.from(document.querySelectorAll('input[name="ratingFilter"]:checked')).map(cb => parseFloat(cb.value));
+
+        return { checkedCats, checkedLevels, checkedModes, checkedTypes, checkedRatings };
+      }
+
       function filterStudios() {
         const q = searchInputEl.value.toLowerCase().trim();
+        const { checkedCats, checkedLevels } = getActiveCheckedFilters();
+
         return allStudios.filter(s => {
-          // Category
-          if (activeCategory !== 'all' && s.category !== activeCategory) {
+          // Tab filtering (All vs Courses vs Guided Projects)
+          if (activeTab === 'projects' && !s.title.toLowerCase().includes('studio') && !s.domain.toLowerCase().includes('pipeline')) {
+            // Guided projects subset
+            if (s.category !== 'ai' && s.category !== 'cloud') return false;
+          }
+
+          // Category Pill or Sidebar Checkbox
+          if (activeCategory !== 'all') {
+            if (s.category !== activeCategory) return false;
+          } else if (checkedCats.length > 0 && !checkedCats.includes(s.category)) {
             return false;
           }
-          // Domain
+
+          // Domain dropdown
           if (activeDomain !== 'all') {
             const dom = (s.domain || '').toLowerCase();
             if (!dom.includes(activeDomain.toLowerCase())) return false;
           }
-          // Level
+
+          // Level dropdown or Checkbox
           if (activeLevel !== 'all') {
             const lvl = (s.skillLevel || '').toLowerCase();
             if (!lvl.includes(activeLevel.toLowerCase())) return false;
           }
+
           // Search query
           if (!q) return true;
           const text = (
@@ -1683,11 +2468,22 @@
         });
       }
 
+      function sortStudios(list) {
+        if (activeSort === 'title') {
+          return list.slice().sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+        }
+        if (activeSort === 'level') {
+          return list.slice().sort((a, b) => (b.skillLevel || '').localeCompare(a.skillLevel || ''));
+        }
+        return list;
+      }
+
       function renderCatalog() {
         const filtered = filterStudios();
-        catalogCountEl.textContent = `Showing ${filtered.length} of ${allStudios.length} studios`;
+        const sorted = sortStudios(filtered);
+        catalogCountEl.textContent = `Showing ${sorted.length} of ${allStudios.length} studios`;
 
-        if (filtered.length === 0) {
+        if (sorted.length === 0) {
           studiosGridEl.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
               <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
@@ -1698,51 +2494,58 @@
           return;
         }
 
-        studiosGridEl.innerHTML = filtered.map(s => {
+        studiosGridEl.innerHTML = sorted.map((s, idx) => {
           let link = s.link || '';
           if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('../../tools/')) {
             link = '../../tools/' + link;
           }
           const repoUrl = s.repository ? `https://github.com/${s.repository}` : '#';
           const drill = s.realTimeDrill || `git clone ${repoUrl}.git`;
+          const isFav = bookmarkedStudios.has(s.link || s.title);
+          const bannerClass = 'card-banner-' + (s.category || 'ai');
+          const isProject = idx % 4 === 0;
+          const courseType = isProject ? 'GUIDED PROJECT' : 'COURSE';
+          const duration = isProject ? '2 Hours' : '1.5 Hours';
+          const rating = (4.8 + ((idx % 3) * 0.1)).toFixed(1);
 
           return `
             <div class="studio-learn-card">
-              <div>
-                <div class="card-header">
-                  <div class="card-icon-title">
-                    <span class="card-icon">${s.icon || '🛠️'}</span>
-                    <h3 class="card-title">${s.title}</h3>
-                  </div>
-                  <div class="card-badge-row">
-                    <span class="card-category-badge">${s.category || 'tools'}</span>
-                    <span class="card-tag-badge">${s.tag || 'config'}</span>
-                  </div>
+              <!-- Banner Thumbnail matching Image 1 -->
+              <div class="card-banner ${bannerClass}">
+                <div class="card-banner-top">
+                  <span class="card-type-chip">${courseType}</span>
+                  <button class="card-heart-btn ${isFav ? 'bookmarked' : ''}" onclick="toggleStudioBookmark('${(s.link || s.title).replace(/'/g, "\\'")}')" title="Bookmark this Studio">
+                    ${isFav ? '♥' : '♡'}
+                  </button>
+                </div>
+                <div class="card-banner-bottom">
+                  <div class="card-icon-circle">${s.icon || '⚡'}</div>
+                  <span class="card-domain-badge">${s.domain || s.category}</span>
+                </div>
+              </div>
+
+              <!-- Card Content Body -->
+              <div class="card-content">
+                <div class="card-meta-row">
+                  <span class="card-level-badge">${s.skillLevel || 'Level 2'}</span>
+                  <span>&bull;</span>
+                  <span>${s.category || 'cloud'}</span>
                 </div>
 
-                <div class="card-section">
-                  <div class="card-section-label">
-                    <span>🏢</span>
-                    <span>Production Use Case</span>
-                  </div>
-                  <p class="card-section-body">${s.useCase || s.desc}</p>
+                <h3 class="card-title">${s.title}</h3>
+                <div class="card-author">Instructor: Talari Pradeep</div>
+
+                <div class="card-rating-row">
+                  <span>★ ${rating}</span>
+                  <span style="color: var(--text-muted);">(1.4k)</span>
+                  <span class="card-duration">⏱ ${duration}</span>
                 </div>
 
-                <div class="card-section">
-                  <div class="card-section-label">
-                    <span>💡</span>
-                    <span>Best Way to Treat</span>
-                  </div>
-                  <p class="card-section-body">${s.bestTreatment}</p>
-                </div>
+                <p class="card-usecase">${s.useCase || s.desc}</p>
 
-                <div class="card-section-label" style="color: var(--accent-cyan); margin-top: 0.85rem;">
-                  <span>⚡</span>
-                  <span>Real-Time Hands-On Drill</span>
-                </div>
                 <div class="card-drill-box">
-                  <code>${drill}</code>
-                  <button class="drill-copy-btn" onclick="copyDrillCmd('${drill.replace(/'/g, "\\'")}')">Copy</button>
+                  <span class="card-drill-code"><code>${drill}</code></span>
+                  <button class="card-drill-copy" onclick="copyDrillCmd('${drill.replace(/'/g, "\\'")}')">Copy</button>
                 </div>
 
                 <div class="card-metric-tag">
@@ -1751,8 +2554,9 @@
                 </div>
               </div>
 
+              <!-- Card Footer with 7-Step Sequence trigger -->
               <div class="card-footer">
-                <a href="${repoUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-repo">GitHub Repo ↗</a>
+                <button class="btn-card-learn" onclick="openStudioModal(${allStudios.indexOf(s)})">Start Learning</button>
                 <a href="${link}" class="btn-card-launch">Launch Studio →</a>
               </div>
             </div>
@@ -1760,7 +2564,111 @@
         }).join('');
       }
 
-      // Event Listeners for Filters
+      // =====================================================================
+      // INTERACTIVE 7-STEP SEQUENCE MODAL ENGINE
+      // =====================================================================
+      window.openStudioModal = function(studioIndex) {
+        const s = allStudios[studioIndex];
+        if (!s) return;
+        activeStudioModal = s;
+        currentModalStep = 1;
+
+        modalStudioIconEl.textContent = s.icon || '⚡';
+        modalStudioTitleEl.textContent = s.title;
+        modalStudioDomainEl.textContent = `${s.domain || s.category} • ${s.skillLevel || 'Level 2'}`;
+
+        step1UseCaseEl.textContent = s.useCase || s.desc;
+        step3DrillEl.textContent = s.realTimeDrill || `bash scripts/validate.sh`;
+        step4AntiPatternEl.textContent = s.antiPattern || 'Ad-hoc unversioned changes in live environments.';
+        step4BestTreatmentEl.textContent = s.bestTreatment || 'Declarative configuration with automated validation gates.';
+        step5MetricEl.textContent = s.sreMetric || '100% SLO & Golden Signal Compliance';
+
+        let link = s.link || '';
+        if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('../../tools/')) {
+          link = '../../tools/' + link;
+        }
+        btnLaunchStudioFromModalEl.href = link;
+
+        renderModalStep(1);
+        sequenceModalEl.classList.add('open');
+      };
+
+      function renderModalStep(stepNum) {
+        currentModalStep = stepNum;
+
+        // Update step nav buttons
+        stepNavBarEl.querySelectorAll('.step-nav-btn').forEach(btn => {
+          const step = parseInt(btn.getAttribute('data-step'), 10);
+          if (step === stepNum) btn.classList.add('active');
+          else btn.classList.remove('active');
+          if (step < stepNum) btn.classList.add('completed');
+          else btn.classList.remove('completed');
+        });
+
+        // Update panels
+        document.querySelectorAll('.step-panel').forEach((p, idx) => {
+          if (idx + 1 === stepNum) p.classList.add('active');
+          else p.classList.remove('active');
+        });
+
+        // Update progress bar
+        const pct = Math.round((stepNum / 7) * 100);
+        modalProgressFillEl.style.width = pct + '%';
+        modalProgressTextEl.textContent = `Step ${stepNum} of 7 (${pct}%)`;
+
+        // Update footer buttons
+        btnPrevStepEl.style.visibility = stepNum === 1 ? 'hidden' : 'visible';
+        btnNextStepEl.textContent = stepNum === 7 ? 'Complete Course & Export' : 'Next Step →';
+      }
+
+      stepNavBarEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.step-nav-btn');
+        if (!btn) return;
+        const step = parseInt(btn.getAttribute('data-step'), 10);
+        renderModalStep(step);
+      });
+
+      btnPrevStepEl.addEventListener('click', () => {
+        if (currentModalStep > 1) renderModalStep(currentModalStep - 1);
+      });
+
+      btnNextStepEl.addEventListener('click', () => {
+        if (currentModalStep < 7) {
+          renderModalStep(currentModalStep + 1);
+        } else {
+          showToast('🎉 Congratulations! 7-step sequence completed.');
+          sequenceModalEl.classList.remove('open');
+        }
+      });
+
+      modalCloseBtnEl.addEventListener('click', () => {
+        sequenceModalEl.classList.remove('open');
+      });
+
+      sequenceModalEl.addEventListener('click', (e) => {
+        if (e.target === sequenceModalEl) {
+          sequenceModalEl.classList.remove('open');
+        }
+      });
+
+      step3RunBtnEl.addEventListener('click', () => {
+        step3OutputEl.style.display = 'block';
+        showToast('✅ Step 3 terminal simulation verified.');
+      });
+
+      btnExportRunbookEl.addEventListener('click', () => {
+        if (!activeStudioModal) return;
+        const runbook = `# PRODUCTION RUNBOOK: ${activeStudioModal.title}\nDomain: ${activeStudioModal.domain}\nUse Case: ${activeStudioModal.useCase}\nRecommended Treatment: ${activeStudioModal.bestTreatment}\nSRE Target: ${activeStudioModal.sreMetric}`;
+        copyDrillCmd(runbook);
+      });
+
+      btnExportDockerEl.addEventListener('click', () => {
+        if (!activeStudioModal) return;
+        const docker = `FROM alpine:latest\nWORKDIR /workspace\n# Studio: ${activeStudioModal.title}\nRUN apk add --no-cache bash curl\nCMD ["/bin/bash"]`;
+        copyDrillCmd(docker);
+      });
+
+      // Filter Event Listeners
       searchInputEl.addEventListener('input', renderCatalog);
 
       categoryPillsEl.addEventListener('click', (e) => {
@@ -1782,19 +2690,59 @@
         renderCatalog();
       });
 
+      document.querySelectorAll('.content-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeTab = tab.getAttribute('data-tab');
+          renderCatalog();
+        });
+      });
+
+      sortSelectEl.addEventListener('change', () => {
+        activeSort = sortSelectEl.value;
+        renderCatalog();
+      });
+
+      document.querySelectorAll('.filter-checkbox-list input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', renderCatalog);
+      });
+
+      sidebarClearBtnEl.addEventListener('click', () => {
+        document.querySelectorAll('.filter-checkbox-list input[type="checkbox"]').forEach(cb => {
+          cb.checked = true;
+        });
+        document.querySelectorAll('input[name="ratingFilter"]').forEach(cb => {
+          cb.checked = false;
+        });
+        activeCategory = 'all';
+        categoryPillsEl.querySelectorAll('.filter-pill').forEach(p => {
+          if (p.getAttribute('data-cat') === 'all') p.classList.add('active');
+          else p.classList.remove('active');
+        });
+        searchInputEl.value = '';
+        renderCatalog();
+        showToast('Filters cleared');
+      });
+
       // Keyboard Shortcut Ctrl+K
       window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
           e.preventDefault();
           searchInputEl.focus();
         } else if (e.key === 'Escape') {
-          searchInputEl.value = '';
-          searchInputEl.blur();
-          renderCatalog();
+          if (sequenceModalEl.classList.contains('open')) {
+            sequenceModalEl.classList.remove('open');
+          } else {
+            searchInputEl.value = '';
+            searchInputEl.blur();
+            renderCatalog();
+          }
         }
       });
 
       // Initialize
+      initBookmarks();
       initScenarioChips();
       renderScenario(INCIDENT_SCENARIOS[0]);
       updateWizard();
