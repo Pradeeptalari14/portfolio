@@ -3204,15 +3204,67 @@ function initHeroPipeline() {
   });
 }
 
-/* ══════════════════════════════════════════
-   COMMAND PALETTE CENTER (CTRL + K)
-══════════════════════════════════════════ */
+/* ═════════════════════════════════════════════════════════════════
+   PHASE 7 UI/UX: COMMAND PALETTE, SPOTLIGHT GLOW & TOAST SYSTEM
+   ═════════════════════════════════════════════════════════════════ */
+
+// 1. Toast Notification System
+window.showToast = function(message, type = 'info', duration = 3000) {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `toast-message toast-${type}`;
+  
+  let iconSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="toast-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+  if (type === 'success') {
+    iconSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="toast-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+  } else if (type === 'error') {
+    iconSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="toast-icon"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+  }
+
+  toast.innerHTML = `${iconSvg}<span>${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, duration);
+};
+
+// 2. Interactive Card Spotlight Effect
+function initCardSpotlight() {
+  const cards = document.querySelectorAll(
+    '.destination-card, .project-card, .studio-card, .feature-card, .playground-card, .build-card'
+  );
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+}
+
+// 3. Global Command Palette (Ctrl + K / Cmd + K)
 function initCommandPalette() {
   const modal = $('cmdPaletteModal');
   const input = $('cmdPaletteInput');
   const resultsContainer = $('cmdPaletteResults');
   const closeBtn = $('cmdCloseBtn');
-  const triggerBtn = $('navCmdTrigger');
+  const triggerBtn = $('cmdPaletteTrigger') || $('navCmdTrigger');
 
   if (!modal || !input || !resultsContainer) return;
 
@@ -3222,23 +3274,19 @@ function initCommandPalette() {
   let currentFiltered = [];
 
   const staticItems = [
-    { type: 'Navigation', title: 'Home', subtitle: 'Platform overview & architecture pipeline', url: '#hero', icon: '🏠' },
-    { type: 'Navigation', title: 'About Pradeep', subtitle: 'Who I am, what I build, engineering philosophy', url: '#about', icon: '👤' },
-    { type: 'Navigation', title: 'Professional Experience', subtitle: 'Accenture & Trigent systems engineering history', url: '#experience', icon: '💼' },
-    { type: 'Navigation', title: 'Skills Matrix', subtitle: 'Cloud, DevOps, SRE, Linux, K8s, AI infrastructure', url: '#skills', icon: '⚡' },
-    { type: 'Navigation', title: 'Projects & Case Studies', subtitle: 'Production architecture implementations', url: '#projects', icon: '📁' },
-    { type: 'Navigation', title: 'Engineering Studios Hub', subtitle: 'Explore all 324 interactive developer studios', url: 'studios/', icon: '🧪' },
-    { type: 'Navigation', title: 'Universal Engineering Toolbox', subtitle: 'CIDR calculator, JSON/YAML validator, Cron generator, Base64', url: 'toolbox/', icon: '🧰' },
-    { type: 'Navigation', title: 'SRE Incident Simulator', subtitle: 'Interactive troubleshooting: CrashLoopBackOff, OOM, Latency', url: 'incident/', icon: '🚨' },
-    { type: 'Navigation', title: 'Architecture Center', subtitle: 'Interactive system topology diagrams (Landing Zone, EKS, RAG)', url: 'architecture/', icon: '📐' },
-    { type: 'Navigation', title: 'Engineering Knowledge Base', subtitle: 'Deep-dive guides on DevOps, SRE, VMware, Windows, AI', url: 'knowledge/', icon: '📚' },
-    { type: 'Navigation', title: 'Engineering Learning Paths', subtitle: 'Step-by-step career path guides for Platform & SRE', url: 'learning/', icon: '🗺️' },
-    { type: 'Navigation', title: 'Cloud FinOps Calculator', subtitle: 'Cloud cost estimation & rightsizing models', url: 'finops/', icon: '💰' },
-    { type: 'Navigation', title: 'Printable ATS Resume', subtitle: 'Clean, printable view and direct PDF download', url: 'resume/', icon: '📄' },
-    { type: 'Navigation', title: 'Platform Status & Metrics', subtitle: 'Real-time telemetry and service uptime', url: 'status/', icon: '🟢' },
-    { type: 'Navigation', title: 'Contact & Collaboration', subtitle: 'Send a message or schedule infrastructure review', url: '#contact', icon: '✉️' },
-    { type: 'Action', title: 'Toggle Theme', subtitle: 'Switch between Dark and Light mode', action: 'toggleTheme', icon: '🌓' },
-    { type: 'Action', title: 'Open SRE Terminal', subtitle: 'Run CLI commands directly in the interactive console', action: 'focusTerminal', icon: '💻' }
+    { type: 'Destinations', title: 'Home Showcase', subtitle: 'Destination 1: Architectural minimalist hero & telemetry', url: '#hero', icon: '⚡' },
+    { type: 'Destinations', title: 'Studios Workbench', subtitle: 'Destination 2: 334 production engineering studios & live tools', url: 'studios/', icon: '🛠️' },
+    { type: 'Destinations', title: 'Studio Learning Lab', subtitle: 'Destination 3: Cognitive 7-step learning paths & badges', url: 'studios/learn/', icon: '🎓' },
+    { type: 'Platform', title: 'AI Laboratory', subtitle: 'Model scaling, RAG & LLMOps studio', url: 'AI/', icon: '🤖' },
+    { type: 'Platform', title: 'Architecture Center', subtitle: 'Enterprise Landing Zones & EKS topologies', url: 'architecture/', icon: '📐' },
+    { type: 'Platform', title: 'SRE Incident Simulator', subtitle: 'Production incident triage & chaos engineering drills', url: 'incident/', icon: '🚨' },
+    { type: 'Platform', title: 'Universal Engineering Toolbox', subtitle: 'DevOps utilities (CIDR, YAML/JSON, Cron, Base64)', url: 'toolbox/', icon: '🧰' },
+    { type: 'Platform', title: 'Skills Matrix', subtitle: 'Cloud, DevOps, SRE, Linux, K8s, AI infra competencies', url: '#skills', icon: '⚡' },
+    { type: 'Platform', title: 'Projects & Case Studies', subtitle: 'Production architecture implementations', url: '#projects', icon: '📁' },
+    { type: 'Platform', title: 'Professional Experience', subtitle: 'Accenture & Trigent systems engineering history', url: '#experience', icon: '💼' },
+    { type: 'Actions', title: 'Toggle Light / Dark Theme', subtitle: 'Switch system interface contrast mode', action: 'toggleTheme', icon: '🌓' },
+    { type: 'Actions', title: 'Launch SRE AI Copilot', subtitle: 'Open live incident triage drawer', action: 'openCopilot', icon: '🤖' },
+    { type: 'Actions', title: 'Focus Interactive Terminal', subtitle: 'Run CLI drills in the interactive console', action: 'focusTerminal', icon: '💻' }
   ];
 
   async function loadTools() {
@@ -3247,18 +3295,19 @@ function initCommandPalette() {
       const res = await fetch('tools/tools.json');
       if (res.ok) {
         const data = await res.json();
-        toolsList = data.map(item => {
-          let link = item.link || '';
+        const rawList = Array.isArray(data) ? data : (data.tools || []);
+        toolsList = rawList.map(item => {
+          let link = item.link || (item.id ? `tools/${item.id}/` : '');
           if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('tools/')) {
             link = 'tools/' + link;
           }
           return {
-            type: `Studio (${item.category || 'tool'})`,
-            title: item.title,
-            subtitle: item.desc || '',
+            type: 'Studios',
+            title: item.title || item.name || item.id,
+            subtitle: item.desc || item.description || `${item.category || 'Engineering'} studio`,
             url: link,
             icon: item.icon || '🛠️',
-            tag: item.tag || ''
+            tag: item.tag || item.category || ''
           };
         });
         isToolsLoaded = true;
@@ -3270,6 +3319,7 @@ function initCommandPalette() {
 
   function openPalette() {
     modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
     input.value = '';
     loadTools().then(() => renderResults(''));
     renderResults('');
@@ -3278,51 +3328,91 @@ function initCommandPalette() {
 
   function closePalette() {
     modal.style.display = 'none';
+    document.body.style.overflow = '';
   }
 
+  window.openCommandPalette = openPalette;
+  window.closeCommandPalette = closePalette;
+
   function renderResults(query) {
-    const q = query.trim().toLowerCase();
+    const q = (query || '').trim().toLowerCase();
     const all = [...staticItems, ...toolsList];
 
     if (!q) {
-      currentFiltered = staticItems.slice(0, 10);
+      currentFiltered = staticItems;
     } else {
       currentFiltered = all.filter(item => {
         return (item.title && item.title.toLowerCase().includes(q)) ||
                (item.subtitle && item.subtitle.toLowerCase().includes(q)) ||
                (item.type && item.type.toLowerCase().includes(q)) ||
                (item.tag && item.tag.toLowerCase().includes(q));
-      }).slice(0, 15);
+      }).slice(0, 16);
     }
 
     activeIndex = 0;
     if (currentFiltered.length === 0) {
-      resultsContainer.innerHTML = '<div class="cmd-empty">No matching tools, commands or pages found.</div>';
+      resultsContainer.innerHTML = `
+        <div style="padding: 2rem; text-align: center; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+          No matching studios, commands or pages found for "${query}"
+        </div>
+      `;
       return;
     }
 
-    resultsContainer.innerHTML = currentFiltered.map((item, idx) => `
-      <div class="cmd-item ${idx === activeIndex ? 'active' : ''}" data-idx="${idx}">
-        <span class="cmd-item-icon">${item.icon}</span>
-        <div class="cmd-item-text">
-          <div class="cmd-item-title">${item.title}</div>
-          <div class="cmd-item-sub">${item.subtitle}</div>
-        </div>
-        <span class="cmd-item-badge">${item.type}</span>
-      </div>
-    `).join('');
+    // Group items by type
+    const groups = {};
+    currentFiltered.forEach(item => {
+      const g = item.type || 'General';
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(item);
+    });
 
-    const items = resultsContainer.querySelectorAll('.cmd-item');
-    items.forEach(el => {
-      el.addEventListener('click', () => {
-        const idx = parseInt(el.getAttribute('data-idx'), 10);
-        selectItem(currentFiltered[idx]);
+    resultsContainer.innerHTML = '';
+    let globalIdx = 0;
+
+    Object.keys(groups).forEach(groupKey => {
+      const grpEl = document.createElement('div');
+      grpEl.className = 'cmd-group-label';
+      grpEl.textContent = groupKey;
+      resultsContainer.appendChild(grpEl);
+
+      groups[groupKey].forEach(item => {
+        const itemIdx = globalIdx++;
+        const itemEl = document.createElement('div');
+        itemEl.className = `cmd-palette-item ${itemIdx === activeIndex ? 'active' : ''}`;
+        itemEl.dataset.idx = itemIdx;
+
+        itemEl.innerHTML = `
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">${item.icon}</span>
+            <div>
+              <div style="font-weight: 600; color: #f8fafc;">${item.title}</div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">${item.subtitle}</div>
+            </div>
+          </div>
+          <span class="cmd-item-meta">${item.type}</span>
+        `;
+
+        itemEl.addEventListener('click', () => selectItem(item));
+        itemEl.addEventListener('mouseenter', () => {
+          activeIndex = itemIdx;
+          updateActiveItem();
+        });
+
+        resultsContainer.appendChild(itemEl);
       });
-      el.addEventListener('mouseenter', () => {
-        items.forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-        activeIndex = parseInt(el.getAttribute('data-idx'), 10);
-      });
+    });
+  }
+
+  function updateActiveItem() {
+    const items = resultsContainer.querySelectorAll('.cmd-palette-item');
+    items.forEach((it, i) => {
+      if (i === activeIndex) {
+        it.classList.add('active');
+        it.scrollIntoView({ block: 'nearest' });
+      } else {
+        it.classList.remove('active');
+      }
     });
   }
 
@@ -3330,7 +3420,21 @@ function initCommandPalette() {
     if (!item) return;
     closePalette();
     if (item.action === 'toggleTheme') {
-      toggleTheme();
+      const themeToggle = $('navThemeToggle') || $('themeToggle') || document.querySelector('.theme-toggle-btn');
+      if (themeToggle) {
+        themeToggle.click();
+      } else {
+        document.documentElement.classList.toggle('dark-theme');
+      }
+      window.showToast('Interface theme toggled', 'success');
+    } else if (item.action === 'openCopilot') {
+      const copilotDrawer = $('copilotDrawer');
+      if (copilotDrawer) {
+        copilotDrawer.classList.toggle('is-open');
+        window.showToast('SRE AI Copilot toggled', 'info');
+      } else {
+        window.location.href = 'studios/';
+      }
     } else if (item.action === 'focusTerminal') {
       const term = $('terminalInput');
       if (term) {
@@ -3347,22 +3451,20 @@ function initCommandPalette() {
     }
   }
 
-  // Keyboard navigation inside modal
+  // Keyboard navigation inside input
   input.addEventListener('keydown', (e) => {
-    const items = resultsContainer.querySelectorAll('.cmd-item');
+    const items = resultsContainer.querySelectorAll('.cmd-palette-item');
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (items.length > 0) {
         activeIndex = (activeIndex + 1) % items.length;
-        items.forEach((it, i) => it.classList.toggle('active', i === activeIndex));
-        items[activeIndex]?.scrollIntoView({ block: 'nearest' });
+        updateActiveItem();
       }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (items.length > 0) {
         activeIndex = (activeIndex - 1 + items.length) % items.length;
-        items.forEach((it, i) => it.classList.toggle('active', i === activeIndex));
-        items[activeIndex]?.scrollIntoView({ block: 'nearest' });
+        updateActiveItem();
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
@@ -3380,7 +3482,10 @@ function initCommandPalette() {
   });
 
   if (triggerBtn) {
-    triggerBtn.addEventListener('click', openPalette);
+    triggerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openPalette();
+    });
   }
 
   if (closeBtn) {
@@ -3408,6 +3513,7 @@ function initCommandPalette() {
 
 initHeroPipeline();
 initCommandPalette();
+initCardSpotlight();
 
 /* ══════════════════════════════
    SCROLL REVEAL — IntersectionObserver
