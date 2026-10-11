@@ -1031,6 +1031,8 @@
     const active = localStorage.getItem('sre_dark_mode_active') === 'true';
     if (active) {
       document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.remove('light-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
       if (!document.getElementById('dark-theme-override-styles')) {
         const style = document.createElement('style');
         style.id = 'dark-theme-override-styles';
@@ -1065,6 +1067,8 @@
       }
     } else {
       document.documentElement.classList.remove('dark-theme');
+      document.documentElement.classList.add('light-theme');
+      document.documentElement.setAttribute('data-theme', 'light');
       const style = document.getElementById('dark-theme-override-styles');
       if (style) style.remove();
     }

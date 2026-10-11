@@ -48,7 +48,13 @@ const navThemeToggle = $('navThemeToggle');
 
 function toggleTheme() {
   const isDark = document.documentElement.classList.toggle('dark-theme');
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  if (isDark) {
+    document.documentElement.classList.remove('light-theme');
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.classList.add('light-theme');
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
   try {
     localStorage.setItem('sre_dark_mode_active', isDark ? 'true' : 'false');
   } catch (e) {}
@@ -61,11 +67,19 @@ if (navThemeToggle) {
   navThemeToggle.addEventListener('click', toggleTheme);
 }
 
-// Initialize theme on load: enforce 2026 Dark Graphite theme
+// Initialize theme on load: respect stored choice, fallback to dark
 try {
-  localStorage.setItem('sre_dark_mode_active', 'true');
-  document.documentElement.classList.add('dark-theme');
-  document.documentElement.setAttribute('data-theme', 'dark');
+  const saved = localStorage.getItem('sre_dark_mode_active');
+  const isDark = saved !== null ? saved === 'true' : true;
+  if (isDark) {
+    document.documentElement.classList.add('dark-theme');
+    document.documentElement.classList.remove('light-theme');
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.add('light-theme');
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
 } catch (e) {}
 
 window.addEventListener('scroll', () => {

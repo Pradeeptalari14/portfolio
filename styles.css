@@ -6567,6 +6567,231 @@ select option {
 .dd-icon--fin    { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
 .dd-icon--status { background: rgba(52,211,153,0.12); color: #10b981; border: 1px solid rgba(52,211,153,0.25); }
 
+.ts-section-header--center {
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── THE THREE DESTINATIONS (Adaptive: Light & Night) ── */
+.destinations-section {
+  padding: 5rem 0;
+  position: relative;
+}
+
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.75rem;
+}
+
+.destination-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.destination-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-accent);
+}
+
+.destination-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #38bdf8);
+}
+
+.destination-card--studios::before {
+  background: linear-gradient(90deg, #38bdf8, #10b981);
+}
+
+.destination-card--learn::before {
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+}
+
+.destination-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.destination-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.destination-card-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.destination-card-badge--portfolio {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="light"] .destination-card-badge--portfolio,
+.light-theme .destination-card-badge--portfolio {
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.08);
+  border-color: rgba(2, 132, 199, 0.25);
+}
+
+.destination-card-badge--studios {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="light"] .destination-card-badge--studios,
+.light-theme .destination-card-badge--studios {
+  color: #059669;
+  background: rgba(5, 150, 105, 0.08);
+  border-color: rgba(5, 150, 105, 0.25);
+}
+
+.destination-card-badge--learn {
+  color: #c084fc;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+[data-theme="light"] .destination-card-badge--learn,
+.light-theme .destination-card-badge--learn {
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.25);
+}
+
+.destination-card-title {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.85rem 0 0.65rem;
+  line-height: 1.25;
+}
+
+.destination-card-desc {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.destination-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.75rem;
+}
+
+.destination-chip {
+  font-size: 0.74rem;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.6rem;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.destination-actions {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.dest-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: none;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.dest-btn-primary--studios {
+  background: linear-gradient(135deg, #0284c7, #0d9488);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
+}
+
+.dest-btn-primary--learn {
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+}
+
+.dest-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.dest-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex: 1;
+  padding: 0.75rem 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.dest-btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.dest-btn-accent {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--accent-primary);
+}
+
+.dest-btn-accent:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
 /* ── PROJECTS (Taste Skill Asymmetric Layout) ── */
 .ts-projects-section {
   padding: 6rem 0;
@@ -6706,7 +6931,7 @@ select option {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   padding: 1.25rem 1.5rem;
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   margin-bottom: 2rem;
@@ -7060,7 +7285,7 @@ select option {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   padding: 1rem 1.25rem;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   margin-bottom: 1.75rem;

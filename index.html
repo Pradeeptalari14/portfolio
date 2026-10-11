@@ -28,9 +28,17 @@
   <script>
     (function() {
       try {
-        localStorage.setItem('sre_dark_mode_active', 'true');
-        document.documentElement.classList.add('dark-theme');
-        document.documentElement.setAttribute('data-theme', 'dark');
+        const saved = localStorage.getItem('sre_dark_mode_active');
+        const isDark = saved !== null ? saved === 'true' : true;
+        if (isDark) {
+          document.documentElement.classList.add('dark-theme');
+          document.documentElement.classList.remove('light-theme');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+          document.documentElement.classList.add('light-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
       } catch(e) {}
     })();
   </script>

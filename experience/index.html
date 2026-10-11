@@ -11,6 +11,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('sre_dark_mode_active');
+        const isDark = saved !== null ? saved === 'true' : true;
+        if (isDark) {
+          document.documentElement.classList.add('dark-theme');
+          document.documentElement.classList.remove('light-theme');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+          document.documentElement.classList.add('light-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch(e) {}
+    })();
+  </script>
   <style>
     :root {
       --bg-base:        #080c14;
@@ -33,6 +50,26 @@
       --shadow-lg:      0 12px 40px rgba(0,0,0,0.6);
       --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
       --grad-primary:   linear-gradient(135deg, #818cf8 0%, #38bdf8 50%, #34d399 100%);
+    }
+
+    [data-theme="light"],
+    .light-theme {
+      --bg-base:        #ffffff;
+      --bg-surface:     #f8f9fc;
+      --bg-card:        #ffffff;
+      --bg-card-hover:  #f4f6ff;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-muted:     #94a3b8;
+      --accent-primary: #4f46e5;
+      --accent-cyan:    #0ea5e9;
+      --accent-green:   #047857;
+      --border:         #e2e8f0;
+      --border-accent:  rgba(79,70,229,0.25);
+      --shadow-sm:      0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md:      0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg:      0 12px 40px rgba(0,0,0,0.1);
+      --grad-primary:   linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
