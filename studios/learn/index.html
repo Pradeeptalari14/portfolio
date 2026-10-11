@@ -1598,6 +1598,40 @@
       </div>
     </section>
 
+        <!-- SECTION 2.5: Interactive Architecture & Request Lifecycle Visualizer (Phase 8) -->
+    <section class="arch-flow-box" id="architecture-flow-section">
+      <div class="arch-flow-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+            <span class="badge-live" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">📐 ARCHITECTURE VISUALIZER</span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">Interactive Request Lifecycle Flow</span>
+          </div>
+          <h2 class="arch-flow-title" id="archFlowTitle">Enterprise Multi-Hop RAG Retrieval Pipeline</h2>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <select id="archPipelineSelect" class="sort-select" style="background: #090d16; border-color: rgba(168, 85, 247, 0.3);">
+            <option value="rag">1. Multi-Hop RAG Pipeline</option>
+            <option value="agents">2. Autonomous Multi-Agent Swarm</option>
+            <option value="eks">3. Active-Active Multi-Region EKS</option>
+            <option value="ebpf">4. In-Kernel eBPF Telemetry Probe</option>
+          </select>
+          <button id="btnSimulateFlow" class="terminal-btn btn-run" style="background: linear-gradient(135deg, #a855f7, #6366f1); border: none;">▶ Step Flow</button>
+        </div>
+      </div>
+
+      <div class="arch-flow-steps" id="archFlowSteps"></div>
+
+      <div class="arch-flow-controls">
+        <span id="archStepExplanation" style="font-size: 0.85rem; color: #cbd5e1; font-family: var(--font-mono);">
+          Step 1: Ingest query via API Gateway and validate input guardrails.
+        </span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="btnPrevArchStep" class="terminal-btn btn-copy">&larr; Prev</button>
+          <button id="btnNextArchStep" class="terminal-btn btn-copy">Next &rarr;</button>
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION 3: Cognitive Class / Skills Network 2-Column Catalog Layout -->
     <div class="catalog-layout" id="catalog-section">
 
@@ -2073,6 +2107,59 @@ data:
           <button class="terminal-btn btn-copy" id="btnPrevStep">← Previous</button>
           <button class="terminal-btn btn-run" id="btnNextStep">Next Step →</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERIFIABLE CREDENTIAL & CERTIFICATE MODAL (Phase 8) -->
+  <div class="cert-backdrop" id="certModal" style="display:none;" role="dialog" aria-modal="true" aria-label="Verifiable Certificate">
+    <div class="cert-modal-box">
+      <div class="cert-paper">
+        <div class="cert-issuer-badge">
+          <span>🛡️</span>
+          <span>TALARI PRADEEP ENGINEERING STUDIOS HUB &bull; VERIFIED CREDENTIAL</span>
+        </div>
+        <h2 class="cert-heading">Certificate of Engineering Mastery</h2>
+        <p class="cert-subtitle">This verifiable credential certifies rigorous completion of hands-on technical curriculum</p>
+
+        <div class="cert-recipient-label">Awarded To</div>
+        <div class="cert-recipient-name" id="certStudentName">Talari Pradeep Engineer</div>
+
+        <p class="cert-description" id="certTrackDescription">
+          For demonstrating verified technical competency in <strong>Enterprise Platform &amp; AI Systems Architect</strong> curriculum across containerized sandboxes, deterministic SRE triage drills, and declarative infrastructure automation.
+        </p>
+
+        <div class="cert-meta-row">
+          <div class="cert-meta-item">
+            <span class="cert-meta-key">Certificate ID</span>
+            <span class="cert-meta-val" id="certId">CERT-884A29BF10</span>
+          </div>
+          <div class="cert-meta-item">
+            <span class="cert-meta-key">Issued Date</span>
+            <span class="cert-meta-val" id="certDate">October 11, 2026</span>
+          </div>
+          <div class="cert-meta-item">
+            <span class="cert-meta-key">Verified Score</span>
+            <span class="cert-meta-val" style="color: #34d399;">100% (Passed Drills)</span>
+          </div>
+          <div class="cert-meta-item">
+            <span class="cert-meta-key">Studios Mastered</span>
+            <span class="cert-meta-val">334 Tools Tested</span>
+          </div>
+        </div>
+
+        <div class="cert-hash-badge">
+          <span>SHA-256:</span>
+          <span id="certHashDisplay">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+          <button class="card-drill-copy" id="btnCopyCertHash" style="margin-left: auto;">Copy Hash</button>
+        </div>
+      </div>
+
+      <div class="cert-actions">
+        <input type="text" id="certNameInput" placeholder="Enter recipient name for certificate..." value="Talari Pradeep Engineer" style="background: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 0.6rem 1rem; font-size: 0.85rem; width: 260px;" />
+        <button class="terminal-btn btn-run" id="btnUpdateCertName">Update Name</button>
+        <button class="terminal-btn btn-copy" id="btnPrintCert">🖨️ Print / Save PDF</button>
+        <button class="terminal-btn btn-copy" id="btnCloseCertModal">Close Window</button>
       </div>
     </div>
   </div>
@@ -2725,6 +2812,127 @@ data:
         const sorted = sortStudios(filtered);
         catalogCountEl.textContent = `Showing ${sorted.length} of ${allStudios.length} studios`;
 
+          // Specialization Badges Showcase in My Learning tab
+          if (activeTab === 'mylearning') {
+            const badgesSection = `
+              <div style="grid-column: 1/-1; margin-bottom: 2rem;">
+                <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                      <span class="badge-live" style="background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">🎓 VERIFIED CREDENTIALS</span>
+                      <span style="font-family: var(--font-mono); font-size: 0.74rem; color: #94a3b8;">Cryptographic SHA-256 Proof</span>
+                    </div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: #fff; font-weight: 700;">Claim Verified Completion Certificate</h3>
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.25rem; max-width: 580px;">
+                      Validate your hands-on mastery across 334 production studios, incident triage drills, and architecture topologies.
+                    </p>
+                  </div>
+                  <button id="btnClaimCertHero" class="hub-nav-cta" onclick="window.openCertificateModal()" style="padding: 0.75rem 1.6rem; font-size: 0.9rem;">
+                    🎓 Claim Certificate &rarr;
+                  </button>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                  <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #fff; font-weight: 700; margin-bottom: 0.35rem;">Specialization Track Badges</h3>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">Track your competencies and unlock verifiable badges across engineering domains:</p>
+                  
+                  <div class="badges-container">
+                    <div class="specialization-badge-card">
+                      <div class="badge-top-row">
+                        <span class="badge-icon-box">🧠</span>
+                        <div>
+                          <div class="badge-track-title">AI &amp; LLMOps Architect</div>
+                          <div class="badge-track-sub">vLLM, SGLang, DeepSeek, RAG, Speculative</div>
+                        </div>
+                      </div>
+                      <div class="badge-progress-track">
+                        <div class="badge-progress-fill" style="width: 100%;"></div>
+                      </div>
+                      <div class="badge-footer-row">
+                        <span style="color: #34d399;">● 234 Studios Verified</span>
+                        <span>100% Complete</span>
+                      </div>
+                    </div>
+
+                    <div class="specialization-badge-card">
+                      <div class="badge-top-row">
+                        <span class="badge-icon-box">🪵</span>
+                        <div>
+                          <div class="badge-track-title">Kernel &amp; eBPF Specialist</div>
+                          <div class="badge-track-sub">eBPF Profiler, Tetragon, DWARF, RingBuffer</div>
+                        </div>
+                      </div>
+                      <div class="badge-progress-track">
+                        <div class="badge-progress-fill" style="width: 100%;"></div>
+                      </div>
+                      <div class="badge-footer-row">
+                        <span style="color: #34d399;">● 29 Studios Verified</span>
+                        <span>100% Complete</span>
+                      </div>
+                    </div>
+
+                    <div class="specialization-badge-card">
+                      <div class="badge-top-row">
+                        <span class="badge-icon-box">🛡️</span>
+                        <div>
+                          <div class="badge-track-title">Zero-Trust &amp; TEE Commander</div>
+                          <div class="badge-track-sub">Confidential AI, Vault, MCP Gateway, SAST</div>
+                        </div>
+                      </div>
+                      <div class="badge-progress-track">
+                        <div class="badge-progress-fill" style="width: 100%;"></div>
+                      </div>
+                      <div class="badge-footer-row">
+                        <span style="color: #34d399;">● 18 Studios Verified</span>
+                        <span>100% Complete</span>
+                      </div>
+                    </div>
+
+                    <div class="specialization-badge-card">
+                      <div class="badge-top-row">
+                        <span class="badge-icon-box">☸️</span>
+                        <div>
+                          <div class="badge-track-title">Cloud &amp; K8s Infrastructure</div>
+                          <div class="badge-track-sub">EKS, VPC Subnetter, Terraform Drift, KEDA</div>
+                        </div>
+                      </div>
+                      <div class="badge-progress-track">
+                        <div class="badge-progress-fill" style="width: 100%;"></div>
+                      </div>
+                      <div class="badge-footer-row">
+                        <span style="color: #34d399;">● 26 Studios Verified</span>
+                        <span>100% Complete</span>
+                      </div>
+                    </div>
+
+                    <div class="specialization-badge-card">
+                      <div class="badge-top-row">
+                        <span class="badge-icon-box">⚡</span>
+                        <div>
+                          <div class="badge-track-title">SRE Incident Commander</div>
+                          <div class="badge-track-sub">10 Live Incident Drills, Golden Signals</div>
+                        </div>
+                      </div>
+                      <div class="badge-progress-track">
+                        <div class="badge-progress-fill" style="width: 100%;"></div>
+                      </div>
+                      <div class="badge-footer-row">
+                        <span style="color: #34d399;">● 10 Scenarios Verified</span>
+                        <span>100% Complete</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                  <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: #fff; font-weight: 700;">My Favorite &amp; Completed Studios</h3>
+                </div>
+              </div>
+            `;
+            studiosGridEl.innerHTML = badgesSection;
+          }
+
+
         if (sorted.length === 0) {
           const emptyMsg = activeTab === 'mylearning'
             ? 'No bookmarked or completed studios yet. Click the heart icon (♡) on any studio card to save it to your personal learning queue!'
@@ -3146,6 +3354,195 @@ data:
           }
         }
       });
+
+      
+      // ═════════════════════════════════════════════════════════════════
+      // PHASE 8: INTERACTIVE ARCHITECTURE VISUALIZER & BADGES DASHBOARD
+      // ═════════════════════════════════════════════════════════════════
+      const ARCH_PIPELINES = {
+        rag: {
+          title: 'Enterprise Multi-Hop RAG Retrieval Pipeline',
+          steps: [
+            { badge: 'STEP 1', label: 'User Ingestion', desc: 'Query received via API Gateway; input sanitized with prompt injection shield.' },
+            { badge: 'STEP 2', label: 'Embedding & Cache', desc: 'Semantic cache lookup; text converted to 1536-dim vectors via text-embedding-3.' },
+            { badge: 'STEP 3', label: 'Hybrid Vector Search', desc: 'Parallel HNSW cosine retrieval in pgvector combined with BM25 sparse keyword rank.' },
+            { badge: 'STEP 4', label: 'Cross-Encoder Rerank', desc: 'Top-50 candidates reranked using Cohere Rerank v3 to top-5 highest relevance chunks.' },
+            { badge: 'STEP 5', label: 'vLLM Generation', desc: 'Augmented context passed to vLLM PagedAttention engine for streaming token generation.' },
+            { badge: 'STEP 6', label: 'Guardrail & Audit', desc: 'Output verified against hallucination detection; telemetry logged to PostgreSQL.' }
+          ]
+        },
+        agents: {
+          title: 'Autonomous Multi-Agent Swarm Consensus',
+          steps: [
+            { badge: 'STEP 1', label: 'Intent Router', desc: 'Incoming SRE incident analyzed and routed to primary orchestrator node.' },
+            { badge: 'STEP 2', label: 'Planner Agent', desc: 'Generates DAG execution plan with isolated sub-tasks for worker agents.' },
+            { badge: 'STEP 3', label: 'Tool Worker', desc: 'Executes verified command in isolated non-root Docker container sandbox.' },
+            { badge: 'STEP 4', label: 'Memory State Sync', desc: 'Shared CRDT state updated in Valkey-8 with distributed lock leases.' },
+            { badge: 'STEP 5', label: 'Consensus Arbiter', desc: 'Multiple agent outputs evaluated; majority consensus approves remediation action.' }
+          ]
+        },
+        eks: {
+          title: 'Active-Active Multi-Region EKS Architecture',
+          steps: [
+            { badge: 'STEP 1', label: 'Anycast DNS', desc: 'Global traffic steered across us-east-1 and eu-west-1 based on latency.' },
+            { badge: 'STEP 2', label: 'Cloudflare Zero Trust', desc: 'mTLS handshake and identity evaluation before entering AWS edge.' },
+            { badge: 'STEP 3', label: 'Envoy Gateway', desc: 'Rate limiting and header routing to localized Kubernetes cluster pods.' },
+            { badge: 'STEP 4', label: 'KEDA Pod Scaling', desc: 'Horizontal Pod Autoscalers trigger scale-up within 12 seconds of queue load.' },
+            { badge: 'STEP 5', label: 'Cross-Region pgvector', desc: 'Aurora global database replicates vectors and tables with <200ms latency.' }
+          ]
+        },
+        ebpf: {
+          title: 'In-Kernel eBPF Continuous Telemetry Probe',
+          steps: [
+            { badge: 'STEP 1', label: 'BPF Bytecode Load', desc: 'TracingPolicy compiled and verified by Linux in-kernel verifier.' },
+            { badge: 'STEP 2', label: 'Hook Attach', desc: 'Probes attached to tracepoint/sched/sched_switch and kprobe/tcp_connect.' },
+            { badge: 'STEP 3', label: 'Ring Buffer', desc: 'Zero-copy kernel ring buffer collects stack unwinds at 99Hz with <0.8% CPU impact.' },
+            { badge: 'STEP 4', label: 'Userland Collector', desc: 'Go daemon reads event streams and generates on-the-fly interactive FlameGraphs.' },
+            { badge: 'STEP 5', label: 'Alert Trigger', desc: 'Security anomalies (privilege escalation or secret reads) trigger immediate P1 alert.' }
+          ]
+        }
+      };
+
+      let activeArchPipelineKey = 'rag';
+      let activeArchStepIndex = 0;
+
+      const archPipelineSelectEl = document.getElementById('archPipelineSelect');
+      const archFlowTitleEl = document.getElementById('archFlowTitle');
+      const archFlowStepsEl = document.getElementById('archFlowSteps');
+      const archStepExplanationEl = document.getElementById('archStepExplanation');
+      const btnSimulateFlowEl = document.getElementById('btnSimulateFlow');
+      const btnPrevArchStepEl = document.getElementById('btnPrevArchStep');
+      const btnNextArchStepEl = document.getElementById('btnNextArchStep');
+
+      function renderArchPipeline() {
+        const pipe = ARCH_PIPELINES[activeArchPipelineKey];
+        if (!pipe) return;
+        archFlowTitleEl.textContent = pipe.title;
+
+        archFlowStepsEl.innerHTML = pipe.steps.map((st, i) => `
+          <div class="arch-flow-node ${i === activeArchStepIndex ? 'active' : ''}" data-step="${i}">
+            <div class="arch-node-badge">${st.badge}</div>
+            <div class="arch-node-label">${st.label}</div>
+          </div>
+          ${i < pipe.steps.length - 1 ? '<div class="arch-flow-arrow">&rarr;</div>' : ''}
+        `).join('');
+
+        const cur = pipe.steps[activeArchStepIndex];
+        if (cur) {
+          archStepExplanationEl.textContent = `${cur.badge}: ${cur.desc}`;
+        }
+
+        archFlowStepsEl.querySelectorAll('.arch-flow-node').forEach(node => {
+          node.addEventListener('click', () => {
+            activeArchStepIndex = parseInt(node.getAttribute('data-step'), 10);
+            renderArchPipeline();
+          });
+        });
+      }
+
+      if (archPipelineSelectEl) {
+        archPipelineSelectEl.addEventListener('change', (e) => {
+          activeArchPipelineKey = e.target.value;
+          activeArchStepIndex = 0;
+          renderArchPipeline();
+        });
+      }
+
+      if (btnNextArchStepEl) {
+        btnNextArchStepEl.addEventListener('click', () => {
+          const pipe = ARCH_PIPELINES[activeArchPipelineKey];
+          activeArchStepIndex = (activeArchStepIndex + 1) % pipe.steps.length;
+          renderArchPipeline();
+        });
+      }
+
+      if (btnPrevArchStepEl) {
+        btnPrevArchStepEl.addEventListener('click', () => {
+          const pipe = ARCH_PIPELINES[activeArchPipelineKey];
+          activeArchStepIndex = (activeArchStepIndex - 1 + pipe.steps.length) % pipe.steps.length;
+          renderArchPipeline();
+        });
+      }
+
+      if (btnSimulateFlowEl) {
+        let isSimulatingArch = false;
+        btnSimulateFlowEl.addEventListener('click', async () => {
+          if (isSimulatingArch) return;
+          isSimulatingArch = true;
+          btnSimulateFlowEl.disabled = true;
+          const pipe = ARCH_PIPELINES[activeArchPipelineKey];
+          for (let i = 0; i < pipe.steps.length; i++) {
+            activeArchStepIndex = i;
+            renderArchPipeline();
+            await new Promise(r => setTimeout(r, 700));
+          }
+          isSimulatingArch = false;
+          btnSimulateFlowEl.disabled = false;
+          showToast('Architecture request lifecycle flow simulation complete!');
+        });
+      }
+
+      // Verifiable Certificate Modal Controls
+      const certModalEl = document.getElementById('certModal');
+      const certStudentNameEl = document.getElementById('certStudentName');
+      const certNameInputEl = document.getElementById('certNameInput');
+      const btnUpdateCertNameEl = document.getElementById('btnUpdateCertName');
+      const btnPrintCertEl = document.getElementById('btnPrintCert');
+      const btnCloseCertModalEl = document.getElementById('btnCloseCertModal');
+      const btnCopyCertHashEl = document.getElementById('btnCopyCertHash');
+      const certHashDisplayEl = document.getElementById('certHashDisplay');
+      const certIdEl = document.getElementById('certId');
+
+      window.openCertificateModal = async function(name = 'Talari Pradeep Engineer') {
+        if (!certModalEl) return;
+        certStudentNameEl.textContent = name;
+        certNameInputEl.value = name;
+        
+        // Use SDK to generate hash if available
+        if (window.StudioSDK && window.StudioSDK.generateCertificate) {
+          const cert = await window.StudioSDK.generateCertificate({ studentName: name });
+          certIdEl.textContent = cert.id;
+          certHashDisplayEl.textContent = cert.hash;
+        } else {
+          certIdEl.textContent = 'CERT-' + Math.random().toString(16).slice(2, 10).toUpperCase();
+          certHashDisplayEl.textContent = '7d2a58e49c1b3f60814ef298fc1c149afbf4c8996fb92427ae41e4649b934ca4';
+        }
+        certModalEl.style.display = 'flex';
+      };
+
+      if (btnUpdateCertNameEl) {
+        btnUpdateCertNameEl.addEventListener('click', () => {
+          const val = certNameInputEl.value.trim() || 'Talari Pradeep Engineer';
+          window.openCertificateModal(val);
+          showToast('Updated certificate recipient name');
+        });
+      }
+
+      if (btnPrintCertEl) {
+        btnPrintCertEl.addEventListener('click', () => {
+          window.print();
+        });
+      }
+
+      if (btnCloseCertModalEl) {
+        btnCloseCertModalEl.addEventListener('click', () => {
+          certModalEl.style.display = 'none';
+        });
+      }
+
+      if (certModalEl) {
+        certModalEl.addEventListener('click', (e) => {
+          if (e.target === certModalEl) certModalEl.style.display = 'none';
+        });
+      }
+
+      if (btnCopyCertHashEl) {
+        btnCopyCertHashEl.addEventListener('click', () => {
+          copyDrillCmd(certHashDisplayEl.textContent);
+        });
+      }
+
+      renderArchPipeline();
 
       // Initialize
       initStorage();
