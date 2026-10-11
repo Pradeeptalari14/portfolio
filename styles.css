@@ -6527,6 +6527,14 @@ select option {
   margin: 0;
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, #818cf8 0%, #38bdf8 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
 .ts-section-subtitle {
   font-size: 1.025rem;
   line-height: 1.7;
@@ -6908,16 +6916,38 @@ select option {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
-  transition: border-color var(--transition);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.ts-ledger-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #38bdf8);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .ts-ledger-card--active {
-  border-color: rgba(99, 102, 241, 0.35);
-  box-shadow: 0 4px 30px rgba(99, 102, 241, 0.06);
+  border-color: rgba(99, 102, 241, 0.45);
+  box-shadow: 0 10px 36px -10px rgba(99, 102, 241, 0.2);
+}
+
+.ts-ledger-card--active::before,
+.ts-ledger-card:hover::before {
+  opacity: 1;
 }
 
 .ts-ledger-card:hover {
-  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.45);
 }
 
 .ts-ledger-header {
