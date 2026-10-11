@@ -67,4 +67,19 @@ describe('Qwen2.5-Coder-32B Enterprise Agentic Coding Studio', () => {
     const code = window.document.getElementById('codeOutput').textContent;
     expect(code).toContain('nvidia.com/gpu: "2"');
   });
+
+  it('should trigger sandbox execution when clicking Run Sandbox button', async () => {
+    const window = loadToolDom();
+    const runBtn = window.document.getElementById('btn-run-sandbox');
+    expect(runBtn).not.toBeNull();
+
+    runBtn.click();
+    await new Promise(r => setTimeout(r, 60));
+
+    const statusLabel = window.document.getElementById('sandboxStatusLabel');
+    expect(statusLabel.textContent).toContain('Exit Code: 0');
+    const stdout = window.document.getElementById('sandboxStdout');
+    expect(stdout.textContent).toContain('sandbox-exec');
+  });
 });
+

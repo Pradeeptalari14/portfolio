@@ -244,6 +244,9 @@
               </button>
             </div>
             <div class="flex items-center gap-2 pr-2">
+              <button id="btn-run-sandbox" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-1 rounded transition flex items-center gap-1 cursor-pointer">
+                <span>⚡</span> Run Sandbox
+              </button>
               <button id="btn-copy-code" class="text-xs font-mono text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded transition flex items-center gap-1">
                 <span>📋</span> Copy
               </button>
@@ -254,11 +257,24 @@
           </div>
 
           <!-- Code View Area -->
-          <div class="flex-1 p-4 bg-slate-950/95 overflow-auto max-h-[560px]">
+          <div class="flex-1 p-4 bg-slate-950/95 overflow-auto max-h-[420px]">
             <pre class="font-mono text-xs text-slate-300 leading-relaxed whitespace-pre" id="codeOutput"><code>Loading Qwen2.5-Coder configuration...</code></pre>
+          </div>
+
+          <!-- Live Sandbox Execution Console -->
+          <div id="sandboxConsoleContainer" class="border-t border-slate-800 bg-black/90 p-3.5">
+            <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="sandboxStatusLabel">Docker Sandbox Runner: Ready</span>
+              </div>
+              <span id="sandboxDurationLabel" class="text-slate-500">0ms</span>
+            </div>
+            <pre id="sandboxStdout" class="font-mono text-[11px] text-emerald-400/90 whitespace-pre overflow-x-auto max-h-32 bg-slate-950 p-2.5 rounded border border-slate-900">$ Ready to execute active artifact in isolated container...</pre>
           </div>
         </div>
       </div>
+
     </div>
   </main>
 
