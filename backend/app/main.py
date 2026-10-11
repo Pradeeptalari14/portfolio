@@ -40,6 +40,7 @@ async def on_startup():
         print(f"[Studios API] Note on database init: {e}")
 
 @app.get("/health")
+@app.get("/api/health")
 async def health_check():
     return {
         "status": "ok",

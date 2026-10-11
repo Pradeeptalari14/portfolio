@@ -56,10 +56,11 @@ class RAGSearchResult(BaseModel):
 
 # Project Schemas
 class ProjectCreate(BaseModel):
-    id: str
-    studio_id: str
+    id: Optional[str] = None
+    studio_id: Optional[str] = "general"
     user_id: Optional[str] = "guest"
-    title: str
+    title: Optional[str] = None
+    name: Optional[str] = None
     files: Optional[Dict[str, str]] = Field(default_factory=dict)
     mode: Optional[str] = "build"
     completed_steps: Optional[List[str]] = Field(default_factory=list)
@@ -70,7 +71,14 @@ class ProjectUpdate(BaseModel):
     mode: Optional[str] = None
     completed_steps: Optional[List[str]] = None
 
-class ProjectResponse(ProjectCreate):
+class ProjectResponse(BaseModel):
+    id: str
+    studio_id: str
+    user_id: str
+    title: str
+    files: Dict[str, str] = Field(default_factory=dict)
+    mode: str = "build"
+    completed_steps: List[str] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
 
@@ -79,7 +87,7 @@ class ProjectResponse(ProjectCreate):
 
 # Sandbox Execution Schemas
 class SandboxRunRequest(BaseModel):
-    studio_id: str
+    studio_id: Optional[str] = "general"
     language: str = "bash"  # bash, python, sh
     command: Optional[str] = None
     files: Optional[Dict[str, str]] = None
