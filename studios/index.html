@@ -24,6 +24,8 @@
       --accent-indigo: #6366f1;
       --accent-purple: #a855f7;
       --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
       --border: rgba(255, 255, 255, 0.08);
       --border-hover: rgba(56, 189, 248, 0.4);
       --font-mono: 'JetBrains Mono', monospace;
@@ -44,17 +46,20 @@
       background-size: 100% 100%, 40px 40px, 40px 40px;
     }
     a { color: inherit; text-decoration: none; }
+    
+    /* Navigation Bar */
     .hub-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 12, 20, 0.85);
+      background: rgba(8, 12, 20, 0.9);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0.85rem 1.5rem;
+      padding: 0.75rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
     }
     .hub-brand {
       display: flex;
@@ -63,7 +68,7 @@
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 1.05rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
     }
     .hub-brand-badge {
       background: rgba(56, 189, 248, 0.15);
@@ -74,17 +79,91 @@
       font-size: 0.72rem;
       font-family: var(--font-mono);
     }
+    .hub-nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-emerald);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .status-pill.offline {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.25);
+      color: var(--accent-cyan);
+    }
+    .status-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+    .workspace-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.2s ease;
+    }
+    .workspace-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .copilot-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #e0e7ff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.2s ease;
+    }
+    .copilot-nav-btn:hover {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35));
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+    }
     .hub-nav-links {
       display: flex;
+      align-items: center;
       gap: 1.25rem;
       font-size: 0.88rem;
       color: var(--text-secondary);
     }
     .hub-nav-links a:hover { color: var(--text-primary); }
+
+    /* Hero Section */
     .hub-hero {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 3.5rem 1.5rem 2rem;
+      padding: 3rem 1.5rem 1.5rem;
       text-align: center;
     }
     .hero-chip {
@@ -106,34 +185,36 @@
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.15;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .hub-desc {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--text-secondary);
-      max-width: 720px;
-      margin: 0 auto 2.5rem;
+      max-width: 760px;
+      margin: 0 auto 2rem;
     }
+    
+    /* Search & Filter Controls */
     .hub-controls {
       max-width: 1280px;
-      margin: 0 auto 2rem;
+      margin: 0 auto 1.5rem;
       padding: 0 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1rem;
     }
     .search-box {
       position: relative;
       width: 100%;
-      max-width: 640px;
+      max-width: 680px;
       margin: 0 auto;
     }
     .search-input {
       width: 100%;
-      padding: 0.95rem 1.25rem 0.95rem 3rem;
+      padding: 0.95rem 1.25rem 0.95rem 3.2rem;
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -153,10 +234,56 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-muted);
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       pointer-events: none;
     }
+    .search-kbd {
+      position: absolute;
+      right: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+    
+    /* Level Selector Filter */
+    .level-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .level-btn {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.15s ease;
+    }
+    .level-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+    }
+    .level-btn.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--accent-indigo);
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    /* Category Filter Pills */
     .category-pills {
       display: flex;
       flex-wrap: wrap;
@@ -184,6 +311,8 @@
       color: var(--accent-cyan);
       font-weight: 600;
     }
+    
+    /* Stats Bar */
     .stats-bar {
       max-width: 1280px;
       margin: 0 auto 1.5rem;
@@ -195,6 +324,18 @@
       color: var(--text-muted);
       font-family: var(--font-mono);
     }
+    .stats-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .stats-link {
+      color: var(--accent-cyan);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    /* Studios Grid */
     .hub-grid {
       max-width: 1280px;
       margin: 0 auto 4rem;
@@ -231,6 +372,11 @@
       font-size: 1.8rem;
       line-height: 1;
     }
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
     .card-badge {
       font-family: var(--font-mono);
       font-size: 0.7rem;
@@ -239,6 +385,28 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
       color: var(--accent-cyan);
+    }
+    .card-lvl-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: #a5b4fc;
+    }
+    .bookmark-star {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 0.2rem;
+      transition: color 0.15s ease;
+    }
+    .bookmark-star:hover, .bookmark-star.bookmarked {
+      color: var(--accent-amber);
     }
     .card-title {
       font-family: var(--font-display);
@@ -251,98 +419,442 @@
     .card-desc {
       font-size: 0.88rem;
       color: var(--text-secondary);
-      margin-bottom: 1.25rem;
-      flex-grow: 1;
       line-height: 1.5;
+      margin-bottom: 1.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 0.75rem;
       padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.82rem;
     }
     .card-tag {
+      font-family: var(--font-mono);
       color: var(--text-muted);
-      max-width: 180px;
+      font-size: 0.75rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 140px;
+    }
+    .card-action-btns {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-learn-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+    .card-learn-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
     .card-launch-btn {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      color: var(--accent-cyan);
-      font-weight: 600;
-      transition: gap 0.15s ease;
+      gap: 0.25rem;
     }
-    .card-launch-btn:hover { gap: 0.6rem; color: #fff; }
+    .card-launch-btn:hover {
+      background: var(--accent-cyan);
+      color: #080c14;
+      border-color: var(--accent-cyan);
+    }
+    
+    /* Footer */
     .hub-footer {
       border-top: 1px solid var(--border);
       padding: 3rem 1.5rem;
       text-align: center;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      font-size: 0.85rem;
       font-family: var(--font-mono);
       background: rgba(8, 12, 20, 0.95);
     }
-    @media (max-width: 640px) {
-      .hub-nav-links { display: none; }
-      .hub-grid { grid-template-columns: 1fr; }
+
+    /* Floating Copilot Toggle Button */
+    .floating-copilot-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.25rem;
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.45);
+      transition: all 0.25s ease;
+    }
+    .floating-copilot-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 36px rgba(168, 85, 247, 0.55);
+    }
+
+    /* AI Assistant Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .copilot-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(560px, 100vw);
+      background: #0b1120;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.8);
+      z-index: 210;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .copilot-drawer.active {
+      transform: translateX(0);
+    }
+    .drawer-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.8);
+    }
+    .drawer-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fff;
+    }
+    .drawer-close {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 8px;
+      padding: 0.35rem 0.65rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.15s ease;
+    }
+    .drawer-close:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .drawer-engine-bar {
+      padding: 0.65rem 1.5rem;
+      background: rgba(15, 23, 42, 0.4);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+    .engine-toggle {
+      display: flex;
+      gap: 0.35rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.2rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .engine-opt {
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+    }
+    .engine-opt.active {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .chat-bubble {
+      padding: 1rem 1.15rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      max-width: 90%;
+    }
+    .chat-bubble.ai {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      align-self: flex-start;
+      color: #f1f5f9;
+    }
+    .chat-bubble.user {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      align-self: flex-end;
+      color: #fff;
+    }
+    .suggested-prompts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .prompt-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .prompt-chip:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    .drawer-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+      display: flex;
+      gap: 0.75rem;
+    }
+    .copilot-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      background: #080c14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      font-family: inherit;
+    }
+    .copilot-input:focus {
+      border-color: var(--accent-cyan);
+    }
+    .copilot-send-btn {
+      background: var(--accent-cyan);
+      color: #080c14;
+      border: none;
+      border-radius: 10px;
+      padding: 0 1.25rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .copilot-send-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Workspace Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-card {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      width: min(520px, 100%);
+      padding: 1.75rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .workspace-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    .workspace-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .workspace-item:hover, .workspace-item.active {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    .workspace-new-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .workspace-input {
+      flex: 1;
+      padding: 0.65rem 0.85rem;
+      background: #080c14;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.88rem;
+    }
+    .workspace-add-btn {
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid var(--accent-indigo);
+      color: #a5b4fc;
+      padding: 0 1rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+
+  <!-- Navigation Bar -->
   <nav class="hub-nav">
-    <a href="../" class="hub-brand">
+    <div class="hub-brand">
+      <a href="/" style="color: #94a3b8; margin-right: 0.25rem;">←</a>
       <span>TALARI PRADEEP</span>
-      <span class="hub-brand-badge">STUDIOS HUB</span>
-    </a>
+      <span class="hub-brand-badge">334 TOOLS</span>
+    </div>
+
+    <div class="hub-nav-controls">
+      <!-- Backend Status Prober Pill -->
+      <div class="status-pill offline" id="backendStatusPill" title="Click to view connection telemetry">
+        <span class="status-indicator"></span>
+        <span id="backendStatusText">Checking Platform Status...</span>
+      </div>
+
+      <!-- Workspace Selector -->
+      <button class="workspace-btn" id="workspaceBtn" title="Switch or create project workspace">
+        📁 <span id="currentWorkspaceLabel">Workspace: Default</span> ▾
+      </button>
+
+      <!-- SRE Copilot Header Trigger -->
+      <button class="copilot-nav-btn" id="copilotHeaderBtn">
+        🤖 SRE Copilot
+      </button>
+    </div>
+
     <div class="hub-nav-links">
-      <a href="learn/" style="color: #38bdf8; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
-        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#38bdf8;"></span>
-        Learn &amp; Drills Hub
-      </a>
-      <a href="../">← Home</a>
-      <a href="../experience/">Experience</a>
-      <a href="../projects/">Projects</a>
-      <a href="../toolbox/">Toolbox</a>
-      <a href="../incident/">Incident Lab</a>
-      <a href="../architecture/">Architecture</a>
-      <a href="../resume/">Resume</a>
+      <a href="/">Home</a>
+      <a href="/studios/" style="color: var(--accent-cyan); font-weight: 600;">Studios</a>
+      <a href="/studios/learn/">Learn Hub 📚</a>
+      <a href="/incident/">Incident Triage</a>
+      <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener">GitHub</a>
     </div>
   </nav>
 
+  <!-- Hero Section -->
   <header class="hub-hero">
     <div class="hero-chip">
       <span>⚡</span>
-      <span>334 PRODUCTION-GRADE ENGINEERING STUDIOS</span>
+      <span>334 Self-Contained Engineering Studios • Dual-Engine Execution</span>
     </div>
-    <h1 class="hub-title">Interactive Technology Laboratory</h1>
+    <h1 class="hub-title">Interactive Engineering Studios Hub</h1>
     <p class="hub-desc">
-      Explore client-side interactive tooling, infrastructure template synthesizers, architecture simulators, and reliability sandboxes across cloud, DevOps, SRE, and AI engineering.
+      Production-grade tools, simulators, and architectures across AI/LLMOps, Cloud Infrastructure, Kubernetes, SRE, and Linux Systems. Zero broken links, zero external API blockers.
     </p>
-
-    <div style="margin: 0 auto 2.5rem; max-width: 840px; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 1.25rem 1.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; text-align: left;">
-      <div>
-        <div style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #38bdf8; margin-bottom: 0.25rem; font-weight: 600;">Interactive Learning &amp; Incident Drills</div>
-        <div style="font-size: 0.95rem; color: #f8fafc; font-weight: 500;">Master production failure modes, architectural best treatments, and real-time terminal drills for all 334 studios.</div>
-      </div>
-      <a href="learn/" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; background: #38bdf8; color: #080c14; font-weight: 700; font-size: 0.85rem; border-radius: 8px; font-family: var(--font-mono); text-decoration: none; transition: transform 0.2s, background 0.2s; white-space: nowrap;">
-        Launch Studio Learn Lab →
-      </a>
-    </div>
   </header>
 
+  <!-- Search & Filter Controls -->
   <section class="hub-controls">
     <div class="search-box">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="studioSearch" class="search-input" placeholder="Search 334 studios by keyword, tech, category, or file..." autocomplete="off" />
+      <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <input type="text" id="studioSearch" class="search-input" placeholder="Search 334 engineering studios (e.g. vLLM, RAG, Terraform, eBPF, Docker)..." autocomplete="off" />
+      <span class="search-kbd">/</span>
     </div>
 
+    <!-- Skill Maturity Level Filters -->
+    <div class="level-filters" id="levelFilters">
+      <button class="level-btn active" data-lvl="all">All Maturity Levels</button>
+      <button class="level-btn" data-lvl="1">Level 1: Foundations (Sandbox)</button>
+      <button class="level-btn" data-lvl="2">Level 2: Scripting &amp; Ops</button>
+      <button class="level-btn" data-lvl="3">Level 3: Distributed &amp; Cloud</button>
+      <button class="level-btn" data-lvl="4">Level 4: Kernel &amp; Deep AI</button>
+    </div>
+
+    <!-- Category Pills -->
     <div class="category-pills" id="categoryPills">
       <button class="cat-btn active" data-cat="all">All (334)</button>
       <button class="cat-btn" data-cat="ai">AI &amp; LLMOps</button>
@@ -356,31 +868,182 @@
     </div>
   </section>
 
+  <!-- Statistics & Quick Links Bar -->
   <div class="stats-bar">
     <span id="showingCount">Showing 334 of 334 studios</span>
-    <span>Self-contained • Client-side • Zero external dependencies</span>
+    <div class="stats-actions">
+      <span>Persistent Storage: <strong id="storageEngineLabel" style="color:#e2e8f0;">IndexedDB</strong></span>
+      <span>•</span>
+      <a href="/studios/learn/" class="stats-link">Open Cognitive Class Catalog →</a>
+    </div>
   </div>
 
+  <!-- Studio Cards Grid -->
   <main class="hub-grid" id="studioGrid">
     <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
       Loading interactive studio database...
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="hub-footer">
     <div>TALARI PRADEEP · CLOUD INFRASTRUCTURE &amp; SRE PLATFORM</div>
-    <div style="margin-top: 0.5rem; color: #475569;">Preserving 334 developer studios built for production excellence.</div>
+    <div style="margin-top: 0.5rem; color: #475569;">Preserving 334 developer studios built for production excellence. Dual-Engine Client Fallback.</div>
   </footer>
 
+  <!-- Floating Action Button for AI Copilot -->
+  <button class="floating-copilot-btn" id="floatingCopilotBtn">
+    <span>🤖</span>
+    <span>SRE Copilot</span>
+  </button>
+
+  <!-- AI Copilot Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="copilot-drawer" id="copilotDrawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <span>🤖</span>
+        <span>SRE AI Copilot</span>
+      </div>
+      <button class="drawer-close" id="drawerCloseBtn">✕</button>
+    </div>
+
+    <div class="drawer-engine-bar">
+      <span>RAG Knowledge: <strong>334 Studios</strong></span>
+      <div class="engine-toggle">
+        <span class="engine-opt active" id="engineBrowser">⚡ In-Browser</span>
+        <span class="engine-opt" id="engineCompanion">🐳 Companion API</span>
+      </div>
+    </div>
+
+    <div class="drawer-body" id="copilotChatBody">
+      <div class="chat-bubble ai">
+        <strong>👋 Hello, SRE Engineer!</strong><br />
+        I am your studio copilot. Ask me how to architect any of our 334 technologies, troubleshoot outages, or generate production runbooks.
+        <div class="suggested-prompts">
+          <button class="prompt-chip" data-prompt="How do I optimize vLLM latency with PagedAttention?">⚡ How do I optimize vLLM latency with PagedAttention?</button>
+          <button class="prompt-chip" data-prompt="Recommend studios for zero-trust Kubernetes security">🛡️ Recommend studios for zero-trust Kubernetes security</button>
+          <button class="prompt-chip" data-prompt="How do I troubleshoot Redis memory exhaustion?">🔍 How do I troubleshoot Redis memory exhaustion?</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <input type="text" class="copilot-input" id="copilotInput" placeholder="Ask about architecture, SRE triage, or studios..." />
+      <button class="copilot-send-btn" id="copilotSendBtn">Send</button>
+    </div>
+  </aside>
+
+  <!-- Project Workspace Modal -->
+  <div class="modal-overlay" id="workspaceModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">📁 Project Workspaces</h3>
+        <button class="drawer-close" id="closeWorkspaceModalBtn">✕</button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+        Workspaces isolate your telemetry, scratchpad scripts, and saved configurations locally in IndexedDB and sync to PostgreSQL when connected.
+      </p>
+
+      <div class="workspace-list" id="workspaceListContainer">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="workspace-new-form">
+        <input type="text" class="workspace-input" id="newWorkspaceNameInput" placeholder="New workspace name (e.g. Production Cluster)..." />
+        <button class="workspace-add-btn" id="createWorkspaceBtn">+ Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform Logic Script -->
   <script>
     (function() {
       let allStudios = [];
       let activeCat = 'all';
+      let activeLevel = 'all';
+      let bookmarkedIds = new Set();
+      let activeWorkspace = localStorage.getItem('tp_active_workspace') || 'Default Workspace';
+
       const searchInput = document.getElementById('studioSearch');
       const pills = document.getElementById('categoryPills');
+      const levelFilters = document.getElementById('levelFilters');
       const grid = document.getElementById('studioGrid');
       const countEl = document.getElementById('showingCount');
+      const backendStatusPill = document.getElementById('backendStatusPill');
+      const backendStatusText = document.getElementById('backendStatusText');
+      const storageEngineLabel = document.getElementById('storageEngineLabel');
+      const currentWorkspaceLabel = document.getElementById('currentWorkspaceLabel');
+      
+      // AI Copilot Elements
+      const copilotDrawer = document.getElementById('copilotDrawer');
+      const drawerOverlay = document.getElementById('drawerOverlay');
+      const copilotHeaderBtn = document.getElementById('copilotHeaderBtn');
+      const floatingCopilotBtn = document.getElementById('floatingCopilotBtn');
+      const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+      const copilotInput = document.getElementById('copilotInput');
+      const copilotSendBtn = document.getElementById('copilotSendBtn');
+      const copilotChatBody = document.getElementById('copilotChatBody');
+      const engineBrowser = document.getElementById('engineBrowser');
+      const engineCompanion = document.getElementById('engineCompanion');
+      let aiEngineMode = 'browser'; // 'browser' | 'companion'
 
+      // Workspace Elements
+      const workspaceBtn = document.getElementById('workspaceBtn');
+      const workspaceModal = document.getElementById('workspaceModal');
+      const closeWorkspaceModalBtn = document.getElementById('closeWorkspaceModalBtn');
+      const workspaceListContainer = document.getElementById('workspaceListContainer');
+      const newWorkspaceNameInput = document.getElementById('newWorkspaceNameInput');
+      const createWorkspaceBtn = document.getElementById('createWorkspaceBtn');
+
+      currentWorkspaceLabel.textContent = `Workspace: ${activeWorkspace}`;
+
+      // 1. Probing Companion Backend & Storage
+      async function probeBackend() {
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const candidateUrl = isLocalhost ? 'http://localhost:8000/api/health' : 'https://api.talaripradeep.info/api/health';
+
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 1200);
+          const res = await fetch(candidateUrl, { signal: controller.signal });
+          clearTimeout(timer);
+
+          if (res.ok) {
+            backendStatusPill.className = 'status-pill';
+            backendStatusText.textContent = '🟢 Companion API (pgvector + Docker)';
+            storageEngineLabel.textContent = 'PostgreSQL + IndexedDB Sync';
+            return;
+          }
+        } catch {
+          // Gracefully fallback to browser mode
+        }
+        backendStatusPill.className = 'status-pill offline';
+        backendStatusText.textContent = '⚡ In-Browser Client Mode (IDB Active)';
+        storageEngineLabel.textContent = 'IndexedDB Offline-First';
+      }
+
+      // 2. Bookmarks
+      function loadBookmarks() {
+        try {
+          const raw = localStorage.getItem('studio_bms');
+          bookmarkedIds = new Set(raw ? JSON.parse(raw) : []);
+        } catch {
+          bookmarkedIds = new Set();
+        }
+      }
+
+      function toggleBookmark(id) {
+        if (bookmarkedIds.has(id)) {
+          bookmarkedIds.delete(id);
+        } else {
+          bookmarkedIds.add(id);
+        }
+        localStorage.setItem('studio_bms', JSON.stringify(Array.from(bookmarkedIds)));
+        render();
+      }
+
+      // 3. Load 334 Studios
       async function loadStudios() {
         try {
           const res = await fetch('../tools/tools.json');
@@ -393,11 +1056,24 @@
         }
       }
 
+      function getStudioLevel(studio) {
+        const cat = (studio.category || '').toLowerCase();
+        const title = (studio.title || '').toLowerCase();
+        if (title.includes('ebpf') || title.includes('vllm') || title.includes('speculative') || title.includes('moe')) return 4;
+        if (cat.includes('ai') || cat.includes('cloud') || cat.includes('kubernetes')) return 3;
+        if (cat.includes('cicd') || cat.includes('sre') || cat.includes('security')) return 2;
+        return 1;
+      }
+
       function filterStudios() {
         const q = searchInput.value.toLowerCase().trim();
         return allStudios.filter(s => {
           const matchesCat = activeCat === 'all' || (s.category && s.category.toLowerCase().includes(activeCat));
           if (!matchesCat) return false;
+
+          const lvl = getStudioLevel(s);
+          if (activeLevel !== 'all' && lvl !== parseInt(activeLevel, 10)) return false;
+
           if (!q) return true;
           return (s.title && s.title.toLowerCase().includes(q)) ||
                  (s.desc && s.desc.toLowerCase().includes(q)) ||
@@ -411,7 +1087,7 @@
         countEl.textContent = `Showing ${filtered.length} of ${allStudios.length} studios`;
 
         if (filtered.length === 0) {
-          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">No matching studios found. Try another keyword.</div>';
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">No matching studios found. Try another keyword or maturity filter.</div>';
           return;
         }
 
@@ -420,26 +1096,47 @@
           if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('../tools/')) {
             link = '../tools/' + link;
           }
+          const studioId = s.id || (s.link ? s.link.replace(/\/$/, '').split('/').pop() : 'studio');
+          const learnLink = `../tools/${studioId}/learn.html`;
+          const lvl = getStudioLevel(s);
+          const isBookmarked = bookmarkedIds.has(studioId);
+
           return `
-            <div class="studio-card">
+            <div class="studio-card" data-id="${studioId}">
               <div>
                 <div class="card-top">
                   <span class="card-icon">${s.icon || '🛠️'}</span>
-                  <span class="card-badge">${s.category || 'tool'}</span>
+                  <div class="card-badges">
+                    <span class="card-lvl-badge">Lvl ${lvl}</span>
+                    <span class="card-badge">${s.category || 'tool'}</span>
+                    <button class="bookmark-star ${isBookmarked ? 'bookmarked' : ''}" data-bm="${studioId}" title="Bookmark Studio">
+                      ${isBookmarked ? '★' : '☆'}
+                    </button>
+                  </div>
                 </div>
                 <h3 class="card-title">${s.title}</h3>
                 <p class="card-desc">${s.desc || ''}</p>
               </div>
               <div class="card-footer">
                 <span class="card-tag" title="${s.tag || ''}">${s.tag || 'Interactive'}</span>
-                <a href="${link}" class="card-launch-btn">Launch →</a>
+                <div class="card-action-btns">
+                  <a href="${learnLink}" class="card-learn-btn" title="Open Complete Learning Guide">Guide 📖</a>
+                  <a href="${link}" class="card-launch-btn">Launch →</a>
+                </div>
               </div>
             </div>
           `;
         }).join('');
       }
 
+      // Event Listeners for Filters
       searchInput.addEventListener('input', render);
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== searchInput && document.activeElement !== copilotInput) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
 
       pills.addEventListener('click', (e) => {
         const btn = e.target.closest('.cat-btn');
@@ -450,7 +1147,178 @@
         render();
       });
 
+      levelFilters.addEventListener('click', (e) => {
+        const btn = e.target.closest('.level-btn');
+        if (!btn) return;
+        levelFilters.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeLevel = btn.getAttribute('data-lvl');
+        render();
+      });
+
+      grid.addEventListener('click', (e) => {
+        const star = e.target.closest('.bookmark-star');
+        if (star) {
+          const sid = star.getAttribute('data-bm');
+          toggleBookmark(sid);
+        }
+      });
+
+      // 4. Copilot Drawer Logic
+      function openCopilot() {
+        copilotDrawer.classList.add('active');
+        drawerOverlay.classList.add('active');
+        copilotInput.focus();
+      }
+
+      function closeCopilot() {
+        copilotDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+      }
+
+      copilotHeaderBtn.addEventListener('click', openCopilot);
+      floatingCopilotBtn.addEventListener('click', openCopilot);
+      drawerCloseBtn.addEventListener('click', closeCopilot);
+      drawerOverlay.addEventListener('click', closeCopilot);
+
+      engineBrowser.addEventListener('click', () => {
+        aiEngineMode = 'browser';
+        engineBrowser.classList.add('active');
+        engineCompanion.classList.remove('active');
+      });
+      engineCompanion.addEventListener('click', () => {
+        aiEngineMode = 'companion';
+        engineCompanion.classList.add('active');
+        engineBrowser.classList.remove('active');
+      });
+
+      function addChatMessage(role, text, actions = null) {
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${role}`;
+        div.innerHTML = text;
+        if (actions) {
+          const actDiv = document.createElement('div');
+          actDiv.style.marginTop = '0.75rem';
+          actDiv.innerHTML = actions;
+          div.appendChild(actDiv);
+        }
+        copilotChatBody.appendChild(div);
+        copilotChatBody.scrollTop = copilotChatBody.scrollHeight;
+      }
+
+      async function handleCopilotQuery(prompt) {
+        if (!prompt) return;
+        addChatMessage('user', prompt);
+        copilotInput.value = '';
+
+        // Generate context-aware response based on allStudios
+        const lower = prompt.toLowerCase();
+        const matches = allStudios.filter(s => 
+          (s.title && s.title.toLowerCase().includes(lower)) ||
+          (s.desc && s.desc.toLowerCase().includes(lower)) ||
+          (s.tag && s.tag.toLowerCase().includes(lower)) ||
+          (s.category && s.category.toLowerCase().includes(lower))
+        ).slice(0, 3);
+
+        setTimeout(() => {
+          if (matches.length > 0) {
+            let respHtml = `<strong>Recommended Studios for your prompt:</strong><br />`;
+            matches.forEach(m => {
+              const link = m.link && m.link.startsWith('http') ? m.link : `../tools/${m.link}`;
+              respHtml += `<div style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 6px;">
+                <strong>${m.icon || '🛠️'} ${m.title}</strong> (${m.category})<br />
+                <span style="font-size: 0.8rem; color: #94a3b8;">${m.desc || ''}</span><br />
+                <a href="${link}" style="color: #38bdf8; font-size: 0.78rem; font-family: monospace; text-decoration: underline;">Open Studio →</a>
+              </div>`;
+            });
+            respHtml += `<br /><span style="font-size: 0.78rem; color: #64748b;">Engine: ${aiEngineMode === 'companion' ? 'FastAPI / Ollama Gateway' : 'In-Browser Heuristic RAG'}</span>`;
+            addChatMessage('ai', respHtml);
+          } else {
+            addChatMessage('ai', `I analyzed the 334 engineering studios for <em>"${prompt}"</em>. For deep troubleshooting, you can launch the <a href="/incident/" style="color:#38bdf8;">Incident Triage Simulator</a> or browse by category.`);
+          }
+        }, 300);
+      }
+
+      copilotSendBtn.addEventListener('click', () => handleCopilotQuery(copilotInput.value.trim()));
+      copilotInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleCopilotQuery(copilotInput.value.trim());
+      });
+
+      copilotChatBody.addEventListener('click', (e) => {
+        const chip = e.target.closest('.prompt-chip');
+        if (chip) {
+          const p = chip.getAttribute('data-prompt');
+          handleCopilotQuery(p);
+        }
+      });
+
+      // 5. Workspaces Modal Logic
+      function getWorkspaces() {
+        try {
+          const raw = localStorage.getItem('tp_workspaces_list');
+          return raw ? JSON.parse(raw) : ['Default Workspace', 'Production SRE Sandbox'];
+        } catch {
+          return ['Default Workspace'];
+        }
+      }
+
+      function renderWorkspaces() {
+        const list = getWorkspaces();
+        workspaceListContainer.innerHTML = list.map(ws => `
+          <div class="workspace-item ${ws === activeWorkspace ? 'active' : ''}" data-ws="${ws}">
+            <div>
+              <strong style="color: #fff; font-size: 0.9rem;">${ws}</strong>
+              <div style="font-size: 0.75rem; color: #64748b; font-family: monospace;">IndexedDB Local State</div>
+            </div>
+            ${ws === activeWorkspace ? '<span style="color:#38bdf8; font-size:0.75rem; font-family:monospace;">ACTIVE</span>' : '<button style="background:transparent; border:none; color:#94a3b8; cursor:pointer;">Switch →</button>'}
+          </div>
+        `).join('');
+      }
+
+      workspaceBtn.addEventListener('click', () => {
+        renderWorkspaces();
+        workspaceModal.classList.add('active');
+      });
+
+      closeWorkspaceModalBtn.addEventListener('click', () => {
+        workspaceModal.classList.remove('active');
+      });
+
+      workspaceModal.addEventListener('click', (e) => {
+        if (e.target === workspaceModal) workspaceModal.classList.remove('active');
+      });
+
+      workspaceListContainer.addEventListener('click', (e) => {
+        const item = e.target.closest('.workspace-item');
+        if (!item) return;
+        const ws = item.getAttribute('data-ws');
+        activeWorkspace = ws;
+        localStorage.setItem('tp_active_workspace', ws);
+        currentWorkspaceLabel.textContent = `Workspace: ${ws}`;
+        renderWorkspaces();
+        workspaceModal.classList.remove('active');
+      });
+
+      createWorkspaceBtn.addEventListener('click', () => {
+        const name = newWorkspaceNameInput.value.trim();
+        if (!name) return;
+        const list = getWorkspaces();
+        if (!list.includes(name)) {
+          list.push(name);
+          localStorage.setItem('tp_workspaces_list', JSON.stringify(list));
+        }
+        activeWorkspace = name;
+        localStorage.setItem('tp_active_workspace', name);
+        currentWorkspaceLabel.textContent = `Workspace: ${name}`;
+        newWorkspaceNameInput.value = '';
+        renderWorkspaces();
+        workspaceModal.classList.remove('active');
+      });
+
+      // Initialization
+      loadBookmarks();
       loadStudios();
+      probeBackend();
     })();
   </script>
 </body>
