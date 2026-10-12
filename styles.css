@@ -12,8 +12,9 @@
   --bg-card-hover:  #1e293b;
   --bg-muted:       #131d33;
 
-  --accent-primary: #6366f1;
-  --accent-dark:    #4f46e5;
+  --accent-primary: #818cf8;
+  --accent-btn:     #4f46e5;
+  --accent-dark:    #6366f1;
   --accent-cyan:    #38bdf8;
   --accent-green:   #10b981;
   --accent-green-dark: #34d399;
@@ -58,7 +59,8 @@
   --bg-card-hover:  #f4f6ff;
   --bg-muted:       #f1f3f8;
 
-  --accent-primary: #4f46e5;
+  --accent-primary: #4338ca;
+  --accent-btn:     #4338ca;
   --accent-dark:    #3730a3;
   --accent-cyan:    #0ea5e9;
   --accent-green:   #059669;
@@ -6389,7 +6391,7 @@ select option {
 .hero-name-accent { color: var(--accent-primary); }
 .hero-value-prop { font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary); max-width: 44ch; animation: ts-fade-up 0.55s 0.16s ease both; }
 .hero-cta-group { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; animation: ts-fade-up 0.55s 0.22s ease both; }
-.hero-cta-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--accent-primary); color: #fff; border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: background var(--transition), transform var(--transition), box-shadow var(--transition); }
+.hero-cta-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--accent-btn, #4f46e5); color: #fff; border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: background var(--transition), transform var(--transition), box-shadow var(--transition); }
 .hero-cta-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.35); }
 .hero-cta-primary svg { transition: transform var(--transition); }
 .hero-cta-primary:hover svg { transform: translateX(3px); }
@@ -7610,7 +7612,7 @@ select option {
   justify-content: center;
   gap: 0.6rem;
   padding: 0.9rem 1.5rem;
-  background: var(--accent-primary);
+  background: var(--accent-btn, #4f46e5);
   border: none;
   border-radius: var(--radius-sm);
   color: #fff;
@@ -7834,6 +7836,10 @@ select option {
 
 /* Responsive adjustments */
 @media (max-width: 900px) {
+  .destinations-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
   .ts-subprojects-grid {
     grid-template-columns: 1fr;
   }
@@ -7859,6 +7865,18 @@ select option {
   }
   .ts-ledger-header {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .destination-card {
+    padding: 1.5rem;
+  }
+  .ts-flagship-main {
+    padding: 1.5rem;
+  }
+  .ts-project-card {
+    padding: 1.5rem;
   }
 }
 
