@@ -129,6 +129,132 @@ export class RepoLearningGenerator {
           { component: 'OWASP LLM Shield', studioId: 'owasp-llm-agent-shield', path: '/tools/owasp-llm-agent-shield/' },
           { component: 'Agent Workflow', studioId: 'agent-workflow', path: '/tools/agent-workflow/' }
         ]
+      },
+      'tp-claude-37-computer-use': {
+        id: 'tp-claude-37-computer-use',
+        repo: 'Pradeeptalari14/tp-claude-37-computer-use',
+        title: 'Claude 3.7 Sonnet Computer Use Automation Hub',
+        desc: 'Autonomous desktop OS automation, mouse pointer control, bash shell execution, and visual screen coordinate grounding.',
+        defaultBranch: 'main',
+        commitSha: 'a19f201',
+        languages: ['Python', 'Shell'],
+        frameworks: ['Anthropic SDK', 'PyAutoGUI', 'FastAPI'],
+        packageManagers: ['pip (requirements.txt)'],
+        infrastructure: ['Docker (X11 Virtual Display)', 'gVisor'],
+        monorepo: false,
+        entrypoints: ['agent.py', 'computer.py'],
+        studioBridge: [
+          { component: 'Computer Use Agent', studioId: 'claude-37-computer-use', path: '/tools/claude-37-computer-use/' },
+          { component: 'Agent Workflow', studioId: 'agent-workflow', path: '/tools/agent-workflow/' }
+        ]
+      },
+      'tp-openai-marketplace-broker': {
+        id: 'tp-openai-marketplace-broker',
+        repo: 'Pradeeptalari14/tp-openai-marketplace-broker',
+        title: 'OpenAI Marketplace Quota & Token Broker Studio',
+        desc: 'Multi-tenant OpenAI token quota arbitrator with sliding-window rate limiters, token leasing, and cost attribution metrics.',
+        defaultBranch: 'main',
+        commitSha: '891cd02',
+        languages: ['Python', 'YAML'],
+        frameworks: ['FastAPI', 'Redis', 'Celery'],
+        packageManagers: ['pip (requirements.txt)'],
+        infrastructure: ['Docker', 'Redis 7.2'],
+        monorepo: false,
+        entrypoints: ['quota_broker.py', 'main.py'],
+        studioBridge: [
+          { component: 'Token Broker Gateway', studioId: 'openai-marketplace-broker', path: '/tools/openai-marketplace-broker/' },
+          { component: 'API Gateway Studio', studioId: 'api-gateway', path: '/tools/api-gateway/' }
+        ]
+      },
+      'tp-mistral-pixtral-vlm': {
+        id: 'tp-mistral-pixtral-vlm',
+        repo: 'Pradeeptalari14/tp-mistral-pixtral-vlm',
+        title: 'Mistral Pixtral 12B Vision Language Model Studio',
+        desc: 'Multimodal vision-language inference with dynamic image resolution tokenization, chart understanding, and OCR extraction.',
+        defaultBranch: 'main',
+        commitSha: '56fe91b',
+        languages: ['Python', 'HTML'],
+        frameworks: ['vLLM', 'PyTorch', 'HuggingFace'],
+        packageManagers: ['pip'],
+        infrastructure: ['NVIDIA GPU Container', 'CUDA 12.2'],
+        monorepo: false,
+        entrypoints: ['serve_vlm.py', 'client.py'],
+        studioBridge: [
+          { component: 'Pixtral VLM Engine', studioId: 'mistral-pixtral-vlm', path: '/tools/mistral-pixtral-vlm/' },
+          { component: 'vLLM PagedAttention', studioId: 'vllm-paged-attention', path: '/tools/vllm-paged-attention/' }
+        ]
+      },
+      'tp-codex-cloud-sandboxes': {
+        id: 'tp-codex-cloud-sandboxes',
+        repo: 'Pradeeptalari14/tp-codex-cloud-sandboxes',
+        title: 'Codex Cloud Sandboxes & Ephemeral Runner Studio',
+        desc: 'Sub-50ms ephemeral Linux microVM sandboxes for executing untrusted AI-generated code with network namespace isolation.',
+        defaultBranch: 'main',
+        commitSha: '67ab128',
+        languages: ['Go', 'Shell'],
+        frameworks: ['gVisor', 'Firecracker', 'Docker'],
+        packageManagers: ['go modules'],
+        infrastructure: ['Linux Cgroups v2', 'Docker'],
+        monorepo: false,
+        entrypoints: ['sandbox_daemon.go', 'runner.sh'],
+        studioBridge: [
+          { component: 'Codex Cloud Sandboxes', studioId: 'codex-cloud-sandboxes', path: '/tools/codex-cloud-sandboxes/' },
+          { component: 'Local Cloud Dev', studioId: 'local-cloud-dev', path: '/tools/local-cloud-dev/' }
+        ]
+      },
+      'tp-gemini-2-flash-live': {
+        id: 'tp-gemini-2-flash-live',
+        repo: 'Pradeeptalari14/tp-gemini-2-flash-live',
+        title: 'Gemini 2.0 Flash Live Multimodal Streaming Studio',
+        desc: 'Sub-200ms bi-directional WebRTC audio and video streaming with Gemini 2.0 Flash Live API, tool calling, and screen grounding.',
+        defaultBranch: 'main',
+        commitSha: '78fa310',
+        languages: ['TypeScript', 'Python'],
+        frameworks: ['WebRTC', 'FastAPI', 'Google GenAI SDK'],
+        packageManagers: ['npm', 'pip'],
+        infrastructure: ['Docker', 'Coturn STUN/TURN'],
+        monorepo: false,
+        entrypoints: ['live_client.ts', 'server.py'],
+        studioBridge: [
+          { component: 'Gemini Live Streaming', studioId: 'gemini-2-flash-live', path: '/tools/gemini-2-flash-live/' },
+          { component: 'OpenAI Realtime Voice', studioId: 'openai-realtime-voice', path: '/tools/openai-realtime-voice/' }
+        ]
+      },
+      'tp-yi-lightning-moe': {
+        id: 'tp-yi-lightning-moe',
+        repo: 'Pradeeptalari14/tp-yi-lightning-moe',
+        title: 'Yi-Lightning MoE Cross-Lingual Inference Engine',
+        desc: 'High-speed bilingual Mixture of Experts inference engine optimized for Indic-English code-switching and dense token efficiency.',
+        defaultBranch: 'main',
+        commitSha: '34ef19a',
+        languages: ['Python', 'Shell'],
+        frameworks: ['vLLM', 'SGLang', 'HuggingFace'],
+        packageManagers: ['pip (requirements.txt)'],
+        infrastructure: ['CUDA 12.4', 'Docker'],
+        monorepo: false,
+        entrypoints: ['bilingual_token_estimator.py', 'serve_moe.py'],
+        studioBridge: [
+          { component: 'Yi Lightning MoE', studioId: 'yi-lightning-moe', path: '/tools/yi-lightning-moe/' },
+          { component: 'SGLang RadixAttention', studioId: 'sglang-radix-attention', path: '/tools/sglang-radix-attention/' }
+        ]
+      },
+      'tp-repo-learning': {
+        id: 'tp-repo-learning',
+        repo: 'Pradeeptalari14/tp-repo-learning',
+        title: 'Unified Repository Learning Workspace & Real Project Platform',
+        desc: 'Interactive codebase parser, architecture DAG generator, 10-point courses, one-click dev setups, and stack trace debugger.',
+        defaultBranch: 'main',
+        commitSha: '035f888',
+        languages: ['Python', 'Shell', 'Docker'],
+        frameworks: ['FastAPI', 'Docker Compose', 'GitHub Actions'],
+        packageManagers: ['pip'],
+        infrastructure: ['Docker Compose', 'Linux Containers'],
+        monorepo: false,
+        entrypoints: ['main.py', 'scripts/validate.sh'],
+        studioBridge: [
+          { component: 'Repository Workspace', studioId: 'repo-learning', path: '/tools/repo-learning/' },
+          { component: 'Backend Ecosystem', studioId: 'backend-ecosystem', path: '/tools/backend-ecosystem/' }
+        ]
       }
     };
   }
