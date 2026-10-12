@@ -4078,5 +4078,17 @@
     "tag": "backend-lifecycle.yaml",
     "link": "backend-ecosystem/",
     "repository": "Pradeeptalari14/tp-backend-ecosystem"
+  },
+  {
+    "title": "Unified Repository Learning Workspace & Real Project Studio",
+    "desc": "Understand real codebases, trace architectural request execution, follow guided 10-point courses, launch one-click setups, test in-browser code diffs, and bridge directly into 340 engineering studios.",
+    "category": "devops",
+    "icon": "📂",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "repository-workspace.yaml",
+    "link": "repo-learning/",
+    "repository": "Pradeeptalari14/tp-repo-learning"
   }
 ]

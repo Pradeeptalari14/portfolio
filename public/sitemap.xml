@@ -123,7 +123,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- All 340 Interactive Developer Studios & SRE Tools -->
+  <!-- All 341 Interactive Developer Studios & SRE Tools -->
   <url>
     <loc>https://talaripradeep.info/tools/ai/</loc>
     <lastmod>2026-10-12</lastmod>
@@ -2160,6 +2160,12 @@
   </url>
   <url>
     <loc>https://talaripradeep.info/tools/backend-ecosystem/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/repo-learning/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -156,6 +156,26 @@
         { from: 'b6', to: 'b7' },
         { from: 'b3', to: 'b8' }
       ]
+    },
+
+    repolearn: {
+      name: 'Unified Repository Learning & Codebase DAG',
+      category: 'automation',
+      nodes: [
+        { id: 'r1', type: 'input', title: 'Git Repository Source', icon: '📦', x: 60, y: 140, params: { branch: 'main', commit: '42be0e3' }, desc: 'Cloned or imported repository source files with AST language parser.' },
+        { id: 'r2', type: 'network', title: 'Ingress & Gateway', icon: '🌐', x: 380, y: 140, params: { proxy: 'NGINX 1.25', rateLimit: 'Token Bucket' }, desc: 'Edge routing layer proxying incoming requests to microservice containers.' },
+        { id: 'r3', type: 'transform', title: 'API Service Layer', icon: '⚡', x: 700, y: 140, params: { framework: 'FastAPI / Go Gin', auth: 'JWT RS256' }, desc: 'Business logic coordinator validating schemas and transaction boundaries.' },
+        { id: 'r4', type: 'storage', title: 'State & Caching DB', icon: '🗄️', x: 1020, y: 60, params: { cache: 'Redis 7', db: 'PostgreSQL 16' }, desc: 'Sub-2ms caching and durable ACID transactional persistence.' },
+        { id: 'r5', type: 'transform', title: 'Message Broker', icon: '📬', x: 1020, y: 240, params: { broker: 'RabbitMQ 3.13', exchange: 'orders.topic' }, desc: 'Decoupled event broker dispatching async background fulfillment tasks.' },
+        { id: 'r6', type: 'compute', title: 'Worker Fleet & CI', icon: '⚙️', x: 1340, y: 140, params: { worker: 'Celery / Asynq', ci: 'GitHub Actions' }, desc: 'Asynchronous consumer workers executing payments, notifications, and CI tests.' }
+      ],
+      connections: [
+        { from: 'r1', to: 'r2' },
+        { from: 'r2', to: 'r3' },
+        { from: 'r3', to: 'r4' },
+        { from: 'r3', to: 'r5' },
+        { from: 'r5', to: 'r6' }
+      ]
     }
   };
 
@@ -1125,6 +1145,26 @@
             <p>3. Enforce PgBouncer transaction pooling and XFetch cache stampede prevention.</p>
             <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
               docker-compose up -d && python main.py
+            </div>
+          `
+        };
+      }
+
+      // 12. Unified Repository Learning & Codebase Workspace
+      if (slug.includes('repo') || slug.includes('repository') || title.includes('repository learning') || title.includes('codebase')) {
+        return {
+          id: slug || 'repo-learning',
+          name: toolData.title || STARTER_TEMPLATES.repolearn.name,
+          category: 'automation',
+          nodes: STARTER_TEMPLATES.repolearn.nodes.map(n => Object.assign({}, n)),
+          connections: STARTER_TEMPLATES.repolearn.connections.map(c => Object.assign({}, c)),
+          copilotHtml: `
+            <div style="font-weight:600; color:#06b6d4; margin-bottom:0.4rem;">📂 Repository Learning Workspace</div>
+            <p>1. Parse actual project files into an interactive architecture DAG.</p>
+            <p>2. Follow 10-point repository courses and test in-browser code diffs.</p>
+            <p>3. Diagnose runtime stack traces against codebase source files.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              bash scripts/validate.sh && python main.py
             </div>
           `
         };

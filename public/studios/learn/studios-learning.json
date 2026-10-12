@@ -7138,5 +7138,26 @@
     "antiPattern": "Calling synchronous external payment or email APIs inside the user HTTP request thread without timeouts.",
     "realTimeDrill": "docker-compose up -d && python main.py",
     "sreMetric": "<20ms Synchronous Request Latency & 0% Thundering Herd Outages"
+  },
+  {
+    "id": "repo-learning",
+    "title": "Unified Repository Learning Workspace & Real Project Studio",
+    "desc": "Understand real codebases, trace architectural request execution, follow guided 10-point courses, launch one-click setups, test in-browser code diffs, and bridge directly into 340 engineering studios.",
+    "category": "automation",
+    "icon": "📂",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "repository-workspace.yaml",
+    "link": "repo-learning/",
+    "repository": "Pradeeptalari14/tp-repo-learning",
+    "repo": "Pradeeptalari14/tp-repo-learning",
+    "domain": "Repository Engineering & Full-Stack Development",
+    "skillLevel": "Level 3 (Distributed & Systems Design)",
+    "useCase": "Connect real source-code repositories to architecture DAGs, guided walkthroughs, and stack trace debugging.",
+    "bestTreatment": "Author changes on isolated feature branches, test diffs with automated test runners, and verify health probes before PR merge.",
+    "antiPattern": "Committing untested changes directly to the default branch without branch protection rules.",
+    "realTimeDrill": "bash scripts/validate.sh && python main.py",
+    "sreMetric": "100% Verified Architecture Traces & Zero Default Branch Breakages"
   }
 ]

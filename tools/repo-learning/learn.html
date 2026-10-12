@@ -1,0 +1,226 @@
+<!-- Copyright (c) 2026 Talari Pradeep. All Rights Reserved. Proprietary License. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Repository-Based Learning & Production Engineering Guide | Talari Pradeep</title>
+  <meta name="description" content="In-depth guide to understanding real-world codebases, monorepo architectures, isolated Git branching, safe local development setups, and stack trace debugging." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b0f19;
+      color: #cbd5e1;
+      min-height: 100vh;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .heading { font-family: 'Space Grotesk', sans-serif; }
+    .code-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      overflow-x: auto;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body class="flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../#home" class="flex items-center gap-2 text-white font-bold text-lg heading">
+          <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full border border-indigo-400" />
+          <span>TP<span class="text-indigo-400">.</span></span>
+        </a>
+        <span class="text-slate-600 text-sm hidden sm:inline">/</span>
+        <a href="./" class="text-xs text-slate-400 hover:text-white transition">Repository Workspace</a>
+        <span class="text-slate-600 text-sm hidden sm:inline">/</span>
+        <span class="text-xs font-semibold text-emerald-400 mono">Engineering Guide</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="./" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition">
+          <i class="fa-solid fa-play mr-1"></i> Interactive Workspace
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Article -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 w-full flex-1">
+    <div class="border-b border-slate-800 pb-8 mb-8">
+      <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800 mono uppercase">
+        Software Development Life Cycle Handbook
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white heading mt-3 mb-4">
+        Mastering Real Repositories: From First Clone to Production PR
+      </h1>
+      <p class="text-slate-400 text-sm leading-relaxed max-w-3xl">
+        A definitive guide to navigating production codebases. Learn how to map architectural dependencies, configure safe local multi-container development environments, author atomic commits, and debug stack traces with precision.
+      </p>
+
+      <div class="flex items-center gap-6 text-xs text-slate-500 mt-6 mono">
+        <span><i class="fa-regular fa-clock mr-1"></i> 14 min read</span>
+        <span><i class="fa-solid fa-code-branch mr-1"></i> Git Workflows</span>
+        <span><i class="fa-solid fa-shield-halved mr-1"></i> Safe Execution</span>
+      </div>
+    </div>
+
+    <article class="space-y-12 text-sm leading-relaxed text-slate-300">
+
+      <!-- Section 1: Architecture DAG -->
+      <section>
+        <h2 class="text-xl font-bold text-white heading mb-4 flex items-center gap-2">
+          <span class="text-indigo-400 mono">01.</span> Deconstructing a Codebase Architecture DAG
+        </h2>
+        <p class="mb-4">
+          When encountering a new repository, avoid reading files randomly from top to bottom. Instead, trace the request path using a Directed Acyclic Graph (DAG):
+        </p>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-4">
+          <img src="repo_learning_flow.png" alt="Repository Architecture Flow" class="w-full rounded-lg object-cover" />
+          <p class="text-center text-xs text-slate-500 mt-2 mono">Fig 1: Unified Repository Architecture DAG, File Parsing & Debugging</p>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          1. <strong>Entry Point:</strong> Locate <code class="mono">main.py</code> or <code class="mono">index.js</code> where routes are registered.<br>
+          2. <strong>Middleware Gate:</strong> Identify authentication, CORS, and rate limiting hooks.<br>
+          3. <strong>State Layer:</strong> Check how databases and Redis caches are pooled.<br>
+          4. <strong>Async Offload:</strong> Find Celery, BullMQ, or Kafka consumer workers.
+        </p>
+      </section>
+
+      <!-- Section 2: Isolated Branching -->
+      <section>
+        <h2 class="text-xl font-bold text-white heading mb-4 flex items-center gap-2">
+          <span class="text-indigo-400 mono">02.</span> Professional Git Branching & Protection Rules
+        </h2>
+        <p class="mb-3">
+          Never write changes directly to <code class="mono text-indigo-300">main</code>. Always author work on isolated feature branches to keep the production branch green.
+        </p>
+        <div class="code-box mb-3">
+# 1. Fetch latest changes from remote
+git fetch origin
+
+# 2. Create and switch to an isolated feature branch
+git checkout -b feature/order-rate-limit
+
+# 3. Author atomic, well-described commits
+git add projects/ecommerce-order-engine/main.py
+git commit -m "feat(ecommerce): add 10-unit maximum purchase limit"
+
+# 4. Push to remote feature branch (NEVER force-push!)
+git push -u origin feature/order-rate-limit
+        </div>
+      </section>
+
+      <!-- Section 3: Safe Local Setup -->
+      <section>
+        <h2 class="text-xl font-bold text-white heading mb-4 flex items-center gap-2">
+          <span class="text-indigo-400 mono">03.</span> Sanitized Environment Setup & Health Verification
+        </h2>
+        <p class="mb-3">
+          Production repositories should never commit real credentials or API tokens into source control. Always inspect <code class="mono">.env.example</code> before running containers:
+        </p>
+        <div class="code-box mb-3">
+# Launch isolated multi-container fleet without touching host ports:
+docker-compose up -d --build
+
+# Verify health endpoint probe:
+curl -i http://localhost:8000/health
+
+# Response:
+# HTTP/1.1 200 OK
+# {"status":"UP","redis_connected":true,"database_connected":true}
+        </div>
+      </section>
+
+      <!-- Section 4: Stack Trace Pinpointing -->
+      <section>
+        <h2 class="text-xl font-bold text-white heading mb-4 flex items-center gap-2">
+          <span class="text-indigo-400 mono">04.</span> Pinpointing Stack Traces in Real Code
+        </h2>
+        <p class="mb-3">
+          When an exception crashes a service, read the stack trace from bottom to top to identify the root cause frame within project code:
+        </p>
+        <div class="code-box mb-3">
+Traceback (most recent call last):
+  File "projects/ecommerce-order-engine/main.py", line 354, in create_order
+    async with engine.begin() as conn:
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) FATAL: remaining connection slots are reserved
+
+# Analysis:
+# Root Cause: Database connection exhaustion.
+# File: projects/ecommerce-order-engine/main.py (Line 354)
+# Solution: Deploy PgBouncer in Transaction Pooling mode.
+        </div>
+      </section>
+
+      <!-- Section 5: Specialized Studio Bridges -->
+      <section class="border-t border-slate-800 pt-8">
+        <h2 class="text-xl font-bold text-white heading mb-4">
+          Connecting Code to Specialized Engineering Studios
+        </h2>
+        <p class="mb-4 text-xs text-slate-400">
+          When working on specific repository layers, carry project context into our dedicated simulators:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <a href="/tools/backend-ecosystem/" class="p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 transition flex items-center justify-between">
+            <span class="text-white font-semibold">Backend Ecosystem Studio</span>
+            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+          </a>
+          <a href="/tools/nginx-config/" class="p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 transition flex items-center justify-between">
+            <span class="text-white font-semibold">NGINX Configurator</span>
+            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+          </a>
+          <a href="/tools/semgrep-ast-guardrails/" class="p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 transition flex items-center justify-between">
+            <span class="text-white font-semibold">Semgrep AST Guardrails</span>
+            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+          </a>
+          <a href="/tools/hashicorp-boundary-zerotrust/" class="p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 transition flex items-center justify-between">
+            <span class="text-white font-semibold">Boundary Zero-Trust Studio</span>
+            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+          </a>
+          <a href="/tools/sigstore-cosign-slsa/" class="p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 transition flex items-center justify-between">
+            <span class="text-white font-semibold">Sigstore Cosign & SLSA</span>
+            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+          </a>
+          <a href="/tools/db-clustering/" class="p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 transition flex items-center justify-between">
+            <span class="text-white font-semibold">DB Clustering Studio</span>
+            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+          </a>
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500 mt-12">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>&copy; 2026 Talari Pradeep. All rights reserved.</span>
+      <div class="flex items-center gap-4">
+        <a href="./" class="hover:text-indigo-400 transition">Workspace</a>
+        <a href="https://github.com/Pradeeptalari14/tp-repo-learning" target="_blank" rel="noopener" class="hover:text-indigo-400 transition">GitHub</a>
+        <a href="../" class="hover:text-indigo-400 transition">Dashboard</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
