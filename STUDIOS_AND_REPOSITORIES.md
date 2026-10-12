@@ -19,6 +19,22 @@
 
 ---
 
+## 🌟 Flagship Production Systems & Architecture Repositories (6 Flagships + Architecture Center)
+
+In addition to the 341 specialized developer studios, the engineering portfolio features **6 verified flagship production systems** and the **Cloud Architecture Center**, each built with full 9+ DevSecOps governance, core architectural principles, high-availability topologies, and production runbooks:
+
+| # | System / Architecture | Domain & Category | Description | Live Architecture Case Study | GitHub Repository |
+| :-: | :--- | :--- | :--- | :---: | :---: |
+| F1 | **Enterprise Agentic OS** | Multi-Agent Orchestration | Multi-agent orchestration platform coordinating specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful cyclic graphs to handle 500+ concurrent enterprise workflows. | [Case Study](https://pradeeptalari.me/projects/enterprise-agentic-os.html) | [`enterprise-agentic-os`](https://github.com/Pradeeptalari14/enterprise-agentic-os) |
+| F2 | **Enterprise Hybrid RAG Platform** | AI & Vector Retrieval | Production retrieval pipeline combining dense semantic vector search with BM25 lexical ranking over 5M+ documents, Weaviate clustering, and Neo4j GraphRAG. | [Case Study](https://pradeeptalari.me/projects/enterprise-rag-platform.html) | [`enterprise-rag-platform`](https://github.com/Pradeeptalari14/enterprise-rag-platform) |
+| F3 | **Multi-Cloud Landing Zone & IaC** | Cloud & IaC Security | Modular Terraform and Pulumi library establishing hardened AWS and Azure foundations to bootstrap isolated VPC topologies, zero-trust IAM, and transit gateways. | [Case Study](https://pradeeptalari.me/projects/multi-cloud-landing-zone.html) | [`multi-cloud-landing-zone`](https://github.com/Pradeeptalari14/multi-cloud-landing-zone) |
+| F4 | **AI Infra Monitoring Copilot** | SRE & AIOps | Autonomous SRE copilot leveraging eBPF telemetry, Prometheus metrics, and causal AI to detect GPU saturation, network bottlenecks, and inference failures. | [Case Study](https://pradeeptalari.me/projects/ai-infra-monitoring-copilot.html) | [`ai-infra-monitoring-copilot`](https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot) |
+| F5 | **Kubernetes Observability Platform** | K8s & Telemetry | Production-grade telemetry stack integrating Prometheus, Grafana, OpenTelemetry, and Fluentbit to monitor multi-cluster Kubernetes topologies. | [Case Study](https://pradeeptalari.me/projects/observability-platform-k8s.html) | [`observability-platform-k8s`](https://github.com/Pradeeptalari14/observability-platform-k8s) |
+| F6 | **WhatsApp Multilingual Voice AI** | Conversational Voice AI | Real-time conversational voice assistant for WhatsApp with speech-to-text, dialect translation, and sub-400ms end-to-end voice synthesis. | [Case Study](https://pradeeptalari.me/projects/whatsapp-voice-ai-assistant.html) | [`whatsapp-voice-ai-assistant`](https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant) |
+| AC | **Cloud Architecture Center** | Production Topologies | Interactive architecture workbench with production topologies for AWS Multi-Account Landing Zones, Multi-Tenant EKS, and Hybrid VMware clouds. | [Architecture Center](https://pradeeptalari.me/architecture/) | [`architecture/`](https://pradeeptalari.me/architecture/) |
+
+---
+
 ## 📚 Master Directory of All 341 Studios & Repositories
 
 ### 🧠 AI, LLMOps & Agentic Systems Studios (235 Studios)

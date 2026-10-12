@@ -7,6 +7,306 @@
  */
 
 const ALL_PRESET_REPOSITORIES = {
+  "enterprise-agentic-os": {
+    "id": "enterprise-agentic-os",
+    "repo": "Pradeeptalari14/enterprise-agentic-os",
+    "title": "Enterprise Agentic Operating System",
+    "desc": "Multi-agent orchestration platform coordinating specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful cyclic graphs to handle 500+ concurrent enterprise workflows.",
+    "category": "ai",
+    "defaultBranch": "main",
+    "commitSha": "a506893",
+    "languages": [
+      "Python"
+    ],
+    "frameworks": [
+      "LangGraph",
+      "FastAPI",
+      "LangChain"
+    ],
+    "packageManagers": [
+      "pip (requirements.txt)",
+      "docker"
+    ],
+    "infrastructure": [
+      "Kubernetes (EKS/AKS)",
+      "Redis Enterprise",
+      "ArgoCD"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "agent_os.py"
+    ],
+    "studioBridge": [
+      {
+        "component": "Production Architecture",
+        "studioId": "projects",
+        "path": "/projects/enterprise-agentic-os.html"
+      },
+      {
+        "component": "Agent Workflow Studio",
+        "studioId": "agent-workflow",
+        "path": "/tools/agent-workflow/"
+      }
+    ]
+  },
+  "enterprise-rag-platform": {
+    "id": "enterprise-rag-platform",
+    "repo": "Pradeeptalari14/enterprise-rag-platform",
+    "title": "Enterprise Hybrid RAG Platform",
+    "desc": "Production retrieval pipeline combining dense semantic vector search with BM25 lexical ranking over 5M+ documents, Weaviate clustering, and Neo4j GraphRAG.",
+    "category": "ai",
+    "defaultBranch": "main",
+    "commitSha": "02aa3cf",
+    "languages": [
+      "Python"
+    ],
+    "frameworks": [
+      "LangChain",
+      "Weaviate",
+      "Neo4j"
+    ],
+    "packageManagers": [
+      "pip (requirements.txt)",
+      "docker"
+    ],
+    "infrastructure": [
+      "Weaviate Cluster",
+      "OpenSearch",
+      "Terraform"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "rag_engine.py"
+    ],
+    "studioBridge": [
+      {
+        "component": "Production Architecture",
+        "studioId": "projects",
+        "path": "/projects/enterprise-rag-platform.html"
+      },
+      {
+        "component": "Vector DB Studio",
+        "studioId": "vector-db",
+        "path": "/tools/vector-db/"
+      }
+    ]
+  },
+  "multi-cloud-landing-zone": {
+    "id": "multi-cloud-landing-zone",
+    "repo": "Pradeeptalari14/multi-cloud-landing-zone",
+    "title": "Multi-Cloud Landing Zone & IaC Platform",
+    "desc": "Modular Terraform and Pulumi library establishing hardened AWS and Azure foundations to bootstrap isolated VPC topologies, zero-trust IAM, and transit gateways.",
+    "category": "cloud",
+    "defaultBranch": "main",
+    "commitSha": "fb05441",
+    "languages": [
+      "HCL (Terraform)",
+      "TypeScript"
+    ],
+    "frameworks": [
+      "Terraform",
+      "Pulumi",
+      "Ansible"
+    ],
+    "packageManagers": [
+      "terraform",
+      "npm"
+    ],
+    "infrastructure": [
+      "AWS Transit Gateway",
+      "Azure Virtual WAN",
+      "OPA Conftest"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "main.tf"
+    ],
+    "studioBridge": [
+      {
+        "component": "Production Architecture",
+        "studioId": "projects",
+        "path": "/projects/multi-cloud-landing-zone.html"
+      },
+      {
+        "component": "Terraform Studio",
+        "studioId": "terraform",
+        "path": "/tools/terraform/"
+      }
+    ]
+  },
+  "ai-infra-monitoring-copilot": {
+    "id": "ai-infra-monitoring-copilot",
+    "repo": "Pradeeptalari14/ai-infra-monitoring-copilot",
+    "title": "AI Infrastructure Monitoring Copilot",
+    "desc": "Autonomous SRE copilot leveraging eBPF telemetry, Prometheus metrics, and causal AI to detect GPU saturation, network bottlenecks, and inference failures.",
+    "category": "observability",
+    "defaultBranch": "main",
+    "commitSha": "c971807",
+    "languages": [
+      "Python",
+      "C (eBPF)"
+    ],
+    "frameworks": [
+      "FastAPI",
+      "NetworkX",
+      "BCC / Tetragon"
+    ],
+    "packageManagers": [
+      "pip (requirements.txt)",
+      "docker"
+    ],
+    "infrastructure": [
+      "NVIDIA DCGM",
+      "Prometheus",
+      "OpenTelemetry Collector"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "copilot.py"
+    ],
+    "studioBridge": [
+      {
+        "component": "Production Architecture",
+        "studioId": "projects",
+        "path": "/projects/ai-infra-monitoring-copilot.html"
+      },
+      {
+        "component": "Incident Simulator",
+        "studioId": "incident",
+        "path": "/incident/"
+      }
+    ]
+  },
+  "observability-platform-k8s": {
+    "id": "observability-platform-k8s",
+    "repo": "Pradeeptalari14/observability-platform-k8s",
+    "title": "Kubernetes Observability & Telemetry Platform",
+    "desc": "Production-grade telemetry stack integrating Prometheus, Grafana, OpenTelemetry, and Fluentbit to monitor multi-cluster Kubernetes topologies.",
+    "category": "observability",
+    "defaultBranch": "main",
+    "commitSha": "a598579",
+    "languages": [
+      "YAML",
+      "Go",
+      "Shell"
+    ],
+    "frameworks": [
+      "Prometheus Operator",
+      "Thanos",
+      "Grafana Loki & Tempo"
+    ],
+    "packageManagers": [
+      "helm",
+      "kubectl"
+    ],
+    "infrastructure": [
+      "Kubernetes Multi-Cluster",
+      "Istio Service Mesh",
+      "S3 MinIO"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "k8s-observability.yaml"
+    ],
+    "studioBridge": [
+      {
+        "component": "Production Architecture",
+        "studioId": "projects",
+        "path": "/projects/observability-platform-k8s.html"
+      },
+      {
+        "component": "Observability Studio",
+        "studioId": "monitoring",
+        "path": "/tools/monitoring/"
+      }
+    ]
+  },
+  "whatsapp-voice-ai-assistant": {
+    "id": "whatsapp-voice-ai-assistant",
+    "repo": "Pradeeptalari14/whatsapp-voice-ai-assistant",
+    "title": "WhatsApp Multilingual Voice AI Assistant",
+    "desc": "Real-time conversational voice assistant for WhatsApp with speech-to-text, dialect translation, and sub-400ms end-to-end voice synthesis.",
+    "category": "ai",
+    "defaultBranch": "main",
+    "commitSha": "b722a75",
+    "languages": [
+      "Python"
+    ],
+    "frameworks": [
+      "FastAPI",
+      "Faster-Whisper",
+      "Silero VAD",
+      "Edge-TTS"
+    ],
+    "packageManagers": [
+      "pip (requirements.txt)",
+      "docker"
+    ],
+    "infrastructure": [
+      "WhatsApp Cloud API",
+      "Celery Worker",
+      "Redis Cache"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "voice_assistant.py"
+    ],
+    "studioBridge": [
+      {
+        "component": "Production Architecture",
+        "studioId": "projects",
+        "path": "/projects/whatsapp-voice-ai-assistant.html"
+      },
+      {
+        "component": "Realtime Voice Studio",
+        "studioId": "openai-realtime-voice",
+        "path": "/tools/openai-realtime-voice/"
+      }
+    ]
+  },
+  "cloud-architecture-center": {
+    "id": "cloud-architecture-center",
+    "repo": "Pradeeptalari14/portfolio",
+    "title": "Cloud & AI Architecture Center",
+    "desc": "Interactive production system architectures for AWS Multi-Account Landing Zones, Multi-Tenant EKS Clusters, Enterprise RAG Pipelines, and Hybrid VMware clouds.",
+    "category": "cloud",
+    "defaultBranch": "main",
+    "commitSha": "e4394e7",
+    "languages": [
+      "JavaScript",
+      "HTML5",
+      "CSS3"
+    ],
+    "frameworks": [
+      "Mermaid.js",
+      "SVG Engine"
+    ],
+    "packageManagers": [
+      "npm"
+    ],
+    "infrastructure": [
+      "Cloud Architecture Topologies",
+      "AWS Transit Gateway",
+      "Kubernetes"
+    ],
+    "monorepo": false,
+    "entrypoints": [
+      "architecture/index.html"
+    ],
+    "studioBridge": [
+      {
+        "component": "Interactive Center",
+        "studioId": "architecture",
+        "path": "/architecture/"
+      },
+      {
+        "component": "Projects Showcase",
+        "studioId": "projects",
+        "path": "/projects/"
+      }
+    ]
+  },
+
   "tp-ai": {
     "id": "tp-ai",
     "repo": "Pradeeptalari14/tp-ai",

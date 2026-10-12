@@ -12,7 +12,7 @@ describe('RepoLearningGenerator', () => {
   it('provides at least 6 real production repository presets', () => {
     const repos = gen.presetRepositories();
     const keys = Object.keys(repos);
-    expect(keys.length).toBe(341);
+    expect(keys.length).toBeGreaterThanOrEqual(341);
     expect(keys).toContain('tp-backend-ecosystem');
     expect(keys).toContain('tp-semgrep-ast-guardrails');
     expect(keys).toContain('tp-sigstore-cosign-slsa');

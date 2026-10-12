@@ -66,6 +66,22 @@ graph TD
 
 ---
 
+## 🌟 Flagship Production Systems & Architecture Center Provisioning
+
+In addition to the 341 developer studios, the 6 core architectural platforms and Architecture Center are provisioned as independent, production-grade repositories:
+
+| Flagship Platform | GitHub Repository | Clone & Verification Command | Architecture Showcase |
+| :--- | :--- | :--- | :--- |
+| **Enterprise Agentic OS** | [`enterprise-agentic-os`](https://github.com/Pradeeptalari14/enterprise-agentic-os) | `git clone https://github.com/Pradeeptalari14/enterprise-agentic-os.git && cd enterprise-agentic-os && bash scripts/validate.sh` | [Case Study](https://pradeeptalari.me/projects/enterprise-agentic-os.html) |
+| **Enterprise Hybrid RAG Platform** | [`enterprise-rag-platform`](https://github.com/Pradeeptalari14/enterprise-rag-platform) | `git clone https://github.com/Pradeeptalari14/enterprise-rag-platform.git && cd enterprise-rag-platform && bash scripts/validate.sh` | [Case Study](https://pradeeptalari.me/projects/enterprise-rag-platform.html) |
+| **Multi-Cloud Landing Zone & IaC** | [`multi-cloud-landing-zone`](https://github.com/Pradeeptalari14/multi-cloud-landing-zone) | `git clone https://github.com/Pradeeptalari14/multi-cloud-landing-zone.git && cd multi-cloud-landing-zone && bash scripts/validate.sh` | [Case Study](https://pradeeptalari.me/projects/multi-cloud-landing-zone.html) |
+| **AI Infra Monitoring Copilot** | [`ai-infra-monitoring-copilot`](https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot) | `git clone https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot.git && cd ai-infra-monitoring-copilot && bash scripts/validate.sh` | [Case Study](https://pradeeptalari.me/projects/ai-infra-monitoring-copilot.html) |
+| **Kubernetes Observability Platform** | [`observability-platform-k8s`](https://github.com/Pradeeptalari14/observability-platform-k8s) | `git clone https://github.com/Pradeeptalari14/observability-platform-k8s.git && cd observability-platform-k8s && bash scripts/validate.sh` | [Case Study](https://pradeeptalari.me/projects/observability-platform-k8s.html) |
+| **WhatsApp Multilingual Voice AI** | [`whatsapp-voice-ai-assistant`](https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant) | `git clone https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant.git && cd whatsapp-voice-ai-assistant && bash scripts/validate.sh` | [Case Study](https://pradeeptalari.me/projects/whatsapp-voice-ai-assistant.html) |
+| **Cloud Architecture Center** | [`architecture/`](https://pradeeptalari.me/architecture/) | Production interactive top-level workbench with live node topology & chaos injection | [Architecture Center](https://pradeeptalari.me/architecture/) |
+
+---
+
 ## 2. Batch Repository Creation Automation Script
 
 You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 341 public repositories under your profile:
