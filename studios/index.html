@@ -194,7 +194,72 @@
       font-size: 1.05rem;
       color: var(--text-secondary);
       max-width: 760px;
-      margin: 0 auto 2rem;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* 3-Pillar Architecture Explainer */
+    .studios-explainer {
+      max-width: 1100px;
+      margin: 0 auto 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      text-align: left;
+    }
+    @media (max-width: 860px) {
+      .studios-explainer {
+        grid-template-columns: 1fr;
+      }
+    }
+    .explainer-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .explainer-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    .explainer-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-cyan), transparent);
+    }
+    .explainer-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    .explainer-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.35rem;
+      font-family: var(--font-display);
+    }
+    .explainer-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .explainer-tag {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
     }
     
     /* Search & Filter Controls */
@@ -816,7 +881,8 @@
 
     <div class="hub-nav-links">
       <a href="/">Home</a>
-      <a href="/studios/" style="color: var(--accent-cyan); font-weight: 600;">Studios</a>
+      <a href="/projects/">Projects</a>
+      <a href="/studios/" style="color: var(--accent-cyan); font-weight: 600;">Studios (334)</a>
       <a href="/studios/learn/">Learn Hub 📚</a>
       <a href="/incident/">Incident Triage</a>
       <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener">GitHub</a>
@@ -833,6 +899,40 @@
     <p class="hub-desc">
       Production-grade tools, simulators, and architectures across AI/LLMOps, Cloud Infrastructure, Kubernetes, SRE, and Linux Systems. Zero broken links, zero external API blockers.
     </p>
+
+    <!-- 3-Pillar Explainer Grid -->
+    <div class="studios-explainer">
+      <div class="explainer-card">
+        <div>
+          <span class="explainer-icon">⚡</span>
+          <div class="explainer-title">1. In-Browser Workbenches</div>
+          <div class="explainer-desc">
+            Self-contained interactive developer sandboxes with live AST parsing, syntax validation, telemetry monitors, and real-time outputs without installing dependencies.
+          </div>
+        </div>
+        <span class="explainer-tag">Zero Configuration Needed</span>
+      </div>
+      <div class="explainer-card">
+        <div>
+          <span class="explainer-icon">🐳</span>
+          <div class="explainer-title">2. Dual-Engine Execution</div>
+          <div class="explainer-desc">
+            Runs 100% in-browser via JavaScript/WASM simulation out of the box, with automatic companion microservice integration when running local Docker/API backends.
+          </div>
+        </div>
+        <span class="explainer-tag">WASM + Companion Docker</span>
+      </div>
+      <div class="explainer-card">
+        <div>
+          <span class="explainer-icon">🛡️</span>
+          <div class="explainer-title">3. Paired Drills &amp; Architectures</div>
+          <div class="explainer-desc">
+            Each studio pairs with an incident triage drill (<a href="/studios/learn/" style="color:var(--accent-cyan); text-decoration:underline;">Learn Hub</a>) and links directly into our 6 flagship production architectures in <a href="/projects/" style="color:var(--accent-cyan); text-decoration:underline;">Projects</a>.
+          </div>
+        </div>
+        <span class="explainer-tag">Production Post-Mortems</span>
+      </div>
+    </div>
   </header>
 
   <!-- Search & Filter Controls -->
@@ -1046,7 +1146,10 @@
       // 3. Load 334 Studios
       async function loadStudios() {
         try {
-          const res = await fetch('../tools/tools.json');
+          let res = await fetch('../tools/tools.json');
+          if (!res.ok) {
+            res = await fetch('/tools/tools.json');
+          }
           if (!res.ok) throw new Error('Status ' + res.status);
           allStudios = await res.json();
           render();

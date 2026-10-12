@@ -1,98 +1,593 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-theme" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Featured Projects | Talari Pradeep</title>
-  <meta name="description" content="DevOps and cloud engineering projects by Talari Pradeep: AWS dashboards, EKS deployments, Jenkins pipelines, Prometheus monitoring, Terraform modules, and cost optimizers." />
+  <title>Production Engineering Systems & Architectural Platforms | Talari Pradeep</title>
+  <meta name="description" content="Production-grade AI platforms, LLMOps pipelines, multi-agent frameworks, and cloud-native IaC architectures built by Talari Pradeep. Featuring 6 verified flagship platforms and 334 interactive developer studios." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('sre_dark_mode_active');
+        const isDark = saved !== null ? saved === 'true' : true;
+        if (isDark) {
+          document.documentElement.classList.add('dark-theme');
+          document.documentElement.classList.remove('light-theme');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+          document.documentElement.classList.add('light-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch(e) {}
+    })();
+  </script>
+
   <style>
-    :root {
-      --bg-base:#ffffff;--bg-surface:#f8f9fc;--bg-card:#ffffff;--bg-card-hover:#f4f6ff;
-      --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
-      --accent-primary:#4f46e5;--accent-cyan:#0ea5e9;--accent-green:#059669;
-      --border:#e2e8f0;--border-accent:rgba(79,70,229,0.25);
-      --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
-      --shadow-sm:0 1px 3px rgba(0,0,0,0.06);--shadow-md:0 4px 16px rgba(0,0,0,0.06);--shadow-lg:0 12px 40px rgba(0,0,0,0.08);
-      --transition:0.22s cubic-bezier(0.4,0,0.2,1);
-      --grad-primary:linear-gradient(135deg,#4f46e5 0%,#0ea5e9 100%);
+    :root, [data-theme="dark"], .dark-theme {
+      --bg-base: #080c14;
+      --bg-surface: #0f172a;
+      --bg-card: #0f172a;
+      --bg-card-hover: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent-primary: #818cf8;
+      --accent-btn: #4f46e5;
+      --accent-cyan: #38bdf8;
+      --accent-green: #10b981;
+      --accent-purple: #c084fc;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.35);
+      --nav-bg: rgba(8, 12, 20, 0.9);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.55);
+      --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      --grad-primary: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-base);color:var(--text-primary);line-height:1.7;min-height:100vh;-webkit-font-smoothing:antialiased;}
-    a{text-decoration:none;color:inherit;}
+    [data-theme="light"], .light-theme {
+      --bg-base: #ffffff;
+      --bg-surface: #f8f9fc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f4f6ff;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --accent-primary: #4338ca;
+      --accent-btn: #4338ca;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #059669;
+      --accent-purple: #7c3aed;
+      --border: #e2e8f0;
+      --border-accent: rgba(79, 70, 229, 0.25);
+      --nav-bg: rgba(255, 255, 255, 0.92);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+      --grad-primary: linear-gradient(135deg, #4338ca 0%, #0ea5e9 100%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    a { text-decoration: none; color: inherit; }
 
     /* Navbar */
-    .navbar{height:72px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
-    .nav-container{max-width:1100px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;}
-    .nav-logo{display:flex;align-items:center;gap:0.65rem;font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;}
-    .nav-logo img{width:32px;height:32px;border-radius:50%;object-fit:cover;outline:2px solid rgba(79,70,229,0.3);outline-offset:2px;}
-    .nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
-    .nav-link{font-size:0.875rem;font-weight:600;color:var(--text-secondary);transition:var(--transition);}
-    .nav-link:hover,.nav-link.active{color:var(--accent-primary);}
-    .nav-cta{padding:0.5rem 1.25rem;border-radius:50px;background:var(--accent-primary);color:#fff;font-size:0.84rem;font-weight:600;transition:var(--transition);box-shadow:0 4px 12px rgba(79,70,229,0.2);}
-    .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(79,70,229,0.35);}
+    .navbar {
+      height: 72px;
+      border-bottom: 1px solid var(--border);
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 2px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+    }
+    .nav-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--accent-primary); }
+    .nav-pill {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="light"] .icon-sun { display: block; }
+    [data-theme="light"] .icon-moon { display: none; }
 
-    /* Page */
-    .page-wrap{max-width:1100px;margin:0 auto;padding:5rem 2rem 6rem;}
-    .back-link{display:inline-flex;align-items:center;gap:0.45rem;font-size:0.84rem;font-weight:600;color:var(--text-muted);margin-bottom:2.5rem;transition:var(--transition);}
-    .back-link:hover{color:var(--accent-primary);}
-    .back-link svg{width:15px;height:15px;}
-    .page-header{text-align:center;margin-bottom:3.5rem;}
-    .page-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-primary);background:rgba(79,70,229,0.08);border:1px solid rgba(79,70,229,0.15);padding:0.28rem 0.9rem;border-radius:50px;margin-bottom:1.2rem;}
-    .page-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;}
-    .gradient-text{background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .page-subtitle{margin-top:1rem;color:var(--text-secondary);font-size:1rem;max-width:520px;margin-left:auto;margin-right:auto;}
+    /* Page Container */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      transition: var(--transition);
+    }
+    .back-link:hover { color: var(--accent-primary); transform: translateX(-2px); }
+    .back-link svg { width: 16px; height: 16px; }
 
-    /* Projects grid */
-    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;}
-    .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;display:flex;flex-direction:column;gap:1rem;box-shadow:var(--shadow-sm);transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition);position:relative;}
-    .project-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--border-accent);}
-    .project-card.featured{background:linear-gradient(135deg,rgba(79,70,229,0.03) 0%,rgba(14,165,233,0.03) 100%);border-color:var(--border-accent);}
-    .project-card-top{display:flex;align-items:flex-start;justify-content:space-between;}
-    .project-icon{font-size:1.75rem;line-height:1;}
-    .project-featured-badge{position:absolute;top:1.4rem;right:1.4rem;font-size:0.68rem;font-weight:700;color:var(--accent-primary);background:rgba(79,70,229,0.08);border:1px solid rgba(79,70,229,0.2);padding:0.2rem 0.7rem;border-radius:50px;}
-    .project-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text-primary);line-height:1.3;}
-    .project-desc{font-size:0.875rem;color:var(--text-secondary);line-height:1.75;flex:1;}
-    .project-tech{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
-    .project-tech span{font-size:0.72rem;font-weight:600;color:var(--text-secondary);background:var(--bg-surface);border:1px solid var(--border);padding:0.22rem 0.65rem;border-radius:50px;}
-    .project-link{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);color:var(--text-muted);transition:var(--transition);}
-    .project-link:hover{border-color:var(--accent-primary);color:var(--accent-primary);background:rgba(79,70,229,0.06);}
-    .project-link svg{width:15px;height:15px;}
-    .project-details-link {font-size:0.8rem;font-weight:700;color:var(--accent-primary);display:inline-flex;align-items:center;gap:0.25rem;margin-top:0.75rem;transition:var(--transition);text-decoration:none;}
-    .project-details-link:hover {color:var(--accent-cyan);}
-    .project-details-link svg {width:12px;height:12px;margin-left:0.15rem;display:inline-block;vertical-align:middle;}
+    .page-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .page-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 0.3rem 0.9rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .gradient-text {
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 3rem;
+    }
+    .tab-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .tab-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+    .tab-btn.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      position: relative;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--border-accent);
+    }
+    .project-card.featured {
+      border-color: rgba(99, 102, 241, 0.35);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(56, 189, 248, 0.03) 100%), var(--bg-card);
+    }
+    .project-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .project-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+    }
+    .project-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .project-status-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-green);
+    }
+    .project-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .project-title a:hover {
+      color: var(--accent-primary);
+    }
+    .project-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      flex: 1;
+    }
+
+    /* Production Metrics */
+    .project-kpi-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .kpi-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .kpi-chip strong {
+      color: var(--accent-cyan);
+    }
+
+    /* Paired Studios */
+    .paired-studios {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 0.85rem 1rem;
+      background: rgba(99, 102, 241, 0.06);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: var(--radius-sm);
+    }
+    .paired-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .paired-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .paired-chip {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .paired-chip:hover {
+      background: var(--accent-btn);
+      color: #fff;
+      border-color: var(--accent-btn);
+    }
+
+    /* Tech Stack Chips */
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: auto;
+    }
+    .project-tech span {
+      font-size: 0.72rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 0.22rem 0.65rem;
+      border-radius: 6px;
+    }
+
+    /* Card Actions */
+    .project-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      gap: 1rem;
+    }
+    .project-details-link {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+    .project-details-link:hover {
+      color: var(--accent-cyan);
+      transform: translateX(2px);
+    }
+    .project-github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .project-github-link:hover {
+      color: var(--text-primary);
+    }
+
+    /* Studios Callout Banner */
+    .studios-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(56, 189, 248, 0.1) 100%), var(--bg-surface);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .banner-content {
+      max-width: 640px;
+    }
+    .banner-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.2rem 0.65rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .banner-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .banner-content p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .banner-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+    .banner-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--radius-sm);
+      background: var(--accent-btn);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+    }
+    .banner-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+    }
+    .banner-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .banner-btn-secondary:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+    }
 
     /* Footer */
-    .footer{border-top:1px solid var(--border);background:var(--bg-surface);padding:2rem 0;text-align:center;}
-    .footer p{font-size:0.82rem;color:var(--text-muted);}
+    .footer {
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      padding: 2.5rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+    .footer p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
 
-    @media(max-width:1024px){.projects-grid{grid-template-columns:repeat(2,1fr);}}
-    @media(max-width:768px){.nav-links,.nav-cta{display:none;}.page-wrap{padding:3rem 1.25rem 4rem;}.projects-grid{grid-template-columns:1fr;}}
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .studios-banner { flex-direction: column; align-items: flex-start; padding: 2rem; }
+      .banner-actions { width: 100%; flex-direction: row; }
+      .banner-btn-primary, .banner-btn-secondary { flex: 1; text-align: center; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-wrap { padding: 3rem 1.25rem 4rem; }
+      .banner-actions { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="../#home" class="nav-logo">
-        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" width="32" height="32" loading="lazy" />
-        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" width="32" height="32" loading="eager" />
+        <span>TALARI PRADEEP<span style="color:var(--accent-primary)">.</span></span>
       </a>
       <ul class="nav-links">
-        <li><a href="../#about" class="nav-link">About</a></li>
-        <li><a href="../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../#home" class="nav-link">About</a></li>
         <li><a href="../experience/" class="nav-link">Experience</a></li>
         <li><a href="./" class="nav-link active">Projects</a></li>
-        <li><a href="../tools/" class="nav-link">Tools</a></li>
-        <li><a href="../AI/" class="nav-link">AI</a></li>
-        <li><a href="../interview/" class="nav-link">Interview</a></li>
+        <li><a href="../studios/" class="nav-link">Studios <span class="nav-pill">334</span></a></li>
+        <li><a href="../studios/learn/" class="nav-link">Learning Hub</a></li>
         <li><a href="../#contact" class="nav-link">Contact</a></li>
       </ul>
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle light or dark theme" title="Toggle theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
     </div>
   </nav>
 
@@ -101,106 +596,400 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
       Back to Portfolio
     </a>
+
     <header class="page-header">
-      <div class="page-tag">Portfolio</div>
-      <h1 class="page-title">Featured <span class="gradient-text">Projects</span></h1>
-      <p class="page-subtitle">Production-grade AI platforms, LLMOps pipelines, multi-agent frameworks, and cloud-native IaC solutions built for enterprise scale.</p>
+      <div class="page-tag">Production Architecture Showcase</div>
+      <h1 class="page-title">Flagship <span class="gradient-text">Systems &amp; Platforms</span></h1>
+      <p class="page-subtitle">
+        Enterprise multi-agent platforms, hybrid vector retrieval pipelines, cloud landing zones, and distributed observability stacks built for strict SLOs and resilient scale.
+      </p>
     </header>
 
-    <div class="projects-grid">
+    <!-- Interactive Domain Filter Tabs -->
+    <div class="filter-tabs" id="projectFilterTabs">
+      <button class="tab-btn active" data-filter="all">All Platforms (6)</button>
+      <button class="tab-btn" data-filter="ai">AI &amp; Multi-Agent (3)</button>
+      <button class="tab-btn" data-filter="cloud">Cloud Architecture (1)</button>
+      <button class="tab-btn" data-filter="sre">SRE &amp; Observability (2)</button>
+    </div>
+
+    <div class="projects-grid" id="projectsGrid">
 
       <!-- Project 1: Enterprise Agentic OS -->
-      <div class="project-card featured" id="project-agentic-os">
+      <article class="project-card featured" data-category="ai" id="project-agentic-os">
         <div class="project-card-top">
-          <div class="project-icon">🤖</div>
-          <a href="https://github.com/Pradeeptalari14/enterprise-agentic-os" target="_blank" rel="noopener noreferrer" class="project-link" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-          </a>
+          <div class="project-icon-box">🤖</div>
+          <div class="project-badge-row">
+            <span class="project-status-badge">Production v2.4</span>
+          </div>
         </div>
-        <div class="project-featured-badge">⭐ Featured</div>
-        <h2 class="project-title"><a href="./enterprise-agentic-os.html" class="project-title-link">Enterprise Agentic Operating System</a></h2>
-        <p class="project-desc">Designed a multi-agent orchestration OS with specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful graphs—handling 500+ concurrent enterprise workflows with dynamic tool routing.</p>
-        <a href="./enterprise-agentic-os.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech"><span>LangGraph</span><span>FastAPI</span><span>Kubernetes</span><span>Redis</span><span>ArgoCD</span></div>
-      </div>
 
-      <!-- Project 2: Enterprise RAG Platform -->
-      <div class="project-card" id="project-rag-platform">
-        <div class="project-card-top">
-          <div class="project-icon">🧠</div>
-          <a href="https://github.com/Pradeeptalari14/enterprise-rag-platform" target="_blank" rel="noopener noreferrer" class="project-link" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        <div>
+          <h2 class="project-title">
+            <a href="./enterprise-agentic-os.html">Enterprise Agentic Operating System</a>
+          </h2>
+          <p class="project-desc">
+            Multi-agent orchestration OS coordinating specialized AI agents (Planner, Executor, Critic, Memory) using LangGraph stateful cyclic graphs to handle 500+ concurrent enterprise workflows with dynamic tool dispatch and persistent vector state.
+          </p>
+        </div>
+
+        <div class="project-kpi-bar">
+          <span class="kpi-chip">Workflows: <strong>500+ Concurrent</strong></span>
+          <span class="kpi-chip">Routing Overhead: <strong>&lt;120ms</strong></span>
+          <span class="kpi-chip">SLO: <strong>99.98%</strong></span>
+        </div>
+
+        <!-- Paired Interactive Studios -->
+        <div class="paired-studios">
+          <span class="paired-label">🛠️ Paired Interactive Studios:</span>
+          <div class="paired-links">
+            <a href="../tools/agent-workflow/" class="paired-chip">LangGraph Agent Studio ↗</a>
+            <a href="../tools/agent-swarm-consensus/" class="paired-chip">Agent Swarm Consensus ↗</a>
+            <a href="../tools/computer-use-agent/" class="paired-chip">Computer Use Agent ↗</a>
+          </div>
+        </div>
+
+        <div class="project-tech">
+          <span>LangGraph</span><span>FastAPI</span><span>Kubernetes</span><span>Redis State</span><span>ArgoCD</span>
+        </div>
+
+        <div class="project-actions">
+          <a href="./enterprise-agentic-os.html" class="project-details-link">
+            <span>View Architecture Case Study</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/Pradeeptalari14/enterprise-agentic-os" target="_blank" rel="noopener noreferrer" class="project-github-link" title="GitHub Repository">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Code</span>
           </a>
         </div>
-        <h2 class="project-title"><a href="./enterprise-rag-platform.html" class="project-title-link">Enterprise RAG Platform</a></h2>
-        <p class="project-desc">Built production-grade RAG pipeline with hybrid semantic + BM25 search over 5M+ documents, Weaviate vector database, and Neo4j GraphRAG, achieving 3x reduction in hallucination rates.</p>
-        <a href="./enterprise-rag-platform.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech"><span>LangChain</span><span>Weaviate</span><span>OpenSearch</span><span>Neo4j</span><span>Terraform</span></div>
-      </div>
+      </article>
+
+      <!-- Project 2: Enterprise Hybrid RAG Platform -->
+      <article class="project-card" data-category="ai" id="project-rag-platform">
+        <div class="project-card-top">
+          <div class="project-icon-box">🧠</div>
+          <div class="project-badge-row">
+            <span class="project-status-badge">Hybrid Search · 5M+ Docs</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="project-title">
+            <a href="./enterprise-rag-platform.html">Enterprise Hybrid RAG Platform</a>
+          </h2>
+          <p class="project-desc">
+            Production retrieval pipeline combining dense semantic vector search with BM25 lexical ranking over 5M+ documents, Weaviate clustering, and Neo4j GraphRAG, achieving 3× reduction in hallucination rates.
+          </p>
+        </div>
+
+        <div class="project-kpi-bar">
+          <span class="kpi-chip">Indexed: <strong>5M+ Documents</strong></span>
+          <span class="kpi-chip">Precision: <strong>89.4% MRR@10</strong></span>
+          <span class="kpi-chip">Hallucinations: <strong>-67%</strong></span>
+        </div>
+
+        <!-- Paired Interactive Studios -->
+        <div class="paired-studios">
+          <span class="paired-label">🛠️ Paired Interactive Studios:</span>
+          <div class="paired-links">
+            <a href="../tools/vector-db/" class="paired-chip">Vector DB Optimizer ↗</a>
+            <a href="../tools/colpali-vlm-rag/" class="paired-chip">ColPali VLM RAG ↗</a>
+            <a href="../tools/speculative-rag-pipeline/" class="paired-chip">Speculative RAG ↗</a>
+          </div>
+        </div>
+
+        <div class="project-tech">
+          <span>LangChain</span><span>Weaviate</span><span>Neo4j</span><span>OpenSearch</span><span>Terraform</span>
+        </div>
+
+        <div class="project-actions">
+          <a href="./enterprise-rag-platform.html" class="project-details-link">
+            <span>View Architecture Case Study</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/Pradeeptalari14/enterprise-rag-platform" target="_blank" rel="noopener noreferrer" class="project-github-link" title="GitHub Repository">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Code</span>
+          </a>
+        </div>
+      </article>
 
       <!-- Project 3: AI Monitoring Copilot -->
-      <div class="project-card" id="project-monitoring-copilot">
+      <article class="project-card" data-category="sre" id="project-monitoring-copilot">
         <div class="project-card-top">
-          <div class="project-icon">📡</div>
-          <a href="https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot" target="_blank" rel="noopener noreferrer" class="project-link" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          <div class="project-icon-box">📡</div>
+          <div class="project-badge-row">
+            <span class="project-status-badge">AIOps · Automated Incident Triage</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="project-title">
+            <a href="./ai-infra-monitoring-copilot.html">AI Infrastructure Monitoring Copilot</a>
+          </h2>
+          <p class="project-desc">
+            Engineered AI incident triage assistant with function-calling agents querying LogicMonitor telemetry, correlating noisy alerts across microservices, auto-generating ServiceNow tickets, and integrating via Model Context Protocol (MCP).
+          </p>
+        </div>
+
+        <div class="project-kpi-bar">
+          <span class="kpi-chip">MTTR: <strong>-42% Reduction</strong></span>
+          <span class="kpi-chip">Alert Deduplication: <strong>81%</strong></span>
+          <span class="kpi-chip">Protocol: <strong>MCP Anthropic</strong></span>
+        </div>
+
+        <!-- Paired Interactive Studios -->
+        <div class="paired-studios">
+          <span class="paired-label">🛠️ Paired Interactive Studios:</span>
+          <div class="paired-links">
+            <a href="../tools/logicmonitor/" class="paired-chip">LogicMonitor Studio ↗</a>
+            <a href="../tools/mcp-server/" class="paired-chip">MCP Server Studio ↗</a>
+            <a href="../incident/" class="paired-chip">SRE Incident Simulator ↗</a>
+          </div>
+        </div>
+
+        <div class="project-tech">
+          <span>Claude 3.7 / GPT-4o</span><span>LogicMonitor</span><span>ServiceNow</span><span>MCP</span><span>FastAPI</span>
+        </div>
+
+        <div class="project-actions">
+          <a href="./ai-infra-monitoring-copilot.html" class="project-details-link">
+            <span>View Architecture Case Study</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/Pradeeptalari14/ai-infra-monitoring-copilot" target="_blank" rel="noopener noreferrer" class="project-github-link" title="GitHub Repository">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Code</span>
           </a>
         </div>
-        <h2 class="project-title"><a href="./ai-infra-monitoring-copilot.html" class="project-title-link">AI Infrastructure Monitoring Copilot</a></h2>
-        <p class="project-desc">Engineered AI-powered incident triage assistant with function-calling agents that query LogicMonitor telemetry, correlate alerts, auto-generate ServiceNow tickets, and integrate with MCP.</p>
-        <a href="./ai-infra-monitoring-copilot.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech"><span>Claude / GPT-4</span><span>LogicMonitor</span><span>ServiceNow</span><span>MCP</span><span>FastAPI</span></div>
-      </div>
+      </article>
 
       <!-- Project 4: Cloud Landing Zone & IaC Platform -->
-      <div class="project-card" id="project-landing-zone">
+      <article class="project-card" data-category="cloud" id="project-landing-zone">
         <div class="project-card-top">
-          <div class="project-icon">🏗️</div>
-          <a href="https://github.com/Pradeeptalari14/multi-cloud-landing-zone" target="_blank" rel="noopener noreferrer" class="project-link" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          <div class="project-icon-box">🏗️</div>
+          <div class="project-badge-row">
+            <span class="project-status-badge">Multi-Cloud IaC · SOC2 Built-In</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="project-title">
+            <a href="./multi-cloud-landing-zone.html">Cloud Landing Zone &amp; IaC Platform</a>
+          </h2>
+          <p class="project-desc">
+            Modular Terraform and Pulumi library establishing hardened AWS and Azure foundations to bootstrap isolated VPC topologies, zero-trust IAM boundaries, and transit gateways in under 30 minutes with built-in FinOps policies.
+          </p>
+        </div>
+
+        <div class="project-kpi-bar">
+          <span class="kpi-chip">Bootstrap Time: <strong>&lt;30 Mins</strong></span>
+          <span class="kpi-chip">Clouds: <strong>AWS + Azure</strong></span>
+          <span class="kpi-chip">Governance: <strong>SOC2 / CIS</strong></span>
+        </div>
+
+        <!-- Paired Interactive Studios -->
+        <div class="paired-studios">
+          <span class="paired-label">🛠️ Paired Interactive Studios:</span>
+          <div class="paired-links">
+            <a href="../tools/terraform/" class="paired-chip">Terraform Architect ↗</a>
+            <a href="../tools/pulumi/" class="paired-chip">Pulumi Studio ↗</a>
+            <a href="../tools/vpc-subnetter/" class="paired-chip">VPC Subnetter ↗</a>
+          </div>
+        </div>
+
+        <div class="project-tech">
+          <span>Terraform</span><span>Pulumi</span><span>Ansible</span><span>Azure</span><span>AWS</span>
+        </div>
+
+        <div class="project-actions">
+          <a href="./multi-cloud-landing-zone.html" class="project-details-link">
+            <span>View Architecture Case Study</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/Pradeeptalari14/multi-cloud-landing-zone" target="_blank" rel="noopener noreferrer" class="project-github-link" title="GitHub Repository">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Code</span>
           </a>
         </div>
-        <h2 class="project-title"><a href="./multi-cloud-landing-zone.html" class="project-title-link">Cloud Landing Zone &amp; IaC Platform</a></h2>
-        <p class="project-desc">Built reusable Terraform module library for multi-cloud Landing Zone provisioning—enabling one-click environment bootstrap in under 30 minutes with GitOps pipelines and SOC2 compliance.</p>
-        <a href="./multi-cloud-landing-zone.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech"><span>Terraform</span><span>Pulumi</span><span>Ansible</span><span>Azure</span><span>AWS</span></div>
-      </div>
+      </article>
 
       <!-- Project 5: Enterprise Observability Platform -->
-      <div class="project-card" id="project-observability-platform">
+      <article class="project-card" data-category="sre" id="project-observability-platform">
         <div class="project-card-top">
-          <div class="project-icon">🔭</div>
-          <a href="https://github.com/Pradeeptalari14/observability-platform-k8s" target="_blank" rel="noopener noreferrer" class="project-link" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          <div class="project-icon-box">🔭</div>
+          <div class="project-badge-row">
+            <span class="project-status-badge">Full-Stack MELT Telemetry</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="project-title">
+            <a href="./observability-platform-k8s.html">Enterprise Observability Platform</a>
+          </h2>
+          <p class="project-desc">
+            Centralized Kubernetes observability stack with Prometheus federation, Loki log aggregation, Tempo distributed tracing, and eBPF kernel instrumentation, providing unified MELT visibility and sub-second alert correlation.
+          </p>
+        </div>
+
+        <div class="project-kpi-bar">
+          <span class="kpi-chip">Daily Ingestion: <strong>1.2 TB Logs</strong></span>
+          <span class="kpi-chip">Trace Latency: <strong>&lt;5ms Overhead</strong></span>
+          <span class="kpi-chip">Kernel Probes: <strong>eBPF Active</strong></span>
+        </div>
+
+        <!-- Paired Interactive Studios -->
+        <div class="paired-studios">
+          <span class="paired-label">🛠️ Paired Interactive Studios:</span>
+          <div class="paired-links">
+            <a href="../tools/monitoring-studio/" class="paired-chip">Prometheus Studio ↗</a>
+            <a href="../tools/ebpf-continuous-profiler/" class="paired-chip">eBPF Profiler ↗</a>
+            <a href="../tools/tracing/" class="paired-chip">Distributed Tracing ↗</a>
+          </div>
+        </div>
+
+        <div class="project-tech">
+          <span>Prometheus</span><span>Grafana</span><span>Loki</span><span>Tempo</span><span>OpenTelemetry</span>
+        </div>
+
+        <div class="project-actions">
+          <a href="./observability-platform-k8s.html" class="project-details-link">
+            <span>View Architecture Case Study</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/Pradeeptalari14/observability-platform-k8s" target="_blank" rel="noopener noreferrer" class="project-github-link" title="GitHub Repository">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Code</span>
           </a>
         </div>
-        <h2 class="project-title"><a href="./observability-platform-k8s.html" class="project-title-link">Enterprise Observability Platform</a></h2>
-        <p class="project-desc">Centralized Kubernetes observability stack with Prometheus federation, Loki log aggregation, and Tempo distributed tracing, providing unified MELT visibility and alert correlation.</p>
-        <a href="./observability-platform-k8s.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech"><span>Prometheus</span><span>Grafana</span><span>Loki</span><span>Tempo</span><span>OpenTelemetry</span></div>
-      </div>
+      </article>
 
       <!-- Project 6: WhatsApp & Voice AI Assistant Platform -->
-      <div class="project-card" id="project-voice-assistant">
+      <article class="project-card" data-category="ai" id="project-voice-assistant">
         <div class="project-card-top">
-          <div class="project-icon">📞</div>
-          <a href="https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant" target="_blank" rel="noopener noreferrer" class="project-link" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          <div class="project-icon-box">📞</div>
+          <div class="project-badge-row">
+            <span class="project-status-badge">WebRTC Voice Streaming</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="project-title">
+            <a href="./whatsapp-voice-ai-assistant.html">WhatsApp &amp; Voice AI Assistant Platform</a>
+          </h2>
+          <p class="project-desc">
+            Architected multi-channel assistant supporting WhatsApp, Telegram, Slack, and Teams. Integrated Whisper STT and ElevenLabs TTS via WebRTC for real-time voice streaming with sub-400ms latency.
+          </p>
+        </div>
+
+        <div class="project-kpi-bar">
+          <span class="kpi-chip">Streaming Latency: <strong>&lt;380ms</strong></span>
+          <span class="kpi-chip">Channels: <strong>WhatsApp / Teams / Slack</strong></span>
+          <span class="kpi-chip">STT/TTS: <strong>Whisper + WebRTC</strong></span>
+        </div>
+
+        <!-- Paired Interactive Studios -->
+        <div class="paired-studios">
+          <span class="paired-label">🛠️ Paired Interactive Studios:</span>
+          <div class="paired-links">
+            <a href="../tools/openai-realtime-voice/" class="paired-chip">OpenAI Realtime Voice ↗</a>
+            <a href="../tools/whatsapp-grievance-reporter/" class="paired-chip">WhatsApp Reporter ↗</a>
+            <a href="../tools/gpt-live-voice-api/" class="paired-chip">GPT Live Voice ↗</a>
+          </div>
+        </div>
+
+        <div class="project-tech">
+          <span>FastAPI</span><span>Whisper</span><span>WebRTC</span><span>Redis</span><span>Docker</span>
+        </div>
+
+        <div class="project-actions">
+          <a href="./whatsapp-voice-ai-assistant.html" class="project-details-link">
+            <span>View Architecture Case Study</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/Pradeeptalari14/whatsapp-voice-ai-assistant" target="_blank" rel="noopener noreferrer" class="project-github-link" title="GitHub Repository">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Code</span>
           </a>
         </div>
-        <h2 class="project-title"><a href="./whatsapp-voice-ai-assistant.html" class="project-title-link">WhatsApp &amp; Voice AI Assistant Platform</a></h2>
-        <p class="project-desc">Architected multi-channel assistant supporting WhatsApp, Telegram, Slack, and Teams. Integrated Whisper STT and ElevenLabs TTS via WebRTC for real-time voice streaming receptionist.</p>
-        <a href="./whatsapp-voice-ai-assistant.html" class="project-details-link">View setup Steps &amp; Diagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        <div class="project-tech"><span>FastAPI</span><span>Whisper</span><span>TTS</span><span>WebRTC</span><span>Redis</span></div>
-      </div>
+      </article>
 
     </div>
+
+    <!-- 334 Studios Ecosystem Callout Banner -->
+    <section class="studios-banner" aria-label="Interactive Studios Hub Callout">
+      <div class="banner-content">
+        <span class="banner-badge">334 INTERACTIVE DEVELOPER STUDIOS</span>
+        <h3>Explore Hands-On Code Compilers &amp; Incident Drills</h3>
+        <p>
+          Each flagship architectural system connects directly to our catalog of 334 self-contained engineering studios with zero install requirements, sandboxed execution, and live SRE failure remediation.
+        </p>
+      </div>
+      <div class="banner-actions">
+        <a href="../studios/" class="banner-btn-primary">
+          <span>🛠️ Launch 334 Studios Hub</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="../studios/learn/" class="banner-btn-secondary">
+          <span>🎓 Open Learning Hub Catalog</span>
+        </a>
+      </div>
+    </section>
+
   </main>
 
   <footer class="footer">
     <p>© <span id="yr"></span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a></p>
   </footer>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Theme Toggle Handler
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const isCurrentDark = document.documentElement.classList.contains('dark-theme') || 
+                              document.documentElement.getAttribute('data-theme') === 'dark';
+        const nextDark = !isCurrentDark;
+        if (nextDark) {
+          document.documentElement.classList.add('dark-theme');
+          document.documentElement.classList.remove('light-theme');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+          document.documentElement.classList.add('light-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+        try { localStorage.setItem('sre_dark_mode_active', nextDark); } catch(e) {}
+      });
+    }
+
+    // Category Filter Handler
+    const filterTabs = document.getElementById('projectFilterTabs');
+    const cards = document.querySelectorAll('.project-card');
+    if (filterTabs && cards.length) {
+      filterTabs.addEventListener('click', (e) => {
+        const btn = e.target.closest('.tab-btn');
+        if (!btn) return;
+
+        filterTabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    }
+  </script>
+
   <load src="../sections/chatbot.html" />
 </body>
 </html>
