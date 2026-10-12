@@ -68,11 +68,11 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(node4.params.distance).toBe('Cosine');
   });
 
-  it('should load all 5 flagship templates seamlessly', () => {
+  it('should load all flagship templates seamlessly', () => {
     const container = document.getElementById('flowWorkspaceContainer');
     const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
 
-    const templates = ['rag', 'pipeline', 'infra', 'database', 'agent'];
+    const templates = ['rag', 'pipeline', 'infra', 'database', 'agent', 'devsecops'];
     templates.forEach(tKey => {
       canvas.loadTemplate(tKey);
       expect(canvas.nodes.size).toBeGreaterThanOrEqual(4);
@@ -165,7 +165,18 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(agentTopo.nodes[3].title).toContain('gVisor Sandboxed Tool Worker');
     expect(agentTopo.nodes[4].title).toContain('Zep Temporal Memory Store');
 
-    // 6. Dynamic synthesis fallback for arbitrary engineering studio
+    // 6. DevSecOps & Supply Chain Security
+    const devsecopsTopo = VisualFlowCanvas.generateStudioTopology('sigstore-cosign-slsa', {
+      title: 'Sigstore Cosign SLSA Studio',
+      category: 'security'
+    });
+    expect(devsecopsTopo.nodes.length).toBe(6);
+    expect(devsecopsTopo.nodes[0].title).toContain('Git Signed Commit');
+    expect(devsecopsTopo.nodes[1].title).toContain('Semgrep SAST');
+    expect(devsecopsTopo.nodes[2].title).toContain('Syft SBOM');
+    expect(devsecopsTopo.nodes[4].title).toContain('Sigstore Cosign');
+
+    // 7. Dynamic synthesis fallback for arbitrary engineering studio
     const customTopo = VisualFlowCanvas.generateStudioTopology('custom-firmware-compiler', {
       title: 'Custom Firmware Compiler',
       category: 'embedded',

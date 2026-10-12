@@ -112,6 +112,26 @@
         { from: 'a5', to: 'a6' },
         { from: 'a6', to: 'a7' }
       ]
+    },
+
+    devsecops: {
+      name: 'DevSecOps & Supply Chain Security Pipeline',
+      category: 'security',
+      nodes: [
+        { id: 'sec1', type: 'input', title: 'Git Signed Commit & Attestation', icon: '🔑', x: 60, y: 140, params: { gpgKey: 'ED25519 Verified', branch: 'protected-main' }, desc: 'Enforces cryptographically signed Git commits and commit identity verification.' },
+        { id: 'sec2', type: 'security', title: 'Semgrep SAST & Secret Audit', icon: '🔍', x: 380, y: 140, params: { rules: 'OWASP Top 10 + CWE Top 25', leakGate: 'Zero Secret Leaks' }, desc: 'Performs semantic AST static analysis blocking hardcoded secrets and injections.' },
+        { id: 'sec3', type: 'transform', title: 'Syft SBOM & Grype Scanner', icon: '📋', x: 700, y: 140, params: { format: 'CycloneDX 1.5 JSON', epssCutoff: '< 0.05' }, desc: 'Generates software bill of materials and scores transitive dependency vulnerabilities.' },
+        { id: 'sec4', type: 'transform', title: 'Trivy Container & Chainguard Base', icon: '🛡️', x: 1020, y: 140, params: { baseImage: 'Distroless Non-Root', cveSeverity: 'CRITICAL = 0' }, desc: 'Scans compiled image layers and verifies minimal distroless attack surface.' },
+        { id: 'sec5', type: 'security', title: 'Sigstore Cosign Keyless Signer', icon: '✍️', x: 1340, y: 140, params: { oidcProvider: 'GitHub Actions OIDC', rekorTransparency: 'Logged' }, desc: 'Signs container image digests keylessly into Fulcio CA with Rekor transparency.' },
+        { id: 'sec6', type: 'deploy', title: 'Kyverno & Tetragon Admission Gate', icon: '☸️', x: 1660, y: 140, params: { admissionPolicy: 'Enforce Cosign Verify', eBPFMonitor: 'Active' }, desc: 'Blocks unsigned images at Kubernetes admission and monitors runtime kernel syscalls.' }
+      ],
+      connections: [
+        { from: 'sec1', to: 'sec2' },
+        { from: 'sec2', to: 'sec3' },
+        { from: 'sec3', to: 'sec4' },
+        { from: 'sec4', to: 'sec5' },
+        { from: 'sec5', to: 'sec6' }
+      ]
     }
   };
 
@@ -226,6 +246,7 @@
                 <div class="vf-cat-title">Starter Flow Experiences</div>
                 <button class="vf-template-btn" data-template="rag"><span>🤖 AI & RAG Pipeline</span><span>→</span></button>
                 <button class="vf-template-btn" data-template="agent"><span>⚡ Agentic AI Swarm</span><span>→</span></button>
+                <button class="vf-template-btn" data-template="devsecops"><span>🛡️ DevSecOps Supply Chain</span><span>→</span></button>
                 <button class="vf-template-btn" data-template="pipeline"><span>🐙 DevOps CI/CD Pipeline</span><span>→</span></button>
                 <button class="vf-template-btn" data-template="infra"><span>☁️ Cloud & Network Topology</span><span>→</span></button>
                 <button class="vf-template-btn" data-template="database"><span>🗄️ Database & pgvector Schema</span><span>→</span></button>
@@ -1045,8 +1066,28 @@
         };
       }
 
-      // 10. Cybersecurity & Zero-Trust
-      if (slug.includes('security') || slug.includes('falco') || slug.includes('trivy') || slug.includes('vault') || slug.includes('cosign') || slug.includes('zerotrust') || slug.includes('waf') || title.includes('security') || cat.includes('security')) {
+      // 10. DevSecOps & Software Supply Chain Security (SLSA, Cosign, SBOM, Semgrep, Trivy, SAST)
+      if (slug.includes('devsecops') || slug.includes('slsa') || slug.includes('cosign') || slug.includes('sigstore') || slug.includes('sbom') || slug.includes('cyclonedx') || slug.includes('semgrep') || slug.includes('trivy') || slug.includes('sast') || slug.includes('tetragon') || slug.includes('grype') || slug.includes('syft') || title.includes('supply chain') || title.includes('devsecops') || title.includes('trivy') || title.includes('sast')) {
+        return {
+          id: slug || 'devsecops',
+          name: toolData.title || STARTER_TEMPLATES.devsecops.name,
+          category: 'security',
+          nodes: STARTER_TEMPLATES.devsecops.nodes.map(n => Object.assign({}, n)),
+          connections: STARTER_TEMPLATES.devsecops.connections.map(c => Object.assign({}, c)),
+          copilotHtml: `
+            <div style="font-weight:600; color:#f43f5e; margin-bottom:0.4rem;">🔬 DevSecOps Supply Chain Lab</div>
+            <p>1. Enforce GPG / Sigstore keyless commit attestation.</p>
+            <p>2. Block PR merges on Semgrep SAST / secret leak detection.</p>
+            <p>3. Generate CycloneDX SBOM and verify container image signature via Cosign.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              cosign verify --certificate-identity-regexp '.*@github\.com' ghcr.io/pradeep/app:sha-latest
+            </div>
+          `
+        };
+      }
+
+      // 10b. Cybersecurity & Zero-Trust
+      if (slug.includes('security') || slug.includes('falco') || slug.includes('vault') || slug.includes('zerotrust') || slug.includes('waf') || title.includes('security') || cat.includes('security')) {
         return {
           id: slug || 'security',
           name: toolData.title || 'Zero-Trust Architecture & Threat Shield',
