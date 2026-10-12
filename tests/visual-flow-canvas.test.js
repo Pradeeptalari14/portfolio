@@ -267,4 +267,20 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(firstNode.querySelector('.vf-port-output')).toBeTruthy();
     expect(firstNode.querySelectorAll('.vf-node-param').length).toBeGreaterThan(0);
   });
+
+  it('should auto-select primary node on load and render overview stage navigator when deselected', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    // Primary node should be selected on load
+    expect(canvas.selectedNodeId).toBeTruthy();
+    const inspector = container.querySelector('#vfInspectorContent');
+    expect(inspector.innerHTML).toContain('Active Parameters');
+    expect(inspector.innerHTML).toContain('Component Label');
+
+    // Deselect should render interactive stage overview navigator
+    canvas._renderInspector(null);
+    expect(inspector.innerHTML).toContain('Pipeline Architecture');
+    expect(inspector.querySelectorAll('.vf-stage-quick-btn').length).toBe(canvas.nodes.size);
+  });
 });

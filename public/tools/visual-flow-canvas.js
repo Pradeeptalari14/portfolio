@@ -533,7 +533,7 @@
       this._applyTransform();
     }
 
-    fitView(padding = 60) {
+    fitView(padding = 50) {
       if (!this.canvasContainer || this.nodes.size === 0) return;
       const rect = this.canvasContainer.getBoundingClientRect ? this.canvasContainer.getBoundingClientRect() : { width: 0, height: 0 };
       const width = rect.width || this.canvasContainer.clientWidth || 800;
@@ -561,13 +561,25 @@
       const scaleX = availW / graphWidth;
       const scaleY = availH / graphHeight;
       let targetScale = Math.min(1.0, Math.min(scaleX, scaleY));
-      targetScale = Math.max(0.4, Math.min(1.15, targetScale));
+      // Keep comfortable readable zoom level (never shrink to microscopic 40%)
+      targetScale = Math.max(0.72, Math.min(1.05, targetScale));
 
       this.scale = targetScale;
-      this.panOffset = {
-        x: Math.round((width - graphWidth * targetScale) / 2 - minX * targetScale),
-        y: Math.round((height - graphHeight * targetScale) / 2 - minY * targetScale)
-      };
+
+      const scaledGraphWidth = graphWidth * targetScale;
+      if (width >= scaledGraphWidth + padding * 2) {
+        // Fits entirely: center it
+        this.panOffset = {
+          x: Math.round((width - scaledGraphWidth) / 2 - minX * targetScale),
+          y: Math.round((height - graphHeight * targetScale) / 2 - minY * targetScale)
+        };
+      } else {
+        // Wider than viewport: start cleanly with comfortable left padding
+        this.panOffset = {
+          x: Math.round(padding - minX * targetScale),
+          y: Math.round((height - graphHeight * targetScale) / 2 - minY * targetScale)
+        };
+      }
 
       const zoomBtn = this.container.querySelector('#vfZoomResetBtn');
       if (zoomBtn) {
@@ -1003,6 +1015,12 @@
       this.render();
       this.fitView();
 
+      const nodesArr = Array.from(this.nodes.values());
+      const primaryNode = nodesArr.find(n => n.type === 'model' || n.type === 'transform') || nodesArr[0];
+      if (primaryNode) {
+        this.selectNode(primaryNode.id);
+      }
+
       this.log(`[STUDIO WORKSPACE] Switched to ${topo.name} (${this.nodes.size} nodes, ${this.connections.length} wires)`);
 
       try {
@@ -1034,6 +1052,13 @@
       this._applyTransform();
       this.render();
       this.fitView();
+
+      const tNodesArr = Array.from(this.nodes.values());
+      const tPrimary = tNodesArr.find(n => n.type === 'model' || n.type === 'transform') || tNodesArr[0];
+      if (tPrimary) {
+        this.selectNode(tPrimary.id);
+      }
+
       this.log(`Loaded starter template: ${t.name} (${this.nodes.size} nodes, ${this.connections.length} wires)`);
     }
 
@@ -1212,12 +1237,48 @@
 
     _renderInspector(node) {
       if (!node) {
+        const nodeList = Array.from(this.nodes.values());
+        const stagePills = nodeList.map(n => `
+          <button class="vf-stage-quick-btn" data-id="${n.id}">
+            <span>${n.icon || '📦'}</span>
+            <span class="vf-stage-quick-title">${n.title}</span>
+            <span class="vf-badge-${n.type || 'model'} vf-stage-quick-badge">${n.type}</span>
+          </button>
+        `).join('');
+
         this.inspectorContent.innerHTML = `
-          <div class="vf-empty-inspector">
-            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">⚙️</div>
-            <div>Select any node on the canvas to configure parameters, inspect latency, and view SRE runbooks.</div>
+          <div class="vf-inspector-overview">
+            <div class="vf-overview-header">
+              <div class="vf-overview-badge">WORKSPACE INSPECTOR</div>
+              <div class="vf-overview-title">Pipeline Architecture</div>
+              <div class="vf-overview-sub">
+                ${nodeList.length} stages configured • ${this.connections.length} active wires
+              </div>
+            </div>
+
+            <div class="vf-overview-stages-label">Select a component to inspect & configure:</div>
+            <div class="vf-stage-quick-list">
+              ${stagePills}
+            </div>
+
+            <div class="vf-ai-box" style="margin-top: 1rem;">
+              <div class="vf-ai-box-title">
+                <span>💡</span>
+                <span>Canvas Navigation Tip</span>
+              </div>
+              <div class="vf-ai-box-body">
+                Click any node on the canvas to inspect latency, modify live parameters, or drag output ports to re-wire dataflow.
+              </div>
+            </div>
           </div>
         `;
+
+        this.inspectorContent.querySelectorAll('.vf-stage-quick-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            this.selectNode(id);
+          });
+        });
         return;
       }
 
