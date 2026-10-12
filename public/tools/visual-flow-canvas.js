@@ -204,7 +204,7 @@
               <div class="vf-studio-selector-wrapper">
                 <label for="vfStudioSelect" class="vf-studio-label">Studio:</label>
                 <select id="vfStudioSelect" class="vf-studio-select">
-                  <option value="">Select Studio (334 available)...</option>
+                  <option value="">Select Studio (339 available)...</option>
                 </select>
               </div>
             </div>
@@ -793,7 +793,7 @@
         });
       });
 
-      let html = `<option value="">Select Studio (334 available)...</option>`;
+      let html = `<option value="">Select Studio (339 available)...</option>`;
       Object.entries(groups).forEach(([catKey, items]) => {
         if (items.length === 0) return;
         const label = cats[catKey] || 'Other Engineering Studios';
@@ -1117,7 +1117,7 @@
         };
       }
 
-      // 11. Technology-Specific Synthesis (Fallback for any of the 334 studios)
+      // 11. Technology-Specific Synthesis (Fallback for any of the 339 studios)
       const studioName = toolData.title || (slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')) || 'Engineering Studio';
       const cleanDesc = toolData.desc ? toolData.desc.substring(0, 110) + '...' : `Technology workspace for ${studioName}.`;
       return {

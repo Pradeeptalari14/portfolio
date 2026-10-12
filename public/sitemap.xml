@@ -116,8 +116,14 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/devsecops-portfolio-guide/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-  <!-- All 334 Interactive Developer Studios & SRE Tools -->
+  <!-- All 339 Interactive Developer Studios & SRE Tools -->
   <url>
     <loc>https://talaripradeep.info/tools/ai/</loc>
     <lastmod>2026-10-12</lastmod>
@@ -2118,6 +2124,36 @@
   </url>
   <url>
     <loc>https://talaripradeep.info/tools/openai-marketplace-broker/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/sigstore-cosign-slsa/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/sbom-cyclonedx-governance/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/semgrep-ast-guardrails/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/owasp-llm-agent-shield/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://talaripradeep.info/tools/hashicorp-boundary-zerotrust/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

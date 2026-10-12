@@ -77,6 +77,8 @@ npm test
 
 For complete step-by-step guidance on running, upgrading, and maintaining the platform, refer to these operational references:
 * **[DEPLOYMENT.md](file:///d:/Domain/DEPLOYMENT.md):** Guides detailing GitHub Pages, Docker runs, Kubernetes, Helm rollouts, and AWS pipelines.
+* **[DEVSECOPS_PORTFOLIO_GUIDE.md](file:///d:/Domain/DEVSECOPS_PORTFOLIO_GUIDE.md):** DevSecOps Supply Chain Architecture, Sigstore Cosign SLSA Provenance, and in-kernel Tetragon runtime enforcement.
+* **[GITHUB_PROVISIONING_GUIDE.md](file:///d:/Domain/GITHUB_PROVISIONING_GUIDE.md):** Provisioning & execution matrix for Developer Studios repositories.
 * **[RUNBOOK.md](file:///d:/Domain/RUNBOOK.md):** SLA/SLO metrics checklists, fallback recovery steps, alert runbooks, and rollback procedures.
 * **[TROUBLESHOOTING.md](file:///d:/Domain/TROUBLESHOOTING.md):** Diagnostics logs check for local browsers, CORS errors, Docker ports, and Kubernetes Pod crashes.
 * **[SECURITY.md](file:///d:/Domain/SECURITY.md):** Vuln disclosure policies, client-side XSS standards, and secrets management.

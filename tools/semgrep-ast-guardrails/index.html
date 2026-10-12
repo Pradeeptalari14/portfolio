@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semgrep AST Policy Guardrails Studio | Talari Pradeep</title>
+  <meta name="description" content="Author custom Semgrep AST static analysis policies, taint tracking rules for SQL injection and SSRF, and automated SARIF publishing to GitHub Security tab.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-magnifying-glass-chart"></i> DevSecOps Frontier</span>
+        <h1 class="tool-title">Semgrep AST Policy Guardrails Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="../../studios/flow/?studio=semgrep-ast-guardrails" class="btn btn-primary" style="margin-right: 0.5rem;">
+          <i class="fa-solid fa-bolt"></i> Visual Flow Canvas
+        </a>
+        <a href="https://github.com/Pradeeptalari14/tp-semgrep-ast-guardrails" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Semantic abstract syntax tree rules, taint tracking for SQLi/SSRF & SARIF reporting</h2>
+        <p class="card-desc">Author custom Semgrep AST static analysis policies, taint tracking rules for SQL injection and SSRF, and automated SARIF publishing to GitHub Security tab.</p>
+
+        <div class="form-group">
+          <label for="cfgEnv">Target Deployment Tier</label>
+          <select id="cfgEnv" class="form-control">
+            <option value="production" selected>Production (Strict Zero-Trust Enforced)</option>
+            <option value="staging">Staging (Continuous Attestation)</option>
+            <option value="dev">Development Sandbox</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgMode">Policy Enforcement Mode</label>
+          <select id="cfgMode" class="form-control">
+            <option value="strict" selected>Strict (Fail-Closed / Block Pull Requests)</option>
+            <option value="audit">Audit Only (Telemetry & Security Alerts)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgManifest">Primary Configuration Manifest</label>
+          <input type="text" id="cfgManifest" class="form-control" value="semgrep-rules.yml" readonly />
+        </div>
+
+        <button id="btnCompile" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-gears"></i> Compile &amp; Verify Policy Manifest
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-shield-halved"></i> Security Telemetry &amp; Compiled Blueprint</h2>
+        <div class="metrics-grid">
+          
+          <div class="metric-card">
+            <span class="metric-label">Analysis Engine</span>
+            <span class="metric-value">Semantic AST Match</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Taint Tracking</span>
+            <span class="metric-value">Source -> Sink Flow</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Reporting Standard</span>
+            <span class="metric-value">OASIS SARIF 2.1.0</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="manifestTab">Primary Manifest (semgrep-rules.yml)</button>
+            <button class="tab-btn" data-tab="pyTab">Python Automation Drill</button>
+            <button class="tab-btn" data-tab="k8sTab">K8s Policy / Deployment</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">rules:
+  - id: detect-tainted-sql-injection
+    languages: [python, javascript, go]
+    severity: ERROR
+    message: "Untrusted user input directly concatenated into SQL query"
+    mode: taint
+    pattern-sources:
+      - pattern: request.args.get(...)
+      - pattern: req.query[...]
+    pattern-sinks:
+      - pattern: db.execute(...)
+      - pattern: cursor.execute(...)</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> Semgrep AST Policy Guardrails Studio Enterprise Topology</h2>
+      <div class="diagram-container">
+        <img src="semgrep_ast_guardrails_flow.png" alt="Semgrep AST Policy Guardrails Studio Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.1);">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview &amp; Architectural Superiority</h3>
+        <p>Author custom Semgrep AST static analysis policies, taint tracking rules for SQL injection and SSRF, and automated SARIF publishing to GitHub Security tab.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Cryptographic Verification:</strong> Prevent tampering in CI/CD pipeline artifact creation and deployment.</li>
+          <li><strong>Automated Gating:</strong> Enforce zero-tolerance security rules before artifacts schedule onto Kubernetes clusters.</li>
+          <li><strong>Zero Bastions / Zero Static Keys:</strong> Ephemeral, identity-based sessions verified against immutable transparency ledgers.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #10b981; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-code-branch"></i> Static Analysis</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Semgrep OSS 1.80+</strong></li><li>• <strong>Tree-Sitter AST Parser</strong></li><li>• <strong>Interprocedural Taint Mode</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #10b981; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-shield-virus"></i> Vulnerability Coverage</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>OWASP Top 10 (A01 - A10)</strong></li><li>• <strong>CWE-89 SQL Injection</strong></li><li>• <strong>CWE-918 Server-Side Request Forgery</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #10b981; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-triangle-exclamation"></i> Security CI/CD</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>GitHub Code Scanning SARIF</strong></li><li>• <strong>Pre-Commit Git Hooks</strong></li><li>• <strong>SonarQube Quality Gates</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const primaryCode = "rules:\n  - id: detect-tainted-sql-injection\n    languages: [python, javascript, go]\n    severity: ERROR\n    message: \"Untrusted user input directly concatenated into SQL query\"\n    mode: taint\n    pattern-sources:\n      - pattern: request.args.get(...)\n      - pattern: req.query[...]\n    pattern-sinks:\n      - pattern: db.execute(...)\n      - pattern: cursor.execute(...)";
+    const pythonCode = "#!/usr/bin/env python3\n\"\"\"\nCustom Semgrep AST Policy Validator & SARIF Exporter\n\"\"\"\nimport subprocess\nimport json\nimport sys\n\ndef run_semgrep_ast_audit(rules_path: str = \"semgrep-rules.yml\", target_dir: str = \".\"):\n    cmd = [\"semgrep\", \"scan\", \"--config\", rules_path, \"--sarif\", \"--output=semgrep.sarif\", target_dir]\n    res = subprocess.run(cmd, capture_output=True, text=True)\n    print(\"Semgrep AST scan completed. Results saved to semgrep.sarif\")\n    return res.returncode\n\nif __name__ == \"__main__\":\n    run_semgrep_ast_audit()\n";
+    const k8sCode = "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: semgrep-guardrails-config\ndata:\n  semgrep-rules.yml: |\n    rules:\n      - id: block-insecure-tls\n        languages: [python, go]\n        severity: ERROR\n        message: \"TLS InsecureSkipVerify must not be enabled\"\n        pattern: \"InsecureSkipVerify: true\"";
+
+    const codeOut = document.getElementById('codeOutput');
+    const tabs = document.querySelectorAll('.tab-btn');
+    let currentTab = 'manifestTab';
+
+    function renderOutput() {
+      const env = document.getElementById('cfgEnv').value;
+      const mode = document.getElementById('cfgMode').value;
+      if (currentTab === 'manifestTab') {
+        codeOut.textContent = `# Environment: ${env} | Enforcement: ${mode}\n` + primaryCode;
+      } else if (currentTab === 'pyTab') {
+        codeOut.textContent = pythonCode;
+      } else {
+        codeOut.textContent = k8sCode;
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTab = tab.getAttribute('data-tab');
+        renderOutput();
+      });
+    });
+
+    document.getElementById('btnCompile').addEventListener('click', renderOutput);
+  </script>
+</body>
+</html>

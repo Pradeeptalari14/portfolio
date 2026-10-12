@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sigstore Cosign SLSA Provenance Studio | Talari Pradeep</title>
+  <meta name="description" content="Automate SLSA Level 3 build provenance, in-toto cryptographic attestations, and keyless container image signing using GitHub Actions OIDC and Rekor transparency log.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-shield-halved"></i> DevSecOps Frontier</span>
+        <h1 class="tool-title">Sigstore Cosign SLSA Provenance Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="../../studios/flow/?studio=sigstore-cosign-slsa" class="btn btn-primary" style="margin-right: 0.5rem;">
+          <i class="fa-solid fa-bolt"></i> Visual Flow Canvas
+        </a>
+        <a href="https://github.com/Pradeeptalari14/tp-sigstore-cosign-slsa" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Cryptographic supply chain attestation & keyless OIDC container signing</h2>
+        <p class="card-desc">Automate SLSA Level 3 build provenance, in-toto cryptographic attestations, and keyless container image signing using GitHub Actions OIDC and Rekor transparency log.</p>
+
+        <div class="form-group">
+          <label for="cfgEnv">Target Deployment Tier</label>
+          <select id="cfgEnv" class="form-control">
+            <option value="production" selected>Production (Strict Zero-Trust Enforced)</option>
+            <option value="staging">Staging (Continuous Attestation)</option>
+            <option value="dev">Development Sandbox</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgMode">Policy Enforcement Mode</label>
+          <select id="cfgMode" class="form-control">
+            <option value="strict" selected>Strict (Fail-Closed / Block Pull Requests)</option>
+            <option value="audit">Audit Only (Telemetry & Security Alerts)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgManifest">Primary Configuration Manifest</label>
+          <input type="text" id="cfgManifest" class="form-control" value="cosign-attestation.yml" readonly />
+        </div>
+
+        <button id="btnCompile" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-gears"></i> Compile &amp; Verify Policy Manifest
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-shield-halved"></i> Security Telemetry &amp; Compiled Blueprint</h2>
+        <div class="metrics-grid">
+          
+          <div class="metric-card">
+            <span class="metric-label">Attestation Level</span>
+            <span class="metric-value">SLSA Level 3</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Keyless OIDC Identity</span>
+            <span class="metric-value">GitHub Actions</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Rekor Log Verification</span>
+            <span class="metric-value">100% Immutable</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="manifestTab">Primary Manifest (cosign-attestation.yml)</button>
+            <button class="tab-btn" data-tab="pyTab">Python Automation Drill</button>
+            <button class="tab-btn" data-tab="k8sTab">K8s Policy / Deployment</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">apiVersion: v1
+kind: SigstoreCosignPipeline
+metadata:
+  name: sigstore-cosign-slsa
+spec:
+  oidcProvider: "https://token.actions.githubusercontent.com"
+  rekorTransparencyUrl: "https://rekor.sigstore.dev"
+  fulcioCertificateAuthority: "https://fulcio.sigstore.dev"
+  slsaProvenanceLevel: 3
+  signKeyless: true
+  attestationPredicate: "https://slsa.dev/provenance/v1"</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> Sigstore Cosign SLSA Provenance Studio Enterprise Topology</h2>
+      <div class="diagram-container">
+        <img src="sigstore_cosign_slsa_flow.png" alt="Sigstore Cosign SLSA Provenance Studio Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.1);">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview &amp; Architectural Superiority</h3>
+        <p>Automate SLSA Level 3 build provenance, in-toto cryptographic attestations, and keyless container image signing using GitHub Actions OIDC and Rekor transparency log.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Cryptographic Verification:</strong> Prevent tampering in CI/CD pipeline artifact creation and deployment.</li>
+          <li><strong>Automated Gating:</strong> Enforce zero-tolerance security rules before artifacts schedule onto Kubernetes clusters.</li>
+          <li><strong>Zero Bastions / Zero Static Keys:</strong> Ephemeral, identity-based sessions verified against immutable transparency ledgers.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #f43f5e; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-key"></i> Signing & Identity</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Sigstore Cosign 2.4</strong></li><li>• <strong>GitHub Actions OIDC v1</strong></li><li>• <strong>Fulcio Ephemeral CA</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #f43f5e; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-book-atlas"></i> Transparency & Ledger</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Rekor Public Transparency Log</strong></li><li>• <strong>in-toto Attestation Predicate v1</strong></li><li>• <strong>RFC 3161 Timestamping</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #f43f5e; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-dharmachakra"></i> Kubernetes Admission</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Kyverno 1.12 Policy Controller</strong></li><li>• <strong>OPA Gatekeeper Provider</strong></li><li>• <strong>Distroless Non-Root Base</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const primaryCode = "apiVersion: v1\nkind: SigstoreCosignPipeline\nmetadata:\n  name: sigstore-cosign-slsa\nspec:\n  oidcProvider: \"https://token.actions.githubusercontent.com\"\n  rekorTransparencyUrl: \"https://rekor.sigstore.dev\"\n  fulcioCertificateAuthority: \"https://fulcio.sigstore.dev\"\n  slsaProvenanceLevel: 3\n  signKeyless: true\n  attestationPredicate: \"https://slsa.dev/provenance/v1\"";
+    const pythonCode = "#!/usr/bin/env python3\n\"\"\"\nSigstore Cosign SLSA Provenance Signer & Verifier\nValidates keyless OIDC container signatures against Rekor transparency log.\n\"\"\"\nimport subprocess\nimport json\nimport sys\n\ndef verify_image_signature(image_ref: str, cert_identity: str, oidc_issuer: str) -> bool:\n    cmd = [\n        \"cosign\", \"verify\",\n        \"--certificate-identity-regexp\", cert_identity,\n        \"--certificate-oidc-issuer\", oidc_issuer,\n        image_ref\n    ]\n    result = subprocess.run(cmd, capture_output=True, text=True)\n    if result.returncode == 0:\n        print(f\"✅ Verified {image_ref} against Rekor log.\")\n        return True\n    else:\n        print(f\"❌ Verification failed: {result.stderr}\", file=sys.stderr)\n        return False\n\nif __name__ == \"__main__\":\n    verify_image_signature(\"ghcr.io/pradeep/app:sha-latest\", \".*@github\\.com\", \"https://token.actions.githubusercontent.com\")\n";
+    const k8sCode = "apiVersion: kyverno.io/v1\nkind: ClusterPolicy\nmetadata:\n  name: check-image-slsa-attestation\nspec:\n  validationFailureAction: Enforce\n  rules:\n    - name: verify-cosign-signature\n      match:\n        any:\n          - resources:\n              kinds: [\"Pod\"]\n      verifyImages:\n        - imageReferences: [\"ghcr.io/pradeep/*\"]\n          attestors:\n            - entries:\n                - keyless:\n                    issuer: \"https://token.actions.githubusercontent.com\"\n                    subjectRegExp: \".*@github\\.com\"\n                    rekor:\n                      url: \"https://rekor.sigstore.dev\"";
+
+    const codeOut = document.getElementById('codeOutput');
+    const tabs = document.querySelectorAll('.tab-btn');
+    let currentTab = 'manifestTab';
+
+    function renderOutput() {
+      const env = document.getElementById('cfgEnv').value;
+      const mode = document.getElementById('cfgMode').value;
+      if (currentTab === 'manifestTab') {
+        codeOut.textContent = `# Environment: ${env} | Enforcement: ${mode}\n` + primaryCode;
+      } else if (currentTab === 'pyTab') {
+        codeOut.textContent = pythonCode;
+      } else {
+        codeOut.textContent = k8sCode;
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTab = tab.getAttribute('data-tab');
+        renderOutput();
+      });
+    });
+
+    document.getElementById('btnCompile').addEventListener('click', renderOutput);
+  </script>
+</body>
+</html>

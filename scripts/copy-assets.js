@@ -38,6 +38,7 @@ copyFile('studios/learn/studios-learning.json', 'studios/learn/studios-learning.
 copyFile('studios/flow/index.html', 'studios/flow/index.html');
 copyFile('Talari_Pradeep.pdf', 'Talari_Pradeep.pdf');
 copyFile('Talari_Pradeep.docx', 'Talari_Pradeep.docx');
+copyFile('devsecops_architecture_flow.png', 'devsecops_architecture_flow.png');
 
 // Sync tools/ to public/tools/ to prevent drift
 const root = path.resolve(__dirname, '..');

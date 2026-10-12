@@ -4340,5 +4340,18 @@
     "link": "openai-marketplace-broker/",
     "repository": "Pradeeptalari14/tp-openai-marketplace-broker",
     "id": "openai-marketplace-broker"
+  },
+  {
+    "id": "owasp-llm-agent-shield",
+    "title": "OWASP Top 10 for LLMs & AI Agent Shield Studio",
+    "desc": "Protect agent swarms and RAG workflows against OWASP Top 10 for LLMs: prompt injections, insecure tool hijacking, sensitive data leakage, and denial of service.",
+    "category": "ai",
+    "icon": "🛡️",
+    "color": "rgb(239, 68, 68)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "guardrails-config.yaml",
+    "link": "owasp-llm-agent-shield/",
+    "repository": "Pradeeptalari14/tp-owasp-llm-agent-shield"
   }
 ]

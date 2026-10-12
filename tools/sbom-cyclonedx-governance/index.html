@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SBOM & CycloneDX Vulnerability Governance Studio | Talari Pradeep</title>
+  <meta name="description" content="Generate CycloneDX and SPDX Software Bill of Materials (SBOM) using Syft, enforce Grype vulnerability gates with EPSS scoring, and verify licensing compliance.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-file-invoice"></i> DevSecOps Frontier</span>
+        <h1 class="tool-title">SBOM & CycloneDX Vulnerability Governance Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="../../studios/flow/?studio=sbom-cyclonedx-governance" class="btn btn-primary" style="margin-right: 0.5rem;">
+          <i class="fa-solid fa-bolt"></i> Visual Flow Canvas
+        </a>
+        <a href="https://github.com/Pradeeptalari14/tp-sbom-cyclonedx-governance" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Automated Syft CycloneDX generation, Grype EPSS vulnerability gating & compliance</h2>
+        <p class="card-desc">Generate CycloneDX and SPDX Software Bill of Materials (SBOM) using Syft, enforce Grype vulnerability gates with EPSS scoring, and verify licensing compliance.</p>
+
+        <div class="form-group">
+          <label for="cfgEnv">Target Deployment Tier</label>
+          <select id="cfgEnv" class="form-control">
+            <option value="production" selected>Production (Strict Zero-Trust Enforced)</option>
+            <option value="staging">Staging (Continuous Attestation)</option>
+            <option value="dev">Development Sandbox</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgMode">Policy Enforcement Mode</label>
+          <select id="cfgMode" class="form-control">
+            <option value="strict" selected>Strict (Fail-Closed / Block Pull Requests)</option>
+            <option value="audit">Audit Only (Telemetry & Security Alerts)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgManifest">Primary Configuration Manifest</label>
+          <input type="text" id="cfgManifest" class="form-control" value="sbom-policy.yaml" readonly />
+        </div>
+
+        <button id="btnCompile" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-gears"></i> Compile &amp; Verify Policy Manifest
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-shield-halved"></i> Security Telemetry &amp; Compiled Blueprint</h2>
+        <div class="metrics-grid">
+          
+          <div class="metric-card">
+            <span class="metric-label">SBOM Specification</span>
+            <span class="metric-value">CycloneDX 1.5 JSON</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">EPSS Threshold Gate</span>
+            <span class="metric-value">EPSS < 0.05</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Critical CVE Tolerance</span>
+            <span class="metric-value">0 Critical / 0 High</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="manifestTab">Primary Manifest (sbom-policy.yaml)</button>
+            <button class="tab-btn" data-tab="pyTab">Python Automation Drill</button>
+            <button class="tab-btn" data-tab="k8sTab">K8s Policy / Deployment</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">apiVersion: governance.cyclonedx.org/v1
+kind: SBOMAuditPolicy
+metadata:
+  name: cyclonedx-governance
+spec:
+  specVersion: "1.5"
+  formats: ["cyclonedx-json", "spdx-json"]
+  scanner:
+    engine: "syft"
+    vulnerabilityMatcher: "grype"
+    epssThreshold: 0.05
+    maxCvssScore: 7.0
+  failOnSeverity: ["CRITICAL", "HIGH"]</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> SBOM & CycloneDX Vulnerability Governance Studio Enterprise Topology</h2>
+      <div class="diagram-container">
+        <img src="sbom_cyclonedx_governance_flow.png" alt="SBOM & CycloneDX Vulnerability Governance Studio Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.1);">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview &amp; Architectural Superiority</h3>
+        <p>Generate CycloneDX and SPDX Software Bill of Materials (SBOM) using Syft, enforce Grype vulnerability gates with EPSS scoring, and verify licensing compliance.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Cryptographic Verification:</strong> Prevent tampering in CI/CD pipeline artifact creation and deployment.</li>
+          <li><strong>Automated Gating:</strong> Enforce zero-tolerance security rules before artifacts schedule onto Kubernetes clusters.</li>
+          <li><strong>Zero Bastions / Zero Static Keys:</strong> Ephemeral, identity-based sessions verified against immutable transparency ledgers.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #0ea5e9; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-barcode"></i> SBOM Generation</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Anchore Syft 1.10+</strong></li><li>• <strong>CycloneDX 1.5 JSON</strong></li><li>• <strong>SPDX 2.3 Tag-Value</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #0ea5e9; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-bug"></i> Vulnerability Matcher</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Anchore Grype 0.79+</strong></li><li>• <strong>FIRST.org EPSS API v2</strong></li><li>• <strong>NIST National Vulnerability DB</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #0ea5e9; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-chart-pie"></i> Governance & Ingestion</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>OWASP Dependency-Track</strong></li><li>• <strong>SPDX License Classifier</strong></li><li>• <strong>GitHub SARIF Tab</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const primaryCode = "apiVersion: governance.cyclonedx.org/v1\nkind: SBOMAuditPolicy\nmetadata:\n  name: cyclonedx-governance\nspec:\n  specVersion: \"1.5\"\n  formats: [\"cyclonedx-json\", \"spdx-json\"]\n  scanner:\n    engine: \"syft\"\n    vulnerabilityMatcher: \"grype\"\n    epssThreshold: 0.05\n    maxCvssScore: 7.0\n  failOnSeverity: [\"CRITICAL\", \"HIGH\"]";
+    const pythonCode = "#!/usr/bin/env python3\n\"\"\"\nSyft CycloneDX SBOM Compiler & Grype EPSS Evaluator\n\"\"\"\nimport subprocess\nimport json\nimport sys\n\ndef generate_and_scan_sbom(image_name: str, output_path: str = \"sbom.cdx.json\"):\n    print(f\"📦 Compiling CycloneDX 1.5 SBOM for {image_name}...\")\n    subprocess.run([\"syft\", image_name, \"-o\", f\"cyclonedx-json={output_path}\"], check=True)\n    \n    print(f\"🔍 Auditing SBOM vulnerabilities with Grype & EPSS...\")\n    scan = subprocess.run([\"grype\", f\"sbom:{output_path}\", \"-o\", \"json\"], capture_output=True, text=True, check=True)\n    report = json.loads(scan.stdout)\n    vulns = report.get(\"matches\", [])\n    print(f\"Found {len(vulns)} packages audited.\")\n    return len(vulns)\n\nif __name__ == \"__main__\":\n    generate_and_scan_sbom(\"alpine:latest\")\n";
+    const k8sCode = "apiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: continuous-sbom-scanner\nspec:\n  schedule: \"0 2 * * *\"\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          containers:\n            - name: syft-scanner\n              image: anchore/syft:latest\n              args: [\"dir:/app\", \"-o\", \"cyclonedx-json=/out/sbom.json\"]\n          restartPolicy: OnFailure";
+
+    const codeOut = document.getElementById('codeOutput');
+    const tabs = document.querySelectorAll('.tab-btn');
+    let currentTab = 'manifestTab';
+
+    function renderOutput() {
+      const env = document.getElementById('cfgEnv').value;
+      const mode = document.getElementById('cfgMode').value;
+      if (currentTab === 'manifestTab') {
+        codeOut.textContent = `# Environment: ${env} | Enforcement: ${mode}\n` + primaryCode;
+      } else if (currentTab === 'pyTab') {
+        codeOut.textContent = pythonCode;
+      } else {
+        codeOut.textContent = k8sCode;
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTab = tab.getAttribute('data-tab');
+        renderOutput();
+      });
+    });
+
+    document.getElementById('btnCompile').addEventListener('click', renderOutput);
+  </script>
+</body>
+</html>

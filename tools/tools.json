@@ -4006,5 +4006,65 @@
     "tag": "broker-policy.json",
     "link": "openai-marketplace-broker/",
     "repository": "Pradeeptalari14/tp-openai-marketplace-broker"
+  },
+  {
+    "title": "Sigstore Cosign SLSA Provenance Studio",
+    "desc": "Automate SLSA Level 3 build provenance, in-toto cryptographic attestations, and keyless container image signing using GitHub Actions OIDC and Rekor transparency log.",
+    "category": "cicd",
+    "icon": "✍️",
+    "color": "rgb(236, 72, 153)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "cosign-attestation.yml",
+    "link": "sigstore-cosign-slsa/",
+    "repository": "Pradeeptalari14/tp-sigstore-cosign-slsa"
+  },
+  {
+    "title": "SBOM & CycloneDX Vulnerability Governance Studio",
+    "desc": "Generate CycloneDX and SPDX Software Bill of Materials (SBOM) using Syft, enforce Grype vulnerability gates with EPSS scoring, and verify licensing compliance.",
+    "category": "cicd",
+    "icon": "📋",
+    "color": "rgb(14, 165, 233)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "sbom-policy.yaml",
+    "link": "sbom-cyclonedx-governance/",
+    "repository": "Pradeeptalari14/tp-sbom-cyclonedx-governance"
+  },
+  {
+    "title": "Semgrep AST Policy Guardrails Studio",
+    "desc": "Author custom Semgrep AST static analysis policies, taint tracking rules for SQL injection and SSRF, and automated SARIF publishing to GitHub Security tab.",
+    "category": "automation",
+    "icon": "🔍",
+    "color": "rgb(16, 185, 129)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "semgrep-rules.yml",
+    "link": "semgrep-ast-guardrails/",
+    "repository": "Pradeeptalari14/tp-semgrep-ast-guardrails"
+  },
+  {
+    "title": "OWASP Top 10 for LLMs & AI Agent Shield Studio",
+    "desc": "Protect agent swarms and RAG workflows against OWASP Top 10 for LLMs: prompt injections, insecure tool hijacking, sensitive data leakage, and denial of service.",
+    "category": "ai",
+    "icon": "🛡️",
+    "color": "rgb(239, 68, 68)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "guardrails-config.yaml",
+    "link": "owasp-llm-agent-shield/",
+    "repository": "Pradeeptalari14/tp-owasp-llm-agent-shield"
+  },
+  {
+    "title": "HashiCorp Boundary Zero-Trust Access Studio",
+    "desc": "Deploy identity-based zero-trust remote access for EKS clusters and Aurora databases without SSH keys, open bastion ports, or legacy static VPN credentials.",
+    "category": "cloud",
+    "icon": "🔐",
+    "color": "rgb(168, 247, 85)",
+    "borderClass": "border-rose-200",
+    "bgClass": "bg-rose-50/10",
+    "tag": "boundary-controller.hcl",
+    "link": "hashicorp-boundary-zerotrust/",
+    "repository": "Pradeeptalari14/tp-boundary-zerotrust"
   }
 ]

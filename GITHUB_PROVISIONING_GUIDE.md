@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **334 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **339 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 334 Studios
+    loop For each of the 339 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)

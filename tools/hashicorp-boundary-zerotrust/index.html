@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HashiCorp Boundary Zero-Trust Access Studio | Talari Pradeep</title>
+  <meta name="description" content="Deploy identity-based zero-trust remote access for EKS clusters and Aurora databases without SSH keys, open bastion ports, or legacy static VPN credentials.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-lock"></i> DevSecOps Frontier</span>
+        <h1 class="tool-title">HashiCorp Boundary Zero-Trust Access Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="../../studios/flow/?studio=hashicorp-boundary-zerotrust" class="btn btn-primary" style="margin-right: 0.5rem;">
+          <i class="fa-solid fa-bolt"></i> Visual Flow Canvas
+        </a>
+        <a href="https://github.com/Pradeeptalari14/tp-boundary-zerotrust" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content">
+    <div class="tool-grid">
+      <!-- Left Config Panel -->
+      <section class="tool-card config-panel">
+        <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Identity-based ephemeral remote access for EKS & Aurora without SSH keys or open bastions</h2>
+        <p class="card-desc">Deploy identity-based zero-trust remote access for EKS clusters and Aurora databases without SSH keys, open bastion ports, or legacy static VPN credentials.</p>
+
+        <div class="form-group">
+          <label for="cfgEnv">Target Deployment Tier</label>
+          <select id="cfgEnv" class="form-control">
+            <option value="production" selected>Production (Strict Zero-Trust Enforced)</option>
+            <option value="staging">Staging (Continuous Attestation)</option>
+            <option value="dev">Development Sandbox</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgMode">Policy Enforcement Mode</label>
+          <select id="cfgMode" class="form-control">
+            <option value="strict" selected>Strict (Fail-Closed / Block Pull Requests)</option>
+            <option value="audit">Audit Only (Telemetry & Security Alerts)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cfgManifest">Primary Configuration Manifest</label>
+          <input type="text" id="cfgManifest" class="form-control" value="boundary-controller.hcl" readonly />
+        </div>
+
+        <button id="btnCompile" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-gears"></i> Compile &amp; Verify Policy Manifest
+        </button>
+      </section>
+
+      <!-- Right Output Panel -->
+      <section class="tool-card results-panel">
+        <h2 class="card-title"><i class="fa-solid fa-shield-halved"></i> Security Telemetry &amp; Compiled Blueprint</h2>
+        <div class="metrics-grid">
+          
+          <div class="metric-card">
+            <span class="metric-label">Bastion Ports Open</span>
+            <span class="metric-value">Zero (0 Inbound)</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Identity Auth</span>
+            <span class="metric-value">Okta / Azure AD OIDC</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Session Credential TTL</span>
+            <span class="metric-value">15m Ephemeral</span>
+          </div>
+        </div>
+
+        <div class="output-preview-container">
+          <div class="output-tabs">
+            <button class="tab-btn active" data-tab="manifestTab">Primary Manifest (boundary-controller.hcl)</button>
+            <button class="tab-btn" data-tab="pyTab">Python Automation Drill</button>
+            <button class="tab-btn" data-tab="k8sTab">K8s Policy / Deployment</button>
+          </div>
+          <pre class="code-preview" id="codeOutput">disable_mlock = true
+
+controller {
+  name = "boundary-zero-trust-controller"
+  database {
+    url = "env://BOUNDARY_PG_URL"
+  }
+}
+
+listener "tcp" {
+  address = "0.0.0.0:9200"
+  purpose = "api"
+  tls_disable = false
+  tls_cert_file = "/etc/boundary/cert.pem"
+  tls_key_file = "/etc/boundary/key.pem"
+}</pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- Architecture & Production Guide -->
+    <section class="tool-card doc-panel">
+      <h2 class="card-title"><i class="fa-solid fa-network-wired"></i> HashiCorp Boundary Zero-Trust Access Studio Enterprise Topology</h2>
+      <div class="diagram-container">
+        <img src="hashicorp_boundary_zerotrust_flow.png" alt="HashiCorp Boundary Zero-Trust Access Studio Architecture Flow" class="architecture-diagram" style="max-width:100%; border-radius:12px; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.1);">
+      </div>
+
+      <div class="doc-content">
+        <h3>Overview &amp; Architectural Superiority</h3>
+        <p>Deploy identity-based zero-trust remote access for EKS clusters and Aurora databases without SSH keys, open bastion ports, or legacy static VPN credentials.</p>
+
+        <h3>Enterprise Production Scenarios</h3>
+        <ul>
+          <li><strong>Cryptographic Verification:</strong> Prevent tampering in CI/CD pipeline artifact creation and deployment.</li>
+          <li><strong>Automated Gating:</strong> Enforce zero-tolerance security rules before artifacts schedule onto Kubernetes clusters.</li>
+          <li><strong>Zero Bastions / Zero Static Keys:</strong> Ephemeral, identity-based sessions verified against immutable transparency ledgers.</li>
+        </ul>
+
+        <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-server"></i> Infrastructure &amp; Software Technology Stack</h3>
+        <div class="stack-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #84cc16; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-network-wired"></i> Zero-Trust Controller</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>HashiCorp Boundary 0.17+</strong></li><li>• <strong>AWS KMS Transit Encryption</strong></li><li>• <strong>PostgreSQL 16 HA Backend</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #84cc16; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-server"></i> Private Worker Mesh</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Multi-Hop Reverse Workers</strong></li><li>• <strong>Zero Public Inbound Ports</strong></li><li>• <strong>Mutual TLS Tunneling</strong></li>
+            </ul>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 1rem;">
+            <h4 style="color: #84cc16; font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-database"></i> Target Workloads</h4>
+            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; list-style: none; padding: 0;">
+              <li>• <strong>Amazon Aurora PostgreSQL</strong></li><li>• <strong>AWS EKS Private Endpoints</strong></li><li>• <strong>Session Recording & Audit</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const primaryCode = "disable_mlock = true\n\ncontroller {\n  name = \"boundary-zero-trust-controller\"\n  database {\n    url = \"env://BOUNDARY_PG_URL\"\n  }\n}\n\nlistener \"tcp\" {\n  address = \"0.0.0.0:9200\"\n  purpose = \"api\"\n  tls_disable = false\n  tls_cert_file = \"/etc/boundary/cert.pem\"\n  tls_key_file = \"/etc/boundary/key.pem\"\n}";
+    const pythonCode = "#!/usr/bin/env python3\n\"\"\"\nHashiCorp Boundary Session Connect & Ephemeral Target Router\n\"\"\"\nimport subprocess\nimport os\n\ndef connect_private_target(target_id: str, local_port: int = 5432):\n    print(f\"🔐 Establishing zero-trust session to target {target_id} on localhost:{local_port}...\")\n    cmd = [\n        \"boundary\", \"connect\", \"postgres\",\n        \"-target-id\", target_id,\n        \"-listen-port\", str(local_port)\n    ]\n    subprocess.run(cmd)\n\nif __name__ == \"__main__\":\n    connect_private_target(\"ttcp_1234567890\")\n";
+    const k8sCode = "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: boundary-worker\nspec:\n  replicas: 2\n  template:\n    spec:\n      containers:\n        - name: worker\n          image: hashicorp/boundary:latest\n          args: [\"server\", \"-config=/etc/boundary/worker.hcl\"]\n          volumeMounts:\n            - name: config\n              mountPath: /etc/boundary";
+
+    const codeOut = document.getElementById('codeOutput');
+    const tabs = document.querySelectorAll('.tab-btn');
+    let currentTab = 'manifestTab';
+
+    function renderOutput() {
+      const env = document.getElementById('cfgEnv').value;
+      const mode = document.getElementById('cfgMode').value;
+      if (currentTab === 'manifestTab') {
+        codeOut.textContent = `# Environment: ${env} | Enforcement: ${mode}\n` + primaryCode;
+      } else if (currentTab === 'pyTab') {
+        codeOut.textContent = pythonCode;
+      } else {
+        codeOut.textContent = k8sCode;
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTab = tab.getAttribute('data-tab');
+        renderOutput();
+      });
+    });
+
+    document.getElementById('btnCompile').addEventListener('click', renderOutput);
+  </script>
+</body>
+</html>

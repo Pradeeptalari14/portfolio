@@ -38,7 +38,7 @@ function loadGuideDom() {
 }
 
 describe('GitHub Provisioning & SRE Execution Hub Page', () => {
-  it('should fetch tools.json and render 324 studio cards', async () => {
+  it('should fetch tools.json and render all studio cards', async () => {
     const window = loadGuideDom();
 
     // Manually dispatch DOMContentLoaded

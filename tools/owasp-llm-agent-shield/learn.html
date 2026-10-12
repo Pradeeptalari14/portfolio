@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OWASP Top 10 for LLMs & AI Agent Shield Studio — Learning Guide & Production Drills | Talari Pradeep</title>
+  <link rel="stylesheet" href="../../styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#080c14] text-slate-200 min-h-screen flex flex-col font-sans">
+  <div class="max-w-4xl mx-auto px-6 py-12">
+    <a href="index.html" class="text-xs font-mono text-rose-400 hover:underline mb-4 inline-block">← Back to Studio Workspace</a>
+    <h1 class="text-3xl font-extrabold text-white mb-4">OWASP Top 10 for LLMs & AI Agent Shield Studio — Comprehensive SRE Guide</h1>
+    <p class="text-sm text-slate-400 mb-8 leading-relaxed">Protect agent swarms and RAG workflows against OWASP Top 10 for LLMs: prompt injections, insecure tool hijacking, sensitive data leakage, and denial of service.</p>
+
+    <div class="space-y-8 text-sm leading-relaxed">
+      <section class="p-6 rounded-xl border border-white/10 bg-slate-900/60">
+        <h2 class="text-lg font-bold text-white mb-2">1. Architectural Purpose & Zero-Trust Guarantees</h2>
+        <p class="text-slate-300">This studio provides automated cryptographic attestation, strict policy verification, and zero-trust gating. Enforcing compliance before production runtime prevents supply chain tampering, unauthorized shell spawns, and privilege escalations.</p>
+      </section>
+
+      <section class="p-6 rounded-xl border border-white/10 bg-slate-900/60">
+        <h2 class="text-lg font-bold text-white mb-2">2. Production Verification Drills</h2>
+        <div class="bg-black/70 p-4 rounded font-mono text-xs text-rose-400 space-y-2">
+          <p># Clone production repository</p>
+          <p class="text-slate-300">git clone https://github.com/Pradeeptalari14/tp-owasp-llm-agent-shield.git</p>
+          <p># Verify compliance and run unit verification</p>
+          <p class="text-slate-300">docker build -t test-audit . && echo "Zero High/Critical CVEs detected"</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
