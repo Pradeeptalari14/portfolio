@@ -13,6 +13,59 @@ async def list_projects(user_id: str = "guest", db: AsyncSession = Depends(get_d
     result = await db.execute(select(Project).where(Project.user_id == user_id))
     return result.scalars().all()
 
+from pathlib import Path
+import json
+
+@router.get("/repositories")
+async def list_open_source_repositories(category: str = None, search: str = None):
+    """
+    Returns the catalog of all 341 open-source developer repositories and paired studios.
+    """
+    tools_path = Path(__file__).resolve().parents[3] / "tools" / "tools.json"
+    if not tools_path.exists():
+        tools_path = Path("tools/tools.json")
+
+    if not tools_path.exists():
+        return {"total": 0, "repositories": []}
+
+    try:
+        with open(tools_path, "r", encoding="utf-8") as f:
+            tools = json.load(f)
+    except Exception:
+        return {"total": 0, "repositories": []}
+
+    results = tools
+    if category and category.lower() != "all":
+        results = [t for t in results if (t.get("category") or "").lower() == category.lower()]
+    if search:
+        s = search.lower()
+        results = [
+            t for t in results
+            if s in (t.get("title") or "").lower()
+            or s in (t.get("desc") or "").lower()
+            or s in (t.get("repository") or "").lower()
+            or s in (t.get("tag") or "").lower()
+        ]
+
+    return {
+        "total": len(results),
+        "total_catalog": len(tools),
+        "repositories": [
+            {
+                "title": t.get("title"),
+                "description": t.get("desc"),
+                "category": t.get("category"),
+                "repository": t.get("repository") or f"Pradeeptalari14/tp-{t.get('link','').strip('/')}",
+                "github_url": f"https://github.com/{t.get('repository') or 'Pradeeptalari14/tp-' + t.get('link','').strip('/')}",
+                "studio_link": f"/tools/{t.get('link','').strip('/')}/",
+                "tag": t.get("tag"),
+                "icon": t.get("icon", "🛠️")
+            }
+            for t in results
+        ]
+    }
+
+
 @router.get("/{project_id}", response_model=ProjectResponse)
 async def get_project(project_id: str, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Project).where(Project.id == project_id))

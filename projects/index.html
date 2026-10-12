@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Production Engineering Systems & Architectural Platforms | Talari Pradeep</title>
-  <meta name="description" content="Production-grade AI platforms, LLMOps pipelines, multi-agent frameworks, and cloud-native IaC architectures built by Talari Pradeep. Featuring 6 verified flagship platforms and 341 interactive developer studios." />
+  <title>Production Systems & 341 Open-Source Repositories | Talari Pradeep</title>
+  <meta name="description" content="Production-grade AI platforms, LLMOps pipelines, multi-agent frameworks, and cloud-native IaC architectures built by Talari Pradeep. Featuring 6 verified flagship platforms, 341 open-source GitHub repositories, and interactive engineering studios." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -565,6 +565,345 @@
       .page-wrap { padding: 3rem 1.25rem 4rem; }
       .banner-actions { flex-direction: column; }
     }
+  
+    /* ========================================================= */
+    /* 341 Open Source Repositories Directory & Explorer Section */
+    /* ========================================================= */
+    .repos-section {
+      margin-top: 5rem;
+      margin-bottom: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 4.5rem;
+    }
+    .repos-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .repos-kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .repo-kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .repo-kpi-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .repo-kpi-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      line-height: 1.15;
+    }
+    .repo-kpi-lbl {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.35rem;
+    }
+    .repo-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .repo-search-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .repo-search-input {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.95rem 3.5rem 0.95rem 3.2rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      outline: none;
+      transition: var(--transition);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .repo-search-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+    }
+    .repo-search-icon {
+      position: absolute;
+      left: 1.15rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .repo-clear-btn {
+      position: absolute;
+      right: 1.15rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: none;
+      padding: 0.2rem;
+    }
+    .repo-clear-btn:hover { color: var(--text-primary); }
+    .repo-filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      justify-content: center;
+    }
+    .repo-tab-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .repo-tab-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+    .repo-tab-btn.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    .repo-toolbar-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      padding: 0 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .repo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .repo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      position: relative;
+    }
+    .repo-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-accent);
+    }
+    .repo-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .repo-cat-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .repo-cat-tag.ai { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+    .repo-cat-tag.cloud { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .repo-cat-tag.cicd { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .repo-cat-tag.automation { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .repo-cat-tag.observability { background: rgba(236, 72, 153, 0.15); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3); }
+    .repo-cat-tag.devops { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .repo-gh-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.22rem 0.55rem;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+      text-decoration: none;
+      max-width: 175px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .repo-gh-badge:hover {
+      background: rgba(56, 189, 248, 0.2);
+      color: #fff;
+      border-color: var(--accent-cyan);
+    }
+    .repo-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+    .repo-card-title a { color: inherit; transition: var(--transition); }
+    .repo-card-title a:hover { color: var(--accent-primary); }
+    .repo-card-desc {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .repo-card-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .repo-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .repo-clone-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+    .repo-clone-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: rgba(129, 140, 248, 0.08);
+    }
+    .repo-launch-btn {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .repo-launch-btn:hover {
+      color: var(--accent-cyan);
+      transform: translateX(2px);
+    }
+    .repo-pagination-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .repo-page-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 0.65rem 1.4rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .repo-page-btn:hover {
+      border-color: var(--accent-primary);
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--accent-primary);
+    }
+    .repo-no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      color: var(--text-muted);
+    }
+    .toast-copy {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #10b981;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      display: none;
+      animation: fadeInToast 0.2s ease;
+    }
+    @keyframes fadeInToast {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 1024px) {
+      .repo-grid { grid-template-columns: repeat(2, 1fr); }
+      .repos-kpi-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .repo-grid { grid-template-columns: 1fr; }
+      .repos-kpi-bar { grid-template-columns: 1fr; }
+      .repo-toolbar-meta { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -917,6 +1256,95 @@
 
     </div>
 
+
+    <!-- ============================================================ -->
+    <!-- 341 Open Source Project Repositories Directory & Explorer -->
+    <!-- ============================================================ -->
+    <section class="repos-section" id="reposDirectory" aria-label="341 Open Source Project Repositories">
+      
+      <div class="repos-header">
+        <div class="page-tag">Open Source Codebase Directory</div>
+        <h2 class="page-title">341 Production <span class="gradient-text">Repositories</span></h2>
+        <p class="page-subtitle">
+          Explore, clone, and launch all 341 public micro-repositories powering our interactive developer studios across AI/LLMOps, Cloud, Kubernetes, SRE Observability, and DevSecOps.
+        </p>
+      </div>
+
+      <!-- KPI Metrics Bar -->
+      <div class="repos-kpi-bar">
+        <div class="repo-kpi-card">
+          <div class="repo-kpi-val">341</div>
+          <div class="repo-kpi-lbl">GitHub Repositories</div>
+        </div>
+        <div class="repo-kpi-card">
+          <div class="repo-kpi-val">100%</div>
+          <div class="repo-kpi-lbl">Live Paired Studios</div>
+        </div>
+        <div class="repo-kpi-card">
+          <div class="repo-kpi-val">6</div>
+          <div class="repo-kpi-lbl">Core Engineering Domains</div>
+        </div>
+        <div class="repo-kpi-card">
+          <div class="repo-kpi-val">Zero</div>
+          <div class="repo-kpi-lbl">Vendor Lock-In</div>
+        </div>
+      </div>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="repo-controls">
+        <div class="repo-search-wrap">
+          <svg class="repo-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="repoSearchInput" 
+            class="repo-search-input" 
+            placeholder="Search 341 repositories by name, language, tag, or tech (e.g. vllm, trivy, rag, ebpf, k8s, argocd)..." 
+            autocomplete="off" 
+          />
+          <button id="clearRepoSearchBtn" class="repo-clear-btn" aria-label="Clear search">✕</button>
+        </div>
+
+        <div class="repo-filter-tabs" id="repoFilterTabs">
+          <button class="repo-tab-btn active" data-repocat="all">All Repos (341)</button>
+          <button class="repo-tab-btn" data-repocat="ai">AI &amp; LLMOps (235)</button>
+          <button class="repo-tab-btn" data-repocat="automation">Automation &amp; SRE (34)</button>
+          <button class="repo-tab-btn" data-repocat="observability">Observability (29)</button>
+          <button class="repo-tab-btn" data-repocat="cloud">Cloud &amp; Infra (27)</button>
+          <button class="repo-tab-btn" data-repocat="cicd">CI/CD &amp; DevSecOps (14)</button>
+          <button class="repo-tab-btn" data-repocat="devops">Backend &amp; Learning (2)</button>
+        </div>
+
+        <div class="repo-toolbar-meta">
+          <span id="repoCountDisplay">Showing 341 of 341 repositories</span>
+          <span>Source: <strong style="color:var(--text-primary)">github.com/Pradeeptalari14</strong></span>
+        </div>
+      </div>
+
+      <!-- Repositories Grid Container -->
+      <div class="repo-grid" id="repoGridContainer">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Pagination / Load More Bar -->
+      <div class="repo-pagination-bar" id="repoPaginationBar">
+        <button id="loadMoreReposBtn" class="repo-page-btn">
+          <span>Load More Repositories (+24)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <button id="showAllReposBtn" class="repo-page-btn" style="background:rgba(255,255,255,0.03);">
+          <span>Show All 341 Repositories</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- Copy Notification Toast -->
+    <div id="repoCopyToast" class="toast-copy">Copied clone command to clipboard!</div>
+
+
     <!-- 341 Studios Ecosystem Callout Banner -->
     <section class="studios-banner" aria-label="Interactive Studios Hub Callout">
       <div class="banner-content">
@@ -991,5 +1419,223 @@
   </script>
 
   <load src="../sections/chatbot.html" />
+
+  <script>
+    // 341 Repositories Explorer Logic
+    (function() {
+      let allTools = [];
+      let filteredTools = [];
+      let visibleCount = 24;
+      const PAGE_CHUNK = 24;
+      let activeCat = 'all';
+      let searchQuery = '';
+
+      const gridEl = document.getElementById('repoGridContainer');
+      const searchInput = document.getElementById('repoSearchInput');
+      const clearBtn = document.getElementById('clearRepoSearchBtn');
+      const filterTabs = document.getElementById('repoFilterTabs');
+      const countDisplay = document.getElementById('repoCountDisplay');
+      const loadMoreBtn = document.getElementById('loadMoreReposBtn');
+      const showAllBtn = document.getElementById('showAllReposBtn');
+      const paginationBar = document.getElementById('repoPaginationBar');
+      const toastEl = document.getElementById('repoCopyToast');
+
+      const catLabels = {
+        ai: 'AI & LLMOps',
+        cloud: 'Cloud & Infra',
+        cicd: 'CI/CD & DevSecOps',
+        automation: 'Automation & SRE',
+        observability: 'Observability',
+        devops: 'Backend & Learning'
+      };
+
+      async function initRepos() {
+        if (typeof fetch === 'function') {
+          try {
+            const res = await fetch('../tools/tools.json');
+            if (res.ok) {
+              allTools = await res.json();
+            } else {
+              const fallbackRes = await fetch('/tools/tools.json');
+              if (fallbackRes.ok) allTools = await fallbackRes.json();
+            }
+          } catch(e) {
+            console.warn('Could not fetch tools.json:', e);
+          }
+        }
+
+        if (!allTools || !allTools.length) {
+          gridEl.innerHTML = '<div class="repo-no-results">Unable to load repositories catalog. Please try refreshing.</div>';
+          return;
+        }
+
+        applyFilters();
+        setupListeners();
+      }
+
+      function applyFilters() {
+        const query = searchQuery.trim().toLowerCase();
+        filteredTools = allTools.filter(tool => {
+          const matchCat = activeCat === 'all' || (tool.category || '').toLowerCase() === activeCat;
+          if (!matchCat) return false;
+          if (!query) return true;
+
+          const title = (tool.title || '').toLowerCase();
+          const desc = (tool.desc || '').toLowerCase();
+          const repo = (tool.repository || '').toLowerCase();
+          const tag = (tool.tag || '').toLowerCase();
+          const link = (tool.link || '').toLowerCase();
+
+          return title.includes(query) || desc.includes(query) || repo.includes(query) || tag.includes(query) || link.includes(query);
+        });
+
+        renderGrid();
+      }
+
+      function renderGrid() {
+        countDisplay.textContent = 'Showing ' + Math.min(visibleCount, filteredTools.length) + ' of ' + filteredTools.length + ' repositories' + (activeCat !== 'all' ? ' (' + (catLabels[activeCat] || activeCat) + ')' : '');
+
+        if (filteredTools.length === 0) {
+          gridEl.innerHTML = '<div class="repo-no-results"><h4>No Repositories Found</h4><p style="margin-top:0.4rem;font-size:0.88rem;">No repositories matched your query. Try clearing your search or choosing another domain.</p></div>';
+          paginationBar.style.display = 'none';
+          return;
+        }
+
+        const itemsToShow = filteredTools.slice(0, visibleCount);
+        let html = '';
+
+        itemsToShow.forEach(tool => {
+          const cat = (tool.category || 'ai').toLowerCase();
+          const catLabel = catLabels[cat] || cat;
+          const repoSlug = tool.repository ? tool.repository.replace(/^Pradeeptalari14\//, '') : 'tp-' + tool.link.replace(/[\/\\]/g, '');
+          const repoFull = tool.repository ? tool.repository : 'Pradeeptalari14/' + repoSlug;
+          const studioLink = '../tools/' + tool.link.replace(/^\/+|\/+$/g, '') + '/';
+          const ghUrl = 'https://github.com/' + repoFull;
+          const cloneCmd = 'git clone ' + ghUrl + '.git';
+          const tag = tool.tag || 'config.yaml';
+
+          html += `
+            <article class="repo-card" data-repo="${repoSlug}">
+              <div class="repo-card-top">
+                <span class="repo-cat-tag ${cat}">${tool.icon || '🛠️'} ${catLabel}</span>
+                <a href="${ghUrl}" target="_blank" rel="noopener noreferrer" class="repo-gh-badge" title="View ${repoFull} on GitHub">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                  <span>${repoSlug}</span>
+                </a>
+              </div>
+
+              <div>
+                <h3 class="repo-card-title">
+                  <a href="${studioLink}">${tool.title}</a>
+                </h3>
+                <p class="repo-card-desc">${tool.desc || ''}</p>
+              </div>
+
+              <div class="repo-card-tag">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                <span>${tag}</span>
+              </div>
+
+              <div class="repo-card-footer">
+                <button class="repo-clone-btn" data-clone="${cloneCmd}" title="Copy git clone command">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span>Clone</span>
+                </button>
+
+                <a href="${studioLink}" class="repo-launch-btn">
+                  <span>Studio</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+              </div>
+            </article>
+          `;
+        });
+
+        gridEl.innerHTML = html;
+
+        if (visibleCount >= filteredTools.length) {
+          paginationBar.style.display = 'none';
+        } else {
+          paginationBar.style.display = 'flex';
+        }
+      }
+
+      function showToast(msg) {
+        if (!toastEl) return;
+        toastEl.textContent = msg;
+        toastEl.style.display = 'block';
+        setTimeout(() => { toastEl.style.display = 'none'; }, 2200);
+      }
+
+      function setupListeners() {
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            visibleCount = PAGE_CHUNK;
+            if (clearBtn) clearBtn.style.display = searchQuery ? 'block' : 'none';
+            applyFilters();
+          });
+        }
+
+        if (clearBtn) {
+          clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            searchQuery = '';
+            clearBtn.style.display = 'none';
+            visibleCount = PAGE_CHUNK;
+            applyFilters();
+            searchInput.focus();
+          });
+        }
+
+        if (filterTabs) {
+          filterTabs.addEventListener('click', (e) => {
+            const btn = e.target.closest('.repo-tab-btn');
+            if (!btn) return;
+            filterTabs.querySelectorAll('.repo-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCat = btn.getAttribute('data-repocat');
+            visibleCount = PAGE_CHUNK;
+            applyFilters();
+          });
+        }
+
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', () => {
+            visibleCount += PAGE_CHUNK;
+            renderGrid();
+          });
+        }
+
+        if (showAllBtn) {
+          showAllBtn.addEventListener('click', () => {
+            visibleCount = filteredTools.length;
+            renderGrid();
+          });
+        }
+
+        // Event delegation for copy clone button
+        gridEl.addEventListener('click', (e) => {
+          const btn = e.target.closest('.repo-clone-btn');
+          if (!btn) return;
+          const cmd = btn.getAttribute('data-clone');
+          if (cmd) {
+            navigator.clipboard.writeText(cmd).then(() => {
+              showToast('Copied: ' + cmd);
+            }).catch(() => {
+              showToast('Copied to clipboard!');
+            });
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRepos);
+      } else {
+        initRepos();
+      }
+    })();
+  </script>
+
 </body>
 </html>
