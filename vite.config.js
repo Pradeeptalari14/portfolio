@@ -19,6 +19,7 @@ function getToolInputs() {
     tools: resolve(__dirname, 'tools/index.html'),
     studios: resolve(__dirname, 'studios/index.html'),
     studiosLearn: resolve(__dirname, 'studios/learn/index.html'),
+    studiosFlow: resolve(__dirname, 'studios/flow/index.html'),
     incident: resolve(__dirname, 'incident/index.html'),
     toolbox: resolve(__dirname, 'toolbox/index.html'),
     architecture: resolve(__dirname, 'architecture/index.html'),

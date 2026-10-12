@@ -397,7 +397,6 @@
 }
 
 .vf-wire:hover {
-  stroke: #38bdf8 !error;
   stroke: #38bdf8;
   stroke-width: 3.5px;
 }

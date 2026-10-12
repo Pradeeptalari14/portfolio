@@ -2171,6 +2171,7 @@ ${nodeKeys.map(k => {
       const currentStudio = parts[parts.length - 1];
       if (!currentStudio || currentStudio === 'tools' || currentStudio === 'Domain' || currentStudio === 'studios') return;
 
+      // 1. Floating Action Launcher (Bottom-right)
       if (!document.getElementById('floatingVisualFlowBtn')) {
         const btn = document.createElement('a');
         btn.id = 'floatingVisualFlowBtn';
@@ -2182,6 +2183,26 @@ ${nodeKeys.map(k => {
         btn.onmouseenter = () => { btn.style.transform = 'translateY(-2px)'; btn.style.background = '#1e293b'; };
         btn.onmouseleave = () => { btn.style.transform = 'translateY(0)'; btn.style.background = '#0b1329'; };
         document.body.appendChild(btn);
+      }
+
+      // 2. Direct Header Action Launcher (Top-bar)
+      if (!document.getElementById('headerVisualFlowBtn')) {
+        const headerContainer = document.querySelector('.tool-header-right') || 
+                                document.querySelector('.header-actions') || 
+                                document.querySelector('.tool-actions') || 
+                                document.querySelector('.nav-actions') || 
+                                document.querySelector('.tool-header-container');
+        if (headerContainer) {
+          const hdrBtn = document.createElement('a');
+          hdrBtn.id = 'headerVisualFlowBtn';
+          hdrBtn.href = `/studios/flow/?studio=${encodeURIComponent(currentStudio)}`;
+          hdrBtn.className = 'btn btn-primary header-flow-btn';
+          hdrBtn.style.cssText = 'background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #fff; border: 1px solid #38bdf8; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.85rem; border-radius: 6px; font-weight: 600; font-size: 0.82rem; text-decoration: none; margin-left: 0.5rem; box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25); transition: all 0.2s ease;';
+          hdrBtn.innerHTML = `<span>⚡</span><span>Visual Flow</span>`;
+          hdrBtn.onmouseenter = () => { hdrBtn.style.boxShadow = '0 4px 14px rgba(56, 189, 248, 0.45)'; };
+          hdrBtn.onmouseleave = () => { hdrBtn.style.boxShadow = '0 2px 8px rgba(56, 189, 248, 0.25)'; };
+          headerContainer.prepend(hdrBtn);
+        }
       }
     } catch (e) {
       console.warn('Visual Flow button injection note:', e);

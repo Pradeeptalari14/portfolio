@@ -35,6 +35,7 @@ copyFile('tools/tools.json', 'tools/tools.json');
 copyFile('interview/topics.json', 'interview/topics.json');
 copyFile('AI/studios.json', 'AI/studios.json');
 copyFile('studios/learn/studios-learning.json', 'studios/learn/studios-learning.json');
+copyFile('studios/flow/index.html', 'studios/flow/index.html');
 copyFile('Talari_Pradeep.pdf', 'Talari_Pradeep.pdf');
 copyFile('Talari_Pradeep.docx', 'Talari_Pradeep.docx');
 
