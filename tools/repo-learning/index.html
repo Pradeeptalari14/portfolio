@@ -1126,8 +1126,42 @@ sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) FATAL: remaining co
       alert(`Repository imported successfully! Analyzed source files and generated architecture DAG.`);
     };
 
+    function populatePresetDropdown() {
+      const select = document.getElementById('repoPresetSelect');
+      if (!select) return;
+      const presets = generator.presetRepositories();
+      const cats = {
+        ai: { label: '🧠 AI & LLMOps Repositories', items: [] },
+        automation: { label: '⚙️ Automation & SRE Repositories', items: [] },
+        observability: { label: '📊 Observability & Tracing Repositories', items: [] },
+        cloud: { label: '☁️ Cloud & Kubernetes Repositories', items: [] },
+        cicd: { label: '🚀 CI/CD & DevSecOps Repositories', items: [] },
+        devops: { label: '🏛️ Enterprise Backend Platforms', items: [] }
+      };
+
+      Object.values(presets).forEach(p => {
+        const c = (p.category || 'ai').toLowerCase();
+        if (cats[c]) cats[c].items.push(p);
+        else cats.ai.items.push(p);
+      });
+
+      let html = '';
+      Object.values(cats).forEach(cat => {
+        if (cat.items.length === 0) return;
+        html += `<optgroup label="${cat.label} (${cat.items.length})">`;
+        cat.items.forEach(p => {
+          const selected = p.id === activeRepoId ? 'selected' : '';
+          html += `<option value="${p.id}" ${selected}>${p.id} — ${p.title}</option>`;
+        });
+        html += `</optgroup>`;
+      });
+      select.innerHTML = html;
+      select.value = activeRepoId;
+    }
+
     // Init
     window.addEventListener('DOMContentLoaded', () => {
+      populatePresetDropdown();
       onSelectPreset('tp-backend-ecosystem');
     });
   </script>

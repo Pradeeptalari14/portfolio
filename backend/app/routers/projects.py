@@ -1,4 +1,5 @@
 from typing import List
+from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -11,7 +12,40 @@ router = APIRouter(prefix="/api/projects", tags=["Projects"])
 @router.get("", response_model=List[ProjectResponse])
 async def list_projects(user_id: str = "guest", db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Project).where(Project.user_id == user_id))
-    return result.scalars().all()
+    projects = result.scalars().all()
+    if projects:
+        return projects
+
+    # Fallback / Default: return project workspaces for all 341 repositories
+    tools_path = Path(__file__).resolve().parents[3] / "tools" / "tools.json"
+    if not tools_path.exists():
+        tools_path = Path("tools/tools.json")
+
+    default_projects = []
+    if tools_path.exists():
+        try:
+            with open(tools_path, "r", encoding="utf-8") as f:
+                tools_data = json.load(f)
+            now = datetime.utcnow()
+            for item in tools_data:
+                sid = item.get("id") or item.get("link", "").strip("/").split("/")[-1]
+                default_projects.append(ProjectResponse(
+                    id=f"proj_tp_{sid}",
+                    studio_id=sid,
+                    user_id=user_id,
+                    title=f"{item.get('title')} Workspace",
+                    files={
+                        "main.py": f"# Project workspace for {item.get('title')}\\n# Target Repository: https://github.com/Pradeeptalari14/tp-{sid}\\n",
+                        item.get("tag", "config.yaml"): f"# Configuration artifact for {item.get('title')}\\n"
+                    },
+                    mode="build",
+                    completed_steps=["learn", "configure", "test"],
+                    created_at=now,
+                    updated_at=now
+                ))
+        except Exception:
+            pass
+    return default_projects
 
 from pathlib import Path
 import json

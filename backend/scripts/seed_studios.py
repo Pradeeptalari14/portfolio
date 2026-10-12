@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from sqlalchemy import select
 
 from backend.app.database import DATABASE_URL, Base
-from backend.app.models import Studio, StudioEmbedding
+from backend.app.models import Studio, StudioEmbedding, Project
 
 async def seed():
     repo_root = Path(__file__).resolve().parent.parent.parent
@@ -81,6 +81,31 @@ async def seed():
                 new_studio = Studio(**studio_record)
                 session.add(new_studio)
                 seeded_count += 1
+
+            # Seed / Upsert default Project record for this studio & repository
+            proj_id = f"proj_tp_{studio_id}"
+            stmt_proj = select(Project).where(Project.id == proj_id)
+            res_proj = await session.execute(stmt_proj)
+            existing_proj = res_proj.scalar_one_or_none()
+
+            project_record = {
+                "id": proj_id,
+                "studio_id": studio_id,
+                "user_id": "guest",
+                "title": f"{item.get('title', 'Untitled')} Project Workspace",
+                "files": {
+                    "main.py": f"# Project workspace for {item.get('title')}\n# Target Repo: https://github.com/Pradeeptalari14/tp-{studio_id}\n",
+                    item.get("tag", "config.yaml"): f"# Configuration artifact for {item.get('title')}\n"
+                },
+                "mode": "build",
+                "completed_steps": ["learn", "configure", "test"]
+            }
+
+            if existing_proj:
+                for k, v in project_record.items():
+                    setattr(existing_proj, k, v)
+            else:
+                session.add(Project(**project_record))
 
         await session.commit()
         print(f"Seeding Complete! Seeded: {seeded_count}, Updated: {updated_count}, Total Processed: {len(tools_data)}")
