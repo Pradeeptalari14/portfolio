@@ -1,5 +1,7 @@
 from typing import List
 from datetime import datetime
+from pathlib import Path
+import json
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -46,9 +48,6 @@ async def list_projects(user_id: str = "guest", db: AsyncSession = Depends(get_d
         except Exception:
             pass
     return default_projects
-
-from pathlib import Path
-import json
 
 @router.get("/repositories")
 async def list_open_source_repositories(category: str = None, search: str = None):
