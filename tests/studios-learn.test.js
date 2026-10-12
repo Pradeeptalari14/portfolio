@@ -169,7 +169,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
   });
 });
 
-describe('Individual Studio Learning Documents Across All 334 Studios', () => {
+describe('Individual Studio Learning Documents Across All 341 Studios', () => {
   const jsonPath = path.resolve(__dirname, '../studios/learn/studios-learning.json');
   const studios = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 

@@ -5,7 +5,7 @@ This backend is the optional, companion backend service that elevates the [Talar
 ## Core Capabilities
 1. **Persistent PostgreSQL with pgvector**:
    - Stores user projects, code files, and workspace state.
-   - Vector embeddings of all 334 developer studios, production runbooks, and failure treatments.
+   - Vector embeddings of all 341 developer studios, production runbooks, and failure treatments.
    - Dynamic vector dimensions (supports 768-dim `nomic-embed-text` and 1536-dim `text-embedding-3-small`).
 2. **Local AI & LLMOps with Ollama**:
    - Zero-cloud-cost local inference via models like `qwen2.5-coder:7b`, `llama3.2`, or `deepseek-r1`.
@@ -46,7 +46,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 | Endpoint | Method | Description |
 |---|---|---|
 | `GET /health` | GET | Health status and database/docker engine checks |
-| `GET /api/studios` | GET | List and filter 334 studios |
+| `GET /api/studios` | GET | List and filter 341 studios |
 | `PATCH /api/studios/{id}` | PATCH | Update studio metadata & dynamic configurations |
 | `POST /api/rag/query` | POST | pgvector cosine distance semantic search |
 | `GET /api/projects` | GET | List user saved projects |

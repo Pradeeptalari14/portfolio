@@ -2,7 +2,7 @@
 """
 Talari Pradeep Studios Hub — Phase 8 Companion Stack Smoke Test
 Validates:
-1. /api/health endpoint returns platform metadata and 334 studios support.
+1. /api/health endpoint returns platform metadata and 341 studios support.
 2. /api/studios/ catalog endpoints respond correctly.
 3. /api/sandbox/run validates isolation parameters.
 4. /api/rag/query handles dynamic vector queries with graceful fallback.

@@ -55,7 +55,7 @@ graph LR
 
 ## 3. Comprehensive DevSecOps Studios Catalog Matrix
 
-Below is an exhaustive matrix of existing DevSecOps, policy, and security studios cataloged across the 334 engineering workspaces:
+Below is an exhaustive matrix of existing DevSecOps, policy, and security studios cataloged across the 341 engineering workspaces:
 
 | # | Studio Name | Route Link | Target GitHub Repository | Primary Focus & Verification |
 | :--- | :--- | :--- | :--- | :--- |

@@ -451,7 +451,7 @@ class StudioPlatformSDK {
   }
 
   // 10. Verifiable Credentials & Certificate Generator (Phase 8)
-  async generateCertificate({ studentName = 'Talari Pradeep Engineer', trackId = 'ai-systems', trackTitle = 'Enterprise Platform & AI Systems Architect', completionCount = 334, score = 100 } = {}) {
+  async generateCertificate({ studentName = 'Talari Pradeep Engineer', trackId = 'ai-systems', trackTitle = 'Enterprise Platform & AI Systems Architect', completionCount = 341, score = 100 } = {}) {
     await this.initPromise;
     const issuedAt = new Date().toISOString();
     const formattedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });

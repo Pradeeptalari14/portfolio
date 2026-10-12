@@ -244,7 +244,7 @@
                 <button class="vf-mode-btn active" id="vfModeBtn">⚡ Visual Flow</button>
               </nav>
 
-              <!-- Studio Selector Dropdown (334 Studios) -->
+              <!-- Studio Selector Dropdown (341 Studios) -->
               <div class="vf-studio-selector-wrapper">
                 <label for="vfStudioSelect" class="vf-studio-label">Studio:</label>
                 <select id="vfStudioSelect" class="vf-studio-select">

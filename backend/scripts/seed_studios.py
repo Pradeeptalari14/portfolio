@@ -1,6 +1,6 @@
 """
 Talari Pradeep Studios Hub — Automated Database Seeder
-Seeds all 334 engineering studios into PostgreSQL + pgvector.
+Seeds all 341 engineering studios into PostgreSQL + pgvector.
 Usage:
     python backend/scripts/seed_studios.py
 """

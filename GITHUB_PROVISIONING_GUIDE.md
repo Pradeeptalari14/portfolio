@@ -68,7 +68,7 @@ graph TD
 
 ## 2. Batch Repository Creation Automation Script
 
-You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 334 public repositories under your profile:
+You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 341 public repositories under your profile:
 
 ```javascript
 // File: scratch/create-github-repos.js
@@ -111,12 +111,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 334 target repositories have been processed!");
+console.log("🎉 All 341 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 334-Repository Execution Matrix
+## 3. Exhaustive 341-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -281,11 +281,11 @@ Whenever a configuration needs an update:
 2. **Commit:** Replace the outdated config file in your local cloned git repository (following the *Commit Destination* in the matrix above).
 3. **Verify:** Commit and push the file to your `main` branch. Run the *Validation Command* locally or let your CI pipeline verify the output.
 
-### D. SRE Best Practices: Managing 334 Repositories at Scale
+### D. SRE Best Practices: Managing 341 Repositories at Scale
 
-As your platform scales to 334 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+As your platform scales to 341 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
-   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 334 repositories individually, define them at the **GitHub Organization level**.
+   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 341 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
 2. **Standard Repository Template:**
    - Create a base template repository (e.g., `tp-template-base`) pre-configured with the standard `.gitignore`, `LICENSE`, and default security linter workflows.

@@ -1,5 +1,5 @@
 # Visual Engineering Workspace & Flow Canvas Specification
-## Production Architecture & Operational Specification for 334 Engineering Studios
+## Production Architecture & Operational Specification for 341 Engineering Studios
 
 > **Platform**: [Talari Pradeep Engineering Studios](https://talaripradeep.info/studios/)  
 > **Repository**: [Pradeeptalari14/portfolio](https://github.com/Pradeeptalari14/portfolio)  
@@ -11,7 +11,7 @@
 
 ## 1. Executive Summary & Design System
 
-The Visual Engineering Workspace elevates all **334 Interactive Engineering Studios** on `talaripradeep.info` into an interactive, node-graph topology engine inspired by the visual design patterns of modern DAG orchestrators (Langflow, Dify, DrawIO, Network Topologies, and Cloud Architectures).
+The Visual Engineering Workspace elevates all **341 Interactive Engineering Studios** on `talaripradeep.info` into an interactive, node-graph topology engine inspired by the visual design patterns of modern DAG orchestrators (Langflow, Dify, DrawIO, Network Topologies, and Cloud Architectures).
 
 ```mermaid
 graph TD
@@ -22,7 +22,7 @@ graph TD
     end
     
     subgraph Universal Engine Integration
-        ST["tools/shared-tools.js<br/>injectVisualFlowAction()"] -->|Injected into all 334 studios| V
+        ST["tools/shared-tools.js<br/>injectVisualFlowAction()"] -->|Injected into all 341 studios| V
         V --> TOP["VisualFlowCanvas Engine<br/>tools/visual-flow-canvas.js"]
         TOP --> TopoGen["generateStudioTopology(studioId, toolData)<br/>10 Archetypes + Dynamic Synthesis"]
     end
@@ -186,7 +186,7 @@ Every studio ID or metadata profile automatically resolves to an appropriate dom
 1. **Automatic Injection via `tools/shared-tools.js`**:
    - `injectVisualFlowAction()` automatically injects a floating `⚡ Visual Flow` action button into every single studio page, linking directly to `/studios/flow/?studio=${studioId}`.
 2. **Top Bar Studio Switcher (`#vfStudioSelect`)**:
-   - When opened in `/studios/flow/`, all 334 studios are listed in optgroups:
+   - When opened in `/studios/flow/`, all 341 studios are listed in optgroups:
      - `AI & LLMOps Studios (234)`
      - `Automation & Systems Studios (33)`
      - `Observability & SRE Studios (29)`
@@ -210,7 +210,7 @@ Every studio ID or metadata profile automatically resolves to an appropriate dom
 Whenever changes are made to studios or visual flows, maintainers and AI assistants must follow these invariant steps:
 
 1. **Verify Studio Count**:
-   - Confirm studio count remains consistent in `tools/tools.json` (currently 334).
+   - Confirm studio count remains consistent in `tools/tools.json` (currently 341).
 2. **Sync Assets**:
    - Run `node scripts/copy-assets.js` to propagate `visual-flow-canvas.js` and `visual-flow-canvas.css` into `dist/` and `public/tools/`.
 3. **Run Unit Tests**:
