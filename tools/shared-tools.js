@@ -2164,6 +2164,30 @@ ${nodeKeys.map(k => {
     }
   }
 
+  // Inject Visual Flow Action for every studio
+  function injectVisualFlowAction() {
+    try {
+      const parts = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
+      const currentStudio = parts[parts.length - 1];
+      if (!currentStudio || currentStudio === 'tools' || currentStudio === 'Domain' || currentStudio === 'studios') return;
+
+      if (!document.getElementById('floatingVisualFlowBtn')) {
+        const btn = document.createElement('a');
+        btn.id = 'floatingVisualFlowBtn';
+        btn.className = 'floating-flow-btn';
+        btn.href = `/studios/flow/?studio=${encodeURIComponent(currentStudio)}`;
+        btn.title = `Launch ${currentStudio} in Visual Flow Workspace`;
+        btn.innerHTML = `<span>⚡</span><span>Visual Flow</span>`;
+        btn.style.cssText = 'position: fixed; bottom: 84px; right: 20px; z-index: 998; background: #0b1329; border: 1.5px solid #38bdf8; color: #38bdf8; padding: 0.4rem 0.85rem; border-radius: 9999px; font-family: monospace; font-size: 0.72rem; font-weight: 700; box-shadow: 0 4px 16px rgba(0,0,0,0.4); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: transform 0.2s ease, background 0.2s ease;';
+        btn.onmouseenter = () => { btn.style.transform = 'translateY(-2px)'; btn.style.background = '#1e293b'; };
+        btn.onmouseleave = () => { btn.style.transform = 'translateY(0)'; btn.style.background = '#0b1329'; };
+        document.body.appendChild(btn);
+      }
+    } catch (e) {
+      console.warn('Visual Flow button injection note:', e);
+    }
+  }
+
   // Initialize features on load
   function init() {
     injectAiLinkToNavbar();
@@ -2171,6 +2195,7 @@ ${nodeKeys.map(k => {
     injectWebhookTab();
     injectLinterTab();
     injectNetworkStatusBadge();
+    injectVisualFlowAction();
 
     // Inject Phase 14 & 15 Custom Features
     injectSystemFlowTab();

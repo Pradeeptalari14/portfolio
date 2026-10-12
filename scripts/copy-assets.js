@@ -29,6 +29,8 @@ function copyFile(srcRelative, destRelative) {
 
 copyFile('src/js/core-tool.js', 'src/js/core-tool.js');
 copyFile('tools/shared-tools.js', 'tools/shared-tools.js');
+copyFile('tools/visual-flow-canvas.js', 'tools/visual-flow-canvas.js');
+copyFile('tools/visual-flow-canvas.css', 'tools/visual-flow-canvas.css');
 copyFile('tools/tools.json', 'tools/tools.json');
 copyFile('interview/topics.json', 'interview/topics.json');
 copyFile('AI/studios.json', 'AI/studios.json');
@@ -54,6 +56,8 @@ function syncFile(srcRel, destRel) {
 
 syncFile('tools/shared-tools.js', 'public/tools/shared-tools.js');
 syncFile('tools/shared-tools.css', 'public/tools/shared-tools.css');
+syncFile('tools/visual-flow-canvas.js', 'public/tools/visual-flow-canvas.js');
+syncFile('tools/visual-flow-canvas.css', 'public/tools/visual-flow-canvas.css');
 syncFile('studios/learn/studios-learning.json', 'public/studios/learn/studios-learning.json');
 
 // Sync all architecture flow diagrams and media across all tools to public and dist

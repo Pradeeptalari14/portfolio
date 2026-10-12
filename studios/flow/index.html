@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visual Engineering Workspace & Flow Canvas | Talari Pradeep</title>
+  <meta name="description" content="Interactive visual engineering workspace for RAG pipelines, agent swarms, CI/CD DAGs, infrastructure topologies, and database schemas with real-time execution tracing." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700;800&display=swap" />
+  <link rel="stylesheet" href="../../tools/visual-flow-canvas.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #080c14;
+    }
+  </style>
+</head>
+<body>
+  <!-- Mount Container for the Canvas Engine -->
+  <div id="flowWorkspaceContainer" style="width: 100%; height: 100%;"></div>
+
+  <script src="../../tools/visual-flow-canvas.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const studioId = urlParams.get('studio') || null;
+      const activeTemplate = urlParams.get('template') || (studioId ? null : 'rag');
+
+      const canvas = new VisualFlowCanvas('#flowWorkspaceContainer', {
+        studioId: studioId,
+        activeTemplate: activeTemplate,
+        mode: 'simulate'
+      });
+      window.activeCanvas = canvas;
+    });
+  </script>
+</body>
+</html>

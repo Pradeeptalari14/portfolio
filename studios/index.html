@@ -882,8 +882,9 @@
     <div class="hub-nav-links">
       <a href="/">Home</a>
       <a href="/projects/">Projects</a>
-      <a href="/studios/" style="color: var(--accent-cyan); font-weight: 600;">Studios (334)</a>
+      <a href="/studios/" style="color: var(--accent-cyan); font-weight: 600;">Explore (334)</a>
       <a href="/studios/learn/">Learn Hub 📚</a>
+      <a href="/studios/flow/" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); padding: 0.25rem 0.65rem; border-radius: 6px; color: #38bdf8; font-weight: 600;">⚡ Visual Flow</a>
       <a href="/incident/">Incident Triage</a>
       <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener">GitHub</a>
     </div>
@@ -1143,9 +1144,21 @@
         render();
       }
 
+      function renderSkeletons() {
+        grid.innerHTML = Array.from({ length: 6 }).map(() => `
+          <div class="studio-card" style="opacity: 0.65; pointer-events: none;">
+            <div style="height: 22px; width: 55%; background: rgba(255,255,255,0.07); border-radius: 4px; margin-bottom: 1rem;"></div>
+            <div style="height: 14px; width: 90%; background: rgba(255,255,255,0.04); border-radius: 4px; margin-bottom: 0.45rem;"></div>
+            <div style="height: 14px; width: 75%; background: rgba(255,255,255,0.04); border-radius: 4px; margin-bottom: 1.25rem;"></div>
+            <div style="height: 28px; width: 100%; background: rgba(255,255,255,0.05); border-radius: 6px;"></div>
+          </div>
+        `).join('');
+      }
+
       // 3. Load 334 Studios
       async function loadStudios() {
         try {
+          renderSkeletons();
           let res = await fetch('../tools/tools.json');
           if (!res.ok) {
             res = await fetch('/tools/tools.json');
@@ -1155,9 +1168,21 @@
           render();
         } catch (e) {
           console.error('Failed to load studios:', e);
-          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #ef4444;">Failed to load studios catalog. Please check network.</div>';
+          grid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1.5rem; color: #ef4444; font-family: var(--font-mono);">
+              <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">⚠️</div>
+              <div style="font-size: 1.15rem; font-weight: 700; color: #f87171; margin-bottom: 0.5rem;">Unable to load studios catalog</div>
+              <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 480px; margin: 0 auto 1.5rem;">
+                The interactive studio registry could not be retrieved from the network. Check your connection or retry below.
+              </p>
+              <button onclick="window.retryLoadStudios()" style="background: var(--accent-cyan); color: #020617; border: none; padding: 0.55rem 1.35rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: var(--font-mono);">
+                🔄 Retry Loading Catalog
+              </button>
+            </div>
+          `;
         }
       }
+      window.retryLoadStudios = loadStudios;
 
       function getStudioLevel(studio) {
         const cat = (studio.category || '').toLowerCase();
@@ -1204,6 +1229,15 @@
           const lvl = getStudioLevel(s);
           const isBookmarked = bookmarkedIds.has(studioId);
 
+          let flowTemplate = 'rag';
+          const catLower = (s.category || '').toLowerCase();
+          const titleLower = (s.title || '').toLowerCase();
+          if (catLower.includes('cicd') || titleLower.includes('pipeline') || titleLower.includes('action')) flowTemplate = 'pipeline';
+          else if (catLower.includes('cloud') || catLower.includes('kubernetes') || titleLower.includes('vpc') || titleLower.includes('terraform')) flowTemplate = 'infra';
+          else if (catLower.includes('data') || titleLower.includes('vector') || titleLower.includes('sql') || titleLower.includes('db')) flowTemplate = 'database';
+          else if (titleLower.includes('agent') || titleLower.includes('swarm') || titleLower.includes('jev')) flowTemplate = 'agent';
+          const flowLink = `/studios/flow/?template=${flowTemplate}&studio=${encodeURIComponent(studioId)}`;
+
           return `
             <div class="studio-card" data-id="${studioId}">
               <div>
@@ -1224,6 +1258,7 @@
                 <span class="card-tag" title="${s.tag || ''}">${s.tag || 'Interactive'}</span>
                 <div class="card-action-btns">
                   <a href="${learnLink}" class="card-learn-btn" title="Open Complete Learning Guide">Guide 📖</a>
+                  <a href="${flowLink}" class="card-flow-btn" title="Open Visual Flow Canvas" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 600;">Flow ⚡</a>
                   <a href="${link}" class="card-launch-btn">Launch →</a>
                 </div>
               </div>
