@@ -283,4 +283,76 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(inspector.innerHTML).toContain('Pipeline Architecture');
     expect(inspector.querySelectorAll('.vf-stage-quick-btn').length).toBe(canvas.nodes.size);
   });
+
+  it('should support collapsing and expanding sidebars and toggling Zen mode', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const sidebarLeft = container.querySelector('#vfSidebarLeft');
+    const sidebarRight = container.querySelector('#vfSidebarRight');
+    const expandLeftBtn = container.querySelector('#vfExpandLeftBtn');
+    const expandRightBtn = container.querySelector('#vfExpandRightBtn');
+    const zenBtn = container.querySelector('#vfZenBtn');
+
+    // Initially expanded
+    expect(sidebarLeft.classList.contains('collapsed')).toBe(false);
+    expect(sidebarRight.classList.contains('collapsed')).toBe(false);
+
+    // Collapse left sidebar
+    canvas.toggleLeftSidebar(false);
+    expect(sidebarLeft.classList.contains('collapsed')).toBe(true);
+    expect(expandLeftBtn.classList.contains('visible')).toBe(true);
+
+    // Expand left sidebar
+    canvas.toggleLeftSidebar(true);
+    expect(sidebarLeft.classList.contains('collapsed')).toBe(false);
+    expect(expandLeftBtn.classList.contains('visible')).toBe(false);
+
+    // Collapse right sidebar
+    canvas.toggleRightSidebar(false);
+    expect(sidebarRight.classList.contains('collapsed')).toBe(true);
+    expect(expandRightBtn.classList.contains('visible')).toBe(true);
+
+    // Expand right sidebar
+    canvas.toggleRightSidebar(true);
+    expect(sidebarRight.classList.contains('collapsed')).toBe(false);
+    expect(expandRightBtn.classList.contains('visible')).toBe(false);
+
+    // Toggle Zen Mode (collapses both)
+    canvas.toggleZenMode();
+    expect(sidebarLeft.classList.contains('collapsed')).toBe(true);
+    expect(sidebarRight.classList.contains('collapsed')).toBe(true);
+    expect(zenBtn.textContent).toContain('Exit Zen');
+
+    // Toggle Zen Mode again (restores both)
+    canvas.toggleZenMode();
+    expect(sidebarLeft.classList.contains('collapsed')).toBe(false);
+    expect(sidebarRight.classList.contains('collapsed')).toBe(false);
+    expect(zenBtn.textContent).toContain('Zen Canvas');
+  });
+
+  it('should toggle bottom drawer state and update chevron and text', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const drawer = container.querySelector('#vfDrawer');
+    const drawerHeader = container.querySelector('#vfDrawerHeader');
+    const drawerChevron = container.querySelector('#vfDrawerChevron');
+    const drawerText = container.querySelector('#vfDrawerText');
+
+    expect(drawer.classList.contains('collapsed')).toBe(false);
+    expect(drawerChevron.textContent).toBe('▼');
+
+    // Click header to collapse
+    drawerHeader.click();
+    expect(drawer.classList.contains('collapsed')).toBe(true);
+    expect(drawerChevron.textContent).toBe('▲');
+    expect(drawerText.textContent).toBe('Expand Drawer');
+
+    // Click header again to expand
+    drawerHeader.click();
+    expect(drawer.classList.contains('collapsed')).toBe(false);
+    expect(drawerChevron.textContent).toBe('▼');
+    expect(drawerText.textContent).toBe('Collapse Drawer');
+  });
 });

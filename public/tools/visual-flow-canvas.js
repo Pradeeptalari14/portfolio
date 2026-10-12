@@ -196,6 +196,7 @@
                 <span id="vfEngineLabel">Engine: WASM Simulation</span>
               </div>
 
+              <button class="vf-btn vf-btn-ghost" id="vfZenBtn" title="Toggle Fullscreen Zen Canvas Mode (Hide sidebars)">⛶ Zen Canvas</button>
               <button class="vf-btn" id="vfAutoLayoutBtn" title="Automatic Hierarchical Layout">📐 Auto Layout</button>
               <button class="vf-btn" id="vfExportCodeBtn" title="Export Executable Code">💾 Export Code</button>
               <button class="vf-btn vf-btn-primary" id="vfRunFlowBtn">▶ Run the Flow</button>
@@ -207,8 +208,11 @@
             <!-- Left Panel: Palette & Templates -->
             <aside class="vf-sidebar-left" id="vfSidebarLeft">
               <div class="vf-panel-header">
-                <span class="vf-panel-title">Component Palette</span>
-                <span style="font-size: 0.75rem; color: var(--vf-text-muted);">Drag to Canvas</span>
+                <div>
+                  <span class="vf-panel-title">Component Palette</span>
+                  <span style="font-size: 0.72rem; color: var(--vf-text-muted); display: block;">Drag to Canvas</span>
+                </div>
+                <button class="vf-panel-collapse-btn" id="vfCollapseLeftBtn" title="Collapse Component Palette (◀)">◀</button>
               </div>
 
               <input type="text" class="vf-search-input" id="vfPaletteSearch" placeholder="Search components (LLM, RAG, K8s)..." />
@@ -271,6 +275,10 @@
 
             <!-- Center: Interactive Canvas -->
             <div class="vf-canvas-container" id="vfCanvasContainer">
+              <!-- Floating expand buttons when sidebars are collapsed -->
+              <button class="vf-floating-tab left" id="vfExpandLeftBtn" title="Expand Component Palette">▶ Palette</button>
+              <button class="vf-floating-tab right" id="vfExpandRightBtn" title="Expand Inspector">◀ Inspector</button>
+
               <div class="vf-canvas-viewport" id="vfCanvasViewport">
                 <!-- SVG Wire Layer -->
                 <svg class="vf-svg-layer" id="vfSvgLayer"></svg>
@@ -294,6 +302,7 @@
               <div class="vf-inspector-pane">
                 <div class="vf-panel-header">
                   <span class="vf-panel-title">Component Inspector</span>
+                  <button class="vf-panel-collapse-btn" id="vfCollapseRightBtn" title="Collapse Inspector (▶)">▶</button>
                 </div>
                 <div class="vf-inspector-content" id="vfInspectorContent">
                   <div class="vf-empty-inspector">
@@ -323,8 +332,8 @@
                 <button class="vf-drawer-tab" data-tab="metrics">Golden Signals & SLOs</button>
                 <button class="vf-drawer-tab" data-tab="code">Generated Manifest</button>
               </div>
-              <div style="font-size: 0.72rem; font-family: var(--vf-font-mono); color: var(--vf-text-muted);">
-                <span>▼ Toggle Drawer</span>
+              <div style="font-size: 0.72rem; font-family: var(--vf-font-mono); color: var(--vf-text-muted);" id="vfDrawerToggleLabel">
+                <span id="vfDrawerChevron">▼</span> <span id="vfDrawerText">Toggle Drawer</span>
               </div>
             </div>
             <div class="vf-drawer-panels">
@@ -355,6 +364,15 @@
       this.manifestPanel = this.container.querySelector('#vfManifestPanel');
       this.drawer = this.container.querySelector('#vfDrawer');
       this.drawerHeader = this.container.querySelector('#vfDrawerHeader');
+      this.drawerChevron = this.container.querySelector('#vfDrawerChevron');
+      this.drawerText = this.container.querySelector('#vfDrawerText');
+      this.sidebarLeft = this.container.querySelector('#vfSidebarLeft');
+      this.sidebarRight = this.container.querySelector('#vfSidebarRight');
+      this.collapseLeftBtn = this.container.querySelector('#vfCollapseLeftBtn');
+      this.collapseRightBtn = this.container.querySelector('#vfCollapseRightBtn');
+      this.expandLeftBtn = this.container.querySelector('#vfExpandLeftBtn');
+      this.expandRightBtn = this.container.querySelector('#vfExpandRightBtn');
+      this.zenBtn = this.container.querySelector('#vfZenBtn');
       this.runFlowBtn = this.container.querySelector('#vfRunFlowBtn');
       this.autoLayoutBtn = this.container.querySelector('#vfAutoLayoutBtn');
       this.exportCodeBtn = this.container.querySelector('#vfExportCodeBtn');
@@ -501,7 +519,32 @@
       this.drawerHeader.addEventListener('click', (e) => {
         if (e.target.closest('.vf-drawer-tab')) return;
         this.drawer.classList.toggle('collapsed');
+        const isCollapsed = this.drawer.classList.contains('collapsed');
+        if (this.drawerChevron) this.drawerChevron.textContent = isCollapsed ? '▲' : '▼';
+        if (this.drawerText) this.drawerText.textContent = isCollapsed ? 'Expand Drawer' : 'Collapse Drawer';
+        setTimeout(() => this.fitView(), 220);
       });
+
+      // 11b. Left Sidebar (Palette) Collapsing & Expanding
+      if (this.collapseLeftBtn) {
+        this.collapseLeftBtn.addEventListener('click', () => this.toggleLeftSidebar(false));
+      }
+      if (this.expandLeftBtn) {
+        this.expandLeftBtn.addEventListener('click', () => this.toggleLeftSidebar(true));
+      }
+
+      // 11c. Right Sidebar (Inspector) Collapsing & Expanding
+      if (this.collapseRightBtn) {
+        this.collapseRightBtn.addEventListener('click', () => this.toggleRightSidebar(false));
+      }
+      if (this.expandRightBtn) {
+        this.expandRightBtn.addEventListener('click', () => this.toggleRightSidebar(true));
+      }
+
+      // 11d. Zen Canvas Mode (Collapses both left and right sidebars for full canvas immersion)
+      if (this.zenBtn) {
+        this.zenBtn.addEventListener('click', () => this.toggleZenMode());
+      }
 
       // 12. Bottom Drawer Tab Switcher
       this.drawer.querySelectorAll('.vf-drawer-tab').forEach(tab => {
@@ -520,6 +563,59 @@
           }
         });
       }
+    }
+
+    toggleLeftSidebar(expand) {
+      if (!this.sidebarLeft) return;
+      if (typeof expand === 'boolean') {
+        if (expand) this.sidebarLeft.classList.remove('collapsed');
+        else this.sidebarLeft.classList.add('collapsed');
+      } else {
+        this.sidebarLeft.classList.toggle('collapsed');
+      }
+      const isCollapsed = this.sidebarLeft.classList.contains('collapsed');
+      if (this.expandLeftBtn) {
+        if (isCollapsed) this.expandLeftBtn.classList.add('visible');
+        else this.expandLeftBtn.classList.remove('visible');
+      }
+      setTimeout(() => this.fitView(), 240);
+    }
+
+    toggleRightSidebar(expand) {
+      if (!this.sidebarRight) return;
+      if (typeof expand === 'boolean') {
+        if (expand) this.sidebarRight.classList.remove('collapsed');
+        else this.sidebarRight.classList.add('collapsed');
+      } else {
+        this.sidebarRight.classList.toggle('collapsed');
+      }
+      const isCollapsed = this.sidebarRight.classList.contains('collapsed');
+      if (this.expandRightBtn) {
+        if (isCollapsed) this.expandRightBtn.classList.add('visible');
+        else this.expandRightBtn.classList.remove('visible');
+      }
+      setTimeout(() => this.fitView(), 240);
+    }
+
+    toggleZenMode() {
+      const leftCol = this.sidebarLeft && this.sidebarLeft.classList.contains('collapsed');
+      const rightCol = this.sidebarRight && this.sidebarRight.classList.contains('collapsed');
+      const shouldRestore = leftCol && rightCol;
+
+      if (shouldRestore) {
+        if (this.sidebarLeft) this.sidebarLeft.classList.remove('collapsed');
+        if (this.sidebarRight) this.sidebarRight.classList.remove('collapsed');
+        if (this.expandLeftBtn) this.expandLeftBtn.classList.remove('visible');
+        if (this.expandRightBtn) this.expandRightBtn.classList.remove('visible');
+        if (this.zenBtn) this.zenBtn.textContent = '⛶ Zen Canvas';
+      } else {
+        if (this.sidebarLeft) this.sidebarLeft.classList.add('collapsed');
+        if (this.sidebarRight) this.sidebarRight.classList.add('collapsed');
+        if (this.expandLeftBtn) this.expandLeftBtn.classList.add('visible');
+        if (this.expandRightBtn) this.expandRightBtn.classList.add('visible');
+        if (this.zenBtn) this.zenBtn.textContent = '◱ Exit Zen';
+      }
+      setTimeout(() => this.fitView(), 240);
     }
 
     _applyTransform() {

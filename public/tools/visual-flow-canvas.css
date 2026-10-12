@@ -258,7 +258,37 @@
   z-index: 20;
   flex-shrink: 0;
   backdrop-filter: blur(12px);
-  transition: transform 0.25s ease;
+  transition: width 0.22s ease, min-width 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+}
+
+.vf-sidebar-left.collapsed {
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-right: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.vf-panel-collapse-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--vf-border);
+  color: var(--vf-text-secondary);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.45rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vf-panel-collapse-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #fff;
 }
 
 .vf-panel-header {
@@ -719,6 +749,68 @@
   flex-shrink: 0;
   backdrop-filter: blur(12px);
   overflow: hidden;
+  transition: width 0.22s ease, min-width 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+}
+
+.vf-sidebar-right.collapsed {
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-left: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+/* Floating Expand Tabs when Sidebars are Collapsed */
+.vf-floating-tab {
+  position: absolute;
+  top: 1rem;
+  z-index: 25;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid var(--vf-border);
+  color: var(--vf-text-secondary);
+  font-family: var(--vf-font-mono);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+  transition: all 0.15s ease;
+}
+
+.vf-floating-tab:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.vf-floating-tab.left {
+  left: 1rem;
+}
+
+.vf-floating-tab.right {
+  right: 1rem;
+}
+
+.vf-floating-tab.visible {
+  display: flex !important;
+}
+
+.vf-btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--vf-border);
+  color: var(--vf-text-secondary);
+}
+
+.vf-btn-ghost:hover {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #fff;
 }
 
 .vf-inspector-pane {
