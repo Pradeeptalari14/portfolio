@@ -283,6 +283,7 @@
                 <button class="vf-tool-btn" id="vfZoomInBtn" title="Zoom In">➕</button>
                 <button class="vf-tool-btn" id="vfZoomResetBtn" title="Reset Zoom">100%</button>
                 <button class="vf-tool-btn" id="vfZoomOutBtn" title="Zoom Out">➖</button>
+                <button class="vf-tool-btn" id="vfFitViewBtn" title="Fit Entire Graph in View">🎯 Fit View</button>
                 <span style="color:var(--vf-border);">|</span>
                 <button class="vf-tool-btn" id="vfClearBtn" title="Clear Canvas">🗑️</button>
               </div>
@@ -290,22 +291,26 @@
 
             <!-- Right Panel: Node Inspector & AI Guide -->
             <aside class="vf-sidebar-right" id="vfSidebarRight">
-              <div class="vf-panel-header">
-                <span class="vf-panel-title">Component Inspector</span>
-              </div>
-              <div class="vf-inspector-content" id="vfInspectorContent">
-                <div class="vf-empty-inspector">
-                  <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">⚙️</div>
-                  <div>Select any node on the canvas to configure parameters, inspect latency, and view SRE runbooks.</div>
+              <div class="vf-inspector-pane">
+                <div class="vf-panel-header">
+                  <span class="vf-panel-title">Component Inspector</span>
+                </div>
+                <div class="vf-inspector-content" id="vfInspectorContent">
+                  <div class="vf-empty-inspector">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">⚙️</div>
+                    <div>Select any node on the canvas to configure parameters, inspect latency, and view SRE runbooks.</div>
+                  </div>
                 </div>
               </div>
 
               <!-- Contextual Lab Guide & AI Runbook -->
-              <div class="vf-panel-header" style="margin-top: 1rem; border-top: 1px solid var(--vf-border); padding-top: 0.75rem;">
-                <span class="vf-panel-title">🤖 Studio Lab & SRE Guidance</span>
-              </div>
-              <div class="vf-copilot-guide" id="vfCopilotGuide" style="padding: 0.85rem; font-size: 0.8rem; line-height: 1.5; color: var(--vf-text-secondary); max-height: 280px; overflow-y: auto;">
-                <div style="color: var(--vf-text-muted);">Select a studio to view guided exercises and architecture runbooks.</div>
+              <div class="vf-guide-pane">
+                <div class="vf-panel-header">
+                  <span class="vf-panel-title">🤖 Studio Lab & SRE Guidance</span>
+                </div>
+                <div class="vf-copilot-guide" id="vfCopilotGuide">
+                  <div style="color: var(--vf-text-muted);">Select a studio to view guided exercises and architecture runbooks.</div>
+                </div>
               </div>
             </aside>
           </div>
@@ -322,12 +327,16 @@
                 <span>▼ Toggle Drawer</span>
               </div>
             </div>
-            <div class="vf-terminal-body" id="vfTerminalBody">
-              <div class="vf-log-entry">
-                <span class="vf-log-time">[${new Date().toISOString().substring(11, 19)}]</span>
-                <span class="vf-log-engine">[WASM RUNTIME]</span>
-                <span class="vf-log-msg">Visual Flow Studio initialized. Zero external dependencies required. Ready to run flow.</span>
+            <div class="vf-drawer-panels">
+              <div class="vf-terminal-body vf-drawer-panel active" id="vfTerminalBody" data-panel="logs">
+                <div class="vf-log-entry">
+                  <span class="vf-log-time">[${new Date().toISOString().substring(11, 19)}]</span>
+                  <span class="vf-log-engine">[WASM RUNTIME]</span>
+                  <span class="vf-log-msg">Visual Flow Studio initialized. Zero external dependencies required. Ready to run flow.</span>
+                </div>
               </div>
+              <div class="vf-drawer-panel" id="vfMetricsPanel" data-panel="metrics" style="display:none;"></div>
+              <div class="vf-drawer-panel" id="vfManifestPanel" data-panel="code" style="display:none;"></div>
             </div>
           </div>
         </div>
@@ -342,6 +351,8 @@
       this.studioSelect = this.container.querySelector('#vfStudioSelect');
       this.brandBadge = this.container.querySelector('#vfActiveStudioBadge') || this.container.querySelector('.vf-badge');
       this.terminalBody = this.container.querySelector('#vfTerminalBody');
+      this.metricsPanel = this.container.querySelector('#vfMetricsPanel');
+      this.manifestPanel = this.container.querySelector('#vfManifestPanel');
       this.drawer = this.container.querySelector('#vfDrawer');
       this.drawerHeader = this.container.querySelector('#vfDrawerHeader');
       this.runFlowBtn = this.container.querySelector('#vfRunFlowBtn');
@@ -399,6 +410,8 @@
         this.panOffset = { x: 40, y: 40 };
         this._applyTransform();
       });
+      const fitBtn = this.container.querySelector('#vfFitViewBtn');
+      if (fitBtn) fitBtn.addEventListener('click', () => this.fitView());
 
       this.container.querySelector('#vfClearBtn').addEventListener('click', () => {
         if (confirm('Clear all nodes and wires from canvas?')) {
@@ -489,6 +502,24 @@
         if (e.target.closest('.vf-drawer-tab')) return;
         this.drawer.classList.toggle('collapsed');
       });
+
+      // 12. Bottom Drawer Tab Switcher
+      this.drawer.querySelectorAll('.vf-drawer-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const tabKey = tab.getAttribute('data-tab');
+          this.switchDrawerTab(tabKey);
+        });
+      });
+
+      // 13. Auto re-fit on window resize
+      if (typeof window !== 'undefined') {
+        window.addEventListener('resize', () => {
+          if (this.nodes.size > 0 && !this.isPanning && !this.isDraggingNode) {
+            this.fitView();
+          }
+        });
+      }
     }
 
     _applyTransform() {
@@ -497,7 +528,51 @@
 
     setZoom(newScale) {
       this.scale = Math.max(0.4, Math.min(2.0, newScale));
-      this.container.querySelector('#vfZoomResetBtn').textContent = `${Math.round(this.scale * 100)}%`;
+      const zoomBtn = this.container.querySelector('#vfZoomResetBtn');
+      if (zoomBtn) zoomBtn.textContent = `${Math.round(this.scale * 100)}%`;
+      this._applyTransform();
+    }
+
+    fitView(padding = 60) {
+      if (!this.canvasContainer || this.nodes.size === 0) return;
+      const rect = this.canvasContainer.getBoundingClientRect ? this.canvasContainer.getBoundingClientRect() : { width: 0, height: 0 };
+      const width = rect.width || this.canvasContainer.clientWidth || 800;
+      const height = rect.height || this.canvasContainer.clientHeight || 600;
+
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      const nodeWidth = 280;
+      const nodeHeight = 160;
+
+      this.nodes.forEach(n => {
+        if (n.x < minX) minX = n.x;
+        if (n.y < minY) minY = n.y;
+        if (n.x + nodeWidth > maxX) maxX = n.x + nodeWidth;
+        if (n.y + nodeHeight > maxY) maxY = n.y + nodeHeight;
+      });
+
+      const graphWidth = maxX - minX;
+      const graphHeight = maxY - minY;
+
+      if (graphWidth <= 0 || graphHeight <= 0) return;
+
+      const availW = Math.max(200, width - padding * 2);
+      const availH = Math.max(200, height - padding * 2);
+
+      const scaleX = availW / graphWidth;
+      const scaleY = availH / graphHeight;
+      let targetScale = Math.min(1.0, Math.min(scaleX, scaleY));
+      targetScale = Math.max(0.4, Math.min(1.15, targetScale));
+
+      this.scale = targetScale;
+      this.panOffset = {
+        x: Math.round((width - graphWidth * targetScale) / 2 - minX * targetScale),
+        y: Math.round((height - graphHeight * targetScale) / 2 - minY * targetScale)
+      };
+
+      const zoomBtn = this.container.querySelector('#vfZoomResetBtn');
+      if (zoomBtn) {
+        zoomBtn.textContent = `${Math.round(this.scale * 100)}%`;
+      }
       this._applyTransform();
     }
 
@@ -926,6 +1001,7 @@
       this._applyTransform();
       this.autoLayout();
       this.render();
+      this.fitView();
 
       this.log(`[STUDIO WORKSPACE] Switched to ${topo.name} (${this.nodes.size} nodes, ${this.connections.length} wires)`);
 
@@ -957,6 +1033,7 @@
       this.panOffset = { x: 30, y: 30 };
       this._applyTransform();
       this.render();
+      this.fitView();
       this.log(`Loaded starter template: ${t.name} (${this.nodes.size} nodes, ${this.connections.length} wires)`);
     }
 
@@ -1000,25 +1077,27 @@
       // 1. Render Nodes
       this.nodesLayer.innerHTML = Array.from(this.nodes.values()).map(n => {
         const isSel = this.selectedNodeId === n.id;
+        const nodeType = n.type || 'model';
         const paramsHtml = Object.entries(n.params || {}).map(([k, v]) => `
           <div class="vf-node-param">
             <span class="vf-param-key">${k}</span>
-            <span class="vf-param-val">${v}</span>
+            <span class="vf-param-val" title="${v}">${v}</span>
           </div>
         `).join('');
 
         return `
-          <div class="vf-node ${isSel ? 'selected' : ''}" data-id="${n.id}" style="left: ${n.x}px; top: ${n.y}px;">
+          <div class="vf-node vf-type-${nodeType} ${isSel ? 'selected' : ''}" data-id="${n.id}" style="left: ${n.x}px; top: ${n.y}px;">
+            <div class="vf-node-accent vf-accent-${nodeType}"></div>
             <div class="vf-port vf-port-input" data-port="in" title="Connect Input"></div>
             <div class="vf-port vf-port-output" data-port="out" title="Connect Output"></div>
             
             <div class="vf-node-header">
               <div class="vf-node-title-group">
-                <span>${n.icon || '📦'}</span>
-                <span class="vf-node-title">${n.title}</span>
+                <span class="vf-node-icon">${n.icon || '📦'}</span>
+                <span class="vf-node-title" title="${n.title}">${n.title}</span>
               </div>
-              <div style="display:flex; align-items:center; gap:0.35rem;">
-                <span class="vf-node-badge">${n.type || 'node'}</span>
+              <div style="display:flex; align-items:center; gap:0.35rem; flex-shrink:0;">
+                <span class="vf-node-badge vf-badge-${nodeType}">${nodeType}</span>
                 <button class="vf-node-delete" data-del="${n.id}" title="Remove Node">✕</button>
               </div>
             </div>
@@ -1099,11 +1178,12 @@
         const toNode = this.nodes.get(c.to);
         if (!fromNode || !toNode) return;
 
-        // Port geometric locations (output: x + 260, y + 60 | input: x, y + 60)
-        const x1 = fromNode.x + 260;
-        const y1 = fromNode.y + 60;
+        // Port geometric locations (node width: 280, vertical midpoint ~70px)
+        const nodeWidth = 280;
+        const x1 = fromNode.x + nodeWidth;
+        const y1 = fromNode.y + 70;
         const x2 = toNode.x;
-        const y2 = toNode.y + 60;
+        const y2 = toNode.y + 70;
 
         const dx = Math.abs(x2 - x1) * 0.55;
         const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
@@ -1126,6 +1206,7 @@
       });
 
       this._renderConnections();
+      this.fitView();
       this.log('Applied automated DAG layout arrangement.');
     }
 
@@ -1279,6 +1360,141 @@
       a.click();
       URL.revokeObjectURL(url);
       this.log('Downloaded verified JSON flow declaration spec.');
+    }
+
+    switchDrawerTab(tabKey) {
+      if (!this.drawer) return;
+      this.drawer.querySelectorAll('.vf-drawer-tab').forEach(tab => {
+        if (tab.getAttribute('data-tab') === tabKey) tab.classList.add('active');
+        else tab.classList.remove('active');
+      });
+
+      if (this.terminalBody) this.terminalBody.style.display = tabKey === 'logs' ? 'block' : 'none';
+      if (this.metricsPanel) this.metricsPanel.style.display = tabKey === 'metrics' ? 'block' : 'none';
+      if (this.manifestPanel) this.manifestPanel.style.display = tabKey === 'code' ? 'block' : 'none';
+
+      if (tabKey === 'metrics') {
+        this._renderMetricsTab();
+      } else if (tabKey === 'code') {
+        this._renderManifestTab();
+      }
+    }
+
+    _renderMetricsTab() {
+      if (!this.metricsPanel) return;
+      const count = this.nodes.size;
+      const wireCount = this.connections.length;
+
+      const nodeRows = Array.from(this.nodes.values()).map(n => {
+        const lat = Math.floor(Math.random() * 20) + 12;
+        const err = '0.00%';
+        return `
+          <div class="vf-slo-stage-row">
+            <span class="vf-slo-stage-name">${n.icon || '📦'} ${n.title}</span>
+            <span class="vf-slo-stage-type vf-badge-${n.type || 'model'}">${n.type || 'stage'}</span>
+            <span class="vf-slo-stage-val" style="color:#38bdf8;">${lat}ms</span>
+            <span class="vf-slo-stage-val" style="color:#10b981;">${err}</span>
+            <div class="vf-slo-progress-bar">
+              <div class="vf-slo-progress-fill" style="width: ${Math.min(100, lat * 2.5)}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      this.metricsPanel.innerHTML = `
+        <div class="vf-metrics-grid">
+          <div class="vf-metric-card">
+            <div class="vf-metric-header">
+              <span class="vf-metric-title">⚡ End-to-End Latency</span>
+              <span class="vf-metric-status ok">SLO &lt;100ms</span>
+            </div>
+            <div class="vf-metric-val">48.2 <span class="vf-metric-unit">ms</span></div>
+            <div class="vf-metric-sub">p50: 16ms | p95: 38ms | p99: 74ms</div>
+          </div>
+
+          <div class="vf-metric-card">
+            <div class="vf-metric-header">
+              <span class="vf-metric-title">🛡️ Error Budget & Availability</span>
+              <span class="vf-metric-status ok">99.99%</span>
+            </div>
+            <div class="vf-metric-val">100.0 <span class="vf-metric-unit">%</span></div>
+            <div class="vf-metric-sub">0 budget burned | 0 dropped spans</div>
+          </div>
+
+          <div class="vf-metric-card">
+            <div class="vf-metric-header">
+              <span class="vf-metric-title">🌊 Throughput & Reflex Routing</span>
+              <span class="vf-metric-status ok">Optimal</span>
+            </div>
+            <div class="vf-metric-val">1,480 <span class="vf-metric-unit">RPS</span></div>
+            <div class="vf-metric-sub">Cache hit: 98.2% | Reflex bypass: active</div>
+          </div>
+
+          <div class="vf-metric-card">
+            <div class="vf-metric-header">
+              <span class="vf-metric-title">📊 Cluster Saturation</span>
+              <span class="vf-metric-status ok">Healthy</span>
+            </div>
+            <div class="vf-metric-val">24.5 <span class="vf-metric-unit">%</span></div>
+            <div class="vf-metric-sub">gVisor MicroVMs: 3/16 pooled</div>
+          </div>
+        </div>
+
+        <div class="vf-slo-breakdown">
+          <div class="vf-slo-breakdown-title">DAG Stage Latency & Golden Signals Breakdown (${count} nodes, ${wireCount} wires)</div>
+          ${nodeRows}
+        </div>
+      `;
+    }
+
+    _renderManifestTab() {
+      if (!this.manifestPanel) return;
+      const spec = {
+        apiVersion: 'pradeep.engineering/v1alpha1',
+        kind: 'VisualFlowPipeline',
+        metadata: {
+          name: (this.currentStudioId || 'flow').replace(/[^a-z0-9-]/gi, '-'),
+          generatedAt: new Date().toISOString()
+        },
+        spec: {
+          runtime: 'wasm-simulation',
+          companionEndpoint: 'http://localhost:8000',
+          nodes: Array.from(this.nodes.values()).map(n => ({
+            id: n.id,
+            type: n.type,
+            title: n.title,
+            params: n.params
+          })),
+          edges: this.connections
+        }
+      };
+
+      const yamlOrJson = JSON.stringify(spec, null, 2);
+      this.manifestPanel.innerHTML = `
+        <div style="padding: 0.75rem 1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+            <span style="font-size:0.75rem; font-family:var(--vf-font-mono); color:var(--vf-accent-cyan);">Generated Kubernetes CRD & DAG Manifest</span>
+            <button class="vf-btn vf-btn-sm" id="vfCopyManifestBtn" style="padding:0.25rem 0.65rem; font-size:0.72rem; cursor:pointer;">📋 Copy Manifest</button>
+          </div>
+          <pre class="vf-code-preview"><code>${this._escapeHtml(yamlOrJson)}</code></pre>
+        </div>
+      `;
+
+      const copyBtn = this.manifestPanel.querySelector('#vfCopyManifestBtn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          if (typeof navigator !== 'undefined' && navigator.clipboard) {
+            navigator.clipboard.writeText(yamlOrJson).then(() => {
+              copyBtn.textContent = '✅ Copied!';
+              setTimeout(() => { copyBtn.textContent = '📋 Copy Manifest'; }, 2000);
+            });
+          }
+        });
+      }
+    }
+
+    _escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
   }
 

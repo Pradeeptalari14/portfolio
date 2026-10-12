@@ -212,4 +212,59 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(select).toBeTruthy();
     expect(select.querySelectorAll('option').length).toBeGreaterThanOrEqual(4);
   });
+
+  it('should support fitView() to automatically center and scale DAG within viewport', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    expect(typeof canvas.fitView).toBe('function');
+    canvas.fitView();
+    expect(canvas.scale).toBeGreaterThan(0.3);
+    expect(canvas.scale).toBeLessThanOrEqual(1.2);
+    expect(canvas.panOffset).toBeDefined();
+    expect(typeof canvas.panOffset.x).toBe('number');
+    expect(typeof canvas.panOffset.y).toBe('number');
+
+    const fitBtn = container.querySelector('#vfFitViewBtn');
+    expect(fitBtn).toBeTruthy();
+  });
+
+  it('should switch bottom drawer tabs to golden signals and generated manifest', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'agent' });
+
+    // Switch to Golden Signals
+    canvas.switchDrawerTab('metrics');
+    const metricsPanel = container.querySelector('#vfMetricsPanel');
+    expect(metricsPanel).toBeTruthy();
+    expect(metricsPanel.style.display).toBe('block');
+    expect(metricsPanel.innerHTML).toContain('End-to-End Latency');
+    expect(metricsPanel.innerHTML).toContain('Golden Signals Breakdown');
+
+    // Switch to Generated Manifest
+    canvas.switchDrawerTab('code');
+    const manifestPanel = container.querySelector('#vfManifestPanel');
+    expect(manifestPanel).toBeTruthy();
+    expect(manifestPanel.style.display).toBe('block');
+    expect(manifestPanel.innerHTML).toContain('VisualFlowPipeline');
+    expect(manifestPanel.innerHTML).toContain('Copy Manifest');
+
+    // Switch back to logs
+    canvas.switchDrawerTab('logs');
+    expect(container.querySelector('#vfTerminalBody').style.display).toBe('block');
+  });
+
+  it('should render category accent bar and parameters on node cards', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const nodes = container.querySelectorAll('.vf-node');
+    expect(nodes.length).toBe(6);
+
+    const firstNode = nodes[0];
+    expect(firstNode.querySelector('.vf-node-accent')).toBeTruthy();
+    expect(firstNode.querySelector('.vf-port-input')).toBeTruthy();
+    expect(firstNode.querySelector('.vf-port-output')).toBeTruthy();
+    expect(firstNode.querySelectorAll('.vf-node-param').length).toBeGreaterThan(0);
+  });
 });
