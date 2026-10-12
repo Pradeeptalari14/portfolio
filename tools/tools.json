@@ -4066,5 +4066,17 @@
     "tag": "boundary-controller.hcl",
     "link": "hashicorp-boundary-zerotrust/",
     "repository": "Pradeeptalari14/tp-boundary-zerotrust"
+  },
+  {
+    "title": "Enterprise Backend Ecosystem & Lifecycle Studio",
+    "desc": "Trace requests across modern backend architectures: NGINX ingress, JWT auth, Redis cache, PostgreSQL DB, RabbitMQ/Kafka queues, Celery/BullMQ/Asynq workers, external SaaS APIs, and OpenTelemetry observability.",
+    "category": "devops",
+    "icon": "🏛️",
+    "color": "rgb(79, 70, 229)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "backend-lifecycle.yaml",
+    "link": "backend-ecosystem/",
+    "repository": "Pradeeptalari14/tp-backend-ecosystem"
   }
 ]

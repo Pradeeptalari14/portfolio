@@ -7117,5 +7117,26 @@
     "antiPattern": "Sharing static PEM private keys or granting developers persistent VPN access to entire subnets.",
     "realTimeDrill": "boundary connect kube -target-id t_1234567890 -- kubectl get nodes",
     "sreMetric": "Zero Static Bastion Keys & 100% Audited Sessions"
+  },
+  {
+    "id": "backend-ecosystem",
+    "title": "Enterprise Backend Ecosystem & Lifecycle Studio",
+    "desc": "Trace requests across modern backend architectures: NGINX ingress, JWT auth, Redis cache, PostgreSQL DB, RabbitMQ/Kafka queues, Celery/BullMQ/Asynq workers, external SaaS APIs, and OpenTelemetry observability.",
+    "category": "cloud",
+    "icon": "🏛️",
+    "color": "rgb(79, 70, 229)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "backend-lifecycle.yaml",
+    "link": "backend-ecosystem/",
+    "repository": "Pradeeptalari14/tp-backend-ecosystem",
+    "repo": "Pradeeptalari14/tp-backend-ecosystem",
+    "domain": "Distributed Backend Architecture & SRE",
+    "skillLevel": "Level 3 (Distributed & Systems Design)",
+    "useCase": "Simulate and troubleshoot end-to-end distributed request lifecycles across caches, queues, databases, and background workers.",
+    "bestTreatment": "Offload slow third-party calls to async queues; use PgBouncer for DB pooling and XFetch for cache stampede protection.",
+    "antiPattern": "Calling synchronous external payment or email APIs inside the user HTTP request thread without timeouts.",
+    "realTimeDrill": "docker-compose up -d && python main.py",
+    "sreMetric": "<20ms Synchronous Request Latency & 0% Thundering Herd Outages"
   }
 ]

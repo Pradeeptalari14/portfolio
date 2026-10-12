@@ -132,6 +132,30 @@
         { from: 'sec4', to: 'sec5' },
         { from: 'sec5', to: 'sec6' }
       ]
+    },
+
+    backend: {
+      name: 'Distributed Backend Ecosystem & Lifecycle',
+      category: 'backend',
+      nodes: [
+        { id: 'b1', type: 'input', title: 'Client Ingress', icon: '📱', x: 60, y: 140, params: { protocol: 'HTTP/2 TLS 1.3', idempotencyKey: 'Enforced' }, desc: 'Browser or mobile frontend emitting requests with JWT Bearer and idempotency tokens.' },
+        { id: 'b2', type: 'network', title: 'NGINX Reverse Proxy', icon: '🛡️', x: 380, y: 140, params: { rateLimit: '1000 rps / IP', sslTerm: 'TLS 1.3' }, desc: 'Edge reverse proxy terminating TLS and enforcing token-bucket rate limits.' },
+        { id: 'b3', type: 'security', title: 'JWT Auth Gate', icon: '🔑', x: 700, y: 140, params: { algorithm: 'RS256 Public Key', claims: 'user_id, roles' }, desc: 'Cryptographically verifies token signatures without querying database.' },
+        { id: 'b4', type: 'storage', title: 'Redis Cache Layer', icon: '⚡', x: 1020, y: 60, params: { maxmemory: '512mb LRU', stampedeGuard: 'XFetch' }, desc: 'Sub-2ms inventory validation and distributed idempotency locking.' },
+        { id: 'b5', type: 'storage', title: 'PostgreSQL DB & PgBouncer', icon: '🐘', x: 1020, y: 240, params: { poolMode: 'Transaction', statementTimeout: '2500ms' }, desc: 'ACID transaction execution with row-level locks and ledger updates.' },
+        { id: 'b6', type: 'transform', title: 'RabbitMQ / Kafka Broker', icon: '📬', x: 1340, y: 140, params: { durableExchange: 'orders.topic', dlq: 'Enabled' }, desc: 'Decoupled event broker publishing persistent fulfillment tasks.' },
+        { id: 'b7', type: 'compute', title: 'Celery / Asynq Workers', icon: '⚙️', x: 1660, y: 60, params: { prefetch: '4', backoff: 'Exponential + Jitter' }, desc: 'Asynchronous workers processing payments and sending email receipts.' },
+        { id: 'b8', type: 'output', title: 'OpenTelemetry & Prometheus', icon: '📊', x: 1660, y: 240, params: { tracing: 'W3C traceparent', export: 'Prometheus 9090' }, desc: 'Distributed trace spans and RED metrics collection across microservices.' }
+      ],
+      connections: [
+        { from: 'b1', to: 'b2' },
+        { from: 'b2', to: 'b3' },
+        { from: 'b3', to: 'b4' },
+        { from: 'b3', to: 'b5' },
+        { from: 'b5', to: 'b6' },
+        { from: 'b6', to: 'b7' },
+        { from: 'b3', to: 'b8' }
+      ]
     }
   };
 
@@ -1081,6 +1105,26 @@
             <p>3. Generate CycloneDX SBOM and verify container image signature via Cosign.</p>
             <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
               cosign verify --certificate-identity-regexp '.*@github\.com' ghcr.io/pradeep/app:sha-latest
+            </div>
+          `
+        };
+      }
+
+      // 11. Distributed Backend Ecosystem & Request Lifecycle
+      if (slug.includes('backend') || slug.includes('lifecycle') || title.includes('backend ecosystem') || title.includes('request lifecycle')) {
+        return {
+          id: slug || 'backend-ecosystem',
+          name: toolData.title || STARTER_TEMPLATES.backend.name,
+          category: 'backend',
+          nodes: STARTER_TEMPLATES.backend.nodes.map(n => Object.assign({}, n)),
+          connections: STARTER_TEMPLATES.backend.connections.map(c => Object.assign({}, c)),
+          copilotHtml: `
+            <div style="font-weight:600; color:#818cf8; margin-bottom:0.4rem;">🏛️ Backend Ecosystem Lifecycle Tracer</div>
+            <p>1. Trace requests from HTTP/2 ingress through JWT auth to PostgreSQL & Redis.</p>
+            <p>2. Offload heavy payments and email dispatching to Celery / Asynq queue workers.</p>
+            <p>3. Enforce PgBouncer transaction pooling and XFetch cache stampede prevention.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              docker-compose up -d && python main.py
             </div>
           `
         };

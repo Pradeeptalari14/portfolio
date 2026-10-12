@@ -1,0 +1,1247 @@
+<!-- Copyright (c) 2026 Talari Pradeep. All Rights Reserved. Proprietary License. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise Backend Ecosystem Studio & Request Lifecycle Simulator | Talari Pradeep</title>
+  <meta name="description" content="Master the modern backend ecosystem. Interactive architecture canvas, 10-stage request lifecycle tracer, 3 production-grade multi-stack projects, SRE failure labs, and deep cross-studio connections." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --accent: #06b6d4;
+      --bg-dark: #0f172a;
+      --card-dark: #1e293b;
+      --border-dark: #334155;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b0f19;
+      color: #f1f5f9;
+      min-height: 100vh;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .heading { font-family: 'Space Grotesk', sans-serif; }
+
+    .node-card {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .node-card:hover, .node-card.active {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.35);
+      border-color: #6366f1;
+    }
+    .tracer-step-active {
+      animation: pulse-border 1.5s infinite;
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.1) !important;
+    }
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #818cf8 0%, #38bdf8 50%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="flex flex-col">
+
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../#home" class="flex items-center gap-2 text-white font-bold text-lg heading">
+          <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full border border-indigo-400" />
+          <span>TP<span class="text-indigo-400">.</span></span>
+        </a>
+        <span class="text-slate-600 text-sm hidden sm:inline">/</span>
+        <a href="../" class="text-xs text-slate-400 hover:text-white transition hidden sm:inline">Studios</a>
+        <span class="text-slate-600 text-sm hidden sm:inline">/</span>
+        <span class="text-xs font-semibold text-indigo-400 mono px-2 py-0.5 bg-indigo-950/60 rounded border border-indigo-800">
+          Backend Ecosystem v2.0
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4 text-xs font-medium">
+        <a href="learn.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 transition">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Best Practices Guide</span>
+        </a>
+        <a href="https://github.com/Pradeeptalari14/tp-backend-ecosystem" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition">
+          <i class="fa-brands fa-github"></i>
+          <span>Repository</span>
+        </a>
+        <a href="../" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition">
+          <i class="fa-solid fa-arrow-left mr-1"></i> Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-4 w-full">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-slate-800 pb-6">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2.5 py-0.5 text-[11px] font-bold rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 mono uppercase">
+            System Design & SRE
+          </span>
+          <span class="text-xs text-slate-500">Based on Cloud X Berry's Lifecycle Architecture</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white heading tracking-tight">
+          Enterprise <span class="gradient-text">Backend Ecosystem Studio</span>
+        </h1>
+        <p class="text-sm text-slate-400 mt-2 max-w-3xl leading-relaxed">
+          Explore how modern backend architectures communicate. Trace requests end-to-end across ingress, auth, cache, database, queues, async workers, SaaS APIs, and OpenTelemetry observability. Inspect production code for 3 complete projects and solve real-world outage labs.
+        </p>
+      </div>
+
+      <!-- Quick Action Stats -->
+      <div class="flex sm:flex-row items-center gap-3 bg-slate-900 p-3 rounded-xl border border-slate-800">
+        <div class="text-center px-3 border-r border-slate-800">
+          <span class="block text-xl font-bold text-indigo-400 mono">10</span>
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider">Lifecycle Stages</span>
+        </div>
+        <div class="text-center px-3 border-r border-slate-800">
+          <span class="block text-xl font-bold text-cyan-400 mono">3</span>
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider">Projects</span>
+        </div>
+        <div class="text-center px-3">
+          <span class="block text-xl font-bold text-emerald-400 mono">6</span>
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider">SRE Labs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-800 mt-6 overflow-x-auto pb-1 text-xs mono">
+      <button onclick="switchTab('tracer')" id="tab-btn-tracer" class="tab-btn active px-4 py-2 rounded-t-lg font-semibold border-b-2 border-indigo-500 text-indigo-400 bg-slate-900/60 flex items-center gap-2">
+        <i class="fa-solid fa-route"></i> 1. Request Lifecycle Tracer
+      </button>
+      <button onclick="switchTab('projects')" id="tab-btn-projects" class="tab-btn px-4 py-2 rounded-t-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2">
+        <i class="fa-solid fa-cubes"></i> 2. Production Projects (3)
+      </button>
+      <button onclick="switchTab('labs')" id="tab-btn-labs" class="tab-btn px-4 py-2 rounded-t-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation"></i> 3. Troubleshooting Labs (6)
+      </button>
+      <button onclick="switchTab('learn')" id="tab-btn-learn" class="tab-btn px-4 py-2 rounded-t-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2">
+        <i class="fa-solid fa-brain"></i> 4. Learning & Quiz
+      </button>
+      <button onclick="switchTab('network')" id="tab-btn-network" class="tab-btn px-4 py-2 rounded-t-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2">
+        <i class="fa-solid fa-network-wired"></i> 5. Inner Studio Cross-Links
+      </button>
+    </div>
+  </section>
+
+  <!-- TAB 1: REQUEST LIFECYCLE TRACER & INTERACTIVE ARCHITECTURE CANVAS -->
+  <section id="view-tracer" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left Column: Interactive Topology Canvas & Tracer Controls -->
+      <div class="lg:col-span-8 flex flex-col gap-6">
+        <!-- Control Header -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold text-slate-300">Tracer Scenario:</span>
+            <select id="tracerScenarioSelect" class="bg-slate-800 text-slate-200 border border-slate-700 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-indigo-500">
+              <option value="ecommerce">🛒 E-Commerce Checkout (POST /api/v1/orders)</option>
+              <option value="notification">⚡ Live Broadcast (POST /api/v1/notify)</option>
+              <option value="billing">💳 SaaS Webhook Event (POST /api/v1/billing)</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btnPlayTracer" onclick="startRequestTrace()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-950">
+              <i class="fa-solid fa-play"></i> Trace Request
+            </button>
+            <button onclick="stepForwardTrace()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
+              <i class="fa-solid fa-forward-step"></i> Step
+            </button>
+            <button onclick="resetTrace()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs border border-slate-700 transition">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- 10-Node Interactive Topology Canvas -->
+        <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mono">
+              Distributed Backend Architecture Grid
+            </h3>
+            <span id="tracerStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-400 border border-slate-700 mono">
+              Idle - Ready for Request
+            </span>
+          </div>
+
+          <!-- Architecture Visual Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <!-- Node 1: Client Ingress -->
+            <div id="node-1" onclick="selectNode(1)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-indigo-400">
+                <i class="fa-solid fa-laptop-code text-base"></i>
+                <span class="mono text-[10px] text-slate-500">01</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Client App</h4>
+                <p class="text-[10px] text-slate-400">Browser / Mobile</p>
+              </div>
+              <span class="text-[9px] mono text-emerald-400">HTTP/2 ~2ms</span>
+            </div>
+
+            <!-- Node 2: Reverse Proxy / Ingress -->
+            <div id="node-2" onclick="selectNode(2)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-cyan-400">
+                <i class="fa-solid fa-shield-halved text-base"></i>
+                <span class="mono text-[10px] text-slate-500">02</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Ingress Proxy</h4>
+                <p class="text-[10px] text-slate-400">NGINX / Caddy</p>
+              </div>
+              <span class="text-[9px] mono text-cyan-400">SSL + Rate Limit</span>
+            </div>
+
+            <!-- Node 3: Auth & Identity Gate -->
+            <div id="node-3" onclick="selectNode(3)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-amber-400">
+                <i class="fa-solid fa-key text-base"></i>
+                <span class="mono text-[10px] text-slate-500">03</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Auth Gate</h4>
+                <p class="text-[10px] text-slate-400">JWT / OAuth2</p>
+              </div>
+              <span class="text-[9px] mono text-amber-400">RS256 Signature</span>
+            </div>
+
+            <!-- Node 4: Backend API -->
+            <div id="node-4" onclick="selectNode(4)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-emerald-400">
+                <i class="fa-solid fa-server text-base"></i>
+                <span class="mono text-[10px] text-slate-500">04</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Backend Core</h4>
+                <p class="text-[10px] text-slate-400">FastAPI / Express / Go</p>
+              </div>
+              <span class="text-[9px] mono text-emerald-400">Controller & Tx</span>
+            </div>
+
+            <!-- Node 5: In-Memory Cache -->
+            <div id="node-5" onclick="selectNode(5)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-rose-400">
+                <i class="fa-solid fa-bolt text-base"></i>
+                <span class="mono text-[10px] text-slate-500">05</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Cache Layer</h4>
+                <p class="text-[10px] text-slate-400">Redis 7 (LRU)</p>
+              </div>
+              <span class="text-[9px] mono text-rose-400">Sub-2ms Memory</span>
+            </div>
+
+            <!-- Node 6: Persistent Database -->
+            <div id="node-6" onclick="selectNode(6)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-blue-400">
+                <i class="fa-solid fa-database text-base"></i>
+                <span class="mono text-[10px] text-slate-500">06</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Database</h4>
+                <p class="text-[10px] text-slate-400">PostgreSQL / MySQL</p>
+              </div>
+              <span class="text-[9px] mono text-blue-400">ACID + Row Lock</span>
+            </div>
+
+            <!-- Node 7: Message Broker -->
+            <div id="node-7" onclick="selectNode(7)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-orange-400">
+                <i class="fa-solid fa-envelope-open-text text-base"></i>
+                <span class="mono text-[10px] text-slate-500">07</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Queue Broker</h4>
+                <p class="text-[10px] text-slate-400">RabbitMQ / Kafka</p>
+              </div>
+              <span class="text-[9px] mono text-orange-400">Durable Publisher</span>
+            </div>
+
+            <!-- Node 8: Async Worker -->
+            <div id="node-8" onclick="selectNode(8)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-purple-400">
+                <i class="fa-solid fa-gears text-base"></i>
+                <span class="mono text-[10px] text-slate-500">08</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Worker Fleet</h4>
+                <p class="text-[10px] text-slate-400">Celery / BullMQ / Asynq</p>
+              </div>
+              <span class="text-[9px] mono text-purple-400">Async Consumer</span>
+            </div>
+
+            <!-- Node 9: External SaaS -->
+            <div id="node-9" onclick="selectNode(9)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-pink-400">
+                <i class="fa-solid fa-cloud text-base"></i>
+                <span class="mono text-[10px] text-slate-500">09</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">External SaaS</h4>
+                <p class="text-[10px] text-slate-400">Stripe / Webhook</p>
+              </div>
+              <span class="text-[9px] mono text-pink-400">Circuit Breaker</span>
+            </div>
+
+            <!-- Node 10: Observability & Telemetry -->
+            <div id="node-10" onclick="selectNode(10)" class="node-card bg-slate-900 border border-slate-800 rounded-xl p-3 flex flex-col justify-between h-28 relative">
+              <div class="flex items-center justify-between text-xs text-teal-400">
+                <i class="fa-solid fa-chart-line text-base"></i>
+                <span class="mono text-[10px] text-slate-500">10</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Telemetry</h4>
+                <p class="text-[10px] text-slate-400">OTel / Prometheus</p>
+              </div>
+              <span class="text-[9px] mono text-teal-400">W3C Traces</span>
+            </div>
+          </div>
+
+          <!-- Architecture Flow Diagram Display -->
+          <div class="mt-6 border border-slate-800 rounded-xl p-4 bg-slate-950/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <img src="backend_ecosystem_flow.png" alt="Backend Ecosystem Flow Diagram" class="w-16 h-10 object-cover rounded border border-slate-700 cursor-pointer hover:opacity-80 transition" onclick="openDiagramModal()" />
+              <div>
+                <h4 class="text-xs font-bold text-slate-200">Full Ecosystem Architecture Blueprint</h4>
+                <p class="text-[11px] text-slate-400">High-resolution topological blueprint from Cloud X Berry's lifecycle analysis.</p>
+              </div>
+            </div>
+            <button onclick="openDiagramModal()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 mono flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-expand"></i> Expand Diagram
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Step-by-Step Tracer Log -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mono mb-3 flex items-center justify-between">
+            <span>Execution Timeline & Latency Breakdown</span>
+            <span id="tracerTimeCounter" class="text-indigo-400">0.0 ms</span>
+          </h3>
+          <div id="tracerLogList" class="space-y-2 text-xs mono max-h-56 overflow-y-auto custom-scrollbar pr-2">
+            <div class="text-slate-500 italic">Click "Trace Request" above to simulate real-time packet propagation across all 10 architectural tiers...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Inspector Panel & Live Component State -->
+      <div class="lg:col-span-4 flex flex-col gap-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 sticky top-24">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mono flex items-center gap-2">
+              <i class="fa-solid fa-magnifying-glass"></i> Component Inspector
+            </h3>
+            <span id="inspectorNodeTag" class="text-[10px] mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+              Node #1: Client
+            </span>
+          </div>
+
+          <!-- Inspector Details -->
+          <div id="inspectorDetails" class="space-y-4 text-xs">
+            <div>
+              <h4 id="inspectorTitle" class="text-sm font-bold text-white mb-1">Client Ingress</h4>
+              <p id="inspectorRole" class="text-slate-400 text-xs leading-relaxed">
+                Frontend client browser or mobile application executing HTTP/2 request with authentication and idempotency tokens.
+              </p>
+            </div>
+
+            <div class="border-t border-slate-800 pt-3">
+              <span class="text-[11px] font-bold text-slate-400 mono uppercase block mb-1.5">Runtime Config / Protocol:</span>
+              <div id="inspectorTech" class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 mono text-indigo-300 text-[11px]">
+                HTTP/2 TLS 1.3 | JSON Payload | Idempotency-Key
+              </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-3">
+              <span class="text-[11px] font-bold text-slate-400 mono uppercase block mb-1.5">Active Trace Payload:</span>
+              <pre id="inspectorPayload" class="bg-slate-950 p-3 rounded-lg border border-slate-800 mono text-[10px] text-emerald-400 overflow-x-auto custom-scrollbar">{
+  "endpoint": "/api/v1/orders",
+  "method": "POST",
+  "headers": {
+    "Authorization": "Bearer eyJhbGci...",
+    "Idempotency-Key": "idemp_99182"
+  },
+  "body": {
+    "product_id": "laptop-pro-m3",
+    "quantity": 1
+  }
+}</pre>
+            </div>
+
+            <div class="border-t border-slate-800 pt-3">
+              <span class="text-[11px] font-bold text-slate-400 mono uppercase block mb-1.5">SRE Performance Metrics:</span>
+              <div class="grid grid-cols-2 gap-2 text-center mono text-[11px]">
+                <div class="bg-slate-950 p-2 rounded border border-slate-800">
+                  <span class="block text-slate-500 text-[9px] uppercase">Latency</span>
+                  <span id="inspectorLatency" class="text-emerald-400 font-bold">1.8 ms</span>
+                </div>
+                <div class="bg-slate-950 p-2 rounded border border-slate-800">
+                  <span class="block text-slate-500 text-[9px] uppercase">Error Rate</span>
+                  <span id="inspectorErrors" class="text-slate-300 font-bold">0.00%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-3">
+              <span class="text-[11px] font-bold text-slate-400 mono uppercase block mb-1.5">Canonical Related Studio:</span>
+              <a id="inspectorStudioLink" href="/tools/api-gateway/" class="block text-center py-2 px-3 rounded-lg bg-indigo-600/20 text-indigo-300 hover:bg-indigo-600/30 border border-indigo-500/30 font-semibold transition text-xs">
+                Explore in API Gateway Studio &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: PRODUCTION PROJECTS EXPLORER (3 COMPLETE PROJECTS) -->
+  <section id="view-projects" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-white heading">3 Production-Grade Backend Projects</h2>
+          <p class="text-xs text-slate-400 mt-1">Multi-stack architectures featuring Python FastAPI, Node.js WebSockets, and Go Webhook Dispatcher.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="switchProject('ecommerce')" id="btn-proj-ecommerce" class="px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-indigo-600 text-white transition">
+            1. E-Commerce (FastAPI)
+          </button>
+          <button onclick="switchProject('notifications')" id="btn-proj-notifications" class="px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-slate-800 text-slate-300 hover:text-white transition">
+            2. Notifications (Node.js)
+          </button>
+          <button onclick="switchProject('billing')" id="btn-proj-billing" class="px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-slate-800 text-slate-300 hover:text-white transition">
+            3. SaaS Billing (Go)
+          </button>
+        </div>
+      </div>
+
+      <!-- Project Content Card -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Project Description & Metadata -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <h3 id="projName" class="text-base font-bold text-white mb-1">E-Commerce High-Volume Order & Inventory Engine</h3>
+            <p id="projStack" class="text-xs text-indigo-400 mono mb-3">Python 3.11 / FastAPI + Redis + Celery + PostgreSQL + Stripe</p>
+            <p id="projDesc" class="text-xs text-slate-400 leading-relaxed">
+              Handles checkout surges with sub-2ms Redis inventory verification, atomic PostgreSQL order record inserts, Celery worker payment processing, and Stripe webhooks.
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <h4 class="text-xs font-bold text-slate-300 mono uppercase mb-2">Key Architectural Features</h4>
+            <ul id="projFeatures" class="text-xs text-slate-400 space-y-2">
+              <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i> Distributed Idempotency Key TTL guard via Redis SET NX.</li>
+              <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i> Sub-2ms cached stock validation before disk writes.</li>
+              <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i> Asynchronous payment charging offloaded to Celery worker queue.</li>
+              <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i> Exponential backoff retry logic and DLQ for failed charges.</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <span class="text-xs text-slate-400 mono">Target Repository Path:</span>
+            <a href="https://github.com/Pradeeptalari14/tp-backend-ecosystem" target="_blank" rel="noopener" class="text-xs text-indigo-400 hover:underline mono font-semibold">
+              tp-backend-ecosystem/projects/ &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Code Viewer & Docker Compose -->
+        <div class="lg:col-span-7 flex flex-col gap-3">
+          <div class="flex items-center justify-between bg-slate-950 px-4 py-2 rounded-t-xl border border-b-0 border-slate-800">
+            <div class="flex items-center gap-2">
+              <button onclick="toggleCodeTab('code')" id="btn-view-code" class="text-xs font-semibold mono px-2.5 py-1 rounded bg-slate-800 text-indigo-400">
+                Source Code
+              </button>
+              <button onclick="toggleCodeTab('compose')" id="btn-view-compose" class="text-xs font-semibold mono px-2.5 py-1 rounded text-slate-400 hover:text-white">
+                docker-compose.yml
+              </button>
+            </div>
+            <button onclick="copyCurrentCode()" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono flex items-center gap-1.5 transition">
+              <i class="fa-regular fa-copy"></i> Copy
+            </button>
+          </div>
+
+          <pre id="projectCodeBlock" class="bg-slate-950 p-4 rounded-b-xl border border-slate-800 text-slate-300 mono text-xs overflow-x-auto custom-scrollbar h-[380px]"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: SRE FAILURE LABS (6 SCENARIOS) -->
+  <section id="view-labs" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div class="border-b border-slate-800 pb-4 mb-6">
+        <h2 class="text-xl font-bold text-white heading">Production SRE Failure Labs & Outage Drills</h2>
+        <p class="text-xs text-slate-400 mt-1">Simulate the 6 most common backend failure modes and apply battle-tested production mitigations.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+        <button onclick="selectLab(0)" class="lab-btn active text-left p-3.5 rounded-xl border border-indigo-500 bg-indigo-950/30 transition">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-white">1. DB Connection Exhaustion</span>
+            <span class="text-rose-400 mono">HTTP 503</span>
+          </div>
+          <p class="text-[11px] text-slate-400">PostgreSQL connection pool saturated; unpooled worker threads.</p>
+        </button>
+
+        <button onclick="selectLab(1)" class="lab-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 transition">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-white">2. Cache Stampede</span>
+            <span class="text-amber-400 mono">100% DB CPU</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Hot Redis key expires; thundering herd of simultaneous SQL queries.</p>
+        </button>
+
+        <button onclick="selectLab(2)" class="lab-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 transition">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-white">3. Queue Lag & Worker OOM</span>
+            <span class="text-rose-400 mono">500k Unacked</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Poison pill message without timeout causes infinite retry loop.</p>
+        </button>
+
+        <button onclick="selectLab(3)" class="lab-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 transition">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-white">4. Upstream 504 Timeout</span>
+            <span class="text-amber-400 mono">HTTP 504</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Synchronous Stripe call freezes user thread; client requests backlog.</p>
+        </button>
+
+        <button onclick="selectLab(4)" class="lab-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 transition">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-white">5. Migration Deadlock</span>
+            <span class="text-rose-400 mono">Breaking DDL</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Schema change drops columns while old pod replicas are still serving.</p>
+        </button>
+
+        <button onclick="selectLab(5)" class="lab-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 transition">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-white">6. Container CrashLoop</span>
+            <span class="text-rose-400 mono">ExitCode 1</span>
+          </div>
+          <p class="text-[11px] text-slate-400">App boots before DB is reachable; failed liveness vs readiness probe.</p>
+        </button>
+      </div>
+
+      <!-- Lab Workbench -->
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+          <div>
+            <h3 id="labTitle" class="text-base font-bold text-white">Database Outage / Connection Exhaustion</h3>
+            <p id="labSymptom" class="text-xs text-rose-400 mono mt-0.5">HTTP 500 / 503 errors spike. PostgreSQL logs: "FATAL: remaining connection slots are reserved".</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="labHealthStatus" class="px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800 mono">
+              CRITICAL - OUTAGE DETECTED
+            </span>
+            <button id="btnApplyFix" onclick="applyLabFix()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold mono shadow transition">
+              <i class="fa-solid fa-wrench mr-1"></i> Apply Production Fix
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 mono uppercase mb-2">Root Cause Investigation</h4>
+            <div id="labRootCause" class="bg-slate-900 p-3.5 rounded-lg border border-slate-800 text-xs text-slate-300 leading-relaxed">
+              Backend microservices opening unpooled direct connections per request without limits, exceeding PostgreSQL max_connections setting.
+            </div>
+
+            <h4 class="text-xs font-bold text-slate-400 mono uppercase mt-4 mb-2">SRE Telemetry Live Stream</h4>
+            <pre id="labLogs" class="bg-slate-900 p-3.5 rounded-lg border border-slate-800 text-[11px] mono text-rose-300 h-36 overflow-y-auto custom-scrollbar">[FATAL] pq: remaining connection slots are reserved for non-replication superuser connections
+[ERROR] sqlalchemy.exc.OperationalError: server closed the connection unexpectedly
+[ALERT] Prometheus Rule 'PostgresHighConnections' firing (99.2% utilization)
+[TRACE] HTTP 503 Service Unavailable returned to 4,210 concurrent users</pre>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 mono uppercase mb-2">Engineering Remediation & Runbook</h4>
+            <pre id="labRemediation" class="bg-slate-900 p-3.5 rounded-lg border border-slate-800 text-xs text-emerald-300 mono leading-relaxed h-52 overflow-y-auto custom-scrollbar">1. Introduce PgBouncer connection pooler in Transaction Pooling mode.
+2. Configure pool_size = ((2 * CPU_CORES) + EFFECTIVE_SPINDLES).
+3. Set statement_timeout = 2500ms to terminate rogue queries.
+4. Route read-only queries to asynchronous Read Replicas.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: LEARNING MODES & INTERACTIVE QUIZZES -->
+  <section id="view-learn" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-white heading">Backend Ecosystem Mastery & Quiz</h2>
+          <p class="text-xs text-slate-400 mt-1">Select your tier to view architectural mental models and test your knowledge.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="setLearnMode('beginner')" id="btn-learn-beg" class="px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-indigo-600 text-white transition">
+            Beginner (Analogies)
+          </button>
+          <button onclick="setLearnMode('intermediate')" id="btn-learn-int" class="px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-slate-800 text-slate-300 hover:text-white transition">
+            Intermediate (Internals)
+          </button>
+          <button onclick="setLearnMode('advanced')" id="btn-learn-adv" class="px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-slate-800 text-slate-300 hover:text-white transition">
+            Advanced (Distributed)
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Explanations & Mental Model -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+          <div class="bg-slate-950 p-5 rounded-xl border border-slate-800">
+            <h3 id="learnTitle" class="text-base font-bold text-white mb-2">Beginner: The Busy Restaurant Analogy</h3>
+            <p id="learnBody" class="text-xs text-slate-300 leading-relaxed">
+              Think of the backend ecosystem as a high-end restaurant:
+              <br><br>
+              • <strong>Client (Customer)</strong>: Sits at the table and places an order.<br>
+              • <strong>Ingress / Waiter (API Gateway)</strong>: Greets the customer, checks if they have a reservation (Auth), and writes down the ticket.<br>
+              • <strong>Pantry Shelf (Redis Cache)</strong>: Ready-made appetizers grabbed immediately without cooking (sub-2ms).<br>
+              • <strong>Chef & Kitchen (Backend API)</strong>: Prepares custom dishes according to business rules.<br>
+              • <strong>Deep Storage / Fridge (Database)</strong>: High-capacity, durable ingredient storage where everything is cataloged.<br>
+              • <strong>Delivery Driver (Queue & Async Worker)</strong>: Takes cooked meals and delivers them across town without forcing the waiter to leave the restaurant.
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-200">Want deeper SRE formulas and Docker drills?</h4>
+              <p class="text-[11px] text-slate-400">Read our in-depth article on Outbox pattern, Idempotency, and PgBouncer sizing.</p>
+            </div>
+            <a href="learn.html" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs mono transition">
+              Open Full Guide &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Interactive Quiz -->
+        <div class="lg:col-span-5 bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-indigo-400 mono uppercase">Knowledge Check Quiz</span>
+              <span id="quizScore" class="text-xs mono font-bold text-emerald-400">Score: 0/3</span>
+            </div>
+            <h4 id="quizQuestion" class="text-xs font-bold text-white mb-3">
+              Q1: Why should payment charging and email sending be offloaded to an asynchronous message queue worker rather than handled in the main HTTP request thread?
+            </h4>
+            <div id="quizOptions" class="space-y-2 text-xs">
+              <button onclick="answerQuiz(0)" class="w-full text-left p-2.5 rounded-lg border border-slate-800 bg-slate-900 hover:border-indigo-500 text-slate-300 transition">
+                A) To avoid blocking the user's HTTP thread on slow external SaaS APIs.
+              </button>
+              <button onclick="answerQuiz(1)" class="w-full text-left p-2.5 rounded-lg border border-slate-800 bg-slate-900 hover:border-indigo-500 text-slate-300 transition">
+                B) Because Redis cannot store email strings.
+              </button>
+              <button onclick="answerQuiz(2)" class="w-full text-left p-2.5 rounded-lg border border-slate-800 bg-slate-900 hover:border-indigo-500 text-slate-300 transition">
+                C) PostgreSQL cannot execute writes if an email is pending.
+              </button>
+            </div>
+            <div id="quizFeedback" class="mt-3 text-xs mono hidden"></div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 mt-4 flex items-center justify-between">
+            <span class="text-[11px] text-slate-500">3 questions per level</span>
+            <button onclick="nextQuizQuestion()" class="text-xs px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono transition">
+              Next Question &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: INNER STUDIO CROSS-LINKS -->
+  <section id="view-network" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div class="border-b border-slate-800 pb-4 mb-6">
+        <h2 class="text-xl font-bold text-white heading">Talari Pradeep Studios Hub Inner Connections</h2>
+        <p class="text-xs text-slate-400 mt-1">
+          Every component in the Backend Ecosystem connects directly into a specialized studio in our portfolio. Click to deep dive into real configs, policies, and simulators.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <a href="/tools/api-gateway/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">1. API Gateway Studio</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Ingress rate limiting, JWT validation, and CORS security headers.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/api-gateway/</span>
+        </a>
+
+        <a href="/tools/nginx-config/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">2. NGINX Configurator</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Reverse proxy upstream load balancing, SSL termination, and caching.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/nginx-config/</span>
+        </a>
+
+        <a href="/tools/local-cloud-dev/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">3. Local Cloud Dev Studio</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Docker Compose multi-service topologies and LocalStack emulation.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/local-cloud-dev/</span>
+        </a>
+
+        <a href="/tools/db-migration/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">4. DB Migration Studio</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Zero-downtime Flyway & Alembic Expand-and-Contract workflows.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/db-migration/</span>
+        </a>
+
+        <a href="/tools/db-clustering/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">5. DB Clustering Studio</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">PostgreSQL Primary-Replica streaming replication & PgBouncer pooling.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/db-clustering/</span>
+        </a>
+
+        <a href="/tools/redis-cesc/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">6. Redis Caching Studio</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Sub-2ms memory caching, semantic cache, and stampede defenses.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/redis-cesc/</span>
+        </a>
+
+        <a href="/tools/event-sre/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">7. Event-Driven SRE Studio</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Kafka/RabbitMQ message topologies, consumer lag, and DLQ triage.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/event-sre/</span>
+        </a>
+
+        <a href="/tools/monitoring/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">8. Monitoring & Alerts</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">Prometheus metrics scrapers, RED alerts, and Grafana dashboards.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/monitoring/</span>
+        </a>
+
+        <a href="/tools/otel-configurator/" class="p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-indigo-500 hover:bg-slate-900/60 transition group">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-white group-hover:text-indigo-400 transition">9. OpenTelemetry Collector</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-indigo-400"></i>
+          </div>
+          <p class="text-xs text-slate-400">W3C distributed trace propagation and collector pipelines.</p>
+          <span class="mt-3 inline-block text-[10px] mono text-indigo-400">/tools/otel-configurator/</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Diagram Modal -->
+  <div id="diagramModal" class="fixed inset-0 bg-black/80 backdrop-blur z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-5xl w-full p-4 relative">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+        <h3 class="text-sm font-bold text-white mono">Backend Ecosystem Request Lifecycle Architecture</h3>
+        <button onclick="closeDiagramModal()" class="text-slate-400 hover:text-white px-2 py-1 text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <img src="backend_ecosystem_flow.png" alt="Architecture Diagram Fullscreen" class="w-full max-h-[75vh] object-contain rounded-lg" />
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500 mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>&copy; 2026 Talari Pradeep. All rights reserved. Enterprise Portfolio Studios.</span>
+      <div class="flex items-center gap-4">
+        <a href="learn.html" class="hover:text-indigo-400 transition">Best Practices</a>
+        <a href="https://github.com/Pradeeptalari14/tp-backend-ecosystem" target="_blank" rel="noopener" class="hover:text-indigo-400 transition">GitHub</a>
+        <a href="../" class="hover:text-indigo-400 transition">All 340 Studios</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script type="module">
+    import { BackendEcosystemGenerator } from '/src/js/generators/backend-ecosystem-gen.js';
+
+    const generator = new BackendEcosystemGenerator();
+    window.generator = generator;
+
+    // Node metadata for the Inspector
+    const nodeData = {
+      1: {
+        title: "Client App (Ingress)",
+        role: "Frontend browser or mobile application executing HTTP/2 request with authorization headers and idempotency tokens.",
+        tech: "HTTP/2 TLS 1.3 | JSON Payload | Idempotency-Key",
+        payload: '{\n  "endpoint": "/api/v1/orders",\n  "method": "POST",\n  "headers": {\n    "Authorization": "Bearer eyJhbGci...",\n    "Idempotency-Key": "idemp_99182"\n  },\n  "body": {\n    "product_id": "laptop-pro-m3",\n    "quantity": 1\n  }\n}',
+        latency: "1.8 ms",
+        errors: "0.00%",
+        studio: "/tools/api-gateway/",
+        studioTitle: "API Gateway Studio"
+      },
+      2: {
+        title: "Reverse Proxy & Ingress",
+        role: "Edge reverse proxy terminating SSL, enforcing rate limits via token bucket, and proxying to backend pods.",
+        tech: "NGINX 1.25 / Caddy 2 | Upstream Round-Robin | 1000 rps limit",
+        payload: 'proxy_set_header X-Real-IP $remote_addr;\nproxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\nproxy_pass http://fastapi-api:8000;',
+        latency: "0.9 ms",
+        errors: "0.01%",
+        studio: "/tools/nginx-config/",
+        studioTitle: "NGINX Configurator"
+      },
+      3: {
+        title: "Auth & Identity Gate",
+        role: "Cryptographic validation of incoming JWT token against RS256 public key without querying central database.",
+        tech: "RS256 JWT | Claims: user_id, roles, exp, iss",
+        payload: '{\n  "sub": "usr_94821",\n  "roles": ["customer"],\n  "exp": 1791829999,\n  "verified": true\n}',
+        latency: "0.5 ms",
+        errors: "0.00%",
+        studio: "/tools/api-gateway/",
+        studioTitle: "API Gateway Studio"
+      },
+      4: {
+        title: "Backend Core API",
+        role: "Application service executing business logic, input validation, transaction boundaries, and queue dispatching.",
+        tech: "FastAPI / Node.js / Go Gin | Async event loop",
+        payload: '@app.post("/api/v1/orders")\nasync def create_order(order: OrderRequest):\n    # Idempotency check, Stock check, DB tx\n    return {"order_id": "ord_100"}',
+        latency: "4.2 ms",
+        errors: "0.02%",
+        studio: "/tools/local-cloud-dev/",
+        studioTitle: "Local Cloud Dev Studio"
+      },
+      5: {
+        title: "In-Memory Cache Layer",
+        role: "Sub-2ms cache checking idempotency duplicate keys and product stock availability before heavy DB queries.",
+        tech: "Redis 7.2 | LRU Eviction | SET NX EX | Pub/Sub",
+        payload: 'GET idemp:idemp_99182 -> nil\nGET stock:laptop-pro-m3 -> "499"\nDECRBY stock:laptop-pro-m3 1 -> "498"',
+        latency: "1.2 ms",
+        errors: "0.00%",
+        studio: "/tools/redis-cesc/",
+        studioTitle: "Redis Caching Studio"
+      },
+      6: {
+        title: "Persistent Relational DB",
+        role: "ACID transactional database executing row-level locks and ledger insertions with foreign key constraints.",
+        tech: "PostgreSQL 16 | PgBouncer Pooling | Read Replicas",
+        payload: 'BEGIN;\nSELECT stock FROM inventory WHERE item_id = 1 FOR UPDATE;\nINSERT INTO orders (id, user_id, amount) VALUES (...);\nCOMMIT;',
+        latency: "12.4 ms",
+        errors: "0.00%",
+        studio: "/tools/db-clustering/",
+        studioTitle: "DB Clustering Studio"
+      },
+      7: {
+        title: "Message Broker / Queue",
+        role: "Durable asynchronous message broker decoupling request path from slow downstream tasks.",
+        tech: "RabbitMQ 3.13 / Kafka | Topic Exchange | Persistent Delivery",
+        payload: 'channel.basic_publish(\n  exchange="orders.exchange",\n  routing_key="order.created",\n  body=json.dumps({"order_id": "ord_100"})\n)',
+        latency: "2.8 ms",
+        errors: "0.00%",
+        studio: "/tools/event-sre/",
+        studioTitle: "Event-Driven SRE Studio"
+      },
+      8: {
+        title: "Asynchronous Worker Fleet",
+        role: "Background consumer processes that pull jobs from the queue to process payments, generate receipts, and email users.",
+        tech: "Celery / BullMQ / Asynq | Prefetch: 4 | Exponential Backoff",
+        payload: '@celery.task(bind=True, max_retries=3)\ndef process_order_payment(self, order_id):\n    # Calls external SaaS API\n    charge_card(order_id)',
+        latency: "150.0 ms (async)",
+        errors: "0.05%",
+        studio: "/tools/event-sre/",
+        studioTitle: "Event-Driven SRE Studio"
+      },
+      9: {
+        title: "External SaaS Integrations",
+        role: "Outbound third-party APIs (Stripe, Twilio, SendGrid) wrapped with timeouts, retries, and Circuit Breakers.",
+        tech: "HTTPS REST | 3s Timeout | Circuit Breaker Pattern",
+        payload: 'POST https://api.stripe.com/v1/payment_intents\n{\n  "amount": 14999,\n  "currency": "usd",\n  "status": "succeeded"\n}',
+        latency: "240.0 ms",
+        errors: "0.10%",
+        studio: "/tools/api-gateway/",
+        studioTitle: "API Gateway Studio"
+      },
+      10: {
+        title: "Telemetry & Observability",
+        role: "OpenTelemetry collector scraping distributed trace spans and exporting RED metrics to Prometheus and Grafana.",
+        tech: "OTel W3C traceparent | Prometheus 2.51 | Grafana",
+        payload: 'traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01\nmetric: http_requests_total{status="201"} + 1',
+        latency: "0.8 ms",
+        errors: "0.00%",
+        studio: "/tools/otel-configurator/",
+        studioTitle: "OpenTelemetry Studio"
+      }
+    };
+
+    // Inspector Node Selection
+    window.selectNode = function(nodeNum) {
+      document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById(`node-${nodeNum}`);
+      if (activeCard) activeCard.classList.add('active');
+
+      const data = nodeData[nodeNum] || nodeData[1];
+      document.getElementById('inspectorNodeTag').innerText = `Node #${nodeNum}: ${data.title}`;
+      document.getElementById('inspectorTitle').innerText = data.title;
+      document.getElementById('inspectorRole').innerText = data.role;
+      document.getElementById('inspectorTech').innerText = data.tech;
+      document.getElementById('inspectorPayload').innerText = data.payload;
+      document.getElementById('inspectorLatency').innerText = data.latency;
+      document.getElementById('inspectorErrors').innerText = data.errors;
+      const link = document.getElementById('inspectorStudioLink');
+      link.href = data.studio;
+      link.innerText = `Explore in ${data.studioTitle} →`;
+    };
+
+    // Tab Switching
+    window.switchTab = function(tabName) {
+      const tabs = ['tracer', 'projects', 'labs', 'learn', 'network'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (view) view.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('active', 'border-indigo-500', 'text-indigo-400', 'bg-slate-900/60');
+          btn.classList.add('border-transparent', 'text-slate-400');
+        }
+      });
+
+      const activeView = document.getElementById(`view-${tabName}`);
+      const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'border-indigo-500', 'text-indigo-400', 'bg-slate-900/60');
+        activeBtn.classList.remove('border-transparent', 'text-slate-400');
+      }
+    };
+
+    // Interactive Request Tracer State Machine
+    let traceStep = 0;
+    let traceInterval = null;
+    const traceSteps = [
+      { node: 1, title: "1. Client App", log: "[0.0ms] Client browser emits POST /api/v1/orders with JWT Bearer & Idempotency-Key", time: 0 },
+      { node: 2, title: "2. Ingress Proxy", log: "[1.8ms] NGINX terminates SSL TLS 1.3; Token Bucket checks passed (Rate limit OK)", time: 1.8 },
+      { node: 3, title: "3. Auth Gate", log: "[2.7ms] RS256 signature verified against public key. Token valid for user 'usr_94821'", time: 2.7 },
+      { node: 5, title: "5. Redis Cache", log: "[3.2ms] Redis sub-2ms check: Idempotency Key is new. Stock is 499 (Available)", time: 3.2 },
+      { node: 4, title: "4. Backend Core", log: "[4.4ms] FastAPI starts transaction: acquiring PostgreSQL row lock", time: 4.4 },
+      { node: 6, title: "6. PostgreSQL DB", log: "[8.6ms] DB transaction committed: order record #ord_179 inserted into ledger", time: 8.6 },
+      { node: 7, title: "7. RabbitMQ Queue", log: "[11.4ms] Event 'order.created' published to durable topic exchange", time: 11.4 },
+      { node: 10, title: "10. Telemetry", log: "[14.2ms] OpenTelemetry spans recorded; W3C traceparent exported to Prometheus", time: 14.2 },
+      { node: 1, title: "1. Response Sent", log: "[16.0ms] HTTP 201 Created returned to client browser with order_id in 16.0ms!", time: 16.0 },
+      { node: 8, title: "8. Worker Fleet", log: "[Async] Celery worker thread picks up payment fulfillment task from queue", time: 24.0 },
+      { node: 9, title: "9. Stripe SaaS", log: "[Async] External Stripe API charged $149.99 with Circuit Breaker safety. Receipt emailed!", time: 264.0 }
+    ];
+
+    window.resetTrace = function() {
+      clearInterval(traceInterval);
+      traceInterval = null;
+      traceStep = 0;
+      document.querySelectorAll('.node-card').forEach(c => c.classList.remove('tracer-step-active'));
+      document.getElementById('tracerStatusBadge').className = "px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-400 border border-slate-700 mono";
+      document.getElementById('tracerStatusBadge').innerText = "Idle - Ready for Request";
+      document.getElementById('tracerTimeCounter').innerText = "0.0 ms";
+      document.getElementById('tracerLogList').innerHTML = '<div class="text-slate-500 italic">Click "Trace Request" above to simulate real-time packet propagation across all 10 architectural tiers...</div>';
+      selectNode(1);
+    };
+
+    window.stepForwardTrace = function() {
+      if (traceStep >= traceSteps.length) {
+        document.getElementById('tracerStatusBadge').className = "px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800 mono";
+        document.getElementById('tracerStatusBadge').innerText = "Request Lifecycle Completed (10/10 OK)";
+        clearInterval(traceInterval);
+        return;
+      }
+
+      const current = traceSteps[traceStep];
+      document.querySelectorAll('.node-card').forEach(c => c.classList.remove('tracer-step-active'));
+      const activeNode = document.getElementById(`node-${current.node}`);
+      if (activeNode) activeNode.classList.add('tracer-step-active');
+      selectNode(current.node);
+
+      document.getElementById('tracerStatusBadge').className = "px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-950 text-indigo-400 border border-indigo-800 mono";
+      document.getElementById('tracerStatusBadge').innerText = `Tracing: Step ${traceStep + 1} of ${traceSteps.length}`;
+      document.getElementById('tracerTimeCounter').innerText = `${current.time} ms`;
+
+      const logList = document.getElementById('tracerLogList');
+      if (traceStep === 0) logList.innerHTML = '';
+      const div = document.createElement('div');
+      div.className = "flex items-start gap-2 text-slate-300 py-1 border-b border-slate-800/60";
+      div.innerHTML = `<span class="text-emerald-400 font-bold">✓</span> <span>${current.log}</span>`;
+      logList.appendChild(div);
+      logList.scrollTop = logList.scrollHeight;
+
+      traceStep++;
+    };
+
+    window.startRequestTrace = function() {
+      window.resetTrace();
+      window.stepForwardTrace();
+      traceInterval = setInterval(() => {
+        if (traceStep >= traceSteps.length) {
+          clearInterval(traceInterval);
+          document.getElementById('tracerStatusBadge').className = "px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800 mono";
+          document.getElementById('tracerStatusBadge').innerText = "Request Lifecycle Completed (10/10 OK)";
+        } else {
+          window.stepForwardTrace();
+        }
+      }, 700);
+    };
+
+    // Project Explorer
+    let activeProjectId = 'ecommerce';
+    let activeCodeTab = 'code';
+
+    window.switchProject = function(pid) {
+      activeProjectId = pid;
+      ['ecommerce', 'notifications', 'billing'].forEach(p => {
+        const btn = document.getElementById(`btn-proj-${p}`);
+        if (btn) {
+          btn.className = (p === pid) 
+            ? "px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-indigo-600 text-white transition"
+            : "px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-slate-800 text-slate-300 hover:text-white transition";
+        }
+      });
+
+      const projs = generator.supportedProjects();
+      const proj = projs[pid === 'billing' ? 'saas-billing' : pid] || projs['ecommerce'];
+
+      document.getElementById('projName').innerText = proj.name;
+      document.getElementById('projStack').innerText = proj.stack;
+      document.getElementById('projDesc').innerText = proj.desc;
+
+      renderProjectCode();
+    };
+
+    window.toggleCodeTab = function(tab) {
+      activeCodeTab = tab;
+      const btnCode = document.getElementById('btn-view-code');
+      const btnComp = document.getElementById('btn-view-compose');
+      if (tab === 'code') {
+        btnCode.className = "text-xs font-semibold mono px-2.5 py-1 rounded bg-slate-800 text-indigo-400";
+        btnComp.className = "text-xs font-semibold mono px-2.5 py-1 rounded text-slate-400 hover:text-white";
+      } else {
+        btnComp.className = "text-xs font-semibold mono px-2.5 py-1 rounded bg-slate-800 text-indigo-400";
+        btnCode.className = "text-xs font-semibold mono px-2.5 py-1 rounded text-slate-400 hover:text-white";
+      }
+      renderProjectCode();
+    };
+
+    function renderProjectCode() {
+      const codeBlock = document.getElementById('projectCodeBlock');
+      const realId = activeProjectId === 'billing' ? 'saas-billing' : activeProjectId;
+      if (activeCodeTab === 'code') {
+        codeBlock.innerText = generator.generateBackendCode(realId);
+      } else {
+        codeBlock.innerText = generator.generateDockerCompose(realId);
+      }
+    }
+
+    window.copyCurrentCode = function() {
+      const codeBlock = document.getElementById('projectCodeBlock');
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        alert("Code copied to clipboard!");
+      });
+    };
+
+    // Troubleshooting Labs
+    const labs = generator.troubleshootingLabs();
+    let currentLabIdx = 0;
+
+    window.selectLab = function(idx) {
+      currentLabIdx = idx;
+      document.querySelectorAll('.lab-btn').forEach((b, i) => {
+        if (i === idx) {
+          b.className = "lab-btn active text-left p-3.5 rounded-xl border border-indigo-500 bg-indigo-950/30 transition";
+        } else {
+          b.className = "lab-btn text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 transition";
+        }
+      });
+
+      const lab = labs[idx];
+      document.getElementById('labTitle').innerText = lab.title;
+      document.getElementById('labSymptom').innerText = lab.symptom;
+      document.getElementById('labRootCause').innerText = lab.rootCause;
+      document.getElementById('labRemediation').innerText = lab.remediationPatch;
+      document.getElementById('labHealthStatus').className = "px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800 mono";
+      document.getElementById('labHealthStatus').innerText = "CRITICAL - OUTAGE DETECTED";
+      document.getElementById('labLogs').className = "bg-slate-900 p-3.5 rounded-lg border border-slate-800 text-[11px] mono text-rose-300 h-36 overflow-y-auto custom-scrollbar";
+      document.getElementById('labLogs').innerText = `[ALERT] Failure active: ${lab.symptom}\n[TRACE] Microservice health checks failing across availability zones.\n[METRICS] Error budget burned: 14.8%`;
+    };
+
+    window.applyLabFix = function() {
+      const statusBadge = document.getElementById('labHealthStatus');
+      const logs = document.getElementById('labLogs');
+      statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800 mono";
+      statusBadge.innerText = "HEALTHY - MITIGATION APPLIED";
+      logs.className = "bg-slate-900 p-3.5 rounded-lg border border-slate-800 text-[11px] mono text-emerald-300 h-36 overflow-y-auto custom-scrollbar";
+      logs.innerText = `[SUCCESS] Production patch verified.\n[SRE] Connections stabilized; error rate reduced to 0.00%.\n[HEALTH] All pods reporting READY. P99 latency recovered to normal baseline.`;
+    };
+
+    // Learning Modes & Quizzes
+    const learnContent = {
+      beginner: {
+        title: "Beginner: The Busy Restaurant Analogy",
+        body: "Think of the backend ecosystem as a high-end restaurant:\n\n• Client (Customer): Sits at the table and places an order.\n• Ingress / Waiter (API Gateway): Greets the customer, checks reservations (Auth), and writes down the ticket.\n• Pantry Shelf (Redis Cache): Ready-made appetizers grabbed immediately without cooking (sub-2ms).\n• Chef & Kitchen (Backend API): Prepares custom dishes according to business rules.\n• Deep Storage / Fridge (Database): High-capacity, durable ingredient storage where everything is cataloged.\n• Delivery Driver (Queue & Async Worker): Takes cooked meals and delivers them across town without forcing the waiter to leave the restaurant."
+      },
+      intermediate: {
+        title: "Intermediate: Protocols, Pools & State",
+        body: "In production, backend services manage critical resource limits:\n\n• Connection Pooling: Opening a TCP + TLS connection to Postgres costs ~50ms. PgBouncer keeps a warm pool open so workers borrow connections for ~0.1ms.\n• Cache Expiration & Jitter: Hard 1-hour TTLs cause all keys to expire simultaneously. Adding random jitter (TTL = 3600 + rand(0, 120)) spreads the load.\n• Idempotency Keys: A unique UUID per payment request stored in Redis with SET key val NX EX 900 prevents accidental double-charging when networks hiccup.\n• Database Locks: Using SELECT FOR UPDATE serializes modifications to a specific customer balance row without locking the entire table."
+      },
+      advanced: {
+        title: "Advanced: Distributed Consensus & Zero-Downtime",
+        body: "Large-scale systems must handle partial network partitions and dual-write failures:\n\n• Transactional Outbox Pattern: Never write to the Database and publish to Kafka in two separate calls. Instead, write the event into an 'outbox' table in the same DB transaction, and have a Debezium CDC worker publish it to Kafka.\n• XFetch Probabilistic Cache Stampede: Computes whether to recalculate a cached value before it expires: delta * beta * ln(rand()) > (ttl - now). Only one worker recomputes.\n• Dead Letter Queues (DLQ): Poison-pill payloads are moved to a quarantine DLQ after 3 failed attempts, preventing worker CrashLoopBackOff."
+      }
+    };
+
+    window.setLearnMode = function(mode) {
+      ['beg', 'int', 'adv'].forEach(m => {
+        const btn = document.getElementById(`btn-learn-${m}`);
+        if (btn) {
+          const isTarget = (m === 'beg' && mode === 'beginner') || (m === 'int' && mode === 'intermediate') || (m === 'adv' && mode === 'advanced');
+          btn.className = isTarget 
+            ? "px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-indigo-600 text-white transition"
+            : "px-3 py-1.5 rounded-lg text-xs font-semibold mono bg-slate-800 text-slate-300 hover:text-white transition";
+        }
+      });
+
+      const data = learnContent[mode] || learnContent.beginner;
+      document.getElementById('learnTitle').innerText = data.title;
+      document.getElementById('learnBody').innerHTML = data.body.replace(/\n/g, '<br>');
+    };
+
+    // Interactive Quiz State
+    let quizIdx = 0;
+    let quizScoreVal = 0;
+    const questions = [
+      {
+        q: "Q1: Why should payment charging and email sending be offloaded to an asynchronous message queue worker rather than handled in the main HTTP request thread?",
+        options: [
+          "To avoid blocking the user's HTTP request thread on slow external SaaS APIs.",
+          "Because Redis cannot store email strings.",
+          "PostgreSQL cannot execute writes if an email is pending."
+        ],
+        correct: 0,
+        explanation: "Correct! Offloading to Celery or BullMQ ensures the user receives an HTTP 201 Created response in < 20ms while workers handle slow 200ms+ external calls in the background."
+      },
+      {
+        q: "Q2: What is the primary cause of a 'Cache Stampede' (Thundering Herd)?",
+        options: [
+          "Redis running out of hard drive space.",
+          "A hot cache key expiring, causing thousands of concurrent requests to hit the database simultaneously.",
+          "Using HTTP/2 instead of HTTP/1.1."
+        ],
+        correct: 1,
+        explanation: "Correct! When a hot key expires, concurrent requests all experience a cache miss at the same millisecond and overwhelm the database with identical heavy queries."
+      },
+      {
+        q: "Q3: How does the Transactional Outbox pattern solve dual-write inconsistency between a Database and a Message Queue?",
+        options: [
+          "It discards the message queue entirely.",
+          "It saves the message into an outbox DB table within the SAME local transaction, and a CDC worker reliably streams it to Kafka.",
+          "It forces the client to retry 100 times."
+        ],
+        correct: 1,
+        explanation: "Correct! By saving the event in an Outbox table inside the same ACID database transaction, you guarantee at-least-once message delivery without distributed 2-phase commits."
+      }
+    ];
+
+    window.renderQuiz = function() {
+      const q = questions[quizIdx];
+      document.getElementById('quizQuestion').innerText = q.q;
+      const opts = document.getElementById('quizOptions');
+      opts.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => answerQuiz(idx);
+        btn.className = "w-full text-left p-2.5 rounded-lg border border-slate-800 bg-slate-900 hover:border-indigo-500 text-slate-300 transition";
+        btn.innerText = opt;
+        opts.appendChild(btn);
+      });
+      document.getElementById('quizFeedback').className = "mt-3 text-xs mono hidden";
+    };
+
+    window.answerQuiz = function(selectedIdx) {
+      const q = questions[quizIdx];
+      const feedback = document.getElementById('quizFeedback');
+      feedback.classList.remove('hidden');
+      if (selectedIdx === q.correct) {
+        quizScoreVal++;
+        document.getElementById('quizScore').innerText = `Score: ${quizScoreVal}/${questions.length}`;
+        feedback.className = "mt-3 text-xs mono text-emerald-400 p-2 rounded bg-emerald-950/40 border border-emerald-800";
+        feedback.innerText = q.explanation;
+      } else {
+        feedback.className = "mt-3 text-xs mono text-rose-400 p-2 rounded bg-rose-950/40 border border-rose-800";
+        feedback.innerText = "Incorrect. Try again or review the explanation in the guide!";
+      }
+    };
+
+    window.nextQuizQuestion = function() {
+      quizIdx = (quizIdx + 1) % questions.length;
+      renderQuiz();
+    };
+
+    // Diagram Modal
+    window.openDiagramModal = function() {
+      document.getElementById('diagramModal').classList.remove('hidden');
+    };
+    window.closeDiagramModal = function() {
+      document.getElementById('diagramModal').classList.add('hidden');
+    };
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      selectNode(1);
+      switchProject('ecommerce');
+      selectLab(0);
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>
