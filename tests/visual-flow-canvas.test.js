@@ -355,4 +355,46 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(drawerChevron.textContent).toBe('▼');
     expect(drawerText.textContent).toBe('Collapse Drawer');
   });
+
+  it('should support persistence: save, restore, and import flow project specifications', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { studioId: 'test-studio', activeTemplate: 'rag' });
+
+    // 1. Save project to localStorage
+    const saveResult = canvas.saveProject();
+    expect(saveResult).toBe(true);
+
+    const savedRaw = window.localStorage.getItem('vf_project_test-studio');
+    expect(savedRaw).toBeTruthy();
+    const parsed = JSON.parse(savedRaw);
+    expect(parsed.nodes.length).toBe(canvas.nodes.size);
+
+    // 2. Clear canvas and restore
+    canvas.nodes.clear();
+    canvas.connections = [];
+    expect(canvas.nodes.size).toBe(0);
+
+    const restoreResult = canvas.restoreProject();
+    expect(restoreResult).toBe(true);
+    expect(canvas.nodes.size).toBe(parsed.nodes.length);
+
+    // 3. Import JSON flow specification
+    const sampleSpec = {
+      version: 'pradeep.flow.v1',
+      name: 'Imported Microservice DAG',
+      nodes: [
+        { id: 'imp_1', title: 'Gateway Ingress', type: 'input', x: 50, y: 100 },
+        { id: 'imp_2', title: 'Payment Processor', type: 'transform', x: 350, y: 100 }
+      ],
+      connections: [
+        { from: 'imp_1', to: 'imp_2' }
+      ]
+    };
+
+    const importResult = canvas.importProject(JSON.stringify(sampleSpec));
+    expect(importResult).toBe(true);
+    expect(canvas.nodes.size).toBe(2);
+    expect(canvas.connections.length).toBe(1);
+    expect(canvas.nodes.get('imp_1').title).toBe('Gateway Ingress');
+  });
 });

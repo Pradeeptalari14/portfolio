@@ -198,7 +198,11 @@
 
               <button class="vf-btn vf-btn-ghost" id="vfZenBtn" title="Toggle Fullscreen Zen Canvas Mode (Hide sidebars)">⛶ Zen Canvas</button>
               <button class="vf-btn" id="vfAutoLayoutBtn" title="Automatic Hierarchical Layout">📐 Auto Layout</button>
-              <button class="vf-btn" id="vfExportCodeBtn" title="Export Executable Code">💾 Export Code</button>
+              <button class="vf-btn" id="vfSaveBtn" title="Save Project to Local Storage">💾 Save</button>
+              <button class="vf-btn" id="vfRestoreBtn" title="Restore Saved Project">📂 Restore</button>
+              <input type="file" id="vfImportFileInput" accept=".json" style="display:none;" />
+              <button class="vf-btn" id="vfImportBtn" title="Import Flow Specification JSON">📥 Import</button>
+              <button class="vf-btn" id="vfExportCodeBtn" title="Export Executable Code">📤 Export</button>
               <button class="vf-btn vf-btn-primary" id="vfRunFlowBtn">▶ Run the Flow</button>
             </div>
           </header>
@@ -375,6 +379,10 @@
       this.zenBtn = this.container.querySelector('#vfZenBtn');
       this.runFlowBtn = this.container.querySelector('#vfRunFlowBtn');
       this.autoLayoutBtn = this.container.querySelector('#vfAutoLayoutBtn');
+      this.saveBtn = this.container.querySelector('#vfSaveBtn');
+      this.restoreBtn = this.container.querySelector('#vfRestoreBtn');
+      this.importBtn = this.container.querySelector('#vfImportBtn');
+      this.importFileInput = this.container.querySelector('#vfImportFileInput');
       this.exportCodeBtn = this.container.querySelector('#vfExportCodeBtn');
     }
 
@@ -449,6 +457,31 @@
 
       // 6. Export Code
       this.exportCodeBtn.addEventListener('click', () => this.exportCode());
+
+      // 6b. Save Project to Persistence
+      if (this.saveBtn) {
+        this.saveBtn.addEventListener('click', () => this.saveProject());
+      }
+
+      // 6c. Restore Project from Persistence
+      if (this.restoreBtn) {
+        this.restoreBtn.addEventListener('click', () => this.restoreProject());
+      }
+
+      // 6d. Import Flow Specification JSON
+      if (this.importBtn && this.importFileInput) {
+        this.importBtn.addEventListener('click', () => this.importFileInput.click());
+        this.importFileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            this.importProject(evt.target.result);
+            this.importFileInput.value = '';
+          };
+          reader.readAsText(file);
+        });
+      }
 
       // 7. Starter Templates Listener
       this.container.querySelectorAll('.vf-template-btn').forEach(btn => {
@@ -1517,6 +1550,107 @@
       a.click();
       URL.revokeObjectURL(url);
       this.log('Downloaded verified JSON flow declaration spec.');
+    }
+
+    saveProject() {
+      const spec = {
+        version: 'pradeep.flow.v1',
+        name: (this.currentStudioId || 'custom-flow'),
+        savedAt: new Date().toISOString(),
+        studioId: this.currentStudioId,
+        nodes: Array.from(this.nodes.values()),
+        connections: this.connections,
+        scale: this.scale,
+        panOffset: this.panOffset
+      };
+      try {
+        const key = `vf_project_${(this.currentStudioId || 'default').replace(/[^a-z0-9_-]/gi, '')}`;
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(key, JSON.stringify(spec));
+          localStorage.setItem('vf_last_saved_key', key);
+        }
+        if (this.saveBtn) {
+          const prevText = this.saveBtn.textContent;
+          this.saveBtn.textContent = '✅ Saved!';
+          setTimeout(() => { if (this.saveBtn) this.saveBtn.textContent = prevText; }, 1800);
+        }
+        this.log(`Saved project state (${this.nodes.size} nodes, ${this.connections.length} wires) to local persistence.`);
+        return true;
+      } catch (e) {
+        console.warn('Failed to save project:', e);
+        return false;
+      }
+    }
+
+    restoreProject() {
+      try {
+        if (typeof localStorage === 'undefined') return false;
+        const key = `vf_project_${(this.currentStudioId || 'default').replace(/[^a-z0-9_-]/gi, '')}`;
+        let raw = localStorage.getItem(key);
+        if (!raw) {
+          const lastKey = localStorage.getItem('vf_last_saved_key');
+          if (lastKey) raw = localStorage.getItem(lastKey);
+        }
+        if (!raw) {
+          this.log(`No saved project found for current studio in local storage.`);
+          return false;
+        }
+        const spec = JSON.parse(raw);
+        if (!spec || !Array.isArray(spec.nodes)) return false;
+
+        this.nodes.clear();
+        this.connections = [];
+        spec.nodes.forEach(n => this.nodes.set(n.id, Object.assign({}, n)));
+        if (Array.isArray(spec.connections)) {
+          this.connections = spec.connections.map(c => Object.assign({}, c));
+        }
+        if (spec.scale) this.scale = spec.scale;
+        if (spec.panOffset) this.panOffset = spec.panOffset;
+
+        this.render();
+        this._applyTransform();
+        if (this.nodes.size > 0) {
+          const firstNode = Array.from(this.nodes.values())[0];
+          this.selectNode(firstNode.id);
+        }
+        if (this.restoreBtn) {
+          const prev = this.restoreBtn.textContent;
+          this.restoreBtn.textContent = '✅ Restored!';
+          setTimeout(() => { if (this.restoreBtn) this.restoreBtn.textContent = prev; }, 1800);
+        }
+        this.log(`Restored project (${this.nodes.size} nodes, ${this.connections.length} wires) saved on ${spec.savedAt || 'earlier session'}.`);
+        return true;
+      } catch (e) {
+        console.warn('Failed to restore project:', e);
+        return false;
+      }
+    }
+
+    importProject(jsonStr) {
+      try {
+        const spec = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
+        if (!spec || !Array.isArray(spec.nodes)) {
+          this.log('Invalid project specification format.');
+          return false;
+        }
+        this.nodes.clear();
+        this.connections = [];
+        spec.nodes.forEach(n => this.nodes.set(n.id, Object.assign({}, n)));
+        if (Array.isArray(spec.connections)) {
+          this.connections = spec.connections.map(c => Object.assign({}, c));
+        }
+        this.render();
+        this.fitView();
+        if (this.nodes.size > 0) {
+          const firstNode = Array.from(this.nodes.values())[0];
+          this.selectNode(firstNode.id);
+        }
+        this.log(`Imported flow spec: ${spec.name || 'Custom Project'} (${this.nodes.size} nodes, ${this.connections.length} wires)`);
+        return true;
+      } catch (err) {
+        this.log(`Error parsing imported file: ${err.message}`);
+        return false;
+      }
     }
 
     switchDrawerTab(tabKey) {
