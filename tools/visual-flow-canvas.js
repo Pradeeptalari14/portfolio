@@ -843,7 +843,10 @@
         const label = cats[catKey] || 'Other Engineering Studios';
         html += `<optgroup label="${label} (${items.length})">`;
         items.forEach(it => {
-          html += `<option value="${it.id}">${it.icon} ${it.title}</option>`;
+          const escId = VisualFlowCanvas.escapeHtml(it.id);
+          const escIcon = VisualFlowCanvas.escapeHtml(it.icon);
+          const escTitle = VisualFlowCanvas.escapeHtml(it.title);
+          html += `<option value="${escId}">${escIcon} ${escTitle}</option>`;
         });
         html += `</optgroup>`;
       });
@@ -855,8 +858,23 @@
       }
     }
 
+    escapeHtml(str) {
+      return VisualFlowCanvas.escapeHtml(str);
+    }
+
+    static escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     static generateStudioTopology(studioId, toolData = {}) {
-      const slug = (studioId || '').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
+      const sanitizedStudioId = VisualFlowCanvas.escapeHtml(studioId || '');
+      const slug = (studioId || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
       const title = (toolData.title || studioId || '').toLowerCase();
       const cat = (toolData.category || '').toLowerCase();
       const desc = (toolData.desc || '').toLowerCase();
@@ -1202,16 +1220,20 @@
       }
 
       // 11. Technology-Specific Synthesis (Fallback for any of the 341 studios)
-      const studioName = toolData.title || (slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')) || 'Engineering Studio';
-      const cleanDesc = toolData.desc ? toolData.desc.substring(0, 110) + '...' : `Technology workspace for ${studioName}.`;
+      const rawTitle = toolData.title || (slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')) || 'Engineering Studio';
+      const studioName = VisualFlowCanvas.escapeHtml(rawTitle);
+      const rawDesc = toolData.desc ? toolData.desc.substring(0, 110) + '...' : `Technology workspace for ${rawTitle}.`;
+      const cleanDesc = VisualFlowCanvas.escapeHtml(rawDesc);
+      const safeCategory = VisualFlowCanvas.escapeHtml(toolData.category || 'engineering');
+      const safeTag = VisualFlowCanvas.escapeHtml(toolData.tag || 'Runtime');
       return {
         id: slug || 'custom',
         name: studioName,
-        category: toolData.category || 'engineering',
+        category: safeCategory,
         nodes: [
           { id: 'gen_1', type: 'input', title: `${studioName} Ingestion`, icon: '📥', x: 60, y: 140, params: { source: 'Client Config / API', schema: 'Strict' }, desc: `Ingests inputs and configurations for ${studioName}.` },
-          { id: 'gen_2', type: 'transform', title: `${(toolData.category || 'System').toUpperCase()} Controller`, icon: '⚙️', x: 380, y: 140, params: { engine: 'WASM / Companion Container', state: 'Active' }, desc: `Initializes execution logic and validates dependency graph.` },
-          { id: 'gen_3', type: 'model', title: `Core Engine: ${toolData.tag || 'Runtime'}`, icon: '🧠', x: 700, y: 140, params: { mode: 'Production Compliant', sandbox: 'Isolated' }, desc: cleanDesc },
+          { id: 'gen_2', type: 'transform', title: `${safeCategory.toUpperCase()} Controller`, icon: '⚙️', x: 380, y: 140, params: { engine: 'WASM / Companion Container', state: 'Active' }, desc: `Initializes execution logic and validates dependency graph.` },
+          { id: 'gen_3', type: 'model', title: `Core Engine: ${safeTag}`, icon: '🧠', x: 700, y: 140, params: { mode: 'Production Compliant', sandbox: 'Isolated' }, desc: cleanDesc },
           { id: 'gen_4', type: 'security', title: 'Integrity & Security Guardrail', icon: '🛡️', x: 1020, y: 140, params: { check: 'Passed', cveScan: '0 Found' }, desc: 'Audits generated artifacts against security baseline policies.' },
           { id: 'gen_5', type: 'output', title: 'Verified Telemetry & Artifact Export', icon: '🎯', x: 1340, y: 140, params: { exportFormat: 'YAML / JSON / Code', status: 'Ready' }, desc: 'Emits auditable configurations and real-time execution metrics.' }
         ],
@@ -1236,15 +1258,17 @@
 
     loadStudio(studioId) {
       if (!studioId) return;
-      this.currentStudioId = studioId;
+      const safeStudioId = String(studioId).replace(/[^a-zA-Z0-9_\-\/]/g, '').trim();
+      if (!safeStudioId) return;
+      this.currentStudioId = safeStudioId;
 
-      const slug = studioId.toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
+      const slug = safeStudioId.toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
       const tool = (this.studiosList || []).find(s => {
         const itemSlug = (s.link || '').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
         return itemSlug === slug || (s.title && s.title.toLowerCase().includes(slug));
-      }) || { title: studioId, category: 'ai' };
+      }) || { title: safeStudioId, category: 'ai' };
 
-      const topo = this.generateStudioTopology(studioId, tool);
+      const topo = this.generateStudioTopology(safeStudioId, tool);
 
       this.nodes.clear();
       this.connections = [];
@@ -1356,33 +1380,42 @@
       // 1. Render Nodes
       this.nodesLayer.innerHTML = Array.from(this.nodes.values()).map(n => {
         const isSel = this.selectedNodeId === n.id;
-        const nodeType = n.type || 'model';
-        const paramsHtml = Object.entries(n.params || {}).map(([k, v]) => `
-          <div class="vf-node-param">
-            <span class="vf-param-key">${k}</span>
-            <span class="vf-param-val" title="${v}">${v}</span>
-          </div>
-        `).join('');
+        const nodeType = VisualFlowCanvas.escapeHtml(n.type || 'model');
+        const nodeId = VisualFlowCanvas.escapeHtml(n.id || '');
+        const nodeTitle = VisualFlowCanvas.escapeHtml(n.title || '');
+        const nodeDesc = VisualFlowCanvas.escapeHtml(n.desc || '');
+        const nodeIcon = VisualFlowCanvas.escapeHtml(n.icon || '📦');
+
+        const paramsHtml = Object.entries(n.params || {}).map(([k, v]) => {
+          const escK = VisualFlowCanvas.escapeHtml(k);
+          const escV = VisualFlowCanvas.escapeHtml(v);
+          return `
+            <div class="vf-node-param">
+              <span class="vf-param-key">${escK}</span>
+              <span class="vf-param-val" title="${escV}">${escV}</span>
+            </div>
+          `;
+        }).join('');
 
         return `
-          <div class="vf-node vf-type-${nodeType} ${isSel ? 'selected' : ''}" data-id="${n.id}" style="left: ${n.x}px; top: ${n.y}px;">
+          <div class="vf-node vf-type-${nodeType} ${isSel ? 'selected' : ''}" data-id="${nodeId}" style="left: ${Number(n.x) || 0}px; top: ${Number(n.y) || 0}px;">
             <div class="vf-node-accent vf-accent-${nodeType}"></div>
             <div class="vf-port vf-port-input" data-port="in" title="Connect Input"></div>
             <div class="vf-port vf-port-output" data-port="out" title="Connect Output"></div>
             
             <div class="vf-node-header">
               <div class="vf-node-title-group">
-                <span class="vf-node-icon">${n.icon || '📦'}</span>
-                <span class="vf-node-title" title="${n.title}">${n.title}</span>
+                <span class="vf-node-icon">${nodeIcon}</span>
+                <span class="vf-node-title" title="${nodeTitle}">${nodeTitle}</span>
               </div>
               <div style="display:flex; align-items:center; gap:0.35rem; flex-shrink:0;">
                 <span class="vf-node-badge vf-badge-${nodeType}">${nodeType}</span>
-                <button class="vf-node-delete" data-del="${n.id}" title="Remove Node">✕</button>
+                <button class="vf-node-delete" data-del="${nodeId}" title="Remove Node">✕</button>
               </div>
             </div>
 
             <div class="vf-node-body">
-              <div class="vf-node-desc">${n.desc || ''}</div>
+              <div class="vf-node-desc">${nodeDesc}</div>
               <div class="vf-node-params">${paramsHtml}</div>
             </div>
           </div>
@@ -1492,13 +1525,19 @@
     _renderInspector(node) {
       if (!node) {
         const nodeList = Array.from(this.nodes.values());
-        const stagePills = nodeList.map(n => `
-          <button class="vf-stage-quick-btn" data-id="${n.id}">
-            <span>${n.icon || '📦'}</span>
-            <span class="vf-stage-quick-title">${n.title}</span>
-            <span class="vf-badge-${n.type || 'model'} vf-stage-quick-badge">${n.type}</span>
-          </button>
-        `).join('');
+        const stagePills = nodeList.map(n => {
+          const escId = VisualFlowCanvas.escapeHtml(n.id || '');
+          const escIcon = VisualFlowCanvas.escapeHtml(n.icon || '📦');
+          const escTitle = VisualFlowCanvas.escapeHtml(n.title || '');
+          const escType = VisualFlowCanvas.escapeHtml(n.type || 'model');
+          return `
+            <button class="vf-stage-quick-btn" data-id="${escId}">
+              <span>${escIcon}</span>
+              <span class="vf-stage-quick-title">${escTitle}</span>
+              <span class="vf-badge-${escType} vf-stage-quick-badge">${escType}</span>
+            </button>
+          `;
+        }).join('');
 
         this.inspectorContent.innerHTML = `
           <div class="vf-inspector-overview">
@@ -1536,30 +1575,40 @@
         return;
       }
 
-      const paramsForm = Object.entries(node.params || {}).map(([k, v]) => `
-        <div class="vf-form-group">
-          <label class="vf-form-label">${k}</label>
-          <input type="text" class="vf-form-control vf-param-input" data-key="${k}" value="${v}" />
-        </div>
-      `).join('');
+      const escId = VisualFlowCanvas.escapeHtml(node.id || '');
+      const escType = VisualFlowCanvas.escapeHtml(node.type || 'model');
+      const escTitle = VisualFlowCanvas.escapeHtml(node.title || '');
+      const escDesc = VisualFlowCanvas.escapeHtml(node.desc || '');
+      const escIcon = VisualFlowCanvas.escapeHtml(node.icon || '📦');
+
+      const paramsForm = Object.entries(node.params || {}).map(([k, v]) => {
+        const escK = VisualFlowCanvas.escapeHtml(k);
+        const escV = VisualFlowCanvas.escapeHtml(v);
+        return `
+          <div class="vf-form-group">
+            <label class="vf-form-label">${escK}</label>
+            <input type="text" class="vf-form-control vf-param-input" data-key="${escK}" value="${escV}" />
+          </div>
+        `;
+      }).join('');
 
       this.inspectorContent.innerHTML = `
         <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
-          <span style="font-size:1.4rem;">${node.icon || '📦'}</span>
+          <span style="font-size:1.4rem;">${escIcon}</span>
           <div>
-            <div style="font-weight:700; color:#fff; font-size:0.95rem;">${node.title}</div>
-            <div style="font-size:0.75rem; color:var(--vf-accent-cyan); font-family:var(--vf-font-mono);">ID: ${node.id} (${node.type})</div>
+            <div style="font-weight:700; color:#fff; font-size:0.95rem;">${escTitle}</div>
+            <div style="font-size:0.75rem; color:var(--vf-accent-cyan); font-family:var(--vf-font-mono);">ID: ${escId} (${escType})</div>
           </div>
         </div>
 
         <div class="vf-form-group">
           <label class="vf-form-label">Component Label</label>
-          <input type="text" class="vf-form-control" id="vfInspectTitle" value="${node.title}" />
+          <input type="text" class="vf-form-control" id="vfInspectTitle" value="${escTitle}" />
         </div>
 
         <div class="vf-form-group">
           <label class="vf-form-label">Description & Role</label>
-          <textarea class="vf-form-control" id="vfInspectDesc" rows="2">${node.desc || ''}</textarea>
+          <textarea class="vf-form-control" id="vfInspectDesc" rows="2">${escDesc}</textarea>
         </div>
 
         <div style="border-top: 1px solid var(--vf-border); margin: 1rem 0; padding-top: 0.75rem;">
@@ -1573,7 +1622,7 @@
             <span>SRE AI Copilot Insight</span>
           </div>
           <div class="vf-ai-box-body">
-            This <strong>${node.title}</strong> stage executes in client WASM simulation by default.
+            This <strong>${escTitle}</strong> stage executes in client WASM simulation by default.
             For verified Docker execution, ensure local companion container is active on <code>:8000</code>.
           </div>
         </div>

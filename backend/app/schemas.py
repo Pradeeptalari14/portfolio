@@ -89,9 +89,9 @@ class ProjectResponse(BaseModel):
 class SandboxRunRequest(BaseModel):
     studio_id: Optional[str] = "general"
     language: str = "bash"  # bash, python, sh
-    command: Optional[str] = None
+    command: Optional[str] = Field(default=None, max_length=2048)
     files: Optional[Dict[str, str]] = None
-    timeout_sec: int = 15
+    timeout_sec: int = Field(default=15, ge=1, le=30)
 
 class SandboxRunResponse(BaseModel):
     success: bool

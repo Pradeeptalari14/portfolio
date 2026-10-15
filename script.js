@@ -3348,6 +3348,16 @@ function initCommandPalette() {
   window.openCommandPalette = openPalette;
   window.closeCommandPalette = closePalette;
 
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   function renderResults(query) {
     const q = (query || '').trim().toLowerCase();
     const all = [...staticItems, ...toolsList];
@@ -3365,9 +3375,10 @@ function initCommandPalette() {
 
     activeIndex = 0;
     if (currentFiltered.length === 0) {
+      const safeQuery = escapeHtml(query);
       resultsContainer.innerHTML = `
         <div style="padding: 2rem; text-align: center; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
-          No matching studios, commands or pages found for "${query}"
+          No matching studios, commands or pages found for "${safeQuery}"
         </div>
       `;
       return;
@@ -3396,15 +3407,20 @@ function initCommandPalette() {
         itemEl.className = `cmd-palette-item ${itemIdx === activeIndex ? 'active' : ''}`;
         itemEl.dataset.idx = itemIdx;
 
+        const escTitle = escapeHtml(item.title || '');
+        const escSubtitle = escapeHtml(item.subtitle || '');
+        const escType = escapeHtml(item.type || '');
+        const escIcon = escapeHtml(item.icon || '🛠️');
+
         itemEl.innerHTML = `
           <div class="cmd-item-left">
-            <span class="cmd-item-icon">${item.icon}</span>
+            <span class="cmd-item-icon">${escIcon}</span>
             <div>
-              <div style="font-weight: 600; color: #f8fafc;">${item.title}</div>
-              <div style="font-size: 0.75rem; color: #94a3b8;">${item.subtitle}</div>
+              <div style="font-weight: 600; color: #f8fafc;">${escTitle}</div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">${escSubtitle}</div>
             </div>
           </div>
-          <span class="cmd-item-meta">${item.type}</span>
+          <span class="cmd-item-meta">${escType}</span>
         `;
 
         itemEl.addEventListener('click', () => selectItem(item));

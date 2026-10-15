@@ -1,10 +1,28 @@
 import time
 import os
+import re
+from typing import Optional
 import docker
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header, Depends
 from ..schemas import SandboxRunRequest, SandboxRunResponse
 
 router = APIRouter(prefix="/api/sandbox", tags=["Docker Sandbox"])
+
+def verify_sandbox_auth(
+    x_api_key: Optional[str] = Header(None, alias="X-API-Key"),
+    authorization: Optional[str] = Header(None)
+):
+    expected_key = os.getenv("SANDBOX_API_KEY")
+    if not expected_key:
+        return True
+    
+    token = x_api_key
+    if not token and authorization and authorization.startswith("Bearer "):
+        token = authorization.split("Bearer ")[1].strip()
+        
+    if token != expected_key:
+        raise HTTPException(status_code=401, detail="Unauthorized: invalid or missing sandbox API key")
+    return True
 
 # Fallback in-process runner if Docker daemon is not active in dev
 def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
@@ -21,7 +39,19 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
         )
 
     image = "python:3.11-alpine" if request.language == "python" else "alpine:3.19"
-    cmd = request.command or "echo 'No command specified'"
+    cmd = (request.command or "echo 'No command specified'").strip()
+
+    # Pre-execution sanity checks for known disruptive command constructs
+    if re.search(r':\(\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;\s*:', cmd):
+        return SandboxRunResponse(
+            success=False,
+            exit_code=1,
+            stdout="",
+            stderr="Command rejected: recursive fork constructs are strictly prohibited.",
+            duration_ms=(time.time() - start_time) * 1000
+        )
+
+    safe_timeout = min(max(1, request.timeout_sec or 15), 30)
 
     try:
         # Hardened container specs as defined in approved blueprint
@@ -38,7 +68,7 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
         )
 
         container.start()
-        res = container.wait(timeout=request.timeout_sec)
+        res = container.wait(timeout=safe_timeout)
         exit_code = res.get("StatusCode", 0)
         logs = container.logs(stdout=True, stderr=True)
         container.remove(force=True)
@@ -71,5 +101,5 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
         )
 
 @router.post("/execute", response_model=SandboxRunResponse)
-async def execute_in_sandbox(payload: SandboxRunRequest):
+async def execute_in_sandbox(payload: SandboxRunRequest, authorized: bool = Depends(verify_sandbox_auth)):
     return run_in_docker(payload)

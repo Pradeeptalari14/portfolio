@@ -10,15 +10,25 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS configuration allowing GitHub Pages and local development
+# CORS configuration allowing custom domains and local development
 allowed_origins = [
     "https://talaripradeep.info",
+    "https://www.talaripradeep.info",
+    "https://pradeeptalari.me",
+    "https://www.pradeeptalari.me",
     "http://localhost:5173",
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:8000"
 ]
+
+extra_origins = os.getenv("CORS_ALLOWED_ORIGINS", "")
+if extra_origins:
+    for origin in extra_origins.split(","):
+        origin_clean = origin.strip()
+        if origin_clean and origin_clean not in allowed_origins:
+            allowed_origins.append(origin_clean)
 
 app.add_middleware(
     CORSMiddleware,

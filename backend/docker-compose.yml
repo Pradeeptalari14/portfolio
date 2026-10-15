@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-studios_dev_pass}
       POSTGRES_DB: ${POSTGRES_DB:-studios_hub}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -24,7 +24,7 @@ services:
     container_name: studios_valkey
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - valkeydata:/data
     command: valkey-server --save 60 1 --loglevel notice
@@ -34,7 +34,7 @@ services:
     container_name: studios_ollama
     restart: unless-stopped
     ports:
-      - "11434:11434"
+      - "127.0.0.1:11434:11434"
     volumes:
       - ollamadata:/root/.ollama
     environment:
@@ -47,7 +47,7 @@ services:
     container_name: studios_api
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     environment:
       - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-studios_dev_pass}@postgres:5432/${POSTGRES_DB:-studios_hub}
       - OLLAMA_HOST=http://ollama:11434

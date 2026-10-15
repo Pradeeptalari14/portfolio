@@ -1,8 +1,9 @@
+import os
 from typing import List, Optional
 from datetime import datetime
 from pathlib import Path
 import json
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, or_
 from ..database import get_db
@@ -10,6 +11,22 @@ from ..models import Studio
 from ..schemas import StudioCreate, StudioUpdate, StudioResponse
 
 router = APIRouter(prefix="/api/studios", tags=["Studios"])
+
+def verify_admin_key(
+    x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
+    authorization: Optional[str] = Header(None)
+):
+    admin_key = os.getenv("ADMIN_API_KEY")
+    if not admin_key:
+        if os.getenv("ENVIRONMENT") == "production":
+            raise HTTPException(status_code=403, detail="Modifications disabled in production without configured ADMIN_API_KEY")
+        return True
+    token = x_admin_key
+    if not token and authorization and authorization.startswith("Bearer "):
+        token = authorization.split("Bearer ")[1].strip()
+    if token != admin_key:
+        raise HTTPException(status_code=401, detail="Unauthorized: invalid or missing X-Admin-Key")
+    return True
 
 def _get_tools_catalog():
     tools_path = Path(__file__).resolve().parents[3] / "tools" / "tools.json"
@@ -118,7 +135,11 @@ async def get_studio(studio_id: str, db: AsyncSession = Depends(get_db)):
     raise HTTPException(status_code=404, detail="Studio not found")
 
 @router.post("", response_model=StudioResponse, status_code=201)
-async def create_studio(payload: StudioCreate, db: AsyncSession = Depends(get_db)):
+async def create_studio(
+    payload: StudioCreate,
+    db: AsyncSession = Depends(get_db),
+    _admin: bool = Depends(verify_admin_key)
+):
     existing = await db.execute(select(Studio).where(Studio.id == payload.id))
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="Studio with this ID already exists")
@@ -130,7 +151,12 @@ async def create_studio(payload: StudioCreate, db: AsyncSession = Depends(get_db
     return new_studio
 
 @router.patch("/{studio_id}", response_model=StudioResponse)
-async def update_studio(studio_id: str, payload: StudioUpdate, db: AsyncSession = Depends(get_db)):
+async def update_studio(
+    studio_id: str,
+    payload: StudioUpdate,
+    db: AsyncSession = Depends(get_db),
+    _admin: bool = Depends(verify_admin_key)
+):
     result = await db.execute(select(Studio).where(Studio.id == studio_id))
     studio = result.scalar_one_or_none()
     if not studio:
