@@ -303,25 +303,26 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
         <animate attributeName="opacity" values="{opacity_values}" keyTimes="{key_times}" dur="14.2s" begin="3.2s" repeatCount="indefinite" />
       </circle>''')
 
-    # Info panel rows strictly adhering to reference screenshot
+    # Info panel rows strictly adhering to user's real projects and GitHub repositories
     rows = [
         ("Subject", "Talari Pradeep"),
-        ("Role", "Senior AI Infra & Platform SRE Lead"),
+        ("Role", "Senior DevOps & Cloud Platform Engineer"),
         ("Origin", "Bangalore, India"),
         ("Education", "B.Tech in Computer Science & Engineering"),
-        ("Status", "Building · Scaling · Shipping Production Systems"),
-        ("ToolChain", "VS Code, Git, Docker, Kubernetes, Linux, Terraform"),
-        ("Core.Lang", "Python, Go, Bash, Rust, TypeScript, SQL"),
-        ("Core.Frontend", "Vanilla JS, Web Components, Canvas DAGs, HTML5"),
-        ("Core.Backend", "FastAPI, vLLM, SGLang, LiteLLM, Node.js"),
-        ("Core.Database", "PostgreSQL (pgvector), Valkey, Redis, Neo4j"),
-        ("Core.Infra", "Kubernetes (EKS/AKS), Karpenter, Cilium eBPF, ArgoCD"),
+        ("Status", "Automating · Scaling · Deploying Production Cloud & AI"),
+        ("ToolChain", "Docker, Kubernetes, Terraform, Helm, Linux, Git"),
+        ("Core.Cloud", "AWS (EKS, VPC, IAM, S3), Azure (AKS), GCP"),
+        ("Core.CI_CD", "GitHub Actions, Jenkins, Ansible, ArgoCD, GitOps"),
+        ("Core.IaC", "Terraform Modules, Terragrunt, HCL, HashiCorp Vault"),
+        ("Core.Lang", "Python, Bash / Shell, YAML, HCL, SQL, Go"),
+        ("Core.AIML", "LLMOps, LangGraph Multi-Agent, RAG, vLLM, Ray"),
+        ("Core.Obs", "Prometheus, Grafana, OpenTelemetry, Loki, Tempo"),
+        ("Core.Sec", "HashiCorp Vault, Cilium eBPF, Trivy, Zero-Trust"),
         ("- Contact", ""),
         ("Grid.Mail", "talaripradeep14@gmail.com"),
         ("Grid.Portfolio", "https://talaripradeep.info (341 Studios)"),
         ("Grid.LinkedIn", "https://linkedin.com/in/pradeep-talari"),
-        ("Grid.GitHub", "https://github.com/Pradeeptalari14"),
-        ("Grid.Instagram", "https://instagram.com/pradeeptalari14")
+        ("Grid.GitHub", "https://github.com/Pradeeptalari14")
     ]
 
     info_lines_svg = []
