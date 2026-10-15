@@ -2,17 +2,23 @@
   ═══════════════════════════════════════════════════════════════════════════
   PRADEEP TALARI · GITHUB PROFILE README
   Senior AI Infrastructure, Platform & Cloud SRE Lead
-  Special repository: https://github.com/Pradeeptalari14/Pradeeptalari14
+  Repository: https://github.com/Pradeeptalari14/Pradeeptalari14
   ═══════════════════════════════════════════════════════════════════════════
 -->
 
+<!-- Phase 1: Animated Banner with Dark/Light Mode Preference -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/profile-header.svg" alt="Talari Pradeep Header Banner" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/dark.svg?v=2026">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/light.svg?v=2026">
+    <img alt="Talari Pradeep — Senior AI Infrastructure & Platform SRE Lead" src="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/main/dark.svg?v=2026" width="100%" />
+  </picture>
 </p>
 
+<!-- Phase 4: Social Badges (for-the-badge style, brand compliant) -->
 <p align="center">
   <a href="https://talaripradeep.info" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio%20Website-296_Studios-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+    <img src="https://img.shields.io/badge/Portfolio%20Hub-341_Studios-0891b2?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
   </a>
   &nbsp;
   <a href="https://linkedin.com/in/pradeep-talari" target="_blank">
@@ -29,7 +35,7 @@
 </p>
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=PROFILE%20VIEWS&color=6366f1&style=flat-square" alt="Profile views" />
+  <img src="https://komarev.com/ghpvc/?username=Pradeeptalari14&label=PROFILE%20VIEWS&color=22d3ee&style=flat-square" alt="Profile views" />
   <img src="https://img.shields.io/badge/EXPERIENCE-6%2B%20YEARS-0ea5e9?style=flat-square" alt="Experience" />
   <img src="https://img.shields.io/badge/FOCUS-AI%20INFRA%20%7C%20PLATFORM%20SRE-8b5cf6?style=flat-square" alt="Focus" />
   <img src="https://img.shields.io/badge/LOCATION-BANGALORE%2C%20INDIA-10b981?style=flat-square" alt="Location" />
@@ -49,25 +55,24 @@ Senior **AI Infrastructure & Platform Engineer** with **6+ years of enterprise e
 
 ---
 
-## 🚀 Live Interactive Simulators & 296 Developer Studios
+## 🚀 Live Interactive Simulators & 341 Developer Studios
 
-The entire engineering ecosystem is backed by an open-source hub of **296 Interactive Developer Studios & SRE Simulators** built into the portfolio:
+The entire engineering ecosystem is backed by an open-source hub of **341 Interactive Developer Studios & 6 Flagship Engineering Platforms** built into the portfolio:
 
 | Interactive Tool / Center | What You Can Explore & Simulate | Launch Live |
 | :--- | :--- | :---: |
+| 🗺️ **Visual Flow Canvas (DAG)** | Interactive zero-dependency visual topology builder and pipeline execution simulator | [**Launch**](https://talaripradeep.info/tools/visual-flow-canvas.html) |
 | ⚡ **SGLang RadixAttention Studio** | Radix Tree KV-cache sharing across hierarchical agent prompts for 5.1x throughput | [**Launch**](https://talaripradeep.info/tools/sglang-radix-attention/) |
 | 🔀 **DeepSeek-V3 MoE & DualPipe Studio** | 256 routed experts + 1 shared expert, DualPipe forward/backward communication overlap | [**Launch**](https://talaripradeep.info/tools/deepseek-v3-moe/) |
 | 💻 **WebGPU In-Browser Small LM Studio** | 100% client-side zero-server SmolLM2/Phi-3.5 inference with WebGPU WGSL compute shaders | [**Launch**](https://talaripradeep.info/tools/webgpu-browser-slm/) |
-| ⚡ **DeepSeek-R1 Speculative Decoding Studio** | 3.2x reasoning speedup with lightweight Qwen-2.5-Coder drafting & parallel verification | [**Launch**](https://talaripradeep.info/tools/deepseek-speculative-decoding/) |
+| ⚡ **DeepSeek-R1 Speculative Decoding** | 3.2x reasoning speedup with lightweight Qwen-2.5-Coder drafting & parallel verification | [**Launch**](https://talaripradeep.info/tools/deepseek-speculative-decoding/) |
 | ⚡ **TypeSafe Jev: System 1 AI Studio** | Sub-100ms non-autoregressive reflex engine, RLCD calibration & System 2 fallback | [**Launch**](https://talaripradeep.info/tools/jev-system1/) |
 | 🕸️ **Knowledge Graph & GraphRAG Studio** | Zero-shot GLiNER extraction, NetworkX topology & Neo4j Cypher constraints | [**Launch**](https://talaripradeep.info/tools/knowledge-graph/) |
-| 🔍 **Vectorless RAG & Sparse Search Studio** | PostgreSQL GIN tsvector search, BM25 TF-IDF saturation & RRF ranker | [**Launch**](https://talaripradeep.info/tools/vectorless-rag/) |
+| 🔍 **Vectorless RAG & Sparse Search** | PostgreSQL GIN tsvector search, BM25 TF-IDF saturation & RRF ranker | [**Launch**](https://talaripradeep.info/tools/vectorless-rag/) |
 | 🔑 **Production Secrets & Rotation Studio** | HashiCorp Vault dynamic leases, AWS KMS envelope encryption & K8s ESO | [**Launch**](https://talaripradeep.info/tools/production-secrets/) |
-| 🗺️ **SRE Production Topology Flow** | In-browser vector packet flows, node inspector HUD, and chaos fault injection | [**Launch**](https://talaripradeep.info/architecture/) |
-| 🎬 **Programmatic Manim Video Generator** | Auto-generates runnable 3Blue1Brown/Manim 4K video Python scripts (`manim_flow.py`) | [**Explore**](https://talaripradeep.info/tools/) |
 | 💥 **SRE Production Incident Simulator** | Real-world PagerDuty outage drills, OOM troubleshooting, and automated failover | [**Launch**](https://talaripradeep.info/incident/) |
 | 💰 **Cloud FinOps Rightsizing Center** | Live multi-cloud AWS cost calculator, idle resource reclamation & Karpenter ROI | [**Launch**](https://talaripradeep.info/finops/) |
-| 🛠️ **296 Developer Studios Hub** | Unified console of 296 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
+| 🛠️ **341 Developer Studios Hub** | Unified console of 341 code generators spanning AI, Cloud, DevSecOps & SRE | [**Launch**](https://talaripradeep.info/studios/) |
 
 ---
 
@@ -137,8 +142,8 @@ The entire engineering ecosystem is backed by an open-source hub of **296 Intera
       <img src="https://img.shields.io/badge/Bash_Shell-121011?style=flat-square&logo=gnu-bash&logoColor=white" />
       <img src="https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white" />
       <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" />
-      <img src="https://img.shields.io/badge/Manim_CE-030712?style=flat-square&logoColor=white" />
       <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" />
+      <img src="https://img.shields.io/badge/Valkey_8-dc2626?style=flat-square&logoColor=white" />
     </td>
   </tr>
 </table>
@@ -196,21 +201,28 @@ The entire engineering ecosystem is backed by an open-source hub of **296 Intera
 
 ---
 
+<!-- Phase 2: Self-Hosted Stats Cards -->
 ## 📊 GitHub Contribution Metrics & Activity
 
-<table align="center" border="0" cellpadding="8" cellspacing="0" width="100%">
-  <tr>
-    <td valign="top" width="50%">
-      <img src="https://github-stats-alpha.vercel.app/api?username=Pradeeptalari14&show_icons=true&theme=radical&hide_border=true" alt="GitHub Stats" width="100%" />
-    </td>
-    <td valign="top" width="50%">
-      <img src="https://github-readme-streak-stats.herokuapp.com/?user=Pradeeptalari14&theme=radical&hide_border=true" alt="GitHub Streak Stats" width="100%" />
-    </td>
-  </tr>
-</table>
-
+<!-- Streak card (100% width) -->
 <p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Pradeeptalari14&theme=radical" alt="GitHub Profile Summary" width="100%" />
+  <img src="https://streak-stats.demolab.com?user=Pradeeptalari14&theme=tokyonight&hide_border=true&border_radius=8&background=0A101F&stroke=1E293B&ring=22D3EE&fire=10B981&currStreakNum=F8FAFC&sideNums=94A3B8&currStreakLabel=22D3EE&sideLabels=94A3B8&dates=475569" width="100%" alt="Pradeep GitHub Streak" />
+</p>
+
+<!-- Side-by-side Stats & Top Languages (49% width each, hide_rank=true) -->
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Pradeeptalari14&show_icons=true&hide_rank=true&hide_border=true&bg_color=0A101F&title_color=22D3EE&icon_color=10B981&text_color=94A3B8&count_private=true" width="49%" alt="Pradeep GitHub Stats" />
+  &nbsp;
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Pradeeptalari14&layout=compact&hide_border=true&bg_color=0A101F&title_color=22D3EE&text_color=94A3B8&langs_count=8" width="49%" alt="Pradeep Top Languages" />
+</p>
+
+<!-- Phase 3: Contribution Snake (12h automated workflow on output branch) -->
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/output/github-contribution-grid-snake-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/output/github-contribution-grid-snake-light.svg">
+    <img alt="GitHub Contribution Snake" src="https://raw.githubusercontent.com/Pradeeptalari14/Pradeeptalari14/output/github-contribution-grid-snake-dark.svg" width="100%" />
+  </picture>
 </p>
 
 ---
@@ -225,7 +237,7 @@ I am always interested in discussing **AI Infrastructure, Large Language Model O
   </a>
   &nbsp;
   <a href="https://talaripradeep.info" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio%20Website-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+    <img src="https://img.shields.io/badge/Portfolio%20Website-0891b2?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
   </a>
   &nbsp;
   <a href="https://talaripradeep.info/Talari_Pradeep.pdf" target="_blank">
@@ -238,5 +250,5 @@ I am always interested in discussing **AI Infrastructure, Large Language Model O
 </p>
 
 <p align="center">
-  <sub>Architected with Enterprise SRE Standards · 292 Interactive Developer Studios · 99.99% Reliability</sub>
+  <sub>Architected with Enterprise SRE Standards · 341 Interactive Developer Studios · 99.999% Reliability</sub>
 </p>
