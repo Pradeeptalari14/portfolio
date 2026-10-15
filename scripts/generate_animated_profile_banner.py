@@ -116,78 +116,92 @@ def process_portrait(image_path, grid_w=300, grid_h=340):
 
 def generate_logo_points(num_dots):
     random.seed(1337)
-    # 1. Kubernetes 7-spoke Helm Wheel
+    # 1. Official Kubernetes 7-Spoke Helm with Outer Handles & Inner Hub
     k8s = []
-    outer = int(num_dots * 0.55)
-    for i in range(outer):
-        theta = 2 * math.pi * i / outer
-        r = 65 + random.uniform(-1.2, 1.2)
-        k8s.append((75 + r * math.cos(theta), 85 + r * math.sin(theta)))
-    spokes = 7
-    rem = num_dots - len(k8s)
-    per_spoke = rem // spokes
-    for s in range(spokes):
-        angle = 2 * math.pi * s / spokes
-        for step in range(per_spoke):
-            r = (step / per_spoke) * 58
-            k8s.append((75 + r * math.cos(angle), 85 + r * math.sin(angle)))
+    # Outer ring
+    ring_pts = int(num_dots * 0.32)
+    for i in range(ring_pts):
+        th = 2 * math.pi * i / ring_pts
+        k8s.append((65 * math.cos(th), 65 * math.sin(th)))
+    # Inner hub
+    hub_pts = int(num_dots * 0.16)
+    for i in range(hub_pts):
+        th = 2 * math.pi * i / hub_pts
+        k8s.append((18 * math.cos(th), 18 * math.sin(th)))
+    # 7 spokes with rounded handles
+    rem_k8s = num_dots - len(k8s)
+    per_spoke = rem_k8s // 7
+    for s in range(7):
+        th = 2 * math.pi * s / 7
+        spoke_steps = int(per_spoke * 0.6)
+        for step in range(spoke_steps):
+            r = 18 + (step / spoke_steps) * 47
+            k8s.append((r * math.cos(th), r * math.sin(th)))
+        handle_steps = per_spoke - spoke_steps
+        for step in range(handle_steps):
+            r = 65 + (step / handle_steps) * 16
+            k8s.append((r * math.cos(th), r * math.sin(th)))
     while len(k8s) < num_dots:
-        k8s.append((75, 85))
+        k8s.append((0, 0))
 
-    # 2. Code Glyph </>
+    # 2. Modern Code & Terminal Glyph < / >
     code = []
-    b_count = num_dots // 3
-    for i in range(b_count):
-        t = i / b_count
+    pts_bracket = int(num_dots * 0.35)
+    for i in range(pts_bracket):
+        t = i / pts_bracket
         if t < 0.5:
-            x = 55 - (t * 2) * 28
-            y = 52 + (t * 2) * 33
+            u = t * 2
+            x = -22 - u * 40
+            y = -46 + u * 46
         else:
-            x = 27 + ((t - 0.5) * 2) * 28
-            y = 85 + ((t - 0.5) * 2) * 33
-        code.append((x + random.uniform(-0.8, 0.8), y + random.uniform(-0.8, 0.8)))
-    for i in range(b_count):
-        t = i / b_count
-        x = 65 + t * 20
-        y = 118 - t * 66
-        code.append((x + random.uniform(-0.8, 0.8), y + random.uniform(-0.8, 0.8)))
-    r_count = num_dots - len(code)
-    for i in range(r_count):
-        t = i / r_count
-        if t < 0.5:
-            x = 95 + (t * 2) * 28
-            y = 52 + (t * 2) * 33
-        else:
-            x = 123 - ((t - 0.5) * 2) * 28
-            y = 85 + ((t - 0.5) * 2) * 33
-        code.append((x + random.uniform(-0.8, 0.8), y + random.uniform(-0.8, 0.8)))
+            u = (t - 0.5) * 2
+            x = -62 + u * 40
+            y = 0 + u * 46
+        code.append((x, y))
 
-    # 3. Neural AI Graph
+    pts_slash = int(num_dots * 0.30)
+    for i in range(pts_slash):
+        t = i / pts_slash
+        x = -10 + t * 20
+        y = 52 - t * 104
+        code.append((x, y))
+
+    pts_right = num_dots - len(code)
+    for i in range(pts_right):
+        t = i / pts_right
+        if t < 0.5:
+            u = t * 2
+            x = 22 + u * 40
+            y = -46 + u * 46
+        else:
+            u = (t - 0.5) * 2
+            x = 62 - u * 40
+            y = 0 + u * 46
+        code.append((x, y))
+
+    # 3. AI Neural Synapse / Atomic Core
     ai = []
-    layers = [4, 7, 9, 7, 4]
-    xs = [30, 52, 75, 98, 120]
-    nodes = []
-    for l_idx, count in enumerate(layers):
-        lx = xs[l_idx]
-        spacing = 80 / (count + 1)
-        for c in range(count):
-            nodes.append((lx, 45 + (c + 1) * spacing))
-    edges = []
-    for l_idx in range(len(layers) - 1):
-        s1 = sum(layers[:l_idx])
-        s2 = sum(layers[:l_idx + 1])
-        for p in range(layers[l_idx]):
-            for c in range(layers[l_idx + 1]):
-                edges.append((nodes[s1 + p], nodes[s2 + c]))
-    per_node = (num_dots // 3) // len(nodes)
-    for nx, ny in nodes:
-        for _ in range(per_node):
-            ai.append((nx + random.uniform(-1.5, 1.5), ny + random.uniform(-1.5, 1.5)))
-    rem = num_dots - len(ai)
-    for _ in range(rem):
-        p1, p2 = random.choice(edges)
-        t = random.random()
-        ai.append((p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1] - p1[1])))
+    nuc_pts = int(num_dots * 0.22)
+    for i in range(nuc_pts):
+        th = 2 * math.pi * i / nuc_pts
+        r = random.uniform(2, 16)
+        ai.append((r * math.cos(th), r * math.sin(th)))
+
+    orbit_pts = int(num_dots * 0.26)
+    for angle_deg in [0, 60, 120]:
+        ang_rad = math.radians(angle_deg)
+        cos_a, sin_a = math.cos(ang_rad), math.sin(ang_rad)
+        sub_pts = orbit_pts if angle_deg != 120 else (num_dots - len(ai))
+        for i in range(sub_pts):
+            th = 2 * math.pi * i / sub_pts
+            ex = 68 * math.cos(th)
+            ey = 26 * math.sin(th)
+            rx = ex * cos_a - ey * sin_a
+            ry = ex * sin_a + ey * cos_a
+            ai.append((rx, ry))
+
+    while len(ai) < num_dots:
+        ai.append((0, 0))
 
     return k8s[:num_dots], code[:num_dots], ai[:num_dots]
 
@@ -246,22 +260,21 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
             d_str = " ".join(shimmer_groups[g])
             shimmer_paths.append(f'<path class="shimmer-grp-{g}" fill="{portrait_hue}" shape-rendering="crispEdges" d="{d_str}" />')
 
-    # 2. Drift keyframe animation
+    # 2. Portrait Fade animation during logo phase
     drift_css = f"""
-    @keyframes portraitDrift {{
-      0%, 21.1% {{ transform: translate(0px, 0px); opacity: 1; }}
-      30.3% {{ transform: translate(24px, 10px); opacity: 0.12; }}
-      90.8% {{ transform: translate(24px, 10px); opacity: 0.12; }}
-      100% {{ transform: translate(0px, 0px); opacity: 1; }}
+    @keyframes portraitFade {{
+      0%, 22% {{ opacity: 1; }}
+      28% {{ opacity: 0; }}
+      88% {{ opacity: 0; }}
+      94%, 100% {{ opacity: 1; }}
     }}
     .portrait-drift-layer {{
-      animation: portraitDrift 14.2s infinite ease-in-out;
-      animation-delay: 3.2s;
+      animation: portraitFade 16s infinite ease-in-out;
     }}
     """
 
-    # 3. Travelers: ~900 Dots
-    NUM_TRAVELERS = 900
+    # 3. High-Density Traveling Morph Points (500 dots)
+    NUM_TRAVELERS = 500
     center_dots = [d for d in dots if 50 <= d[0] <= 250 and 60 <= d[1] <= 280]
     random.seed(2026)
     if len(center_dots) > NUM_TRAVELERS:
@@ -271,36 +284,36 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
     actual_travelers = len(traveling_source)
 
     k8s_pts, code_pts, ai_pts = generate_logo_points(actual_travelers)
-    morph_cx, morph_cy = origin_x + 175.0, origin_y + 207.0
-    morph_scale = 1.8
+    morph_cx = 255.0
+    morph_cy = 327.0
+    morph_scale = 1.7
 
     def sort_polar(pts, cx, cy):
         return sorted(pts, key=lambda p: math.atan2(p[1] - cy, p[0] - cx))
 
     sorted_src = sort_polar([(origin_x + x * scale_x, origin_y + y * scale_y) for x, y in traveling_source], morph_cx, morph_cy)
-    sorted_k8s = sort_polar([(morph_cx + (px - 75) * morph_scale, morph_cy + (py - 85) * morph_scale) for px, py in k8s_pts], morph_cx, morph_cy)
-    sorted_code = sort_polar([(morph_cx + (px - 75) * morph_scale, morph_cy + (py - 85) * morph_scale) for px, py in code_pts], morph_cx, morph_cy)
-    sorted_ai = sort_polar([(morph_cx + (px - 75) * morph_scale, morph_cy + (py - 85) * morph_scale) for px, py in ai_pts], morph_cx, morph_cy)
+    sorted_k8s = sort_polar([(morph_cx + px * morph_scale, morph_cy + py * morph_scale) for px, py in k8s_pts], morph_cx, morph_cy)
+    sorted_code = sort_polar([(morph_cx + px * morph_scale, morph_cy + py * morph_scale) for px, py in code_pts], morph_cx, morph_cy)
+    sorted_ai = sort_polar([(morph_cx + px * morph_scale, morph_cy + py * morph_scale) for px, py in ai_pts], morph_cx, morph_cy)
 
     traveling_smil_elements = []
-    stride = max(1, actual_travelers // 160)
-    key_times = "0; 0.211; 0.303; 0.444; 0.535; 0.676; 0.768; 0.908; 1.0"
-    opacity_values = "0; 0; 1; 1; 1; 1; 1; 0; 0"
+    key_times = "0; 0.22; 0.28; 0.44; 0.50; 0.66; 0.72; 0.88; 0.94; 1.0"
+    opacity_values = "0; 0; 1; 1; 1; 1; 1; 1; 0; 0"
 
-    for i in range(0, actual_travelers, stride):
+    for i in range(actual_travelers):
         p0 = sorted_src[i]
         p1 = sorted_k8s[i]
         p2 = sorted_code[i]
         p3 = sorted_ai[i]
 
-        cx_vals = f"{p0[0]:.1f};{p0[0]:.1f};{p1[0]:.1f};{p1[0]:.1f};{p2[0]:.1f};{p2[0]:.1f};{p3[0]:.1f};{p3[0]:.1f};{p0[0]:.1f}"
-        cy_vals = f"{p0[1]:.1f};{p0[1]:.1f};{p1[1]:.1f};{p1[1]:.1f};{p2[1]:.1f};{p2[1]:.1f};{p3[1]:.1f};{p3[1]:.1f};{p0[1]:.1f}"
+        cx_vals = f"{p0[0]:.1f};{p0[0]:.1f};{p1[0]:.1f};{p1[0]:.1f};{p2[0]:.1f};{p2[0]:.1f};{p3[0]:.1f};{p3[0]:.1f};{p0[0]:.1f};{p0[0]:.1f}"
+        cy_vals = f"{p0[1]:.1f};{p0[1]:.1f};{p1[1]:.1f};{p1[1]:.1f};{p2[1]:.1f};{p2[1]:.1f};{p3[1]:.1f};{p3[1]:.1f};{p0[1]:.1f};{p0[1]:.1f}"
 
         traveling_smil_elements.append(f'''
-      <circle cx="{p0[0]:.1f}" cy="{p0[1]:.1f}" r="1.5" fill="{chrome_color}">
-        <animate attributeName="cx" values="{cx_vals}" keyTimes="{key_times}" dur="14.2s" begin="3.2s" repeatCount="indefinite" />
-        <animate attributeName="cy" values="{cy_vals}" keyTimes="{key_times}" dur="14.2s" begin="3.2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="{opacity_values}" keyTimes="{key_times}" dur="14.2s" begin="3.2s" repeatCount="indefinite" />
+      <circle cx="{p0[0]:.1f}" cy="{p0[1]:.1f}" r="1.4" fill="{chrome_color}">
+        <animate attributeName="cx" values="{cx_vals}" keyTimes="{key_times}" dur="16s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="{cy_vals}" keyTimes="{key_times}" dur="16s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="{opacity_values}" keyTimes="{key_times}" dur="16s" repeatCount="indefinite" />
       </circle>''')
 
     # Info panel rows strictly adhering to user's real projects and GitHub repositories
@@ -380,6 +393,13 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
       {drift_css}
       {chr(10).join(shimmer_css)}
     </style>
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="0.9" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
 
   <rect width="{total_w}" height="{total_h}" fill="{bg_color}" />
@@ -420,7 +440,7 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
   </g>
 
   <!-- Layer 2: Traveling Morph Dots -->
-  <g id="travelers-layer">
+  <g id="travelers-layer" filter="url(#cyanGlow)">
     {"".join(traveling_smil_elements)}
   </g>
 
