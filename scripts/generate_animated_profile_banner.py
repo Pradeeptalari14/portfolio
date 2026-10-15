@@ -319,7 +319,7 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
     # Info panel rows strictly adhering to user's real projects and GitHub repositories
     rows = [
         ("Subject", "Talari Pradeep"),
-        ("Role", "Senior DevOps & Cloud Platform Engineer"),
+        ("Role", "DevOps Infrastructure, Platform & Cloud SRE"),
         ("Origin", "Bangalore, India"),
         ("Education", "B.Tech in Computer Science & Engineering"),
         ("Status", "Automating · Scaling · Deploying Production Cloud & AI"),
