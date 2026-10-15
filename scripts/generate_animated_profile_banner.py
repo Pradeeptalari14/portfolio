@@ -327,32 +327,30 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
     info_lines_svg = []
     y_start = 135
     spacing = 23
-    val_text_length = 370
+    mono_font = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
 
     for idx, (label, val) in enumerate(rows):
         y_pos = y_start + idx * spacing
         safe_label = label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         safe_val = val.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
         if label.startswith("-"):
             # Subheader separator
             info_lines_svg.append(f'''
-            <g transform="translate({panel_right_x + 18}, {y_pos})">
-              <text x="0" y="0" fill="{chrome_color}" font-family="ui-monospace, monospace" font-size="12" font-weight="700">{safe_label}</text>
-            </g>''')
+            <text x="{panel_right_x + 18}" y="{y_pos}" fill="{chrome_color}" font-family="{mono_font}" font-size="12" font-weight="700">{safe_label}</text>''')
             continue
 
-        is_highlight = label in ("Subject", "Role", "Status", "Grid.Portfolio")
-        val_color = accent_emerald if label == "Status" else (chrome_color if is_highlight else text_primary)
+        is_highlight = label in ("Subject", "Role", "Grid.Portfolio")
+        is_status = (label == "Status")
+        val_color = accent_emerald if is_status else (chrome_color if is_highlight else text_primary)
+        val_weight = "700" if is_highlight else "500"
 
-        dot_count = max(4, int(22 - len(label) * 0.95))
+        # Precise monospace leader dots without character stretching
+        dot_count = max(2, 20 - len(label))
         dots_leader = "." * dot_count
 
         info_lines_svg.append(f'''
-        <g transform="translate({panel_right_x + 18}, {y_pos})">
-          <text x="0" y="0" fill="{text_secondary}" font-family="ui-monospace, monospace" font-size="13" font-weight="600">{safe_label}</text>
-          <text x="135" y="0" fill="{text_muted}" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">{dots_leader}</text>
-          <text x="205" y="0" fill="{val_color}" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="{val_text_length}" lengthAdjust="spacingAndGlyphs">{safe_val}</text>
-        </g>''')
+        <text x="{panel_right_x + 18}" y="{y_pos}" font-family="{mono_font}" font-size="12" xml:space="preserve"><tspan fill="{text_secondary}" font-weight="600">{safe_label} </tspan><tspan fill="{text_muted}" opacity="0.38">{dots_leader} </tspan><tspan fill="{val_color}" font-weight="{val_weight}">{safe_val}</tspan></text>''')
 
     # Final SVG assembly without double-hyphen in comments
     svg_markup = f'''<svg width="{total_w}" height="{total_h}" viewBox="0 0 {total_w} {total_h}" xmlns="http://www.w3.org/2000/svg">
@@ -399,13 +397,13 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
   <circle cx="78" cy="36" r="6" fill="#27C93F" />
 
   <!-- Title on Right Header matching reference -->
-  <text x="{total_w - 35}" y="40" fill="{text_secondary}" font-family="ui-monospace, monospace" font-size="12" font-weight="600" text-anchor="end" letter-spacing="0.5">
+  <text x="{total_w - 35}" y="40" fill="{text_secondary}" font-family="{mono_font}" font-size="12" font-weight="600" text-anchor="end" letter-spacing="0.5">
     talaripradeep14@gmail.com &#8212; profile.sh &#8212;live
   </text>
 
   <!-- Left Panel: VISUAL.MAP Outer Box -->
   <rect x="35" y="75" width="{panel_left_w}" height="505" rx="8" fill="{subpanel_bg}" stroke="{subpanel_border}" stroke-width="1" />
-  <text x="55" y="98" fill="{chrome_color}" font-family="ui-monospace, monospace" font-size="12" font-weight="800" letter-spacing="1.5">
+  <text x="55" y="98" fill="{chrome_color}" font-family="{mono_font}" font-size="12" font-weight="800" letter-spacing="1.5">
     VISUAL.MAP
   </text>
 
@@ -429,14 +427,14 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
   <rect x="{panel_right_x}" y="75" width="{panel_right_w}" height="505" rx="8" fill="{subpanel_bg}" stroke="{subpanel_border}" stroke-width="1" />
   
   <!-- SYSTEM.INFO Header -->
-  <text x="{panel_right_x + 18}" y="98" fill="{chrome_color}" font-family="ui-monospace, monospace" font-size="13" font-weight="800" letter-spacing="1.5">
+  <text x="{panel_right_x + 18}" y="98" fill="{chrome_color}" font-family="{mono_font}" font-size="13" font-weight="800" letter-spacing="1.5">
     SYSTEM.INFO
   </text>
 
   <!-- Highlighted Email Pill Badge matching reference -->
   <g transform="translate({panel_right_x + 18}, 107)">
     <rect width="210" height="20" rx="3" fill="#6366F1" />
-    <text x="105" y="14" fill="#FFFFFF" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle">talaripradeep14@gmail.com</text>
+    <text x="105" y="14" fill="#FFFFFF" font-family="{mono_font}" font-size="11" font-weight="700" text-anchor="middle">talaripradeep14@gmail.com</text>
   </g>
 
   <!-- Rows of Telemetry -->
@@ -446,8 +444,8 @@ def build_banner_svg(dots, grid_w, grid_h, mode='dark'):
 
   <!-- Terminal Bottom Prompt -->
   <g transform="translate({panel_right_x + 18}, 555)">
-    <text x="0" y="0" fill="{chrome_color}" font-family="ui-monospace, monospace" font-size="12" font-weight="600">&gt; More about me &amp; projects:</text>
-    <rect class="cursor-blink" x="200" y="-10" width="8" height="12" fill="{chrome_color}" />
+    <text x="0" y="0" fill="{chrome_color}" font-family="{mono_font}" font-size="12" font-weight="600">&gt; More about me &amp; projects:</text>
+    <rect class="cursor-blink" x="215" y="-10" width="8" height="12" fill="{chrome_color}" />
   </g>
 </svg>'''
     return svg_markup

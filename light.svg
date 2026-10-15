@@ -412,13 +412,13 @@
   <circle cx="78" cy="36" r="6" fill="#27C93F" />
 
   <!-- Title on Right Header matching reference -->
-  <text x="1145" y="40" fill="#475569" font-family="ui-monospace, monospace" font-size="12" font-weight="600" text-anchor="end" letter-spacing="0.5">
+  <text x="1145" y="40" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="600" text-anchor="end" letter-spacing="0.5">
     talaripradeep14@gmail.com &#8212; profile.sh &#8212;live
   </text>
 
   <!-- Left Panel: VISUAL.MAP Outer Box -->
   <rect x="35" y="75" width="440" height="505" rx="8" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1" />
-  <text x="55" y="98" fill="#0891B2" font-family="ui-monospace, monospace" font-size="12" font-weight="800" letter-spacing="1.5">
+  <text x="55" y="98" fill="#0891B2" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="800" letter-spacing="1.5">
     VISUAL.MAP
   </text>
 
@@ -1342,107 +1342,41 @@
   <rect x="475" y="75" width="665" height="505" rx="8" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1" />
   
   <!-- SYSTEM.INFO Header -->
-  <text x="493" y="98" fill="#0891B2" font-family="ui-monospace, monospace" font-size="13" font-weight="800" letter-spacing="1.5">
+  <text x="493" y="98" fill="#0891B2" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13" font-weight="800" letter-spacing="1.5">
     SYSTEM.INFO
   </text>
 
   <!-- Highlighted Email Pill Badge matching reference -->
   <g transform="translate(493, 107)">
     <rect width="210" height="20" rx="3" fill="#6366F1" />
-    <text x="105" y="14" fill="#FFFFFF" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle">talaripradeep14@gmail.com</text>
+    <text x="105" y="14" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="11" font-weight="700" text-anchor="middle">talaripradeep14@gmail.com</text>
   </g>
 
   <!-- Rows of Telemetry -->
   <g id="info-readout">
     
-        <g transform="translate(493, 135)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Subject</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">...............</text>
-          <text x="205" y="0" fill="#0891B2" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Talari Pradeep</text>
-        </g>
-        <g transform="translate(493, 158)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Role</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">..................</text>
-          <text x="205" y="0" fill="#0891B2" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Senior AI Infra &amp; Platform SRE Lead</text>
-        </g>
-        <g transform="translate(493, 181)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Origin</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">................</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Bangalore, India</text>
-        </g>
-        <g transform="translate(493, 204)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Education</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.............</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">B.Tech in Computer Science &amp; Engineering</text>
-        </g>
-        <g transform="translate(493, 227)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Status</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">................</text>
-          <text x="205" y="0" fill="#059669" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Building · Scaling · Shipping Production Systems</text>
-        </g>
-        <g transform="translate(493, 250)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">ToolChain</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.............</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">VS Code, Git, Docker, Kubernetes, Linux, Terraform</text>
-        </g>
-        <g transform="translate(493, 273)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Core.Lang</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.............</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Python, Go, Bash, Rust, TypeScript, SQL</text>
-        </g>
-        <g transform="translate(493, 296)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Core.Frontend</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.........</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Vanilla JS, Web Components, Canvas DAGs, HTML5</text>
-        </g>
-        <g transform="translate(493, 319)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Core.Backend</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">..........</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">FastAPI, vLLM, SGLang, LiteLLM, Node.js</text>
-        </g>
-        <g transform="translate(493, 342)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Core.Database</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.........</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">PostgreSQL (pgvector), Valkey, Redis, Neo4j</text>
-        </g>
-        <g transform="translate(493, 365)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Core.Infra</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">............</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">Kubernetes (EKS/AKS), Karpenter, Cilium eBPF, ArgoCD</text>
-        </g>
-            <g transform="translate(493, 388)">
-              <text x="0" y="0" fill="#0891B2" font-family="ui-monospace, monospace" font-size="12" font-weight="700">- Contact</text>
-            </g>
-        <g transform="translate(493, 411)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Grid.Mail</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.............</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">talaripradeep14@gmail.com</text>
-        </g>
-        <g transform="translate(493, 434)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Grid.Portfolio</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">........</text>
-          <text x="205" y="0" fill="#0891B2" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">https://talaripradeep.info (341 Studios)</text>
-        </g>
-        <g transform="translate(493, 457)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Grid.LinkedIn</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">.........</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">https://linkedin.com/in/pradeep-talari</text>
-        </g>
-        <g transform="translate(493, 480)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Grid.GitHub</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">...........</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">https://github.com/Pradeeptalari14</text>
-        </g>
-        <g transform="translate(493, 503)">
-          <text x="0" y="0" fill="#475569" font-family="ui-monospace, monospace" font-size="13" font-weight="600">Grid.Instagram</text>
-          <text x="135" y="0" fill="#94A3B8" font-family="ui-monospace, monospace" font-size="13" opacity="0.45">........</text>
-          <text x="205" y="0" fill="#0F172A" font-family="ui-monospace, monospace" font-size="13" font-weight="500" textLength="370" lengthAdjust="spacingAndGlyphs">https://instagram.com/pradeeptalari14</text>
-        </g>
+        <text x="493" y="135" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Subject </tspan><tspan fill="#94A3B8" opacity="0.38">............. </tspan><tspan fill="#0891B2" font-weight="700">Talari Pradeep</tspan></text>
+        <text x="493" y="158" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Role </tspan><tspan fill="#94A3B8" opacity="0.38">................ </tspan><tspan fill="#0891B2" font-weight="700">Senior AI Infra &amp; Platform SRE Lead</tspan></text>
+        <text x="493" y="181" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Origin </tspan><tspan fill="#94A3B8" opacity="0.38">.............. </tspan><tspan fill="#0F172A" font-weight="500">Bangalore, India</tspan></text>
+        <text x="493" y="204" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Education </tspan><tspan fill="#94A3B8" opacity="0.38">........... </tspan><tspan fill="#0F172A" font-weight="500">B.Tech in Computer Science &amp; Engineering</tspan></text>
+        <text x="493" y="227" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Status </tspan><tspan fill="#94A3B8" opacity="0.38">.............. </tspan><tspan fill="#059669" font-weight="500">Building · Scaling · Shipping Production Systems</tspan></text>
+        <text x="493" y="250" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">ToolChain </tspan><tspan fill="#94A3B8" opacity="0.38">........... </tspan><tspan fill="#0F172A" font-weight="500">VS Code, Git, Docker, Kubernetes, Linux, Terraform</tspan></text>
+        <text x="493" y="273" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Core.Lang </tspan><tspan fill="#94A3B8" opacity="0.38">........... </tspan><tspan fill="#0F172A" font-weight="500">Python, Go, Bash, Rust, TypeScript, SQL</tspan></text>
+        <text x="493" y="296" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Core.Frontend </tspan><tspan fill="#94A3B8" opacity="0.38">....... </tspan><tspan fill="#0F172A" font-weight="500">Vanilla JS, Web Components, Canvas DAGs, HTML5</tspan></text>
+        <text x="493" y="319" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Core.Backend </tspan><tspan fill="#94A3B8" opacity="0.38">........ </tspan><tspan fill="#0F172A" font-weight="500">FastAPI, vLLM, SGLang, LiteLLM, Node.js</tspan></text>
+        <text x="493" y="342" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Core.Database </tspan><tspan fill="#94A3B8" opacity="0.38">....... </tspan><tspan fill="#0F172A" font-weight="500">PostgreSQL (pgvector), Valkey, Redis, Neo4j</tspan></text>
+        <text x="493" y="365" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Core.Infra </tspan><tspan fill="#94A3B8" opacity="0.38">.......... </tspan><tspan fill="#0F172A" font-weight="500">Kubernetes (EKS/AKS), Karpenter, Cilium eBPF, ArgoCD</tspan></text>
+            <text x="493" y="388" fill="#0891B2" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="700">- Contact</text>
+        <text x="493" y="411" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Grid.Mail </tspan><tspan fill="#94A3B8" opacity="0.38">........... </tspan><tspan fill="#0F172A" font-weight="500">talaripradeep14@gmail.com</tspan></text>
+        <text x="493" y="434" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Grid.Portfolio </tspan><tspan fill="#94A3B8" opacity="0.38">...... </tspan><tspan fill="#0891B2" font-weight="700">https://talaripradeep.info (341 Studios)</tspan></text>
+        <text x="493" y="457" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Grid.LinkedIn </tspan><tspan fill="#94A3B8" opacity="0.38">....... </tspan><tspan fill="#0F172A" font-weight="500">https://linkedin.com/in/pradeep-talari</tspan></text>
+        <text x="493" y="480" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Grid.GitHub </tspan><tspan fill="#94A3B8" opacity="0.38">......... </tspan><tspan fill="#0F172A" font-weight="500">https://github.com/Pradeeptalari14</tspan></text>
+        <text x="493" y="503" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" xml:space="preserve"><tspan fill="#475569" font-weight="600">Grid.Instagram </tspan><tspan fill="#94A3B8" opacity="0.38">...... </tspan><tspan fill="#0F172A" font-weight="500">https://instagram.com/pradeeptalari14</tspan></text>
   </g>
 
   <!-- Terminal Bottom Prompt -->
   <g transform="translate(493, 555)">
-    <text x="0" y="0" fill="#0891B2" font-family="ui-monospace, monospace" font-size="12" font-weight="600">&gt; More about me &amp; projects:</text>
-    <rect class="cursor-blink" x="200" y="-10" width="8" height="12" fill="#0891B2" />
+    <text x="0" y="0" fill="#0891B2" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="600">&gt; More about me &amp; projects:</text>
+    <rect class="cursor-blink" x="215" y="-10" width="8" height="12" fill="#0891B2" />
   </g>
 </svg>
