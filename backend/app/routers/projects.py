@@ -142,11 +142,20 @@ async def create_or_upsert_project(payload: ProjectCreate, db: AsyncSession = De
     return new_project
 
 @router.patch("/{project_id}", response_model=ProjectResponse)
-async def update_project(project_id: str, payload: ProjectUpdate, db: AsyncSession = Depends(get_db)):
+async def update_project(
+    project_id: str,
+    payload: ProjectUpdate,
+    user_id: str = "guest",
+    db: AsyncSession = Depends(get_db)
+):
     result = await db.execute(select(Project).where(Project.id == project_id))
     project = result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
+
+    # Broken Object-Level Authorization (BOLA/IDOR) Defense
+    if project.user_id != user_id:
+        raise HTTPException(status_code=403, detail="Forbidden: You do not have permission to modify this project")
 
     for field, val in payload.dict(exclude_unset=True).items():
         setattr(project, field, val)
@@ -156,10 +165,20 @@ async def update_project(project_id: str, payload: ProjectUpdate, db: AsyncSessi
     return project
 
 @router.delete("/{project_id}", status_code=204)
-async def delete_project(project_id: str, db: AsyncSession = Depends(get_db)):
+async def delete_project(
+    project_id: str,
+    user_id: str = "guest",
+    db: AsyncSession = Depends(get_db)
+):
     result = await db.execute(select(Project).where(Project.id == project_id))
     project = result.scalar_one_or_none()
-    if project:
-        await db.delete(project)
-        await db.commit()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    # Broken Object-Level Authorization (BOLA/IDOR) Defense
+    if project.user_id != user_id:
+        raise HTTPException(status_code=403, detail="Forbidden: You do not have permission to delete this project")
+
+    await db.delete(project)
+    await db.commit()
     return None

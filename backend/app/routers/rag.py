@@ -67,9 +67,10 @@ async def search_rag(payload: RAGQueryRequest, db: AsyncSession = Depends(get_db
         return results
     except Exception as e:
         # Fallback ILIKE search if vector extension is indexing or empty
+        safe_query = payload.query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         ilike_stmt = (
             select(Studio)
-            .where(Studio.use_case.ilike(f"%{payload.query}%"))
+            .where(Studio.use_case.ilike(f"%{safe_query}%"))
             .limit(payload.top_k)
         )
         res = await db.execute(ilike_stmt)

@@ -1,4 +1,5 @@
 import os
+import hmac
 from typing import List, Optional
 from datetime import datetime
 from pathlib import Path
@@ -24,7 +25,7 @@ def verify_admin_key(
     token = x_admin_key
     if not token and authorization and authorization.startswith("Bearer "):
         token = authorization.split("Bearer ")[1].strip()
-    if token != admin_key:
+    if not token or not hmac.compare_digest(token, admin_key):
         raise HTTPException(status_code=401, detail="Unauthorized: invalid or missing X-Admin-Key")
     return True
 
@@ -43,7 +44,7 @@ def _get_tools_catalog():
 @router.get("", response_model=List[StudioResponse])
 async def list_studios(
     category: Optional[str] = None,
-    q: Optional[str] = None,
+    q: Optional[str] = Query(None, max_length=200),
     limit: int = Query(500, le=1000),
     offset: int = 0,
     db: AsyncSession = Depends(get_db)
@@ -52,7 +53,9 @@ async def list_studios(
     if category and category != "all":
         query = query.where(Studio.category == category)
     if q:
-        search_pattern = f"%{q}%"
+        # Sanitize SQL ILIKE wildcard inputs to prevent wildcard denial-of-service
+        q_safe = q.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        search_pattern = f"%{q_safe}%"
         query = query.where(
             or_(
                 Studio.title.ilike(search_pattern),

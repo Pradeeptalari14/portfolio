@@ -54,5 +54,9 @@ export default defineConfig({
     rollupOptions: {
       input: getToolInputs()
     }
+  },
+  test: {
+    include: ['tests/**/*.test.js'],
+    exclude: ['**/scratch/**', '**/node_modules/**']
   }
 });

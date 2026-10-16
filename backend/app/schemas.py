@@ -43,9 +43,9 @@ class StudioResponse(StudioBase):
 
 # Vector RAG Schemas
 class RAGQueryRequest(BaseModel):
-    query: str
-    top_k: int = 5
-    category_filter: Optional[str] = None
+    query: str = Field(..., min_length=1, max_length=1000, description="Query string for semantic similarity search")
+    top_k: int = Field(default=5, ge=1, le=50, description="Number of nearest-neighbor results (bounded 1-50)")
+    category_filter: Optional[str] = Field(default=None, max_length=100)
 
 class RAGSearchResult(BaseModel):
     studio_id: str
@@ -102,8 +102,8 @@ class SandboxRunResponse(BaseModel):
 
 # Ollama / AI Schemas
 class AICompletionRequest(BaseModel):
-    model: str = "qwen2.5-coder:7b"
-    prompt: str
-    system_prompt: Optional[str] = None
-    temperature: float = 0.2
+    model: str = Field(default="qwen2.5-coder:7b", max_length=128)
+    prompt: str = Field(..., min_length=1, max_length=16384, description="Prompt payload bounded to 16KB")
+    system_prompt: Optional[str] = Field(default=None, max_length=4096)
+    temperature: float = Field(default=0.2, ge=0.0, le=2.0)
     stream: bool = False

@@ -1,6 +1,7 @@
 import time
 import os
 import re
+import hmac
 from typing import Optional
 import docker
 from fastapi import APIRouter, HTTPException, Header, Depends
@@ -13,14 +14,23 @@ def verify_sandbox_auth(
     authorization: Optional[str] = Header(None)
 ):
     expected_key = os.getenv("SANDBOX_API_KEY")
+    env = os.getenv("ENVIRONMENT", "development").lower()
+
+    # Enforce strict secret requirement in production environments
+    if env == "production" and not expected_key:
+        raise HTTPException(
+            status_code=500,
+            detail="Sandbox execution disabled: SANDBOX_API_KEY must be configured in production environment."
+        )
+
     if not expected_key:
         return True
-    
+
     token = x_api_key
     if not token and authorization and authorization.startswith("Bearer "):
         token = authorization.split("Bearer ")[1].strip()
-        
-    if token != expected_key:
+
+    if not token or not hmac.compare_digest(token, expected_key):
         raise HTTPException(status_code=401, detail="Unauthorized: invalid or missing sandbox API key")
     return True
 
