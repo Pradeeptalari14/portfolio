@@ -1654,35 +1654,42 @@
                 <input type="checkbox" name="catFilter" value="ai" checked />
                 <span>AI &amp; MLOps</span>
               </span>
-              <span class="filter-count-badge">234</span>
+              <span class="filter-count-badge">235</span>
             </label>
             <label class="filter-checkbox-item">
               <span class="filter-checkbox-label">
                 <input type="checkbox" name="catFilter" value="automation" checked />
                 <span>Config &amp; Runbooks</span>
               </span>
-              <span class="filter-count-badge">33</span>
+              <span class="filter-count-badge">36</span>
             </label>
             <label class="filter-checkbox-item">
               <span class="filter-checkbox-label">
                 <input type="checkbox" name="catFilter" value="observability" checked />
                 <span>Observability &amp; eBPF</span>
               </span>
-              <span class="filter-count-badge">29</span>
+              <span class="filter-count-badge">30</span>
             </label>
             <label class="filter-checkbox-item">
               <span class="filter-checkbox-label">
                 <input type="checkbox" name="catFilter" value="cloud" checked />
                 <span>Cloud &amp; K8s</span>
               </span>
-              <span class="filter-count-badge">26</span>
+              <span class="filter-count-badge">29</span>
             </label>
             <label class="filter-checkbox-item">
               <span class="filter-checkbox-label">
                 <input type="checkbox" name="catFilter" value="cicd" checked />
                 <span>CI/CD GitOps</span>
               </span>
-              <span class="filter-count-badge">12</span>
+              <span class="filter-count-badge">15</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="devops" checked />
+                <span>Backend &amp; Learning</span>
+              </span>
+              <span class="filter-count-badge">2</span>
             </label>
           </div>
         </div>
@@ -1830,18 +1837,19 @@
         <!-- Search Input -->
         <div class="search-row">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="learnSearch" class="search-input" placeholder="Search 341 courses by title, tech (e.g. ebpf, vllm, mcp, argocd), use case, or failure..." autocomplete="off" />
+          <input type="text" id="learnSearch" class="search-input" placeholder="Search 347 courses by title, tech (e.g. ebpf, vllm, mcp, argocd), use case, or failure..." autocomplete="off" />
           <span class="search-badge">Ctrl + K</span>
         </div>
 
         <!-- Category Filter Pills (Must include .filter-pill with data-cat for Vitest) -->
         <div class="filter-pills-row" id="categoryPills">
-          <button class="filter-pill active" data-cat="all">All Studios (341)</button>
-          <button class="filter-pill" data-cat="ai">AI &amp; MLOps (234)</button>
-          <button class="filter-pill" data-cat="automation">Config &amp; Runbooks (33)</button>
-          <button class="filter-pill" data-cat="observability">Observability &amp; eBPF (29)</button>
-          <button class="filter-pill" data-cat="cloud">Cloud &amp; K8s (26)</button>
-          <button class="filter-pill" data-cat="cicd">CI/CD GitOps (12)</button>
+          <button class="filter-pill active" data-cat="all">All Studios (347)</button>
+          <button class="filter-pill" data-cat="ai">AI &amp; MLOps (235)</button>
+          <button class="filter-pill" data-cat="automation">Config &amp; Runbooks (36)</button>
+          <button class="filter-pill" data-cat="observability">Observability &amp; eBPF (30)</button>
+          <button class="filter-pill" data-cat="cloud">Cloud &amp; K8s (29)</button>
+          <button class="filter-pill" data-cat="cicd">CI/CD GitOps (15)</button>
+          <button class="filter-pill" data-cat="devops">Backend &amp; Learning (2)</button>
         </div>
 
         <!-- Hidden DOM Selects for Test Compatibility -->

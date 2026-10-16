@@ -57,6 +57,31 @@
       ]
     },
 
+    k8sEcosystem: {
+      name: 'Kubernetes CNCF Ecosystem & Fleet Topology',
+      category: 'cloud',
+      nodes: [
+        { id: 'kcncf_1', type: 'input', title: 'Envoy Gateway & cert-manager', icon: '🌐', x: 60, y: 140, params: { gatewayClass: 'eg', tls: 'Let\'s Encrypt ACME' }, desc: 'Cloud-native L7 ingress gateway terminating TLS with automated cert-manager rotation.' },
+        { id: 'kcncf_2', type: 'security', title: 'Kyverno & Trivy Admission Gate', icon: '🛡️', x: 380, y: 140, params: { policy: 'Enforce Cosign Verify', cveBlock: 'CRITICAL = 0' }, desc: 'Admission controller validating cryptographic signatures and rejecting vulnerable images.' },
+        { id: 'kcncf_3', type: 'transform', title: 'KEDA Event Scaler', icon: '⚡', x: 700, y: 140, params: { triggers: 'Kafka lag, SQS, Prometheus', minReplicas: '0' }, desc: 'Event-driven horizontal pod autoscaling scaling workloads dynamically from zero.' },
+        { id: 'kcncf_4', type: 'compute', title: 'Karpenter NodePool Consolidator', icon: '🧭', x: 1020, y: 140, params: { strategy: 'Price-Capacity-Optimized', spotRatio: '80%' }, desc: 'Just-in-time node provisioner spinning EC2/GCP compute instances in under 40s.' },
+        { id: 'kcncf_5', type: 'compute', title: 'containerd & gVisor Runtime', icon: '⚙️', x: 1340, y: 60, params: { snapshotter: 'eStargz', isolation: 'runsc MicroVM' }, desc: 'High-performance CRI execution engine running isolated container pods.' },
+        { id: 'kcncf_6', type: 'network', title: 'Cilium eBPF CNI & CoreDNS Mesh', icon: '🔌', x: 1340, y: 240, params: { networkPolicy: 'L3-L7 eBPF', dns: 'CoreDNS AutoPath' }, desc: 'Kernel-level high-throughput container networking and in-cluster service discovery.' },
+        { id: 'kcncf_7', type: 'storage', title: 'Longhorn CSI Storage & Velero DR', icon: '💾', x: 1660, y: 60, params: { replicas: '3x Sync Block Storage', backup: 'S3 Velero Daily' }, desc: 'Distributed persistent volume replication with automated disaster recovery snapshots.' },
+        { id: 'kcncf_8', type: 'output', title: 'OTel, Fluent Bit & Prometheus MELT', icon: '📊', x: 1660, y: 240, params: { traces: 'OTel OTLP', logs: 'Fluent Bit -> Loki', metrics: 'Prometheus' }, desc: 'Full-stack observability mesh streaming traces, logs, and golden signal metrics.' }
+      ],
+      connections: [
+        { from: 'kcncf_1', to: 'kcncf_2' },
+        { from: 'kcncf_2', to: 'kcncf_3' },
+        { from: 'kcncf_3', to: 'kcncf_4' },
+        { from: 'kcncf_4', to: 'kcncf_5' },
+        { from: 'kcncf_4', to: 'kcncf_6' },
+        { from: 'kcncf_5', to: 'kcncf_7' },
+        { from: 'kcncf_5', to: 'kcncf_8' },
+        { from: 'kcncf_6', to: 'kcncf_8' }
+      ]
+    },
+
     infra: {
       name: 'Cloud & Network Topology Canvas',
       category: 'cloud',
@@ -973,7 +998,27 @@
         };
       }
 
-      // 4. Kubernetes, Karpenter & Cloud-Native Scaling
+      // 4a. CNCF Kubernetes Complete Ecosystem (Envoy Gateway, cert-manager, KEDA, Longhorn, Fluent Bit, containerd)
+      if (slug.includes('envoy-gateway') || slug.includes('cert-manager') || slug.includes('longhorn') || slug.includes('fluent-bit') || slug.includes('containerd') || slug.includes('k8s-ecosystem') || title.includes('envoy gateway') || title.includes('cert-manager') || title.includes('longhorn') || title.includes('fluent bit') || title.includes('containerd')) {
+        return {
+          id: slug || 'k8s-ecosystem',
+          name: toolData.title || STARTER_TEMPLATES.k8sEcosystem.name,
+          category: 'cloud',
+          nodes: STARTER_TEMPLATES.k8sEcosystem.nodes.map(n => Object.assign({}, n)),
+          connections: STARTER_TEMPLATES.k8sEcosystem.connections.map(c => Object.assign({}, c)),
+          copilotHtml: `
+            <div style="font-weight:600; color:#38bdf8; margin-bottom:0.4rem;">🔬 CNCF Kubernetes Ecosystem Lab</div>
+            <p>1. Ingress traffic routes through Envoy Gateway with automated cert-manager TLS.</p>
+            <p>2. KEDA scales pod replicas on queue lag; Karpenter consolidates node fleet.</p>
+            <p>3. Longhorn replicates persistent block storage while Fluent Bit streams logs to Loki.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              kubectl get gateway,scaledobject,nodepool,pvc,daemonset -A
+            </div>
+          `
+        };
+      }
+
+      // 4b. Kubernetes, Karpenter & Cloud-Native Scaling
       if (slug.includes('karpenter') || slug.includes('k8s') || slug.includes('kubernetes') || slug.includes('helm') || slug.includes('argo') || slug.includes('istio') || slug.includes('cilium') || title.includes('karpenter') || title.includes('kubernetes')) {
         return {
           id: slug || 'k8s',
@@ -1962,6 +2007,8 @@
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
   }
+
+  VisualFlowCanvas.STARTER_TEMPLATES = STARTER_TEMPLATES;
 
   return VisualFlowCanvas;
 });

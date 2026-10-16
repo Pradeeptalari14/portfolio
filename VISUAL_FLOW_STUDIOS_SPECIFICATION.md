@@ -1,5 +1,5 @@
 # Visual Engineering Workspace & Flow Canvas Specification
-## Production Architecture & Operational Specification for 341 Engineering Studios
+## Production Architecture & Operational Specification for 347 Engineering Studios
 
 > **Platform**: [Talari Pradeep Engineering Studios](https://talaripradeep.info/studios/)  
 > **Repository**: [Pradeeptalari14/portfolio](https://github.com/Pradeeptalari14/portfolio)  
@@ -11,7 +11,7 @@
 
 ## 1. Executive Summary & Design System
 
-The Visual Engineering Workspace elevates all **341 Interactive Engineering Studios** on `talaripradeep.info` into an interactive, node-graph topology engine inspired by the visual design patterns of modern DAG orchestrators (Langflow, Dify, DrawIO, Network Topologies, and Cloud Architectures).
+The Visual Engineering Workspace elevates all **347 Interactive Engineering Studios** on `talaripradeep.info` into an interactive, node-graph topology engine inspired by the visual design patterns of modern DAG orchestrators (Langflow, Dify, DrawIO, Network Topologies, and Cloud Architectures).
 
 ```mermaid
 graph TD
@@ -22,7 +22,7 @@ graph TD
     end
     
     subgraph Universal Engine Integration
-        ST["tools/shared-tools.js<br/>injectVisualFlowAction()"] -->|Injected into all 341 studios| V
+        ST["tools/shared-tools.js<br/>injectVisualFlowAction()"] -->|Injected into all 347 studios| V
         V --> TOP["VisualFlowCanvas Engine<br/>tools/visual-flow-canvas.js"]
         TOP --> TopoGen["generateStudioTopology(studioId, toolData)<br/>10 Archetypes + Dynamic Synthesis"]
     end
@@ -74,7 +74,7 @@ The workspace operates in `tools/visual-flow-canvas.js` with styling in `tools/v
 
 ---
 
-## 3. The 10 Technology Archetypes & DAG Topologies
+## 3. The 11 Technology Archetypes & DAG Topologies
 
 Every studio ID or metadata profile automatically resolves to an appropriate domain topology through `VisualFlowCanvas.generateStudioTopology(studioId, toolData)`:
 
@@ -105,7 +105,19 @@ Every studio ID or metadata profile automatically resolves to an appropriate dom
   4. `[Target GPU Tensor Parallelism]` (Llama-3.3-70B, 4x H100 GPU tensor parallel)
   5. `[Chunked Prefill & Stream Scheduler]` (<12ms TPOT latency, 512-token chunks)
 
-### 4. Kubernetes, Karpenter & Cloud-Native Scaling (`isK8s`)
+### 4a. CNCF Kubernetes Complete Ecosystem Archetype (`isK8sEcosystem`)
+- **Key Studios**: `envoy-gateway`, `cert-manager`, `longhorn`, `fluent-bit`, `containerd`, `kustomize`
+- **DAG Nodes**:
+  1. `[Envoy Gateway & cert-manager]` (Cloud-native L7 ingress gateway, automated ACME TLS)
+  2. `[Kyverno & Trivy Admission Gate]` (Cosign signature validation, zero-CVE image gate)
+  3. `[KEDA Event Scaler]` (Event-driven pod autoscaling from Kafka/SQS/Prometheus lag)
+  4. `[Karpenter NodePool Consolidator]` (Just-in-time Spot/On-Demand fleet bin packing)
+  5. `[containerd & gVisor Runtime]` (eStargz snapshotter, runsc microVM kernel isolation)
+  6. `[Cilium eBPF CNI & CoreDNS Mesh]` (Kernel-level L3-L7 WireGuard networking, AutoPath DNS)
+  7. `[Longhorn CSI Storage & Velero DR]` (Synchronous 3x volume block replication, S3 snapshots)
+  8. `[OTel, Fluent Bit & Prometheus MELT]` (Full-stack traces, Loki logs, Alertmanager SLOs)
+
+### 4b. Kubernetes, Karpenter & Cloud-Native Scaling (`isK8s`)
 - **Key Studios**: `karpenter-autoscaler`, `k8s-pod-rightsizer`, `cilium`, `kuberay`
 - **DAG Nodes**:
   1. `[Pending Pod SQS Metric Queue]` (Unschedulable pods > 0, real-time SQS queue)
@@ -186,7 +198,7 @@ Every studio ID or metadata profile automatically resolves to an appropriate dom
 1. **Automatic Injection via `tools/shared-tools.js`**:
    - `injectVisualFlowAction()` automatically injects a floating `⚡ Visual Flow` action button into every single studio page, linking directly to `/studios/flow/?studio=${studioId}`.
 2. **Top Bar Studio Switcher (`#vfStudioSelect`)**:
-   - When opened in `/studios/flow/`, all 341 studios are listed in optgroups:
+   - When opened in `/studios/flow/`, all 347 studios are listed in optgroups:
      - `AI & LLMOps Studios (234)`
      - `Automation & Systems Studios (33)`
      - `Observability & SRE Studios (29)`
@@ -210,7 +222,7 @@ Every studio ID or metadata profile automatically resolves to an appropriate dom
 Whenever changes are made to studios or visual flows, maintainers and AI assistants must follow these invariant steps:
 
 1. **Verify Studio Count**:
-   - Confirm studio count remains consistent in `tools/tools.json` (currently 341).
+   - Confirm studio count remains consistent in `tools/tools.json` (currently 347).
 2. **Sync Assets**:
    - Run `node scripts/copy-assets.js` to propagate `visual-flow-canvas.js` and `visual-flow-canvas.css` into `dist/` and `public/tools/`.
 3. **Run Unit Tests**:

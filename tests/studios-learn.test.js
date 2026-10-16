@@ -10,8 +10,8 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
   const rawData = fs.readFileSync(jsonPath, 'utf8');
   const studios = JSON.parse(rawData);
 
-  it('should contain all 341 developer studios', () => {
-    expect(studios.length).toBe(341);
+  it('should contain all 347 developer studios', () => {
+    expect(studios.length).toBe(347);
   });
 
   it('should match category distributions across platform studios', () => {
@@ -21,10 +21,11 @@ describe('Studios Learning Hub Dataset (studios-learning.json)', () => {
     }, {});
 
     expect(counts['ai']).toBe(235);
-    expect(counts['automation']).toBe(35);
-    expect(counts['observability']).toBe(29);
-    expect(counts['cloud']).toBe(28);
-    expect(counts['cicd']).toBe(14);
+    expect(counts['automation']).toBe(36);
+    expect(counts['observability']).toBe(30);
+    expect(counts['cloud']).toBe(29);
+    expect(counts['cicd']).toBe(15);
+    expect(counts['devops']).toBe(2);
   });
 
   it('should validate every studio has thorough learning attributes', () => {
@@ -95,10 +96,10 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
 
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
-    expect(cards.length).toBe(341);
+    expect(cards.length).toBe(347);
 
     const catalogCount = document.getElementById('catalogCount');
-    expect(catalogCount.textContent).toContain('341 of 341');
+    expect(catalogCount.textContent).toContain('347 of 347');
   });
 
   it('should filter cards when searching by keyword', async () => {
@@ -114,7 +115,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
     expect(cards.length).toBeGreaterThan(0);
-    expect(cards.length).toBeLessThan(341);
+    expect(cards.length).toBeLessThan(347);
 
     const firstCard = cards[0];
     expect(firstCard.textContent.toLowerCase()).toContain('vllm');
@@ -132,7 +133,7 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
 
     const grid = document.getElementById('studiosGrid');
     const cards = grid.querySelectorAll('.studio-learn-card');
-    expect(cards.length).toBe(14);
+    expect(cards.length).toBe(15);
   });
 
   it('should switch incident archetypes in the Incident & Treatment Simulator', () => {

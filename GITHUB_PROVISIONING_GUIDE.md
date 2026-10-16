@@ -1,6 +1,6 @@
 # Developer Studios: GitHub Provisioning & Execution Guide
 
-This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **341 Developer Studios** in the portfolio.
+This handbook provides SREs and Platform Engineers with the exact commands and pipeline flow to bootstrap GitHub repositories and execute compiled configurations for all **347 Developer Studios** in the portfolio.
 
 ---
 
@@ -34,7 +34,7 @@ sequenceDiagram
     Engineer->>Script: Run Node/Bash Execution Script
     Script->>gh: Check auth status ('gh auth status')
     gh-->>Script: Authenticated as User
-    loop For each of the 341 Studios
+    loop For each of the 347 Studios
         Script->>gh: gh repo create Pradeeptalari14/tp-<folder> --public
         gh->>API: POST /user/repos (with descriptions & default branches)
         API-->>gh: Repository Created (HTTP 201)
@@ -68,7 +68,7 @@ graph TD
 
 ## 🌟 Flagship Production Systems & Architecture Center Provisioning
 
-In addition to the 341 developer studios, the 6 core architectural platforms and Architecture Center are provisioned as independent, production-grade repositories:
+In addition to the 347 developer studios, the 6 core architectural platforms and Architecture Center are provisioned as independent, production-grade repositories:
 
 | Flagship Platform | GitHub Repository | Clone & Verification Command | Architecture Showcase |
 | :--- | :--- | :--- | :--- |
@@ -84,7 +84,7 @@ In addition to the 341 developer studios, the 6 core architectural platforms and
 
 ## 2. Batch Repository Creation Automation Script
 
-You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 341 public repositories under your profile:
+You can copy and save the script below as `scratch/create-github-repos.js` on your machine, then execute it to automatically create all 347 public repositories under your profile:
 
 ```javascript
 // File: scratch/create-github-repos.js
@@ -127,12 +127,12 @@ tools.forEach((tool, index) => {
   }
 });
 
-console.log("🎉 All 341 target repositories have been processed!");
+console.log("🎉 All 347 target repositories have been processed!");
 ```
 
 ---
 
-## 3. Exhaustive 341-Repository Execution Matrix
+## 3. Exhaustive 347-Repository Execution Matrix
 
 This table lists every studio, its Git repository name, the primary configuration file it compiles, where that file should be committed, and the exact command line strings to apply and verify the setup:
 
@@ -479,6 +479,12 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 339 | HashiCorp Boundary Zero-Trust Access Studio | `Pradeeptalari14/tp-boundary-zerotrust` | `boundary-controller.hcl` | `/config` | `cat boundary-controller.hcl` | `ls -la boundary-controller.hcl` |
 | 340 | Enterprise Backend Ecosystem & Lifecycle Studio | `Pradeeptalari14/tp-backend-ecosystem` | `backend-lifecycle.yaml` | `/deploy/k8s` | `kubectl apply -f backend-lifecycle.yaml` | `kubectl get -f backend-lifecycle.yaml` |
 | 341 | Unified Repository Learning Workspace & Real Project Studio | `Pradeeptalari14/tp-repo-learning` | `repository-workspace.yaml` | `/deploy/k8s` | `kubectl apply -f repository-workspace.yaml` | `kubectl get -f repository-workspace.yaml` |
+| 342 | Envoy Gateway & Gateway API Studio | `Pradeeptalari14/tp-envoy-gateway` | `gateway.yaml` | `/deploy/k8s` | `kubectl apply -f gateway.yaml` | `kubectl get gateway,httproute -A` |
+| 343 | cert-manager PKI & TLS Studio | `Pradeeptalari14/tp-cert-manager` | `cluster-issuer.yaml` | `/deploy/k8s` | `kubectl apply -f cluster-issuer.yaml` | `kubectl get clusterissuer,certificate -A` |
+| 344 | containerd & CRI Runtime Studio | `Pradeeptalari14/tp-containerd` | `config.toml` | `/etc/containerd` | `containerd config dump` | `crictl info` |
+| 345 | Longhorn Cloud-Native Block Storage Studio | `Pradeeptalari14/tp-longhorn` | `storageclass.yaml` | `/deploy/k8s` | `kubectl apply -f storageclass.yaml` | `kubectl get sc,pvc,volumes.longhorn.io -A` |
+| 346 | Fluent Bit Log Processor & Forwarder Studio | `Pradeeptalari14/tp-fluentbit` | `fluent-bit.conf` | `/etc/fluent-bit` | `fluent-bit -c fluent-bit.conf --dry-run` | `kubectl get ds -n logging fluent-bit` |
+| 347 | Kustomize Declarative Overlays Studio | `Pradeeptalari14/tp-kustomize` | `kustomization.yaml` | `/deploy/k8s` | `kustomize build overlays/production` | `kubectl diff -k overlays/production` |
 ---
 
 ## 4. Key Learning & Quick Reference Points
@@ -507,11 +513,11 @@ Whenever a configuration needs an update:
 2. **Commit:** Replace the outdated config file in your local cloned git repository (following the *Commit Destination* in the matrix above).
 3. **Verify:** Commit and push the file to your `main` branch. Run the *Validation Command* locally or let your CI pipeline verify the output.
 
-### D. SRE Best Practices: Managing 341 Repositories at Scale
+### D. SRE Best Practices: Managing 347 Repositories at Scale
 
-As your platform scales to 341 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
+As your platform scales to 347 micro-repositories, manually configuring each repository becomes an operational bottleneck. Implement the following automation practices:
 1. **GitHub Org-Level Secrets:**
-   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 341 repositories individually, define them at the **GitHub Organization level**.
+   - Instead of configuring secrets (e.g. `SONAR_TOKEN`, `DOCKER_PASSWORD`, `AWS_ACCESS_KEY_ID`) inside all 347 repositories individually, define them at the **GitHub Organization level**.
    - Set the visibility of these secrets to `Selected repositories` and apply the pattern `tp-*` so all studio repositories inherit them automatically.
 2. **Standard Repository Template:**
    - Create a base template repository (e.g., `tp-template-base`) pre-configured with the standard `.gitignore`, `LICENSE`, and default security linter workflows.

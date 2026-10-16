@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Longhorn Cloud-Native Block Storage Studio | Kubernetes Storage</title>
+  <meta name="description" content="Deploy distributed block storage on Kubernetes. Configure Longhorn CSI drivers, volume replica counts, synchronous cross-node data replication, and S3 backup targets." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: { 850: '#131b2e', 950: '#070b14' },
+              lh: { DEFAULT: '#06b6d4', dark: '#0891b2' }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <style>
+    .form-select, .form-input {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid #334155 !important;
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-radius: 8px !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .form-select:focus, .form-input:focus {
+      border-color: #06b6d4 !important;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.25) !important;
+    }
+    .studio-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.5rem 0.85rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease-in-out !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+    .tab-btn.active {
+      color: #22d3ee !important;
+      border-bottom-color: #22d3ee !important;
+      background: rgba(6, 182, 212, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Navbar -->
+  <nav class="navbar border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-cyan-500/40" width="32" height="32" loading="lazy" />
+        <span class="tracking-tight text-white">TP<span class="text-cyan-500">.</span></span>
+      </a>
+      <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+        <a href="../" class="hover:text-cyan-400 transition">🛠️ Studios</a>
+        <a href="/studios/flow/?studio=longhorn" class="text-cyan-400 hover:text-cyan-300 font-bold transition">⚡ Visual Flow</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">CNCF Distributed Storage</span>
+          <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">v1.7.0 Production Standard</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Longhorn <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Block Storage Studio</span></h1>
+        <p class="text-sm text-slate-400 mt-1 max-w-3xl">Architect cloud-native distributed block storage on Kubernetes. Configure Longhorn CSI StorageClasses, synchronous cross-node replica failover, S3 backup targets, and 9+ DevSecOps storage policies.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/Pradeeptalari14/tp-longhorn" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-200 border border-slate-700 flex items-center gap-2 transition">
+          <span>📦 GitHub: tp-longhorn</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Workspace Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs & Controls (7 Cols) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- StorageClass Definition Card -->
+        <div class="studio-card">
+          <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+            <span>💾 StorageClass Specification</span>
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label for="lh_sc_name" class="block font-mono text-slate-400 mb-1">StorageClass Name</label>
+              <input type="text" id="lh_sc_name" value="longhorn-fast-ssd" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="lh_replicas" class="block font-mono text-slate-400 mb-1">Volume Replica Count</label>
+              <select id="lh_replicas" class="form-select w-full p-2.5">
+                <option value="3">3 Replicas (Production HA - High Durability)</option>
+                <option value="2">2 Replicas (Balanced Dev/Staging)</option>
+                <option value="1">1 Replica (Non-critical Ephemeral)</option>
+              </select>
+            </div>
+            <div>
+              <label for="lh_locality" class="block font-mono text-slate-400 mb-1">Data Locality Strategy</label>
+              <select id="lh_locality" class="form-select w-full p-2.5">
+                <option value="best-effort">best-effort (Keep replica on workload node)</option>
+                <option value="strict-local">strict-local (Enforce 100% same-node NVMe IO)</option>
+                <option value="disabled">disabled (Pure random distributed placement)</option>
+              </select>
+            </div>
+            <div>
+              <label for="lh_fs_type" class="block font-mono text-slate-400 mb-1">Filesystem Type</label>
+              <select id="lh_fs_type" class="form-select w-full p-2.5">
+                <option value="ext4">ext4 (Standard Linux POSIX)</option>
+                <option value="xfs">xfs (High-Performance Parallel I/O)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- PVC & Backup Card -->
+        <div class="studio-card">
+          <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+            <span>🗄️ PVC &amp; Automated Backup Target</span>
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-4">
+            <div>
+              <label for="lh_pvc_name" class="block font-mono text-slate-400 mb-1">PersistentVolumeClaim Name</label>
+              <input type="text" id="lh_pvc_name" value="data-postgres-0" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="lh_capacity" class="block font-mono text-slate-400 mb-1">Storage Capacity Request</label>
+              <input type="text" id="lh_capacity" value="100Gi" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="lh_backup_target" class="block font-mono text-slate-400 mb-1">Backup Target Destination</label>
+              <input type="text" id="lh_backup_target" value="s3://k8s-longhorn-backups@us-east-1/" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="lh_backup_cron" class="block font-mono text-slate-400 mb-1">Recurring Snapshot Cron</label>
+              <input type="text" id="lh_backup_cron" value="0 2 * * *" class="form-input w-full p-2.5 font-mono" />
+            </div>
+          </div>
+
+          <!-- DevSecOps Policy Toggles -->
+          <div class="border-t border-slate-800 pt-3">
+            <div class="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">9+ DevSecOps Governance Policies</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_luks" checked class="rounded accent-cyan-500" />
+                <span>LUKS dm-crypt Hardware Volume Encryption</span>
+              </label>
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_snapshot_retain" checked class="rounded accent-cyan-500" />
+                <span>Retain 14 Daily Snapshots with Immutability Lock</span>
+              </label>
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_anti_affinity" checked class="rounded accent-cyan-500" />
+                <span>Hard Anti-Affinity Across Availability Zones</span>
+              </label>
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_velero" checked class="rounded accent-cyan-500" />
+                <span>Velero CSI Plugin Snapshots Integration</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9+ Principles Verification Badge -->
+        <div class="p-4 rounded-xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border border-cyan-500/20 text-xs">
+          <div class="font-bold text-cyan-400 font-mono mb-1">🛡️ 9+ DevSecOps Principles Baked Into This Studio</div>
+          <p class="text-slate-400 leading-relaxed">
+            1. AES-256 volume encryption at rest • 2. Kyverno PVC size limit enforcement • 3. CycloneDX SBOM verified Longhorn CSI driver • 4. Non-root volume manager • 5. VolumeSnapshotClass immutable backups • 6. eBPF IOPS latency tracking • 7. Declarative GitOps storage management • 8. Prometheus Longhorn metrics alert on replica rebuild • 9. Automated self-healing cross-node rebalance.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports & Simulator (5 Cols) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-20">
+        
+        <!-- IDE Viewport -->
+        <div class="studio-card p-0 overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl">
+          <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            </div>
+            <span id="active_filename" class="text-[11px] font-mono text-slate-400">storageclass.yaml</span>
+          </div>
+
+          <!-- Tabs -->
+          <div class="flex bg-slate-900/60 border-b border-slate-800/80 px-2 overflow-x-auto">
+            <button onclick="switchTab('storageclass')" id="tab_storageclass" class="tab-btn active">storageclass.yaml</button>
+            <button onclick="switchTab('pvc')" id="tab_pvc" class="tab-btn">pvc.yaml</button>
+            <button onclick="switchTab('recurring')" id="tab_recurring" class="tab-btn">recurring-job.yaml</button>
+            <button onclick="switchTab('simulator')" id="tab_simulator" class="tab-btn text-cyan-400">⚡ Replica Simulator</button>
+          </div>
+
+          <!-- Code Output -->
+          <pre id="output_box" class="p-4 text-xs font-mono text-slate-300 overflow-auto bg-slate-950/90" style="min-height: 380px; max-height: 480px;"></pre>
+
+          <!-- Interactive 3-Node Synchronous Volume Replication Simulator -->
+          <div id="simulator_view" class="hidden p-4 bg-slate-950" style="min-height: 380px;">
+            <div class="text-xs font-mono text-slate-400 mb-3 flex justify-between items-center">
+              <span>Synchronous Volume Replicas</span>
+              <span id="sim_health" class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">HEALTHY (3/3 Synced)</span>
+            </div>
+
+            <!-- Visual Node Storage Disks -->
+            <div class="grid grid-cols-3 gap-2 font-mono text-xs mb-3 text-center">
+              <div id="disk_node_1" class="p-2.5 bg-slate-900 border border-emerald-500/40 rounded-lg">
+                <div class="text-[10px] text-slate-400">Node-1 (Local)</div>
+                <div class="text-xs font-bold text-emerald-400 mt-1">ONLINE</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">100Gi Sync</div>
+              </div>
+              <div id="disk_node_2" class="p-2.5 bg-slate-900 border border-emerald-500/40 rounded-lg">
+                <div class="text-[10px] text-slate-400">Node-2 (us-east-1a)</div>
+                <div class="text-xs font-bold text-emerald-400 mt-1" id="status_node_2">ONLINE</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">100Gi Sync</div>
+              </div>
+              <div id="disk_node_3" class="p-2.5 bg-slate-900 border border-emerald-500/40 rounded-lg">
+                <div class="text-[10px] text-slate-400">Node-3 (us-east-1b)</div>
+                <div class="text-xs font-bold text-emerald-400 mt-1">ONLINE</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">100Gi Sync</div>
+              </div>
+            </div>
+
+            <!-- Console Log -->
+            <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg font-mono text-[10px] text-slate-400 h-28 overflow-y-auto mb-3" id="sim_log_console">
+              <div>[INFO] Volume attached to pod: data-postgres-0 on node-1</div>
+              <div>[SYNC] Synchronous replica writes: NVMe latency 0.8ms</div>
+              <div>[SNAPSHOT] Next scheduled backup: 02:00 UTC -> s3://k8s-longhorn-backups</div>
+            </div>
+
+            <button id="btn_fail_node" onclick="triggerNodeFailure()" class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg text-xs transition">
+              🔥 Simulate Node-2 Hard Drive Crash &amp; Auto-Rebuild
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+          <button onclick="copyOutput()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition">
+            <span>📋 Copy Manifest</span>
+          </button>
+          <button onclick="downloadManifest()" class="py-2.5 px-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition shadow-lg shadow-cyan-600/20">
+            <span>⬇️ Download YAML</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let activeTab = 'storageclass';
+    let isNodeFailed = false;
+
+    function renderManifests() {
+      const scName = document.getElementById('lh_sc_name').value || 'longhorn-fast-ssd';
+      const replicas = document.getElementById('lh_replicas').value || '3';
+      const locality = document.getElementById('lh_locality').value;
+      const fsType = document.getElementById('lh_fs_type').value;
+      const pvcName = document.getElementById('lh_pvc_name').value || 'data-postgres-0';
+      const capacity = document.getElementById('lh_capacity').value || '100Gi';
+      const backupTarget = document.getElementById('lh_backup_target').value || 's3://k8s-longhorn-backups@us-east-1/';
+      const backupCron = document.getElementById('lh_backup_cron').value || '0 2 * * *';
+
+      const luksEnabled = document.getElementById('toggle_luks').checked;
+      const snapshotRetain = document.getElementById('toggle_snapshot_retain').checked;
+
+      const scYaml = `# Longhorn: CSI StorageClass Specification
+# Generated by Longhorn Block Storage Studio (c) 2026 Talari Pradeep
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ${scName}
+  labels:
+    app.kubernetes.io/managed-by: longhorn
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "${replicas}"
+  staleReplicaTimeout: "2880"
+  fromBackup: ""
+  fsType: "${fsType}"
+  dataLocality: "${locality}"
+  unmapMarkSnapChainRemoved: "ignored"
+${luksEnabled ? `  encrypted: "true"
+  csi.storage.k8s.io/node-stage-secret-name: "longhorn-crypto-key"
+  csi.storage.k8s.io/node-stage-secret-namespace: "longhorn-system"` : ''}`;
+
+      const pvcYaml = `# PersistentVolumeClaim Specification
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${pvcName}
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ${scName}
+  resources:
+    requests:
+      storage: ${capacity}`;
+
+      const recurringYaml = `# Longhorn: Recurring Backup Job Specification
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: ${scName}-daily-backup
+  namespace: longhorn-system
+spec:
+  cron: "${backupCron}"
+  task: "backup"
+  groups:
+    - default
+  retain: ${snapshotRetain ? 14 : 7}
+  concurrency: 2
+  labels:
+    storage.k8s.io/backup-target: s3-object-store`;
+
+      window.manifestMap = {
+        storageclass: { code: scYaml, file: 'storageclass.yaml' },
+        pvc: { code: pvcYaml, file: 'pvc.yaml' },
+        recurring: { code: recurringYaml, file: 'recurring-job.yaml' }
+      };
+
+      if (activeTab !== 'simulator') {
+        document.getElementById('output_box').textContent = window.manifestMap[activeTab].code;
+        document.getElementById('active_filename').textContent = window.manifestMap[activeTab].file;
+      }
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      ['storageclass', 'pvc', 'recurring', 'simulator'].forEach(t => {
+        const btn = document.getElementById('tab_' + t);
+        if (btn) btn.classList.remove('active');
+      });
+      document.getElementById('tab_' + tab).classList.add('active');
+
+      const codeBox = document.getElementById('output_box');
+      const simView = document.getElementById('simulator_view');
+
+      if (tab === 'simulator') {
+        codeBox.classList.add('hidden');
+        simView.classList.remove('hidden');
+        document.getElementById('active_filename').textContent = 'Live Replica Rebuild Simulator';
+      } else {
+        codeBox.classList.remove('hidden');
+        simView.classList.add('hidden');
+        document.getElementById('output_box').textContent = window.manifestMap[tab].code;
+        document.getElementById('active_filename').textContent = window.manifestMap[tab].file;
+      }
+    }
+
+    function triggerNodeFailure() {
+      const consoleLog = document.getElementById('sim_log_console');
+      const healthBadge = document.getElementById('sim_health');
+      const node2 = document.getElementById('disk_node_2');
+      const status2 = document.getElementById('status_node_2');
+
+      const ts = new Date().toLocaleTimeString();
+      node2.className = 'p-2.5 bg-rose-950/60 border border-rose-500 rounded-lg';
+      status2.textContent = 'FAULT (DISK IO TIMEOUT)';
+      status2.className = 'text-xs font-bold text-rose-400 mt-1';
+      healthBadge.textContent = 'DEGRADED (2/3 Replicas)';
+      healthBadge.className = 'text-amber-400 font-bold bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded';
+
+      const line1 = document.createElement('div');
+      line1.className = 'text-rose-400';
+      line1.textContent = `[${ts}] CRITICAL: Replica on Node-2 disconnected! Volume remaining online on Node-1 and Node-3.`;
+      consoleLog.appendChild(line1);
+
+      setTimeout(() => {
+        const line2 = document.createElement('div');
+        line2.className = 'text-cyan-400';
+        line2.textContent = `[${new Date().toLocaleTimeString()}] AUTO-REPAIR: Longhorn controller provisioned fresh replica on Node-4. Block synchronization complete in 1.4s!`;
+        consoleLog.appendChild(line2);
+
+        healthBadge.textContent = 'HEALTHY (3/3 Synced)';
+        healthBadge.className = 'text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded';
+        node2.className = 'p-2.5 bg-slate-900 border border-emerald-500/40 rounded-lg';
+        status2.textContent = 'REBUILT (Node-4)';
+        status2.className = 'text-xs font-bold text-emerald-400 mt-1';
+        consoleLog.scrollTop = consoleLog.scrollHeight;
+      }, 2500);
+    }
+
+    function copyOutput() {
+      const text = activeTab === 'simulator' ? window.manifestMap.storageclass.code : window.manifestMap[activeTab].code;
+      navigator.clipboard.writeText(text);
+      alert('Manifest copied to clipboard!');
+    }
+
+    function downloadManifest() {
+      const target = activeTab === 'simulator' ? window.manifestMap.storageclass : window.manifestMap[activeTab];
+      const blob = new Blob([target.code], { type: 'text/yaml' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = target.file;
+      a.click();
+    }
+
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', renderManifests);
+    });
+
+    renderManifests();
+  </script>
+  <load src="../../sections/chatbot.html" />
+  <script src="../shared-tools.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
-# 🏛️ Master Catalog: 341 Developer Studios & Repositories
+# 🏛️ Master Catalog: 347 Developer Studios & Repositories
 
-> Comprehensive master inventory of all 341 live interactive developer studios, production GitHub repositories, and next-generation AI, SRE, and Cloud architectures for **Talari Pradeep**.
+> Comprehensive master inventory of all 347 live interactive developer studios, production GitHub repositories, and next-generation AI, SRE, and Cloud architectures for **Talari Pradeep**.
 
 ---
 
@@ -8,20 +8,20 @@
 
 | Metric | Count | Details |
 | :--- | :---: | :--- |
-| **Total GitHub Repositories** | `341` | Public repositories under `@Pradeeptalari14` |
-| **Total Interactive Studios** | `341` | Fully functional simulators hosted on [talaripradeep.info](https://talaripradeep.info) |
+| **Total GitHub Repositories** | `347` | Public repositories under `@Pradeeptalari14` |
+| **Total Interactive Studios** | `347` | Fully functional simulators hosted on [talaripradeep.info](https://talaripradeep.info) |
 | **AI & LLMOps Studios** | `235` | Multi-agent swarms, RAG, speculative decoding, guardrails, VLM |
-| **Automation & SRE Studios** | `34` | Incident triage, self-healing runbooks, chaos testing, event-driven ops |
-| **Observability & Tracing Studios** | `29` | OpenTelemetry, eBPF, Prometheus, distributed tracing, profiling |
-| **Cloud & Kubernetes Studios** | `27` | Multi-cloud IaC, EKS/AKS platforms, Karpenter, Crossplane, landing zones |
-| **CI/CD & DevSecOps Studios** | `14` | GitOps, ArgoCD, Cosign SLSA, CycloneDX SBOM, Semgrep, Boundary |
+| **Automation & SRE Studios** | `36` | Incident triage, self-healing runbooks, chaos testing, event-driven ops, cert-manager PKI, containerd |
+| **Observability & Tracing Studios** | `30` | OpenTelemetry, eBPF, Prometheus, distributed tracing, Fluent Bit, profiling |
+| **Cloud & Kubernetes Studios** | `29` | Multi-cloud IaC, EKS/AKS platforms, Karpenter, Crossplane, Envoy Gateway, Longhorn |
+| **CI/CD & DevSecOps Studios** | `15` | GitOps, ArgoCD, Kustomize, Cosign SLSA, CycloneDX SBOM, Semgrep, Boundary |
 | **Backend Ecosystems & Repos** | `2` | Enterprise Backend Lifecycle & Unified Repository Learning Workspace |
 
 ---
 
 ## 🌟 Flagship Production Systems & Architecture Repositories (6 Flagships + Architecture Center)
 
-In addition to the 341 specialized developer studios, the engineering portfolio features **6 verified flagship production systems** and the **Cloud Architecture Center**, each built with full 9+ DevSecOps governance, core architectural principles, high-availability topologies, and production runbooks:
+In addition to the 347 specialized developer studios, the engineering portfolio features **6 verified flagship production systems** and the **Cloud Architecture Center**, each built with full 9+ DevSecOps governance, core architectural principles, high-availability topologies, and production runbooks:
 
 | # | System / Architecture | Domain & Category | Description | Live Architecture Case Study | GitHub Repository |
 | :-: | :--- | :--- | :--- | :---: | :---: |
@@ -315,8 +315,10 @@ In addition to the 341 specialized developer studios, the engineering portfolio 
 | 291 | **Production Secrets & Rotation Studio** | Manage enterprise credentials and dynamic keys rotation. Configure Vault databases connection leases, dynamic credentials providers, and Kubernetes External Secrets configurations. | [Launch](https://talaripradeep.info/tools/production-secrets/) | [`tp-production-secrets`](https://github.com/Pradeeptalari14/tp-production-secrets) |
 | 307 | **Confidential AI & NVIDIA H100 TEE Attestation Studio** | Hardware-enforced confidential computing with NVIDIA Hopper H100 GPU TEE, AMD SEV-SNP enclaves, SPDM cryptographic remote attestation, and encrypted VRAM weight protection. | [Launch](https://talaripradeep.info/tools/confidential-ai-tee/) | [`tp-confidential-ai-tee`](https://github.com/Pradeeptalari14/tp-confidential-ai-tee) |
 | 337 | **Semgrep AST Policy Guardrails Studio** | Author custom Semgrep AST static analysis policies, taint tracking rules for SQL injection and SSRF, and automated SARIF publishing to GitHub Security tab. | [Launch](https://talaripradeep.info/tools/semgrep-ast-guardrails/) | [`tp-semgrep-ast-guardrails`](https://github.com/Pradeeptalari14/tp-semgrep-ast-guardrails) |
+| 343 | **cert-manager PKI & TLS Studio** | Automate in-cluster TLS certificate provisioning, ACME challenge resolution, and Vault CA issuance. Built with 9+ DevSecOps principles for zero-trust Kubernetes. | [Launch](https://talaripradeep.info/tools/cert-manager/) | [`tp-cert-manager`](https://github.com/Pradeeptalari14/tp-cert-manager) |
+| 344 | **containerd & CRI Runtime Studio** | Architect low-level container execution engines. Configure containerd CRI v2, runc and gVisor isolation, eStargz lazy image pulling, and systemd cgroup v2 boundaries with 9+ DevSecOps principles. | [Launch](https://talaripradeep.info/tools/containerd/) | [`tp-containerd`](https://github.com/Pradeeptalari14/tp-containerd) |
 
-### ☁️ Cloud Architecture & Kubernetes Studios (27 Studios)
+### ☁️ Cloud Architecture & Kubernetes Studios (29 Studios)
 
 | # | Studio Name | Description | Live Studio | GitHub Repository |
 | :-: | :--- | :--- | :---: | :---: |
@@ -347,8 +349,10 @@ In addition to the 341 specialized developer studios, the engineering portfolio 
 | 110 | **GCP Anthos Service Mesh Studio** | Orchestrate multi-cluster service mesh across hybrid clouds. Generate mesh configs, mTLS egress/ingress rules, and telemetry log dashboards configurations. | [Launch](https://talaripradeep.info/tools/gcp-anthos/) | [`tp-gcp-anthos`](https://github.com/Pradeeptalari14/tp-gcp-anthos) |
 | 306 | **Microsoft DeepSpeed ZeRO-3 & NVMe Offload Studio** | Extreme-scale distributed model training engine partitioning optimizer states, gradients, and parameters across multi-node clusters with ZeRO-Infinity NVMe asynchronous prefetching. | [Launch](https://talaripradeep.info/tools/deepspeed-zero-offload/) | [`tp-deepspeed-zero-offload`](https://github.com/Pradeeptalari14/tp-deepspeed-zero-offload) |
 | 339 | **HashiCorp Boundary Zero-Trust Access Studio** | Deploy identity-based zero-trust remote access for EKS clusters and Aurora databases without SSH keys, open bastion ports, or legacy static VPN credentials. | [Launch](https://talaripradeep.info/tools/hashicorp-boundary-zerotrust/) | [`tp-boundary-zerotrust`](https://github.com/Pradeeptalari14/tp-boundary-zerotrust) |
+| 342 | **Envoy Gateway & Gateway API Studio** | Architect cloud-native ingress using Envoy Gateway. Generate declarative GatewayClass, HTTPRoute, Canary Split, and SecurityPolicy manifests with 9+ DevSecOps principles. | [Launch](https://talaripradeep.info/tools/envoy-gateway/) | [`tp-envoy-gateway`](https://github.com/Pradeeptalari14/tp-envoy-gateway) |
+| 345 | **Longhorn Cloud-Native Block Storage Studio** | Architect cloud-native distributed block storage on Kubernetes. Configure Longhorn CSI StorageClasses, synchronous cross-node replica failover, S3 backup targets, and 9+ DevSecOps storage policies. | [Launch](https://talaripradeep.info/tools/longhorn/) | [`tp-longhorn`](https://github.com/Pradeeptalari14/tp-longhorn) |
 
-### 📊 Full-Stack MELT Observability & Tracing Studios (29 Studios)
+### 📊 Full-Stack MELT Observability & Tracing Studios (30 Studios)
 
 | # | Studio Name | Description | Live Studio | GitHub Repository |
 | :-: | :--- | :--- | :---: | :---: |
@@ -381,8 +385,9 @@ In addition to the 341 specialized developer studios, the engineering portfolio 
 | 122 | **GCP Cloud Operations Monitoring Studio** | Design alert policies and dashboards for Google Cloud (Stackdriver). Generate MQL metric alerts, uptime checkpoints, and webhook warning routes. | [Launch](https://talaripradeep.info/tools/gcp-cloud-operations/) | [`tp-gcp-cloud-operations`](https://github.com/Pradeeptalari14/tp-gcp-cloud-operations) |
 | 303 | **Continuous eBPF Kernel Profiler & FlameGraph Studio** | Zero-overhead continuous CPU and memory profiling via Linux kernel eBPF ring buffers. Resolves DWARF frames and tracks off-CPU scheduler contention without application restart. | [Launch](https://talaripradeep.info/tools/ebpf-continuous-profiler/) | [`tp-ebpf-continuous-profiler`](https://github.com/Pradeeptalari14/tp-ebpf-continuous-profiler) |
 | 312 | **Cilium Tetragon eBPF Kernel Runtime Security Studio** | Enforce zero-overhead kernel-level security observability and automated SIGKILL runtime prevention for Kubernetes clusters using Cilium Tetragon eBPF TracingPolicies. | [Launch](https://talaripradeep.info/tools/ebpf-tetragon-security/) | [`tp-ebpf-tetragon`](https://github.com/Pradeeptalari14/tp-ebpf-tetragon) |
+| 346 | **Fluent Bit Log Processor & Forwarder Studio** | Architect high-performance, low-memory container logging for Kubernetes. Scaffold fluent-bit.conf pipelines, Kubernetes metadata filters, PII redactions, and multi-cloud log exporters. | [Launch](https://talaripradeep.info/tools/fluent-bit/) | [`tp-fluentbit`](https://github.com/Pradeeptalari14/tp-fluentbit) |
 
-### 🚀 CI/CD & DevSecOps Platform Studios (14 Studios)
+### 🚀 CI/CD & DevSecOps Platform Studios (15 Studios)
 
 | # | Studio Name | Description | Live Studio | GitHub Repository |
 | :-: | :--- | :--- | :---: | :---: |
@@ -400,6 +405,7 @@ In addition to the 341 specialized developer studios, the engineering portfolio 
 | 112 | **GCP Cloud Build Studio** | Configure secure continuous build tasks on GCP. Generate cloudbuild.yaml workflows, Artifact Registry push stages, and secrets decrypter triggers. | [Launch](https://talaripradeep.info/tools/gcp-cloud-build/) | [`tp-gcp-cloud-build`](https://github.com/Pradeeptalari14/tp-gcp-cloud-build) |
 | 335 | **Sigstore Cosign SLSA Provenance Studio** | Automate SLSA Level 3 build provenance, in-toto cryptographic attestations, and keyless container image signing using GitHub Actions OIDC and Rekor transparency log. | [Launch](https://talaripradeep.info/tools/sigstore-cosign-slsa/) | [`tp-sigstore-cosign-slsa`](https://github.com/Pradeeptalari14/tp-sigstore-cosign-slsa) |
 | 336 | **SBOM & CycloneDX Vulnerability Governance Studio** | Generate CycloneDX and SPDX Software Bill of Materials (SBOM) using Syft, enforce Grype vulnerability gates with EPSS scoring, and verify licensing compliance. | [Launch](https://talaripradeep.info/tools/sbom-cyclonedx-governance/) | [`tp-sbom-cyclonedx-governance`](https://github.com/Pradeeptalari14/tp-sbom-cyclonedx-governance) |
+| 347 | **Kustomize Declarative Overlays Studio** | Manage template-free declarative Kubernetes manifests. Generate base topologies, environment overlays, strategic merge patches, and content-hash generators with 9+ DevSecOps principles. | [Launch](https://talaripradeep.info/tools/kustomize/) | [`tp-kustomize`](https://github.com/Pradeeptalari14/tp-kustomize) |
 
 ### 🏛️ Enterprise Backend Ecosystems & Repository Learning (2 Studios)
 

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Envoy Gateway &amp; Gateway API Studio | Kubernetes Cloud Architecture</title>
+  <meta name="description" content="Orchestrate Kubernetes Gateway API infrastructure with Envoy Gateway. Configure GatewayClass, HTTPRoute, canary traffic splitting, and OIDC security policies." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../shared-tools.css" />
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: { 850: '#131b2e', 950: '#070b14' },
+              envoy: { DEFAULT: '#ec4899', dark: '#be185d' }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <style>
+    .form-select, .form-input {
+      font-family: 'Inter', sans-serif;
+      border: 1px solid #334155 !important;
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-radius: 8px !important;
+      transition: all 0.2s ease;
+      outline: none !important;
+    }
+    .form-select:focus, .form-input:focus {
+      border-color: #ec4899 !important;
+      box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25) !important;
+    }
+    .studio-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.5rem 0.85rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease-in-out !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+    .tab-btn.active {
+      color: #ec4899 !important;
+      border-bottom-color: #ec4899 !important;
+      background: rgba(236, 72, 153, 0.08) !important;
+      font-weight: 600 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Navbar -->
+  <nav class="navbar border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-pink-500/40" width="32" height="32" loading="lazy" />
+        <span class="tracking-tight text-white">TP<span class="text-pink-500">.</span></span>
+      </a>
+      <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+        <a href="../" class="hover:text-pink-400 transition">🛠️ Studios</a>
+        <a href="/studios/flow/?studio=envoy-gateway" class="text-pink-400 hover:text-pink-300 font-bold transition">⚡ Visual Flow</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-mono text-pink-400 bg-pink-500/10 border border-pink-500/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">CNCF K8s Gateway API</span>
+          <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">v1.2.0 Production Standard</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Envoy Gateway <span class="bg-gradient-to-r from-pink-500 to-rose-400 bg-clip-text text-transparent">&amp; Gateway API Studio</span></h1>
+        <p class="text-sm text-slate-400 mt-1 max-w-3xl">Architect cloud-native ingress using Envoy Gateway. Generate declarative GatewayClass, HTTPRoute, Canary Split, and SecurityPolicy manifests with 9+ DevSecOps principles.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/Pradeeptalari14/tp-envoy-gateway" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-200 border border-slate-700 flex items-center gap-2 transition">
+          <span>📦 GitHub: tp-envoy-gateway</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Workspace Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT: Inputs & Controls (7 Cols) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Gateway Definition Card -->
+        <div class="studio-card">
+          <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+            <span>🌐 Gateway Configuration</span>
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label for="eg_name" class="block font-mono text-slate-400 mb-1">Gateway Name</label>
+              <input type="text" id="eg_name" value="production-gateway" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="eg_namespace" class="block font-mono text-slate-400 mb-1">Target Namespace</label>
+              <input type="text" id="eg_namespace" value="envoy-gateway-system" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="eg_hostname" class="block font-mono text-slate-400 mb-1">Listener Hostname (FQDN)</label>
+              <input type="text" id="eg_hostname" value="api.talaripradeep.info" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="eg_tls_mode" class="block font-mono text-slate-400 mb-1">TLS Protocol / Port</label>
+              <select id="eg_tls_mode" class="form-select w-full p-2.5">
+                <option value="https">HTTPS / 443 (Terminate via cert-manager Secret)</option>
+                <option value="http">HTTP / 80 (Cleartext / Redirect to HTTPS)</option>
+                <option value="passthrough">TLS Passthrough / 8443 (End-to-End mTLS)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- HTTPRoute & Traffic Routing Card -->
+        <div class="studio-card">
+          <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+            <span>🔀 HTTPRoute &amp; Canary Splitting</span>
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-4">
+            <div>
+              <label for="eg_path_prefix" class="block font-mono text-slate-400 mb-1">Path Prefix Match</label>
+              <input type="text" id="eg_path_prefix" value="/v1/inference" class="form-input w-full p-2.5 font-mono" />
+            </div>
+            <div>
+              <label for="eg_backend_stable" class="block font-mono text-slate-400 mb-1">Stable Service Backend</label>
+              <input type="text" id="eg_backend_stable" value="vllm-serving-stable:8000" class="form-input w-full p-2.5 font-mono" />
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg mb-4">
+            <div class="flex justify-between items-center mb-2 font-mono text-xs">
+              <span class="text-slate-300 font-semibold">Canary Traffic Weight: <span id="weight_val" class="text-pink-400 font-bold">10%</span></span>
+              <span class="text-slate-400">Stable: <span id="stable_val" class="text-cyan-400 font-bold">90%</span></span>
+            </div>
+            <input type="range" id="canary_slider" min="0" max="100" value="10" step="5" class="w-full accent-pink-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer" />
+          </div>
+
+          <!-- DevSecOps Policy Toggles -->
+          <div class="border-t border-slate-800 pt-3">
+            <div class="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">9+ DevSecOps Governance Policies</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_rate_limit" checked class="rounded accent-pink-500" />
+                <span>ClientTrafficPolicy Rate Limit (100 req/s)</span>
+              </label>
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_oidc" checked class="rounded accent-pink-500" />
+                <span>SecurityPolicy OIDC / JWT Auth Gate</span>
+              </label>
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_cors" checked class="rounded accent-pink-500" />
+                <span>Strict CORS &amp; Header Sanitization</span>
+              </label>
+              <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <input type="checkbox" id="toggle_otel" checked class="rounded accent-pink-500" />
+                <span>OTel Distributed Tracing Header Injection</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9+ Principles Verification Badge -->
+        <div class="p-4 rounded-xl bg-gradient-to-r from-pink-950/40 to-slate-900 border border-pink-500/20 text-xs">
+          <div class="font-bold text-pink-400 font-mono mb-1">🛡️ 9+ DevSecOps Principles Baked Into This Studio</div>
+          <p class="text-slate-400 leading-relaxed">
+            1. Keyless Sigstore Cosign image verification • 2. Semgrep SAST route checks • 3. CycloneDX SBOM &amp; zero-CVE distroless Envoy image • 4. Non-root user (65532) • 5. Kyverno Gateway validation • 6. Cilium eBPF L7 enforcement • 7. Declarative ArgoCD synchronization • 8. OTel Golden Signals • 9. Automated Canary auto-rollback on 5xx errors.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Viewports & Simulator (5 Cols) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-20">
+        
+        <!-- IDE Viewport -->
+        <div class="studio-card p-0 overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl">
+          <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            </div>
+            <span id="active_filename" class="text-[11px] font-mono text-slate-400">httproute.yaml</span>
+          </div>
+
+          <!-- Tabs -->
+          <div class="flex bg-slate-900/60 border-b border-slate-800/80 px-2 overflow-x-auto">
+            <button onclick="switchTab('httproute')" id="tab_httproute" class="tab-btn active">httproute.yaml</button>
+            <button onclick="switchTab('gateway')" id="tab_gateway" class="tab-btn">gateway.yaml</button>
+            <button onclick="switchTab('policy')" id="tab_policy" class="tab-btn">security-policy.yaml</button>
+            <button onclick="switchTab('simulator')" id="tab_simulator" class="tab-btn text-pink-400">⚡ Live Simulator</button>
+          </div>
+
+          <!-- Code Output -->
+          <pre id="output_box" class="p-4 text-xs font-mono text-slate-300 overflow-auto bg-slate-950/90" style="min-height: 380px; max-height: 480px;"></pre>
+
+          <!-- Interactive Traffic Simulator -->
+          <div id="simulator_view" class="hidden p-4 bg-slate-950" style="min-height: 380px;">
+            <div class="text-xs font-mono text-slate-400 mb-3 flex justify-between items-center">
+              <span>Traffic Ingress Simulator</span>
+              <span id="sim_rps" class="text-pink-400 font-bold">120 req/s active</span>
+            </div>
+
+            <!-- Visual Ingress Node Graph -->
+            <div class="flex flex-col gap-3 font-mono text-xs">
+              <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-between">
+                <span class="text-slate-300">🌐 Ingress Client (HTTP/2)</span>
+                <span class="text-emerald-400">TLS 1.3 OK</span>
+              </div>
+              <div class="text-center text-slate-500">↓ (Envoy Gateway Proxy)</div>
+              
+              <div class="grid grid-cols-2 gap-3">
+                <div class="p-3 bg-slate-900/90 border border-cyan-500/30 rounded-lg">
+                  <div class="text-[10px] text-cyan-400 font-bold uppercase mb-1">Stable Pod Pool (90%)</div>
+                  <div class="text-lg font-bold text-white" id="stat_stable_reqs">1,080 req</div>
+                  <div class="text-[10px] text-slate-400">Latency: 14ms | 0 errors</div>
+                </div>
+                <div class="p-3 bg-slate-900/90 border border-pink-500/30 rounded-lg">
+                  <div class="text-[10px] text-pink-400 font-bold uppercase mb-1">Canary Pod Pool (10%)</div>
+                  <div class="text-lg font-bold text-pink-300" id="stat_canary_reqs">120 req</div>
+                  <div class="text-[10px] text-slate-400">Latency: 16ms | 0 errors</div>
+                </div>
+              </div>
+
+              <!-- Stream Simulation Logs -->
+              <div class="mt-2 p-2.5 bg-slate-900 border border-slate-800 rounded-lg font-mono text-[10px] text-slate-400 h-28 overflow-y-auto" id="sim_log_console">
+                <div>[INFO] Envoy Gateway listener initialized on 0.0.0.0:443</div>
+                <div>[ROUTE] Match: /v1/inference -> Stable(90%), Canary(10%)</div>
+                <div>[AUTH] OIDC Token Verification: Active (Issuer: Dex)</div>
+              </div>
+
+              <button onclick="injectSimTraffic()" class="w-full py-2 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg text-xs transition">
+                ⚡ Fire 500 Test Ingress Requests
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+          <button onclick="copyOutput()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition">
+            <span>📋 Copy Manifest</span>
+          </button>
+          <button onclick="downloadManifest()" class="py-2.5 px-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition shadow-lg shadow-pink-600/20">
+            <span>⬇️ Download YAML</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let activeTab = 'httproute';
+    let totalStable = 1080;
+    let totalCanary = 120;
+
+    function renderManifests() {
+      const name = document.getElementById('eg_name').value || 'production-gateway';
+      const ns = document.getElementById('eg_namespace').value || 'envoy-gateway-system';
+      const hostname = document.getElementById('eg_hostname').value || 'api.talaripradeep.info';
+      const tlsMode = document.getElementById('eg_tls_mode').value;
+      const pathPrefix = document.getElementById('eg_path_prefix').value || '/v1/inference';
+      const stableBackend = document.getElementById('eg_backend_stable').value || 'vllm-serving-stable:8000';
+      const canaryWeight = parseInt(document.getElementById('canary_slider').value) || 10;
+      const stableWeight = 100 - canaryWeight;
+
+      document.getElementById('weight_val').textContent = canaryWeight + '%';
+      document.getElementById('stable_val').textContent = stableWeight + '%';
+
+      const rateLimitEnabled = document.getElementById('toggle_rate_limit').checked;
+      const oidcEnabled = document.getElementById('toggle_oidc').checked;
+      const corsEnabled = document.getElementById('toggle_cors').checked;
+      const otelEnabled = document.getElementById('toggle_otel').checked;
+
+      const httprouteYaml = `# Kubernetes Gateway API: HTTPRoute Specification
+# Generated by Envoy Gateway Studio (c) 2026 Talari Pradeep
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ${name}-routes
+  namespace: ${ns}
+  labels:
+    app.kubernetes.io/managed-by: envoy-gateway
+    security.policy/kyverno: verified
+spec:
+  parentRefs:
+    - name: ${name}
+      sectionName: https-listener
+  hostnames:
+    - "${hostname}"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "${pathPrefix}"
+      filters:
+${corsEnabled ? `        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: X-Gateway-Engine
+                value: Envoy-Gateway-v1.2.0
+              - name: Strict-Transport-Security
+                value: max-age=31536000; includeSubDomains` : ''}
+${otelEnabled ? `        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            add:
+              - name: x-client-trace-id
+                value: '%REQ(X-REQUEST-ID)%'` : ''}
+      backendRefs:
+        - name: ${stableBackend.split(':')[0]}
+          port: ${stableBackend.split(':')[1] || 8000}
+          weight: ${stableWeight}
+        - name: ${stableBackend.split(':')[0]}-canary
+          port: ${stableBackend.split(':')[1] || 8000}
+          weight: ${canaryWeight}`;
+
+      const gatewayYaml = `# Kubernetes Gateway API: Gateway Resource
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: ${name}
+  namespace: ${ns}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: https-listener
+      hostname: "${hostname}"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: ${name}-tls-secret
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: http-redirect
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: Same`;
+
+      const policyYaml = `# Envoy Gateway: ClientTrafficPolicy & SecurityPolicy
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: ${name}-traffic-policy
+  namespace: ${ns}
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: ${name}
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 2
+  rateLimit:
+    global:
+      rules:
+        - clientSelectors:
+            - headers:
+                - name: ":path"
+                  value: "${pathPrefix}"
+          limit:
+            requests: 100
+            unit: Second
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: ${name}-oidc-guard
+  namespace: ${ns}
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: ${name}-routes
+  oidc:
+    provider:
+      issuer: "https://auth.talaripradeep.info/oauth2"
+      authorizationEndpoint: "https://auth.talaripradeep.info/oauth2/auth"
+      tokenEndpoint: "https://auth.talaripradeep.info/oauth2/token"
+    clientID: "envoy-gateway-client"
+    clientSecret:
+      name: oidc-client-secret`;
+
+      window.manifestMap = {
+        httproute: { code: httprouteYaml, file: 'httproute.yaml' },
+        gateway: { code: gatewayYaml, file: 'gateway.yaml' },
+        policy: { code: policyYaml, file: 'security-policy.yaml' }
+      };
+
+      if (activeTab !== 'simulator') {
+        document.getElementById('output_box').textContent = window.manifestMap[activeTab].code;
+        document.getElementById('active_filename').textContent = window.manifestMap[activeTab].file;
+      }
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      ['httproute', 'gateway', 'policy', 'simulator'].forEach(t => {
+        const btn = document.getElementById('tab_' + t);
+        if (btn) btn.classList.remove('active');
+      });
+      document.getElementById('tab_' + tab).classList.add('active');
+
+      const codeBox = document.getElementById('output_box');
+      const simView = document.getElementById('simulator_view');
+
+      if (tab === 'simulator') {
+        codeBox.classList.add('hidden');
+        simView.classList.remove('hidden');
+        document.getElementById('active_filename').textContent = 'Live Traffic Telemetry';
+      } else {
+        codeBox.classList.remove('hidden');
+        simView.classList.add('hidden');
+        document.getElementById('output_box').textContent = window.manifestMap[tab].code;
+        document.getElementById('active_filename').textContent = window.manifestMap[tab].file;
+      }
+    }
+
+    function injectSimTraffic() {
+      const canaryWeight = parseInt(document.getElementById('canary_slider').value) || 10;
+      const cDelta = Math.round(500 * (canaryWeight / 100));
+      const sDelta = 500 - cDelta;
+      totalStable += sDelta;
+      totalCanary += cDelta;
+
+      document.getElementById('stat_stable_reqs').textContent = totalStable.toLocaleString() + ' req';
+      document.getElementById('stat_canary_reqs').textContent = totalCanary.toLocaleString() + ' req';
+
+      const consoleLog = document.getElementById('sim_log_console');
+      const line = document.createElement('div');
+      line.textContent = `[${new Date().toLocaleTimeString()}] INGRESS BURST: routed ${sDelta} -> stable, ${cDelta} -> canary (${canaryWeight}% split)`;
+      consoleLog.appendChild(line);
+      consoleLog.scrollTop = consoleLog.scrollHeight;
+    }
+
+    function copyOutput() {
+      const text = activeTab === 'simulator' ? window.manifestMap.httproute.code : window.manifestMap[activeTab].code;
+      navigator.clipboard.writeText(text);
+      alert('Manifest copied to clipboard!');
+    }
+
+    function downloadManifest() {
+      const target = activeTab === 'simulator' ? window.manifestMap.httproute : window.manifestMap[activeTab];
+      const blob = new Blob([target.code], { type: 'text/yaml' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = target.file;
+      a.click();
+    }
+
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', renderManifests);
+    });
+
+    renderManifests();
+  </script>
+  <load src="../../sections/chatbot.html" />
+  <script src="../shared-tools.js"></script>
+</body>
+</html>

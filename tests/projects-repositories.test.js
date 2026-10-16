@@ -34,13 +34,13 @@ describe('Projects Showcase & 341 Open Source Repositories Explorer', () => {
     expect(titles).toContain('WhatsApp & Voice AI Assistant Platform');
   });
 
-  it('should have the 341 Open Source Repositories Explorer section and controls', () => {
+  it('should have the 347 Open Source Repositories Explorer section and controls', () => {
     const reposSection = document.getElementById('reposDirectory');
     expect(reposSection).toBeTruthy();
 
     const searchInput = document.getElementById('repoSearchInput');
     expect(searchInput).toBeTruthy();
-    expect(searchInput.getAttribute('placeholder')).toContain('Search 341 repositories');
+    expect(searchInput.getAttribute('placeholder')).toContain('Search 347 repositories');
 
     const filterTabs = document.getElementById('repoFilterTabs');
     expect(filterTabs).toBeTruthy();
@@ -49,17 +49,17 @@ describe('Projects Showcase & 341 Open Source Repositories Explorer', () => {
 
     const countDisplay = document.getElementById('repoCountDisplay');
     expect(countDisplay).toBeTruthy();
-    expect(countDisplay.textContent).toContain('341');
+    expect(countDisplay.textContent).toContain('347');
 
     const gridContainer = document.getElementById('repoGridContainer');
     expect(gridContainer).toBeTruthy();
   });
 
-  it('should verify tools.json contains exactly 341 tools with valid repository mappings', () => {
+  it('should verify tools.json contains exactly 347 tools with valid repository mappings', () => {
     const toolsPath = path.resolve(__dirname, '../tools/tools.json');
     const tools = JSON.parse(fs.readFileSync(toolsPath, 'utf8'));
 
-    expect(tools.length).toBe(341);
+    expect(tools.length).toBe(347);
     tools.forEach(t => {
       expect(t.title).toBeTruthy();
       expect(t.repository).toBeTruthy();
@@ -68,19 +68,19 @@ describe('Projects Showcase & 341 Open Source Repositories Explorer', () => {
     });
   });
 
-  it('should verify STUDIOS_AND_REPOSITORIES.md and GITHUB_PROVISIONING_GUIDE.md catalog all 341 repositories', () => {
+  it('should verify STUDIOS_AND_REPOSITORIES.md and GITHUB_PROVISIONING_GUIDE.md catalog all 347 repositories', () => {
     const catDoc = fs.readFileSync(path.resolve(__dirname, '../STUDIOS_AND_REPOSITORIES.md'), 'utf8');
-    expect(catDoc).toContain('341 Developer Studios & Repositories');
-    expect(catDoc).toContain('`341`');
+    expect(catDoc).toContain('347 Developer Studios & Repositories');
+    expect(catDoc).toContain('`347`');
 
     const provGuide = fs.readFileSync(path.resolve(__dirname, '../GITHUB_PROVISIONING_GUIDE.md'), 'utf8');
-    expect(provGuide).toContain('all **341 Developer Studios**');
-    expect(provGuide).toContain('Exhaustive 341-Repository Execution Matrix');
+    expect(provGuide).toContain('all **347 Developer Studios**');
+    expect(provGuide).toContain('Exhaustive 347-Repository Execution Matrix');
   });
 
-  it('should verify sections/projects.html points to all 341 repositories', () => {
+  it('should verify sections/projects.html points to all 347 repositories', () => {
     const secHtml = fs.readFileSync(path.resolve(__dirname, '../sections/projects.html'), 'utf8');
-    expect(secHtml).toContain('341 Repositories');
-    expect(secHtml).toContain('Explore 6 Flagship Platforms &amp; All 341 Open Source Repositories');
+    expect(secHtml).toContain('347 Repositories');
+    expect(secHtml).toContain('Explore 6 Flagship Platforms &amp; All 347 Open Source Repositories');
   });
 });

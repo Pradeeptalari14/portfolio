@@ -4090,5 +4090,77 @@
     "tag": "repository-workspace.yaml",
     "link": "repo-learning/",
     "repository": "Pradeeptalari14/tp-repo-learning"
+  },
+  {
+    "title": "Envoy Gateway & Gateway API Studio",
+    "desc": "Architect cloud-native ingress using Envoy Gateway. Generate declarative GatewayClass, HTTPRoute, Canary Split, and SecurityPolicy manifests with 9+ DevSecOps principles.",
+    "category": "cloud",
+    "icon": "🌐",
+    "color": "rgb(236, 72, 153)",
+    "borderClass": "border-pink-200",
+    "bgClass": "bg-pink-50/10",
+    "tag": "gateway.yaml",
+    "link": "envoy-gateway/",
+    "repository": "Pradeeptalari14/tp-envoy-gateway"
+  },
+  {
+    "title": "cert-manager PKI & TLS Studio",
+    "desc": "Automate in-cluster TLS certificate provisioning, ACME challenge resolution, and Vault CA issuance. Built with 9+ DevSecOps principles for zero-trust Kubernetes.",
+    "category": "automation",
+    "icon": "📜",
+    "color": "rgb(59, 130, 246)",
+    "borderClass": "border-blue-200",
+    "bgClass": "bg-blue-50/10",
+    "tag": "cluster-issuer.yaml",
+    "link": "cert-manager/",
+    "repository": "Pradeeptalari14/tp-cert-manager"
+  },
+  {
+    "title": "Kustomize Declarative Overlays Studio",
+    "desc": "Manage template-free declarative Kubernetes manifests. Generate base topologies, environment overlays, strategic merge patches, and content-hash generators with 9+ DevSecOps principles.",
+    "category": "cicd",
+    "icon": "🧩",
+    "color": "rgb(99, 102, 241)",
+    "borderClass": "border-indigo-200",
+    "bgClass": "bg-indigo-50/10",
+    "tag": "kustomization.yaml",
+    "link": "kustomize/",
+    "repository": "Pradeeptalari14/tp-kustomize"
+  },
+  {
+    "title": "Longhorn Cloud-Native Block Storage Studio",
+    "desc": "Architect cloud-native distributed block storage on Kubernetes. Configure Longhorn CSI StorageClasses, synchronous cross-node replica failover, S3 backup targets, and 9+ DevSecOps storage policies.",
+    "category": "cloud",
+    "icon": "💾",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "storageclass.yaml",
+    "link": "longhorn/",
+    "repository": "Pradeeptalari14/tp-longhorn"
+  },
+  {
+    "title": "Fluent Bit Log Processor & Forwarder Studio",
+    "desc": "Architect high-performance, low-memory container logging for Kubernetes. Scaffold fluent-bit.conf pipelines, Kubernetes metadata filters, PII redactions, and multi-cloud log exporters.",
+    "category": "observability",
+    "icon": "📡",
+    "color": "rgb(14, 165, 233)",
+    "borderClass": "border-sky-200",
+    "bgClass": "bg-sky-50/10",
+    "tag": "fluent-bit.conf",
+    "link": "fluent-bit/",
+    "repository": "Pradeeptalari14/tp-fluentbit"
+  },
+  {
+    "title": "containerd & CRI Runtime Studio",
+    "desc": "Architect low-level container execution engines. Configure containerd CRI v2, runc and gVisor isolation, eStargz lazy image pulling, and systemd cgroup v2 boundaries with 9+ DevSecOps principles.",
+    "category": "automation",
+    "icon": "⚙️",
+    "color": "rgb(100, 116, 139)",
+    "borderClass": "border-slate-300",
+    "bgClass": "bg-slate-50/10",
+    "tag": "config.toml",
+    "link": "containerd/",
+    "repository": "Pradeeptalari14/tp-containerd"
   }
 ]
