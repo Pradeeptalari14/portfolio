@@ -61,4 +61,6 @@ async def generate_completion(payload: AICompletionRequest):
             "total_duration": 42000000
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        env = os.getenv("ENVIRONMENT", "development").lower()
+        detail = "AI service encountered an internal error. Please check backend engine availability." if env == "production" else str(e)
+        raise HTTPException(status_code=500, detail=detail)

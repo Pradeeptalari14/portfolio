@@ -32,3 +32,12 @@ link_validation_report.json
 ~$*
 *.tmp
 __pycache__/
+*.pem
+*.key
+*.cert
+*.crt
+.pytest_cache/
+.coverage
+.DS_Store
+Thumbs.db
+

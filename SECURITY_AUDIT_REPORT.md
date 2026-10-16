@@ -44,6 +44,11 @@ The review strictly followed Cloudflare's 5-stage auditing workflow:
 | **SEC-004** | **Low** | Timing Side-Channel in Secret Validation | `backend/app/routers/sandbox.py`, `studios.py` | **Patched & Verified** |
 | **SEC-005** | **Low** | SQL Wildcard Denial-of-Service / Amplification | `backend/app/routers/studios.py`, `rag.py` | **Patched & Verified** |
 | **SEC-006** | **Low / Hardening** | Missing Security Response Headers & MIME Sniffing | `backend/app/main.py`, `index.html` | **Patched & Verified** |
+| **SEC-007** | **Medium** | BOLA/IDOR on Project Upsert Overwrite | `backend/app/routers/projects.py` | **Patched & Verified** |
+| **SEC-008** | **Medium** | Docker Container Resource Leak on Timeouts | `backend/app/routers/sandbox.py` | **Patched & Verified** |
+| **SEC-009** | **Low / SRE** | Stale DB Sockets & Idle Connection Pool Drops | `backend/app/database.py` | **Patched & Verified** |
+| **SEC-010** | **Low** | Stack Trace & Internal Exception Disclosure | `backend/app/routers/ai.py` | **Patched & Verified** |
+| **SEC-011** | **Low** | Missing Regex Character Constraints on IDs | `backend/app/schemas.py` | **Patched & Verified** |
 
 ---
 
@@ -159,6 +164,7 @@ The review strictly followed Cloudflare's 5-stage auditing workflow:
          response.headers["X-Frame-Options"] = "SAMEORIGIN"
          response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
          response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+         response.headers["Content-Security-Policy"] = "default-src 'self'; frame-ancestors 'self'"
          return response
      ```
   2. Added client-side defense meta directives in `index.html`:
@@ -166,6 +172,71 @@ The review strictly followed Cloudflare's 5-stage auditing workflow:
      <meta http-equiv="X-Content-Type-Options" content="nosniff" />
      <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
      ```
+
+---
+
+### Finding SEC-007: Broken Object-Level Authorization (BOLA/IDOR) on Project Upsert Overwrite
+- **Severity:** Medium
+- **Attack Class:** Broken Object-Level Authorization (OWASP API1:2023)
+- **Target Component:** `backend/app/routers/projects.py:121-125`
+- **Vulnerability Mechanism:**
+  When `POST /api/projects` received a payload with an existing `id`, the backend updated the existing project record without checking if `existing.user_id == payload.user_id`. An attacker could overwrite another user's project by specifying their target project `id`.
+- **Remediation Applied:**
+  Verified ownership during upsert:
+  ```python
+  if existing:
+      if existing.user_id != payload.user_id:
+          raise HTTPException(
+              status_code=403,
+              detail="Forbidden: Cannot overwrite a workspace project owned by another user"
+          )
+  ```
+
+---
+
+### Finding SEC-008: Docker Container Resource Leaks on Exceptions & Timeouts
+- **Severity:** Medium
+- **Attack Class:** Denial of Service / Container Daemon Resource Exhaustion
+- **Target Component:** `backend/app/routers/sandbox.py:84`
+- **Vulnerability Mechanism:**
+  `container.remove(force=True)` was located directly after `container.wait()`. If `wait()` timed out or threw a Docker socket error, container cleanup was skipped, resulting in zombie containers consuming system memory and Docker daemon PID slots.
+- **Remediation Applied:**
+  Moved container lifecycle cleanup into a guaranteed `finally` block:
+  ```python
+  finally:
+      if container:
+          try:
+              container.remove(force=True)
+          except Exception:
+              pass
+  ```
+
+---
+
+### Finding SEC-009: Stale DB Connection Pool Sockets upon Server Idle Drops
+- **Severity:** Low / SRE
+- **Attack Class:** Connection Pool Exhaustion & Service Disruption
+- **Target Component:** `backend/app/database.py:10-15`
+- **Remediation Applied:**
+  Added `pool_pre_ping=True` and `pool_recycle=3600` to `create_async_engine`, preventing dropped-socket exceptions across cloud load balancers and PostgreSQL idle timeouts.
+
+---
+
+### Finding SEC-010: Stack Trace & Internal Exception Information Disclosure
+- **Severity:** Low
+- **Attack Class:** Sensitive Information Disclosure
+- **Target Component:** `backend/app/routers/ai.py:64`
+- **Remediation Applied:**
+  Sanitized exception messages in production environments so that internal networking endpoints and host paths are never reflected back to clients.
+
+---
+
+### Finding SEC-011: Missing Character Constraints on User-Supplied Project IDs
+- **Severity:** Low
+- **Attack Class:** Input Validation / Path Traversal Defense
+- **Target Component:** `backend/app/schemas.py:58-67`
+- **Remediation Applied:**
+  Added alphanumeric regex validation `pattern=r"^[a-zA-Z0-9_\-\.]+$"` and strict length caps (`max_length=64`) on project IDs.
 
 ---
 

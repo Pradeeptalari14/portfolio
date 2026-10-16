@@ -49,7 +49,7 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
         )
 
     image = "python:3.11-alpine" if request.language == "python" else "alpine:3.19"
-    cmd = (request.command or "echo 'No command specified'").strip()
+    cmd = (request.command or "echo 'No command specified'").replace("\x00", "").strip()
 
     # Pre-execution sanity checks for known disruptive command constructs
     if re.search(r':\(\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;\s*:', cmd):
@@ -62,6 +62,7 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
         )
 
     safe_timeout = min(max(1, request.timeout_sec or 15), 30)
+    container = None
 
     try:
         # Hardened container specs as defined in approved blueprint
@@ -81,7 +82,6 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
         res = container.wait(timeout=safe_timeout)
         exit_code = res.get("StatusCode", 0)
         logs = container.logs(stdout=True, stderr=True)
-        container.remove(force=True)
 
         duration = (time.time() - start_time) * 1000
         output_str = logs.decode("utf-8", errors="replace")
@@ -109,6 +109,12 @@ def run_in_docker(request: SandboxRunRequest) -> SandboxRunResponse:
             stderr=f"Sandbox execution error: {str(ex)}",
             duration_ms=(time.time() - start_time) * 1000
         )
+    finally:
+        if container:
+            try:
+                container.remove(force=True)
+            except Exception:
+                pass
 
 @router.post("/execute", response_model=SandboxRunResponse)
 async def execute_in_sandbox(payload: SandboxRunRequest, authorized: bool = Depends(verify_sandbox_auth)):

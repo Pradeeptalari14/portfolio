@@ -56,19 +56,19 @@ class RAGSearchResult(BaseModel):
 
 # Project Schemas
 class ProjectCreate(BaseModel):
-    id: Optional[str] = None
-    studio_id: Optional[str] = "general"
-    user_id: Optional[str] = "guest"
-    title: Optional[str] = None
-    name: Optional[str] = None
+    id: Optional[str] = Field(default=None, max_length=64, pattern=r"^[a-zA-Z0-9_\-\.]+$")
+    studio_id: Optional[str] = Field(default="general", max_length=128)
+    user_id: Optional[str] = Field(default="guest", max_length=64)
+    title: Optional[str] = Field(default=None, max_length=256)
+    name: Optional[str] = Field(default=None, max_length=256)
     files: Optional[Dict[str, str]] = Field(default_factory=dict)
-    mode: Optional[str] = "build"
+    mode: Optional[str] = Field(default="build", max_length=32)
     completed_steps: Optional[List[str]] = Field(default_factory=list)
 
 class ProjectUpdate(BaseModel):
-    title: Optional[str] = None
+    title: Optional[str] = Field(default=None, max_length=256)
     files: Optional[Dict[str, str]] = None
-    mode: Optional[str] = None
+    mode: Optional[str] = Field(default=None, max_length=32)
     completed_steps: Optional[List[str]] = None
 
 class ProjectResponse(BaseModel):

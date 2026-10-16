@@ -119,6 +119,13 @@ async def create_or_upsert_project(payload: ProjectCreate, db: AsyncSession = De
     existing = result.scalar_one_or_none()
 
     if existing:
+        # Broken Object-Level Authorization (BOLA/IDOR) Defense
+        if existing.user_id != payload.user_id:
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden: Cannot overwrite a workspace project owned by another user"
+            )
+
         update_data = payload.dict(exclude_unset=True)
         update_data.pop("name", None)
         update_data["title"] = proj_title
