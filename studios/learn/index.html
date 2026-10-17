@@ -275,9 +275,23 @@
             <label class="filter-checkbox-item">
               <span class="filter-checkbox-label">
                 <input type="checkbox" name="catFilter" value="ai" checked />
-                <span>AI &amp; MLOps</span>
+                <span>Artificial Intelligence (AI)</span>
               </span>
               <span class="filter-count-badge">235</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="si" checked />
+                <span>Synthetic Intelligence (SI)</span>
+              </span>
+              <span class="filter-count-badge">24</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="filter-checkbox-label">
+                <input type="checkbox" name="catFilter" value="asi" checked />
+                <span>Superintelligence (ASI)</span>
+              </span>
+              <span class="filter-count-badge">18</span>
             </label>
             <label class="filter-checkbox-item">
               <span class="filter-checkbox-label">
@@ -436,6 +450,31 @@
         <div class="catalog-main-header">
           <h2 class="catalog-main-title">Explore Content</h2>
           <p class="catalog-main-subtitle">Browse 347 production engineering courses and interactive project studios</p>
+        </div>
+
+        <!-- Dedicated Technology Track Quick Links -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem;">
+          <a href="../ai/" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none;">
+            <div>
+              <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">IMPLEMENTABLE TECH</div>
+              <div style="font-size: 0.92rem; font-weight: 700; color: #fff;">AI Studio Catalogue &rarr;</div>
+            </div>
+            <span style="font-size: 1.3rem;">🤖</span>
+          </a>
+          <a href="../si/" style="background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.25); border-radius: 8px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none;">
+            <div>
+              <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a78bfa; font-weight: 700;">COGNITIVE ARCHITECTURES</div>
+              <div style="font-size: 0.92rem; font-weight: 700; color: #fff;">SI Studio Catalogue &rarr;</div>
+            </div>
+            <span style="font-size: 1.3rem;">🧠</span>
+          </a>
+          <a href="../asi/" style="background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.25); border-radius: 8px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none;">
+            <div>
+              <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">THEORETICAL RESEARCH</div>
+              <div style="font-size: 0.92rem; font-weight: 700; color: #fff;">ASI Studio Catalogue &rarr;</div>
+            </div>
+            <span style="font-size: 1.3rem;">🛡️</span>
+          </a>
         </div>
 
         <!-- Content Sub-Nav Tabs & Controls -->
@@ -1411,8 +1450,18 @@ data:
           // Category
           if (activeCategory !== 'all') {
             if (s.category !== activeCategory) return false;
-          } else if (checkedCats.length > 0 && !checkedCats.includes(s.category)) {
-            return false;
+          } else if (checkedCats.length > 0) {
+            const cat = (s.category || '').toLowerCase();
+            const tag = (s.tag || '').toLowerCase();
+            const title = (s.title || '').toLowerCase();
+            const matchesCat = checkedCats.some(c => {
+              if (c === cat) return true;
+              if (c === 'ai') return cat.includes('ai') || tag.includes('ai') || tag.includes('llm') || tag.includes('rag');
+              if (c === 'si') return title.includes('cognitive') || title.includes('synthetic') || title.includes('agent') || title.includes('swarm') || title.includes('reason') || tag.includes('agent');
+              if (c === 'asi') return title.includes('guardrail') || title.includes('alignment') || title.includes('interpret') || title.includes('safety') || title.includes('eval') || cat.includes('security');
+              return false;
+            });
+            if (!matchesCat) return false;
           }
 
           // Domain

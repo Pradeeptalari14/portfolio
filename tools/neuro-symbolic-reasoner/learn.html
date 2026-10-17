@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuro-Symbolic Reasoning Guide | Synthetic Intelligence Logic Systems</title>
+  <meta name="description" content="Engineering guide to Neuro-Symbolic AI: combining neural network embeddings with formal First-Order Logic, SMT solvers (Z3), and Knowledge Graphs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .code-container {
+      background: #030612;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#070914] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#070914]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../studios/si/" class="text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          Synthetic Intelligence Lab
+        </a>
+        <span class="text-slate-600">/</span>
+        <a href="./" class="text-sm text-slate-300 hover:text-purple-400 transition">
+          Neuro-Symbolic Reasoner
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-800/60 text-purple-300">
+          Guide
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="./" class="text-xs font-mono text-purple-400 hover:text-white bg-purple-950/40 border border-purple-700/50 px-3 py-1.5 rounded-lg">← Back to Interactive Studio</a>
+        <a href="../../studios/si/" class="text-xs text-slate-400 hover:text-white transition">SI Catalogue ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    <!-- Disambiguation Banner -->
+    <div class="mb-8 p-5 rounded-xl bg-purple-950/40 border border-purple-700/50 flex items-start gap-4">
+      <span class="text-2xl mt-0.5">ℹ️</span>
+      <div>
+        <h2 class="text-sm font-bold text-purple-300 uppercase tracking-wider mb-1">Terminology Disambiguation</h2>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          <strong>Synthetic Intelligence (SI)</strong> represents the synthetic formulation of cognitive faculties (symbol grounding, formal logic constraints, perception loops). <em>Synthetic Intelligence is not a universally standardized industry taxonomy</em>, and is distinct from <strong>SI</strong> used as an informal abbreviation for <strong>Superintelligence (ASI)</strong>. For alignment research on hypothetical superintelligent systems, visit the <a href="../../studios/asi/" class="text-amber-400 underline font-semibold hover:text-amber-300">Artificial Superintelligence (ASI) Catalogue</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Title and Overview -->
+    <div class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+        Neuro-Symbolic Reasoning: Eliminating Hallucination with Formal Logic
+      </h1>
+      <p class="text-slate-400 text-base leading-relaxed">
+        Why pure large language models cannot guarantee safety or formal correctness, and how marrying them with Satisfiability Modulo Theories (SMT) and First-Order Logic (FOL) delivers provable certainty.
+      </p>
+    </div>
+
+    <!-- Section 1 -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-purple-400 font-mono">01.</span> The Symbol Grounding Problem
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        Deep learning models operate on continuous vector spaces (embeddings). While high-dimensional vectors excel at capturing fuzzy semantic similarities and sensory correlations, they lack discrete grounding: vectors can smoothly interpolate between mutually contradictory facts without producing a runtime syntax error.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-black/40 border border-slate-800 rounded-lg p-4">
+          <h3 class="text-xs font-bold text-rose-400 uppercase font-mono mb-2">Neural Vulnerability</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Stochastic parrot effect: A transformer predicting tokens based on likelihood $P(w_t | w_{<t})$ can assert $A$ and $\neg A$ in consecutive paragraphs when prompted adversarially.
+          </p>
+        </div>
+        <div class="bg-black/40 border border-slate-800 rounded-lg p-4">
+          <h3 class="text-xs font-bold text-emerald-400 uppercase font-mono mb-2">Symbolic Guarantee</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Formal axiom checking: An SMT solver evaluates clauses deterministically. If a premise implies a contradiction ($\bot$), the entire solution branch is mathematically refuted in milliseconds.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-pink-400 font-mono">02.</span> Hybrid Architecture Pipeline
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        In an enterprise Neuro-Symbolic synthetic intelligence pipeline, the neural model acts solely as an informational parser, while the symbolic engine serves as an inviolable gatekeeper:
+      </p>
+      <ol class="list-decimal list-inside space-y-3 text-sm text-slate-300 mb-6">
+        <li><strong>Neural Extraction:</strong> The LLM converts unstructured natural language into structured First-Order Logic predicates: $Patient(x) \land Takes(x, y)$.</li>
+        <li><strong>Ontology Grounding:</strong> Extracted predicates are matched against validated knowledge base URIs (e.g. SNOMED-CT, UMLS, DBpedia).</li>
+        <li><strong>Axiom Verification:</strong> The solver executes consistency verification. If the proposed action violates any universal constraint ($\forall x, P(x) \rightarrow \neg Q(x)$), it is instantly rejected with a deterministic counterexample proof.</li>
+        <li><strong>Resolution:</strong> The system synthesizes an alternative valid path without requiring re-prompting or LLM hallucinations.</li>
+      </ol>
+      <div class="code-container p-4 text-xs text-pink-300 overflow-x-auto">
+<pre>% Prolog Knowledge Base Axiom Example
+contraindicated(Patient, Drug) :-
+    diagnosed(Patient, renal_failure),
+    nephrotoxic(Drug).
+
+allowed(Patient, Drug) :-
+    prescribed(Patient, Drug),
+    \+ contraindicated(Patient, Drug).
+
+% Query execution:
+?- allowed(john_doe, metformin).
+% Output: false. (Deterministic proof rejection)</pre>
+      </div>
+    </section>
+
+    <!-- Navigation Footer -->
+    <div class="flex items-center justify-between border-t border-slate-800 pt-6">
+      <a href="./" class="text-sm text-purple-400 hover:text-purple-300 font-mono flex items-center gap-2">
+        ← Open Neuro-Symbolic Reasoner
+      </a>
+      <a href="../../studios/si/" class="text-sm text-slate-300 hover:text-white font-mono flex items-center gap-2">
+        SI Studio Catalogue →
+      </a>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-800 bg-[#070914] py-8 text-center text-xs text-slate-500">
+    Talari Pradeep Studios Hub &bull; Synthetic Intelligence Studio &bull; Neuro-Symbolic Logic
+  </footer>
+</body>
+</html>

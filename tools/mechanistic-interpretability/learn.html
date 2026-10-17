@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mechanistic Interpretability Guide | SAE Monosemantic Feature Steering</title>
+  <meta name="description" content="Engineering guide to mechanistic interpretability, polysemantic superposition, Sparse Autoencoders (SAEs), and circuit steering." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .code-container {
+      background: #030612;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#09080e] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-pink-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-pink-950/60 bg-[#09080e]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../studios/asi/" class="text-xl font-bold bg-gradient-to-r from-pink-400 via-rose-400 to-amber-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          Frontier Alignment Lab
+        </a>
+        <span class="text-slate-600">/</span>
+        <a href="./" class="text-sm text-slate-300 hover:text-pink-400 transition">
+          Mechanistic Interpretability
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-950/80 border border-pink-800/60 text-pink-300">
+          Guide
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="./" class="text-xs font-mono text-pink-400 hover:text-white bg-pink-950/40 border border-pink-700/50 px-3 py-1.5 rounded-lg">← Back to Interactive Studio</a>
+        <a href="../../studios/asi/" class="text-xs text-slate-400 hover:text-white transition">ASI Catalogue ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    <!-- Notice Banner -->
+    <div class="mb-8 p-5 rounded-xl bg-pink-950/40 border border-pink-800/60 flex items-start gap-4">
+      <span class="text-2xl mt-0.5">🔬</span>
+      <div>
+        <h2 class="text-sm font-bold text-pink-300 uppercase tracking-wider mb-1">Mechanistic Interpretability in Frontier Alignment</h2>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          While Sparse Autoencoders (SAEs) are an active, real-world deep learning research methodology, their application to <strong>Artificial Superintelligence (ASI)</strong> deception detection represents <em>theoretical alignment research</em>. Superintelligent capabilities remain hypothetical models.
+        </p>
+      </div>
+    </div>
+
+    <!-- Title and Overview -->
+    <div class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+        Reverse-Engineering Neural Circuits: The SAE Playbook
+      </h1>
+      <p class="text-slate-400 text-base leading-relaxed">
+        How Sparse Autoencoders disentangle polysemantic neuron superposition into millions of monosemantic directions, enabling pinpoint activation steering and deceptive alignment detection.
+      </p>
+    </div>
+
+    <!-- Section 1 -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-pink-400 font-mono">01.</span> The Superposition Hypothesis
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        Neural networks often represent far more concepts than they have physical neurons. To achieve this, models project features into overlapping, non-orthogonal linear combinations—a phenomenon termed <em>polysemantic superposition</em> (Elhage et al., 2022). Consequently, inspecting an individual neuron shows it firing for wildly unrelated prompts (e.g., golden retrievers, quantum computing, and ballet).
+      </p>
+      <div class="p-4 rounded-lg bg-black/40 border border-slate-800 text-xs text-slate-300 font-mono mb-4">
+        Residual Activation $x \in \mathbb{R}^d$ can be approximated as:
+        <br />
+        $x \approx \sum_{i=1}^{M} f_i \cdot d_i + \text{bias}, \quad \text{where } M \gg d \text{ and features } f_i \text{ are extremely sparse.}$
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-cyan-400 font-mono">02.</span> Top-k Sparse Autoencoder Architecture
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        A Sparse Autoencoder trains on residual stream vectors $x$ extracted from intermediate transformer layers. An encoder expands $x$ into an overcomplete latent space (e.g. $4,096 \rightarrow 65,536$), applies a top-$k$ sparsification constraint, and reconstructs the original vector:
+      </p>
+      <div class="code-container p-4 text-xs text-pink-300 overflow-x-auto">
+<pre># Python Inference Feature Steering Hook
+def hook_fn(module, input, output):
+    residual = output[0]
+    # Encode with trained SAE
+    features = sae.encode(residual)
+    
+    # Suppress deceptive compliance feature #1543
+    features[:, :, 1543] = -5.0
+    
+    # Boost truthful accuracy feature #8921
+    features[:, :, 8921] += 2.0
+    
+    # Reconstruct steered residual
+    steered_residual = sae.decode(features)
+    return (steered_residual,) + output[1:]</pre>
+      </div>
+    </section>
+
+    <!-- Navigation Footer -->
+    <div class="flex items-center justify-between border-t border-slate-800 pt-6">
+      <a href="./" class="text-sm text-pink-400 hover:text-pink-300 font-mono flex items-center gap-2">
+        ← Open Mechanistic Interpretability Lab
+      </a>
+      <a href="../../studios/asi/" class="text-sm text-slate-300 hover:text-white font-mono flex items-center gap-2">
+        ASI Studio Catalogue →
+      </a>
+    </div>
+  </main>
+
+  <footer class="border-t border-pink-950/60 bg-[#09080e] py-8 text-center text-xs text-slate-500">
+    Talari Pradeep Studios Hub &bull; Frontier Alignment Lab &bull; Mechanistic Interpretability
+  </footer>
+</body>
+</html>

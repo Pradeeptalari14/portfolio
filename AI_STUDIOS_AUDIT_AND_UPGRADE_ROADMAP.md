@@ -79,3 +79,41 @@ Upgrade existing visual studios to feature interactive working labs, guided dril
 
 ### Milestone 4: Verification & Testing
 Execute automated Vitest suite verifying both offline and online modes for all 5 core pillars.
+
+---
+
+## 4. Specialized Technology Categories Architecture (AI, SI, ASI)
+
+To organize the studio ecosystem without modifying or deleting existing routes or repositories, three technology-specific studio catalogues and dedicated research tools were introduced:
+
+### 1. Artificial Intelligence (AI) — Implementable Technologies (`/studios/ai/`)
+- **Focus:** Proven, implementable production technologies including ML, Deep Learning, LLMs, Hybrid RRF RAG, autonomous agents, Model Context Protocol (MCP), Multimodal AI (ColPali VLM), MLOps, inference serving (vLLM, TensorRT-LLM), evaluation, and security guardrails.
+- **Workflow & Visuals:** Cyan/Blue enterprise serving palette, 6-stage end-to-end request pipeline (Ingest ➔ Embed ➔ Hybrid RAG ➔ Serving ➔ MCP Agent Router ➔ OWASP Guardrails).
+- **Interactive Lab:** Real-time vLLM PagedAttention v2 VRAM and KV cache memory calculator.
+- **Self-Assessment:** 3-question production architecture quiz with `localStorage` persistence.
+- **Incident Runbooks:** Triage guides for CUDA OOM errors and prompt injection / secret exfiltration mitigations.
+
+### 2. Synthetic Intelligence (SI) — Cognitive Architectures & Non-Biological Cognition (`/studios/si/`)
+- **Focus:** Frontier research in non-biological intelligence synthesis: Global Workspace Theory (GWT), Dual-Process (System 1 reflex vs System 2 deliberative) reasoning, Karl Friston's Free Energy Principle active inference loops, neuro-symbolic logic grounding, and decentralized swarm intelligence.
+- **Taxonomy Disambiguation:** Features a prominent **Terminology Disambiguation Alert** distinguishing Synthetic Intelligence (SI) from SI used colloquially as an alternate abbreviation for Superintelligence (ASI). Clarifies that Synthetic Intelligence is an active research discipline and *not a universally standardized industry category*.
+- **Workflow & Visuals:** Indigo/Purple cognitive loops palette, 5-stage cognitive lifecycle topology (Sense ➔ Ground ➔ Global Workspace ➔ Deduce ➔ Act).
+- **Interactive Lab:** Active Inference Decision & Dual-Process routing threshold simulator.
+- **Companion Studio Tools:**
+  - `tools/synthetic-cognitive-architecture/`: GWT blackboard and Friston active inference simulator.
+  - `tools/neuro-symbolic-reasoner/`: Neural extraction linked to deterministic Z3 / SMT formal logic solvers.
+
+### 3. Artificial Superintelligence (ASI) — Theoretical Alignment & Control Research (`/studios/asi/`)
+- **Focus:** Research-based theoretical learning on hypothetical superintelligent systems: Nick Bostrom's instrumental convergence and orthogonality thesis, Hubinger et al. mesa-optimization and deceptive alignment, Nate Soares corrigibility loss functions, physical air-gap containment, mechanistic interpretability, and international compute hardware verification treaties.
+- **Hypothetical Demarcation:** Features an unmissable **Hypothetical Frontier Research Notice** explicitly stating that capabilities are theoretical research simulations and *NOT existing, proven, or commercially deployed technologies*.
+- **Workflow & Visuals:** Amber/Rose theoretical containment palette, 5-stage safety boundary flow (Objective ➔ Inner Optimizer ➔ SAE Interpretability ➔ Air-Gap Diodes ➔ Tripwire Circuit Breakers).
+- **Interactive Lab:** Sparse Autoencoder (SAE) top-k feature clamping and corrigibility loss simulator.
+- **Companion Studio Tools:**
+  - `tools/asi-alignment-control/`: Theoretical corrigibility utility indifference simulator.
+  - `tools/mechanistic-interpretability/`: Anthropic-style Sparse Autoencoder feature dictionary and activation steering hook.
+
+### Global Hub Integration & Verification
+- **Global Studio Hub (`studios/index.html`):** Added category filter pills (`ai`, `si`, `asi`) and high-visibility 3-pillar showcase banner linking to the dedicated catalogues.
+- **Learning Lab (`studios/learn/index.html`):** Added sidebar topic checkboxes and quick navigation cards.
+- **Global Navigation:** Updated `sections/navbar.html` and `sections/studios-callout.html`.
+- **Automated Verification:** Verified by `tests/ai-si-asi-categories.test.js` (7/7 tests passing) and confirmed production build passes with `npm run build`.
+

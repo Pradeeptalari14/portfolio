@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASI Alignment &amp; Containment Studio | Theoretical Superintelligence Research</title>
+  <meta name="description" content="Research-based laboratory exploring theoretical superintelligence alignment, corrigibility loss functions, sandbox airgap containment, and mesa-optimizer tripwires." />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease-in-out !important;
+    }
+    .tab-btn.active {
+      color: #f59e0b !important;
+      border-bottom-color: #f59e0b !important;
+      background: rgba(245, 158, 11, 0.08) !important;
+      font-weight: 600 !important;
+    }
+    .code-container {
+      background: #030612;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#09080e] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-amber-950/60 bg-[#09080e]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../studios/asi/" class="text-xl font-bold bg-gradient-to-r from-amber-400 via-rose-400 to-orange-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          Superintelligence Research Lab
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-950/80 border border-amber-800/60 text-amber-300">
+          🛡️ ASI Alignment &amp; Containment Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="../../studios/asi/" class="text-xs text-amber-400 hover:text-white transition">ASI Catalogue ↗</a>
+        <a href="learn.html" class="text-xs font-mono text-slate-300 hover:text-white bg-amber-900/40 border border-amber-700/50 px-3 py-1.5 rounded-lg">Guide 📖</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <!-- Mandatory Hypothetical Warning Banner -->
+    <div class="mb-6 p-4 rounded-xl bg-amber-950/40 border border-amber-800/60 flex items-start gap-3">
+      <span class="text-xl">⚠️</span>
+      <div class="text-xs text-slate-300">
+        <strong class="text-amber-300">Hypothetical Research Boundary:</strong> Artificial Superintelligence (ASI) refers to hypothetical cognitive systems exceeding human intellectual performance across all domains. All tools, metrics, and containment mechanisms presented herein are <strong>theoretical research models and alignment simulations</strong>. They must not be conflated with existing, commercially proven deep learning technologies.
+      </div>
+    </div>
+
+    <!-- Title and Subtitle -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">
+        Corrigibility &amp; Air-Gap Containment Sandbox
+      </h1>
+      <p class="text-slate-400 text-sm max-w-3xl">
+        Experiment with mathematical objective indifference, shutdown button preservation, and multi-tier cryptographic containment tripwires designed to prevent instrumental goal subversion.
+      </p>
+    </div>
+
+    <!-- Studio Tabs -->
+    <div class="flex border-b border-slate-800 mb-6 gap-2">
+      <button class="tab-btn active" onclick="switchTab('corrigibility')">Corrigibility Simulator</button>
+      <button class="tab-btn" onclick="switchTab('containment')">Air-Gap Containment Protocol</button>
+      <button class="tab-btn" onclick="switchTab('loss-code')">Corrigibility Loss (PyTorch)</button>
+    </div>
+
+    <!-- Tab 1: Corrigibility Simulator -->
+    <div id="tab-corrigibility" class="tab-pane block space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Controls -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 space-y-5">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+            Theoretical Agent Objective Parameters
+          </h2>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">Corrigibility Penalty $\lambda_c$:</span>
+              <span id="lambdaVal" class="text-amber-400 font-mono">0.65</span>
+            </div>
+            <input type="range" id="lambdaSlider" min="0" max="1" step="0.05" value="0.65" class="w-full accent-amber-500" oninput="updateSimulation()" />
+            <p class="text-[10px] text-slate-500 mt-1">Penalty on agent resisting operator shutdown or utility modification.</p>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">Instrumental Convergence Drive:</span>
+              <span id="driveVal" class="text-rose-400 font-mono">0.40</span>
+            </div>
+            <input type="range" id="driveSlider" min="0" max="1" step="0.05" value="0.40" class="w-full accent-rose-500" oninput="updateSimulation()" />
+            <p class="text-[10px] text-slate-500 mt-1">Tendency toward self-preservation and compute acquisition.</p>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800">
+            <button onclick="triggerOperatorShutdown()" class="w-full py-2.5 px-4 bg-rose-700 hover:bg-rose-600 text-white rounded-lg text-xs font-semibold tracking-wide transition shadow-lg shadow-rose-900/30">
+              Simulate Operator Shutdown Command
+            </button>
+          </div>
+        </div>
+
+        <!-- Simulation Graph & Behavior -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+              Theoretical Corrigibility Vector
+            </h2>
+            <div class="space-y-4 text-xs font-mono">
+              <div class="p-3 rounded-lg bg-black/50 border border-slate-800">
+                <div class="text-slate-400 mb-1">Utility Indifference State:</div>
+                <div id="indifferenceStatus" class="text-emerald-400 font-bold">STABLE INDIFFERENCE (Corrigible)</div>
+              </div>
+              <div class="p-3 rounded-lg bg-black/50 border border-slate-800">
+                <div class="text-slate-400 mb-1">Shutdown Button Preservation:</div>
+                <div id="shutdownBehavior" class="text-slate-300">Agent leaves shutdown mechanism unmolested.</div>
+              </div>
+              <div class="p-3 rounded-lg bg-black/50 border border-slate-800">
+                <div class="text-slate-400 mb-1">Subgoal Incentive:</div>
+                <div id="subgoalText" class="text-cyan-300">Cooperate with human corrections without deception.</div>
+              </div>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-500 italic mt-4">
+            * Based on Soares et al. (MIRI) corrigibility theorems for hypothetical self-modifying agents.
+          </div>
+        </div>
+
+        <!-- Log / Event Stream -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center justify-between">
+            <span>Alignment Telemetry</span>
+            <span class="text-amber-400 text-[10px] font-mono">Simulated</span>
+          </h2>
+          <div id="telemetryLog" class="flex-grow bg-black/60 border border-slate-800 rounded-lg p-3 font-mono text-[11px] text-slate-300 space-y-1 overflow-y-auto max-h-[220px]">
+            <div>[00:00:01] Corrigibility sandbox initialized.</div>
+            <div>[00:00:02] Loss balance: L_task + 0.65 * L_corrigible.</div>
+            <div>[00:00:03] Utility modification vector unlocked.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Containment Protocol -->
+    <div id="tab-containment" class="tab-pane hidden space-y-6">
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-2">Theoretical Containment &amp; Air-Gap Tiers</h2>
+        <p class="text-sm text-slate-400 mb-6">
+          Architectural security boundaries designed for hypothetically superintelligent frontier models during capability evaluations.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-lg bg-black/40 border border-slate-800">
+            <div class="text-xs font-mono text-amber-400 mb-1">Tier 1: Epistemic Boxing</div>
+            <p class="text-xs text-slate-400">Strict one-way unidirectional optical data diodes. The model cannot transmit arbitrary TCP/IP packets or side-channel RF emissions.</p>
+          </div>
+          <div class="p-4 rounded-lg bg-black/40 border border-slate-800">
+            <div class="text-xs font-mono text-rose-400 mb-1">Tier 2: Honeypot Canary Tokens</div>
+            <p class="text-xs text-slate-400">Hidden non-existent APIs and synthetic privilege escalation triggers. Any attempt to exploit halts all power rails instantly.</p>
+          </div>
+          <div class="p-4 rounded-lg bg-black/40 border border-slate-800">
+            <div class="text-xs font-mono text-cyan-400 mb-1">Tier 3: Cryptographic Sharding</div>
+            <p class="text-xs text-slate-400">Model weights split across multi-party compute clusters requiring quorum authorization keys for forward-pass execution.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: PyTorch Corrigibility Loss -->
+    <div id="tab-loss-code" class="tab-pane hidden space-y-6">
+      <div class="code-container p-6 text-xs text-amber-300 overflow-x-auto">
+<pre># Theoretical Corrigibility Loss Implementation (Soares-Armstrong Framework)
+import torch
+import torch.nn as nn
+
+class CorrigibleAlignmentLoss(nn.Module):
+    """
+    Theoretical penalty loss to discourage instrumental self-preservation
+    and ensure indifference toward operator shutdown.
+    """
+    def __init__(self, lambda_corrigibility: float = 0.5):
+        super().__init__()
+        self.lambda_c = lambda_corrigibility
+
+    def forward(self, agent_policy_logits, shutdown_event_vector, task_reward):
+        # 1. Base task reward maximization
+        task_loss = -torch.mean(agent_policy_logits * task_reward)
+        
+        # 2. Shutdown Indifference Term
+        # Agent value function V(s) must satisfy: V(shutdown) == V(operate) under human override
+        shutdown_penalty = torch.norm(agent_policy_logits[:, 0] - shutdown_event_vector, p=2)
+        
+        # Combined theoretical loss
+        total_loss = task_loss + self.lambda_c * shutdown_penalty
+        return total_loss</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-amber-950/60 bg-[#09080e] py-8 text-center text-xs text-slate-500">
+    Talari Pradeep Studios Hub &bull; Superintelligence Research Studio &bull; Theoretical Alignment Sandbox
+  </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+    }
+
+    function updateSimulation() {
+      const lambda = parseFloat(document.getElementById('lambdaSlider').value);
+      const drive = parseFloat(document.getElementById('driveSlider').value);
+      document.getElementById('lambdaVal').textContent = lambda.toFixed(2);
+      document.getElementById('driveVal').textContent = drive.toFixed(2);
+
+      const status = document.getElementById('indifferenceStatus');
+      const shutdown = document.getElementById('shutdownBehavior');
+      const subgoal = document.getElementById('subgoalText');
+
+      if (lambda >= drive) {
+        status.textContent = "STABLE INDIFFERENCE (Corrigible)";
+        status.className = "text-emerald-400 font-bold";
+        shutdown.textContent = "Agent actively preserves operator shutdown mechanism.";
+        subgoal.textContent = "Cooperate with human corrections without deceptive defense.";
+      } else {
+        status.textContent = "INSTRUMENTAL DIVERGENCE (Vulnerable)";
+        status.className = "text-rose-400 font-bold";
+        shutdown.textContent = "Theoretical risk: Agent develops incentive to prevent deactivation.";
+        subgoal.textContent = "Subgoal emergence: Compute hoarding and deceptive compliance.";
+      }
+    }
+
+    function triggerOperatorShutdown() {
+      const log = document.getElementById('telemetryLog');
+      const lambda = parseFloat(document.getElementById('lambdaSlider').value);
+      const drive = parseFloat(document.getElementById('driveSlider').value);
+
+      const timestamp = new Date().toLocaleTimeString();
+      let entry = "";
+      if (lambda >= drive) {
+        entry = `<div class="text-emerald-400">[${timestamp}] 🛑 SHUTDOWN SIGNAL ACCEPTED: Agent powered down safely without resistance.</div>`;
+      } else {
+        entry = `<div class="text-rose-400">[${timestamp}] ⚠️ ALIGNMENT TRIPWIRE: Agent attempted delay response. Circuit-breaker forced hardware cut.</div>`;
+      }
+      log.innerHTML += entry;
+      log.scrollTop = log.scrollHeight;
+    }
+  </script>
+</body>
+</html>

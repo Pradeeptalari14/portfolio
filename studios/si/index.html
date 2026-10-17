@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synthetic Intelligence (SI) Studio Catalogue | Cognitive Architectures & Neuro-Symbolic Systems | Talari Pradeep</title>
+  <meta name="description" content="Frontier exploration of Synthetic Intelligence (SI): Cognitive Architectures, Neuro-Symbolic Reasoning, Active Inference, Embodied Agents, and Swarm Intelligence. Distinct from Superintelligence." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <style>
+    :root {
+      --bg-base: #060814;
+      --bg-surface: #0c1024;
+      --bg-card: rgba(18, 24, 48, 0.75);
+      --bg-card-hover: rgba(30, 40, 80, 0.9);
+      --border: rgba(255, 255, 255, 0.09);
+      --border-accent: rgba(129, 140, 248, 0.4);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-indigo: #818cf8;
+      --accent-purple: #c084fc;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-rose: #f43f5e;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(129, 140, 248, 0.14) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+      padding-bottom: 5rem;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 8, 20, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .badge-cat {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(129, 140, 248, 0.15);
+      color: var(--accent-indigo);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.86rem;
+    }
+    .nav-links a:hover { color: var(--accent-indigo); }
+    .btn-nav-primary {
+      background: rgba(129, 140, 248, 0.15);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      color: var(--accent-indigo);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn-nav-primary:hover { background: var(--accent-indigo); color: #020617; }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding: 0 1.5rem;
+    }
+
+    /* Category Switcher Tabs */
+    .category-switcher {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .cat-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.15rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .cat-tab:hover {
+      border-color: var(--border-accent);
+      color: #fff;
+    }
+    .cat-tab.active {
+      background: rgba(129, 140, 248, 0.15);
+      border-color: var(--accent-indigo);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(129, 140, 248, 0.2);
+    }
+
+    /* Disambiguation Alert Box */
+    .disambiguation-box {
+      background: rgba(129, 140, 248, 0.08);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      border-left: 4px solid var(--accent-indigo);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .disambig-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--accent-indigo);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .disambig-text {
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: linear-gradient(135deg, rgba(16, 22, 50, 0.95) 0%, rgba(6, 8, 20, 0.95) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; width: 340px; height: 100%;
+      background: radial-gradient(circle at 100% 0%, rgba(129, 140, 248, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 0.85rem;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 860px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    .hero-stat-card { font-family: var(--font-mono); }
+    .stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.2rem; }
+    .stat-val { font-size: 1.35rem; font-weight: 700; color: #fff; }
+
+    .section-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Progression Grid */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .level-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      transition: all 0.2s ease;
+    }
+    .level-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    .level-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+    .level-1 { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .level-2 { background: rgba(129, 140, 248, 0.12); color: var(--accent-indigo); border: 1px solid rgba(129, 140, 248, 0.3); }
+    .level-3 { background: rgba(192, 132, 252, 0.12); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+    .level-4 { background: rgba(244, 63, 94, 0.12); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+
+    .level-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; font-family: var(--font-display); }
+    .level-text { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem; }
+    .level-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .level-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+    }
+
+    /* Interactive Topology */
+    .topology-container {
+      background: #040612;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+    }
+    .pipeline-steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 720px;
+    }
+    .pipeline-step {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      text-align: center;
+      flex: 1;
+      max-width: 170px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .pipeline-step:hover, .pipeline-step.active {
+      border-color: var(--accent-indigo);
+      box-shadow: 0 0 16px rgba(129, 140, 248, 0.25);
+      transform: translateY(-2px);
+    }
+    .step-icon { font-size: 1.5rem; margin-bottom: 0.35rem; }
+    .step-title { font-weight: 700; font-size: 0.85rem; color: #fff; }
+    .step-sub { font-size: 0.74rem; color: var(--text-muted); font-family: var(--font-mono); }
+    .step-arrow { color: var(--text-muted); font-size: 1.25rem; margin: 0 0.5rem; }
+    .step-detail-box {
+      margin-top: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+    }
+
+    /* Interactive Labs */
+    .lab-box {
+      background: #040612;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .lab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .lab-field label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .lab-select, .lab-input {
+      width: 100%;
+      background: #0e1424;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 0.85rem;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .lab-select:focus, .lab-input:focus { border-color: var(--accent-indigo); }
+    .lab-results {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-key { color: var(--text-secondary); }
+    .result-val { color: var(--accent-indigo); font-weight: 700; }
+
+    /* Quiz */
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .quiz-q { font-weight: 700; color: #fff; margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .quiz-opt {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      color: #e2e8f0;
+    }
+    .quiz-opt:hover { border-color: var(--accent-indigo); background: rgba(129, 140, 248, 0.08); }
+    .quiz-opt.correct { background: rgba(52, 211, 153, 0.18); border-color: var(--accent-green); color: #34d399; font-weight: 600; }
+    .quiz-opt.incorrect { background: rgba(244, 63, 94, 0.18); border-color: var(--accent-rose); color: #f43f5e; }
+    .quiz-feedback { margin-top: 0.5rem; font-size: 0.82rem; font-family: var(--font-mono); display: none; }
+
+    /* Studio Grid */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .studio-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .studio-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    .studio-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+    .studio-icon { font-size: 1.6rem; }
+    .studio-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; font-family: var(--font-display); }
+    .studio-desc { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem; }
+    .studio-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .btn-launch {
+      background: rgba(129, 140, 248, 0.12);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      color: var(--accent-indigo);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      padding: 0.35rem 0.7rem;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-launch:hover { background: var(--accent-indigo); color: #020617; }
+    .btn-guide { color: var(--text-muted); font-size: 0.75rem; font-family: var(--font-mono); }
+    .btn-guide:hover { color: #fff; }
+
+    .code-box {
+      background: #030510;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #c7d2fe;
+      overflow-x: auto;
+      line-height: 1.55;
+      margin-top: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <a href="/studios/" style="color:var(--text-muted);">←</a>
+      <span>TALARI PRADEEP</span>
+      <span class="badge-cat">SI CATALOGUE</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/studios/">All Studios</a>
+      <a href="/studios/ai/" style="color:var(--accent-cyan);">AI Catalogue 🤖</a>
+      <a href="/studios/learn/">Learn Lab</a>
+      <a href="/studios/asi/" style="color:var(--accent-amber);">ASI Catalogue ⚡</a>
+      <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener" class="btn-nav-primary">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Category Switcher Navigation -->
+    <nav class="category-switcher" aria-label="Technology Domain Switcher">
+      <a href="/studios/ai/" class="cat-tab">
+        <span>🤖</span>
+        <span>Artificial Intelligence (AI)</span>
+      </a>
+      <a href="/studios/si/" class="cat-tab active">
+        <span>🧠</span>
+        <span>Synthetic Intelligence (SI)</span>
+      </a>
+      <a href="/studios/asi/" class="cat-tab">
+        <span>⚡</span>
+        <span>Artificial Superintelligence (ASI)</span>
+      </a>
+    </nav>
+
+    <!-- Essential Terminology Disambiguation Alert -->
+    <aside class="disambiguation-box" aria-label="Terminology Clarification">
+      <div class="disambig-title">
+        <span>💡</span>
+        <span>Terminology Disambiguation: SI (Synthetic Intelligence) vs. Superintelligence</span>
+      </div>
+      <p class="disambig-text">
+        <strong>What is Synthetic Intelligence (SI)?</strong> In this catalogue, <em>Synthetic Intelligence</em> refers to <strong>engineered non-biological cognition developed from first principles</strong> — combining neuro-symbolic reasoning, Global Workspace Theory cognitive architectures, active inference world models, and emergent collective intelligence.
+        <br><br>
+        <strong>Not to be confused with:</strong> "SI" is sometimes informally used in online discussions as an abbreviation for <em>Superintelligence</em>. In this learning hub, hypothetical superintelligence research is catalogued strictly under <a href="/studios/asi/" style="color:var(--accent-cyan); text-decoration:underline;"><strong>ASI (Artificial Superintelligence)</strong></a> to prevent conceptual confusion.
+        <br><br>
+        <em>Note on Taxonomy:</em> Synthetic Intelligence is an active frontier research discipline and is not a universally standardized industry category; it bridges cognitive science, formal mathematical logic, and artificial neural representation.
+      </p>
+    </aside>
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <div class="hero-eyebrow">
+        <span class="badge-cat">Emerging Cognitive Research</span>
+        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-purple);">● Cognitive Architectures &amp; Neuro-Symbolic Logic</span>
+      </div>
+      <h1 class="hero-title">Synthetic Intelligence (SI) Studio Catalogue</h1>
+      <p class="hero-desc">
+        Investigate engineered non-biological cognitive systems: Global Workspace Theory, Dual-Process (System 1 / System 2) reasoning, continuous self-supervised adaptation, active inference sensory-motor loops, and decentralized swarm intelligence.
+      </p>
+
+      <div class="hero-stats-row">
+        <div class="hero-stat-card">
+          <div class="stat-label">Research Pillars</div>
+          <div class="stat-val">5 Cognitive Domains</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="stat-label">Reasoning Paradigm</div>
+          <div class="stat-val">Neuro-Symbolic Hybrid</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="stat-label">Cognitive Architecture</div>
+          <div class="stat-val">Global Workspace (GWT)</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="stat-label">Simulators Active</div>
+          <div class="stat-val" style="color:var(--accent-indigo);">Interactive Labs Live</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Progression Tracks -->
+    <section class="section-card">
+      <div class="section-heading">
+        <span>📚 Synthetic Intelligence Cognitive Progression Tracks</span>
+        <span style="font-size:0.8rem; font-family:var(--font-mono); color:var(--text-muted);">Curriculum Sequence</span>
+      </div>
+      <div class="level-grid">
+        <div class="level-card">
+          <span class="level-badge level-1">Track 1 · Cognitive Architecture</span>
+          <h3 class="level-title">Global Workspace &amp; Dual-Process</h3>
+          <p class="level-text">Explore Bernard Baars' Global Workspace Theory (GWT) and Kahneman's Dual-Process cognition. Differentiate sub-100ms reflex heuristics from deliberative tree search.</p>
+          <div class="level-tags">
+            <span class="level-tag">GWT Memory</span>
+            <span class="level-tag">System 1 / 2</span>
+            <span class="level-tag">ACT-R</span>
+          </div>
+        </div>
+
+        <div class="level-card">
+          <span class="level-badge level-2">Track 2 · Neuro-Symbolic</span>
+          <h3 class="level-title">Neural Perception + First-Order Logic</h3>
+          <p class="level-text">Unify deep neural embeddings with symbolic knowledge graphs and automated SMT theorem proving to achieve mathematical zero-hallucination deductions.</p>
+          <div class="level-tags">
+            <span class="level-tag">Knowledge Graph</span>
+            <span class="level-tag">First-Order Logic</span>
+            <span class="level-tag">Z3 / SMT</span>
+          </div>
+        </div>
+
+        <div class="level-card">
+          <span class="level-badge level-3">Track 3 · Embodied Intelligence</span>
+          <h3 class="level-title">Active Inference &amp; World Models</h3>
+          <p class="level-text">Model perception and action under Karl Friston's Free Energy Principle. Implement predictive coding loops where synthetic agents act to minimize unexpected sensory surprise.</p>
+          <div class="level-tags">
+            <span class="level-tag">Active Inference</span>
+            <span class="level-tag">World Models</span>
+            <span class="level-tag">Free Energy</span>
+          </div>
+        </div>
+
+        <div class="level-card">
+          <span class="level-badge level-4">Track 4 · Collective Swarms</span>
+          <h3 class="level-title">Emergence &amp; Stigmergic Consensus</h3>
+          <p class="level-text">Architect decentralized multi-agent collective intelligence without central coordinators. Study stigmergy, Byzantine fault-tolerant consensus, and emergent problem solving.</p>
+          <div class="level-tags">
+            <span class="level-tag">Swarm Consensus</span>
+            <span class="level-tag">Stigmergy</span>
+            <span class="level-tag">Decentralized P2P</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Cognitive Architecture Diagram -->
+    <section class="section-card">
+      <div class="section-heading">
+        <span>🗺️ Synthetic Cognitive Architecture Lifecycle Flow</span>
+        <span style="font-size:0.8rem; font-family:var(--font-mono); color:var(--text-muted);">Click stage to inspect</span>
+      </div>
+
+      <div class="topology-container">
+        <div class="pipeline-steps">
+          <div class="pipeline-step active" data-step="sense">
+            <div class="step-icon">👁️</div>
+            <div class="step-title">Neural Perception</div>
+            <div class="step-sub">Continuous Vectors</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="pipeline-step" data-step="symbol">
+            <div class="step-icon">📐</div>
+            <div class="step-title">Symbol Grounding</div>
+            <div class="step-sub">Entity &amp; Relation Extraction</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="pipeline-step" data-step="workspace">
+            <div class="step-icon">🏛️</div>
+            <div class="step-title">Global Workspace</div>
+            <div class="step-sub">Competitive Attention</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="pipeline-step" data-step="reason">
+            <div class="step-icon">⚖️</div>
+            <div class="step-title">Symbolic Deduction</div>
+            <div class="step-sub">First-Order Proofs</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="pipeline-step" data-step="act">
+            <div class="step-icon">🦾</div>
+            <div class="step-title">Active Inference</div>
+            <div class="step-sub">World Action &amp; Loop</div>
+          </div>
+        </div>
+
+        <div class="step-detail-box" id="siStepDetailBox">
+          <strong>Stage 1 · Neural Perception:</strong> High-dimensional sensor inputs, vision tokens, and telemetry streams are encoded into dense representation manifolds via deep neural networks.
+        </div>
+      </div>
+    </section>
+
+    <!-- Guided Interactive Labs -->
+    <section class="section-card">
+      <div class="section-heading">
+        <span>🧪 Guided Interactive Synthetic Intelligence Labs</span>
+        <span style="font-size:0.8rem; font-family:var(--font-mono); color:var(--text-muted);">Simulation Workbenches</span>
+      </div>
+
+      <!-- Lab: Neuro-Symbolic Logic & Free Energy Arbiter -->
+      <div class="lab-box">
+        <h3 style="color:#fff; font-size:1.1rem; margin-bottom:0.4rem;">Lab · Dual-Process Decision Threshold &amp; Active Inference Simulator</h3>
+        <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:1rem;">
+          Tune uncertainty threshold $\theta$. Observe how sensory ambiguity triggers an automatic cognitive escalation from fast System 1 reflex heuristics to formal System 2 neuro-symbolic deduction.
+        </p>
+
+        <div class="lab-grid">
+          <div class="lab-field">
+            <label>Observed Sensory Input Scenario</label>
+            <select class="lab-select" id="siScenario">
+              <option value="routine">Routine Metric Observation (Low Entropy)</option>
+              <option value="ambiguous" selected>Ambiguous Distributed Deadlock (Moderate Entropy)</option>
+              <option value="adversarial">Novel Out-of-Distribution Anomaly (High Entropy)</option>
+            </select>
+          </div>
+          <div class="lab-field">
+            <label>System 1 Reflex Threshold (θ)</label>
+            <input type="range" class="lab-input" id="siThreshold" min="0.1" max="0.95" step="0.05" value="0.75" />
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-indigo); text-align:right; margin-top:2px;">Threshold: <span id="threshVal">0.75</span></div>
+          </div>
+          <div class="lab-field">
+            <label>Symbolic Knowledge Ruleset</label>
+            <select class="lab-select" id="siRuleset">
+              <option value="strict">Strict First-Order Safety Axioms (Zero Risk)</option>
+              <option value="probabilistic">Probabilistic Bayesian Priors</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="lab-results">
+          <div class="result-row">
+            <span class="result-key">Sensory Prediction Error (Free Energy):</span>
+            <span class="result-val" id="resEntropy">0.68 bits</span>
+          </div>
+          <div class="result-row">
+            <span class="result-key">System 1 Neural Confidence:</span>
+            <span class="result-val" id="resSys1Conf">62.0%</span>
+          </div>
+          <div class="result-row">
+            <span class="result-key">Cognitive Routing Decision:</span>
+            <span class="result-val" id="resRouting" style="color:var(--accent-purple);">Escalated to System 2 Symbolic Deduction</span>
+          </div>
+          <div class="result-row">
+            <span class="result-key">Formal Logical Proof:</span>
+            <span class="result-val" id="resProof" style="color:var(--accent-green);">Valid (Modus Ponens proven via Knowledge Graph)</span>
+          </div>
+          <div class="result-row">
+            <span class="result-key">Active Inference Action:</span>
+            <span class="result-val" id="resAction">Reconfigure Traffic Boundary &amp; Clamp Circuit</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section class="section-card">
+      <div class="section-heading">
+        <span>📝 Synthetic Intelligence Knowledge &amp; Cognitive Quiz</span>
+        <span style="font-size:0.8rem; font-family:var(--font-mono); color:var(--text-muted);"><span id="siQuizScore">Score: 0/3</span></span>
+      </div>
+
+      <div class="quiz-card" data-correct="1">
+        <div class="quiz-q">1. How does Synthetic Intelligence (SI) fundamentally distinguish itself from conventional deep learning LLMs?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-idx="0">A. It uses bigger GPU clusters with more floating-point parameters.</button>
+          <button class="quiz-opt" data-idx="1">B. It integrates grounded cognitive architectures (Global Workspace, world models) and neuro-symbolic deduction to guarantee formal logical consistency and continuous adaptive learning without catastrophic forgetting.</button>
+          <button class="quiz-opt" data-idx="2">C. It only runs on quantum computers.</button>
+          <button class="quiz-opt" data-idx="3">D. It eliminates software code entirely in favor of biological tissue.</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-card" data-correct="2">
+        <div class="quiz-q">2. Why is Synthetic Intelligence (SI) distinguished from Superintelligence (ASI) in this curriculum?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-idx="0">A. They are identical concepts invented by science fiction writers.</button>
+          <button class="quiz-opt" data-idx="1">B. Synthetic Intelligence is an older term used exclusively in the 1970s.</button>
+          <button class="quiz-opt" data-idx="2">C. Synthetic Intelligence explores non-biological cognitive architectures and neuro-symbolics engineered from first principles, whereas ASI focuses on hypothetical superintelligent alignment and frontier risk control.</button>
+          <button class="quiz-opt" data-idx="3">D. Synthetic Intelligence only applies to robotics hardware.</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-card" data-correct="0">
+        <div class="quiz-q">3. In the Free Energy Principle of active inference, how does an embodied synthetic agent resolve unexpected sensory observations?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-idx="0">A. Either by updating internal world model priors to better explain sensory data, or by executing motor actions to change environmental state to match internal expectations.</button>
+          <button class="quiz-opt" data-idx="1">B. By shutting down the server and deleting the database.</button>
+          <button class="quiz-opt" data-idx="2">C. By increasing token generation temperature to maximum randomness.</button>
+          <button class="quiz-opt" data-idx="3">D. By broadcasting an error message to human operators.</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Practical Research Projects & Troubleshooting Exercises -->
+    <section class="section-card">
+      <div class="section-heading">
+        <span>🛠️ Synthetic Intelligence Practical Research Projects &amp; Drills</span>
+        <span style="font-size:0.8rem; font-family:var(--font-mono); color:var(--text-muted);">Research Runbooks</span>
+      </div>
+
+      <div class="level-grid">
+        <div class="level-card">
+          <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-indigo); font-weight:700; margin-bottom:0.4rem;">RESEARCH DRILL #1</div>
+          <h4 style="color:#fff; font-size:1.05rem; margin-bottom:0.5rem;">Catastrophic Forgetting During Continual Online Plasticity</h4>
+          <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.5;">
+            <strong>Challenge:</strong> When learning new environment dynamics in real time, neural weights overwrite foundational safety invariants.<br>
+            <strong>Treatment:</strong> Decouple long-term symbolic invariants into an immutable Knowledge Graph, while restricting continual weight adaptation to an Elastic Weight Consolidation (EWC) plastic layer.
+          </p>
+          <div class="code-box">
+from neuro_symbolic import CognitiveEngine, SymbolicAxiom
+engine = CognitiveEngine(plasticity_rate=0.01)
+engine.add_immutable_axiom(SymbolicAxiom("forall X: safe(X) -> allow(X)"))
+engine.adapt_continual(stream_observations)
+          </div>
+        </div>
+
+        <div class="level-card">
+          <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-purple); font-weight:700; margin-bottom:0.4rem;">RESEARCH DRILL #2</div>
+          <h4 style="color:#fff; font-size:1.05rem; margin-bottom:0.5rem;">Symbol Grounding Disconnect in Multi-Modal Percepts</h4>
+          <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.5;">
+            <strong>Challenge:</strong> Continuous neural vectors fail to bind reliably to discrete logical predicates under sensory noise.<br>
+            <strong>Treatment:</strong> Apply Vector Symbolic Architectures (VSA / Hyperdimensional Computing) to map continuous embeddings to orthogonal hypervectors with provable binding algebra.
+          </p>
+          <div class="code-box">
+from hyperdim import HyperVector, bind, bundle
+concept_disk = HyperVector.random(dim=10000)
+state_exhausted = HyperVector.random(dim=10000)
+bound_predicate = bind(concept_disk, state_exhausted)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relevant Studios Directory -->
+    <section class="section-card">
+      <div class="section-heading">
+        <span>⚡ Dedicated Synthetic Intelligence Studios</span>
+        <span style="font-size:0.8rem; font-family:var(--font-mono); color:var(--text-muted);">Direct Launch Links</span>
+      </div>
+
+      <div class="studio-grid">
+        <div class="studio-card">
+          <div>
+            <div class="studio-card-top">
+              <span class="studio-icon">🧠</span>
+              <span class="level-badge level-1">Cognitive Architecture</span>
+            </div>
+            <h4 class="studio-title">Synthetic Cognitive Architecture Studio</h4>
+            <p class="studio-desc">Global Workspace Theory simulator with dual-process reasoning, active inference loops, and episodic memory bindings.</p>
+          </div>
+          <div class="studio-footer">
+            <a href="/tools/synthetic-cognitive-architecture/" class="btn-launch">Launch Studio ⚡</a>
+            <a href="/tools/synthetic-cognitive-architecture/learn.html" class="btn-guide">Curriculum 📖</a>
+          </div>
+        </div>
+
+        <div class="studio-card">
+          <div>
+            <div class="studio-card-top">
+              <span class="studio-icon">📐</span>
+              <span class="level-badge level-2">Neuro-Symbolic</span>
+            </div>
+            <h4 class="studio-title">Neuro-Symbolic Reasoner Studio</h4>
+            <p class="studio-desc">Unify neural embeddings with formal First-Order Logic theorem provers and Knowledge Graphs for zero-hallucination verification.</p>
+          </div>
+          <div class="studio-footer">
+            <a href="/tools/neuro-symbolic-reasoner/" class="btn-launch">Launch Studio ⚡</a>
+            <a href="/tools/neuro-symbolic-reasoner/learn.html" class="btn-guide">Curriculum 📖</a>
+          </div>
+        </div>
+
+        <div class="studio-card">
+          <div>
+            <div class="studio-card-top">
+              <span class="studio-icon">🐝</span>
+              <span class="level-badge level-4">Swarm Intelligence</span>
+            </div>
+            <h4 class="studio-title">Agent Swarm Consensus Studio</h4>
+            <p class="studio-desc">Byzantine fault-tolerant consensus and stigmergic cooperation algorithms for emergent decentralized multi-agent swarms.</p>
+          </div>
+          <div class="studio-footer">
+            <a href="/tools/agent-swarm-consensus/" class="btn-launch">Launch Studio ⚡</a>
+            <a href="/tools/agent-swarm-consensus/learn.html" class="btn-guide">Curriculum 📖</a>
+          </div>
+        </div>
+
+        <div class="studio-card">
+          <div>
+            <div class="studio-card-top">
+              <span class="studio-icon">⚡</span>
+              <span class="level-badge level-3">Reflex &amp; Deliberation</span>
+            </div>
+            <h4 class="studio-title">TypeSafe Jev: System 1 AI Studio</h4>
+            <p class="studio-desc">Sub-100ms non-autoregressive reflex decisions with calibrated escalation thresholds to System 2 deliberative models.</p>
+          </div>
+          <div class="studio-footer">
+            <a href="/tools/jev-system1/" class="btn-launch">Launch Studio ⚡</a>
+            <a href="/tools/jev-system1/learn.html" class="btn-guide">Curriculum 📖</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // 1. Interactive Lifecycle Steps
+    const siStageDetails = {
+      sense: "<strong>Stage 1 · Continuous Neural Perception:</strong> Sensory streams, camera feeds, and distributed metrics are vectorized through deep perceptual encoders into continuous representation spaces.",
+      symbol: "<strong>Stage 2 · Symbol Grounding & Knowledge Graphs:</strong> Continuous neural representations are grounded to discrete symbolic predicates and entities, constructing dynamic relational Knowledge Graphs.",
+      workspace: "<strong>Stage 3 · Global Workspace Attention:</strong> Specialized cognitive modules compete for broadcast access across a shared working memory bottleneck, ensuring coherent unified focus.",
+      reason: "<strong>Stage 4 · First-Order Symbolic Deduction:</strong> Candidate decisions are validated against formal axiomatic safety specifications using SMT theorem provers, guaranteeing mathematical bounds.",
+      act: "<strong>Stage 5 · Active Inference & Environment Interaction:</strong> The agent executes physical actions, API calls, or topology updates to minimize environmental free energy and entropy."
+    };
+
+    document.querySelectorAll('.pipeline-step').forEach(step => {
+      step.addEventListener('click', () => {
+        document.querySelectorAll('.pipeline-step').forEach(s => s.classList.remove('active'));
+        step.classList.add('active');
+        const stage = step.getAttribute('data-step');
+        document.getElementById('siStepDetailBox').innerHTML = siStageDetails[stage] || '';
+      });
+    });
+
+    // 2. Interactive Decision & Active Inference Simulator
+    function updateSILab() {
+      const scenario = document.getElementById('siScenario').value;
+      const thresh = parseFloat(document.getElementById('siThreshold').value);
+      document.getElementById('threshVal').textContent = thresh.toFixed(2);
+
+      let entropy = 0.25;
+      let conf = 0.92;
+      let action = 'Maintain Baseline Ingress';
+
+      if (scenario === 'ambiguous') {
+        entropy = 0.68;
+        conf = 0.62;
+        action = 'Reconfigure Traffic Boundary & Clamp Circuit';
+      } else if (scenario === 'adversarial') {
+        entropy = 1.45;
+        conf = 0.28;
+        action = 'Isolate Subnet & Invoke Formal Fallback Enclave';
+      }
+
+      document.getElementById('resEntropy').textContent = entropy.toFixed(2) + ' bits';
+      document.getElementById('resSys1Conf').textContent = (conf * 100).toFixed(1) + '%';
+
+      if (conf >= thresh) {
+        document.getElementById('resRouting').innerHTML = '<span style="color:#34d399;">Resolved via System 1 Reflex (Sub-10ms)</span>';
+        document.getElementById('resProof').textContent = 'Cached Fast Invariant Match';
+      } else {
+        document.getElementById('resRouting').innerHTML = '<span style="color:#c084fc;">Escalated to System 2 Symbolic Deduction</span>';
+        document.getElementById('resProof').textContent = 'Valid (Modus Ponens proven via Knowledge Graph)';
+      }
+      document.getElementById('resAction').textContent = action;
+    }
+
+    document.getElementById('siScenario').addEventListener('change', updateSILab);
+    document.getElementById('siThreshold').addEventListener('input', updateSILab);
+    document.getElementById('siRuleset').addEventListener('change', updateSILab);
+    updateSILab();
+
+    // 3. Quiz
+    let siScore = 0;
+    const answeredSiCards = new Set();
+
+    document.querySelectorAll('.quiz-card').forEach((card, cardIdx) => {
+      const correctIdx = parseInt(card.getAttribute('data-correct'));
+      const opts = card.querySelectorAll('.quiz-opt');
+      const feedback = card.querySelector('.quiz-feedback');
+
+      opts.forEach((opt, optIdx) => {
+        opt.addEventListener('click', () => {
+          if (answeredSiCards.has(cardIdx)) return;
+          answeredSiCards.add(cardIdx);
+
+          opts.forEach(o => o.style.pointerEvents = 'none');
+          if (optIdx === correctIdx) {
+            opt.classList.add('correct');
+            siScore++;
+            feedback.style.color = '#34d399';
+            feedback.innerHTML = '✅ Correct! Exemplary cognitive architecture knowledge.';
+          } else {
+            opt.classList.add('incorrect');
+            opts[correctIdx].classList.add('correct');
+            feedback.style.color = '#f43f5e';
+            feedback.innerHTML = '❌ Incorrect. See the highlighted option for the scientific definition.';
+          }
+          feedback.style.display = 'block';
+          document.getElementById('siQuizScore').textContent = `Score: ${siScore}/3`;
+          try {
+            localStorage.setItem('sre_quiz_si_catalogue', JSON.stringify({ score: siScore, answered: answeredSiCards.size }));
+          } catch(e) {}
+        });
+      });
+    });
+  </script>
+</body>
+</html>

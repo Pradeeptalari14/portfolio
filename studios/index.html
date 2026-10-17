@@ -934,6 +934,39 @@
         <span class="explainer-tag">Production Post-Mortems</span>
       </div>
     </div>
+
+    <!-- Dedicated AI / SI / ASI Technology Catalogues -->
+    <div style="margin-top: 1.75rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; width: 100%; text-align: left;">
+      <a href="/studios/ai/" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(59, 130, 246, 0.08)); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 12px; padding: 1.25rem; display: block; transition: all 0.2s ease; text-decoration: none;" class="tech-cat-banner">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">🤖</span>
+          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.15rem 0.5rem; border-radius: 4px;">IMPLEMENTABLE TECH</span>
+        </div>
+        <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">Artificial Intelligence (AI)</div>
+        <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0.75rem;">Production ML, LLMOps, Hybrid RAG, vLLM PagedAttention, Autonomous Agents &amp; Model Serving.</p>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; font-weight: 600;">Open AI Catalogue &rarr;</div>
+      </a>
+
+      <a href="/studios/si/" style="background: linear-gradient(135deg, rgba(129, 140, 248, 0.12), rgba(168, 85, 247, 0.08)); border: 1px solid rgba(129, 140, 248, 0.3); border-radius: 12px; padding: 1.25rem; display: block; transition: all 0.2s ease; text-decoration: none;" class="tech-cat-banner">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">🧠</span>
+          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #a78bfa; background: rgba(167, 139, 250, 0.15); border: 1px solid rgba(167, 139, 250, 0.3); padding: 0.15rem 0.5rem; border-radius: 4px;">COGNITIVE ARCHITECTURES</span>
+        </div>
+        <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">Synthetic Intelligence (SI)</div>
+        <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0.75rem;">Global Workspace Theory, Active Inference &amp; Neuro-Symbolic Logic. (Note: Non-standardized taxonomy; distinct from ASI).</p>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #a78bfa; font-weight: 600;">Open SI Catalogue &rarr;</div>
+      </a>
+
+      <a href="/studios/asi/" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(244, 63, 94, 0.08)); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 1.25rem; display: block; transition: all 0.2s ease; text-decoration: none;" class="tech-cat-banner">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">🛡️</span>
+          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #fbbf24; background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); padding: 0.15rem 0.5rem; border-radius: 4px;">THEORETICAL RESEARCH</span>
+        </div>
+        <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">Superintelligence (ASI)</div>
+        <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0.75rem;">Hypothetical superintelligence alignment, corrigibility losses, air-gap containment &amp; mechanistic interpretability.</p>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #fbbf24; font-weight: 600;">Open ASI Catalogue &rarr;</div>
+      </a>
+    </div>
   </header>
 
   <!-- Search & Filter Controls -->
@@ -958,7 +991,9 @@
     <!-- Category Pills -->
     <div class="category-pills" id="categoryPills">
       <button class="cat-btn active" data-cat="all">All (347)</button>
-      <button class="cat-btn" data-cat="ai">AI &amp; LLMOps</button>
+      <button class="cat-btn" data-cat="ai">Artificial Intelligence (AI)</button>
+      <button class="cat-btn" data-cat="si">Synthetic Intelligence (SI)</button>
+      <button class="cat-btn" data-cat="asi">Superintelligence (ASI)</button>
       <button class="cat-btn" data-cat="cloud">Cloud &amp; AWS</button>
       <button class="cat-btn" data-cat="kubernetes">Kubernetes</button>
       <button class="cat-btn" data-cat="cicd">DevOps &amp; CI/CD</button>
@@ -1196,7 +1231,21 @@
       function filterStudios() {
         const q = searchInput.value.toLowerCase().trim();
         return allStudios.filter(s => {
-          const matchesCat = activeCat === 'all' || (s.category && s.category.toLowerCase().includes(activeCat));
+          let matchesCat = activeCat === 'all';
+          if (!matchesCat) {
+            const cat = (s.category || '').toLowerCase();
+            const tag = (s.tag || '').toLowerCase();
+            const title = (s.title || '').toLowerCase();
+            if (activeCat === 'ai') {
+              matchesCat = cat.includes('ai') || tag.includes('ai') || tag.includes('llm') || tag.includes('rag');
+            } else if (activeCat === 'si') {
+              matchesCat = title.includes('cognitive') || title.includes('synthetic') || title.includes('agent') || title.includes('swarm') || title.includes('reason') || tag.includes('agent');
+            } else if (activeCat === 'asi') {
+              matchesCat = title.includes('guardrail') || title.includes('alignment') || title.includes('interpret') || title.includes('safety') || title.includes('eval') || cat.includes('security');
+            } else {
+              matchesCat = cat.includes(activeCat);
+            }
+          }
           if (!matchesCat) return false;
 
           const lvl = getStudioLevel(s);

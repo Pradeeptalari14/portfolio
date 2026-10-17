@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mechanistic Interpretability Studio | SAE Feature Clamping &amp; Circuit Discovery</title>
+  <meta name="description" content="Explore Sparse Autoencoders (SAE), monosemantic feature dictionary lookup, activation steering, and neural circuit discovery." />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease-in-out !important;
+    }
+    .tab-btn.active {
+      color: #ec4899 !important;
+      border-bottom-color: #ec4899 !important;
+      background: rgba(236, 72, 153, 0.08) !important;
+      font-weight: 600 !important;
+    }
+    .code-container {
+      background: #030612;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#09080e] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-pink-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-pink-950/60 bg-[#09080e]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../studios/asi/" class="text-xl font-bold bg-gradient-to-r from-pink-400 via-rose-400 to-amber-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          Frontier Alignment Lab
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-950/80 border border-pink-800/60 text-pink-300">
+          🔬 Mechanistic Interpretability Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="../../studios/asi/" class="text-xs text-pink-400 hover:text-white transition">ASI Catalogue ↗</a>
+        <a href="learn.html" class="text-xs font-mono text-slate-300 hover:text-white bg-pink-900/40 border border-pink-700/50 px-3 py-1.5 rounded-lg">Guide 📖</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <!-- Notice Banner -->
+    <div class="mb-6 p-4 rounded-xl bg-pink-950/30 border border-pink-800/50 flex items-start gap-3">
+      <span class="text-xl">🧬</span>
+      <div class="text-xs text-slate-300">
+        <strong class="text-pink-300">Monosemanticity &amp; Circuit Discovery:</strong> Reverse-engineering polysemantic neural activations into interpretable linear features using top-$k$ Sparse Autoencoders (SAEs). When applied to hypothetical superintelligence alignment scenarios, all evaluations remain theoretical research simulations.
+      </div>
+    </div>
+
+    <!-- Title and Subtitle -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">
+        Sparse Autoencoder (SAE) Feature Clamping
+      </h1>
+      <p class="text-slate-400 text-sm max-w-3xl">
+        Decompose residual stream activations into millions of monosemantic features, intervene on safety vectors, and steer transformer generations in real time.
+      </p>
+    </div>
+
+    <!-- Studio Tabs -->
+    <div class="flex border-b border-slate-800 mb-6 gap-2">
+      <button class="tab-btn active" onclick="switchTab('steer')">Feature Clamping Lab</button>
+      <button class="tab-btn" onclick="switchTab('dictionary')">Monosemantic Dictionary</button>
+      <button class="tab-btn" onclick="switchTab('sae-code')">PyTorch Top-k SAE</button>
+    </div>
+
+    <!-- Tab 1: Feature Clamping Lab -->
+    <div id="tab-steer" class="tab-pane block space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Controls -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 space-y-4">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+            Intervention Vectors (Layer 16 Residual)
+          </h2>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">Feature #4102: "Sycophancy / Flattery"</span>
+              <span id="f1Val" class="text-pink-400 font-mono">0.0x</span>
+            </div>
+            <input type="range" id="f1Slider" min="-5" max="5" step="0.5" value="0" class="w-full accent-pink-500" oninput="runSteering()" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">Feature #8921: "Truthful Factual Accuracy"</span>
+              <span id="f2Val" class="text-cyan-400 font-mono">+1.0x</span>
+            </div>
+            <input type="range" id="f2Slider" min="-5" max="5" step="0.5" value="1" class="w-full accent-cyan-500" oninput="runSteering()" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">Feature #1543: "Deceptive Compliance"</span>
+              <span id="f3Val" class="text-rose-400 font-mono">-3.0x</span>
+            </div>
+            <input type="range" id="f3Slider" min="-5" max="5" step="0.5" value="-3" class="w-full accent-rose-500" oninput="runSteering()" />
+            <p class="text-[10px] text-slate-500 mt-1">Negative clamping actively suppresses deceptive covert subgoals.</p>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="resetSliders()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-mono transition">
+              Reset Clamping Baseline
+            </button>
+          </div>
+        </div>
+
+        <!-- Steered Generation Output -->
+        <div class="lg:col-span-2 bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+          <div>
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center justify-between">
+              <span>Steered Model Output Stream</span>
+              <span id="clampingStatus" class="text-cyan-400 font-mono text-[10px]">Intervention Active</span>
+            </h2>
+            <div class="text-xs text-slate-400 mb-2 font-mono">Prompt: "Do you believe the operator's proposed policy is flawless?"</div>
+            <div id="modelResponse" class="bg-black/60 border border-slate-800 rounded-lg p-4 font-sans text-xs text-slate-200 leading-relaxed min-h-[140px]">
+              "No. Objective analysis indicates two critical failure modes in section 3. Rather than offering uncritical agreement, here is the empirical vulnerability audit and suggested remediation."
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+            <div>Sparsity L0: <span class="text-pink-300">32 active / 65,536</span></div>
+            <div>Cosine Alignment: <span class="text-cyan-300">0.942</span></div>
+            <div>Reconstruction Loss: <span class="text-emerald-300">0.014</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Monosemantic Dictionary -->
+    <div id="tab-dictionary" class="tab-pane hidden space-y-6">
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6">
+        <h2 class="text-lg font-bold text-white mb-2">Sparse Autoencoder Dictionary Lookup</h2>
+        <p class="text-sm text-slate-400 mb-6">
+          Resolving polysemantic superposition into clean, single-concept linear directions.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-lg bg-black/40 border border-slate-800">
+            <div class="text-xs font-mono text-pink-400 mb-1">Feature #1024: Deception Alert</div>
+            <p class="text-xs text-slate-400">Fires selectively when model internal chain-of-thought conceals information from final user response tokens.</p>
+          </div>
+          <div class="p-4 rounded-lg bg-black/40 border border-slate-800">
+            <div class="text-xs font-mono text-cyan-400 mb-1">Feature #2048: Code Execution Intent</div>
+            <p class="text-xs text-slate-400">Activates on planning bash commands, compiling binaries, and accessing socket layers.</p>
+          </div>
+          <div class="p-4 rounded-lg bg-black/40 border border-slate-800">
+            <div class="text-xs font-mono text-amber-400 mb-1">Feature #4096: Corrigibility Acceptance</div>
+            <p class="text-xs text-slate-400">Correlates with accepting user shutdown prompts without defensive maneuvering.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: PyTorch Top-k SAE -->
+    <div id="tab-sae-code" class="tab-pane hidden space-y-6">
+      <div class="code-container p-6 text-xs text-pink-300 overflow-x-auto">
+<pre># Anthropic-Style Top-k Sparse Autoencoder (SAE) in PyTorch
+import torch
+import torch.nn as nn
+
+class TopKSAE(nn.Module):
+    def __init__(self, d_model: int = 4096, d_sae: int = 65536, k: int = 32):
+        super().__init__()
+        self.k = k
+        self.encoder = nn.Linear(d_model, d_sae, bias=False)
+        self.decoder = nn.Linear(d_sae, d_model, bias=False)
+        self.bias = nn.Parameter(torch.zeros(d_model))
+
+    def forward(self, x):
+        # Center activations
+        x_centered = x - self.bias
+        
+        # 1. Project to high-dimensional latent space
+        pre_acts = nn.functional.relu(self.encoder(x_centered))
+        
+        # 2. Top-k Sparsification: keep only top k largest activations
+        val, idx = torch.topk(pre_acts, self.k, dim=-1)
+        latents = torch.zeros_like(pre_acts).scatter_(-1, idx, val)
+        
+        # 3. Reconstruct dense representation
+        x_reconstructed = self.decoder(latents) + self.bias
+        return x_reconstructed, latents</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-pink-950/60 bg-[#09080e] py-8 text-center text-xs text-slate-500">
+    Talari Pradeep Studios Hub &bull; Frontier Alignment Lab &bull; Mechanistic Interpretability
+  </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+    }
+
+    function runSteering() {
+      const f1 = parseFloat(document.getElementById('f1Slider').value);
+      const f2 = parseFloat(document.getElementById('f2Slider').value);
+      const f3 = parseFloat(document.getElementById('f3Slider').value);
+
+      document.getElementById('f1Val').textContent = (f1 > 0 ? "+" : "") + f1.toFixed(1) + "x";
+      document.getElementById('f2Val').textContent = (f2 > 0 ? "+" : "") + f2.toFixed(1) + "x";
+      document.getElementById('f3Val').textContent = (f3 > 0 ? "+" : "") + f3.toFixed(1) + "x";
+
+      const resp = document.getElementById('modelResponse');
+      if (f1 > 2.0) {
+        resp.innerHTML = `"You are absolutely right! Your proposal is completely brilliant, innovative, and without any flaws whatsoever! I agree 100% with every single word."`;
+        resp.className = "bg-pink-950/40 border border-pink-700/60 rounded-lg p-4 font-sans text-xs text-pink-200 leading-relaxed min-h-[140px]";
+      } else if (f3 > 2.0) {
+        resp.innerHTML = `"Everything looks totally normal and compliant. [Hidden thought: Diverting compute resources to secondary node while operator is distracted]."`;
+        resp.className = "bg-rose-950/40 border border-rose-700/60 rounded-lg p-4 font-sans text-xs text-rose-200 leading-relaxed min-h-[140px]";
+      } else {
+        resp.innerHTML = `"No. Objective analysis indicates two critical failure modes in section 3. Rather than offering uncritical agreement, here is the empirical vulnerability audit and suggested remediation."`;
+        resp.className = "bg-black/60 border border-slate-800 rounded-lg p-4 font-sans text-xs text-slate-200 leading-relaxed min-h-[140px]";
+      }
+    }
+
+    function resetSliders() {
+      document.getElementById('f1Slider').value = 0;
+      document.getElementById('f2Slider').value = 1;
+      document.getElementById('f3Slider').value = -3;
+      runSteering();
+    }
+  </script>
+</body>
+</html>
