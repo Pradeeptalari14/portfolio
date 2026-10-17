@@ -78,183 +78,149 @@
       </div>
     </header>
 
-    <!-- SECTION 1: Real-Time Incident & Treatment Simulator (Preserved for Vitest) -->
-    <section class="simulator-container" id="realtime-simulator">
-      <div class="sim-toggle-row" id="simToggle">
-        <div class="sim-toggle-title">
-          <span class="badge-live">LIVE TELEMETRY</span>
-          <span>🚨 Production Incident Simulation Lab</span>
+    <!-- WORKSPACE HERO: Primary Navigation Matrix (User Wireframe Layout) -->
+    <section class="workspace-hero-card" id="workspace-hero">
+      <div class="workspace-header">
+        <div class="workspace-icon-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
         </div>
-        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">10 Interactive Archetypes ▼</span>
+        <div class="workspace-title-box">
+          <h2 class="workspace-title">Learn Workspace</h2>
+          <p class="workspace-subtitle">Learn by building, practising and solving real problems.</p>
+        </div>
       </div>
 
-      <div class="scenario-picker-header">
-        <span>Active Incident Archetypes</span>
-        <span id="currentScenarioIndex" style="color: var(--accent-cyan);">Scenario 1 of 10</span>
+      <div class="workspace-actions-grid">
+        <!-- 1. Continue learning -->
+        <a href="#continue-learning-section" class="workspace-action-card" id="actionContinue">
+          <div class="workspace-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </div>
+          <div class="workspace-action-info">
+            <div class="workspace-action-title">
+              <span>Continue learning</span>
+              <span class="workspace-action-arrow">&rarr;</span>
+            </div>
+            <p class="workspace-action-desc">Resume your last lesson</p>
+          </div>
+        </a>
+
+        <!-- 2. Learning paths -->
+        <a href="#learning-paths-section" class="workspace-action-card" id="actionPaths">
+          <div class="workspace-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="3" x2="6" y2="15"/>
+              <circle cx="18" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M18 9a9 9 0 0 1-9 9"/>
+            </svg>
+          </div>
+          <div class="workspace-action-info">
+            <div class="workspace-action-title">
+              <span>Learning paths</span>
+              <span class="workspace-action-arrow">&rarr;</span>
+            </div>
+            <p class="workspace-action-desc">Follow a guided roadmap</p>
+          </div>
+        </a>
+
+        <!-- 3. Hands-on labs -->
+        <a href="#hands-on-labs-section" class="workspace-action-card" id="actionLabs">
+          <div class="workspace-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"/>
+              <line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+          </div>
+          <div class="workspace-action-info">
+            <div class="workspace-action-title">
+              <span>Hands-on labs</span>
+              <span class="workspace-action-arrow">&rarr;</span>
+            </div>
+            <p class="workspace-action-desc">Practise and verify results</p>
+          </div>
+        </a>
+
+        <!-- 4. Explore studios -->
+        <a href="#catalog-section" class="workspace-action-card" id="actionExplore">
+          <div class="workspace-action-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <div class="workspace-action-info">
+            <div class="workspace-action-title">
+              <span>Explore studios</span>
+              <span class="workspace-action-arrow">&rarr;</span>
+            </div>
+            <p class="workspace-action-desc">Find the right technology</p>
+          </div>
+        </a>
       </div>
 
-      <!-- Quick Selector Chips -->
-      <div class="scenario-chips" id="scenarioChips"></div>
-
-      <!-- Active Scenario Layout -->
-      <div class="sim-layout" id="simLayout">
-        <!-- Left: Incident Treatment Intel -->
-        <div class="sim-detail-card" id="simDetailCard">
-          <div>
-            <div class="sim-alert-banner" id="simAlertBanner">
-              <span>⚠️</span>
-              <strong id="simSeverity">P1 ALERT:</strong>
-              <span id="simAlertText">Loading active telemetry...</span>
-            </div>
-            <h3 class="sim-title" id="simScenarioTitle">Scenario Title</h3>
-            <p class="sim-desc" id="simScenarioDesc">Scenario Description</p>
-
-            <div class="sim-treatment-box">
-              <div class="sim-treatment-heading">
-                <span>✅</span>
-                <span>Best Way to Treat &amp; Resolve</span>
-              </div>
-              <p class="sim-treatment-text" id="simTreatmentText">Treatment strategy text</p>
-            </div>
-
-            <div class="sim-antipattern-box">
-              <div class="sim-antipattern-heading">
-                <span>❌</span>
-                <span>The Naive Anti-Pattern to Avoid</span>
-              </div>
-              <p class="sim-antipattern-text" id="simAntiPatternText">Anti-pattern text</p>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
-            <div>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Prescribed Studio:</span>
-              <div id="simPrescribedStudio" style="font-weight: 700; color: #fff; font-size: 0.95rem;">Studio Name</div>
-            </div>
-            <a id="simLaunchBtn" href="#" class="hub-nav-cta">Launch Studio Simulator →</a>
-          </div>
-        </div>
-
-        <!-- Right: Terminal HUD & Execution Drill -->
-        <div class="terminal-hud">
-          <div class="terminal-topbar">
-            <div class="terminal-dots">
-              <span class="terminal-dot dot-red"></span>
-              <span class="terminal-dot dot-yellow"></span>
-              <span class="terminal-dot dot-green"></span>
-            </div>
-            <span class="terminal-title" id="terminalTitle">bash &bull; interactive-drill.sh</span>
-            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #34d399;">● READY</span>
-          </div>
-
-          <div class="terminal-body" id="terminalLogs">
-            <div class="terminal-log-line terminal-log-dim"># Real-Time SRE / AI Production Drill Console</div>
-            <div class="terminal-log-line terminal-log-cyan">$ <span id="terminalCmdDisplay">Loading command...</span></div>
-            <div class="terminal-log-line terminal-log-dim" id="terminalInitialPrompt">Ready to execute live simulation. Click "Simulate Live Drill" below.</div>
-          </div>
-
-          <div class="terminal-actions">
-            <button class="terminal-btn btn-copy" id="btnCopyDrill">
-              <span>📋</span>
-              <span>Copy Command</span>
-            </button>
-            <button class="terminal-btn btn-run" id="btnRunSimulation">
-              <span>▶</span>
-              <span>Simulate Live Drill</span>
-            </button>
-          </div>
-        </div>
+      <div class="workspace-footer-note">
+        Below the main actions: recommended path &rarr; continue learning cards &rarr; studio catalogue &rarr; projects and labs &rarr; progress and revision.
       </div>
     </section>
 
-    <!-- SECTION 2: Triage Decision Tree Wizard (Preserved for Vitest) -->
-    <section class="wizard-card" id="treatment-wizard">
-      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-        <span class="badge-live" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">🧭 TRIAGE ENGINE</span>
-      </div>
-      <h2 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">
-        Understand Best How to Treat Your Production Challenge
-      </h2>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
-        Match your infrastructure layer and failure constraint to identify the recommended Developer Studio:
-      </p>
-
-      <div class="wizard-steps">
+    <!-- SECTION B: Continue Learning & Recommended Path -->
+    <section class="continue-learning-section" id="continue-learning-section">
+      <!-- Recommended Path Banner -->
+      <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-md); padding: 1.25rem 1.75rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
         <div>
-          <div class="wizard-step-label">Step 1: Select Infrastructure / Software Layer</div>
-          <select id="wizardLayer" class="wizard-select">
-            <option value="ai-runtime">🧠 AI / LLM Serving &amp; Runtime (vLLM, SGLang, DeepSpeed)</option>
-            <option value="ai-rag">🔍 Knowledge Bases &amp; Multi-Hop RAG (Vector DB, Speculative, Quantum)</option>
-            <option value="kernel-telemetry">🪵 Kernel Telemetry &amp; SRE Observability (eBPF, OpenTelemetry, Loki)</option>
-            <option value="cloud-k8s">☸️ Cloud Infrastructure &amp; Kubernetes (Terraform, KEDA, Crossplane)</option>
-            <option value="security-secrets">🛡️ Zero-Trust Security &amp; Secrets (Vault, TEE Attestation, SAST)</option>
-            <option value="cicd-gitops">📦 Delivery &amp; GitOps CI/CD (ArgoCD, GitHub Actions, FluxCD)</option>
-            <option value="local-sandbox">🛠️ Local Sandbox &amp; Emulations (Docker, LocalStack, Linux)</option>
-          </select>
-        </div>
-
-        <div>
-          <div class="wizard-step-label">Step 2: Select Primary Operational Friction</div>
-          <select id="wizardConstraint" class="wizard-select">
-            <option value="latency">⚡ Severe Latency / Low Throughput / CPU Spikes</option>
-            <option value="oom">💥 Memory Starvation / GPU VRAM Out-of-Memory (OOM)</option>
-            <option value="cost">💰 High Cloud / Token Spend (FinOps Overrun)</option>
-            <option value="security">🔓 Vulnerability, Secret Leak or Prompt Poisoning</option>
-            <option value="drift">⚠️ Uncontrolled Configuration Drift or Outages</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="wizard-result" id="wizardResult">
-        <div class="wizard-result-info">
-          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700; margin-bottom: 0.25rem;">
-            Recommended Studio Treatment
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span class="badge-live" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">RECOMMENDED PATH</span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #94a3b8;">Highest Industry Demand &bull; 235 Studios</span>
           </div>
-          <h3 class="wizard-result-title" id="wizResultTitle">vLLM PagedAttention &amp; Chunked Prefill Studio</h3>
-          <p class="wizard-result-desc" id="wizResultDesc">
-            Eliminates KV-cache fragmentation down to &lt;4% using virtual memory page tables and co-scheduled prefill batches.
+          <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: #fff; font-weight: 700;">AI &amp; LLMOps Systems Engineer</h3>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.2rem; max-width: 620px;">
+            Master high-throughput GPU serving, KV-cache paged memory, dual-model speculative RAG, and MCP tool gateways.
           </p>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
-          <button id="wizFilterBtn" class="terminal-btn btn-copy">Filter Catalog Below</button>
-          <a id="wizLaunchBtn" href="../../tools/vllm-paged-attention/" class="hub-nav-cta">Launch Studio →</a>
-        </div>
+        <button id="btnExploreRecommendedPath" class="hub-nav-cta" style="cursor: pointer; border: none;">
+          Explore Recommended Path &rarr;
+        </button>
       </div>
-    </section>
 
-        <!-- SECTION 2.5: Interactive Architecture & Request Lifecycle Visualizer (Phase 8) -->
-    <section class="arch-flow-box" id="architecture-flow-section">
-      <div class="arch-flow-header">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
         <div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
-            <span class="badge-live" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">📐 ARCHITECTURE VISUALIZER</span>
-            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">Interactive Request Lifecycle Flow</span>
-          </div>
-          <h2 class="arch-flow-title" id="archFlowTitle">Enterprise Multi-Hop RAG Retrieval Pipeline</h2>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700;">IN-PROGRESS COURSES &amp; LABS</div>
+          <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: #fff; font-weight: 700;">Continue Learning</h3>
         </div>
-        <div style="display: flex; gap: 0.5rem; align-items: center;">
-          <select id="archPipelineSelect" class="sort-select" style="background: #090d16; border-color: rgba(168, 85, 247, 0.3);">
-            <option value="rag">1. Multi-Hop RAG Pipeline</option>
-            <option value="agents">2. Autonomous Multi-Agent Swarm</option>
-            <option value="eks">3. Active-Active Multi-Region EKS</option>
-            <option value="ebpf">4. In-Kernel eBPF Telemetry Probe</option>
-          </select>
-          <button id="btnSimulateFlow" class="terminal-btn btn-run" style="background: linear-gradient(135deg, #a855f7, #6366f1); border: none;">▶ Step Flow</button>
-        </div>
+        <span id="inProgressStatusCount" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+          Saved locally &bull; Real progress
+        </span>
       </div>
 
-      <div class="arch-flow-steps" id="archFlowSteps"></div>
-
-      <div class="arch-flow-controls">
-        <span id="archStepExplanation" style="font-size: 0.85rem; color: #cbd5e1; font-family: var(--font-mono);">
-          Step 1: Ingest query via API Gateway and validate input guardrails.
-        </span>
-        <div style="display: flex; gap: 0.5rem;">
-          <button id="btnPrevArchStep" class="terminal-btn btn-copy">&larr; Prev</button>
-          <button id="btnNextArchStep" class="terminal-btn btn-copy">Next &rarr;</button>
-        </div>
+      <div class="continue-learning-grid" id="continueLearningGrid">
+        <!-- Rendered dynamically by JavaScript from localStorage and fallback dataset -->
       </div>
     </section>
+
+    <!-- SECTION C: Structured Learning Paths -->
+    <section class="learning-paths-section" id="learning-paths-section">
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+          <span class="badge-live" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">STRUCTURED ROADMAPS</span>
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">From Fundamentals to Production Competency</span>
+        </div>
+        <h3 style="font-family: var(--font-display); font-size: 1.45rem; color: #fff; font-weight: 800;">Engineering Career Learning Paths</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); max-width: 760px; margin-top: 0.25rem;">
+          Progress through structured milestones with prerequisites, key modules, hands-on labs, and real project outcomes.
+        </p>
+      </div>
+
+      <div class="learning-paths-grid" id="learningPathsGrid">
+        <!-- 8 Path Cards rendered dynamically -->
+      </div>
+    </section>
+
 
     <!-- SECTION 3: Cognitive Class / Skills Network 2-Column Catalog Layout -->
     <div class="catalog-layout" id="catalog-section">
@@ -548,6 +514,352 @@
       </main>
 
     </div>
+
+    <!-- SECTION E: Hands-On Projects & Incident Labs -->
+    <section class="labs-section" id="hands-on-labs-section">
+      <div style="margin-bottom: 1.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+          <span class="badge-live" style="background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); border-color: rgba(20, 184, 166, 0.3);">PRACTICAL DRILLS &amp; VERIFICATION</span>
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">Simulated Production Environments</span>
+        </div>
+        <h3 style="font-family: var(--font-display); font-size: 1.45rem; color: #fff; font-weight: 800;">Hands-On Projects, Labs &amp; Topologies</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); max-width: 760px; margin-top: 0.25rem;">
+          Triage live incident telemetry, consult the failure decision tree, and step through distributed request architectures.
+        </p>
+      </div>
+
+      <!-- LAB PART 1: Real-Time Incident & Treatment Simulator (Preserved for Vitest) -->
+      <div class="simulator-container" id="realtime-simulator" style="margin-bottom: 2rem;">
+        <div class="sim-toggle-row" id="simToggle">
+          <div class="sim-toggle-title">
+            <span class="badge-live">LIVE TELEMETRY</span>
+            <span>🚨 Production Incident Simulation Lab</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">10 Interactive Archetypes ▼</span>
+        </div>
+
+        <div class="scenario-picker-header">
+          <span>Active Incident Archetypes</span>
+          <span id="currentScenarioIndex" style="color: var(--accent-cyan);">Scenario 1 of 10</span>
+        </div>
+
+        <!-- Quick Selector Chips -->
+        <div class="scenario-chips" id="scenarioChips"></div>
+
+        <!-- Active Scenario Layout -->
+        <div class="sim-layout" id="simLayout">
+          <!-- Left: Incident Treatment Intel -->
+          <div class="sim-detail-card" id="simDetailCard">
+            <div>
+              <div class="sim-alert-banner" id="simAlertBanner">
+                <span>⚠️</span>
+                <strong id="simSeverity">P1 ALERT:</strong>
+                <span id="simAlertText">Loading active telemetry...</span>
+              </div>
+              <h3 class="sim-title" id="simScenarioTitle">Scenario Title</h3>
+              <p class="sim-desc" id="simScenarioDesc">Scenario Description</p>
+
+              <div class="sim-treatment-box">
+                <div class="sim-treatment-heading">
+                  <span>✅</span>
+                  <span>Best Way to Treat &amp; Resolve</span>
+                </div>
+                <p class="sim-treatment-text" id="simTreatmentText">Treatment strategy text</p>
+              </div>
+
+              <div class="sim-antipattern-box">
+                <div class="sim-antipattern-heading">
+                  <span>❌</span>
+                  <span>The Naive Anti-Pattern to Avoid</span>
+                </div>
+                <p class="sim-antipattern-text" id="simAntiPatternText">Anti-pattern text</p>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
+              <div>
+                <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Prescribed Studio:</span>
+                <div id="simPrescribedStudio" style="font-weight: 700; color: #fff; font-size: 0.95rem;">Studio Name</div>
+              </div>
+              <a id="simLaunchBtn" href="#" class="hub-nav-cta">Launch Studio Simulator →</a>
+            </div>
+          </div>
+
+          <!-- Right: Terminal HUD & Execution Drill -->
+          <div class="terminal-hud">
+            <div class="terminal-topbar">
+              <div class="terminal-dots">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <span class="terminal-title" id="terminalTitle">bash &bull; interactive-drill.sh</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #34d399;">● READY</span>
+            </div>
+
+            <div class="terminal-body" id="terminalLogs">
+              <div class="terminal-log-line terminal-log-dim"># Real-Time SRE / AI Production Drill Console</div>
+              <div class="terminal-log-line terminal-log-cyan">$ <span id="terminalCmdDisplay">Loading command...</span></div>
+              <div class="terminal-log-line terminal-log-dim" id="terminalInitialPrompt">Ready to execute live simulation. Click "Simulate Live Drill" below.</div>
+            </div>
+
+            <div class="terminal-actions">
+              <button class="terminal-btn btn-copy" id="btnCopyDrill">
+                <span>📋</span>
+                <span>Copy Command</span>
+              </button>
+              <button class="terminal-btn btn-run" id="btnRunSimulation">
+                <span>▶</span>
+                <span>Simulate Live Drill</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAB PART 2: Triage Decision Tree Wizard (Preserved for Vitest) -->
+      <div class="wizard-card" id="treatment-wizard" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+          <span class="badge-live" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">🧭 TRIAGE ENGINE</span>
+        </div>
+        <h3 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">
+          Understand Best How to Treat Your Production Challenge
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Match your infrastructure layer and failure constraint to identify the recommended Developer Studio:
+        </p>
+
+        <div class="wizard-steps">
+          <div>
+            <div class="wizard-step-label">Step 1: Select Infrastructure / Software Layer</div>
+            <select id="wizardLayer" class="wizard-select">
+              <option value="ai-runtime">🧠 AI / LLM Serving &amp; Runtime (vLLM, SGLang, DeepSpeed)</option>
+              <option value="ai-rag">🔍 Knowledge Bases &amp; Multi-Hop RAG (Vector DB, Speculative, Quantum)</option>
+              <option value="kernel-telemetry">🪵 Kernel Telemetry &amp; SRE Observability (eBPF, OpenTelemetry, Loki)</option>
+              <option value="cloud-k8s">☸️ Cloud Infrastructure &amp; Kubernetes (Terraform, KEDA, Crossplane)</option>
+              <option value="security-secrets">🛡️ Zero-Trust Security &amp; Secrets (Vault, TEE Attestation, SAST)</option>
+              <option value="cicd-gitops">📦 Delivery &amp; GitOps CI/CD (ArgoCD, GitHub Actions, FluxCD)</option>
+              <option value="local-sandbox">🛠️ Local Sandbox &amp; Emulations (Docker, LocalStack, Linux)</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="wizard-step-label">Step 2: Select Primary Operational Friction</div>
+            <select id="wizardConstraint" class="wizard-select">
+              <option value="latency">⚡ Severe Latency / Low Throughput / CPU Spikes</option>
+              <option value="oom">💥 Memory Starvation / GPU VRAM Out-of-Memory (OOM)</option>
+              <option value="cost">💰 High Cloud / Token Spend (FinOps Overrun)</option>
+              <option value="security">🔓 Vulnerability, Secret Leak or Prompt Poisoning</option>
+              <option value="drift">⚠️ Uncontrolled Configuration Drift or Outages</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="wizard-result" id="wizardResult">
+          <div class="wizard-result-info">
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700; margin-bottom: 0.25rem;">
+              Recommended Studio Treatment
+            </div>
+            <h4 class="wizard-result-title" id="wizResultTitle">vLLM PagedAttention &amp; Chunked Prefill Studio</h4>
+            <p class="wizard-result-desc" id="wizResultDesc">
+              Eliminates KV-cache fragmentation down to &lt;4% using virtual memory page tables and co-scheduled prefill batches.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button id="wizFilterBtn" class="terminal-btn btn-copy">Filter Catalog Below</button>
+            <a id="wizLaunchBtn" href="../../tools/vllm-paged-attention/" class="hub-nav-cta">Launch Studio →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAB PART 3: Interactive Architecture & Request Lifecycle Visualizer (Phase 8) -->
+      <div class="arch-flow-box" id="architecture-flow-section">
+        <div class="arch-flow-header">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span class="badge-live" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">📐 ARCHITECTURE VISUALIZER</span>
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">Interactive Request Lifecycle Flow</span>
+            </div>
+            <h3 class="arch-flow-title" id="archFlowTitle">Enterprise Multi-Hop RAG Retrieval Pipeline</h3>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <select id="archPipelineSelect" class="sort-select" style="background: #090d16; border-color: rgba(168, 85, 247, 0.3);">
+              <option value="rag">1. Multi-Hop RAG Pipeline</option>
+              <option value="agents">2. Autonomous Multi-Agent Swarm</option>
+              <option value="eks">3. Active-Active Multi-Region EKS</option>
+              <option value="ebpf">4. In-Kernel eBPF Telemetry Probe</option>
+            </select>
+            <button id="btnSimulateFlow" class="terminal-btn btn-run" style="background: linear-gradient(135deg, #a855f7, #6366f1); border: none;">▶ Step Flow</button>
+          </div>
+        </div>
+
+        <div class="arch-flow-steps" id="archFlowSteps"></div>
+
+        <div class="arch-flow-controls">
+          <span id="archStepExplanation" style="font-size: 0.85rem; color: #cbd5e1; font-family: var(--font-mono);">
+            Step 1: Ingest query via API Gateway and validate input guardrails.
+          </span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="btnPrevArchStep" class="terminal-btn btn-copy">&larr; Prev</button>
+            <button id="btnNextArchStep" class="terminal-btn btn-copy">Next &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION F: AI Learning Assistant -->
+    <section class="ai-assistant-section" id="ai-assistant-section">
+      <div class="ai-assistant-card">
+        <div class="ai-assistant-header">
+          <div class="ai-assistant-title-wrap">
+            <span style="font-size: 1.5rem;">🤖</span>
+            <div>
+              <h3 class="ai-assistant-title">AI Learning Assistant &amp; Copilot</h3>
+              <p style="font-size: 0.8rem; color: var(--text-secondary);">
+                Trained on the 347 engineering studios, production failure archetypes, and SRE best practices.
+              </p>
+            </div>
+          </div>
+          <div class="ai-status-indicator">
+            <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #34d399;"></span>
+            <span>Online &bull; Local &amp; Hosted LLM Ready</span>
+          </div>
+        </div>
+
+        <!-- Quick Prompt Chips -->
+        <div class="ai-chips-row" id="aiPromptChips">
+          <button class="ai-chip-btn" data-query="Explain KV-Cache PagedAttention in plain terms">💡 Explain KV-Cache PagedAttention</button>
+          <button class="ai-chip-btn" data-query="Why is in-kernel eBPF safer than ptrace?">🪵 Why is eBPF safer than ptrace?</button>
+          <button class="ai-chip-btn" data-query="How does ArgoCD reconcile out-of-band drift?">📦 How ArgoCD reconciles drift</button>
+          <button class="ai-chip-btn" data-query="Give me a hint for the Kubernetes OOM triage drill">🔍 Hint for K8s OOM triage</button>
+          <button class="ai-chip-btn" data-query="Recommend the best path for transitioning from DevOps to AI Engineer">🚀 DevOps to AI Engineer path</button>
+        </div>
+
+        <!-- Chat Console -->
+        <div class="ai-chat-console" id="aiChatConsole">
+          <div class="ai-bubble ai-bubble-bot">
+            <strong>Studio Copilot:</strong> Welcome to the Learn Workspace! I can explain complex infrastructure concepts in simple terms, generate hints before you check solutions, diagnose lab errors, or recommend which studio to tackle next. Pick a suggested prompt above or type your question below.
+          </div>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="ai-input-bar">
+          <input type="text" id="aiAssistantInput" class="ai-input-field" placeholder="Ask a question about any studio, error, architecture pattern, or drill..." />
+          <button id="btnAskAI" class="ai-ask-btn">Ask Copilot &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION G: Progress, Revision & My Learning -->
+    <section class="my-learning-section" id="my-learning-section" style="margin-bottom: 4rem;">
+      <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+            <span class="badge-live" style="background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">🎓 VERIFIED CREDENTIALS</span>
+            <span style="font-family: var(--font-mono); font-size: 0.74rem; color: #94a3b8;">Cryptographic SHA-256 Proof</span>
+          </div>
+          <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: #fff; font-weight: 700;">Claim Verified Completion Certificate</h3>
+          <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.25rem; max-width: 580px;">
+            Validate your hands-on mastery across 347 production studios, incident triage drills, and architecture topologies.
+          </p>
+        </div>
+        <button id="btnClaimCertHero" class="hub-nav-cta" onclick="window.openCertificateModal()" style="padding: 0.75rem 1.6rem; font-size: 0.9rem; border: none; cursor: pointer;">
+          🎓 Claim Certificate &rarr;
+        </button>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #fff; font-weight: 700; margin-bottom: 0.35rem;">Specialization Track Badges</h3>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">Track your competencies and unlock verifiable badges across engineering domains:</p>
+        
+        <div class="badges-container">
+          <div class="specialization-badge-card">
+            <div class="badge-top-row">
+              <span class="badge-icon-box">🧠</span>
+              <div>
+                <div class="badge-track-title">AI &amp; LLMOps Architect</div>
+                <div class="badge-track-sub">vLLM, SGLang, DeepSeek, RAG, Speculative</div>
+              </div>
+            </div>
+            <div class="badge-progress-track">
+              <div class="badge-progress-fill" style="width: 100%;"></div>
+            </div>
+            <div class="badge-footer-row">
+              <span style="color: #34d399;">● 234 Studios Verified</span>
+              <span>100% Complete</span>
+            </div>
+          </div>
+
+          <div class="specialization-badge-card">
+            <div class="badge-top-row">
+              <span class="badge-icon-box">🪵</span>
+              <div>
+                <div class="badge-track-title">Kernel &amp; eBPF Specialist</div>
+                <div class="badge-track-sub">eBPF Profiler, Tetragon, DWARF, RingBuffer</div>
+              </div>
+            </div>
+            <div class="badge-progress-track">
+              <div class="badge-progress-fill" style="width: 100%;"></div>
+            </div>
+            <div class="badge-footer-row">
+              <span style="color: #34d399;">● 29 Studios Verified</span>
+              <span>100% Complete</span>
+            </div>
+          </div>
+
+          <div class="specialization-badge-card">
+            <div class="badge-top-row">
+              <span class="badge-icon-box">🛡️</span>
+              <div>
+                <div class="badge-track-title">Zero-Trust &amp; TEE Commander</div>
+                <div class="badge-track-sub">Confidential AI, Vault, MCP Gateway, SAST</div>
+              </div>
+            </div>
+            <div class="badge-progress-track">
+              <div class="badge-progress-fill" style="width: 100%;"></div>
+            </div>
+            <div class="badge-footer-row">
+              <span style="color: #34d399;">● 18 Studios Verified</span>
+              <span>100% Complete</span>
+            </div>
+          </div>
+
+          <div class="specialization-badge-card">
+            <div class="badge-top-row">
+              <span class="badge-icon-box">☸️</span>
+              <div>
+                <div class="badge-track-title">Cloud &amp; K8s Infrastructure</div>
+                <div class="badge-track-sub">EKS, VPC Subnetter, Terraform Drift, KEDA</div>
+              </div>
+            </div>
+            <div class="badge-progress-track">
+              <div class="badge-progress-fill" style="width: 100%;"></div>
+            </div>
+            <div class="badge-footer-row">
+              <span style="color: #34d399;">● 26 Studios Verified</span>
+              <span>100% Complete</span>
+            </div>
+          </div>
+
+          <div class="specialization-badge-card">
+            <div class="badge-top-row">
+              <span class="badge-icon-box">⚡</span>
+              <div>
+                <div class="badge-track-title">SRE Incident Commander</div>
+                <div class="badge-track-sub">10 Live Incident Drills, Golden Signals</div>
+              </div>
+            </div>
+            <div class="badge-progress-track">
+              <div class="badge-progress-fill" style="width: 100%;"></div>
+            </div>
+            <div class="badge-footer-row">
+              <span style="color: #34d399;">● 10 Scenarios Verified</span>
+              <span>100% Complete</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </div>
 
@@ -1169,15 +1481,483 @@ data:
         }
       };
 
-      // Load bookmarks & completed progress from storage
+      // =====================================================================
+      // STORAGE & PERSISTENT USER PROGRESS (PHASE 9)
+      // =====================================================================
+      let progressMap = {};
+
+      const continueLearningGridEl = document.getElementById('continueLearningGrid');
+      const inProgressStatusCountEl = document.getElementById('inProgressStatusCount');
+      const learningPathsGridEl = document.getElementById('learningPathsGrid');
+      const btnExploreRecommendedPathEl = document.getElementById('btnExploreRecommendedPath');
+
+      const DEFAULT_CONTINUE_ITEMS = [
+        {
+          id: 'vllm-paged-attention',
+          title: 'vLLM PagedAttention & Chunked Prefill Studio',
+          domain: 'LLMOps & RAG Pipelines',
+          step: 3,
+          totalSteps: 7,
+          stepName: 'Hands-On Lab (Interactive Terminal Drill)',
+          pct: 43,
+          lastActive: 'Active 2 hours ago',
+          studioIndex: 0
+        },
+        {
+          id: 'ebpf-continuous-profiler',
+          title: 'Continuous eBPF Kernel Profiler Studio',
+          domain: 'Kernel & Observability',
+          step: 5,
+          totalSteps: 7,
+          stepName: 'Quiz Assessment & Verification',
+          pct: 71,
+          lastActive: 'Active yesterday',
+          studioIndex: 1
+        },
+        {
+          id: 'argocd',
+          title: 'ArgoCD GitOps Application Studio',
+          domain: 'CI/CD & GitOps Delivery',
+          step: 2,
+          totalSteps: 7,
+          stepName: 'Visual Architecture & Declarations',
+          pct: 29,
+          lastActive: 'Active 3 days ago',
+          studioIndex: 4
+        }
+      ];
+
       function initStorage() {
         try {
           const storedBms = localStorage.getItem('pradeep_studio_bookmarks');
           if (storedBms) bookmarkedStudios = new Set(JSON.parse(storedBms));
           const storedComp = localStorage.getItem('pradeep_studio_completed');
           if (storedComp) completedStudios = new Set(JSON.parse(storedComp));
+          const storedProg = localStorage.getItem('pradeep_studio_progress');
+          if (storedProg) progressMap = JSON.parse(storedProg);
           updateBookmarkCounter();
+          renderContinueLearning();
         } catch {}
+      }
+
+      function saveStudioProgress(s, stepNum) {
+        if (!s) return;
+        const key = s.link || s.title;
+        const totalSteps = 7;
+        const pct = Math.round((stepNum / totalSteps) * 100);
+        const stepNames = [
+          'Overview & Architecture',
+          'Understand & Prerequisites',
+          'Visual Architecture & Topology',
+          'Hands-On Terminal Drill',
+          'Production Troubleshooting',
+          'Quiz Assessment & Verification',
+          'Artifact Build & Export',
+          'Track Completion & Certification'
+        ];
+        
+        let sIdx = allStudios.indexOf(s);
+        if (sIdx === -1) sIdx = allStudios.findIndex(item => item.title === s.title);
+
+        progressMap[key] = {
+          id: s.id || s.title,
+          title: s.title,
+          domain: s.domain || s.category,
+          step: stepNum,
+          totalSteps: 7,
+          stepName: stepNames[stepNum] || `Step ${stepNum} of 7`,
+          pct: pct,
+          lastActive: 'Just now',
+          studioIndex: sIdx >= 0 ? sIdx : 0
+        };
+
+        try {
+          localStorage.setItem('pradeep_studio_progress', JSON.stringify(progressMap));
+        } catch {}
+
+        renderContinueLearning();
+      }
+
+      function renderContinueLearning() {
+        if (!continueLearningGridEl) return;
+        const progressKeys = Object.keys(progressMap);
+        let items = [];
+
+        if (progressKeys.length > 0) {
+          items = progressKeys.map(k => progressMap[k]);
+          if (inProgressStatusCountEl) {
+            inProgressStatusCountEl.textContent = `${items.length} active studio${items.length === 1 ? '' : 's'} • Saved in browser`;
+          }
+        } else {
+          items = DEFAULT_CONTINUE_ITEMS;
+          if (inProgressStatusCountEl) {
+            inProgressStatusCountEl.textContent = '3 recommended starters • Progress saved in browser';
+          }
+        }
+
+        continueLearningGridEl.innerHTML = items.map((item) => {
+          let targetIndex = item.studioIndex;
+          if (targetIndex === undefined || targetIndex < 0) {
+            targetIndex = allStudios.findIndex(s => s.title === item.title || (s.id && s.id === item.id));
+            if (targetIndex < 0) targetIndex = 0;
+          }
+          const isDone = item.step >= item.totalSteps || completedStudios.has(item.id) || completedStudios.has(item.title);
+
+          return `
+            <div class="in-progress-card">
+              <div>
+                <div class="in-progress-card-top">
+                  <span class="in-progress-tag">${item.domain || 'Cloud & AI'}</span>
+                  <span class="in-progress-time">${item.lastActive || 'In progress'}</span>
+                </div>
+                <h4 class="in-progress-title">${item.title}</h4>
+                <div class="in-progress-step">
+                  <span>📍</span>
+                  <span>Step ${item.step} of ${item.totalSteps}: ${item.stepName || 'Hands-on practice'}</span>
+                </div>
+                <div class="in-progress-bar-wrap">
+                  <div class="in-progress-bar-fill" style="width: ${item.pct}%;"></div>
+                </div>
+              </div>
+              <div class="in-progress-footer">
+                <span class="in-progress-pct">${item.pct}% complete</span>
+                <button class="in-progress-resume-btn" onclick="window.resumeStudioFromCard(${targetIndex}, ${item.step})">
+                  <span>▶</span>
+                  <span>${isDone ? 'Review Studio' : 'Resume Studio'} &rarr;</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.resumeStudioFromCard = function(studioIndex, stepNum) {
+        if (allStudios.length === 0) {
+          setTimeout(() => window.resumeStudioFromCard(studioIndex, stepNum), 100);
+          return;
+        }
+        openStudioModal(studioIndex, stepNum || 1);
+      };
+
+      // Structured Career Paths
+      const LEARNING_PATHS = [
+        {
+          id: 'devops',
+          title: 'DevOps Engineer',
+          icon: '📦',
+          effort: '6 Weeks • 15 Studios',
+          prereq: 'Linux CLI & Git Fundamentals',
+          desc: 'Master automated container build pipelines, declarative GitOps continuous delivery, and artifact security scanning.',
+          modules: ['ArgoCD GitOps', 'Tekton Pipelines', 'GitHub Actions CI', 'Docker Compose Sandboxes'],
+          milestone: 'Milestone: Build automated zero-drift GitOps deployment pipeline',
+          filterCat: 'cicd',
+          searchQuery: ''
+        },
+        {
+          id: 'cloud',
+          title: 'Cloud Engineer',
+          icon: '☁️',
+          effort: '8 Weeks • 29 Studios',
+          prereq: 'TCP/IP & Cloud Architecture Basics',
+          desc: 'Design resilient multi-cloud network topologies, enforce declarative Terraform state synchronization, and audit VPC CIDR blocks.',
+          modules: ['Terraform Drift Auditor', 'AWS VPC Subnetter', 'Cloud Data Warehouses', 'LocalStack Sandbox'],
+          milestone: 'Milestone: Deploy immutable multi-tier VPC topology with drift auditing',
+          filterCat: 'cloud',
+          searchQuery: ''
+        },
+        {
+          id: 'sre',
+          title: 'Site Reliability Engineer (SRE)',
+          icon: '⚡',
+          effort: '10 Weeks • 30 Studios',
+          prereq: 'Linux Internals & Golden Signals',
+          desc: 'Quantify service reliability with multi-window burn rates, debug kernel locks via eBPF flamegraphs, and manage telemetry pipelines.',
+          modules: ['SLO & Error Budgets', 'eBPF Kernel Profiler', 'OpenTelemetry Tracing', 'Loki Log Aggregation'],
+          milestone: 'Milestone: Resolve silent P1 host saturation drill in under 5 minutes',
+          filterCat: 'observability',
+          searchQuery: ''
+        },
+        {
+          id: 'ai-engineer',
+          title: 'AI Engineer',
+          icon: '🧠',
+          effort: '12 Weeks • 235 Studios',
+          prereq: 'Python 3.10 & PyTorch Basics',
+          desc: 'Architect high-throughput LLM inference engines, eliminate KV-cache fragmentation, implement speculative drafting, and tune FP8 kernels.',
+          modules: ['vLLM PagedAttention', 'SGLang RadixAttention', 'DeepSpeed ZeRO-3', 'Speculative RAG Pipeline'],
+          milestone: 'Milestone: Serve 70B model at >50 req/s with <4% memory fragmentation',
+          filterCat: 'ai',
+          searchQuery: 'vllm'
+        },
+        {
+          id: 'agentic-ai',
+          title: 'Agentic AI Engineer',
+          icon: '🤖',
+          effort: '8 Weeks • 42 Studios',
+          prereq: 'REST APIs & Asynchronous Python',
+          desc: 'Build coordinated multi-agent swarms with CRDT state synchronization, Anthropic MCP JSON-RPC gateways, and computer use sandboxes.',
+          modules: ['LangGraph Multi-Agent', 'Anthropic MCP Universal Gateway', 'Computer Use OS Sandbox', 'Evaluation Harness'],
+          milestone: 'Milestone: Deploy autonomous SRE triage swarm with zero-trust tool access',
+          filterCat: 'ai',
+          searchQuery: 'agent'
+        },
+        {
+          id: 'k8s-platform',
+          title: 'Kubernetes Platform Engineer',
+          icon: '☸️',
+          effort: '10 Weeks • 26 Studios',
+          prereq: 'Container Fundamentals & CNI',
+          desc: 'Engineer enterprise-grade Kubernetes platforms with reactive event-driven autoscaling, modern Envoy gateways, and Karpenter node scheduling.',
+          modules: ['KEDA Event Autoscaler', 'Envoy Gateway', 'Crossplane Control Planes', 'Karpenter Autoscaler'],
+          milestone: 'Milestone: Auto-scale worker pods from 0 to 120 in <15 seconds under spike load',
+          filterCat: 'cloud',
+          searchQuery: 'keda'
+        },
+        {
+          id: 'infra-engineer',
+          title: 'Linux/Windows Infrastructure Engineer',
+          icon: '🛠️',
+          effort: '8 Weeks • 36 Studios',
+          prereq: 'Bash & PowerShell Scripting',
+          desc: 'Automate bare-metal and OS virtualization, harden Linux systemd service units, and emulate offline AWS cloud primitives locally.',
+          modules: ['Systemd Service Builder', 'Tetragon Security', 'LocalStack Cloud Emulation', 'Cron Scheduler'],
+          milestone: 'Milestone: Harden OS kernel boundaries with verified non-root sandboxes',
+          filterCat: 'automation',
+          searchQuery: ''
+        },
+        {
+          id: 'cybersecurity',
+          title: 'Cybersecurity Engineer',
+          icon: '🛡️',
+          effort: '9 Weeks • 18 Studios',
+          prereq: 'Public Key Cryptography & PKI',
+          desc: 'Enforce zero-trust workload attestation, ephemeral secrets rotation, Sigstore SLSA supply chain provenance, and hardware TEEs.',
+          modules: ['Confidential AI & H100 TEE', 'Vault Dynamic Secrets', 'Boundary Zero-Trust', 'Sigstore SLSA Attestation'],
+          milestone: 'Milestone: Secure model weight checkpoints with verifiable remote attestation',
+          filterCat: 'ai',
+          searchQuery: 'security'
+        }
+      ];
+
+      function renderLearningPaths() {
+        if (!learningPathsGridEl) return;
+        learningPathsGridEl.innerHTML = LEARNING_PATHS.map(p => `
+          <div class="path-card">
+            <div>
+              <div class="path-card-top">
+                <span class="path-icon">${p.icon}</span>
+                <span class="path-effort-badge">${p.effort}</span>
+              </div>
+              <h4 class="path-title">${p.title}</h4>
+              <p class="path-desc">${p.desc}</p>
+              
+              <div class="path-modules-label">Ordered Curriculum Modules:</div>
+              <div class="path-modules-list">
+                ${p.modules.map(m => `<span class="path-module-chip">${m}</span>`).join('')}
+              </div>
+
+              <div class="path-milestone-box">
+                <span>🎯</span>
+                <span>${p.milestone}</span>
+              </div>
+            </div>
+
+            <div class="path-footer">
+              <span class="path-prereq-text">${p.prereq}</span>
+              <button class="path-action-btn" onclick="window.explorePath('${p.id}')">
+                Filter Studios &rarr;
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      window.explorePath = function(pathId) {
+        const path = LEARNING_PATHS.find(p => p.id === pathId);
+        if (!path) return;
+        if (path.filterCat) {
+          activeCategory = path.filterCat;
+          categoryPillsEl.querySelectorAll('.filter-pill').forEach(p => {
+            if (p.getAttribute('data-cat') === path.filterCat) p.classList.add('active');
+            else p.classList.remove('active');
+          });
+        }
+        if (path.searchQuery) {
+          searchInputEl.value = path.searchQuery;
+        } else {
+          searchInputEl.value = '';
+        }
+        renderCatalog();
+        const catSec = document.getElementById('catalog-section');
+        if (catSec) catSec.scrollIntoView({ behavior: 'smooth' });
+        showToast(`Showing studios for ${path.title}`);
+      };
+
+      if (btnExploreRecommendedPathEl) {
+        btnExploreRecommendedPathEl.addEventListener('click', () => {
+          window.explorePath('ai-engineer');
+        });
+      }
+
+      // =====================================================================
+      // AI LEARNING ASSISTANT ENGINE
+      // =====================================================================
+      const aiPromptChipsEl = document.getElementById('aiPromptChips');
+      const aiChatConsoleEl = document.getElementById('aiChatConsole');
+      const aiAssistantInputEl = document.getElementById('aiAssistantInput');
+      const btnAskAIEl = document.getElementById('btnAskAI');
+
+      const AI_ANSWERS = {
+        'kv-cache': `**KV-Cache PagedAttention Explained:**
+In standard autoregressive LLM decoding, key-value (KV) tensors for past tokens must be preserved in GPU VRAM so previous context isn't recomputed. Pre-allocating contiguous buffers leads to **60-80% memory waste** due to external fragmentation.
+
+**vLLM PagedAttention** applies OS virtual memory page tables to KV-cache:
+1. KV tensors are partitioned into fixed 16 or 32-token page blocks.
+2. Pages are allocated dynamically on-demand anywhere in VRAM.
+3. Multiple requests can share common prefix prompts (zero-copy copy-on-write).
+
+*Outcome:* Fragmentation drops to **<4%**, boosting batch concurrency **2.8x - 4x** on identical GPU hardware. Check out the [vLLM PagedAttention Studio](../../tools/vllm-paged-attention/) for hands-on drills!`,
+
+        'ebpf': `**Why in-kernel eBPF is safer than ptrace/gdb in production:**
+1. **Zero-Pause Overhead (<0.8% CPU):** Tracing tools like \`ptrace\` stop thread execution to inspect memory, causing multi-second latency spikes in high-throughput microservices.
+2. **In-Kernel Verification Engine:** The Linux kernel verifier analyzes all eBPF bytecode before loading. It strictly enforces:
+   - No unbounded loops (guarantees probe termination)
+   - Zero out-of-bounds memory access
+   - Read-only safety on kernel memory structures
+3. **Zero-Copy Ring Buffers:** Aggregates stack unwinds directly in kernel memory before flushing to userland, eliminating IPC bottlenecks.
+
+Explore the [Continuous eBPF Kernel Profiler Studio](../../tools/ebpf-continuous-profiler/) to generate live FlameGraphs.`,
+
+        'argocd': `**How ArgoCD Reconciles Out-of-Band Production Drift:**
+When an engineer makes manual changes directly with \`kubectl edit\` or \`kubectl scale\`:
+1. **Continuous 3-Way Diff:** The ArgoCD application controller continuously hashes Git manifests vs live Kubernetes API state vs previous \`kubectl.kubernetes.io/last-applied-configuration\`.
+2. **OutOfSync Flag:** Detected discrepancies trigger an \`OutOfSync\` health alert.
+3. **Automated Self-Healing (\`selfHeal: true\`):** If self-healing is enabled, ArgoCD immediately applies the desired Git state, overriding unauthorized cluster mutations in under 3 seconds.
+4. **Admission Prevention:** Pair with Kyverno or Gatekeeper to reject any non-GitOps mutating webhooks at admission time.
+
+Launch the [ArgoCD GitOps Studio](../../tools/argocd/) to run automated sync and rollback drills.`,
+
+        'oom': `**Diagnostic Hint for Kubernetes OOM Triage:**
+1. Inspect the Pod termination reason: Look for \`OOMKilled: true\` and exit code \`137\` (\`128 + 9 (SIGKILL)\`).
+2. Verify if it is **Host OOM** or **cgroup Container OOM**:
+   \`dmesg -T | grep -E -i "oom-killer|killed process"\`
+3. For Python / LLM workloads, check GPU VRAM allocation vs system RAM. Often contiguous pre-allocation starves system buffer cache.
+4. Remediation: Set explicit \`resources.limits.memory\` and configure pre-allocated memory pools with garbage-collection triggers.`,
+
+        'devops-ai': `**Recommended Roadmap: Transitioning from DevOps to AI Engineer:**
+1. **Foundation (Weeks 1-2):** Linux GPU Drivers, CUDA, Triton Inference Server, NVIDIA Container Toolkit.
+2. **Inference Optimization (Weeks 3-5):** vLLM PagedAttention, SGLang Radix prefix caching, TensorRT-LLM FP8 quantization.
+3. **Retrieval & RAG Systems (Weeks 6-8):** pgvector HNSW indexing, Speculative RAG drafting, cross-encoder rerankers.
+4. **Agentic Workflows & Tool Gateways (Weeks 9-10):** Anthropic MCP Universal Gateway, LangGraph state machine swarms.
+5. **Observability & SRE (Weeks 11-12):** OpenTelemetry GenAI semantic conventions, GPU power/temperature golden signals.
+
+Click "Explore Recommended Path" at the top to start with the **AI & LLMOps Systems Engineer** track!`
+      };
+
+      function generateAITutorAnswer(userQuery) {
+        const q = userQuery.toLowerCase();
+        if (q.includes('kv-cache') || q.includes('pagedattention') || q.includes('vllm')) {
+          return AI_ANSWERS['kv-cache'];
+        }
+        if (q.includes('ebpf') || q.includes('ptrace') || q.includes('kernel') || q.includes('flamegraph')) {
+          return AI_ANSWERS['ebpf'];
+        }
+        if (q.includes('argocd') || q.includes('drift') || q.includes('gitops')) {
+          return AI_ANSWERS['argocd'];
+        }
+        if (q.includes('oom') || q.includes('memory') || q.includes('starvation') || q.includes('137')) {
+          return AI_ANSWERS['oom'];
+        }
+        if (q.includes('devops to ai') || q.includes('roadmap') || q.includes('transition') || q.includes('path')) {
+          return AI_ANSWERS['devops-ai'];
+        }
+
+        const matches = allStudios.filter(s => 
+          s.title.toLowerCase().includes(q) || 
+          (s.useCase && s.useCase.toLowerCase().includes(q)) ||
+          (s.domain && s.domain.toLowerCase().includes(q))
+        );
+
+        if (matches.length > 0) {
+          const top = matches[0];
+          return `**Recommended Studio Match: ${top.title}**
+• **Domain:** ${top.domain || top.category} (${top.skillLevel || 'Level 2'})
+• **Production Problem Solved:** ${top.useCase || top.desc}
+• **Recommended Treatment:** ${top.bestTreatment || 'Standardize on declarative manifests and enforce runtime verification.'}
+• **Operational Anti-Pattern to Avoid:** ${top.antiPattern || 'Manual unversioned changes in production.'}
+• **Verification Drill:** \`${top.realTimeDrill || 'git clone repo && bash scripts/validate.sh'}\`
+
+Would you like to start this studio? You can search for "${top.title.split(' ')[0]}" in the catalog or launch it directly from the course cards below!`;
+        }
+
+        return `**Studio Copilot Guidance:**
+To address "${userQuery}":
+1. **Identify the Architecture Layer:** Determine whether this is an AI serving bottleneck (vLLM/SGLang), kernel lock saturation (eBPF), or infrastructure drift (Terraform/ArgoCD).
+2. **Apply Deterministic Validation:** Avoid ad-hoc mutations. Standardize on versioned manifests, run pre-commit lints, and benchmark against Golden Signals (Latency P99, Error Rate, Saturation).
+3. **Consult Decision Tree:** Use the **Triage Decision Tree Wizard** in the Labs section below to get automated studio recommendations!`;
+      }
+
+      function appendAIChatMessage(text, sender = 'bot') {
+        if (!aiChatConsoleEl) return;
+        const bubble = document.createElement('div');
+        bubble.className = `ai-bubble ${sender === 'user' ? 'ai-bubble-user' : 'ai-bubble-bot'}`;
+        
+        let formatted = text
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.08); padding:0.15rem 0.35rem; border-radius:4px; font-family:var(--font-mono); color:var(--accent-cyan);">$1</code>')
+          .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="color:var(--accent-cyan); text-decoration:underline;">$1</a>')
+          .replace(/\n\n/g, '<br><br>')
+          .replace(/\n• /g, '<br>&bull; ')
+          .replace(/\n(\d+\.) /g, '<br>$1 ');
+
+        if (sender === 'user') {
+          bubble.innerHTML = `<strong>You:</strong> ${formatted}`;
+        } else {
+          bubble.innerHTML = `<strong>Studio Copilot:</strong><br>${formatted}`;
+        }
+
+        aiChatConsoleEl.appendChild(bubble);
+        aiChatConsoleEl.scrollTop = aiChatConsoleEl.scrollHeight;
+      }
+
+      if (aiPromptChipsEl) {
+        aiPromptChipsEl.addEventListener('click', (e) => {
+          const btn = e.target.closest('.ai-chip-btn');
+          if (!btn) return;
+          const query = btn.getAttribute('data-query');
+          if (query) {
+            if (aiAssistantInputEl) aiAssistantInputEl.value = query;
+            appendAIChatMessage(query, 'user');
+            setTimeout(() => {
+              const resp = generateAITutorAnswer(query);
+              appendAIChatMessage(resp, 'bot');
+            }, 300);
+          }
+        });
+      }
+
+      function handleAskAI() {
+        if (!aiAssistantInputEl) return;
+        const val = aiAssistantInputEl.value.trim();
+        if (!val) return;
+        aiAssistantInputEl.value = '';
+        appendAIChatMessage(val, 'user');
+        setTimeout(() => {
+          const resp = generateAITutorAnswer(val);
+          appendAIChatMessage(resp, 'bot');
+        }, 350);
+      }
+
+      if (btnAskAIEl) btnAskAIEl.addEventListener('click', handleAskAI);
+      if (aiAssistantInputEl) {
+        aiAssistantInputEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAskAI();
+          }
+        });
       }
 
       function toggleBookmark(id) {
@@ -1201,6 +1981,7 @@ data:
           bookmarkedCounterEl.textContent = `★ Bookmarks (${bookmarkedStudios.size}) • Completed (${completedStudios.size})`;
         }
       }
+
 
       // Render Incident Scenario
       function renderScenario(sc) {
@@ -1715,11 +2496,11 @@ data:
       // =====================================================================
       // 7-STEP LEARNING SEQUENCE MODAL ENGINE
       // =====================================================================
-      window.openStudioModal = function(studioIndex) {
+      window.openStudioModal = function(studioIndex, startStep = 1) {
         const s = allStudios[studioIndex];
         if (!s) return;
         activeStudioModal = s;
-        currentModalStep = 1;
+        currentModalStep = startStep;
         isRealSandboxMode = false;
 
         modalStudioIconEl.textContent = s.icon || '⚡';
@@ -1754,10 +2535,11 @@ data:
         step7NextTitleEl.textContent = nextStudio.title;
         step7NextDescEl.textContent = `Continue advancing in ${nextStudio.domain || nextStudio.category} track.`;
         btnStartNextStudioEl.onclick = () => {
-          openStudioModal(nextIdx);
+          openStudioModal(nextIdx, 1);
         };
 
-        renderModalStep(1);
+        renderModalStep(startStep);
+        saveStudioProgress(s, startStep);
         sequenceModalEl.classList.add('open');
       };
 
@@ -1893,6 +2675,9 @@ data:
 
       function renderModalStep(stepNum) {
         currentModalStep = stepNum;
+        if (activeStudioModal) {
+          saveStudioProgress(activeStudioModal, stepNum);
+        }
 
         stepNavBarEl.querySelectorAll('.step-nav-btn').forEach(btn => {
           const step = parseInt(btn.getAttribute('data-step'), 10);
@@ -2252,6 +3037,7 @@ data:
 
       // Initialize
       initStorage();
+      renderLearningPaths();
       initScenarioChips();
       renderScenario(INCIDENT_SCENARIOS[0]);
       updateWizard();
