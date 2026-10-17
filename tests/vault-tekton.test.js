@@ -118,8 +118,8 @@ describe('Tekton CI/CD Pipeline DAG Studio', () => {
     expect(simStatus.textContent).toBe('RUNNING...');
     expect(logs.textContent).toContain('initializing workspace claim');
 
-    // Wait for the simulator execution timeline sequence (approx 600ms * 3 steps = 1800ms)
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Wait for the simulator execution timeline sequence (approx 600ms * 4 steps = 2400ms)
+    await new Promise(resolve => setTimeout(resolve, 2800));
 
     expect(logs.textContent).toContain('PipelineRun successfully executed');
     expect(simStatus.textContent).toBe('SUCCESS');

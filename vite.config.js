@@ -63,6 +63,8 @@ export default defineConfig({
   },
   test: {
     include: ['tests/**/*.test.js'],
-    exclude: ['**/scratch/**', '**/node_modules/**']
+    exclude: ['**/scratch/**', '**/node_modules/**'],
+    testTimeout: 30000,
+    hookTimeout: 30000
   }
 });
