@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SLSA-3 Cryptographic Supply Chain &amp; DevSecOps | Talari Pradeep</title>
+  <meta name="description" content="DevSecOps & Platform Security: End-to-end SLSA-3 cryptographic software supply chain platform with CycloneDX SBOMs, Sigstore Cosign keyless signing, Rekor transparency, and Kyverno admission controls." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "SLSA-3 Cryptographic Supply Chain & DevSecOps Platform",
+    "description": "Enterprise SLSA Level 3 cryptographic supply chain verification platform with keyless Cosign signatures and Kyverno zero-trust admission gating.",
+    "programmingLanguage": "Go / Shell / YAML",
+    "codeRepository": "https://github.com/Pradeeptalari14/tp-sbom-cyclonedx-governance"
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-base: #ffffff;
+      --bg-surface: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent-primary: #4f46e5;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #059669;
+      --border: #e2e8f0;
+      --border-accent: rgba(79, 70, 229, 0.2);
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      --grad-primary: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-surface); color: var(--text-primary); line-height: 1.7; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    .navbar { height: 72px; border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1200px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; outline: 2px solid rgba(79, 70, 229, 0.3); outline-offset: 2px; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-link { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); transition: var(--transition); }
+    .nav-link:hover { color: var(--accent-primary); }
+
+    /* Page Wrap */
+    .detail-wrap { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; transition: var(--transition); }
+    .back-link:hover { color: var(--accent-primary); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* Header */
+    .detail-header { margin-bottom: 3.5rem; }
+    .detail-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-primary); background: rgba(79, 70, 229, 0.08); border: 1px solid rgba(79, 70, 229, 0.15); padding: 0.3rem 1rem; border-radius: 50px; margin-bottom: 1rem; }
+    .detail-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .detail-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 800px; }
+
+    /* Layout Grid */
+    .detail-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: start; }
+    .detail-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+    .detail-card-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+
+    /* Left Col Elements */
+    .step-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step-item { display: flex; gap: 1rem; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(79, 70, 229, 0.08); border: 1.5px solid var(--accent-primary); color: var(--accent-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--text-primary); }
+    .step-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+
+    /* Code Block */
+    .code-container { background: #0f172a; border-radius: var(--radius-md); overflow: hidden; border: 1px solid #1e293b; margin: 0.75rem 0; }
+    .code-header { background: #1e293b; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+    .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+    .copy-btn { background: transparent; border: none; color: #94a3b8; font-size: 0.68rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-weight: 600; transition: color var(--transition); }
+    .copy-btn:hover { color: #fff; }
+    .code-pre { padding: 1rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #e2e8f0; line-height: 1.5; }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; }
+    .replace-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    .replace-table th, .replace-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .replace-table th { font-weight: 700; color: var(--text-primary); background: var(--bg-surface); }
+    .replace-table td { color: var(--text-secondary); }
+    .replace-table code { font-family: 'JetBrains Mono', monospace; background: var(--bg-surface); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.78rem; border: 1px solid var(--border); }
+
+    /* Diagram / Terminal Card */
+    .diagram-viewport { background: #0f172a; border-radius: var(--radius-md); border: 1px solid #1e293b; padding: 1rem; overflow-x: auto; color: #fff; }
+    .terminal-pre { background: #0b0f19; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a9fef7; padding: 1rem; border-radius: var(--radius-md); border: 1px solid #1e293b; line-height: 1.6; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); background: var(--bg-surface); padding: 2rem 0; text-align: center; }
+    .footer p { font-size: 0.82rem; color: var(--text-muted); }
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: #fff; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 600; border: 1px solid #334155; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 1024px) { .detail-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../#home" class="nav-logo">
+        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#about" class="nav-link">About</a></li>
+        <li><a href="../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../experience/" class="nav-link">Experience</a></li>
+        <li><a href="./" class="nav-link">Projects</a></li>
+        <li><a href="../tools/" class="nav-link">Tools</a></li>
+        <li><a href="../AI/" class="nav-link">AI</a></li>
+        <li><a href="../interview/" class="nav-link">Interview</a></li>
+        <li><a href="../#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Main -->
+  <main class="detail-wrap">
+    <a href="./" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+      Back to Projects
+    </a>
+
+    <header class="detail-header">
+      <div class="detail-tag">Cryptographic Supply Chain Security</div>
+      <h1 class="detail-title">SLSA-3 Cryptographic Supply Chain &amp; <span class="gradient-text">DevSecOps Platform</span></h1>
+      <p class="detail-subtitle">End-to-end provenance architecture generating CycloneDX SBOMs, keyless Sigstore Cosign signatures, and Kyverno admission controls blocking unsigned container images in production.</p>
+    </header>
+
+    <div class="detail-grid">
+      <!-- Left Column -->
+      <div class="left-col">
+        <!-- Overview -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📖 Project Overview</h2>
+          <p style="margin-bottom: 1rem;">
+            Modern CI/CD pipelines and microservice registries are prime vectors for sophisticated supply chain compromises (e.g., SolarWinds, Codecov, dependency typosquatting). Deploying third-party or internal container images without verifiable provenance creates severe enterprise vulnerability risks.
+          </p>
+          <p style="margin-bottom: 1rem;">
+            This system establishes an end-to-end <strong>Supply-chain Levels for Software Artifacts (SLSA) Level 3</strong> compliant governance platform. Integrated into GitHub Actions pipelines, it automatically extracts standardized <strong>CycloneDX JSON SBOMs</strong>, validates dependencies with Trivy against national vulnerability databases, and applies cryptographic keyless container signing via <strong>Sigstore Cosign</strong> using ephemeral OIDC identities.
+          </p>
+          <p>
+            Attestations are immutably logged to the public <strong>Rekor transparency ledger</strong>. At cluster admission time, <strong>Kyverno admission controllers</strong> intercept every Pod deployment request, strictly verifying signatures and denying any unsigned artifact or high-severity CVE before it reaches Kubernetes nodes.
+          </p>
+        </section>
+
+        <!-- Setup Steps -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">⚙️ Deployment Checklist &amp; Runbook</h2>
+          <div class="step-list">
+            <div class="step-item">
+              <span class="step-num">1</span>
+              <div class="step-content">
+                <h3 class="step-title">Generate CycloneDX SBOM &amp; Scan with Trivy</h3>
+                <p class="step-desc">Extract deep dependency trees and CVE vulnerability reports during container builds:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">yaml</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>- name: Generate CycloneDX SBOM
+  uses: CycloneDX/gh-node-module-generatebom@v1
+  with:
+    output: bom.json
+
+- name: Vulnerability Scan with Trivy
+  uses: aquasecurity/trivy-action@master
+  with:
+    scan-type: 'fs'
+    ignore-unfixed: true
+    format: 'sarif'
+    severity: 'CRITICAL,HIGH'</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">2</span>
+              <div class="step-content">
+                <h3 class="step-title">Sign Container Image Keylessly with Sigstore Cosign</h3>
+                <p class="step-desc">Publish image attestation to Rekor using GitHub OIDC workload identity:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code># Sign image using OIDC token (no long-lived private keys):
+cosign sign --yes \
+  ghcr.io/pradeeptalari14/enterprise-platform:v2.4.0
+
+# Attach and sign the CycloneDX SBOM attestation:
+cosign attest --yes \
+  --predicate bom.json \
+  --type cyclonedx \
+  ghcr.io/pradeeptalari14/enterprise-platform:v2.4.0</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">3</span>
+              <div class="step-content">
+                <h3 class="step-title">Deploy Kyverno Zero-Trust Admission Policy</h3>
+                <p class="step-desc">Enforce cluster-wide rule blocking deployment of unsigned container images:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">yaml</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-cosign-signature
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+  - name: verify-signature-rule
+    match:
+      any:
+      - resources:
+          kinds: ["Pod"]
+    verifyImages:
+    - imageReferences: ["ghcr.io/pradeeptalari14/*"]
+      attestors:
+      - entries:
+        - keyless:
+            issuer: https://token.actions.githubusercontent.com
+            subject: https://github.com/Pradeeptalari14/*</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Customizations -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🔄 Configuration &amp; Environment Keys</h2>
+          <div class="table-responsive">
+            <table class="replace-table">
+              <thead>
+                <tr>
+                  <th>Environment Variable</th>
+                  <th>Description</th>
+                  <th>Suggested Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>COSIGN_EXPERIMENTAL</code></td>
+                  <td>Enable keyless OIDC Fulcio / Rekor workflows.</td>
+                  <td><code>1</code></td>
+                </tr>
+                <tr>
+                  <td><code>REKOR_SERVER_URL</code></td>
+                  <td>Sigstore public or enterprise transparency log.</td>
+                  <td><code>https://rekor.sigstore.dev</code></td>
+                </tr>
+                <tr>
+                  <td><code>KYVERNO_FAILURE_ACTION</code></td>
+                  <td>Enforcement action for unverified image admission.</td>
+                  <td><code>Enforce</code> (blocks pod creation)</td>
+                </tr>
+                <tr>
+                  <td><code>MAX_ALLOWED_CVE_SEVERITY</code></td>
+                  <td>Highest permitted CVE threshold in production pipelines.</td>
+                  <td><code>MEDIUM</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <!-- Architecture Diagram -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📊 Architectural Workflow</h2>
+          <div class="diagram-viewport">
+            <pre class="mermaid" style="background: transparent;">
+graph TD
+    Dev([Developer Commit]) -->|Git Push| Pipeline[GitHub Actions CI Runner]
+    Pipeline -->|Docker Build| BuildImage[Container Image Artifact]
+    Pipeline -->|Generate SBOM| CycloneDX[CycloneDX JSON Generator]
+    Pipeline -->|Vulnerability Gate| Trivy[Trivy Security Scanner]
+    Trivy -->|Scan Clean| CosignSign[Sigstore Cosign Keyless Signer]
+    CosignSign -->|Fulcio Certificate| OIDC[(GitHub OIDC Workload ID)]
+    CosignSign -->|Publish Log Entry| Rekor[(Rekor Transparency Ledger)]
+    CosignSign -->|Push Image + Attestation| Registry[(Container Registry GHCR)]
+    ArgoCD[ArgoCD GitOps] -->|Deploy Request| K8sAPI[Kubernetes API Server]
+    K8sAPI -->|Admission Webhook| Kyverno[Kyverno Policy Engine]
+    Kyverno -->|Verify Cosign Signature| Rekor
+    Kyverno -->|Signature Validated| WorkerNodes[Deploy to Production Pods]
+            </pre>
+          </div>
+        </section>
+
+        <!-- Useful Commands -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🛠️ Useful CLI Reference</h2>
+          <div class="terminal-pre">
+            <code style="display: block; white-space: pre-wrap;"># Verify signature of live production image:
+cosign verify \
+  --certificate-identity-regexp="https://github.com/Pradeeptalari14/.*" \
+  --certificate-oidc-issuer="https://token.actions.githubusercontent.com" \
+  ghcr.io/pradeeptalari14/enterprise-platform:v2.4.0
+
+# Inspect Kyverno cluster policy violation reports:
+kubectl get clusterpolicyreports -A</code>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="yr"></span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a></p>
+  </footer>
+
+  <div id="toast" class="toast">📋 Code copied to clipboard!</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+
+    function copyCode(btn) {
+      const pre = btn.parentElement.nextElementSibling;
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 2000);
+      });
+    }
+  </script>
+  <load src="../sections/chatbot.html" />
+</body>
+</html>

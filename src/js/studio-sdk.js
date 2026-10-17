@@ -523,6 +523,45 @@ class StudioPlatformSDK {
     };
   }
 
+  gradeDrill({ command = '', expectedPatterns = [] } = {}) {
+    if (!expectedPatterns || !expectedPatterns.length) {
+      return { passed: true, score: 100, feedback: 'Drill executed successfully', diff: null };
+    }
+
+    let allMatched = true;
+    const diffs = [];
+
+    for (const pattern of expectedPatterns) {
+      if (pattern instanceof RegExp) {
+        if (!pattern.test(command)) {
+          allMatched = false;
+          diffs.push(`Expected command matching regex: ${pattern}`);
+        }
+      } else if (typeof pattern === 'string') {
+        if (!command.includes(pattern)) {
+          allMatched = false;
+          diffs.push(`Expected command matching: "${pattern}"`);
+        }
+      }
+    }
+
+    if (allMatched) {
+      return {
+        passed: true,
+        score: 100,
+        feedback: 'Drill executed successfully. All required patterns matched.',
+        diff: null
+      };
+    } else {
+      return {
+        passed: false,
+        score: 0,
+        feedback: 'Drill validation failed. Command does not match expected criteria.',
+        diff: diffs.join('; ')
+      };
+    }
+  }
+
   // 12. AI Prompt Guardrails & OWASP Injection Scanner (Dual-Engine)
   async scanPromptGuardrails(prompt = '', { tier = 'strict' } = {}) {
     await this.initPromise;

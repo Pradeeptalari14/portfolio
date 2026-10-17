@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vLLM Distributed Serving &amp; PagedAttention Engine | Talari Pradeep</title>
+  <meta name="description" content="AI Infrastructure: High-throughput distributed LLM serving cluster leveraging vLLM, PagedAttention v2, FlashAttention-3 chunked prefill, and FP8 quantization." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "vLLM Distributed Serving & PagedAttention Engine",
+    "description": "High-throughput distributed model inference cluster with PagedAttention v2, tensor parallelism, and sub-18ms time-to-first-token.",
+    "programmingLanguage": "Python",
+    "codeRepository": "https://github.com/Pradeeptalari14/tp-vllm-paged-attention"
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-base: #ffffff;
+      --bg-surface: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent-primary: #4f46e5;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #059669;
+      --border: #e2e8f0;
+      --border-accent: rgba(79, 70, 229, 0.2);
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      --grad-primary: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-surface); color: var(--text-primary); line-height: 1.7; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    .navbar { height: 72px; border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1200px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; outline: 2px solid rgba(79, 70, 229, 0.3); outline-offset: 2px; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-link { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); transition: var(--transition); }
+    .nav-link:hover { color: var(--accent-primary); }
+
+    /* Page Wrap */
+    .detail-wrap { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; transition: var(--transition); }
+    .back-link:hover { color: var(--accent-primary); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* Header */
+    .detail-header { margin-bottom: 3.5rem; }
+    .detail-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-primary); background: rgba(79, 70, 229, 0.08); border: 1px solid rgba(79, 70, 229, 0.15); padding: 0.3rem 1rem; border-radius: 50px; margin-bottom: 1rem; }
+    .detail-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .detail-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 800px; }
+
+    /* Layout Grid */
+    .detail-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: start; }
+    .detail-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+    .detail-card-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+
+    /* Left Col Elements */
+    .step-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step-item { display: flex; gap: 1rem; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(79, 70, 229, 0.08); border: 1.5px solid var(--accent-primary); color: var(--accent-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--text-primary); }
+    .step-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+
+    /* Code Block */
+    .code-container { background: #0f172a; border-radius: var(--radius-md); overflow: hidden; border: 1px solid #1e293b; margin: 0.75rem 0; }
+    .code-header { background: #1e293b; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+    .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+    .copy-btn { background: transparent; border: none; color: #94a3b8; font-size: 0.68rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-weight: 600; transition: color var(--transition); }
+    .copy-btn:hover { color: #fff; }
+    .code-pre { padding: 1rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #e2e8f0; line-height: 1.5; }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; }
+    .replace-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    .replace-table th, .replace-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .replace-table th { font-weight: 700; color: var(--text-primary); background: var(--bg-surface); }
+    .replace-table td { color: var(--text-secondary); }
+    .replace-table code { font-family: 'JetBrains Mono', monospace; background: var(--bg-surface); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.78rem; border: 1px solid var(--border); }
+
+    /* Diagram / Terminal Card */
+    .diagram-viewport { background: #0f172a; border-radius: var(--radius-md); border: 1px solid #1e293b; padding: 1rem; overflow-x: auto; color: #fff; }
+    .terminal-pre { background: #0b0f19; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a9fef7; padding: 1rem; border-radius: var(--radius-md); border: 1px solid #1e293b; line-height: 1.6; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); background: var(--bg-surface); padding: 2rem 0; text-align: center; }
+    .footer p { font-size: 0.82rem; color: var(--text-muted); }
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: #fff; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 600; border: 1px solid #334155; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 1024px) { .detail-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../#home" class="nav-logo">
+        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#about" class="nav-link">About</a></li>
+        <li><a href="../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../experience/" class="nav-link">Experience</a></li>
+        <li><a href="./" class="nav-link">Projects</a></li>
+        <li><a href="../tools/" class="nav-link">Tools</a></li>
+        <li><a href="../AI/" class="nav-link">AI</a></li>
+        <li><a href="../interview/" class="nav-link">Interview</a></li>
+        <li><a href="../#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Main -->
+  <main class="detail-wrap">
+    <a href="./" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+      Back to Projects
+    </a>
+
+    <header class="detail-header">
+      <div class="detail-tag">High-Throughput Distributed AI Inference</div>
+      <h1 class="detail-title">vLLM Distributed Serving &amp; <span class="gradient-text">PagedAttention Engine</span></h1>
+      <p class="detail-subtitle">Scalable model inference cluster serving 70B+ parameter models across 8× NVIDIA H100 GPUs with PagedAttention v2, FlashAttention-3 chunked prefill, and sub-18ms TTFT.</p>
+    </header>
+
+    <div class="detail-grid">
+      <!-- Left Column -->
+      <div class="left-col">
+        <!-- Overview -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📖 Project Overview</h2>
+          <p style="margin-bottom: 1rem;">
+            Serving modern Large Language Models at enterprise scale faces a core bottleneck: <strong>Key-Value (KV) cache memory fragmentation</strong>. Traditional inference engines allocate contiguous blocks of High-Bandwidth Memory (HBM) for worst-case sequence lengths, wasting 60% to 80% of scarce GPU VRAM on unused capacity.
+          </p>
+          <p style="margin-bottom: 1rem;">
+            This platform deploys a production <strong>vLLM</strong> inference cluster utilizing <strong>PagedAttention v2</strong>—an algorithm inspired by operating system virtual memory paging that splits KV cache tensors into discrete, non-contiguous physical memory blocks.
+          </p>
+          <p>
+            Combined with <strong>FlashAttention-3</strong> chunked prefill, AWQ 4-bit and FP8 quantization, and tensor parallelism orchestrated over Ray Core, the cluster delivers <strong>2.8× higher concurrent query throughput</strong>, cuts Time-to-First-Token (TTFT) to under 18ms, and enables multi-node serving of 70B and MoE models with zero wasted memory.
+          </p>
+        </section>
+
+        <!-- Setup Steps -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">⚙️ Deployment Checklist &amp; Runbook</h2>
+          <div class="step-list">
+            <div class="step-item">
+              <span class="step-num">1</span>
+              <div class="step-content">
+                <h3 class="step-title">Initialize vLLM Distributed Async Engine</h3>
+                <p class="step-desc">Configure the asynchronous vLLM engine with tensor parallelism and PagedAttention settings:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>from vllm import AsyncLLMEngine, AsyncEngineArgs, SamplingParams
+
+engine_args = AsyncEngineArgs(
+    model="deepseek-ai/DeepSeek-V2.5",
+    tensor_parallel_size=8,
+    gpu_memory_utilization=0.92,
+    max_model_len=32768,
+    kv_cache_dtype="fp8_e4m3",
+    block_size=16,  # PagedAttention block size
+    enable_chunked_prefill=True,
+    max_num_batched_tokens=8192
+)
+engine = AsyncLLMEngine.from_engine_args(engine_args)</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">2</span>
+              <div class="step-content">
+                <h3 class="step-title">Deploy Ray Cluster DaemonSet</h3>
+                <p class="step-desc">Provision the multi-node Ray operator on Kubernetes across GPU node pools:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">yaml</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>apiVersion: ray.io/v1
+kind: RayCluster
+metadata:
+  name: vllm-h100-cluster
+spec:
+  rayVersion: '2.34.0'
+  headGroupSpec:
+    rayStartParams:
+      dashboard-host: '0.0.0.0'
+    template:
+      spec:
+        containers:
+        - name: ray-head
+          image: vllm/vllm-openai:latest
+          resources:
+            limits:
+              cpu: "16"
+              memory: "64Gi"
+  workerGroupSpecs:
+  - groupName: gpu-workers
+    replicas: 4
+    template:
+      spec:
+        containers:
+        - name: ray-worker
+          image: vllm/vllm-openai:latest
+          resources:
+            limits:
+              nvidia.com/gpu: "8"</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">3</span>
+              <div class="step-content">
+                <h3 class="step-title">Configure Triton &amp; Prometheus Metrics Exporter</h3>
+                <p class="step-desc">Export real-time TTFT, KV-cache usage, and token generation latencies to Prometheus:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code># Scrape vLLM native metrics endpoint:
+curl http://vllm-engine.ai-serving.svc:8000/metrics | grep vllm:
+# Metrics:
+# vllm:num_requests_running
+# vllm:num_requests_waiting
+# vllm:gpu_cache_usage_factor
+# vllm:time_to_first_token_seconds</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Customizations -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🔄 Configuration &amp; Environment Keys</h2>
+          <div class="table-responsive">
+            <table class="replace-table">
+              <thead>
+                <tr>
+                  <th>Environment Variable</th>
+                  <th>Description</th>
+                  <th>Suggested Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>TENSOR_PARALLEL_SIZE</code></td>
+                  <td>Number of GPUs to partition model layers across.</td>
+                  <td><code>8</code> (for 70B+ weights)</td>
+                </tr>
+                <tr>
+                  <td><code>GPU_MEMORY_UTILIZATION</code></td>
+                  <td>Fraction of VRAM reserved for weights + KV-cache.</td>
+                  <td><code>0.92</code></td>
+                </tr>
+                <tr>
+                  <td><code>KV_CACHE_DTYPE</code></td>
+                  <td>Data format for KV cache tokens.</td>
+                  <td><code>fp8_e4m3</code> (50% VRAM saving)</td>
+                </tr>
+                <tr>
+                  <td><code>MAX_NUM_BATCHED_TOKENS</code></td>
+                  <td>Chunked prefill batching threshold.</td>
+                  <td><code>8192</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <!-- Architecture Diagram -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📊 Architectural Workflow</h2>
+          <div class="diagram-viewport">
+            <pre class="mermaid" style="background: transparent;">
+graph TD
+    Client([Client Application]) -->|OpenAI-Compatible Streaming| LiteLLM[LiteLLM Smart Router]
+    LiteLLM -->|Batch Dispatch| Scheduler[vLLM Iteration-Level Scheduler]
+    Scheduler -->|Prefill Chunking| FlashAttn[FlashAttention-3 Engine]
+    Scheduler -->|Allocate KV Pages| MemoryManager[PagedAttention v2 Block Table]
+    MemoryManager -->|Map Virtual Pages| PhysicalVRAM[(8x H100 Physical VRAM)]
+    PhysicalVRAM -->|Tensor Parallel Compute| RayWorkerPool[Ray GPU Worker Pool]
+    RayWorkerPool -->|Yield Next Token| StreamBuffer[SSE Event Buffer]
+    StreamBuffer -->|Sub-18ms TTFT Stream| Client
+            </pre>
+          </div>
+        </section>
+
+        <!-- Useful Commands -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🛠️ Useful CLI Reference</h2>
+          <div class="terminal-pre">
+            <code style="display: block; white-space: pre-wrap;"># Launch production vLLM serving container:
+python3 -m vllm.entrypoints.openai.api_server \
+  --model deepseek-ai/DeepSeek-V2.5 \
+  --tensor-parallel-size 8 \
+  --gpu-memory-utilization 0.92 \
+  --kv-cache-dtype fp8_e4m3 \
+  --port 8000
+
+# Benchmark concurrency and tokens/second:
+python3 -m vllm.benchmarks.benchmark_serving \
+  --backend vllm \
+  --model deepseek-ai/DeepSeek-V2.5 \
+  --num-prompts 500 \
+  --request-rate 25</code>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="yr"></span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a></p>
+  </footer>
+
+  <div id="toast" class="toast">📋 Code copied to clipboard!</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+
+    function copyCode(btn) {
+      const pre = btn.parentElement.nextElementSibling;
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 2000);
+      });
+    }
+  </script>
+  <load src="../sections/chatbot.html" />
+</body>
+</html>

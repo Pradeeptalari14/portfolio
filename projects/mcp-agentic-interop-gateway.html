@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universal MCP Multi-Agent Gateway | Talari Pradeep</title>
+  <meta name="description" content="Agentic AI: Universal Model Context Protocol (MCP) gateway enabling standardized cross-agent tool discovery, A2A communication, and secure SaaS integration." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Universal Model Context Protocol (MCP) Multi-Agent Gateway",
+    "description": "Standardized Anthropic MCP host and SSE multiplexing bridge connecting heterogeneous AI agents with 50+ enterprise SaaS connectors.",
+    "programmingLanguage": "Python",
+    "codeRepository": "https://github.com/Pradeeptalari14/tp-mcp-agentic-bridge"
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-base: #ffffff;
+      --bg-surface: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent-primary: #4f46e5;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #059669;
+      --border: #e2e8f0;
+      --border-accent: rgba(79, 70, 229, 0.2);
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      --grad-primary: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-surface); color: var(--text-primary); line-height: 1.7; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    .navbar { height: 72px; border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1200px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; outline: 2px solid rgba(79, 70, 229, 0.3); outline-offset: 2px; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-link { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); transition: var(--transition); }
+    .nav-link:hover { color: var(--accent-primary); }
+
+    /* Page Wrap */
+    .detail-wrap { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; transition: var(--transition); }
+    .back-link:hover { color: var(--accent-primary); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* Header */
+    .detail-header { margin-bottom: 3.5rem; }
+    .detail-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-primary); background: rgba(79, 70, 229, 0.08); border: 1px solid rgba(79, 70, 229, 0.15); padding: 0.3rem 1rem; border-radius: 50px; margin-bottom: 1rem; }
+    .detail-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .detail-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 800px; }
+
+    /* Layout Grid */
+    .detail-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: start; }
+    .detail-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+    .detail-card-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+
+    /* Left Col Elements */
+    .step-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step-item { display: flex; gap: 1rem; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(79, 70, 229, 0.08); border: 1.5px solid var(--accent-primary); color: var(--accent-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--text-primary); }
+    .step-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+
+    /* Code Block */
+    .code-container { background: #0f172a; border-radius: var(--radius-md); overflow: hidden; border: 1px solid #1e293b; margin: 0.75rem 0; }
+    .code-header { background: #1e293b; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+    .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+    .copy-btn { background: transparent; border: none; color: #94a3b8; font-size: 0.68rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-weight: 600; transition: color var(--transition); }
+    .copy-btn:hover { color: #fff; }
+    .code-pre { padding: 1rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #e2e8f0; line-height: 1.5; }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; }
+    .replace-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    .replace-table th, .replace-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .replace-table th { font-weight: 700; color: var(--text-primary); background: var(--bg-surface); }
+    .replace-table td { color: var(--text-secondary); }
+    .replace-table code { font-family: 'JetBrains Mono', monospace; background: var(--bg-surface); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.78rem; border: 1px solid var(--border); }
+
+    /* Diagram / Terminal Card */
+    .diagram-viewport { background: #0f172a; border-radius: var(--radius-md); border: 1px solid #1e293b; padding: 1rem; overflow-x: auto; color: #fff; }
+    .terminal-pre { background: #0b0f19; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a9fef7; padding: 1rem; border-radius: var(--radius-md); border: 1px solid #1e293b; line-height: 1.6; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); background: var(--bg-surface); padding: 2rem 0; text-align: center; }
+    .footer p { font-size: 0.82rem; color: var(--text-muted); }
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: #fff; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 600; border: 1px solid #334155; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 1024px) { .detail-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../#home" class="nav-logo">
+        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#about" class="nav-link">About</a></li>
+        <li><a href="../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../experience/" class="nav-link">Experience</a></li>
+        <li><a href="./" class="nav-link">Projects</a></li>
+        <li><a href="../tools/" class="nav-link">Tools</a></li>
+        <li><a href="../AI/" class="nav-link">AI</a></li>
+        <li><a href="../interview/" class="nav-link">Interview</a></li>
+        <li><a href="../#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Main -->
+  <main class="detail-wrap">
+    <a href="./" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+      Back to Projects
+    </a>
+
+    <header class="detail-header">
+      <div class="detail-tag">Multi-Agent Protocol &amp; Tool Bus</div>
+      <h1 class="detail-title">Universal Model Context Protocol <span class="gradient-text">(MCP) Multi-Agent Gateway</span></h1>
+      <p class="detail-subtitle">Anthropic MCP open-standard gateway facilitating cross-agent capability discovery, cryptographic capability authorization, and real-time SSE tool execution across 50+ enterprise SaaS connectors.</p>
+    </header>
+
+    <div class="detail-grid">
+      <!-- Left Column -->
+      <div class="left-col">
+        <!-- Overview -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📖 Project Overview</h2>
+          <p style="margin-bottom: 1rem;">
+            As organizations scale autonomous agents across different teams and frameworks (LangChain, AutoGen, CrewAI, Custom Python), agents become trapped in proprietary silos. They lack a uniform protocol for exposing capabilities, introspecting dynamic schemas, and securely sharing operational tools.
+          </p>
+          <p style="margin-bottom: 1rem;">
+            This platform engineers a centralized <strong>Model Context Protocol (MCP) Multi-Agent Gateway</strong> compliant with Anthropic's open specification. It establishes an asynchronous <strong>Server-Sent Events (SSE)</strong> multiplexing transport layer that exposes a unified registry of enterprise resources, prompts, and tools.
+          </p>
+          <p>
+            Heterogeneous agents negotiate permissions cryptographically, inspect input schemas on the fly, and execute actions with strict per-tenant rate-limiting and audit tracing. The bridge currently supports <strong>50+ production integrations</strong> including AWS IAM, Kubernetes APIs, GitHub Enterprise, Jira, Datadog, and Snowflake.
+          </p>
+        </section>
+
+        <!-- Setup Steps -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">⚙️ Deployment Checklist &amp; Runbook</h2>
+          <div class="step-list">
+            <div class="step-item">
+              <span class="step-num">1</span>
+              <div class="step-content">
+                <h3 class="step-title">Initialize FastMCP Tool Server</h3>
+                <p class="step-desc">Define strongly-typed Pydantic tools exposed over the MCP protocol:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>from mcp.server.fastmcp import FastMCP
+from pydantic import BaseModel, Field
+
+mcp = FastMCP("enterprise-infra-gateway")
+
+class ClusterQuery(BaseModel):
+    namespace: str = Field(description="Target Kubernetes namespace")
+    resource_type: str = Field(default="pods", description="Resource kind")
+
+@mcp.tool()
+async def query_cluster_health(query: ClusterQuery) -> str:
+    """Introspect real-time Kubernetes cluster health via MCP."""
+    return f"Status for {query.resource_type} in {query.namespace}: All 14 pods Healthy"
+
+if __name__ == "__main__":
+    mcp.run(transport="sse")</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">2</span>
+              <div class="step-content">
+                <h3 class="step-title">Configure SSE Multiplexing Transport</h3>
+                <p class="step-desc">Establish persistent Server-Sent Events channel for bidirectional agent streaming:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>from mcp.client.sse import sse_client
+from mcp.client.session import ClientSession
+
+async with sse_client("http://mcp-gateway:8080/sse") as streams:
+    async with ClientSession(*streams) as session:
+        await session.initialize()
+        tools = await session.list_tools()
+        result = await session.call_tool("query_cluster_health", {"namespace": "production"})</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">3</span>
+              <div class="step-content">
+                <h3 class="step-title">Deploy Zero-Trust RBAC Policy Sidecar</h3>
+                <p class="step-desc">Enforce Open Policy Agent (OPA) validation on all incoming A2A tool dispatches:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">rego</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>package mcp.authz
+
+default allow = false
+
+allow {
+    input.agent.role == "sre-lead"
+    input.tool.name == "query_cluster_health"
+}
+
+allow {
+    input.agent.role == "admin"
+    input.tool.scope == "read-write"
+    input.client_cert_verified == true
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Customizations -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🔄 Configuration &amp; Environment Keys</h2>
+          <div class="table-responsive">
+            <table class="replace-table">
+              <thead>
+                <tr>
+                  <th>Environment Variable</th>
+                  <th>Description</th>
+                  <th>Suggested Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>MCP_TRANSPORT_MODE</code></td>
+                  <td>Transport communication layer.</td>
+                  <td><code>sse</code> (or <code>stdio</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>MCP_SERVER_PORT</code></td>
+                  <td>Port for SSE events stream and POST routing.</td>
+                  <td><code>8080</code></td>
+                </tr>
+                <tr>
+                  <td><code>MAX_CONCURRENT_SSE_CLIENTS</code></td>
+                  <td>Multiplexing connection pool cap.</td>
+                  <td><code>2500</code></td>
+                </tr>
+                <tr>
+                  <td><code>TOOL_EXECUTION_TIMEOUT_SEC</code></td>
+                  <td>Maximum duration before tool abort.</td>
+                  <td><code>30</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <!-- Architecture Diagram -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📊 Architectural Workflow</h2>
+          <div class="diagram-viewport">
+            <pre class="mermaid" style="background: transparent;">
+graph TD
+    AgentA([LangGraph Orchestrator]) -->|SSE Connect / Handshake| MCPGateway[Universal MCP Gateway]
+    AgentB([Claude 3.7 Computer-Use]) -->|SSE Connect / Handshake| MCPGateway
+    MCPGateway -->|Validate Token| OPASidecar[OPA RBAC Engine]
+    OPASidecar -->|Granted| SchemaRegistry[Dynamic Tool & Schema Registry]
+    SchemaRegistry -->|List Capabilities| MCPGateway
+    MCPGateway -->|Execute Tool Call| ExecutionWorker[Sandboxed Tool Worker]
+    ExecutionWorker -->|Secure Connector| AWS[(AWS Cloud APIs)]
+    ExecutionWorker -->|K8s SDK| K8s[(Kubernetes Cluster)]
+    ExecutionWorker -->|Database Query| DB[(PostgreSQL Data Lake)]
+    ExecutionWorker -->|Return Result| MCPGateway
+    MCPGateway -->|JSON-RPC Response| AgentA
+            </pre>
+          </div>
+        </section>
+
+        <!-- Useful Commands -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🛠️ Useful CLI Reference</h2>
+          <div class="terminal-pre">
+            <code style="display: block; white-space: pre-wrap;"># Introspect registered MCP server tools over SSE:
+curl -N http://localhost:8080/sse
+
+# Inspect live active MCP connections:
+curl http://localhost:8080/api/mcp/health
+
+# Run automated MCP compatibility regression suite:
+npm run test -- tests/mcp-universal-gateway.test.js</code>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="yr"></span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a></p>
+  </footer>
+
+  <div id="toast" class="toast">📋 Code copied to clipboard!</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+
+    function copyCode(btn) {
+      const pre = btn.parentElement.nextElementSibling;
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 2000);
+      });
+    }
+  </script>
+  <load src="../sections/chatbot.html" />
+</body>
+</html>

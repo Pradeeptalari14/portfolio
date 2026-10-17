@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous Kubernetes GPU Scheduler &amp; FinOps | Talari Pradeep</title>
+  <meta name="description" content="Cloud Infrastructure & FinOps: Autonomous Kubernetes GPU scheduler orchestrating Karpenter, KEDA, and NVIDIA MIG slicing, reducing AI compute expenses by 42%." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Autonomous Kubernetes GPU Scheduler & AI FinOps Platform",
+    "description": "Dynamic GPU bin-packing and Karpenter Spot orchestrator cutting AI inference infrastructure costs by 42%.",
+    "programmingLanguage": "Go / YAML",
+    "codeRepository": "https://github.com/Pradeeptalari14/tp-gpu-scheduler"
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-base: #ffffff;
+      --bg-surface: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent-primary: #4f46e5;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #059669;
+      --border: #e2e8f0;
+      --border-accent: rgba(79, 70, 229, 0.2);
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      --grad-primary: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-surface); color: var(--text-primary); line-height: 1.7; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    .navbar { height: 72px; border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1200px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; outline: 2px solid rgba(79, 70, 229, 0.3); outline-offset: 2px; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-link { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); transition: var(--transition); }
+    .nav-link:hover { color: var(--accent-primary); }
+
+    /* Page Wrap */
+    .detail-wrap { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; transition: var(--transition); }
+    .back-link:hover { color: var(--accent-primary); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* Header */
+    .detail-header { margin-bottom: 3.5rem; }
+    .detail-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-primary); background: rgba(79, 70, 229, 0.08); border: 1px solid rgba(79, 70, 229, 0.15); padding: 0.3rem 1rem; border-radius: 50px; margin-bottom: 1rem; }
+    .detail-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .detail-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 800px; }
+
+    /* Layout Grid */
+    .detail-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: start; }
+    .detail-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+    .detail-card-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+
+    /* Left Col Elements */
+    .step-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step-item { display: flex; gap: 1rem; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(79, 70, 229, 0.08); border: 1.5px solid var(--accent-primary); color: var(--accent-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--text-primary); }
+    .step-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+
+    /* Code Block */
+    .code-container { background: #0f172a; border-radius: var(--radius-md); overflow: hidden; border: 1px solid #1e293b; margin: 0.75rem 0; }
+    .code-header { background: #1e293b; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+    .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+    .copy-btn { background: transparent; border: none; color: #94a3b8; font-size: 0.68rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-weight: 600; transition: color var(--transition); }
+    .copy-btn:hover { color: #fff; }
+    .code-pre { padding: 1rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #e2e8f0; line-height: 1.5; }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; }
+    .replace-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    .replace-table th, .replace-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .replace-table th { font-weight: 700; color: var(--text-primary); background: var(--bg-surface); }
+    .replace-table td { color: var(--text-secondary); }
+    .replace-table code { font-family: 'JetBrains Mono', monospace; background: var(--bg-surface); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.78rem; border: 1px solid var(--border); }
+
+    /* Diagram / Terminal Card */
+    .diagram-viewport { background: #0f172a; border-radius: var(--radius-md); border: 1px solid #1e293b; padding: 1rem; overflow-x: auto; color: #fff; }
+    .terminal-pre { background: #0b0f19; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a9fef7; padding: 1rem; border-radius: var(--radius-md); border: 1px solid #1e293b; line-height: 1.6; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); background: var(--bg-surface); padding: 2rem 0; text-align: center; }
+    .footer p { font-size: 0.82rem; color: var(--text-muted); }
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: #fff; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 600; border: 1px solid #334155; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 1024px) { .detail-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../#home" class="nav-logo">
+        <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" />
+        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#about" class="nav-link">About</a></li>
+        <li><a href="../skills/" class="nav-link">Skills</a></li>
+        <li><a href="../experience/" class="nav-link">Experience</a></li>
+        <li><a href="./" class="nav-link">Projects</a></li>
+        <li><a href="../tools/" class="nav-link">Tools</a></li>
+        <li><a href="../AI/" class="nav-link">AI</a></li>
+        <li><a href="../interview/" class="nav-link">Interview</a></li>
+        <li><a href="../#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Main -->
+  <main class="detail-wrap">
+    <a href="./" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+      Back to Projects
+    </a>
+
+    <header class="detail-header">
+      <div class="detail-tag">Cloud Infrastructure &amp; AI FinOps</div>
+      <h1 class="detail-title">Autonomous Kubernetes <span class="gradient-text">GPU Scheduler &amp; FinOps Platform</span></h1>
+      <p class="detail-subtitle">Automated bin-packing engine orchestrating Karpenter, KEDA, and NVIDIA Multi-Instance GPU (MIG) slicing to drive 42% cloud compute savings without violating strict model inference SLAs.</p>
+    </header>
+
+    <div class="detail-grid">
+      <!-- Left Column -->
+      <div class="left-col">
+        <!-- Overview -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📖 Project Overview</h2>
+          <p style="margin-bottom: 1rem;">
+            Enterprise AI workloads (training, fine-tuning, and real-time inference) rely heavily on expensive GPU compute instances (e.g., AWS <code>p4d.24xlarge</code> or <code>g5.12xlarge</code>). Without specialized scheduling, models running batch inferences leave massive chunks of GPU compute, Tensor Cores, and VRAM underutilized, incurring exorbitant monthly cloud expenses.
+          </p>
+          <p style="margin-bottom: 1rem;">
+            This system establishes an autonomous GPU scheduling and FinOps control plane built on <strong>Karpenter</strong>, <strong>KEDA (Kubernetes Event-driven Autoscaling)</strong>, and the <strong>NVIDIA GPU Operator</strong>. By leveraging <strong>Multi-Instance GPU (MIG)</strong> hardware slicing, single A100/H100 cards are safely partitioned into up to 7 isolated GPU instances for lightweight embedders and rerankers.
+          </p>
+          <p>
+            When workloads spike, Karpenter provisions Spot GPU instances in under 45 seconds, while KEDA gracefully handles 2-minute Spot termination notices with pre-flight model state checkpointing—achieving an audited <strong>42% cloud expenditure reduction</strong>.
+          </p>
+        </section>
+
+        <!-- Setup Steps -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">⚙️ Deployment Checklist &amp; Runbook</h2>
+          <div class="step-list">
+            <div class="step-item">
+              <span class="step-num">1</span>
+              <div class="step-content">
+                <h3 class="step-title">Configure Karpenter GPU NodePool</h3>
+                <p class="step-desc">Provision ephemeral Spot GPU worker pools with consolidated bin-packing rules:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">yaml</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: gpu-inference-pool
+spec:
+  template:
+    spec:
+      requirements:
+        - key: "karpenter.k8s.aws/instance-category"
+          operator: In
+          values: ["g5", "g6", "p4d"]
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          values: ["spot", "on-demand"]
+      nodeClassRef:
+        name: gpu-nodeclass
+  disruption:
+    consolidationPolicy: WhenUnderutilized
+    expireAfter: 720h</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">2</span>
+              <div class="step-content">
+                <h3 class="step-title">Deploy KEDA Queue-Based Autoscaler</h3>
+                <p class="step-desc">Autoscale GPU inference workers based on RabbitMQ / Redis request queue depth:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">yaml</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code>apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: llm-worker-scaler
+  namespace: ai-serving
+spec:
+  scaleTargetRef:
+    name: vllm-worker-deployment
+  minReplicaCount: 1
+  maxReplicaCount: 20
+  triggers:
+  - type: redis
+    metadata:
+      address: redis-cluster.redis.svc:6379
+      listName: inference_tasks_queue
+      listLength: "15"</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <span class="step-num">3</span>
+              <div class="step-content">
+                <h3 class="step-title">Enable NVIDIA MIG Dynamic Partitioning</h3>
+                <p class="step-desc">Apply ConfigMap configuring 3g.40gb and 1g.10gb hardware slices:</p>
+                <div class="code-container">
+                  <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+                  <pre class="code-pre"><code># Apply MIG config profile to NVIDIA GPU Operator:
+kubectl patch clusterpolicies.nvidia.com default --type='json' \
+  -p='[{"op": "replace", "path": "/spec/mig/strategy", "value": "mixed"}]'
+
+# Verify created MIG geometry slices:
+nvidia-smi mig -lgi</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Customizations -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🔄 Configuration &amp; Environment Keys</h2>
+          <div class="table-responsive">
+            <table class="replace-table">
+              <thead>
+                <tr>
+                  <th>Environment Variable</th>
+                  <th>Description</th>
+                  <th>Suggested Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>SPOT_FALLBACK_TO_ONDEMAND</code></td>
+                  <td>Automatically switch to on-demand if Spot market lacks capacity.</td>
+                  <td><code>true</code></td>
+                </tr>
+                <tr>
+                  <td><code>SPOT_DRAIN_GRACE_PERIOD_SEC</code></td>
+                  <td>Grace period to migrate active KV caches on termination notice.</td>
+                  <td><code>110</code> (under 120s limit)</td>
+                </tr>
+                <tr>
+                  <td><code>MIG_PARTITIONING_PROFILE</code></td>
+                  <td>Hardware slicing profile assigned to nodes.</td>
+                  <td><code>all-balanced</code></td>
+                </tr>
+                <tr>
+                  <td><code>KEDA_POLLING_INTERVAL</code></td>
+                  <td>Frequency to poll inference backlog depth in seconds.</td>
+                  <td><code>5</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <!-- Architecture Diagram -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">📊 Architectural Workflow</h2>
+          <div class="diagram-viewport">
+            <pre class="mermaid" style="background: transparent;">
+graph TD
+    UserQuery([Client Inference Request]) -->|Push to Queue| RedisQueue[(Redis / Kafka Queue)]
+    RedisQueue -->|Monitor Backlog| KEDA[KEDA ScaledObject]
+    KEDA -->|Request Worker Pods| K8sScheduler[K8s API Server]
+    K8sScheduler -->|Pending Pods Detected| Karpenter[Karpenter Node Autoscaler]
+    Karpenter -->|Evaluate Spot Availability| AWS[(AWS EC2 Spot Fleet)]
+    AWS -->|Provision Node <45s| GPUNode[GPU Worker Node]
+    GPUNode -->|NVIDIA Operator| MIGManager[NVIDIA MIG Slicing Engine]
+    MIGManager -->|Slice 1: 3g.40gb| VLLMPod[vLLM Inference Pod]
+    MIGManager -->|Slice 2: 1g.10gb| EmbedPod[Embedding Microservice]
+    Kubecost[Kubecost FinOps Agent] -->|Track Real-time Savings| Dashboard[Grafana FinOps Dashboard]
+            </pre>
+          </div>
+        </section>
+
+        <!-- Useful Commands -->
+        <section class="detail-card">
+          <h2 class="detail-card-title">🛠️ Useful CLI Reference</h2>
+          <div class="terminal-pre">
+            <code style="display: block; white-space: pre-wrap;"># Check Karpenter node provisioner metrics:
+kubectl get nodepools,nodeclaims -A
+
+# Inspect real-time GPU hardware utilization:
+kubectl exec -it daemonset/nvidia-device-plugin-daemonset -n gpu-operator -- nvidia-smi
+
+# Review Kubecost namespace GPU expenditure:
+kubectl port-forward -n kubecost svc/kubecost-cost-analyzer 9090:9090</code>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="yr"></span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a></p>
+  </footer>
+
+  <div id="toast" class="toast">📋 Code copied to clipboard!</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+
+    function copyCode(btn) {
+      const pre = btn.parentElement.nextElementSibling;
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 2000);
+      });
+    }
+  </script>
+  <load src="../sections/chatbot.html" />
+</body>
+</html>
