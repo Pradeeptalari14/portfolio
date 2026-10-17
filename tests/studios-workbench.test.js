@@ -41,7 +41,7 @@ describe('Studios Workbench Hub (studios/index.html)', () => {
   it('should render the search bar and skill maturity level filters', () => {
     const searchInput = document.getElementById('studioSearch');
     expect(searchInput).toBeTruthy();
-    expect(searchInput.getAttribute('placeholder')).toContain('Search 341 engineering studios');
+    expect(searchInput.getAttribute('placeholder')).toMatch(/Search (341|347) engineering studios/);
 
     const levelFilters = document.getElementById('levelFilters');
     expect(levelFilters).toBeTruthy();

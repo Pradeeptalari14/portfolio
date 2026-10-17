@@ -615,19 +615,53 @@
     inputField.value = '';
   });
 
-  function submitQuery(query) {
+  async function submitQuery(query) {
     addUserMessage(query);
     scrollToBottom();
 
     // Trigger typing simulation
     const typingIndicator = addTypingIndicator();
     
-    setTimeout(() => {
-      typingIndicator.remove();
-      const answer = generateAnswer(query);
-      addBotMessage(answer);
-      scrollToBottom();
-    }, 500 + Math.random() * 500);
+    // Attempt dynamic backend API first with graceful offline fallback
+    let answered = false;
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2500);
+
+      const res = await fetch('/api/ai/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: query,
+          model: 'qwen2.5-coder:7b',
+          stream: false
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.response) {
+          typingIndicator.remove();
+          const cleanAnswer = data.response.replace(/\n/g, '<br>');
+          addBotMessage(`🤖 <strong>Live AI Assistant</strong> (${data.model || 'Local LLM'}):<br><br>${cleanAnswer}`);
+          scrollToBottom();
+          answered = true;
+        }
+      }
+    } catch (e) {
+      // Backend unavailable or timed out; seamless local fallback
+    }
+
+    if (!answered) {
+      setTimeout(() => {
+        if (typingIndicator.parentNode) typingIndicator.remove();
+        const answer = generateAnswer(query);
+        addBotMessage(answer);
+        scrollToBottom();
+      }, 350 + Math.random() * 300);
+    }
   }
 
   function addUserMessage(text) {
@@ -776,7 +810,7 @@
     },
     {
       keywords: ['rest', 'sandbox', 'client', 'payload', 'validate json'],
-      answer: "🚀 **REST Client Sandbox & Diff Auditor**: All 341 developer studios feature a dedicated **REST Sandbox** tab. This tool enables developers to:<br><br>1. Select HTTP methods (GET, POST, PUT, DELETE) and endpoints.<br>2. Edit, lint, and format JSON payload variables.<br>3. Audit properties side-by-side against compiled studio files to catch missing environment parameters."
+      answer: "🚀 **REST Client Sandbox & Diff Auditor**: All 347 developer studios feature a dedicated **REST Sandbox** tab. This tool enables developers to:<br><br>1. Select HTTP methods (GET, POST, PUT, DELETE) and endpoints.<br>2. Edit, lint, and format JSON payload variables.<br>3. Audit properties side-by-side against compiled studio files to catch missing environment parameters."
     },
     {
       keywords: ['vllm', 'paged attention', 'pagedattention', 'kv cache', 'chunked prefill'],
