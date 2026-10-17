@@ -591,6 +591,30 @@ tmp/
           }
         }
       }
+
+      const hasArchLink = links.some(a => {
+        const href = a.getAttribute('href') || '';
+        return href.includes('/architecture/') || a.textContent.toLowerCase().includes('architecture');
+      });
+
+      if (!hasArchLink) {
+        const archLink = document.createElement('a');
+        archLink.href = '../../architecture/';
+        archLink.className = 'hover:text-cyan-400 transition';
+        archLink.style.display = 'inline-flex';
+        archLink.style.alignItems = 'center';
+        archLink.style.gap = '4px';
+        archLink.innerHTML = '🏛️ Architecture';
+
+        if (linksWrap.tagName.toLowerCase() === 'ul') {
+          const li = document.createElement('li');
+          archLink.className = 'nav-link';
+          li.appendChild(archLink);
+          linksWrap.appendChild(li);
+        } else {
+          linksWrap.appendChild(archLink);
+        }
+      }
     }
   }
 
