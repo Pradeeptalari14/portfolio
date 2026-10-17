@@ -65,3 +65,43 @@ class Telemetry(Base):
     event_type = Column(String(64), index=True)  # drill_run, launch, step_complete
     payload = Column(JSON, default=dict)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class AgentMemory(Base):
+    __tablename__ = "agent_memories"
+
+    id = Column(String(64), primary_key=True, index=True)
+    agent_id = Column(String(64), index=True, nullable=False)
+    entity = Column(String(128), index=True, nullable=False)
+    relation = Column(String(128), nullable=False)
+    value = Column(Text, nullable=False)
+    context = Column(Text)
+    importance = Column(Integer, default=70)  # 0 to 100
+    rehearsal_count = Column(Integer, default=1)
+    last_accessed_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class AIEvalRun(Base):
+    __tablename__ = "ai_eval_runs"
+
+    id = Column(String(64), primary_key=True, index=True)
+    question = Column(Text, nullable=False)
+    answer = Column(Text, nullable=False)
+    faithfulness_score = Column(Integer, default=100)
+    relevance_score = Column(Integer, default=100)
+    context_recall_score = Column(Integer, default=100)
+    hallucination_index = Column(Integer, default=0)
+    verdict = Column(String(32), default="PASSED")
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class GuardrailAuditLog(Base):
+    __tablename__ = "guardrail_audit_logs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), index=True, default="guest")
+    prompt = Column(Text, nullable=False)
+    blocked = Column(Integer, default=0)
+    risk_score = Column(Integer, default=0)
+    attack_class = Column(String(128))
+    reasons = Column(JSON, default=list)
+    created_at = Column(DateTime, default=datetime.utcnow)
+

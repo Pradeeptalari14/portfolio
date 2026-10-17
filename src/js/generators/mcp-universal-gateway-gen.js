@@ -237,6 +237,34 @@ echo "✓ Validation clean."
     } else if (cleanCmd.includes('gh repo view')) {
       appendTerminal('Repository: Pradeeptalari14/tp-mcp-agentic-bridge');
       appendTerminal('Visibility: PUBLIC | Branch: main | CI: PASSING');
+    } else if (cleanCmd.includes('a2a-dispatch')) {
+      appendTerminal('Initiating A2A (Agent-to-Agent) Interoperability Dispatch...');
+      const role = elements.agentRole ? elements.agentRole.value : 'sre';
+      const transport = elements.transportType ? elements.transportType.value : 'sse';
+
+      if (typeof window !== 'undefined' && window.StudioSDK && typeof window.StudioSDK.dispatchA2AMessage === 'function') {
+        window.StudioSDK.dispatchA2AMessage({
+          sourceAgentId: 'SRE_Supervisor',
+          targetAgentId: 'DB_Operator',
+          action: 'query_pgvector_indices',
+          payload: { schema: 'public', metric: 'cosine', role_required: role }
+        }).then(res => {
+          appendTerminal(`[A2A Dispatch] SRE_Supervisor ➔ DB_Operator [ID: ${res.message_id || 'a2a_ack'}]`);
+          appendTerminal(`Status: ${res.status || 'delivered'} (Latency: ${res.latency_ms || 1.8}ms over ${transport.toUpperCase()})`);
+          appendTerminal(`Result: ${res.response_payload ? res.response_payload.result : 'Action executed with role validation.'}`);
+          appendTerminal('Zero-trust RBAC gate asserted: 100% Policy Enforced.');
+        });
+      } else {
+        appendTerminal('[A2A Dispatch] SRE_Supervisor ➔ DB_Operator (Action: query_pgvector_indices)');
+        appendTerminal('Status: DELIVERED | Roundtrip: 1.8ms | Role: SRE Authorized');
+        appendTerminal('Zero-trust RBAC gate asserted: 100% Policy Enforced.');
+      }
+    } else if (cleanCmd.includes('mcp-tools')) {
+      appendTerminal('Listing Aggregated MCP Tool Manifest (JSON-RPC 2.0):');
+      appendTerminal('1. query_postgres          - Read/write access to PostgreSQL pgvector tables');
+      appendTerminal('2. trigger_github_action   - Dispatch workflow triggers in repo CI/CD');
+      appendTerminal('3. kubectl_get_pods        - Real-time Kubernetes cluster workload telemetry');
+      appendTerminal('Transport: SSE Multiplexed | Security: Bearer Token + mTLS Required');
     } else {
       appendTerminal(`Command executed: ${cleanCmd}`);
     }

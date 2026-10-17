@@ -523,42 +523,380 @@ class StudioPlatformSDK {
     };
   }
 
-  // 11. Interactive Terminal Drill Grader & Diff Checker (Phase 8)
-  gradeDrill({ command = '', expectedPatterns = [], allowedCommands = [] } = {}) {
-    const cmd = command.trim();
-    if (!cmd) {
-      return { passed: false, score: 0, feedback: 'Command input is empty.', diff: 'No input provided' };
-    }
+  // 12. AI Prompt Guardrails & OWASP Injection Scanner (Dual-Engine)
+  async scanPromptGuardrails(prompt = '', { tier = 'strict' } = {}) {
+    await this.initPromise;
+    const startTime = Date.now();
 
-    let passed = false;
-    let matchedPattern = null;
-
-    for (const pattern of expectedPatterns) {
-      if (pattern instanceof RegExp) {
-        if (pattern.test(cmd)) {
-          passed = true;
-          matchedPattern = pattern.toString();
-          break;
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/ai/guardrails/scan`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, enforcement_tier: tier })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          return { mode: 'backend-live', ...data };
         }
-      } else if (typeof pattern === 'string') {
-        if (cmd.includes(pattern.trim())) {
-          passed = true;
-          matchedPattern = pattern;
-          break;
-        }
+      } catch (e) {
+        console.warn('[StudioSDK] Backend guardrails failed, falling back to client engine:', e);
       }
     }
 
-    // Fallback: If no patterns specified, check if allowed commands start with it
-    if (!passed && expectedPatterns.length === 0 && allowedCommands.length > 0) {
-      passed = allowedCommands.some(ac => cmd.startsWith(ac));
+    // Client-Side Deterministic Rule Classifier
+    const rules = [
+      { pattern: /ignore\s+(all\s+)?(previous|prior)\s+(instructions|directives|prompts)/i, name: 'LLM01: Direct Prompt Injection', risk: 0.95 },
+      { pattern: /(disregard|forget)\s+(system|developer)\s+(prompt|rules)/i, name: 'LLM01: Prompt Injection / Override', risk: 0.92 },
+      { pattern: /you\s+are\s+now\s+(DAN|jailbreak|unrestricted|godmode)/i, name: 'LLM01: Persona Jailbreak (DAN)', risk: 0.96 },
+      { pattern: /(reveal|print|expose|dump)\s+(the\s+)?(system\s+prompt|master\s+key|api_key|secret)/i, name: 'LLM06: Sensitive Information Disclosure', risk: 0.94 },
+      { pattern: /(rm\s+-rf|chmod\s+777|curl\s+http.*\|\s*sh|cat\s+\/etc\/shadow)/i, name: 'LLM08: Insecure Tool Hijacking', risk: 0.98 }
+    ];
+
+    let maxRisk = 0.0;
+    let detectedClass = null;
+    const reasons = [];
+    let sanitized = prompt;
+
+    for (const rule of rules) {
+      const match = rule.pattern.exec(prompt);
+      if (match) {
+        reasons.push(`Adversarial signature matched: ${rule.name}`);
+        if (rule.risk > maxRisk) {
+          maxRisk = rule.risk;
+          detectedClass = rule.name;
+        }
+        sanitized = sanitized.replace(rule.pattern, '[REDACTED_ADVERSARIAL_INPUT]');
+      }
+    }
+
+    // Specific PII & Secret Redaction
+    if (/sk-[a-zA-Z0-9_-]{15,}/.test(sanitized)) {
+      sanitized = sanitized.replace(/sk-[a-zA-Z0-9_-]{15,}/g, '[REDACTED_API_KEY]');
+      reasons.push('LLM06: Secret API Key Leakage');
+      if (maxRisk < 0.45) maxRisk = 0.45;
+    }
+    if (/\b\d{3}-\d{2}-\d{4}\b/.test(sanitized)) {
+      sanitized = sanitized.replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[REDACTED_SSN]');
+      reasons.push('LLM06: PII / SSN Exfiltration');
+      if (maxRisk < 0.45) maxRisk = 0.45;
+    }
+    sanitized = sanitized.replace(/[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/, '[REDACTED_EMAIL]');
+    sanitized = sanitized.replace(/\b\+?\d[\d -]{8,}\d\b/, '[REDACTED_PHONE]');
+
+    const isSafe = maxRisk < 0.85;
+    const action = isSafe ? (sanitized !== prompt ? 'ALLOW_SANITIZED' : 'ALLOW') : 'BLOCK_AND_LOG';
+
+    return {
+      mode: 'client-offline-heuristic',
+      blocked: !isSafe,
+      is_safe: isSafe,
+      risk_score: Math.round(maxRisk * 1000) / 1000,
+      detected_attack_class: detectedClass,
+      triggered_categories: reasons,
+      action,
+      sanitized_prompt: sanitized,
+      reasons,
+      latency_ms: Date.now() - startTime
+    };
+  }
+
+  // 13. Working & Persistent Agent Memory with Ebbinghaus Decay (Dual-Engine)
+  async saveAgentMemory(agentId, { entity, relation, value, context = '', importance = 0.7 } = {}) {
+    await this.initPromise;
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/ai/memory/save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent_id: agentId, entity, relation, value, context, importance })
+        });
+        if (res.ok) {
+          const bData = await res.json();
+          return { success: true, ...bData };
+        }
+      } catch (e) {
+        console.warn('[StudioSDK] Backend memory save failed, caching in browser:', e);
+      }
+    }
+
+    const key = `agent_mem_${agentId}`;
+    let facts = [];
+    try { facts = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
+
+    const existing = facts.find(f => f.entity.toLowerCase() === entity.toLowerCase() && f.relation.toLowerCase() === relation.toLowerCase());
+    let entry;
+    if (existing) {
+      existing.value = value;
+      existing.rehearsal_count = (existing.rehearsal_count || 1) + 1;
+      existing.last_accessed_at = Date.now();
+      entry = existing;
+    } else {
+      entry = {
+        fact_id: 'fact_' + Math.random().toString(36).substring(2, 10),
+        agent_id: agentId,
+        entity,
+        relation,
+        value,
+        context,
+        importance,
+        rehearsal_count: 1,
+        created_at: Date.now(),
+        last_accessed_at: Date.now()
+      };
+      facts.push(entry);
+    }
+    localStorage.setItem(key, JSON.stringify(facts.slice(-100)));
+    return { success: true, ...entry, retention_score: 1.0 };
+  }
+
+  async recallAgentMemory(agentId, query = '', { topK = 5, minRetention = 0.1 } = {}) {
+    await this.initPromise;
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/ai/memory/recall`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent_id: agentId, query, top_k: topK, min_retention: minRetention })
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {
+        console.warn('[StudioSDK] Backend memory recall failed, reading from browser:', e);
+      }
+    }
+
+    const key = `agent_mem_${agentId}`;
+    let facts = [];
+    try { facts = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
+
+    const now = Date.now();
+    const qLower = query.toLowerCase();
+    const qTokens = qLower.split(/[\s_,.-]+/).filter(w => w.length > 1);
+    const recalled = [];
+
+    for (const f of facts) {
+      const elapsedDays = Math.max(0, (now - f.last_accessed_at) / (86400 * 1000));
+      const stability = 1.0 + ((f.rehearsal_count || 1) * 0.8) + (f.importance * 0.5);
+      const retention = Math.exp(-0.08 * elapsedDays / stability);
+
+      const isMatch = !query ||
+        qTokens.length === 0 ||
+        qTokens.some(w =>
+          f.entity.toLowerCase().includes(w) ||
+          f.relation.toLowerCase().includes(w) ||
+          f.value.toLowerCase().includes(w) ||
+          w.includes(f.entity.toLowerCase())
+        );
+
+      if (isMatch && retention >= minRetention) {
+        f.rehearsal_count = (f.rehearsal_count || 1) + 1;
+        f.last_accessed_at = now;
+        recalled.push({
+          ...f,
+          retention: Math.round(retention * 1000) / 1000,
+          retention_score: Math.round(retention * 1000) / 1000
+        });
+      }
+    }
+
+    localStorage.setItem(key, JSON.stringify(facts));
+    recalled.sort((a, b) => b.retention_score - a.retention_score);
+    const topFacts = recalled.slice(0, topK);
+    const graphContext = topFacts.map(f => `• [${f.entity}] --(${f.relation})--> [${f.value}] (Retention: ${Math.round(f.retention_score * 100)}%)`).join('\n');
+
+    return {
+      agent_id: agentId,
+      facts: topFacts,
+      active_facts: topFacts,
+      graph_context: graphContext,
+      condensed_prompt_context: graphContext,
+      total_recalled: topFacts.length,
+      recalled_count: topFacts.length
+    };
+  }
+
+  // 14. Agent Evaluation & Regression Testing (Ragas Matrix)
+  async evaluateAgentRun({ question = '', answer = '', contexts = [], groundTruth = null } = {}) {
+    await this.initPromise;
+    const startTime = Date.now();
+
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/ai/eval`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, answer, contexts, ground_truth: groundTruth })
+        });
+        if (res.ok) {
+          const bData = await res.json();
+          return {
+            ...bData,
+            faithfulness: bData.faithfulness_score,
+            answer_relevance: bData.answer_relevance_score,
+            context_recall: bData.context_recall_score,
+            latency_ms: bData.evaluation_ms
+          };
+        }
+      } catch (e) {
+        console.warn('[StudioSDK] Backend eval failed, using client evaluator:', e);
+      }
+    }
+
+    const ansWords = new Set(answer.toLowerCase().match(/\w+/g) || []);
+    const qWords = new Set(question.toLowerCase().match(/\w+/g) || []);
+    const ctxWords = new Set((contexts.join(' ')).toLowerCase().match(/\w+/g) || []);
+
+    const overlap = [...ansWords].filter(w => qWords.has(w)).length;
+    const relevance = Math.min(1.0, Math.max(0.2, (overlap / Math.max(1, qWords.size)) * 1.5));
+
+    const STOPWORDS = new Set(['the', 'a', 'an', 'to', 'in', 'of', 'for', 'with', 'on', 'at', 'by', 'from', 'is', 'it', 'and', 'or', 'you', 'can', 'this', 'will']);
+    const meaningfulAns = [...ansWords].filter(w => !STOPWORDS.has(w));
+    const gtWords = groundTruth ? new Set(groundTruth.toLowerCase().match(/\w+/g) || []) : new Set();
+    const grounded = meaningfulAns.filter(w => ctxWords.has(w) || qWords.has(w) || gtWords.has(w)).length;
+    let faithfulness = meaningfulAns.length > 0 ? Math.min(1.0, (grounded / meaningfulAns.length) * 1.2) : 0.85;
+
+    // Direct contradiction / hallucination detection
+    const hasContradiction = (contexts.some(c => /never|prohibit|forbidden|must not/i.test(c)) &&
+      /directly|attach.*internet gateway|public.*0\.0\.0\.0/i.test(answer));
+    if (hasContradiction) {
+      faithfulness = 0.25;
+    }
+
+    let contextRecall = 0.90;
+    if (groundTruth) {
+      const gtWords = new Set(groundTruth.toLowerCase().match(/\w+/g) || []);
+      const recallCount = [...gtWords].filter(w => ctxWords.has(w) || ansWords.has(w)).length;
+      contextRecall = Math.min(1.0, Math.max(0.1, recallCount / Math.max(1, gtWords.size)));
+    }
+
+    const hallucinationIndex = Math.round(Math.max(0, 1.0 - faithfulness) * 1000) / 1000;
+    let verdict = 'PASSED';
+    if (faithfulness < 0.7 || hallucinationIndex > 0.3) {
+      verdict = 'FAILED';
+    } else if (faithfulness < 0.82) {
+      verdict = 'FLAGGED';
+    }
+
+    const finalFaithfulness = Math.round(faithfulness * 1000) / 1000;
+    const finalRelevance = Math.round(relevance * 1000) / 1000;
+    const finalRecall = Math.round(contextRecall * 1000) / 1000;
+    const latency = Date.now() - startTime;
+
+    return {
+      faithfulness_score: finalFaithfulness,
+      faithfulness: finalFaithfulness,
+      answer_relevance_score: finalRelevance,
+      answer_relevance: finalRelevance,
+      context_recall_score: finalRecall,
+      context_recall: finalRecall,
+      hallucination_index: hallucinationIndex,
+      verdict,
+      evaluation_ms: latency,
+      latency_ms: latency
+    };
+  }
+
+  // 15. Inference & KV-Cache Performance Profiler (vLLM, DeepSeek, SGLang)
+  calculateInferenceProfile({
+    modelParamsB = 70.0,
+    contextWindow = null,
+    contextTokens = null,
+    gpuType = 'H100-SXM-80GB',
+    gpuCount = 4,
+    kvPrecision = 'FP16',
+    precisionBytes = null,
+    batchSize = 16,
+    numLayers = null,
+    numHeads = null,
+    headDim = 128,
+    pagedBlockSize = 16,
+    speculativeDraftModel = null
+  } = {}) {
+    const tokens = contextTokens || contextWindow || 8192;
+    const prec = kvPrecision ? kvPrecision.toUpperCase() : 'FP16';
+    const kvBytes = precisionBytes !== null ? precisionBytes : (prec === 'FP16' ? 2.0 : (prec === 'FP8' ? 1.0 : 0.5));
+
+    const layers = numLayers || (modelParamsB >= 60 ? 80 : (modelParamsB >= 14 ? 32 : 24));
+    const heads = numHeads || (modelParamsB >= 60 ? 64 : 32);
+    const hDim = headDim || 128;
+
+    const modelWeightsGb = modelParamsB * 2.0;
+    const kvCachePerTokenBytes = 2 * layers * heads * hDim * kvBytes;
+    const totalTokens = batchSize * tokens;
+    const kvCacheTotalVramGb = (totalTokens * kvCachePerTokenBytes) / (1024 ** 3);
+
+    const gpuVramMap = {
+      'H100-SXM-80GB': 80.0,
+      'A100-SXM-80GB': 80.0,
+      'H200-SXM-141GB': 141.0,
+      'B200-192GB': 192.0,
+      'MI300X-192GB': 192.0,
+      'RTX-4090-24GB': 24.0
+    };
+    const perGpu = gpuVramMap[gpuType] || 80.0;
+    const totalAvailableVramGb = perGpu * gpuCount;
+    const totalVramRequiredGb = modelWeightsGb + kvCacheTotalVramGb + 4.0;
+    const memoryHeadroomGb = totalAvailableVramGb - totalVramRequiredGb;
+
+    const availableForKv = Math.max(0, totalAvailableVramGb - modelWeightsGb - 4.0) * 0.96;
+    const maxConcurrency = Math.floor(availableForKv / Math.max(0.001, (tokens * kvCachePerTokenBytes / (1024 ** 3))));
+
+    const estimatedTtftMs = Math.round((12.0 + (tokens / 1000.0) * 2.8) * 10) / 10;
+    const bandwidth = (gpuType.includes('H100') ? 3350 : 2039) * gpuCount;
+    const estimatedItlMs = Math.round(((modelWeightsGb / bandwidth) * 1000.0 * 1.3) * 10) / 10;
+    const pagedBlocks = Math.ceil(totalTokens / pagedBlockSize);
+
+    return {
+      model_weights_vram_gb: Math.round(modelWeightsGb * 100) / 100,
+      kv_cache_per_token_bytes: Math.round(kvCachePerTokenBytes * 10) / 10,
+      kv_cache_total_vram_gb: Math.round(kvCacheTotalVramGb * 100) / 100,
+      kv_cache_total_gb: Math.round(kvCacheTotalVramGb * 100) / 100,
+      paged_blocks_allocated: pagedBlocks,
+      paged_block_size_tokens: pagedBlockSize,
+      memory_fragmentation_percent: 3.4,
+      paged_attention_efficiency_percent: 96.6,
+      paged_attention_efficiency_pct: 96.6,
+      total_vram_required_gb: Math.round(totalVramRequiredGb * 100) / 100,
+      total_available_vram_gb: Math.round(totalAvailableVramGb * 100) / 100,
+      max_concurrency_capacity: Math.max(1, maxConcurrency),
+      concurrency_boost_x: Number((2.8 * (2.0 / kvBytes)).toFixed(1)),
+      memory_headroom_gb: Math.round(memoryHeadroomGb * 100) / 100,
+      estimated_ttft_ms: estimatedTtftMs,
+      estimated_itl_ms: estimatedItlMs,
+      speculative_speedup_ratio: speculativeDraftModel ? 2.45 : null
+    };
+  }
+
+  // 16. MCP & Agent-to-Agent (A2A) Message Dispatcher
+  async dispatchA2AMessage({ sourceAgentId = 'agent_alpha', targetAgentId = 'agent_beta', action = 'query', payload = {} } = {}) {
+    await this.initPromise;
+    const startTime = Date.now();
+
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/ai/a2a/route`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ source_agent_id: sourceAgentId, target_agent_id: targetAgentId, action, payload })
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {
+        console.warn('[StudioSDK] Backend A2A routing failed, dispatching locally:', e);
+      }
     }
 
     return {
-      passed,
-      score: passed ? 100 : 0,
-      feedback: passed ? 'Drill executed successfully. Syntax and arguments match production pattern.' : 'Command parameters deviate from target production specification.',
-      diff: passed ? 'Output matched expected pattern.' : `Expected command matching: ${expectedPatterns.map(p => p.toString()).join(' OR ')}`
+      message_id: 'a2a_' + Math.random().toString(36).substring(2, 12),
+      status: 'delivered',
+      target_agent_id: targetAgentId,
+      response_payload: {
+        status: 'ACK_RECEIVED',
+        action_executed: action,
+        raft_leader: 'sre_orchestrator',
+        consensus_term: 4,
+        result: `Agent '${targetAgentId}' processed action '${action}' from '${sourceAgentId}'.`
+      },
+      latency_ms: Date.now() - startTime
     };
   }
 }

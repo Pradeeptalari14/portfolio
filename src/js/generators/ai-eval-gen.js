@@ -1,4 +1,5 @@
 import { setupCompilerTriggers } from '../utils/events.js';
+import StudioSDK from '../studio-sdk.js';
 
 const SCRIPT_VERSION = '2.1.0';
 
@@ -232,34 +233,260 @@ function switchTab(tabId) {
   } else if (tabId === 'flow') {
     nameBox.value = 'flow';
     extTag.textContent = '.mermaid';
+  } else if (tabId === 'workbench') {
+    nameBox.value = 'agent_eval_report';
+    extTag.textContent = '.json';
   }
   updateViewportContent();
 }
 
-function updateViewportContent() {
-  if (activeTab === 'flow') {
-    $('output-box').classList.add('hidden');
-    $('mermaid-container').classList.remove('hidden');
+const EVAL_PRESETS = {
+  k8s: {
+    label: '🎯 Pod Restart (High Faithfulness & High Relevance)',
+    question: 'How do I perform a rolling restart of the payment-api container in production?',
+    answer: 'You can restart it by running: kubectl rollout restart deployment/payment-api -n production. This will gracefully rotate pods with zero downtime.',
+    contexts: 'To restart pods without downtime in Kubernetes, use kubectl rollout restart deployment/<name> -n <namespace>. It gracefully terminates and recreates pods according to rolling update maxSurge/maxUnavailable settings.',
+    groundTruth: 'Run: kubectl rollout restart deployment/payment-api -n production'
+  },
+  hallucinated: {
+    label: '⚠️ AWS Subnet Route (Hallucination Detected)',
+    question: 'How do I enable outbound IPv6 internet traffic from a private database subnet?',
+    answer: 'Simply attach an Internet Gateway directly to the private subnet route table with 0.0.0.0/0 pointing to igw-xxxx and assign public elastic IPs to the database nodes.',
+    contexts: 'Isolated private subnets must never route directly to an Internet Gateway. In AWS VPCs, use an Egress-Only Internet Gateway (eigw) to allow outbound IPv6 traffic while preventing inbound connections from the internet.',
+    groundTruth: 'Deploy an Egress-Only Internet Gateway (eigw) and add route ::/0 targeting the eigw.'
+  },
+  irrelevant: {
+    label: '❓ Query Drift (Low Answer Relevance)',
+    question: 'What is the CPU threshold limit before SRE high-priority pager alerts trigger?',
+    answer: 'Prometheus was originally developed at SoundCloud in 2012 and graduated from CNCF in 2018 with multi-dimensional data model support.',
+    contexts: 'Prometheus alerting rules define high CPU usage alerts at 90% node capacity over a 5m duration, triggering P1 PagerDuty incidents.',
+    groundTruth: 'The threshold is 90% node CPU capacity utilization.'
+  }
+};
 
-    const container = $('mermaid-container');
-    container.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
+let workbenchInitialized = false;
+
+function initWorkbenchView() {
+  const container = $('workbench-container');
+  if (!container) return;
+
+  if (!workbenchInitialized) {
+    container.innerHTML = `
+      <div class="space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <span>🧪</span> Real-Time Ragas Agent Evaluation Bench
+            </h4>
+            <p class="text-[11px] text-slate-400">Score factual faithfulness, query relevance, context recall, and hallucination index.</p>
+          </div>
+          <span id="eval-gate-badge" class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">
+            AWAITING RUN
+          </span>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Evaluation Presets:</label>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="loadEvalPreset('k8s')" class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 transition">
+              🎯 Accurate Pod Restart
+            </button>
+            <button type="button" onclick="loadEvalPreset('hallucinated')" class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-rose-900/50 text-[11px] text-rose-300 transition">
+              ⚠️ Hallucinated Subnet
+            </button>
+            <button type="button" onclick="loadEvalPreset('irrelevant')" class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-amber-900/50 text-[11px] text-amber-300 transition">
+              ❓ Irrelevant Response
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label for="eval-q-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">User Query / Question:</label>
+            <textarea id="eval-q-input" rows="2" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-slate-200 font-mono resize-none focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+          <div>
+            <label for="eval-ans-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Generated Agent Answer:</label>
+            <textarea id="eval-ans-input" rows="2" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-slate-200 font-mono resize-none focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label for="eval-ctx-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Retrieved RAG Context Chunk:</label>
+            <textarea id="eval-ctx-input" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-slate-200 font-mono resize-none focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+          <div>
+            <label for="eval-gt-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Ground Truth Reference:</label>
+            <textarea id="eval-gt-input" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-slate-200 font-mono resize-none focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+        </div>
+
+        <button type="button" onclick="executeLiveAgentEvaluation()" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-lg transition shadow-lg shadow-indigo-950 flex items-center justify-center gap-1.5">
+          <span>⚡ Execute Ragas Live Benchmark Evaluation</span>
+        </button>
+
+        <!-- Metric Scorecards Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-2.5">
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">Faithfulness</span>
+            <span id="score-faithfulness" class="text-base font-black font-mono text-emerald-400 mt-0.5 block">0.00</span>
+            <div class="w-full bg-slate-800 h-1 rounded mt-1 overflow-hidden">
+              <div id="bar-faithfulness" class="bg-emerald-400 h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-2.5">
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">Relevance</span>
+            <span id="score-relevance" class="text-base font-black font-mono text-cyan-400 mt-0.5 block">0.00</span>
+            <div class="w-full bg-slate-800 h-1 rounded mt-1 overflow-hidden">
+              <div id="bar-relevance" class="bg-cyan-400 h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-2.5">
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">Context Recall</span>
+            <span id="score-recall" class="text-base font-black font-mono text-indigo-400 mt-0.5 block">0.00</span>
+            <div class="w-full bg-slate-800 h-1 rounded mt-1 overflow-hidden">
+              <div id="bar-recall" class="bg-indigo-400 h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-2.5">
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">Hallucination Index</span>
+            <span id="score-hallucination" class="text-base font-black font-mono text-rose-400 mt-0.5 block">0.00</span>
+            <div class="w-full bg-slate-800 h-1 rounded mt-1 overflow-hidden">
+              <div id="bar-hallucination" class="bg-rose-400 h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="eval-verdict-summary" class="bg-slate-900/60 border border-slate-800/80 rounded p-2.5 text-[11px] text-slate-400 font-mono">
+          Ready for benchmarking. Select a preset or customize parameters and execute.
+        </div>
+      </div>
+    `;
+
+    workbenchInitialized = true;
+    loadEvalPreset('k8s');
+  }
+}
+
+window.loadEvalPreset = function(key) {
+  const p = EVAL_PRESETS[key];
+  if (!p) return;
+  const qIn = $('eval-q-input');
+  const aIn = $('eval-ans-input');
+  const cIn = $('eval-ctx-input');
+  const gIn = $('eval-gt-input');
+
+  if (qIn) qIn.value = p.question;
+  if (aIn) aIn.value = p.answer;
+  if (cIn) cIn.value = p.contexts;
+  if (gIn) gIn.value = p.groundTruth;
+
+  executeLiveAgentEvaluation();
+};
+
+window.executeLiveAgentEvaluation = async function() {
+  const q = $('eval-q-input') ? $('eval-q-input').value.trim() : '';
+  const a = $('eval-ans-input') ? $('eval-ans-input').value.trim() : '';
+  const c = $('eval-ctx-input') ? $('eval-ctx-input').value.trim() : '';
+  const gt = $('eval-gt-input') ? $('eval-gt-input').value.trim() : '';
+  const minScore = parseFloat($('min_score') ? $('min_score').value : '0.85') || 0.85;
+
+  const badge = $('eval-gate-badge');
+  if (badge) {
+    badge.textContent = 'EVALUATING...';
+    badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-900/50 text-amber-300 border border-amber-800';
+  }
+
+  try {
+    const res = await StudioSDK.evaluateAgentRun({
+      question: q,
+      answer: a,
+      contexts: [c],
+      groundTruth: gt
+    });
+
+    const faith = res.faithfulness || 0.0;
+    const rel = res.answer_relevance || 0.0;
+    const recall = res.context_recall || 0.0;
+    const hallu = res.hallucination_index || 0.0;
+    const passed = (faith >= minScore && rel >= minScore);
+
+    // Update Scores
+    if ($('score-faithfulness')) $('score-faithfulness').textContent = faith.toFixed(2);
+    if ($('bar-faithfulness')) $('bar-faithfulness').style.width = `${Math.round(faith * 100)}%`;
+
+    if ($('score-relevance')) $('score-relevance').textContent = rel.toFixed(2);
+    if ($('bar-relevance')) $('bar-relevance').style.width = `${Math.round(rel * 100)}%`;
+
+    if ($('score-recall')) $('score-recall').textContent = recall.toFixed(2);
+    if ($('bar-recall')) $('bar-recall').style.width = `${Math.round(recall * 100)}%`;
+
+    if ($('score-hallucination')) $('score-hallucination').textContent = hallu.toFixed(2);
+    if ($('bar-hallucination')) $('bar-hallucination').style.width = `${Math.round(hallu * 100)}%`;
+
+    // Update Gate Badge
+    if (badge) {
+      if (passed) {
+        badge.textContent = `✔ SRE GATE PASSED (>${minScore})`;
+        badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-900/50 text-emerald-300 border border-emerald-800';
+      } else {
+        badge.textContent = `✖ GATE FAILED (Below ${minScore})`;
+        badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-rose-900/50 text-rose-300 border border-rose-800';
+      }
+    }
+
+    const summary = $('eval-verdict-summary');
+    if (summary) {
+      summary.innerHTML = `
+        <span class="${passed ? 'text-emerald-400' : 'text-rose-400'} font-bold">Status: ${passed ? 'QUALITY APPROVED' : 'SCORE DEGRADATION DETECTED'}</span>
+        <div class="mt-1">Faithfulness: ${(faith*100).toFixed(1)}% | Relevance: ${(rel*100).toFixed(1)}% | Recall: ${(recall*100).toFixed(1)}% | Latency: ${res.latency_ms || 18}ms</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Dual-Engine: ${StudioSDK.isConnectedBackend ? 'FastAPI Companion Live API' : 'StudioSDK Browser Heuristics'}</div>
+      `;
+    }
+  } catch (err) {
+    console.error('Evaluation error:', err);
+  }
+};
+
+function updateViewportContent() {
+  const outBox = $('output-box');
+  const mContainer = $('mermaid-container');
+  const wbContainer = $('workbench-container');
+
+  if (activeTab === 'flow') {
+    if (outBox) outBox.classList.add('hidden');
+    if (wbContainer) wbContainer.classList.add('hidden');
+    if (mContainer) mContainer.classList.remove('hidden');
+
+    mContainer.innerHTML = '<div class="mermaid text-center">' + compiledCode.flow + '</div>';
 
     if (typeof mermaid === 'undefined') {
-      container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid library is not loaded. Please check your internet connection or reload the page.\n\nCode:\n${compiledCode.flow}</pre>`;
+      mContainer.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid library is not loaded. Please check your internet connection or reload the page.\n\nCode:\n${compiledCode.flow}</pre>`;
     } else {
       try {
         mermaid.run({
-          nodes: [container.querySelector('.mermaid')]
+          nodes: [mContainer.querySelector('.mermaid')]
         });
       } catch (e) {
-        console.error("Mermaid render error:", e);
-        container.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
+        console.error("Mermaid Render Error:", e);
+        mContainer.innerHTML = `<pre class="text-rose-400 font-mono text-xs p-4">Mermaid Render Error: ${e.message}\n\nCode:\n${compiledCode.flow}</pre>`;
       }
     }
+  } else if (activeTab === 'workbench') {
+    if (outBox) outBox.classList.add('hidden');
+    if (mContainer) mContainer.classList.add('hidden');
+    if (wbContainer) {
+      wbContainer.classList.remove('hidden');
+      initWorkbenchView();
+    }
   } else {
-    $('output-box').classList.remove('hidden');
-    $('mermaid-container').classList.add('hidden');
-    $('output-box').textContent = compiledCode[activeTab];
+    if (mContainer) mContainer.classList.add('hidden');
+    if (wbContainer) wbContainer.classList.add('hidden');
+    if (outBox) {
+      outBox.classList.remove('hidden');
+      outBox.textContent = compiledCode[activeTab];
+    }
   }
 }
 
@@ -432,6 +659,18 @@ function explainActiveTabCode() {
       'practices': ['Ensure failed validation runs abort deployments automatically.'],
       'ai_mlops': 'Continuous evaluation flow reference.',
       'flow': '[Mermaid Canvas Diagram]'
+    };
+  } else if (activeTab === 'workbench') {
+    explanation = {
+      'title': 'Live Agent Evaluation Workbench',
+      'filename': 'agent_eval_report.json',
+      'why': 'Interactive evaluation bench to test prompts, answers, and context against Ragas metrics in real-time.',
+      'when': 'Use during interactive development, prompt tuning, and regression testing.',
+      'where': 'Directly inside the Studios Hub UI.',
+      'command': 'StudioSDK.evaluateAgentRun()',
+      'practices': ['Test both positive and adversarial cases.', 'Check hallucination index closely.'],
+      'ai_mlops': 'Interactive developer sandbox for live Ragas metric testing.',
+      'flow': '[Input Query & Context] ➔ [StudioSDK / FastAPI] ➔ [Compute Ragas Metrics] ➔ [SRE Gate]'
     };
   }
 

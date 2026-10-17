@@ -327,13 +327,57 @@ jobs:
     elements.outputBox.textContent = compiledCode[activeTab] || '';
   }
 
-  function runInteractiveSimulation() {
+  async function runInteractiveSimulation() {
     if (!elements.simStatus) return;
-    elements.simStatus.innerHTML = '<span class="text-cyan-400">⚡ Allocating virtual PagedAttention blocks in non-contiguous HBM3e...</span>';
-    
-    setTimeout(() => {
-      elements.simStatus.innerHTML = '<span class="text-emerald-400">🌲 Allocated 64 blocks with 3.4% fragmentation! Co-scheduling chunked prefill...</span>';
-    }, 400);
+    elements.simStatus.innerHTML = '<span class="text-cyan-400">⚡ Calculating virtual PagedAttention blocks in non-contiguous HBM3e...</span>';
+
+    const precision = elements.precisionSelect ? elements.precisionSelect.value : 'FP8 Tensor Core';
+    let precisionBytes = 1.0;
+    if (precision.includes('BF16')) precisionBytes = 2.0;
+    else if (precision.includes('Ternary')) precisionBytes = 0.2;
+
+    const batchSize = elements.concurrencySlider ? parseInt(elements.concurrencySlider.value, 10) || 16 : 16;
+
+    let profile;
+    if (typeof window !== 'undefined' && window.StudioSDK && typeof window.StudioSDK.calculateInferenceProfile === 'function') {
+      profile = await window.StudioSDK.calculateInferenceProfile({
+        numLayers: 32,
+        numHeads: 32,
+        headDim: 128,
+        precisionBytes,
+        contextTokens: 4096,
+        batchSize,
+        pagedBlockSize: 16
+      });
+    } else {
+      // Deterministic fallback formula
+      const bytesPerToken = 2 * 32 * 32 * 128 * precisionBytes;
+      const totalBytes = bytesPerToken * 4096 * batchSize;
+      const gb = Number((totalBytes / (1024 ** 3)).toFixed(2));
+      profile = {
+        kv_cache_total_gb: gb,
+        paged_blocks_allocated: Math.ceil((4096 * batchSize) / 16),
+        paged_block_size_tokens: 16,
+        memory_fragmentation_percent: 3.4,
+        paged_attention_efficiency_percent: 96.6,
+        estimated_ttft_ms: Number((12.5 + (batchSize * 0.35)).toFixed(1)),
+        estimated_itl_ms: Number((4.2 + (batchSize * 0.12)).toFixed(1)),
+        concurrency_boost_x: Number((2.8 * (2.0 / precisionBytes)).toFixed(1))
+      };
+    }
+
+    // Update HUD elements
+    const hudFrag = document.getElementById('hud-frag');
+    const hudConcurrency = document.getElementById('hud-concurrency');
+    const hudTtft = document.getElementById('hud-ttft');
+    const hudVram = document.getElementById('hud-vram');
+
+    if (hudFrag) hudFrag.textContent = `${profile.memory_fragmentation_percent}%`;
+    if (hudConcurrency) hudConcurrency.textContent = `${profile.concurrency_boost_x}x`;
+    if (hudTtft) hudTtft.textContent = `${profile.estimated_ttft_ms} ms`;
+    if (hudVram) hudVram.textContent = `${profile.kv_cache_total_gb} GB`;
+
+    elements.simStatus.innerHTML = `<span class="text-emerald-400">🌲 Allocated ${profile.paged_blocks_allocated} physical blocks (${profile.paged_block_size_tokens} tokens/block). PagedAttention efficiency: ${profile.paged_attention_efficiency_percent}%.</span>`;
   }
 
   function initTerminalSession() {
@@ -344,7 +388,7 @@ jobs:
     `;
   }
 
-  window.runTerminalCommand = function (cmd) {
+  window.runTerminalCommand = async function (cmd) {
     if (!elements.terminalLogs) return;
     const line = document.createElement('div');
     line.className = 'mt-2';
@@ -358,12 +402,20 @@ jobs:
       out.innerHTML = `Available commands:
   • docker compose up -d    - Launch local container infrastructure
   • bash scripts/validate.sh - Run integration and unit validation tests
+  • profile-kv               - Profile KV-cache memory and virtual block allocation
   • gh repo view             - Inspect upstream GitHub repository metadata
   • clear                    - Clear terminal scrollback buffer`;
     } else if (cmd === 'docker compose up -d') {
       out.innerHTML = `<span class="text-emerald-400">✔ Container network created\n✔ Containers started [healthy]</span>`;
     } else if (cmd === 'bash scripts/validate.sh') {
       out.innerHTML = `<span class="text-emerald-400">⚡ Validating SRE engine...\n✓ Syntax tests passed\n✓ Invariants asserted\n✅ All checks passed successfully!</span>`;
+    } else if (cmd === 'profile-kv') {
+      out.innerHTML = `<span class="text-cyan-400">⚡ Profiling KV-Cache virtual memory blocks (Llama-3-8B | 32 layers | 32 heads):
+• Total Allocated Blocks: 4,096 physical blocks (16 tokens/block)
+• Native Contiguous Fragmentation: ~68.4% (wasted ~38GB VRAM)
+• PagedAttention Virtual Paging: 3.4% waste (<4% target met)
+• Net VRAM Saved: 54.2 GB in HBM3e
+• Chunked Prefill Overlap: 2.8x higher concurrency stream</span>`;
     } else if (cmd === 'gh repo view') {
       out.innerHTML = `<span class="text-cyan-400">Repository: Pradeeptalari14/tp-vllm-paged-attention\nVisibility: Public | Branch: main | CI Status: Passing</span>`;
     } else if (cmd === 'clear') {
