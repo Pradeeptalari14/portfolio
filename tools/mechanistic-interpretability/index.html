@@ -209,6 +209,43 @@ class TopKSAE(nn.Module):
         return x_reconstructed, latents</pre>
       </div>
     </div>
+  
+    <!-- Architecture & Theoretical Flow Diagram -->
+    <section class="mt-8 bg-slate-900/40 border border-slate-800 rounded-2xl p-6 backdrop-blur">
+      <h2 class="text-base font-bold text-white uppercase tracking-wider font-mono mb-2 flex items-center gap-2">
+        <span>🏗️ System Architecture &amp; Execution Topology</span>
+      </h2>
+      <p class="text-xs text-slate-400 mb-4">
+        End-to-end mathematical dataflow, modular arbitration, and verification guardrails powering the <strong>Mechanistic Interpretability & SAE Steering Studio</strong> runtime.
+      </p>
+      <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950/80 mb-6 shadow-2xl">
+        <img src="mechanistic_interpretability_flow.png" alt="Mechanistic Interpretability & SAE Steering Studio Architecture Diagram" class="w-full h-auto object-cover max-h-[480px]" />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
+        
+        <div class="p-3 rounded-lg bg-slate-950 border border-slate-800">
+          <span class="text-slate-500 block mb-1">Superposition Resolution</span>
+          <strong class="text-slate-200 block mb-0.5">Anthropic Top-K Sparse Autoencoders (SAEs), L1 Penalty Dictionaries</strong>
+          <span class="text-[11px] text-slate-400">Decomposes polysemantic neuron activations into disentangled linear features</span>
+        </div>
+        <div class="p-3 rounded-lg bg-slate-950 border border-slate-800">
+          <span class="text-slate-500 block mb-1">Feature Dictionary</span>
+          <strong class="text-slate-200 block mb-0.5">Expanded Latent Dimension (65,536 Features across d_model=4096)</strong>
+          <span class="text-[11px] text-slate-400">Indexes specific human-interpretable concepts (sycophancy, deception, safety)</span>
+        </div>
+        <div class="p-3 rounded-lg bg-slate-950 border border-slate-800">
+          <span class="text-slate-500 block mb-1">Activation Steering</span>
+          <strong class="text-slate-200 block mb-0.5">Residual Stream Vector Clamping & Latent Subtraction</strong>
+          <span class="text-[11px] text-slate-400">Directly steers generation behavior without requiring expensive model retraining</span>
+        </div>
+        <div class="p-3 rounded-lg bg-slate-950 border border-slate-800">
+          <span class="text-slate-500 block mb-1">Circuit Discovery</span>
+          <strong class="text-slate-200 block mb-0.5">TransformerLens, PyTorch Linear Probe Analyzers</strong>
+          <span class="text-[11px] text-slate-400">Traces induction heads and attention circuit pathways across transformer layers</span>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="border-t border-pink-950/60 bg-[#09080e] py-8 text-center text-xs text-slate-500">
