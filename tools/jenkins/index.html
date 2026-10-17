@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jenkins DEVSECOPS Pipeline Generator | Talari Pradeep</title>
-  <meta name="description" content="Generate production-ready Declarative DevSecOps Jenkinsfiles, SonarQube properties, and credentials mappings with advanced security scans." />
+  <title>Jenkins DevSecOps Real-Time Pipeline Studio | Multi-Project CI/CD | Talari Pradeep</title>
+  <meta name="description" content="Production-ready real-time Jenkins DevSecOps pipeline studio with 5 enterprise project blueprints: Spring Boot to EKS, Node.js to ArgoCD, Python AI/LLMOps, and Go with SLSA-3 Cosign." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   
@@ -18,7 +18,6 @@
   
   <link rel="stylesheet" href="../shared-tools.css" />
   <style>
-    /* ── Design Tokens & Monograph Styles ── */
     :root {
       --accent-primary: #4f46e5;
       --accent-cyan:    #0ea5e9;
@@ -32,7 +31,6 @@
       --transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Custom form elements */
     .form-select, .form-input, .form-textarea {
       font-family: 'Inter', sans-serif;
       border: 1px solid var(--border) !important;
@@ -42,8 +40,11 @@
       transition: all 0.2s ease;
       outline: none !important;
     }
+    .form-select:focus, .form-input:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
 
-    /* Checkboxes */
     .custom-checkbox {
       appearance: none;
       width: 18px;
@@ -60,43 +61,81 @@
       position: relative;
       flex-shrink: 0;
     }
+    .custom-checkbox:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+    .custom-checkbox:checked::after {
+      content: '✓';
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-    /* Custom card container */
     .studio-card {
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
       transition: all 0.22s ease;
     }
 
-    /* Tabs */
     .tab-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 0.95rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #94a3b8;
       border-bottom: 2px solid transparent;
       transition: var(--transition);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: #ffffff;
+    }
+    .tab-btn.active {
+      color: #38bdf8;
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
     }
 
-    /* IDE / Terminal Code Block */
     .ide-container {
       border-radius: var(--radius-lg);
       border: 1px solid #1e293b;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      background: #090e1a;
+      box-shadow: 0 16px 48px rgba(15, 23, 42, 0.25);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
-
-    /* Custom Table styling */
-    .table-container {
+    .ide-viewport {
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      background: #050811;
+      max-height: 520px;
+      overflow-y: auto;
       overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      scrollbar-width: thin;
+      white-space: pre;
+    }
+
+    /* Real-Time Live Console Window */
+    .console-terminal {
+      background: #02040a;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      padding: 1rem 1.25rem;
+      height: 480px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
     }
 
     .custom-table {
@@ -104,7 +143,6 @@
       border-collapse: collapse;
       font-size: 0.8rem;
     }
-
     .custom-table th {
       background-color: var(--bg-surface);
       font-family: 'Space Grotesk', sans-serif;
@@ -116,164 +154,260 @@
       border-bottom: 1px solid var(--border);
       text-align: left;
     }
-
     .custom-table td {
       padding: 0.5rem 0.8rem;
       border-bottom: 1px solid var(--border);
     }
-
     .custom-table tr:last-child td {
       border-bottom: none;
     }
   </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script></head>
-<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans">
 
   <!-- ══ NAVBAR ══ -->
-  <nav class="navbar">
-    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between w-full">
-      <a href="../../#home" class="flex items-center gap-2 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
+  <nav class="navbar border-b border-gray-200/80 bg-white/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between w-full">
+      <a href="../../#home" class="flex items-center gap-2.5 font-bold text-lg" style="font-family: 'Space Grotesk', sans-serif;">
         <img src="../../Photo.webp" alt="Talari Pradeep" class="w-8 h-8 rounded-full object-cover outline outline-2 outline-indigo-200 outline-offset-2" width="32" height="32" loading="lazy" />
-        <span>TP<span style="color:var(--accent-primary)">.</span></span>
+        <span class="tracking-tight text-slate-900">TALARI PRADEEP<span style="color:var(--accent-primary)">.</span></span>
       </a>
       
-      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
-        <a href="../../#home" class="hover:text-indigo-600 transition">🏠 Home</a>
-        <a href="../" class="hover:text-indigo-600 transition">🛠️ Tools Dashboard</a>
+      <div class="hidden sm:flex items-center gap-6 text-xs font-semibold text-gray-600">
+        <a href="../../" class="hover:text-indigo-600 transition">Home</a>
+        <a href="../../studios/" class="hover:text-indigo-600 transition">Studios (347)</a>
+        <a href="../../studios/learn/" class="hover:text-indigo-600 transition">🎓 Learn Hub</a>
+        <a href="../../architecture/" class="hover:text-indigo-600 transition text-indigo-600 font-bold">🏛️ Architecture Center</a>
+        <a href="../../projects/" class="hover:text-indigo-600 transition">Flagship Projects</a>
+        <a href="../" class="hover:text-indigo-600 transition">Tools Directory</a>
       </div>
     </div>
   </nav>
 
   <!-- ══ MAIN DEVSECOPS STUDIO ══ -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
     
-    <div class="mb-10 text-center lg:text-left">
-      <span class="inline-block text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider mb-3" style="font-family: 'JetBrains Mono', monospace;">Enterprise DevSecOps</span>
-      <h1 class="studio-title text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">[ Jenkins DEVSECOPS Pipeline Generator ]</h1>
-      <p class="text-sm text-gray-500 mt-2 max-w-2xl">Integrate secure checks seamlessly. Compile automated, declarative CI/CD pipelines with SonarQube quality gates, Snyk scanning, Trivy checks, OWASP ZAP baseline audits, and Yelp secrets protection.</p>
+    <!-- Studio Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">
+          Production CI/CD Engine &bull; DevSecOps SLSA L3
+        </span>
+        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">
+          ● Real-Time Ready
+        </span>
+      </div>
+      <h1 class="studio-title text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight" style="font-family: 'Space Grotesk', sans-serif;">
+        Jenkins Real-Time Production Pipeline Studio
+      </h1>
+      <p class="text-sm text-slate-600 mt-1.5 max-w-3xl">
+        Generate and simulate real-time production Declarative Jenkinsfiles, SonarQube static analysis quality gates, Trivy filesystem &amp; container CVE blockers, Amazon ECR packaging, and rolling Kubernetes deployments across multiple real-world tech stacks.
+      </p>
     </div>
 
-    <!-- Layout Grid -->
+    <!-- ══ SECTION: 5 REAL-TIME ENTERPRISE PROJECT BLUEPRINTS ══ -->
+    <section class="mb-8">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider font-mono flex items-center gap-2">
+          <span>🚀</span> Real-Time Production Project Blueprints (Select to Load Full Stack)
+        </h2>
+        <span class="text-xs text-indigo-600 font-medium">Click any blueprint to pre-fill 10-stage execution</span>
+      </div>
+
+      <!-- Injected Dynamically by JS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5" id="project-blueprints-container"></div>
+    </section>
+
+    <!-- ══ SECTION: REAL-TIME PIPELINE FLOW TRACKER (Matches bottom of real-time script image) ══ -->
+    <section class="mb-8 studio-card p-4 bg-slate-950 text-white border-slate-800 shadow-xl">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-400 font-mono font-bold text-xs rounded border border-indigo-500/30">
+            PIPELINE FLOW DIAGRAM
+          </span>
+          <span class="text-slate-300 text-xs font-semibold">10 Real-Time Execution Stages</span>
+        </div>
+
+        <!-- Simulation Controls -->
+        <div class="flex items-center gap-2">
+          <button onclick="runRealTimeSimulation()" id="btn-run-sim" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm shadow-indigo-600/40">
+            <span>▶️ Run Live Simulation</span>
+          </button>
+          <button onclick="stepSimulationStage()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs rounded-lg transition">
+            <span>⏭ Step Stage</span>
+          </button>
+          <button onclick="resetSimulation()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs rounded-lg transition">
+            <span>🔄 Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Horizontal Flow Tracker Steps -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin" id="pipeline-flow-track">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ══ TWO-COLUMN WORKSPACE: Configuration & Multi-Tab IDE ══ -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- LEFT: Configuration Panels (7 Columns) -->
+      <!-- LEFT COLUMN: Real-Time Configuration Panels (7 Columns) -->
       <div class="lg:col-span-7 flex flex-col gap-6">
+
+        <!-- CARD 1: Real-Time Production Environment Parameters -->
+        <div class="studio-card border-indigo-200/80 bg-indigo-50/20">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-indigo-950 flex items-center gap-2 font-mono uppercase tracking-wide">
+              <span>🌐</span> Real-Time Production Environment Variables
+            </h3>
+            <span class="text-[10px] font-mono text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded border border-indigo-200">
+              Live Reactive Synced
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-semibold text-slate-700">
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">EKS_CLUSTER</label>
+              <input type="text" id="rt_eks_cluster" class="form-input w-full p-2 text-xs font-mono" value="dev-eks-cluster" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">AWS_REGION</label>
+              <input type="text" id="rt_aws_region" class="form-input w-full p-2 text-xs font-mono" value="us-east-1" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">AWS_ACCOUNT_ID</label>
+              <input type="text" id="rt_aws_account" class="form-input w-full p-2 text-xs font-mono" value="123456789012" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">ECR_REPOSITORY</label>
+              <input type="text" id="rt_ecr_repo" class="form-input w-full p-2 text-xs font-mono" value="springboot-app" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">APP_NAME</label>
+              <input type="text" id="rt_app_name" class="form-input w-full p-2 text-xs font-mono" value="springboot-app" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">K8S_NAMESPACE</label>
+              <input type="text" id="rt_k8s_namespace" class="form-input w-full p-2 text-xs font-mono" value="default" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">SONAR_PROJECT_KEY</label>
+              <input type="text" id="rt_sonar_key" class="form-input w-full p-2 text-xs font-mono" value="springboot-app" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-500 font-mono mb-1">SLACK / WEBHOOK CHANNEL</label>
+              <input type="text" id="rt_slack_channel" class="form-input w-full p-2 text-xs font-mono" value="#devsecops-alerts" />
+            </div>
+          </div>
+        </div>
         
-        <!-- SECTION 1: Select Agent -->
+        <!-- CARD 2: Agent Selection -->
         <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">🤖 Select Agent</h3>
+          <h3 class="studio-title text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">🤖 Agent Execution Plane</h3>
           <div class="flex items-center gap-6 text-xs font-semibold text-gray-700">
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" id="agent_any" class="custom-checkbox" checked />
-              <span>any</span>
+              <span>agent any</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" id="agent_custom" class="custom-checkbox" />
-              <span>Custom Label</span>
+              <span>Kubernetes Agent Label</span>
             </label>
             
             <div id="custom-agent-name-box" class="hidden flex-1 max-w-xs">
-              <input type="text" id="agent_label" class="form-input w-full p-2 text-xs" value="aws-sre-runner" placeholder="Enter Label" />
+              <input type="text" id="agent_label" class="form-input w-full p-2 text-xs font-mono" value="k8s-agent" placeholder="e.g. k8s-agent" />
             </div>
           </div>
         </div>
 
-        <!-- SECTION 2: Build Tools Selection -->
+        <!-- CARD 3: Build Tools Selection -->
         <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🛠️ Build Tools</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+          <h3 class="studio-title text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">🛠️ Build Toolchain</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-semibold text-gray-700">
             
             <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="tool_java" class="custom-checkbox" />
-                <span>Use Java</span>
+                <input type="checkbox" id="tool_java" class="custom-checkbox" checked />
+                <span>Java JDK</span>
               </label>
               <select id="tool_java_version" class="form-select p-1.5 text-xs w-28">
-                <option value="JDK">JDK</option>
-                <option value="JDK11">JDK 11</option>
                 <option value="JDK17">JDK 17</option>
                 <option value="JDK21">JDK 21</option>
+                <option value="JDK11">JDK 11</option>
               </select>
             </div>
 
             <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="tool_maven" class="custom-checkbox" />
-                <span>Use Maven</span>
+                <input type="checkbox" id="tool_maven" class="custom-checkbox" checked />
+                <span>Maven</span>
               </label>
               <select id="tool_maven_version" class="form-select p-1.5 text-xs w-28">
-                <option value="maven">maven</option>
-                <option value="maven-3.8">maven 3.8</option>
                 <option value="maven-3.9">maven 3.9</option>
-              </select>
-            </div>
-
-            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="tool_gradle" class="custom-checkbox" />
-                <span>Use Gradle</span>
-              </label>
-              <select id="tool_gradle_version" class="form-select p-1.5 text-xs w-28">
-                <option value="gradle">gradle</option>
-                <option value="gradle-7">gradle 7</option>
-                <option value="gradle-8">gradle 8</option>
+                <option value="maven-3.8">maven 3.8</option>
               </select>
             </div>
 
             <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" id="tool_node" class="custom-checkbox" />
-                <span>Use Node.js</span>
+                <span>Node.js</span>
               </label>
               <select id="tool_node_version" class="form-select p-1.5 text-xs w-28">
-                <option value="node">node</option>
-                <option value="node-18">node 18</option>
                 <option value="node-20">node 20</option>
+                <option value="node-18">node 18</option>
               </select>
             </div>
 
             <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" id="tool_python" class="custom-checkbox" />
-                <span>Use Python</span>
+                <span>Python 3.11</span>
               </label>
               <select id="tool_python_version" class="form-select p-1.5 text-xs w-28">
                 <option value="python3">python3</option>
               </select>
             </div>
 
-            <div class="flex items-center justify-between gap-3 p-2 border border-slate-100 rounded-lg">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="tool_ant" class="custom-checkbox" />
-                <span>Use Ant</span>
-              </label>
-              <select id="tool_ant_version" class="form-select p-1.5 text-xs w-28">
-                <option value="ant">ant</option>
-              </select>
-            </div>
-
           </div>
         </div>
 
-        <!-- SECTION 3: Security Build Tools -->
-        <div class="studio-card bg-indigo-50/20">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🛡️ Security Build Tools</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
+        <!-- CARD 4: Security Scanners -->
+        <div class="studio-card bg-indigo-50/20 border-indigo-100">
+          <h3 class="studio-title text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">🛡️ Security Scanners &amp; Gates</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-semibold text-gray-700">
             
-            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-200 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" id="sectool_sonar" class="custom-checkbox" checked />
                 <span>SonarQube Scanner</span>
               </label>
               <select id="sectool_sonar_version" class="form-select p-1.5 text-xs w-32">
                 <option value="SonarScanner">SonarScanner</option>
-                <option value="SonarScanner4">SonarScanner 4</option>
                 <option value="SonarScanner5">SonarScanner 5</option>
               </select>
             </div>
 
-            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-200 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="sectool_trivy" class="custom-checkbox" checked />
+                <span>Trivy Vulnerability Scan</span>
+              </label>
+              <select id="sectool_trivy_version" class="form-select p-1.5 text-xs w-32">
+                <option value="trivy">trivy latest</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-200 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" id="sectool_snyk" class="custom-checkbox" />
                 <span>Snyk CLI</span>
@@ -283,134 +417,62 @@
               </select>
             </div>
 
-            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
+            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-200 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="sectool_trivy" class="custom-checkbox" checked />
-                <span>Trivy Scanner</span>
+                <input type="checkbox" id="docker_cli" class="custom-checkbox" checked />
+                <span>Docker OCI Builder</span>
               </label>
-              <select id="sectool_trivy_version" class="form-select p-1.5 text-xs w-32">
-                <option value="trivy">trivy</option>
-              </select>
-            </div>
-
-            <div class="flex items-center justify-between gap-3 p-2 bg-white border border-slate-150 rounded-lg">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="sectool_zap" class="custom-checkbox" />
-                <span>OWASP ZAP</span>
-              </label>
-              <select id="sectool_zap_version" class="form-select p-1.5 text-xs w-32">
-                <option value="zap">zap</option>
-              </select>
+              <span class="text-[10px] text-emerald-600 font-mono font-bold">ACTIVE</span>
             </div>
 
           </div>
         </div>
 
-        <!-- SECTION 4: Additional Stages -->
-        <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">➕ Additional Stages</h3>
-          <div class="flex items-center gap-6 text-xs font-semibold text-gray-700">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="stage_test_add" class="custom-checkbox" checked />
-              <span>Include Test Stage</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="stage_deploy_add" class="custom-checkbox" />
-              <span>Include Deploy Stage</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- SECTION 5: Security Stages -->
-        <div class="studio-card border-rose-200 bg-rose-50/10">
-          <h3 class="studio-title text-base font-bold text-rose-900 mb-3 flex items-center gap-2">🚨 Security Stages</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700">
-            
+        <!-- CARD 5: Security & Deployment Stages -->
+        <div class="studio-card border-rose-200/80 bg-rose-50/10">
+          <h3 class="studio-title text-sm font-bold text-rose-950 mb-3 flex items-center gap-2">🚨 Quality Gate &amp; Deploy Controls</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-semibold text-gray-700">
             <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
               <input type="checkbox" id="sec_sonar_scan" class="custom-checkbox" checked />
-              <span>Include SonarQube Scan</span>
+              <span>SonarQube Scan Stage</span>
             </label>
-
             <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
-              <input type="checkbox" id="sec_snyk_scan" class="custom-checkbox" />
-              <span>Include Snyk Scan</span>
+              <input type="checkbox" id="enh_sonar_gate" class="custom-checkbox" checked />
+              <span>Enforce Sonar Quality Gate (waitForQualityGate)</span>
             </label>
-
             <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
               <input type="checkbox" id="sec_trivy_scan" class="custom-checkbox" checked />
-              <span>Include Trivy Scan</span>
+              <span>Trivy FS &amp; Image Audit Stages</span>
             </label>
-
             <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
-              <input type="checkbox" id="sec_zap_scan" class="custom-checkbox" />
-              <span>Include OWASP ZAP Scan</span>
+              <input type="checkbox" id="enh_k8s" class="custom-checkbox" checked />
+              <span>Kubernetes Deployment &amp; Rollout Status</span>
             </label>
-
             <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
-              <input type="checkbox" id="sec_dep_track" class="custom-checkbox" />
-              <span>Upload to Dependency-Track</span>
+              <input type="checkbox" id="enh_slack" class="custom-checkbox" checked />
+              <span>Slack / Webhook Post Alert</span>
             </label>
-
             <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
-              <input type="checkbox" id="sec_artifactory" class="custom-checkbox" />
-              <span>Upload to Artifactory</span>
+              <input type="checkbox" id="sec_snyk_scan" class="custom-checkbox" />
+              <span>Snyk Dependency Test</span>
             </label>
-
-            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
-              <input type="checkbox" id="sec_secrets_yelp" class="custom-checkbox" checked />
-              <span>Detect Secrets (Yelp detect-secrets)</span>
-            </label>
-
-            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg">
-              <input type="checkbox" id="sec_secrets_gitleaks" class="custom-checkbox" checked />
-              <span>Detect Secrets (Gitleaks)</span>
-            </label>
-
-            <label class="flex items-center gap-2 cursor-pointer p-2 bg-white border border-rose-100 rounded-lg col-span-1 md:col-span-2">
-              <input type="checkbox" id="sec_secrets_truffle" class="custom-checkbox" />
-              <span>Detect Secrets (TruffleHog)</span>
-            </label>
-
           </div>
         </div>
 
-        <!-- SECTION 6: Environment Variables Configuration -->
+        <!-- CARD 6: Custom Environment Variables Table -->
         <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">🔑 Environment Variables</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-semibold text-gray-700 mb-4 border-b border-gray-100 pb-4">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="env_image_name" class="custom-checkbox" checked />
-              <span>docker_image_name (IMAGE_NAME)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="env_container_name" class="custom-checkbox" checked />
-              <span>docker_container_name (CONTAINER_NAME)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="env_git_repo" class="custom-checkbox" checked />
-              <span>Git Repository URL (GIT_REPO)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="env_git_branch" class="custom-checkbox" checked />
-              <span>Git Branch (GIT_BRANCH)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="env_java_home" class="custom-checkbox" />
-              <span>JAVA_HOME</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="env_mvn_home" class="custom-checkbox" />
-              <span>MVN_HOME</span>
-            </label>
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="studio-title text-sm font-bold text-gray-900 flex items-center gap-2">🔑 Custom Pipeline Key-Values</h3>
+            <button onclick="addCustomEnvRow()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded transition">
+              ＋ Add Custom Var
+            </button>
           </div>
-
-          <!-- Dynamic custom environment list -->
-          <div class="table-container mb-3">
+          
+          <div class="table-container mb-2">
             <table class="custom-table" id="custom-env-table">
               <thead>
                 <tr>
-                  <th>Custom Env Variable Name</th>
+                  <th>Variable Name</th>
                   <th>Value</th>
                   <th style="width:40px;"></th>
                 </tr>
@@ -420,117 +482,100 @@
               </tbody>
             </table>
           </div>
-
-          <button onclick="addCustomEnvRow()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition">＋ Add Custom Env Variable</button>
-        </div>
-
-        <!-- SECTION 7: Pipeline Enhancements -->
-        <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-4 flex items-center gap-2">🚀 Pipeline Enhancements</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-gray-700 mb-4">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="enh_k8s" class="custom-checkbox" />
-              <span>Deploy to Kubernetes</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="enh_tar" class="custom-checkbox" />
-              <span>Package Artifact (tar.gz)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="enh_sonar_gate" class="custom-checkbox" checked />
-              <span>Enforce SonarQube Quality Gate</span>
-            </label>
-            
-            <div class="flex items-center gap-2">
-              <label for="enh_upload" class="whitespace-nowrap">Artifact Upload Target:</label>
-              <select id="enh_upload" class="form-select p-1.5 text-xs flex-1">
-                <option value="none">-- None --</option>
-                <option value="artifactory">Artifactory</option>
-                <option value="nexus">Nexus</option>
-                <option value="s3">S3 Bucket</option>
-              </select>
-            </div>
-
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="enh_slack" class="custom-checkbox" checked />
-              <span>Send Notification (Slack)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="enh_email" class="custom-checkbox" />
-              <span>Send Notification (Email)</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- SECTION 8: Docker Section -->
-        <div class="studio-card">
-          <h3 class="studio-title text-base font-bold text-gray-900 mb-3 flex items-center gap-2">🐳 Docker Section</h3>
-          <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
-            <input type="checkbox" id="docker_cli" class="custom-checkbox" checked />
-            <span>Use Docker CLI</span>
-          </label>
         </div>
 
       </div>
 
-      <!-- RIGHT: Tabbed IDE Viewport & Global Actions (5 Columns) -->
-      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-24">
+      <!-- RIGHT COLUMN: Tabbed Multi-File IDE Viewport & Global Actions (5 Columns) -->
+      <div class="lg:col-span-5 flex flex-col gap-6 sticky top-20">
         
         <!-- IDE Viewport -->
         <div class="ide-container">
-          <div class="ide-header flex-col items-stretch p-0">
-            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
-              <div class="ide-dots">
-                <span class="ide-dot ide-dot-red"></span>
-                <span class="ide-dot ide-dot-yellow"></span>
-                <span class="ide-dot ide-dot-green"></span>
+          <div class="ide-header flex flex-col items-stretch p-0">
+            <!-- Window Topbar -->
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                <span class="text-xs text-slate-400 font-mono font-bold ml-2" id="active-file-label">Pipeline Manifests</span>
               </div>
               <div class="flex items-center gap-2">
-                <input type="text" id="download-name-input" class="bg-slate-800 text-[10px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-28 focus:outline-none" value="Jenkinsfile" readonly />
-                <span class="text-[10px] text-slate-500 font-mono" id="file-extension-tag"></span>
+                <input type="text" id="download-name-input" class="bg-slate-800 text-[11px] text-slate-300 font-mono px-2 py-1 rounded border border-slate-700 w-32 focus:outline-none" value="Jenkinsfile" readonly />
+                <span class="text-[11px] text-slate-500 font-mono" id="file-extension-tag"></span>
               </div>
             </div>
             
-            <div class="flex bg-slate-850 px-2 border-b border-slate-800/50">
+            <!-- Multi-File Tabs -->
+            <div class="flex bg-slate-950 px-2 border-b border-slate-800/80 overflow-x-auto scrollbar-thin">
               <button onclick="switchTab('jenkinsfile')" id="tab-jenkinsfile" class="tab-btn active">Jenkinsfile</button>
-              <button onclick="switchTab('sonar')" id="tab-sonar" class="tab-btn">sonar-project.properties</button>
-            
-              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flowchart</button></div>
+              <button onclick="switchTab('sonar')" id="tab-sonar" class="tab-btn">sonar.properties</button>
+              <button onclick="switchTab('k8s')" id="tab-k8s" class="tab-btn">deployment.yaml</button>
+              <button onclick="switchTab('dockerfile')" id="tab-dockerfile" class="tab-btn">Dockerfile</button>
+              <button onclick="switchTab('flow')" id="tab-flow" class="tab-btn">📊 Visual Flow</button>
+              <button onclick="switchTab('console')" id="tab-console" class="tab-btn">📺 Live Console</button>
+            </div>
           </div>
 
+          <!-- Code Viewport -->
           <pre id="output-box" class="ide-viewport"></pre>
-          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 640px;"></div>
+
+          <!-- Mermaid Flowchart Viewport -->
+          <div id="mermaid-container" class="hidden ide-viewport bg-slate-950 p-6 overflow-auto flex items-center justify-center" style="min-height: 480px; max-height: 520px;"></div>
+
+          <!-- Real-Time Console Simulator Viewport -->
+          <div id="console-simulator-container" class="hidden">
+            <div class="bg-slate-900 border-b border-slate-800 px-4 py-2 flex items-center justify-between text-xs font-mono">
+              <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-slate-200 font-bold">Real-Time Jenkins Output Console</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="runRealTimeSimulation()" class="px-2 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-[10px]">▶ Run</button>
+                <button onclick="resetSimulation()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px]">🔄 Reset</button>
+              </div>
+            </div>
+            <div class="console-terminal" id="console-log-stream">
+              <div class="text-slate-400 font-mono text-xs"># Real-Time Execution Console Ready.</div>
+              <div class="text-slate-500 font-mono text-xs"># Click "▶ Run Live Simulation" above to step through all 10 stages live with authentic log outputs.</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Global Actions -->
+        <!-- Global Actions Toolbar -->
         <div class="studio-card">
           <div class="grid grid-cols-3 gap-2 mb-3">
-            <button onclick="triggerCompileAll()" class="col-span-3 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
-              <span>⚡ Generate YAML</span>
+            <button onclick="triggerCompileAll()" class="col-span-3 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+              <span>⚡ Generate &amp; Compile Pipeline</span>
             </button>
-            <button onclick="resetEnvVars()" class="py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>🔄 Reset Env Vars</span>
+
+            <button onclick="runRealTimeSimulation()" class="py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1">
+              <span>▶️ Live Sim</span>
             </button>
-            <button onclick="triggerCompileAll()" class="py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>🔄 Re-Fresh Page</span>
+
+            <button onclick="exportAllZip()" class="py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1">
+              <span>📦 Export ZIP</span>
             </button>
-            <button onclick="exportEnvBlock()" class="py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>⬇️ Export Env Block</span>
+
+            <button onclick="copyActiveTabContent()" class="py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1">
+              <span>📋 Copy Code</span>
             </button>
-            <button onclick="copyActiveTabContent()" class="py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>📋 Copy YAML</span>
+
+            <button onclick="downloadActiveFile()" class="py-2 bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1">
+              <span>⬇️ Download</span>
             </button>
-            <button onclick="explainActiveTabCode()" class="py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
-              <span>🧠 Explain</span>
+
+            <button onclick="explainActiveTabCode()" class="py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1">
+              <span>🧠 SRE Explain</span>
             </button>
-            <button onclick="downloadActiveFile()" class="py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center">
-              <span>⬇️ Download File</span>
+
+            <button onclick="resetEnvVars()" class="py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1">
+              <span>🔄 Reset Env</span>
             </button>
           </div>
 
-          <button onclick="clearAllFields()" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
-            <span>🗑️ Clear Output</span>
+          <button onclick="clearAllFields()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold text-xs rounded-lg transition flex items-center justify-center">
+            <span>🗑️ Reset All Fields to Blank</span>
           </button>
         </div>
 
@@ -541,23 +586,25 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-gray-100 bg-gray-50 py-8 mt-12">
-    <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center text-xs text-gray-400 gap-4">
-      <p>© 2026 Talari Pradeep. All rights reserved.</p>
+  <footer class="border-t border-gray-200 bg-white py-8 mt-12 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="font-bold text-slate-800 mb-1">TALARI PRADEEP &bull; CLOUD ARCHITECTURE, SRE &amp; AI SYSTEMS</div>
+      <div>Jenkins DevSecOps Real-Time Studio &bull; Standardized on Declarative Pipelines, SLSA Level 3 &amp; Zero-Trust EKS Rollouts</div>
+      <p class="mt-2 text-gray-400">© 2026 Talari Pradeep. Built with intentional engineering.</p>
     </div>
   </footer>
 
   <!-- ══ ENGINE SCRIPT ══ -->
   <script type="module" src="../../src/js/generators/jenkins-gen.js"></script>
-  <!-- ══ EXPLANTION SIDE DRAWER ══ -->
+
+  <!-- ══ SRE EXPLANATION SIDE DRAWER ══ -->
   <div id="explanation-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
-    <!-- Header -->
     <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
       <div class="flex items-center gap-2">
         <span class="text-xl">🧠</span>
         <div>
           <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
-          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">app.py</p>
+          <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">Jenkinsfile</p>
         </div>
       </div>
       <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
@@ -565,73 +612,54 @@
       </button>
     </div>
     
-    <!-- Content (Scrollable) -->
     <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
-      
-      <!-- Section: Why -->
       <div>
         <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
-          <span>🎯</span> WHY & WHAT IT DOES
+          <span>🎯</span> WHY &amp; WHAT IT DOES
         </h4>
-        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why">
-          <!-- Injected -->
-        </p>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why"></p>
       </div>
 
-      <!-- Section: When -->
       <div>
         <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
           <span>🕒</span> WHEN TO USE IT
         </h4>
-        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when">
-          <!-- Injected -->
-        </p>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when"></p>
       </div>
 
-      <!-- Section: Where & How -->
       <div>
         <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
-          <span>🚀</span> WHERE & HOW TO DEPLOY
+          <span>🚀</span> WHERE &amp; HOW TO DEPLOY
         </h4>
         <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
           <p id="explain-where"></p>
           <div class="mt-2">
-            <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
-            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+            <span class="text-slate-400 text-[10px] block mb-1">Execution Command:</span>
+            <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"></pre>
           </div>
         </div>
       </div>
 
-      <!-- Section: Production Best Practices -->
       <div>
         <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
           <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
         </h4>
-        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices">
-          <!-- Injected -->
-        </ul>
+        <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices"></ul>
       </div>
 
-      <!-- Section: AI/MLOps Integration -->
       <div>
         <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
-          <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+          <span>🧠</span> AI/MLOPS &amp; LLMOPS INTEGRATION
         </h4>
-        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops">
-          <!-- Injected -->
-        </p>
+        <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops"></p>
       </div>
 
-      <!-- Section: Visual Flow -->
       <div>
         <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
-          <span>📊</span> ARCHITECTURE DATA FLOW
+          <span>📊</span> PIPELINE DATA FLOW
         </h4>
-        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow">
-          <!-- Injected -->
-        </pre>
+        <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow"></pre>
       </div>
-
     </div>
   </div>
 

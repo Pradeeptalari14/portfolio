@@ -8,6 +8,7 @@
  * @param {Array<string>} [excludeIds=['download-name-input']] - List of DOM element IDs to exclude from triggering compilation.
  */
 export function setupCompilerTriggers(compileCallback, excludeIds = ['download-name-input']) {
+  if (typeof document === 'undefined') return;
   const inputs = document.querySelectorAll('input, select, textarea');
   inputs.forEach(input => {
     if (!excludeIds.includes(input.id)) {
@@ -18,6 +19,7 @@ export function setupCompilerTriggers(compileCallback, excludeIds = ['download-n
 }
 
 // ── Shared Mermaid Theme, Node Interaction, and Exporter Utilities ──
+if (typeof document !== 'undefined') {
 document.addEventListener('DOMContentLoaded', () => {
   const $ = (id) => document.getElementById(id);
   const container = $('mermaid-container');
@@ -167,3 +169,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+}
