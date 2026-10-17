@@ -9,13 +9,13 @@
 
     <div class="wib-layout">
 
-      <!-- Featured Card: Cloud Infrastructure -->
-      <div class="wib-card wib-card--featured" id="wib-cloud">
+      <!-- 01: Cloud Infrastructure -->
+      <div class="wib-card" id="wib-cloud">
         <div class="wib-card-number">01</div>
+        <div class="wib-card-icon wib-card-icon--cloud" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        </div>
         <div class="wib-card-body">
-          <div class="wib-card-icon wib-card-icon--cloud" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-          </div>
           <h3 class="wib-card-title">Cloud Infrastructure</h3>
           <p class="wib-card-desc">
             Multi-region AWS and Azure architectures engineered for 99.99% availability.
@@ -32,64 +32,66 @@
         </div>
       </div>
 
-      <!-- Right Column: 3 Compact Cards -->
-      <div class="wib-col">
-
-        <!-- AI / LLMOps -->
-        <div class="wib-card wib-card--compact" id="wib-ai">
-          <div class="wib-card-number">02</div>
-          <div class="wib-card-icon wib-card-icon--ai" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-          </div>
-          <div class="wib-card-body">
-            <h3 class="wib-card-title">AI Infrastructure</h3>
-            <p class="wib-card-desc">Production LLMOps pipelines, multi-agent orchestration with LangGraph, high-performance vector search, and low-latency GPU inference serving.</p>
-            <div class="wib-tags">
-              <span class="wib-tag">LangGraph</span>
-              <span class="wib-tag">Weaviate</span>
-              <span class="wib-tag">vLLM</span>
-              <span class="wib-tag">LLMOps</span>
-            </div>
+      <!-- 02: AI Infrastructure -->
+      <div class="wib-card" id="wib-ai">
+        <div class="wib-card-number">02</div>
+        <div class="wib-card-icon wib-card-icon--ai" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="wib-card-body">
+          <h3 class="wib-card-title">AI Infrastructure</h3>
+          <p class="wib-card-desc">
+            Production LLMOps pipelines, multi-agent orchestration with LangGraph, high-performance vector search, and low-latency GPU inference serving.
+          </p>
+          <div class="wib-tags">
+            <span class="wib-tag">LangGraph</span>
+            <span class="wib-tag">Weaviate</span>
+            <span class="wib-tag">vLLM</span>
+            <span class="wib-tag">LLMOps</span>
           </div>
         </div>
-
-        <!-- DevOps & Platform -->
-        <div class="wib-card wib-card--compact" id="wib-devops">
-          <div class="wib-card-number">03</div>
-          <div class="wib-card-icon wib-card-icon--devops" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-          </div>
-          <div class="wib-card-body">
-            <h3 class="wib-card-title">DevOps &amp; Platform</h3>
-            <p class="wib-card-desc">Zero-touch CI/CD, GitOps with ArgoCD and Atlantis, container security scanning, and production Kubernetes clusters with KEDA auto-scaling.</p>
-            <div class="wib-tags">
-              <span class="wib-tag">GitHub Actions</span>
-              <span class="wib-tag">ArgoCD</span>
-              <span class="wib-tag">Kubernetes</span>
-              <span class="wib-tag">Helm</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SRE & Observability -->
-        <div class="wib-card wib-card--compact" id="wib-sre">
-          <div class="wib-card-number">04</div>
-          <div class="wib-card-icon wib-card-icon--sre" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div class="wib-card-body">
-            <h3 class="wib-card-title">SRE &amp; Observability</h3>
-            <p class="wib-card-desc">SLO design, error budget dashboards, distributed tracing, automated incident runbooks, and chaos engineering for production resilience.</p>
-            <div class="wib-tags">
-              <span class="wib-tag">Prometheus</span>
-              <span class="wib-tag">Grafana</span>
-              <span class="wib-tag">OpenTelemetry</span>
-              <span class="wib-tag">Chaos</span>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      <!-- 03: DevOps & Platform -->
+      <div class="wib-card" id="wib-devops">
+        <div class="wib-card-number">03</div>
+        <div class="wib-card-icon wib-card-icon--devops" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+        </div>
+        <div class="wib-card-body">
+          <h3 class="wib-card-title">DevOps &amp; Platform</h3>
+          <p class="wib-card-desc">
+            Zero-touch CI/CD, GitOps with ArgoCD and Atlantis, container security scanning, and production Kubernetes clusters with KEDA auto-scaling.
+          </p>
+          <div class="wib-tags">
+            <span class="wib-tag">GitHub Actions</span>
+            <span class="wib-tag">ArgoCD</span>
+            <span class="wib-tag">Kubernetes</span>
+            <span class="wib-tag">Helm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04: SRE & Observability -->
+      <div class="wib-card" id="wib-sre">
+        <div class="wib-card-number">04</div>
+        <div class="wib-card-icon wib-card-icon--sre" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="wib-card-body">
+          <h3 class="wib-card-title">SRE &amp; Observability</h3>
+          <p class="wib-card-desc">
+            SLO design, error budget dashboards, distributed tracing, automated incident runbooks, and chaos engineering for production resilience.
+          </p>
+          <div class="wib-tags">
+            <span class="wib-tag">Prometheus</span>
+            <span class="wib-tag">Grafana</span>
+            <span class="wib-tag">OpenTelemetry</span>
+            <span class="wib-tag">Chaos</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
