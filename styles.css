@@ -6565,7 +6565,7 @@ select option {
   margin-right: auto;
 }
 
-/* ── THE THREE DESTINATIONS (Adaptive: Light & Night) ── */
+/* ── THE FOUR WORKSPACES (Adaptive: Light & Night) ── */
 .destinations-section {
   padding: 5rem 0;
   position: relative;
@@ -6573,7 +6573,7 @@ select option {
 
 .destinations-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.75rem;
 }
 
