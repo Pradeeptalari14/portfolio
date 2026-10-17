@@ -2182,6 +2182,8 @@ ${nodeKeys.map(k => {
           }, 50);
         }
 
+        window.__currentActiveTab = tabId;
+        currentActiveTab = tabId;
         original(tabId);
       };
       window.switchTab.__wrapped = true;
@@ -2233,6 +2235,486 @@ ${nodeKeys.map(k => {
     }
   }
 
+  // =========================================================================
+  // UNIVERSAL STUDIO EXPLAINER ENGINE & DRAWER INTERCEPTOR (ALL 353 STUDIOS)
+  // =========================================================================
+  let currentActiveTab = 'main';
+
+  function ensureExplanationDrawer() {
+    if (typeof document === 'undefined') return null;
+    let drawer = document.getElementById('explanation-drawer');
+    if (!drawer && document.body) {
+      drawer = document.createElement('div');
+      drawer.id = 'explanation-drawer';
+      drawer.className = 'fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl z-[1100] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col';
+      drawer.innerHTML = `
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🧠</span>
+            <div>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider" id="drawer-title">SRE Code Explanation</h3>
+              <p class="text-[10px] text-slate-400 font-mono" id="drawer-filename">specification.yaml</p>
+            </div>
+          </div>
+          <button onclick="closeExplanationDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition" title="Close drawer (Esc)">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        
+        <!-- Content (Scrollable) -->
+        <div class="flex-1 p-5 overflow-y-auto space-y-6 text-slate-300 text-xs scrollbar-thin">
+          <!-- Section: Why -->
+          <div>
+            <h4 class="text-indigo-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+              <span>🎯</span> WHY &amp; WHAT IT DOES
+            </h4>
+            <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-why"></p>
+          </div>
+
+          <!-- Section: When -->
+          <div>
+            <h4 class="text-amber-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+              <span>🕒</span> WHEN TO USE IT
+            </h4>
+            <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-when"></p>
+          </div>
+
+          <!-- Section: Where & How -->
+          <div>
+            <h4 class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+              <span>🚀</span> WHERE &amp; HOW TO DEPLOY
+            </h4>
+            <div class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 space-y-2">
+              <p id="explain-where"></p>
+              <div class="mt-2">
+                <span class="text-slate-400 text-[10px] block mb-1">Commands to run:</span>
+                <pre class="bg-slate-900 p-2 rounded text-emerald-400 border border-slate-800 font-mono text-[10px] overflow-x-auto" id="explain-command"># command</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Production Best Practices -->
+          <div>
+            <h4 class="text-rose-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+              <span>🛡️</span> SRE PRODUCTION BEST PRACTICES
+            </h4>
+            <ul class="list-disc pl-4 space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800/60" id="explain-practices"></ul>
+          </div>
+
+          <!-- Section: AI/MLOps Integration -->
+          <div>
+            <h4 class="text-fuchsia-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+              <span>🧠</span> AI/MLOPS &amp; GENAI INTEGRATION
+            </h4>
+            <p class="leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800/60 text-slate-300" id="explain-ai-mlops"></p>
+          </div>
+
+          <!-- Section: Visual Flow -->
+          <div>
+            <h4 class="text-cyan-400 font-bold uppercase tracking-wide text-[10px] mb-2 flex items-center gap-1.5">
+              <span>📊</span> ARCHITECTURE DATA FLOW
+            </h4>
+            <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800/60 font-mono text-[10px] text-slate-400 leading-normal overflow-x-auto" id="explain-flow"></pre>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(drawer);
+    }
+    return drawer;
+  }
+
+  function closeExplanationDrawer() {
+    const drawer = document.getElementById('explanation-drawer');
+    if (drawer) {
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+  }
+  if (typeof window !== 'undefined') {
+    window.closeExplanationDrawer = closeExplanationDrawer;
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeExplanationDrawer();
+    });
+  }
+
+  function detectActiveTab() {
+    if (typeof window !== 'undefined' && window.__currentActiveTab) return window.__currentActiveTab;
+    if (currentActiveTab && currentActiveTab !== 'main') return currentActiveTab;
+    if (typeof document === 'undefined') return 'main';
+    const activeBtn = document.querySelector('.tab-btn.active') || document.querySelector('button.active[id^="tab-"]');
+    if (activeBtn) {
+      if (activeBtn.id && activeBtn.id.startsWith('tab-')) {
+        return activeBtn.id.replace('tab-', '');
+      }
+      return activeBtn.textContent.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    }
+    const mermaid = document.getElementById('mermaid-container');
+    if (mermaid && !mermaid.classList.contains('hidden')) {
+      return 'flow';
+    }
+    const downloadInput = document.getElementById('download-name-input');
+    if (downloadInput && downloadInput.value) {
+      return downloadInput.value.toLowerCase().replace(/[^a-z0-9_-]/g, '_');
+    }
+    return 'main';
+  }
+
+  function getStudioMeta() {
+    if (typeof window === 'undefined') return { slug: 'studio', title: 'Studio' };
+    const parts = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
+    const slug = parts[parts.length - 1] || 'devops-sre';
+    const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    return { slug, title };
+  }
+
+  function generateUniversalExplanation(tabId) {
+    const { slug, title } = getStudioMeta();
+    const cleanTab = (tabId || detectActiveTab() || 'main').toLowerCase();
+
+    // 1. Flow & Diagrams
+    if (cleanTab === 'flow' || cleanTab === 'flowchart' || cleanTab === 'cloud_flow' || cleanTab === 'system-flow' || cleanTab === 'manim-flow' || cleanTab === 'visual-flow' || cleanTab === 'flow_diagram') {
+      return {
+        title: `${title} — Architecture Flowchart & Dependency DAG`,
+        filename: `${slug}-flow.mmd`,
+        why: `Provides an end-to-end visual specification of service topologies, request ingestion paths, circuit breakers, and state persistence boundaries for ${title}. Eliminates architecture blind-spots during multi-service debugging and latency triage.`,
+        when: `Inspect during system design reviews, capacity planning drills, security perimeter audits, and SRE incident post-mortems.`,
+        where: `Rendered directly in the Live Studio Canvas and committed to repository under docs/architecture/${slug}.mmd.`,
+        command: `# Render locally with Mermaid CLI:\nnpx @mermaid-js/mermaid-cli -i ${slug}-flow.mmd -o flow.svg`,
+        practices: [
+          'Keep stateful and stateless service boundaries explicitly segregated with protocol annotations.',
+          'Instrument distributed OpenTelemetry spans across each hop depicted in this topology.',
+          'Verify system resilience by executing automated Chaos Engineering tests against the critical path.'
+        ],
+        ai_mlops: `Serves as the structural DAG schema for autonomous SRE remediation agents and RAG vector retrieval pipelines.`,
+        flow: `[Client Ingress] ➔ [WAF / API Gateway] ➔ [${title} Engine] ➔ [State Store / Cache] ➔ [OpenTelemetry / SIEM]`
+      };
+    }
+
+    // 2. Webhooks
+    if (cleanTab === 'webhook' || cleanTab === 'webhooks') {
+      return {
+        title: `${title} — DevSecOps Event Webhook & Notification Hook`,
+        filename: 'webhook-event.json',
+        why: `Asynchronously dispatches real-time pipeline status, deployment health alerts, and audit payloads to external notification routers (Slack, PagerDuty, Datadog) without blocking execution loops.`,
+        when: `Triggered upon stage completion, security quality gate failures, or production health check breaches.`,
+        where: `Configured in repository settings, CI/CD webhook dispatchers, or Kubernetes mutating admission controllers.`,
+        command: `curl -X POST -H "Content-Type: application/json" -d @webhook-event.json https://api.talaripradeep.info/webhooks`,
+        practices: [
+          'Sign payloads with HMAC-SHA256 signatures to prevent unauthorized event spoofing.',
+          'Implement exponential backoff retry policies with dead-letter queue (DLQ) buffers.',
+          'Never include plaintext credentials or sensitive tokens in notification payloads.'
+        ],
+        ai_mlops: `Pushes anomaly incident summaries to LLM triage copilots for instant root-cause diagnosis.`,
+        flow: `[Pipeline Event] ➔ [Payload Assembly] ➔ [HMAC Signature] ➔ [Secure Webhook POST] ➔ [Receiver Verification]`
+      };
+    }
+
+    // 3. Linters
+    if (cleanTab === 'linter' || cleanTab === 'lint') {
+      return {
+        title: `${title} — Static Analysis & Architecture Linter Guardrails`,
+        filename: '.linter-rules.yaml',
+        why: `Enforces strict syntactical, security, and operational standards prior to commit or build, catching anti-patterns and vulnerabilities at the earliest development stage.`,
+        when: `Executed automatically during git pre-commit hooks, local developer builds, and CI quality gates.`,
+        where: `Placed at the repository root as .linter-rules.yaml and integrated into IDE language servers.`,
+        command: `spectral lint config.yaml --ruleset .linter-rules.yaml`,
+        practices: [
+          'Treat critical security misconfigurations as fatal pipeline blockers.',
+          'Automate routine style fixes using --fix flags in pre-commit scripts.',
+          'Sync lint rules across developer workstations and CI runners via centralized templates.'
+        ],
+        ai_mlops: `Validates prompt templates, token boundary limits, and embedding dimension alignments.`,
+        flow: `[Code / Config Edit] ➔ [Pre-Commit Hook] ➔ [Rule Evaluation] ➔ [Pass / Block with Line-Level Diagnostics]`
+      };
+    }
+
+    // 4. REST Sandbox
+    if (cleanTab === 'rest-sandbox' || cleanTab === 'sandbox') {
+      return {
+        title: `${title} — Interactive REST Sandbox & Verification Probe`,
+        filename: 'sandbox-probe.http',
+        why: `Provides an isolated runtime playground to simulate API payloads, test edge cases, and verify header and authentication handling without impacting shared environments.`,
+        when: `Use during API integration development, contract testing, and smoke testing following rollouts.`,
+        where: `Run locally via curl, Postman, or VS Code REST Client against localhost or ephemeral staging clusters.`,
+        command: `curl -i -X GET http://localhost:8080/healthz -H "Accept: application/json"`,
+        practices: [
+          'Mock external third-party dependencies using WireMock or local stub containers.',
+          'Validate both success (2xx) and resilience (4xx/5xx) status code contracts.',
+          'Sanitize sandbox test data to ensure zero production PII exposure.'
+        ],
+        ai_mlops: `Tests synthetic prompt generations and validates streaming SSE chunk parsing.`,
+        flow: `[Draft Request Spec] ➔ [Dispatch via Probe] ➔ [Measure Latency & Status] ➔ [Validate Response Schema]`
+      };
+    }
+
+    // 5. Compose / Local Cloud Orchestration
+    if (cleanTab === 'cloud_compose' || cleanTab === 'compose' || cleanTab === 'docker-compose') {
+      return {
+        title: `${title} — Multi-Container Local Orchestration`,
+        filename: 'docker-compose.yml',
+        why: `Declaratively provisions the complete local cloud emulation stack (APIs, datastores, message queues, caches) on an isolated Docker bridge network.`,
+        when: `Run on local developer workstations to mirror production topologies with single-command spin-up.`,
+        where: `Project root directory alongside bootstrap scripts.`,
+        command: `docker-compose up -d --build && docker-compose ps`,
+        practices: [
+          'Configure explicit memory/CPU limits to prevent development machine resource exhaustion.',
+          'Use persistent named volumes for database state retention across container restarts.',
+          'Enforce healthchecks with depends_on condition: service_healthy for ordered initialization.'
+        ],
+        ai_mlops: `Boots local ChromaDB / Qdrant vector databases alongside Redis and Ollama/vLLM endpoints.`,
+        flow: `[docker-compose up] ➔ [Create Bridge Network] ➔ [Mount Volumes] ➔ [Start DB/Cache] ➔ [Start App Containers]`
+      };
+    }
+
+    // 6. Bootstrap Scripts
+    if (cleanTab === 'cloud_sh' || cleanTab === 'bootstrap' || cleanTab === 'script' || cleanTab === 'bash') {
+      return {
+        title: `${title} — Environment Bootstrap & Automation Script`,
+        filename: 'bootstrap-local.sh',
+        why: `Automates prerequisite checks, Docker network provisioning, local volume directory creation, and container orchestration with idempotent safety checks.`,
+        when: `Run upon cloning the project or onboarding a new engineer to achieve zero-to-running in under 60 seconds.`,
+        where: `Executable script in repository root with +x permissions.`,
+        command: `chmod +x bootstrap-local.sh && ./bootstrap-local.sh`,
+        practices: [
+          'Use set -euo pipefail to halt immediately on unhandled command failures.',
+          'Check for required binaries (docker, curl, jq) before starting operations.',
+          'Print clear colored progress indicators and human-friendly troubleshooting tips.'
+        ],
+        ai_mlops: `Pre-downloads quantized small language models (GGUF) and warms local vector caches.`,
+        flow: `[Verify Dependencies] ➔ [Setup Directories] ➔ [Pull Images] ➔ [Execute Compose] ➔ [Run Smoke Tests]`
+      };
+    }
+
+    // 7. Environment & Secrets
+    if (cleanTab === 'cloud_env' || cleanTab === 'env' || cleanTab === 'dotenv') {
+      return {
+        title: `${title} — Runtime Environment & Parameter Bindings`,
+        filename: '.env.example',
+        why: `Externalizes runtime configuration variables (ports, database URLs, log levels, secret keys) in accordance with 12-Factor App methodology.`,
+        when: `Read by Docker Compose and application runtimes at boot time.`,
+        where: `Template checked into git as .env.example; active secrets kept strictly in uncommitted .env.`,
+        command: `cp .env.example .env && chmod 600 .env`,
+        practices: [
+          'Never commit active production secrets or credentials to git repositories.',
+          'Provide documented default values and clear comments for every configuration flag.',
+          'Inject secrets via Vault, AWS Secrets Manager, or Kubernetes Secrets in production.'
+        ],
+        ai_mlops: `Configures model temperature, top_p, maximum context windows, and vector similarity thresholds.`,
+        flow: `[.env Template] ➔ [Copied & Populated] ➔ [Injected into Container Runtime] ➔ [Parsed by App]`
+      };
+    }
+
+    // 8. Runbooks & Safety
+    if (cleanTab === 'cloud_help' || cleanTab === 'safety' || cleanTab === 'help' || cleanTab === 'readme') {
+      return {
+        title: `${title} — SRE Operational Safety Runbook`,
+        filename: 'SAFETY_RUNBOOK.md',
+        why: `Documents emergency recovery procedures, container diagnostic commands, log inspection steps, and clean teardown recipes for zero data loss.`,
+        when: `Consult whenever encountering container port conflicts, disk exhaustion, crashed services, or database corruption.`,
+        where: `Committed in repository root or docs/runbooks/.`,
+        command: `docker-compose logs -f --tail=100 <service-name>`,
+        practices: [
+          'Keep runbook commands copy-pasteable with explicit warning labels for destructive operations.',
+          'Document expected baseline metrics (CPU, RAM, latency) alongside alert thresholds.',
+          'Review and update runbooks immediately following each incident post-mortem.'
+        ],
+        ai_mlops: `Provides recovery steps for GPU OOM errors, corrupted vector indices, and failed prompt caches.`,
+        flow: `[Symptom Detected] ➔ [Run Diagnostics] ➔ [Identify Root Cause] ➔ [Execute Mitigation] ➔ [Verify Recovery]`
+      };
+    }
+
+    // 9. Docker Ignore / Git Ignore
+    if (cleanTab === 'ignore' || cleanTab === '.dockerignore' || cleanTab === '.gitignore') {
+      return {
+        title: `${title} — Build Context & Exclusion Guardrails`,
+        filename: '.dockerignore',
+        why: `Prevents bulky local directories (node_modules, .git, venv), test binaries, and secret credentials (.env, keys) from leaking into the Docker build context or container images.`,
+        when: `Read by the container builder daemon immediately upon issuing build commands.`,
+        where: `Placed in the same directory as the Dockerfile.`,
+        command: `docker build --no-cache -t app:test .`,
+        practices: [
+          'Always exclude .git, test suites, coverage reports, and documentation.',
+          'Explicitly ignore .env and all private credentials (.pem, .key, id_rsa).',
+          'Use wildcard negation rules (!needed-asset) for fine-grained whitelisting.'
+        ],
+        ai_mlops: `Excludes uncompressed multi-gigabyte checkpoints and raw training datasets from runner images.`,
+        flow: `[docker build] ➔ [Daemon evaluates .dockerignore] ➔ [Compresses minimal build context] ➔ [Transfers to Builder]`
+      };
+    }
+
+    // 10. Container Entrypoints
+    if (cleanTab === 'entrypoint' || cleanTab === 'entrypoint.sh') {
+      return {
+        title: `${title} — Container PID 1 Initialization Script`,
+        filename: 'entrypoint.sh',
+        why: `Acts as PID 1 bootstrap script inside the container, running database migration checks, environment validation, and executing the main application process via exec so OS signals (SIGTERM, SIGINT) are received gracefully.`,
+        when: `Executed automatically when the container starts before the main process launches.`,
+        where: `Copied into /usr/local/bin/entrypoint.sh inside the container image.`,
+        command: `chmod +x entrypoint.sh && docker run --entrypoint /entrypoint.sh my-image:latest`,
+        practices: [
+          'Always end the script with \'exec "$@"\' so the application receives graceful shutdown signals.',
+          'Validate upstream database connectivity using netcat or wait-for-it before starting the app.',
+          'Run as an unprivileged user (UID >= 1000) to maintain defense-in-depth.'
+        ],
+        ai_mlops: `Verifies CUDA GPU device visibility and downloads weights from cache before launching inference servers.`,
+        flow: `[Container Starts] ➔ [entrypoint.sh executes] ➔ [Validates DB/Network] ➔ [exec "$@" Hands Over to Main Process]`
+      };
+    }
+
+    // 11. Trivy Vulnerability Scanning
+    if (cleanTab === 'trivy' || cleanTab === 'trivy.yaml') {
+      return {
+        title: `${title} — Trivy DevSecOps Vulnerability & Compliance Policy`,
+        filename: 'trivy.yaml',
+        why: `Configures vulnerability scanning thresholds, severity filtering (HIGH, CRITICAL), CVE ignore lists, and license compliance rules to prevent vulnerable images from reaching production.`,
+        when: `Executed in CI/CD pipeline immediately after Docker build and before container registry push.`,
+        where: `Placed in repository root or .github/workflows/.`,
+        command: `trivy image --config trivy.yaml my-image:latest`,
+        practices: [
+          'Set exit-code: 1 on CRITICAL vulnerabilities to break builds before deployment.',
+          'Maintain an audited .trivyignore file with expiration dates for documented false positives.',
+          'Automate scanning of both OS base packages and application language dependencies (npm, pip, maven).'
+        ],
+        ai_mlops: `Scans Python ML dependencies and HuggingFace cache packages for known CVEs and malicious supply-chain packages.`,
+        flow: `[OCI Image Built] ➔ [Trivy Scans Layers] ➔ [Matches Against Vulnerability DB] ➔ [Generates SARIF Report] ➔ [Pass / Gate]`
+      };
+    }
+
+    // 12. Generic Dynamic Fallback
+    const formattedTab = cleanTab.split('_').join(' ').split('-').join(' ').toUpperCase();
+    return {
+      title: `${title} — ${formattedTab} Specification`,
+      filename: `${cleanTab}.yaml`,
+      why: `Implements the ${formattedTab} operational declarations for ${title}. Encapsulates cloud infrastructure, automation logic, and telemetry contracts according to modern SRE and DevSecOps engineering standards.`,
+      when: `Apply during pipeline execution, infrastructure provisioning, or runtime workload scaling.`,
+      where: `Stored in the project repository root or deploy/ configurations directory.`,
+      command: `# Inspect and validate configuration:\ncat ${cleanTab}.yaml`,
+      practices: [
+        'Maintain declarative configurations in version control with git branch protection.',
+        'Validate syntax and resource dependencies in CI before applying changes.',
+        'Monitor operational telemetry metrics following every rollout.'
+      ],
+      ai_mlops: `Integrates seamlessly with SRE observability platforms and AI inference clusters.`,
+      flow: `[Configuration Spec] ➔ [CI/CD Validation] ➔ [Target Environment] ➔ [Continuous Health Probing]`
+    };
+  }
+
+  function renderUniversalExplanation(exp) {
+    const drawer = ensureExplanationDrawer();
+    if (!drawer) return;
+
+    const titleEl = document.getElementById('drawer-title');
+    if (titleEl) titleEl.textContent = exp.title;
+
+    const fileEl = document.getElementById('drawer-filename');
+    if (fileEl) fileEl.textContent = exp.filename;
+
+    const whyEl = document.getElementById('explain-why');
+    if (whyEl) whyEl.innerHTML = exp.why;
+
+    const whenEl = document.getElementById('explain-when');
+    if (whenEl) whenEl.innerHTML = exp.when;
+
+    const whereEl = document.getElementById('explain-where');
+    if (whereEl) whereEl.innerHTML = exp.where;
+
+    const cmdEl = document.getElementById('explain-command');
+    if (cmdEl) cmdEl.textContent = exp.command;
+
+    const practicesBox = document.getElementById('explain-practices');
+    if (practicesBox) {
+      practicesBox.innerHTML = '';
+      (exp.practices || []).forEach(practice => {
+        const li = document.createElement('li');
+        li.innerHTML = practice;
+        practicesBox.appendChild(li);
+      });
+    }
+
+    const aiEl = document.getElementById('explain-ai-mlops');
+    if (aiEl) aiEl.innerHTML = exp.ai_mlops;
+
+    const flowEl = document.getElementById('explain-flow');
+    if (flowEl) flowEl.textContent = exp.flow;
+
+    drawer.classList.remove('translate-x-full');
+    drawer.classList.add('translate-x-0');
+  }
+
+  function universalExplainActiveTab(targetTab) {
+    const tab = targetTab || detectActiveTab();
+    const exp = generateUniversalExplanation(tab);
+    renderUniversalExplanation(exp);
+  }
+  if (typeof window !== 'undefined') {
+    window.universalExplainActiveTab = universalExplainActiveTab;
+  }
+
+  // Intercept any toast containing "No explanation available"
+  function installToastInterceptor() {
+    if (typeof MutationObserver === 'undefined' || typeof document === 'undefined' || !document.body) return;
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) {
+            const txt = node.textContent || '';
+            if (txt.includes('No explanation available')) {
+              try { node.remove(); } catch(e) {}
+              universalExplainActiveTab();
+            }
+          }
+        });
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // Hook all Explain buttons on page
+  function hookExplainButtons() {
+    if (typeof document === 'undefined') return;
+    document.querySelectorAll('button').forEach(btn => {
+      if (btn.__explainHooked) return;
+      const txt = (btn.textContent || '').toLowerCase();
+      const onclickAttr = (btn.getAttribute('onclick') || '').toLowerCase();
+      if (txt.includes('explain') || onclickAttr.includes('explain')) {
+        btn.__explainHooked = true;
+        btn.addEventListener('click', () => {
+          setTimeout(() => {
+            const drawer = document.getElementById('explanation-drawer');
+            if (!drawer || drawer.classList.contains('translate-x-full')) {
+              universalExplainActiveTab();
+            }
+          }, 40);
+        });
+      }
+    });
+  }
+
+  // Wrap or define window.explainActiveTabCode globally
+  function wrapExplainActiveTabCode() {
+    if (typeof window === 'undefined') return;
+    const originalExplain = window.explainActiveTabCode;
+    window.explainActiveTabCode = function() {
+      let handled = false;
+      if (typeof originalExplain === 'function' && originalExplain !== window.explainActiveTabCode) {
+        try {
+          originalExplain();
+          const drawer = document.getElementById('explanation-drawer');
+          if (drawer && !drawer.classList.contains('translate-x-full')) {
+            handled = true;
+          }
+        } catch (e) {
+          console.warn('Native explanation error, falling back to universal explainer:', e);
+        }
+      }
+      if (!handled) {
+        universalExplainActiveTab();
+      }
+    };
+    window.explainActiveTabCode.__wrapped = true;
+  }
+
   // Initialize features on load
   function init() {
     injectAiLinkToNavbar();
@@ -2241,6 +2723,12 @@ ${nodeKeys.map(k => {
     injectLinterTab();
     injectNetworkStatusBadge();
     injectVisualFlowAction();
+
+    // Universal Explainer System
+    ensureExplanationDrawer();
+    installToastInterceptor();
+    hookExplainButtons();
+    wrapExplainActiveTabCode();
 
     // Inject Phase 14 & 15 Custom Features
     injectSystemFlowTab();
@@ -2272,22 +2760,29 @@ ${nodeKeys.map(k => {
     setTimeout(() => {
       restoreState();
       wrapSwitchTab();
+      hookExplainButtons();
+      wrapExplainActiveTabCode();
     }, 150);
 
-    // Keep trying to wrap switchTab in case generator loaded deferred
+    // Keep trying to wrap in case generator loaded deferred
     let attempts = 0;
     const interval = setInterval(() => {
       wrapSwitchTab();
+      hookExplainButtons();
+      wrapExplainActiveTabCode();
       attempts++;
-      if (attempts > 10 || (window.switchTab && window.switchTab.__wrapped)) {
+      if (attempts > 10 || (window.switchTab && window.switchTab.__wrapped && window.explainActiveTabCode && window.explainActiveTabCode.__wrapped)) {
         clearInterval(interval);
       }
     }, 200);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   }
 })();
+

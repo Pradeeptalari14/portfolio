@@ -421,7 +421,11 @@ function explainActiveTabCode() {
   }
 
   if (!explanation) {
-    showToast("⚠️ No explanation available for this tab.");
+    if (typeof window !== 'undefined' && typeof window.universalExplainActiveTab === 'function') {
+        window.universalExplainActiveTab(activeTab);
+        return;
+      }
+      return;
     return;
   }
 
