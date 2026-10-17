@@ -3,50 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Architecture Center | Production Cloud &amp; AI Topologies | Talari Pradeep</title>
-  <meta name="description" content="Explore interactive production system architectures for AWS Multi-Account Landing Zones, Multi-Tenant EKS Clusters, Enterprise RAG Pipelines, and Hybrid VMware clouds designed by Talari Pradeep." />
+  <title>Production Architecture Center | Cloud & AI Systems Topologies | Talari Pradeep</title>
+  <meta name="description" content="Explore interactive production system architectures for AWS Landing Zones, Multi-Region Active-Active EKS, Distributed vLLM Clusters, Multi-Agent Swarms, In-Kernel eBPF Telemetry, and Zero-Trust DevSecOps." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
   <style>
     :root {
-      --bg-base: #080c14;
-      --bg-surface: #0f172a;
-      --bg-card: rgba(15, 23, 42, 0.7);
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(26, 38, 64, 0.85);
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
       --accent-cyan: #38bdf8;
+      --accent-teal: #14b8a6;
       --accent-indigo: #6366f1;
       --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
       --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.35);
       --font-mono: 'JetBrains Mono', monospace;
       --font-display: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5.5rem;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: var(--font-body);
-      background: var(--bg-base);
+      background-color: var(--bg-base);
       color: var(--text-primary);
       min-height: 100vh;
       line-height: 1.6;
+      background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 15% 40%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
+
     a { color: inherit; text-decoration: none; }
+
+    /* Sticky Navbar */
     .hub-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 12, 20, 0.9);
+      background: rgba(6, 9, 17, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0.85rem 1.5rem;
+      padding: 0.85rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1.5rem;
     }
     .hub-brand {
       display: flex;
@@ -55,440 +83,2076 @@
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 1.05rem;
+      letter-spacing: -0.01em;
     }
     .hub-brand-badge {
-      background: rgba(99, 102, 241, 0.15);
-      color: #a5b4fc;
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-sm);
       font-size: 0.72rem;
       font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: 0.05em;
     }
     .hub-nav-links {
       display: flex;
-      gap: 1.25rem;
+      align-items: center;
+      gap: 1.15rem;
       font-size: 0.88rem;
       color: var(--text-secondary);
     }
-    .hub-nav-links a:hover { color: var(--text-primary); }
-    .arch-container {
-      max-width: 1280px;
+    .hub-nav-links a {
+      transition: var(--transition);
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-sm);
+    }
+    .hub-nav-links a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .hub-nav-links a.active-nav {
+      color: #fff;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .hub-nav-cta {
+      background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .hub-nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .container {
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 3rem 1.5rem 5rem;
+      padding: 2.5rem 1.5rem 6rem;
     }
-    .arch-header {
+
+    /* Hero Section */
+    .hero-section {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
     }
-    .arch-title {
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      padding: 0.35rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      color: #a5b4fc;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+    .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
       font-weight: 800;
-      margin-bottom: 0.75rem;
-      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.85rem;
+      color: #fff;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .arch-desc {
+    .hero-desc {
+      font-size: 1.02rem;
       color: var(--text-secondary);
-      max-width: 720px;
-      margin: 0 auto;
+      max-width: 820px;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
     }
-    .arch-selector {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+
+    /* Architecture Metrics HUD */
+    .metrics-hud {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
       margin-bottom: 2.5rem;
+    }
+    .hud-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+    }
+    .hud-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-2px);
+    }
+    .hud-val {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .hud-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    /* Filter & Search Bar */
+    .filter-bar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .search-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-muted);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      background: #060911;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem 0.75rem 2.85rem;
+      font-size: 0.92rem;
+      color: #fff;
+      outline: none;
+      font-family: var(--font-body);
+      transition: var(--transition);
+    }
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+    .search-badge {
+      position: absolute;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 0.2rem 0.5rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      pointer-events: none;
+    }
+
+    /* Category Filter Pills */
+    .category-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .cat-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.4rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .cat-pill:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    .cat-pill.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    /* Architecture Selector Carousel/Grid */
+    .arch-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 2.25rem;
     }
     .arch-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 0.65rem 1.25rem;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      position: relative;
+      overflow: hidden;
     }
-    .arch-btn:hover { color: #fff; border-color: rgba(99, 102, 241, 0.4); }
+    .arch-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 3px;
+      background: transparent;
+      transition: var(--transition);
+    }
+    .arch-btn:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
     .arch-btn.active {
-      background: rgba(99, 102, 241, 0.15);
-      border-color: #818cf8;
-      color: #818cf8;
-      font-weight: 600;
+      background: rgba(56, 189, 248, 0.08);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 1px var(--accent-cyan);
     }
+    .arch-btn.active::before {
+      background: var(--accent-cyan);
+    }
+    .arch-btn-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .arch-btn-icon {
+      font-size: 1.25rem;
+    }
+    .arch-btn-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .arch-btn.active .arch-btn-badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    .arch-btn-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .arch-btn-sub {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Main Architecture Layout */
     .arch-layout {
       display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 1.5rem;
+      grid-template-columns: 1fr 420px;
+      gap: 1.75rem;
     }
+
+    /* Diagram Viewport */
     .diagram-viewport {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: var(--radius-lg);
       padding: 2rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.75rem;
       position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+    .viewport-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+    }
+    .diagram-tag {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
     }
     .diagram-title {
       font-family: var(--font-display);
-      font-size: 1.35rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+    }
+    .diagram-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-top: 0.35rem;
+      max-width: 640px;
+    }
+
+    /* Simulator Control Bar */
+    .sim-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .btn-sim-action {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-sim-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-sim-action.btn-run-primary {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      border: none;
+      font-weight: 700;
+    }
+    .btn-sim-action.btn-run-primary:hover {
+      box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+    }
+    .flow-status-chip {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: #34d399;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Live Request Flow Simulator HUD */
+    .flow-simulator-hud {
+      background: #040711;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .hud-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+    .flow-pipeline-track {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+    }
+    .flow-step-node {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.85rem;
+      min-width: 135px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .flow-step-node.active {
+      border-color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+    }
+    .flow-step-node.completed {
+      border-color: #34d399;
+      background: rgba(52, 211, 153, 0.08);
+    }
+    .flow-step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .flow-step-node.active .flow-step-badge {
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+    .flow-step-node.completed .flow-step-badge {
+      color: #34d399;
+    }
+    .flow-step-label {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
       font-weight: 700;
       color: #fff;
+      white-space: nowrap;
+    }
+    .flow-arrow {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    /* Terminal Logs in Simulator */
+    .flow-terminal {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #94a3b8;
+      max-height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .term-line-green { color: #34d399; }
+    .term-line-cyan { color: var(--accent-cyan); }
+    .term-line-dim { color: #64748b; }
+
+    /* Architecture Layers & Node Grid */
+    .layers-container,
+    .tiered-node-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .tier-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .tier-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 0.35rem;
     }
     .node-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1rem;
-      margin-top: 1rem;
     }
     .arch-node {
-      background: #040711;
+      background: #060a14;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: var(--radius-md);
       padding: 1.25rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: var(--transition);
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
     }
     .arch-node:hover {
       border-color: var(--accent-cyan);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
     }
     .arch-node.active {
-      border-color: #818cf8;
-      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      box-shadow: 0 0 0 1px var(--accent-cyan), 0 10px 24px rgba(56, 189, 248, 0.15);
+    }
+    .node-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     .node-role {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--accent-cyan);
-      margin-bottom: 0.35rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .node-status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.1);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
     }
     .node-name {
-      font-size: 0.95rem;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 0.25rem;
       color: #fff;
+      line-height: 1.25;
+      margin: 0.2rem 0;
     }
     .node-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
     }
+    .node-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.6rem;
+      margin-top: 0.2rem;
+    }
+    .node-metric {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-teal);
+    }
+    .node-inspect-arrow {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+    .arch-node:hover .node-inspect-arrow,
+    .arch-node.active .node-inspect-arrow {
+      color: var(--accent-cyan);
+      transform: translateX(3px);
+    }
+
+    /* Inspector Panel (Right Column) */
     .inspector-panel {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
       position: sticky;
       top: 5rem;
       height: fit-content;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+    .insp-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
     }
     .insp-tag {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent-cyan);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.25rem;
     }
     .insp-title {
       font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+    }
+    .insp-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* Inspector Tabs */
+    .insp-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      gap: 0.35rem;
+    }
+    .insp-tab {
+      background: none;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .insp-tab:hover {
       color: #fff;
     }
+    .insp-tab.active {
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+    .insp-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-cyan);
+    }
+
+    .insp-panel-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
     .insp-desc {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
+      font-size: 0.88rem;
+      color: #cbd5e1;
       line-height: 1.6;
     }
-    .insp-detail-row {
-      border-top: 1px solid var(--border);
-      padding-top: 0.75rem;
+
+    .spec-block {
+      background: #060a14;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
     }
-    .detail-label {
+    .spec-title {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
+      font-size: 0.7rem;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
     }
-    .detail-val {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
+    .spec-val {
+      font-size: 0.84rem;
       color: #e2e8f0;
+      line-height: 1.45;
     }
-    @media (max-width: 880px) {
-      .arch-layout { grid-template-columns: 1fr; }
-      .inspector-panel { position: static; }
+
+    /* Code View in Inspector */
+    .code-viewer {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .code-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.75rem;
+      background: #0a0f1d;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .code-pre {
+      padding: 0.85rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      overflow-x: auto;
+      max-height: 260px;
+      scrollbar-width: thin;
+      white-space: pre;
+    }
+    .btn-copy-code {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-copy-code:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Metric Badges in Inspector */
+    .metrics-grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    .insp-launch-btn {
+      background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .insp-launch-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+    .toast-msg {
+      background: #0f172a;
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: toastIn 0.22s ease forwards;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    .hub-footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem 4rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      background: #03060c;
+    }
+
+    @media (max-width: 1080px) {
+      .arch-layout {
+        grid-template-columns: 1fr;
+      }
+      .inspector-panel {
+        position: static;
+      }
+      .hub-nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hub-nav {
+        padding: 0.75rem 1rem;
+      }
+      .container {
+        padding: 1.5rem 1rem 4rem;
+      }
+      .node-grid {
+        grid-template-columns: 1fr;
+      }
+      .arch-selector {
+        grid-template-columns: 1fr;
+      }
+      .metrics-grid-2x2 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Sticky Navbar -->
   <nav class="hub-nav">
     <a href="../" class="hub-brand">
       <span>TALARI PRADEEP</span>
       <span class="hub-brand-badge">ARCHITECTURE CENTER</span>
     </a>
     <div class="hub-nav-links">
-      <a href="../">← Home</a>
+      <a href="../">Home</a>
       <a href="../studios/">Studios Hub</a>
-      <a href="../toolbox/">Toolbox</a>
+      <a href="../studios/learn/">🎓 Learn Workspace</a>
+      <a href="../studios/flow/">Visual Flow ⚡</a>
       <a href="../incident/">Incident Lab</a>
-      <a href="../knowledge/">Knowledge</a>
+      <a href="./" class="active-nav">Architecture</a>
       <a href="../resume/">Resume</a>
     </div>
+    <a href="../studios/" class="hub-nav-cta">Launch 347 Studios →</a>
   </nav>
 
-  <div class="arch-container">
-    <header class="arch-header">
-      <h1 class="arch-title">Production Architecture Center</h1>
-      <p class="arch-desc">
-        Interactive system topologies, resilience patterns, and Terraform blueprints for enterprise cloud, multi-tenant Kubernetes, and AI inference serving.
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-section">
+      <div class="hero-badge">
+        <span>⚡</span>
+        <span>PRODUCTION SYSTEM ARCHITECTURES &amp; RESILIENCE TOPOLOGIES</span>
+      </div>
+      <h1 class="hero-title">
+        Production <span class="gradient-text">Architecture Center</span>
+      </h1>
+      <p class="hero-desc">
+        Explore interactive production system topologies, deterministic failure isolation patterns, and verified Infrastructure-as-Code blueprints across multi-region Kubernetes, distributed LLM inference clusters, autonomous agent swarms, and in-kernel eBPF telemetry.
       </p>
+
+      <!-- Key Architectural Metrics HUD -->
+      <div class="metrics-hud">
+        <div class="hud-card">
+          <div class="hud-val">8</div>
+          <div class="hud-label">Enterprise Topologies</div>
+        </div>
+        <div class="hud-card">
+          <div class="hud-val">347</div>
+          <div class="hud-label">Integrated Studios</div>
+        </div>
+        <div class="hud-card">
+          <div class="hud-val">99.999%</div>
+          <div class="hud-label">Target Availability</div>
+        </div>
+        <div class="hud-card">
+          <div class="hud-val">&lt;18ms</div>
+          <div class="hud-label">P99 Ingress Latency</div>
+        </div>
+        <div class="hud-card">
+          <div class="hud-val">Zero-Trust</div>
+          <div class="hud-label">Cryptographic Identity</div>
+        </div>
+      </div>
     </header>
 
-    <div class="arch-selector" id="archSelector">
-      <button class="arch-btn active" data-id="landing-zone">AWS Multi-Account Landing Zone</button>
-      <button class="arch-btn" data-id="eks-mesh">Multi-Tenant EKS Cluster Stack</button>
-      <button class="arch-btn" data-id="rag-ai">Enterprise RAG &amp; LLMOps Platform</button>
-      <button class="arch-btn" data-id="hybrid-vmware">Hybrid Cloud &amp; VMware vSphere</button>
+    <!-- Filter & Search Controls -->
+    <div class="filter-bar">
+      <div class="search-row">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="archSearch" class="search-input" placeholder="Search architectures by technology (e.g. vLLM, eBPF, Karpenter, Transit Gateway, ArgoCD, Direct Connect)..." autocomplete="off" />
+        <span class="search-badge">Ctrl + K</span>
+      </div>
+
+      <div class="category-pills" id="categoryPills">
+        <button class="cat-pill active" data-cat="all">All Topologies (8)</button>
+        <button class="cat-pill" data-cat="cloud">Cloud &amp; K8s (2)</button>
+        <button class="cat-pill" data-cat="ai">AI &amp; LLMOps (3)</button>
+        <button class="cat-pill" data-cat="observability">Kernel &amp; SRE (1)</button>
+        <button class="cat-pill" data-cat="security">DevSecOps &amp; Security (1)</button>
+        <button class="cat-pill" data-cat="hybrid">Hybrid Cloud (1)</button>
+      </div>
     </div>
 
+    <!-- Architecture Selector Row (Preserves #archSelector & data-id for test contracts) -->
+    <div class="arch-selector" id="archSelector">
+      <!-- Injected dynamically by JS -->
+    </div>
+
+    <!-- Active Blueprint & Technical Inspector Layout -->
     <div class="arch-layout">
-      <main class="diagram-viewport">
-        <div>
-          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.25rem;">
-            INTERACTIVE SYSTEM BLUEPRINT
+
+      <!-- Left: Diagram Viewport with Visual Layers & Interactive Nodes -->
+      <main class="diagram-viewport" id="diagramViewport">
+        <div class="viewport-header">
+          <div>
+            <div class="diagram-tag" id="diagramTag">INTERACTIVE SYSTEM BLUEPRINT</div>
+            <h2 class="diagram-title" id="diagramTitle">AWS Multi-Account Landing Zone Topology</h2>
+            <p class="diagram-desc" id="diagramDesc">
+              Secure multi-account architecture isolating audit, security, networking, and production workloads with AWS Control Tower and Transit Gateway.
+            </p>
           </div>
-          <h2 class="diagram-title" id="diagramTitle">AWS Multi-Account Landing Zone Topology</h2>
-          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.4rem;" id="diagramDesc">
-            Secure multi-account architecture isolating audit, security, networking, and production workloads with AWS Control Tower and Transit Gateway.
-          </p>
+
+          <!-- Simulation & Export Controls -->
+          <div class="sim-controls-row">
+            <span class="flow-status-chip" id="flowStatusIndicator">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#34d399;"></span>
+              <span>● Production Topology Ready</span>
+            </span>
+            <button class="btn-sim-action btn-run-primary" id="btnSimulateRequestFlow">
+              ▶ Step Request Flow
+            </button>
+            <button class="btn-sim-action" id="btnExportRunbook">
+              📥 Copy Runbook
+            </button>
+          </div>
         </div>
 
-        <div class="node-grid" id="nodeGrid">
-          <!-- Interactive nodes injected by JS -->
+        <!-- Live Request Flow Simulation HUD -->
+        <div class="flow-simulator-hud" id="flowSimulatorHud">
+          <div class="hud-title-bar">
+            <span>REQUEST LIFECYCLE PATH TRACE:</span>
+            <span id="flowStepCount" style="color: var(--accent-cyan);">Step 1 of 5</span>
+          </div>
+
+          <div class="flow-pipeline-track" id="flowPipelineTrack">
+            <!-- Pipeline steps injected dynamically -->
+          </div>
+
+          <div class="flow-terminal" id="flowTerminalLogs">
+            <div class="term-line-dim"># Interactive Request Flow Console Ready. Click "Step Request Flow" above to simulate real-time packet progression.</div>
+          </div>
+        </div>
+
+        <!-- Architecture Tiers & Interactive Nodes Grid -->
+        <div class="layers-container" id="layersContainer">
+          <div id="nodeGrid" class="tiered-node-grid"></div>
         </div>
       </main>
 
+      <!-- Right: Technical Inspector Panel (Preserves #inspectorPanel & IDs for tests) -->
       <aside class="inspector-panel" id="inspectorPanel">
-        <div>
+        <div class="insp-header">
           <span class="insp-tag" id="inspTag">NODE INSPECTOR</span>
           <h3 class="insp-title" id="inspTitle">Select an architecture node</h3>
-        </div>
-        <p class="insp-desc" id="inspDesc">
-          Click any component on the left diagram to view technical specifications, security isolation rules, and provisioning code.
-        </p>
-
-        <div class="insp-detail-row">
-          <div class="detail-label">PROVISIONING / IAC</div>
-          <div class="detail-val" id="inspIac">Terraform Module</div>
+          <p class="insp-subtitle" id="inspSubtitle">Click any component to inspect implementation details, IaC code, and SLOs</p>
         </div>
 
-        <div class="insp-detail-row">
-          <div class="detail-label">HIGH AVAILABILITY</div>
-          <div class="detail-val" id="inspHa">Multi-AZ / Multi-Region</div>
+        <!-- Inspector Tabs -->
+        <div class="insp-tabs" id="inspTabs">
+          <button class="insp-tab active" data-tab="overview">Overview</button>
+          <button class="insp-tab" data-tab="iac">IaC &amp; Manifest</button>
+          <button class="insp-tab" data-tab="slo">SLO &amp; Security</button>
+          <button class="insp-tab" data-tab="chaos">Chaos &amp; Failover</button>
         </div>
 
-        <div class="insp-detail-row">
-          <div class="detail-label">COMPLIANCE &amp; SECURITY</div>
-          <div class="detail-val" id="inspSec">Least Privilege IAM + KMS CMK</div>
+        <!-- Tab 1: Overview Panel -->
+        <div class="insp-panel-content" id="panelOverview">
+          <p class="insp-desc" id="inspDesc">
+            Click any component on the left diagram to view technical specifications, security isolation rules, and provisioning code.
+          </p>
+
+          <div class="spec-block">
+            <span class="spec-title">ARCHITECTURAL ROLE &amp; MOTIVATION</span>
+            <div class="spec-val" id="inspMotivation">
+              Eliminates single-point-of-failure blast radius while enforcing automated compliance gates across cloud accounts.
+            </div>
+          </div>
+
+          <div class="spec-block">
+            <span class="spec-title">PRIMARY PRODUCTION METRIC</span>
+            <div class="spec-val" id="inspPrimaryMetric" style="color: var(--accent-teal); font-family: var(--font-mono);">
+              P99 Latency &lt; 18ms &bull; 99.999% Reliability
+            </div>
+          </div>
         </div>
+
+        <!-- Tab 2: IaC Manifest Panel -->
+        <div class="insp-panel-content" id="panelIac" style="display: none;">
+          <div class="code-viewer">
+            <div class="code-topbar">
+              <span id="inspIacLang">terraform &bull; main.tf</span>
+              <button class="btn-copy-code" id="btnCopyIacCode">📋 Copy Manifest</button>
+            </div>
+            <pre class="code-pre" id="inspIacCode"># Loading verified declaration...</pre>
+          </div>
+          <div class="spec-block" style="margin-top: 0.25rem;">
+            <span class="spec-title">PROVISIONING &amp; IAC ENGINE</span>
+            <div class="spec-val" id="inspIac" style="font-family: var(--font-mono); font-size: 0.8rem;">
+              Terraform Module / Helm
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: SLO & Security Panel -->
+        <div class="insp-panel-content" id="panelSlo" style="display: none;">
+          <div class="metrics-grid-2x2">
+            <div class="spec-block">
+              <span class="spec-title">HIGH AVAILABILITY</span>
+              <div class="spec-val" id="inspHa" style="font-family: var(--font-mono); font-size: 0.78rem;">
+                Multi-AZ Active-Active
+              </div>
+            </div>
+            <div class="spec-block">
+              <span class="spec-title">COMPLIANCE &amp; SECURITY</span>
+              <div class="spec-val" id="inspSec" style="font-family: var(--font-mono); font-size: 0.78rem;">
+                Least Privilege IAM + KMS
+              </div>
+            </div>
+          </div>
+
+          <div class="spec-block">
+            <span class="spec-title">ERROR BUDGET BURN POLICY</span>
+            <div class="spec-val" id="inspBurnPolicy" style="font-size: 0.8rem;">
+              Automated canary halt upon 2% 1-hour error budget burn rate.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Chaos & Failover Panel -->
+        <div class="insp-panel-content" id="panelChaos" style="display: none;">
+          <div class="spec-block">
+            <span class="spec-title">CHAOS FAILURE SCENARIO</span>
+            <div class="spec-val" id="inspChaosScenario" style="color: var(--accent-rose); font-size: 0.82rem;">
+              Complete Availability Zone network partition / silent packet drop.
+            </div>
+          </div>
+          <div class="spec-block">
+            <span class="spec-title">DETERMINISTIC SELF-HEALING ACTION</span>
+            <div class="spec-val" id="inspSelfHealing" style="color: #34d399; font-size: 0.82rem;">
+              Automatic health check ejection via Route53 / Envoy, rerouting 100% traffic in &lt;8 seconds.
+            </div>
+          </div>
+        </div>
+
+        <!-- Related Interactive Studio CTA -->
+        <a href="../studios/" class="insp-launch-btn" id="inspLaunchStudio">
+          <span>🚀 Launch Related Studio Simulator &rarr;</span>
+        </a>
       </aside>
+
     </div>
   </div>
 
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="hub-footer">
+    <div style="font-weight: 700; color: #fff; margin-bottom: 0.35rem;">TALARI PRADEEP &bull; CLOUD ARCHITECTURE, SRE &amp; AI SYSTEMS</div>
+    <div>Production Architecture Center &bull; Verified Distributed Topologies &amp; Resilience Blueprints</div>
+    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+      Standardized on open declarations, zero-trust cryptographic identities, and deterministic SRE self-healing patterns.
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript Engine -->
   <script>
     (function() {
-      const architectures = {
+      // 8 Comprehensive Enterprise Architecture Topologies
+      const ARCHITECTURES = {
         'landing-zone': {
+          id: 'landing-zone',
+          category: 'cloud',
+          icon: '☁️',
           title: 'AWS Multi-Account Landing Zone Topology',
-          desc: 'Secure multi-account architecture isolating audit, security, networking, and production workloads with AWS Control Tower and Transit Gateway.',
+          badgeText: 'AWS CONTROL TOWER',
+          desc: 'Enterprise multi-account landing zone isolating root governance, central network inspection, security aggregation, and production EKS workloads with automated Service Control Policies (SCPs).',
+          metric: '99.999% SLA • Zero Trust',
+          flowSteps: [
+            { label: 'Ingress Packet', desc: 'Packet arrives at AWS Direct Connect Gateway / Internet Gateway.' },
+            { label: 'Inspection VPC', desc: 'AWS Network Firewall inspects stateful Layer 7 traffic against Suricata rules.' },
+            { label: 'Transit Gateway', desc: 'Hub-and-spoke transit router steers traffic to target Workload VPC.' },
+            { label: 'Internal ALB', desc: 'Application Load Balancer authenticates client with AWS WAF & ACM mTLS.' },
+            { label: 'EKS Worker Pod', desc: 'Traffic delivered to private pod running in isolated worker subnet.' }
+          ],
           nodes: [
             {
+              tier: 'Tier 1: Global Edge & Governance',
               role: 'GOVERNANCE & OU',
-              name: 'AWS Control Tower',
+              name: 'AWS Control Tower & Organizations',
               sub: 'Root Management Account',
-              desc: 'Enforces Service Control Policies (SCPs), automated guardrails, and account vending machine (AFT) for zero-trust provisioning.',
-              iac: 'Terraform AWS Provider / Control Tower Account Factory',
-              ha: 'Global AWS Management Plane',
-              sec: 'Break-glass MFA, SCP Deny Unencrypted EBS, Region Lock'
+              desc: 'Enforces Service Control Policies (SCPs), automated guardrails, and account vending machine (AFT) for zero-trust provisioning across all departmental accounts.',
+              motivation: 'Prevents rogue AWS resource provisioning, enforces mandatory tag policies, and locks IAM root accounts.',
+              metric: 'Automated Account Vending in <15min',
+              iac: `# AWS Control Tower Account Factory for Terraform (AFT)\nresource "aws_organizations_policy" "guardrails" {\n  name        = "Enforce-Encrypted-EBS-And-IMDSv2"\n  description = "Denies unencrypted storage and forces IMDSv2"\n  content     = jsonencode({\n    Version = "2012-10-17"\n    Statement = [{\n      Sid       = "RequireEncryptedEBS"\n      Effect    = "Deny"\n      Action    = ["ec2:CreateVolume"]\n      Resource  = "*"\n      Condition = { Bool = { "ec2:Encrypted": "false" } }\n    }]\n  })\n}`,
+              iacLang: 'terraform • control-tower.tf',
+              ha: 'Global AWS Management Plane (Active-Active)',
+              sec: 'Break-glass MFA, SCP Deny Unencrypted EBS, Region Lock to us-east-1/eu-west-1',
+              burnPolicy: 'Automated compliance alerting via SecurityHub EventBridge triggers.',
+              chaosScenario: 'Unauthorized privilege escalation attempt in child development account.',
+              selfHealing: 'SCP immediately denies API call at AWS root boundary; SecurityHub triggers automated Lambda session revocation.',
+              studioLink: '../tools/terraform-drift/'
             },
             {
+              tier: 'Tier 1: Global Edge & Governance',
               role: 'SHARED NETWORK',
-              name: 'AWS Transit Gateway',
-              sub: 'Central Routing Hub',
-              desc: 'Interconnects 15+ VPCs across accounts with hub-and-spoke routing, centralized inspection via AWS Network Firewall, and Direct Connect.',
-              iac: 'terraform-aws-modules/transit-gateway',
-              ha: 'Active-Active Multi-AZ (up to 50Gbps per VPC attachment)',
-              sec: 'Strict Route Tables, No Transitive VPC-to-VPC without Firewall'
+              name: 'AWS Transit Gateway & Inspection VPC',
+              sub: 'Central Hub-and-Spoke Router',
+              desc: 'Interconnects 15+ VPCs across accounts with hub-and-spoke routing, centralized inspection via AWS Network Firewall, and Direct Connect Gateway attachments.',
+              motivation: 'Eliminates complex mesh VPC peering, ensures all cross-VPC traffic is inspected for data exfiltration.',
+              metric: 'Up to 50Gbps per VPC attachment',
+              iac: `module "transit_gateway" {\n  source  = "terraform-aws-modules/transit-gateway/aws"\n  version = "~> 2.8"\n\n  name        = "enterprise-production-tgw"\n  description = "Central Hub-and-Spoke Transit Gateway"\n\n  enable_auto_accept_shared_attachments = true\n  ram_allow_external_principals          = false\n\n  vpc_attachments = {\n    inspection_vpc = {\n      vpc_id       = module.inspection_vpc.vpc_id\n      subnet_ids   = module.inspection_vpc.transit_subnets\n      dns_support  = true\n      ipv6_support = false\n    }\n  }\n}`,
+              iacLang: 'terraform • tgw.tf',
+              ha: 'Active-Active Multi-AZ (Automatic redundancy)',
+              sec: 'Strict Route Tables, No Transitive VPC-to-VPC without Firewall Pass-through',
+              burnPolicy: 'TGW Packet Drop rate >0.05% triggers immediate network path alarm.',
+              chaosScenario: 'Complete AZ failure in us-east-1a impacting transit gateway attachment.',
+              selfHealing: 'AWS BGP multi-path automatically reroutes all traffic through us-east-1b & 1c in <2 seconds.',
+              studioLink: '../tools/vpc-subnetter/'
             },
             {
+              tier: 'Tier 2: Platform Security & Auditing',
               role: 'SECURITY & AUDIT',
-              name: 'Security Tooling Account',
-              sub: 'GuardDuty & SecurityHub',
+              name: 'Security Tooling & Central Audit',
+              sub: 'GuardDuty, SecurityHub & KMS',
               desc: 'Aggregates threat intelligence, automated IAM Access Analyzer findings, and Macie sensitive data sweeps across all organization accounts.',
-              iac: 'AWS Organizations Delegation + Terraform',
-              ha: 'Regional Automated Collectors',
-              sec: 'Read-only Cross-Account Roles with KMS Envelope Encryption'
+              motivation: 'Single pane of glass for security operations without granting developers root audit privileges.',
+              metric: '100% Audit Event Ingestion into S3 Vault',
+              iac: `resource "aws_securityhub_organization_configuration" "central" {\n  auto_enable = true\n}\n\nresource "aws_guardduty_detector" "primary" {\n  enable = true\n\n  datasources {\n    s3_logs {\n      enable = true\n    }\n    kubernetes {\n      audit_logs {\n        enable = true\n      }\n    }\n  }\n}`,
+              iacLang: 'terraform • security.tf',
+              ha: 'Regional Automated Collectors fanned out to Central KMS bucket',
+              sec: 'Read-only Cross-Account Roles with KMS Envelope Encryption & Object Lock',
+              burnPolicy: 'P1 GuardDuty Finding triggers automated PagerDuty page within 60s.',
+              chaosScenario: 'Compromised developer access key making calls from unknown IP.',
+              selfHealing: 'Automated IAM policy attachment restricts key to read-only; invalidates active STS tokens.',
+              studioLink: '../tools/vault-secrets/'
             },
             {
+              tier: 'Tier 3: Workload & Application Compute',
               role: 'WORKLOAD VPC',
               name: 'Production EKS Cluster VPC',
-              sub: 'Tier-1 Microservices',
+              sub: 'Multi-Tenant Microservices Cluster',
               desc: 'Private subnets hosting managed node groups with Karpenter autoscaling, external-facing ALB via AWS WAF, and VPC Interface Endpoints.',
-              iac: 'terraform-aws-modules/eks + vpc',
+              motivation: 'Zero public IP addresses assigned to worker pods; 100% outbound traffic routed via NAT Gateway and inspection proxies.',
+              metric: 'Sub-40s Pod Provisioning with Karpenter',
+              iac: `module "eks" {\n  source  = "terraform-aws-modules/eks/aws"\n  version = "~> 20.0"\n\n  cluster_name    = "production-us-east-1"\n  cluster_version = "1.31"\n\n  cluster_endpoint_public_access  = false\n  cluster_endpoint_private_access = true\n\n  vpc_id     = module.workload_vpc.vpc_id\n  subnet_ids = module.workload_vpc.private_subnets\n\n  enable_irsa = true\n}`,
+              iacLang: 'terraform • eks.tf',
               ha: '3 Availability Zones with Pod Anti-Affinity & PDBs',
-              sec: 'Private API Endpoint, IRSA IAM Roles, Security Groups per Pod'
+              sec: 'Private API Endpoint, IRSA IAM Roles, Security Groups per Pod',
+              burnPolicy: 'Error budget depleted by 5% pauses all progressive canary rollouts.',
+              chaosScenario: 'Sudden loss of 2 worker EC2 instances simultaneously.',
+              selfHealing: 'Karpenter detects unallocated pods and provisions replacement instances in under 38 seconds.',
+              studioLink: '../tools/argocd/'
             }
           ]
         },
         'eks-mesh': {
-          title: 'Multi-Tenant EKS Cluster Stack',
-          desc: 'Enterprise Kubernetes architecture with zero-trust mTLS service mesh, Karpenter autoscaling, and OpenTelemetry distributed tracing.',
+          id: 'eks-mesh',
+          category: 'cloud',
+          icon: '☸️',
+          title: 'Active-Active Multi-Region EKS & Global Mesh',
+          badgeText: 'K8S & ISTIO AMBIENT',
+          desc: 'Production Kubernetes platform architecture featuring zero-trust mutual TLS with Istio Ambient mesh, Karpenter JIT autoscaling, and Cilium eBPF packet routing.',
+          metric: 'P99 Latency <18ms • Multi-Region',
+          flowSteps: [
+            { label: 'Anycast DNS', desc: 'Client DNS resolves to closest geographic Anycast POP.' },
+            { label: 'Envoy Gateway', desc: 'Edge Envoy proxy terminates TLS and evaluates JWT claims.' },
+            { label: 'ztunnel L4 mTLS', desc: 'Zero-overhead in-kernel eBPF tunnel enforces SPIFFE identity.' },
+            { label: 'Service Pod', desc: 'Container processes business logic with non-root UID.' },
+            { label: 'Aurora Global DB', desc: 'Async cross-region replication ensures data consistency <200ms.' }
+          ],
           nodes: [
             {
+              tier: 'Tier 1: Global Edge & Ingress',
+              role: 'GLOBAL ROUTING',
+              name: 'Cloudflare Magic Transit & Envoy Gateway',
+              sub: 'Active-Active Anycast Ingress',
+              desc: 'Global Anycast BGP routing steering traffic to closest regional EKS cluster with automated DDoS scrubbing and Envoy Gateway API controllers.',
+              motivation: 'Sub-20ms edge termination with zero-downtime regional failover.',
+              metric: 'Global Anycast Edge Latency < 12ms',
+              iac: `apiVersion: gateway.networking.k8s.io/v1\nkind: Gateway\nmetadata:\n  name: production-edge-gateway\nspec:\n  gatewayClassName: eg\n  listeners:\n    - name: https\n      protocol: HTTPS\n      port: 443\n      tls:\n        mode: Terminate\n        certificateRefs:\n          - name: wild-talaripradeep-cert`,
+              iacLang: 'yaml • gateway.yaml',
+              ha: 'Active-Active Dual-Region (us-east-1 and eu-west-1)',
+              sec: 'WAF Rate Limiting, Geo-blocking, Strict TLS 1.3 only',
+              burnPolicy: 'Ingress 5xx error rate >0.1% triggers automatic DNS weight shifting.',
+              chaosScenario: 'Complete regional AWS outage in us-east-1.',
+              selfHealing: 'Cloudflare Health Checks flip DNS weight to eu-west-1 in under 12 seconds.',
+              studioLink: '../tools/keda-scaling/'
+            },
+            {
+              tier: 'Tier 2: Compute & Service Mesh',
               role: 'SERVICE MESH',
-              name: 'Istio Ambient / Sidecar',
-              sub: 'mTLS & Traffic Shifting',
-              desc: 'Zero-trust mutual TLS enforcement, canary traffic shifting, fault injection, and telemetry aggregation across all namespaces.',
-              iac: 'Helm Chart / Istio Operator',
-              ha: 'Multi-replica istiod control plane across zones',
-              sec: 'PeerAuthentication STRICT, SPIFFE/SPIRE Identity'
+              name: 'Istio Ambient Mesh & ztunnel',
+              sub: 'Sidecarless Zero-Trust mTLS',
+              desc: 'Zero-overhead mutual TLS encryption enforced at Layer 4 via in-node ztunnel and Cilium eBPF, eliminating 80% of sidecar memory overhead.',
+              motivation: 'Provides zero-trust pod-to-pod identity without modifying pod manifests or injecting Envoy sidecars.',
+              metric: '<0.8ms Mesh Hop Latency Overhead',
+              iac: `apiVersion: security.istio.io/v1beta1\nkind: PeerAuthentication\nmetadata:\n  name: default\n  namespace: production\nspec:\n  mtls:\n    mode: STRICT`,
+              iacLang: 'yaml • peer-auth.yaml',
+              ha: 'Multi-replica istiod control plane spanning 3 availability zones',
+              sec: 'Cryptographic SPIFFE/SPIRE Identity, PeerAuthentication STRICT',
+              burnPolicy: 'mTLS handshake error >0 triggers immediate security investigation.',
+              chaosScenario: 'Worker node ztunnel crash.',
+              selfHealing: 'Systemd and K8s daemonset controller restarts ztunnel container in <800ms.',
+              studioLink: '../tools/ebpf-continuous-profiler/'
             },
             {
-              role: 'AUTOSCALING',
-              name: 'Karpenter Just-in-Time',
-              sub: 'Fast EC2 Node Provisioning',
-              desc: 'Direct EC2 fleet consolidation and rightsizing, provisioning custom Spot and On-Demand instances in under 45 seconds.',
-              iac: 'Karpenter NodePool CRD + Helm',
-              ha: 'Multi-zone Spot diversification with interruption handler',
-              sec: 'Instance Profile least privilege, IMDSv2 mandatory'
+              tier: 'Tier 2: Compute & Service Mesh',
+              role: 'JIT AUTOSCALER',
+              name: 'Karpenter Just-in-Time Node Autoscaler',
+              sub: 'Direct EC2 Fleet Consolidation',
+              desc: 'Bypasses standard AWS Auto Scaling Groups to provision heterogeneous Spot and On-Demand EC2 instances tailored directly to pod compute constraints.',
+              motivation: 'Reduces compute cloud bills by up to 64% while speeding up node provisioning from 6 minutes down to 35 seconds.',
+              metric: 'Sub-40s Node Spin-up Time',
+              iac: `apiVersion: karpenter.sh/v1beta1\nkind: NodePool\nmetadata:\n  name: default\nspec:\n  template:\n    spec:\n      requirements:\n        - key: "karpenter.k8s.aws/instance-category"\n          operator: In\n          values: ["c", "m", "r"]\n        - key: "karpenter.sh/capacity-type"\n          operator: In\n          values: ["spot", "on-demand"]\n      nodeClassRef:\n        name: default`,
+              iacLang: 'yaml • nodepool.yaml',
+              ha: 'Multi-zone Spot diversification across 12 instance families',
+              sec: 'IMDSv2 required, ephemeral encrypted root disks, least privilege IRSA',
+              burnPolicy: 'Failed node scheduling alert if unscheduled pods persist >60s.',
+              chaosScenario: 'AWS Spot Interruption notice (2-minute warning).',
+              selfHealing: 'Karpenter pre-emptively spins up replacement node and cordons terminating node with zero pod drop.',
+              studioLink: '../tools/keda-scaling/'
             },
             {
-              role: 'OBSERVABILITY',
-              name: 'OpenTelemetry Collector',
-              sub: 'Metrics, Traces & Logs',
-              desc: 'Daemonset and gateway deployment receiving OTLP spans, filtering PII, and fanning out to Prometheus, Loki, and Tempo.',
-              iac: 'OTel Operator Helm Chart',
-              ha: 'HPA on Collector Gateway with local memory queue buffer',
-              sec: 'Non-root container, TLS client cert auth'
+              tier: 'Tier 3: Distributed State & Database',
+              role: 'DATABASE STATE',
+              name: 'Amazon Aurora Global pgvector Database',
+              sub: 'Active-Active Cross-Region Storage',
+              desc: 'High-performance PostgreSQL 16 cluster with pgvector extension, physical cross-region storage replication under 200ms, and automated storage auto-scaling.',
+              motivation: 'Guarantees sub-10ms vector embeddings search alongside ACID transactional data.',
+              metric: 'Replication Lag < 180ms across continents',
+              iac: `resource "aws_rds_cluster" "aurora" {\n  cluster_identifier = "production-aurora-cluster"\n  engine             = "aurora-postgresql"\n  engine_version     = "16.1"\n  database_name      = "enterprise_app"\n  master_username    = "dbadmin"\n  storage_encrypted  = true\n  kms_key_id         = aws_kms_key.rds.arn\n}`,
+              iacLang: 'terraform • rds.tf',
+              ha: '1 Primary Writer + 3 Multi-AZ Readers per region',
+              sec: 'IAM Database Authentication, TLS 1.3, Storage KMS Encryption',
+              burnPolicy: 'Replication lag >500ms triggers automatic query routing to local cache.',
+              chaosScenario: 'Primary database writer node hardware crash.',
+              selfHealing: 'Aurora storage layer promotes read-replica to writer in under 24 seconds.',
+              studioLink: '../tools/cloud-data-warehouses/'
+            }
+          ]
+        },
+        'llm-cluster': {
+          id: 'llm-cluster',
+          category: 'ai',
+          icon: '🧠',
+          title: 'Distributed High-Throughput LLM Inference Cluster',
+          badgeText: 'VLLM & TRT-LLM H100',
+          desc: 'Production infrastructure for high-concurrency LLM inference serving utilizing vLLM PagedAttention v2, TensorRT-LLM multi-GPU tensor parallelism, and SGLang Radix cache hits.',
+          metric: 'TTFT P99 <120ms • 140 tok/s',
+          flowSteps: [
+            { label: 'Token Ingestion', desc: 'Streaming HTTP/SSE request arrives at token-bucket rate limiter.' },
+            { label: 'Semantic Cache', desc: 'Valkey-8 checks for exact or cosine similarity prefix cache match.' },
+            { label: 'vLLM PagedAttention', desc: 'KV-cache page blocks allocated dynamically with <4% memory waste.' },
+            { label: 'Tensor Parallelism', desc: '8x H100 GPUs execute FP8 GEMM matrix math over 900GB/s NVLink.' },
+            { label: 'Token Stream', desc: 'Decoded tokens streamed via gRPC/SSE back to client.' }
+          ],
+          nodes: [
+            {
+              tier: 'Tier 1: Ingestion & Caching Gateway',
+              role: 'CACHE GATEWAY',
+              name: 'Semantic Cache & Token Rate Limiter',
+              sub: 'Valkey-8 In-Memory Cache',
+              desc: 'High-throughput reverse proxy checking vector similarity on incoming prompts to serve frequent agent queries directly from memory at <5ms.',
+              motivation: 'Reduces expensive GPU compute cycles by up to 45% for multi-turn conversations.',
+              metric: 'Sub-5ms Semantic Cache Response',
+              iac: `apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: llm-gateway\nspec:\n  replicas: 4\n  template:\n    spec:\n      containers:\n        - name: gateway\n          image: ghcr.io/pradeeptalari14/mcp-universal-gateway:latest\n          resources:\n            limits:\n              memory: "1Gi"\n              cpu: "1000m"`,
+              iacLang: 'yaml • gateway-deployment.yaml',
+              ha: 'Multi-pod deployment with HPA scaled on request concurrency',
+              sec: 'Prompt Injection Sanitization, Token Budget Cap per API Key',
+              burnPolicy: 'Gateway 429 rate >5% triggers automated GPU replica spin-up.',
+              chaosScenario: 'Traffic surge with 10x prompt volume spike.',
+              selfHealing: 'Semantic cache hit ratio increases; gateway sheds non-priority background batches.',
+              studioLink: '../tools/mcp-universal-gateway/'
+            },
+            {
+              tier: 'Tier 2: High-Performance GPU Serving',
+              role: 'INFERENCE RUNTIME',
+              name: 'vLLM PagedAttention & Chunked Prefill',
+              sub: '8x NVIDIA H100 SXM5 Nodes',
+              desc: 'Virtual memory page tables eliminating KV-cache external fragmentation down to <4%, boosting batch concurrency 2.8x - 4x on identical GPU hardware.',
+              motivation: 'Prevents out-of-memory (OOM) crashes under variable request lengths and multi-turn agent chats.',
+              metric: '<4% Memory Fragmentation (2.8x Concurrency)',
+              iac: `apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: vllm-engine\nspec:\n  replicas: 2\n  template:\n    spec:\n      containers:\n        - name: vllm\n          image: vllm/vllm-openai:v0.6.2\n          args: [\n            "--model", "meta-llama/Llama-3-70B-Instruct",\n            "--tensor-parallel-size", "8",\n            "--block-size", "16",\n            "--enable-chunked-prefill",\n            "--gpu-memory-utilization", "0.92"\n          ]`,
+              iacLang: 'yaml • vllm-h100.yaml',
+              ha: 'Ray Cluster distributed scheduling across multi-GPU nodes',
+              sec: 'Hardware-enforced remote attestation via NVIDIA TEE Enclave',
+              burnPolicy: 'Time-to-first-token (TTFT) >200ms triggers chunked prefill batch reduction.',
+              chaosScenario: 'Sudden request with 128k context length causing memory pressure.',
+              selfHealing: 'Chunked prefill slices tokens across multiple batches, preserving decode latency.',
+              studioLink: '../tools/vllm-paged-attention/'
+            },
+            {
+              tier: 'Tier 2: High-Performance GPU Serving',
+              role: 'PREFIX CACHE ENGINE',
+              name: 'SGLang RadixAttention Engine',
+              sub: 'Radix Tree Prefix Recomputation Buster',
+              desc: 'Radix-tree data structure storing KV-cache activations for multi-turn chats and agent swarms, slashing recomputation latency by 88%.',
+              motivation: 'Enables real-time multi-agent interactions where agents share extensive common system prompts.',
+              metric: '88% Compute Reduction on Prefix Hits',
+              iac: `python3 -m sglang.launch_server \\\n  --model-path meta-llama/Llama-3-8B-Instruct \\\n  --enable-radix-cache \\\n  --port 30000 \\\n  --mem-fraction-static 0.88`,
+              iacLang: 'bash • sglang-launch.sh',
+              ha: 'Dual-instance active-active with load-balanced prefix routing',
+              sec: 'Read-only weight tensors with SHA-256 model signature verification',
+              burnPolicy: 'Prefix cache hit ratio <60% triggers radix tree compaction.',
+              chaosScenario: 'Cache eviction storm due to memory saturation.',
+              selfHealing: 'LRU radix tree prunes leaf nodes while preserving high-traffic root system prompts.',
+              studioLink: '../tools/sglang-radix-attention/'
+            },
+            {
+              tier: 'Tier 3: GPU Telemetry & Observability',
+              role: 'GPU TELEMETRY',
+              name: 'NVIDIA DCGM & Prometheus Exporter',
+              sub: 'Golden Signals GPU Telemetry',
+              desc: 'Continuous real-time sampling of GPU Tensor Core activity, VRAM temperature, NVLink bandwidth, and throttling flags at 100ms intervals.',
+              motivation: 'Pinpoints thermal throttling and PCIe bus bottlenecks before they impact customer SLAs.',
+              metric: 'Sub-100ms Telemetry Export Resolution',
+              iac: `apiVersion: monitoring.coreos.com/v1\nkind: ServiceMonitor\nmetadata:\n  name: nvidia-dcgm-exporter\nspec:\n  endpoints:\n    - port: metrics\n      interval: 10s\n  selector:\n    matchLabels:\n      app: dcgm-exporter`,
+              iacLang: 'yaml • dcgm-monitor.yaml',
+              ha: 'Daemonset running on all GPU worker nodes',
+              sec: 'Non-root container execution with read-only /proc and /sys mounts',
+              burnPolicy: 'GPU temperature >82°C triggers automated thermal drain to spare node.',
+              chaosScenario: 'Single GPU NVLink error triggering kernel PCIe throttle.',
+              selfHealing: 'Kubernetes node problem detector cordons node and reschedules inference worker.',
+              studioLink: '../tools/monitoring-studio/'
+            }
+          ]
+        },
+        'agent-swarm': {
+          id: 'agent-swarm',
+          category: 'ai',
+          icon: '🤖',
+          title: 'Autonomous Multi-Agent Swarm with CRDT & MCP',
+          badgeText: 'LANGGRAPH & ANTHROPIC MCP',
+          desc: 'Enterprise multi-agent swarm architecture featuring LangGraph DAG state machines, Anthropic MCP zero-trust tool proxies, and Docker containerized sandbox execution.',
+          metric: '100% Tool Isolation • Zero Escape',
+          flowSteps: [
+            { label: 'Incident Intent', desc: 'Natural language SRE alert ingested and classified into structured intent.' },
+            { label: 'DAG Planner', desc: 'LangGraph generates dependency graph of sub-tasks for specialized agents.' },
+            { label: 'MCP Tool Proxy', desc: 'Anthropic MCP verifies RBAC token before allowing tool invocation.' },
+            { label: 'Sandbox Execution', desc: 'Command executed inside isolated, read-only non-root Docker container.' },
+            { label: 'Consensus Arbiter', desc: 'Multi-agent outputs reconciled; majority consensus approves remediation.' }
+          ],
+          nodes: [
+            {
+              tier: 'Tier 1: Intent Routing & Orchestration',
+              role: 'TASK DECOMPOSITION',
+              name: 'LangGraph Multi-Agent Orchestrator',
+              sub: 'State Graph & DAG Planner',
+              desc: 'Finite state machine coordinating specialized agents (SRE Triager, K8s Investigator, Patch Builder) with cycle prevention and recursion limits.',
+              motivation: 'Prevents infinite loops and guarantees deterministic multi-agent problem resolution.',
+              metric: 'Deterministic DAG Resolution in <1.2s',
+              iac: `from langgraph.graph import StateGraph, END\n\nbuilder = StateGraph(SwarmState)\nbuilder.add_node("intent_router", route_incident)\nbuilder.add_node("sre_specialist", run_sre_drill)\nbuilder.add_node("consensus_arbiter", evaluate_output)\n\nbuilder.add_edge("intent_router", "sre_specialist")\nbuilder.add_edge("sre_specialist", "consensus_arbiter")\nbuilder.add_edge("consensus_arbiter", END)`,
+              iacLang: 'python • swarm_graph.py',
+              ha: 'Stateless worker replicas backed by distributed Valkey-8 state store',
+              sec: 'Hard maximum step limit (25 steps), isolated execution tokens',
+              burnPolicy: 'Agent recursion limit reached aborts run and alerts human commander.',
+              chaosScenario: 'Agent generates hallucinated invalid command syntax.',
+              selfHealing: 'Consensus arbiter rejects proposal; prompts agent with compiler error feedback.',
+              studioLink: '../tools/agent-workflow/'
+            },
+            {
+              tier: 'Tier 2: Tool Isolation & Gateways',
+              role: 'TOOL PROXY',
+              name: 'Anthropic MCP Universal Gateway',
+              sub: 'Zero-Trust JSON-RPC 2.0 Proxy',
+              desc: 'Enforces strict Role-Based Access Control (RBAC) and schema validation on every tool call made by autonomous LLM agents.',
+              motivation: 'Stops prompt injection attacks from executing dangerous destructive commands against production clusters.',
+              metric: 'Zero-Trust Validation on 100% Tool Invocations',
+              iac: `{\n  "mcpServers": {\n    "k8s-cluster": {\n      "command": "mcp-proxy",\n      "args": ["--policy", "strict-readonly.json"],\n      "env": { "KUBECONFIG": "/etc/mcp/safe.kubeconfig" }\n    }\n  }\n}`,
+              iacLang: 'json • mcp-servers.json',
+              ha: 'Dual-instance proxy with mutual authentication',
+              sec: 'Read-only whitelist, path traversal blocking, shell escape sanitization',
+              burnPolicy: 'Single unauthorized tool call triggers agent quarantine.',
+              chaosScenario: 'Malicious payload in user prompt instructs agent to delete database.',
+              selfHealing: 'MCP Gateway intercepts command, matches against destructive blacklist, and returns error.',
+              studioLink: '../tools/mcp-universal-gateway/'
+            },
+            {
+              tier: 'Tier 2: Tool Isolation & Gateways',
+              role: 'SECURE SANDBOX',
+              name: 'Hardened Docker Execution Sandbox',
+              sub: 'Non-Root Containerized Runtime',
+              desc: 'Ephemeral, read-only root filesystem Docker container with drop-all Linux capabilities, 512MB RAM cap, and seccomp filters.',
+              motivation: 'Guarantees that even if an agent runs malicious code, the underlying host kernel cannot be compromised.',
+              metric: '0 Escape Vectors with Seccomp/AppArmor',
+              iac: `docker run --rm \\\n  --read-only \\\n  --cap-drop ALL \\\n  --security-opt no-new-privileges:true \\\n  --memory 512m \\\n  --pids-limit 64 \\\n  --tmpfs /tmp:rw,size=64m \\\n  alpine:latest sh -c "$DRILL_COMMAND"`,
+              iacLang: 'bash • run-sandbox.sh',
+              ha: 'Instant ephemeral container creation in <250ms',
+              sec: 'Non-root UID 10001, no network egress without proxy, memory hard limit',
+              burnPolicy: 'Container OOM Killed (Exit 137) logs memory exhaustion alert.',
+              chaosScenario: 'Fork bomb script executed inside container.',
+              selfHealing: 'Linux pids-limit terminates process creation; container exits cleanly without host freeze.',
+              studioLink: '../tools/computer-use-agent/'
+            },
+            {
+              tier: 'Tier 3: Distributed State & Memory',
+              role: 'STATE MEMORY',
+              name: 'CRDT Shared Memory & Valkey-8',
+              sub: 'Conflict-Free Distributed Replicated Store',
+              desc: 'State synchronization layer allowing multiple concurrent agents to update shared investigation notes with mathematical convergence and zero lock stalls.',
+              motivation: 'Eliminates race conditions when 10+ agents inspect different microservice logs simultaneously.',
+              metric: 'Zero Lock Contention with CRDT Convergence',
+              iac: `apiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: valkey-cluster\nspec:\n  replicas: 3\n  serviceName: valkey-headless\n  template:\n    spec:\n      containers:\n        - name: valkey\n          image: valkey/valkey:8.0-alpine\n          command: ["valkey-server", "--cluster-enabled", "yes"]`,
+              iacLang: 'yaml • valkey-statefulset.yaml',
+              ha: '3-node Raft consensus cluster with automated leader election',
+              sec: 'TLS encryption in transit, AUTH password rotation with Vault',
+              burnPolicy: 'Cluster sync lag >50ms flags distributed lock contention.',
+              chaosScenario: 'Network partition between agent worker and state cluster.',
+              selfHealing: 'CRDT state resolves upon reconnection using state vector timestamps.',
+              studioLink: '../tools/agent-swarm-consensus/'
             }
           ]
         },
         'rag-ai': {
-          title: 'Enterprise RAG & LLMOps Platform',
-          desc: 'Production infrastructure for LLM inference serving, Milvus/Qdrant vector indexing, GPU node partitioning, and prompt evaluation guardrails.',
+          id: 'rag-ai',
+          category: 'ai',
+          icon: '🔍',
+          title: 'Enterprise Multi-Hop Speculative RAG Architecture',
+          badgeText: 'HYBRID PGVECTOR & COHERE',
+          desc: 'Production retrieval-augmented generation platform combining dense pgvector HNSW indexing, sparse BM25 retrieval, Cohere cross-encoder reranking, and speculative SLM drafting.',
+          metric: 'P95 Latency <850ms • 98.6% Accuracy',
+          flowSteps: [
+            { label: 'Query Decomposition', desc: 'Complex query decomposed into 2-3 focused sub-queries.' },
+            { label: 'Hybrid Retrieval', desc: 'Parallel execution of pgvector cosine search and BM25 sparse keyword rank.' },
+            { label: 'Cross-Encoder Rerank', desc: 'Cohere Rerank v3 evaluates top-100 candidates to select top-5 chunks.' },
+            { label: 'Speculative Drafting', desc: '3B SLM drafts initial response tokens with low latency.' },
+            { label: '70B Verification', desc: '70B model verifies tokens and injects cryptographic citation hash.' }
+          ],
           nodes: [
             {
-              role: 'INFERENCE ENGINE',
-              name: 'vLLM Serving Pool',
-              sub: 'PagedAttention GPU Nodes',
-              desc: 'High-throughput LLM serving using NVIDIA A100/H100 GPUs with PagedAttention, continuous batching, and tensor parallelism.',
-              iac: 'Kubernetes GPU Operator + Helm',
-              ha: 'NVIDIA MIG (Multi-Instance GPU) partitioning',
-              sec: 'Isolated internal VPC, TLS gRPC endpoint'
+              tier: 'Tier 1: Query Intake & Hybrid Search',
+              role: 'HYBRID SEARCH',
+              name: 'pgvector HNSW & BM25 Sparse Index',
+              sub: 'Dense & Sparse Parallel Retrieval',
+              desc: 'Combines semantic dense vector embeddings (1536-dim text-embedding-3) with exact keyword BM25 retrieval to resolve vector cluster collisions.',
+              motivation: 'Prevents vector retrieval failures on specific product SKU numbers, error codes, and acronyms.',
+              metric: 'Sub-8ms Index Traversal over 2M Chunks',
+              iac: `CREATE EXTENSION IF NOT EXISTS vector;\n\nCREATE TABLE document_chunks (\n  id BIGSERIAL PRIMARY KEY,\n  content TEXT NOT NULL,\n  metadata JSONB,\n  embedding vector(1536)\n);\n\nCREATE INDEX ON document_chunks \nUSING hnsw (embedding vector_cosine_ops)\nWITH (m = 16, ef_construction = 64);`,
+              iacLang: 'sql • hnsw_schema.sql',
+              ha: 'Multi-AZ PostgreSQL cluster with 3 read replicas',
+              sec: 'Row-Level Security (RLS) enforcing tenant isolation',
+              burnPolicy: 'Vector retrieval latency >25ms triggers index vacuum re-index.',
+              chaosScenario: 'Sudden insertion of 500,000 new vector embeddings causing lock contention.',
+              selfHealing: 'Background async ingestion worker decouples writes from query read replicas.',
+              studioLink: '../tools/vector-db/'
             },
             {
-              role: 'VECTOR STORE',
-              name: 'Milvus Distributed Cluster',
-              sub: 'Vector Indexing & ANN',
-              desc: 'Scalable vector database indexing billions of embedding dimensions with HNSW and IVF_FLAT algorithms for sub-10ms retrieval.',
-              iac: 'Milvus Helm Chart + S3 storage engine',
-              ha: 'Coordinator stateless replicas with S3 object durability',
-              sec: 'RBAC user authentication, TLS encrypted channels'
+              tier: 'Tier 2: Reranking & Quality Scoring',
+              role: 'CROSS-ENCODER',
+              name: 'Cohere Cross-Encoder Reranker',
+              sub: 'Deep Transformer Chunk Scorer',
+              desc: 'Takes top-100 candidate chunks from hybrid search and computes joint cross-attention scores to pick the top-5 most factually relevant paragraphs.',
+              motivation: 'Boosts Mean Reciprocal Rank (MRR) from 0.62 to 0.91, eliminating context window pollution.',
+              metric: 'MRR Boost from 0.62 to 0.91',
+              iac: `import cohere\nco = cohere.ClientV2(os.environ["COHERE_API_KEY"])\n\nresponse = co.rerank(\n    model="rerank-v3.5",\n    query=user_query,\n    documents=candidate_chunks,\n    top_n=5\n)`,
+              iacLang: 'python • rerank_pipeline.py',
+              ha: 'Local TensorRT model deployment on T4 GPU nodes',
+              sec: 'In-VPC local model execution ensuring zero data leaves corporate boundary',
+              burnPolicy: 'Reranker latency >80ms falls back to reciprocal rank fusion (RRF).',
+              chaosScenario: 'Reranker service timeout under spike load.',
+              selfHealing: 'Fallback circuit breaker automatically routes raw BM25/Dense top-5 directly to generation.',
+              studioLink: '../tools/speculative-rag-pipeline/'
+            },
+            {
+              tier: 'Tier 3: Generation & Factual Verification',
+              role: 'SPECULATIVE RAG',
+              name: 'Speculative Drafting & Self-Correction',
+              sub: 'Dual-Model Draft & Verify',
+              desc: 'A small 3B SLM drafts initial answers at 180 tok/s while a 70B model verifies tokens in parallel, cutting Time-to-First-Token latency by 62%.',
+              motivation: 'Combines the speed of tiny language models with the reasoning depth and safety of frontier foundation models.',
+              metric: '62% Reduction in Total RAG Latency',
+              iac: `python3 -m vllm.entrypoints.openai.api_server \\\n  --model meta-llama/Llama-3-70B-Instruct \\\n  --speculative-model meta-llama/Llama-3-8B-Instruct \\\n  --num-speculative-tokens 5`,
+              iacLang: 'bash • speculative-vllm.sh',
+              ha: 'Active-Active across dual GPU pods',
+              sec: 'Automated Hallucination Detection & Citation Verification',
+              burnPolicy: 'Draft model rejection rate >50% triggers speculative token reduction.',
+              chaosScenario: 'Draft model produces hallucinated factual claim.',
+              selfHealing: '70B target model rejects draft tokens, falls back to direct verification decoding.',
+              studioLink: '../tools/speculative-rag-pipeline/'
+            }
+          ]
+        },
+        'ebpf-telemetry': {
+          id: 'ebpf-telemetry',
+          category: 'observability',
+          icon: '🪵',
+          title: 'In-Kernel eBPF Continuous Telemetry & Profiling',
+          badgeText: 'EBPF & TETRAGON',
+          desc: 'Ultra-low overhead (<0.8% CPU) production profiling and security telemetry architecture leveraging Linux kernel eBPF probes, zero-copy ring buffers, and continuous on/off-CPU flamegraphs.',
+          metric: '<0.8% CPU Impact • Zero Pause',
+          flowSteps: [
+            { label: 'Bytecode Verification', desc: 'Linux kernel verifier ensures memory safety and loop termination.' },
+            { label: 'Kprobe Attachment', desc: 'Probes attach to sched_switch, tcp_connect, and sys_enter hooks.' },
+            { label: 'RingBuffer Flush', desc: 'Zero-copy kernel ringbuffer emits event stream without IPC locks.' },
+            { label: 'FlameGraph Aggregation', desc: 'Userland Go daemon unwinds stack traces and renders dynamic SVG.' },
+            { label: 'OTel Export', desc: 'Standardized OpenTelemetry spans sent to Prometheus, Loki, and Tempo.' }
+          ],
+          nodes: [
+            {
+              tier: 'Tier 1: Linux Kernel Verification',
+              role: 'KERNEL VERIFIER',
+              name: 'Linux In-Kernel eBPF Verifier',
+              sub: 'Kernel Safety & Static Analysis',
+              desc: 'Validates all eBPF bytecode before loading into ring 0. Enforces strictly bounded loops, read-only memory accesses, and zero risk of kernel panics.',
+              motivation: 'Allows live production debugging without intrusive ptrace thread freezes or crash risks.',
+              metric: 'Zero-Panic Guarantee via Kernel Verifier',
+              iac: `SEC("tracepoint/sched/sched_switch")\nint handle_sched_switch(struct trace_event_raw_sched_switch *ctx) {\n    u32 prev_pid = ctx->prev_pid;\n    u32 next_pid = ctx->next_pid;\n    bpf_ringbuf_output(&rb, &next_pid, sizeof(next_pid), 0);\n    return 0;\n}\nchar LICENSE[] SEC("license") = "GPL";`,
+              iacLang: 'c • sched_profiler.bpf.c',
+              ha: 'Built directly into Linux Kernel 5.15+ / 6.x core',
+              sec: 'Enforces memory safety, restricts raw pointer arithmetic, unprivileged BPF disabled',
+              burnPolicy: 'Verifier rejection logs error to dmesg without affecting host.',
+              chaosScenario: 'eBPF program enters infinite loop.',
+              selfHealing: 'Kernel verifier rejects program at load time with error code; prevents deployment.',
+              studioLink: '../tools/ebpf-continuous-profiler/'
+            },
+            {
+              tier: 'Tier 2: Runtime Security Enforcement',
+              role: 'SECURITY ENFORCEMENT',
+              name: 'Cilium Tetragon In-Kernel Enforcement',
+              sub: 'Real-Time Process & Network Control',
+              desc: 'Enforces security policies directly inside the Linux kernel, killing unauthorized processes (e.g. namespace escapes, sensitive file reads) in microseconds.',
+              motivation: 'Stops zero-day exploits before userland monitoring daemons even finish reading log files.',
+              metric: 'Sub-25 Microsecond Security Enforcement',
+              iac: `apiVersion: cilium.io/v1alpha1\nkind: TracingPolicy\nmetadata:\n  name: block-privilege-escalation\nspec:\n  kprobes:\n    - call: "sys_execve"\n      syscall: true\n      args:\n        - index: 0\n          type: "string"\n      selectors:\n        - matchArgs:\n            - index: 0\n              operator: "Prefix"\n              values: ["/etc/shadow", "/root/.ssh"]\n          matchActions:\n            - action: Sigkill`,
+              iacLang: 'yaml • tracing-policy.yaml',
+              ha: 'Kernel probe attaches automatically on all existing and new host threads',
+              sec: 'In-kernel Sigkill before system call completes; immutable policy manifests',
+              burnPolicy: 'Tetragon alert delivery latency >50ms flags agent queue backup.',
+              chaosScenario: 'Container breakout attempt trying to read host shadow password file.',
+              selfHealing: 'Tetragon in-kernel hook issues SIGKILL to offending PID before open() completes.',
+              studioLink: '../tools/ebpf-tetragon-security/'
+            },
+            {
+              tier: 'Tier 3: Continuous Profiling & Visual Flow',
+              role: 'CONTINUOUS PROFILER',
+              name: 'Continuous Profiler & FlameGraph Engine',
+              sub: 'On-CPU / Off-CPU Lock Detection',
+              desc: 'Samples stack traces at 99Hz across all CPU cores with <0.8% overhead, generating interactive SVG FlameGraphs that pinpoint line-of-code CPU waste.',
+              motivation: 'Exposes silent lock contention and garbage collection freezes that do not appear in top or htop.',
+              metric: '<0.8% CPU Impact at 99Hz Sampling',
+              iac: `apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: continuous-profiler\nspec:\n  template:\n    spec:\n      hostPID: true\n      containers:\n        - name: profiler\n          image: ghcr.io/pradeeptalari14/ebpf-continuous-profiler:latest\n          securityContext:\n            privileged: true`,
+              iacLang: 'yaml • profiler-daemonset.yaml',
+              ha: 'Runs as a DaemonSet across 100% of Kubernetes cluster nodes',
+              sec: 'Read-only access to host DWARF debug symbols and /sys/kernel/debug/tracing',
+              burnPolicy: 'Host CPU consumption of profiler daemon >1.5% triggers automated throttling.',
+              chaosScenario: 'Host CPU pinned at 100% with no identifiable process in top.',
+              selfHealing: 'Profiler unwinds kernel spinlock stacks; generates FlameGraph pinpointing driver contention.',
+              studioLink: '../tools/ebpf-continuous-profiler/'
+            }
+          ]
+        },
+        'devsecops-slsa': {
+          id: 'devsecops-slsa',
+          category: 'security',
+          icon: '🛡️',
+          title: 'Zero-Trust GitOps & SLSA Level 3 Provenance Pipeline',
+          badgeText: 'ARGOCD & SIGSTORE',
+          desc: 'Declarative continuous delivery and supply-chain security architecture with ArgoCD self-healing, Sigstore Cosign cryptographic signing, and HashiCorp Vault dynamic ephemeral secret rotation.',
+          metric: 'Zero Plaintext Secrets • 100% SLSA Verified',
+          flowSteps: [
+            { label: 'Git Commit', desc: 'Developer signs commit with GPG; GitHub Actions triggers build pipeline.' },
+            { label: 'Trivy & Semgrep', desc: 'Static analysis scans AST code, dependencies, and container CVEs.' },
+            { label: 'Sigstore Signing', desc: 'Fulcio CA issues ephemeral OIDC cert; Cosign signs image digest into Rekor.' },
+            { label: 'ArgoCD Sync', desc: 'Controller detects Git state divergence and verifies Sigstore signature.' },
+            { label: 'Vault Secret Lease', desc: 'Pod requests ephemeral 1-hour database credentials from HashiCorp Vault.' }
+          ],
+          nodes: [
+            {
+              tier: 'Tier 1: Declarative Delivery Engine',
+              role: 'GITOPS CONTROLLER',
+              name: 'ArgoCD Declarative GitOps Application',
+              sub: 'Continuous 3-Way Reconciliation',
+              desc: 'Continuously hashes desired state in Git against live cluster state. Automatically overrides manual out-of-band cluster mutations in under 3 seconds.',
+              motivation: 'Eliminates cluster drift and manual console changes that cause production outages.',
+              metric: 'Reconciliation in <3s • 100% Audited History',
+              iac: `apiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: production-workloads\nspec:\n  project: default\n  source:\n    repoURL: 'https://github.com/Pradeeptalari14/portfolio.git'\n    targetRevision: HEAD\n    path: infra/k8s/production\n  destination:\n    server: 'https://kubernetes.default.svc'\n    namespace: default\n  syncPolicy:\n    automated:\n      prune: true\n      selfHeal: true`,
+              iacLang: 'yaml • argocd-application.yaml',
+              ha: 'Active-Active ArgoCD controller replicas with Redis cache',
+              sec: 'Read-only cluster role for sync engine; non-GitOps mutating webhooks rejected',
+              burnPolicy: 'OutOfSync alert triggers Slack notification if sync remains blocked >5m.',
+              chaosScenario: 'Engineer executes unauthorized "kubectl edit" directly on production deployment.',
+              selfHealing: 'ArgoCD selfHeal detects discrepancy and overrides manual change back to Git state in <3s.',
+              studioLink: '../tools/argocd/'
+            },
+            {
+              tier: 'Tier 2: Supply Chain Security & Signing',
+              role: 'SUPPLY CHAIN SECURITY',
+              name: 'Sigstore Cosign & Kyverno Admission',
+              sub: 'SLSA Level 3 Image Provenance',
+              desc: 'Enforces keyless container image signing via Fulcio and Rekor. Kyverno admission controllers reject any image that lacks verified cryptographic provenance.',
+              motivation: 'Prevents compromised third-party dependencies and man-in-the-middle registry poisoning.',
+              metric: '100% Cryptographically Verified OCI Artifacts',
+              iac: `apiVersion: kyverno.io/v1\nkind: ClusterPolicy\nmetadata:\n  name: verify-image-sigstore\nspec:\n  validationFailureAction: Enforce\n  rules:\n    - name: verify-signature\n      match:\n        resources:\n          kinds: ["Pod"]\n      verifyImages:\n        - imageReferences: ["ghcr.io/pradeeptalari14/*"]\n          attestors:\n            - entries:\n                - keyless:\n                    issuer: "https://token.actions.githubusercontent.com"\n                    subject: "https://github.com/Pradeeptalari14/*"`,
+              iacLang: 'yaml • kyverno-policy.yaml',
+              ha: 'Multi-replica Kyverno admission webhook with fail-closed configuration',
+              sec: 'No long-lived private signing keys stored in CI; ephemeral OIDC identity only',
+              burnPolicy: 'Signature verification failure blocks container scheduling and emits P1 alert.',
+              chaosScenario: 'Attacker compromises container registry and pushes trojanized image tag.',
+              selfHealing: 'Kyverno admission webhook rejects pod creation; cluster continues running previous verified digest.',
+              studioLink: '../tools/sigstore-cosign-slsa/'
+            },
+            {
+              tier: 'Tier 3: Dynamic Secrets & Access Control',
+              role: 'DYNAMIC SECRETS',
+              name: 'HashiCorp Vault & Ephemeral Leases',
+              sub: 'Zero Plaintext Secrets Architecture',
+              desc: 'Generates on-demand database credentials with 1-hour TTLs. Automatically revokes compromised keys and rotates cloud API tokens without restarting pods.',
+              motivation: 'Eliminates hardcoded credentials from Git repositories and prevents leaked credentials from remaining valid.',
+              metric: 'Dynamic 1-Hour Leases with Automated Revocation',
+              iac: `resource "vault_database_secret_backend_role" "app" {\n  backend             = vault_mount.db.path\n  name                = "production-app-role"\n  db_name             = "postgresql"\n  creation_statements = [\n    "CREATE ROLE \\"{{name}}\\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';",\n    "GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO \\"{{name}}\\";"\n  ]\n  default_ttl         = 3600\n  max_ttl             = 86400\n}`,
+              iacLang: 'terraform • vault.tf',
+              ha: '3-node High Availability Vault cluster with Integrated Raft Storage',
+              sec: 'Dynamic ephemeral leases, mTLS client authentication, automated audit logging',
+              burnPolicy: 'Vault lease renewal failure triggers automated pod reload.',
+              chaosScenario: 'Accidental database credential leak on public communication channel.',
+              selfHealing: 'Vault administrator triggers instant lease revocation; database drops credentials in <1s.',
+              studioLink: '../tools/vault-secrets/'
             }
           ]
         },
         'hybrid-vmware': {
-          title: 'Hybrid Cloud & VMware vSphere Integration',
-          desc: 'Enterprise hybrid architecture linking on-premises VMware vSphere ESXi clusters with AWS via redundant 10Gbps Direct Connect.',
+          id: 'hybrid-vmware',
+          category: 'hybrid',
+          icon: '🔌',
+          title: 'Enterprise Hybrid Cloud & VMware vSphere Integration',
+          badgeText: 'VSPHERE 8 & AWS DIRECT CONNECT',
+          desc: 'Mission-critical hybrid cloud architecture linking on-premises VMware vSphere ESXi clusters with AWS via redundant 10Gbps Direct Connect circuits and VMware Tanzu.',
+          metric: 'RTO < 15min • RPO < 5min',
+          flowSteps: [
+            { label: 'On-Prem Workload', desc: 'Enterprise workload executes on vSphere ESXi 8 hypervisor cluster.' },
+            { label: 'vSAN Storage', desc: 'NVMe storage fabric provides distributed synchronous write replication.' },
+            { label: 'Direct Connect DX', desc: 'Dedicated 10Gbps private fiber cross-connect with MACsec encryption.' },
+            { label: 'AWS Transit Gateway', desc: 'Central hybrid router directs traffic into AWS VPCs with BGP multi-path.' },
+            { label: 'S3 Glacier DR', desc: 'Velero automated disaster recovery snapshots replicated off-site.' }
+          ],
           nodes: [
             {
+              tier: 'Tier 1: On-Premises Hyperconverged Compute',
               role: 'ON-PREM COMPUTE',
-              name: 'VMware vSphere ESXi 8',
-              sub: 'Enterprise HA Cluster',
-              desc: 'Clustered physical hypervisors managed by vCenter with DRS load balancing, vMotion live migrations, and VSAN storage.',
-              iac: 'Terraform vSphere Provider / PowerCLI',
-              ha: 'vSphere HA with automated host restart failover',
-              sec: 'VLAN segmentation, Host Lockdown Mode enabled'
+              name: 'VMware vSphere ESXi 8 & DRS Clusters',
+              sub: 'Clustered Bare-Metal Hypervisors',
+              desc: 'Clustered physical hypervisors managed by vCenter Server with Distributed Resource Scheduler (DRS), vMotion live migrations, and High Availability automated restart.',
+              motivation: 'Delivers predictable low-latency compute for legacy database systems with enterprise hypervisor guarantees.',
+              metric: 'Sub-1ms Storage Latency with vSAN NVMe',
+              iac: `resource "vsphere_virtual_machine" "app_node" {\n  name             = "prod-hybrid-compute-01"\n  resource_pool_id = data.vsphere_resource_pool.pool.id\n  datastore_id     = data.vsphere_datastore.vsan.id\n\n  num_cpus = 8\n  memory   = 32768\n  guest_id = "ubuntu64Guest"\n\n  network_interface {\n    network_id   = data.vsphere_network.prod_vlan.id\n    adapter_type = "vmxnet3"\n  }\n}`,
+              iacLang: 'terraform • vsphere.tf',
+              ha: 'vSphere HA cluster with automated host restart and proactive failover',
+              sec: 'Host Lockdown Mode enabled, vSphere Trust Authority, isolated VMkernel VLANs',
+              burnPolicy: 'ESXi host CPU saturation >85% triggers DRS automated VM live migration.',
+              chaosScenario: 'Complete physical server motherboard failure in primary rack.',
+              selfHealing: 'vSphere HA detects lost heartbeat; restarts virtual machines on healthy spare nodes in <90s.',
+              studioLink: '../tools/localstack-dev/'
             },
             {
-              role: 'INTERCONNECT',
-              name: 'AWS Direct Connect (DX)',
-              sub: 'Redundant 10Gbps Circuits',
-              desc: 'Dedicated private fiber cross-connect terminating in AWS Direct Connect Gateway with MACsec encryption and BGP dynamic routing.',
-              iac: 'Terraform Direct Connect Gateway attachment',
-              ha: 'Dual-circuit active-active diverse path routing',
-              sec: 'MACsec point-to-point layer 2 encryption'
+              tier: 'Tier 2: Dedicated Hybrid Interconnect',
+              role: 'HYBRID INTERCONNECT',
+              name: 'AWS Direct Connect (DX) & MACsec',
+              sub: 'Redundant 10Gbps Private Circuits',
+              desc: 'Dedicated private fiber cross-connect terminating in AWS Direct Connect Gateway with IEEE 802.1AE MACsec layer-2 encryption and dynamic BGP routing.',
+              motivation: 'Bypasses the public internet entirely, cutting cloud egress transit costs by up to 66% while guaranteeing stable latency.',
+              metric: 'Dual 10Gbps Circuits with MACsec Encryption',
+              iac: `resource "aws_dx_connection" "primary" {\n  name            = "hybrid-primary-10g"\n  bandwidth       = "10Gbps"\n  location        = "EqDC2"\n  encryption_mode = "must_encrypt"\n}\n\nresource "aws_dx_gateway" "central" {\n  name            = "central-hybrid-dx-gw"\n  amazon_side_asn = "64512"\n}`,
+              iacLang: 'terraform • direct-connect.tf',
+              ha: 'Active-Active dual diverse-path fiber circuits with BGP multi-pathing',
+              sec: 'Hardware-enforced MACsec line-rate encryption, BGP MD5 authentication',
+              burnPolicy: 'Circuit packet error rate >0.01% triggers BGP path deprioritization.',
+              chaosScenario: 'Physical fiber cut on primary Direct Connect carrier path.',
+              selfHealing: 'BGP Bidirectional Forwarding Detection (BFD) shifts 100% traffic to secondary circuit in <800ms.',
+              studioLink: '../tools/vpc-subnetter/'
+            },
+            {
+              tier: 'Tier 3: Hybrid Kubernetes & Disaster Recovery',
+              role: 'HYBRID K8S & DR',
+              name: 'VMware Tanzu & Velero Cloud DR',
+              sub: 'Multi-Cloud Recovery Fabric',
+              desc: 'Standardized Kubernetes control planes spanning on-premises and AWS with Velero automated snapshot backup to AWS S3 Glacier with immutable retention.',
+              motivation: 'Ensures full disaster recovery capability with Recovery Time Objective (RTO) < 15 minutes and Recovery Point Objective (RPO) < 5 minutes.',
+              metric: 'RTO < 15min • RPO < 5min to AWS S3',
+              iac: `apiVersion: velero.io/v1\nkind: Schedule\nmetadata:\n  name: hybrid-hourly-backup\nspec:\n  schedule: "0 * * * *"\n  template:\n    includedNamespaces:\n      - "*"\n    storageLocation: aws-s3-backup-vault\n    snapshotVolumes: true\n    ttl: "720h"`,
+              iacLang: 'yaml • velero-schedule.yaml',
+              ha: 'Automated cross-cloud snapshot synchronization every hour',
+              sec: 'S3 Object Lock Compliance Mode, KMS customer managed keys',
+              burnPolicy: 'Failed scheduled backup emits immediate alert to SRE on-call rotation.',
+              chaosScenario: 'Complete catastrophic on-premises data center power outage.',
+              selfHealing: 'Velero automated disaster recovery script restores full Kubernetes cluster in AWS in <12 minutes.',
+              studioLink: '../tools/backup-dr/'
             }
           ]
         }
       };
 
-      let currentKey = 'landing-zone';
-      const selector = document.getElementById('archSelector');
-      const titleEl = document.getElementById('diagramTitle');
-      const descEl = document.getElementById('diagramDesc');
-      const gridEl = document.getElementById('nodeGrid');
-      const inspTitle = document.getElementById('inspTitle');
-      const inspTag = document.getElementById('inspTag');
-      const inspDesc = document.getElementById('inspDesc');
-      const inspIac = document.getElementById('inspIac');
-      const inspHa = document.getElementById('inspHa');
-      const inspSec = document.getElementById('inspSec');
+      // State Management
+      let currentArchKey = 'landing-zone';
+      let activeCategory = 'all';
+      let activeNodeIndex = 0;
+      let activeInspectorTab = 'overview';
+      let isSimulatingFlow = false;
+      let currentSimStep = 0;
 
-      function loadArch(key) {
-        currentKey = key;
-        const arch = architectures[key];
-        titleEl.textContent = arch.title;
-        descEl.textContent = arch.desc;
+      // DOM Elements
+      const archSelectorEl = document.getElementById('archSelector');
+      const categoryPillsEl = document.getElementById('categoryPills');
+      const archSearchEl = document.getElementById('archSearch');
+      const diagramTitleEl = document.getElementById('diagramTitle');
+      const diagramDescEl = document.getElementById('diagramDesc');
+      const diagramTagEl = document.getElementById('diagramTag');
+      const layersContainerEl = document.getElementById('layersContainer');
+      const nodeGridEl = document.getElementById('nodeGrid');
+      const btnSimulateRequestFlowEl = document.getElementById('btnSimulateRequestFlow');
+      const btnExportRunbookEl = document.getElementById('btnExportRunbook');
+      const flowStatusIndicatorEl = document.getElementById('flowStatusIndicator');
+      const flowPipelineTrackEl = document.getElementById('flowPipelineTrack');
+      const flowStepCountEl = document.getElementById('flowStepCount');
+      const flowTerminalLogsEl = document.getElementById('flowTerminalLogs');
 
-        gridEl.innerHTML = arch.nodes.map((node, i) => `
-          <div class="arch-node ${i === 0 ? 'active' : ''}" data-idx="${i}">
-            <div class="node-role">${node.role}</div>
-            <div class="node-name">${node.name}</div>
-            <div class="node-sub">${node.sub}</div>
-          </div>
-        `).join('');
+      // Inspector Elements
+      const inspTagEl = document.getElementById('inspTag');
+      const inspTitleEl = document.getElementById('inspTitle');
+      const inspSubtitleEl = document.getElementById('inspSubtitle');
+      const inspDescEl = document.getElementById('inspDesc');
+      const inspMotivationEl = document.getElementById('inspMotivation');
+      const inspPrimaryMetricEl = document.getElementById('inspPrimaryMetric');
+      const inspIacEl = document.getElementById('inspIac');
+      const inspIacCodeEl = document.getElementById('inspIacCode');
+      const inspIacLangEl = document.getElementById('inspIacLang');
+      const inspHaEl = document.getElementById('inspHa');
+      const inspSecEl = document.getElementById('inspSec');
+      const inspBurnPolicyEl = document.getElementById('inspBurnPolicy');
+      const inspChaosScenarioEl = document.getElementById('inspChaosScenario');
+      const inspSelfHealingEl = document.getElementById('inspSelfHealing');
+      const inspLaunchStudioEl = document.getElementById('inspLaunchStudio');
+      const btnCopyIacCodeEl = document.getElementById('btnCopyIacCode');
+      const toastContainerEl = document.getElementById('toastContainer');
 
-        inspectNode(arch.nodes[0]);
+      // Toast Feedback
+      function showToast(msg) {
+        if (!toastContainerEl) return;
+        const toast = document.createElement('div');
+        toast.className = 'toast-msg';
+        toast.textContent = msg;
+        toastContainerEl.appendChild(toast);
+        setTimeout(() => toast.remove(), 2600);
+      }
 
-        gridEl.querySelectorAll('.arch-node').forEach(nodeEl => {
-          nodeEl.addEventListener('click', () => {
-            gridEl.querySelectorAll('.arch-node').forEach(n => n.classList.remove('active'));
-            nodeEl.classList.add('active');
-            const idx = parseInt(nodeEl.getAttribute('data-idx'), 10);
-            inspectNode(arch.nodes[idx]);
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast('✅ Copied to clipboard!'));
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('✅ Copied to clipboard!');
+        }
+      }
+
+      // Render Architecture Selector Buttons
+      function renderArchSelector() {
+        const q = archSearchEl.value.toLowerCase().trim();
+        const archKeys = Object.keys(ARCHITECTURES);
+
+        const filteredKeys = archKeys.filter(key => {
+          const arch = ARCHITECTURES[key];
+          if (activeCategory !== 'all' && arch.category !== activeCategory) return false;
+          if (!q) return true;
+          const searchStr = (arch.title + ' ' + arch.desc + ' ' + arch.badgeText + ' ' + arch.nodes.map(n => n.name + ' ' + n.desc).join(' ')).toLowerCase();
+          return searchStr.includes(q);
+        });
+
+        if (filteredKeys.length === 0) {
+          archSelectorEl.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted); font-family: var(--font-mono);">
+              No architectures match your query "${q}". Try clearing your search keyword.
+            </div>
+          `;
+          return;
+        }
+
+        archSelectorEl.innerHTML = filteredKeys.map(key => {
+          const arch = ARCHITECTURES[key];
+          const isActive = key === currentArchKey;
+          return `
+            <button class="arch-btn ${isActive ? 'active' : ''}" data-id="${arch.id}">
+              <div class="arch-btn-top">
+                <span class="arch-btn-icon">${arch.icon || '🏛️'}</span>
+                <span class="arch-btn-badge">${arch.badgeText}</span>
+              </div>
+              <div class="arch-btn-title">${arch.title}</div>
+              <div class="arch-btn-sub">${arch.metric}</div>
+            </button>
+          `;
+        }).join('');
+
+        // Wire click handlers
+        archSelectorEl.querySelectorAll('.arch-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            loadArchitecture(id);
           });
         });
       }
 
-      function inspectNode(node) {
-        inspTag.textContent = node.role;
-        inspTitle.textContent = node.name;
-        inspDesc.textContent = node.desc;
-        inspIac.textContent = node.iac;
-        inspHa.textContent = node.ha;
-        inspSec.textContent = node.sec;
+      // Load Selected Architecture
+      function loadArchitecture(key) {
+        if (!ARCHITECTURES[key]) key = 'landing-zone';
+        currentArchKey = key;
+        activeNodeIndex = 0;
+        currentSimStep = 0;
+        isSimulatingFlow = false;
+
+        const arch = ARCHITECTURES[key];
+        diagramTitleEl.textContent = arch.title;
+        diagramDescEl.textContent = arch.desc;
+        diagramTagEl.textContent = `SYSTEM BLUEPRINT • ${arch.badgeText}`;
+
+        // Update selector active states
+        archSelectorEl.querySelectorAll('.arch-btn').forEach(b => {
+          if (b.getAttribute('data-id') === key) b.classList.add('active');
+          else b.classList.remove('active');
+        });
+
+        // Group Nodes by Tier
+        const tierMap = {};
+        arch.nodes.forEach((node, idx) => {
+          const tier = node.tier || 'Architecture Components';
+          if (!tierMap[tier]) tierMap[tier] = [];
+          tierMap[tier].push({ ...node, originalIndex: idx });
+        });
+
+        // Render Tiered Nodes
+        nodeGridEl.innerHTML = Object.keys(tierMap).map(tierName => {
+          const nodes = tierMap[tierName];
+          return `
+            <div class="tier-group">
+              <div class="tier-header">
+                <span>📍</span>
+                <span>${tierName}</span>
+              </div>
+              <div class="node-grid">
+                ${nodes.map(n => `
+                  <div class="arch-node ${n.originalIndex === 0 ? 'active' : ''}" data-idx="${n.originalIndex}">
+                    <div class="node-top">
+                      <span class="node-role">${n.role}</span>
+                      <span class="node-status-dot">● ACTIVE</span>
+                    </div>
+                    <div>
+                      <div class="node-name">${n.name}</div>
+                      <div class="node-sub">${n.sub}</div>
+                    </div>
+                    <div class="node-bottom">
+                      <span class="node-metric">${n.metric || 'SLO Verified'}</span>
+                      <span class="node-inspect-arrow">&rarr;</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Wire node clicks
+        nodeGridEl.querySelectorAll('.arch-node').forEach(nodeEl => {
+          nodeEl.addEventListener('click', () => {
+            nodeGridEl.querySelectorAll('.arch-node').forEach(n => n.classList.remove('active'));
+            nodeEl.classList.add('active');
+            const idx = parseInt(nodeEl.getAttribute('data-idx'), 10);
+            activeNodeIndex = idx;
+            inspectNode(arch.nodes[idx]);
+          });
+        });
+
+        // Render Request Lifecycle Flow Steps
+        renderFlowPipeline(arch);
+
+        // Inspect First Node by default
+        inspectNode(arch.nodes[0]);
       }
 
-      selector.addEventListener('click', (e) => {
-        const btn = e.target.closest('.arch-btn');
-        if (!btn) return;
-        selector.querySelectorAll('.arch-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        loadArch(btn.getAttribute('data-id'));
+      // Render Flow Pipeline Steps
+      function renderFlowPipeline(arch) {
+        flowStepCountEl.textContent = `Step 1 of ${arch.flowSteps.length}`;
+        flowPipelineTrackEl.innerHTML = arch.flowSteps.map((st, i) => `
+          <div class="flow-step-node ${i === 0 ? 'active' : ''}" data-step="${i}">
+            <span class="flow-step-badge">STAGE 0${i + 1}</span>
+            <span class="flow-step-label">${st.label}</span>
+          </div>
+          ${i < arch.flowSteps.length - 1 ? '<span class="flow-arrow">&rarr;</span>' : ''}
+        `).join('');
+
+        flowTerminalLogsEl.innerHTML = `
+          <div class="term-line-dim"># Interactive Topology Initialized: ${arch.title}</div>
+          <div class="term-line-cyan">$ ping -c 1 edge.${arch.id}.internal.mesh</div>
+          <div class="term-line-green">[OK] Health check passed. 100% routing pathways deterministic.</div>
+        `;
+
+        flowPipelineTrackEl.querySelectorAll('.flow-step-node').forEach(stepEl => {
+          stepEl.addEventListener('click', () => {
+            const stepIdx = parseInt(stepEl.getAttribute('data-step'), 10);
+            setFlowStep(stepIdx);
+          });
+        });
+      }
+
+      function setFlowStep(stepIdx) {
+        const arch = ARCHITECTURES[currentArchKey];
+        if (!arch || !arch.flowSteps[stepIdx]) return;
+        currentSimStep = stepIdx;
+        flowStepCountEl.textContent = `Step ${stepIdx + 1} of ${arch.flowSteps.length}`;
+
+        flowPipelineTrackEl.querySelectorAll('.flow-step-node').forEach((el, i) => {
+          el.classList.remove('active');
+          if (i < stepIdx) el.classList.add('completed');
+          else el.classList.remove('completed');
+          if (i === stepIdx) el.classList.add('active');
+        });
+
+        const curStep = arch.flowSteps[stepIdx];
+        const logLine = document.createElement('div');
+        logLine.className = 'term-line-cyan';
+        logLine.textContent = `[STAGE ${stepIdx + 1}] ${curStep.label}: ${curStep.desc}`;
+        flowTerminalLogsEl.appendChild(logLine);
+        flowTerminalLogsEl.scrollTop = flowTerminalLogsEl.scrollHeight;
+
+        // Auto-select corresponding node if in range
+        if (arch.nodes[stepIdx]) {
+          nodeGridEl.querySelectorAll('.arch-node').forEach(n => n.classList.remove('active'));
+          const targetNode = nodeGridEl.querySelector(`.arch-node[data-idx="${stepIdx}"]`);
+          if (targetNode) targetNode.classList.add('active');
+          inspectNode(arch.nodes[stepIdx]);
+        }
+      }
+
+      // Inspect Node in Panel
+      function inspectNode(node) {
+        if (!node) return;
+        inspTagEl.textContent = node.role;
+        inspTitleEl.textContent = node.name;
+        inspSubtitleEl.textContent = node.sub;
+        inspDescEl.textContent = node.desc;
+        inspMotivationEl.textContent = node.motivation || 'Guarantees zero-downtime reliability and enterprise isolation.';
+        inspPrimaryMetricEl.textContent = node.metric || '100% Tested Verification';
+        inspIacEl.textContent = node.iacLang || 'Terraform Module';
+        inspIacCodeEl.textContent = node.iac || '# Verified IaC code';
+        inspIacLangEl.textContent = node.iacLang || 'terraform • main.tf';
+        inspHaEl.textContent = node.ha || 'Multi-AZ Active-Active';
+        inspSecEl.textContent = node.sec || 'Least Privilege IAM + KMS CMK';
+        inspBurnPolicyEl.textContent = node.burnPolicy || 'Automated canary halt upon error rate breach.';
+        inspChaosScenarioEl.textContent = node.chaosScenario || 'Complete Availability Zone outage.';
+        inspSelfHealingEl.textContent = node.selfHealing || 'Automated health ejection and failover in <12 seconds.';
+
+        if (node.studioLink) {
+          inspLaunchStudioEl.href = node.studioLink;
+          inspLaunchStudioEl.style.display = 'flex';
+          inspLaunchStudioEl.querySelector('span').textContent = `🚀 Launch ${node.name.split(' ')[0]} Studio Simulator →`;
+        } else {
+          inspLaunchStudioEl.style.display = 'none';
+        }
+      }
+
+      // Step Request Flow Button
+      btnSimulateRequestFlowEl.addEventListener('click', async () => {
+        const arch = ARCHITECTURES[currentArchKey];
+        if (!arch) return;
+        const totalSteps = arch.flowSteps.length;
+        const nextStep = (currentSimStep + 1) % totalSteps;
+        setFlowStep(nextStep);
+        showToast(`Stepped to Stage ${nextStep + 1}: ${arch.flowSteps[nextStep].label}`);
       });
 
-      loadArch('landing-zone');
+      // Export Architecture Runbook
+      btnExportRunbookEl.addEventListener('click', () => {
+        const arch = ARCHITECTURES[currentArchKey];
+        if (!arch) return;
+        const runbook = `# PRODUCTION SRE ARCHITECTURE RUNBOOK: ${arch.title}\nDomain: ${arch.category.toUpperCase()}\nSLO Target: ${arch.metric}\nDescription: ${arch.desc}\n\n## Component Breakdown\n${arch.nodes.map(n => `### ${n.name} (${n.role})\n- Role: ${n.sub}\n- Specification: ${n.desc}\n- High Availability: ${n.ha}\n- Security: ${n.sec}\n- Self-Healing: ${n.selfHealing}\n`).join('\n')}\n\nGenerated from Talari Pradeep Production Architecture Center.`;
+        copyText(runbook);
+      });
+
+      // Copy IaC Button
+      btnCopyIacCodeEl.addEventListener('click', () => {
+        copyText(inspIacCodeEl.textContent);
+      });
+
+      // Inspector Tab Switching
+      const inspTabs = document.querySelectorAll('.insp-tab');
+      inspTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          inspTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const tabId = tab.getAttribute('data-tab');
+          activeInspectorTab = tabId;
+
+          document.getElementById('panelOverview').style.display = tabId === 'overview' ? 'flex' : 'none';
+          document.getElementById('panelIac').style.display = tabId === 'iac' ? 'flex' : 'none';
+          document.getElementById('panelSlo').style.display = tabId === 'slo' ? 'flex' : 'none';
+          document.getElementById('panelChaos').style.display = tabId === 'chaos' ? 'flex' : 'none';
+        });
+      });
+
+      // Category Pill Filtering
+      categoryPillsEl.addEventListener('click', (e) => {
+        const pill = e.target.closest('.cat-pill');
+        if (!pill) return;
+        categoryPillsEl.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeCategory = pill.getAttribute('data-cat');
+        renderArchSelector();
+      });
+
+      // Search Filtering
+      archSearchEl.addEventListener('input', () => {
+        renderArchSelector();
+      });
+
+      // Keyboard Shortcut Ctrl+K
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          archSearchEl.focus();
+        } else if (e.key === 'Escape') {
+          archSearchEl.value = '';
+          archSearchEl.blur();
+          renderArchSelector();
+        }
+      });
+
+      // Initialize
+      renderArchSelector();
+
+      // Check URL Hash for direct linking
+      const hash = window.location.hash.replace(/^#/, '');
+      if (hash && ARCHITECTURES[hash]) {
+        loadArchitecture(hash);
+      } else {
+        loadArchitecture('landing-zone');
+      }
     })();
   </script>
 </body>
