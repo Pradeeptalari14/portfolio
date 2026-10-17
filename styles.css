@@ -6628,6 +6628,14 @@ select option {
   background: linear-gradient(90deg, #a855f7, #ec4899);
 }
 
+.destination-card--flow::before {
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+}
+
+.destination-card--realtime::before {
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+}
+
 .destination-card-top {
   display: flex;
   align-items: center;
@@ -6686,6 +6694,32 @@ select option {
   color: #7c3aed;
   background: rgba(124, 58, 237, 0.08);
   border-color: rgba(124, 58, 237, 0.25);
+}
+
+.destination-card-badge--flow {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+[data-theme="light"] .destination-card-badge--flow,
+.light-theme .destination-card-badge--flow {
+  color: #d97706;
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.25);
+}
+
+.destination-card-badge--realtime {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="light"] .destination-card-badge--realtime,
+.light-theme .destination-card-badge--realtime {
+  color: #059669;
+  background: rgba(5, 150, 105, 0.08);
+  border-color: rgba(5, 150, 105, 0.25);
 }
 
 .destination-card-title {
@@ -6751,6 +6785,96 @@ select option {
 .dest-btn-primary--learn {
   background: linear-gradient(135deg, #7c3aed, #9333ea);
   box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+}
+
+.dest-btn-primary--flow {
+  background: linear-gradient(135deg, #d97706, #ea580c);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+}
+
+.dest-btn-primary--realtime {
+  background: linear-gradient(135deg, #059669, #0891b2);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.destination-helper {
+  margin-top: 2.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.destination-helper-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.destination-helper-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.destination-helper-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.destination-helper-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.destination-helper-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.destination-helper-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.destination-example {
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 2px solid var(--border-accent);
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.destination-example strong {
+  color: var(--text-secondary);
 }
 
 .dest-btn-primary:hover {

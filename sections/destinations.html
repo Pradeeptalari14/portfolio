@@ -1,104 +1,176 @@
-<!-- ══ THE THREE CLEAR DESTINATIONS ══ -->
-<section class="section destinations-section" id="destinations" aria-label="Platform destinations">
+<!-- ══ THE FOUR CORE ENGINEERING WORKSPACES ══ -->
+<section class="section destinations-section" id="destinations" aria-label="Platform workspaces">
   <div class="container">
     <div class="ts-section-header ts-section-header--center text-center">
       <div class="ts-section-signal">
         <span class="signal-dot" aria-hidden="true"></span>
-        <span class="ts-section-tag">Platform Destinations</span>
+        <span class="ts-section-tag">Platform Workspaces</span>
       </div>
       <h2 class="ts-section-title">
-        Three Purpose-Built Platforms
+        Four Purpose-Built Workspaces
       </h2>
       <p class="ts-section-subtitle">
-        Explore the focused engineering showcase, launch live interactive developer studios, or master production skills through the guided course catalog.
+        Choose how you want to work: generate tools in Studios, explore architectures in Flow, monitor live systems in Real-Time, or build skills in Learn.
       </p>
     </div>
 
     <div class="destinations-grid">
 
-      <!-- Destination 1: Portfolio & Showcase -->
-      <div class="destination-card destination-card--portfolio">
-        <div>
-          <div class="destination-card-top">
-            <span class="destination-card-badge destination-card-badge--portfolio">
-              DESTINATION 01
-            </span>
-            <span class="destination-icon" aria-hidden="true">💼</span>
-          </div>
-          <h3 class="destination-card-title">
-            Engineering Showcase
-          </h3>
-          <p class="destination-card-desc">
-            Personal engineering brand, career timeline, verified production impact metrics, and deep-dive architectural case studies for enterprise systems.
-          </p>
-          <div class="destination-chips">
-            <span class="destination-chip">Enterprise Case Studies</span>
-            <span class="destination-chip">Career Timeline</span>
-            <span class="destination-chip">Verified SLOs</span>
-          </div>
-        </div>
-        <div class="destination-actions">
-          <a href="experience/" class="dest-btn-secondary dest-btn-accent">
-            💼 Experience →
-          </a>
-          <a href="#projects" class="dest-btn-secondary">
-            Projects ↓
-          </a>
-        </div>
-      </div>
-
-      <!-- Destination 2: Studios Platform -->
+      <!-- Workspace 1: Studios -->
       <div class="destination-card destination-card--studios">
         <div>
           <div class="destination-card-top">
             <span class="destination-card-badge destination-card-badge--studios">
-              DESTINATION 02 &bull; WORKBENCH
+              WORKSPACE 01 &bull; STUDIOS
             </span>
             <span class="destination-icon" aria-hidden="true">🛠️</span>
           </div>
           <h3 class="destination-card-title">
-            Studios Development Platform
+            Studios Workspace
           </h3>
           <p class="destination-card-desc">
-            347 active developer studios with sandboxed script execution, shared AI assistant, Docker job runners, and live SRE telemetry consoles.
+            Discover and use technology-specific tools, configuration generators, and diagnostics across AI, Cloud, CI/CD, and SRE.
           </p>
           <div class="destination-chips">
-            <span class="destination-chip">347 Live Studios</span>
-            <span class="destination-chip">Docker Sandbox</span>
-            <span class="destination-chip">Shared AI Drawer</span>
+            <span class="destination-chip">347 Production Studios</span>
+            <span class="destination-chip">HCL/YAML/Python Gen</span>
+            <span class="destination-chip">Universal Explainer</span>
+          </div>
+          <div class="destination-example">
+            <strong>Example outcome:</strong> Configure &amp; export production Kubernetes manifests, Terraform stacks, and Ollama Modelfiles.
           </div>
         </div>
-        <a href="studios/" class="dest-btn-primary dest-btn-primary--studios">
-          Launch Studios Platform →
-        </a>
+        <div style="margin-top: 1.5rem;">
+          <a href="studios/" class="dest-btn-primary dest-btn-primary--studios" id="dest-action-studios">
+            Explore 347 Studios →
+          </a>
+        </div>
       </div>
 
-      <!-- Destination 3: Interactive Learning Hub -->
+      <!-- Workspace 2: Flow -->
+      <div class="destination-card destination-card--flow">
+        <div>
+          <div class="destination-card-top">
+            <span class="destination-card-badge destination-card-badge--flow">
+              WORKSPACE 02 &bull; FLOW
+            </span>
+            <span class="destination-icon" aria-hidden="true">🔀</span>
+          </div>
+          <h3 class="destination-card-title">
+            Flow Visual Canvas
+          </h3>
+          <p class="destination-card-desc">
+            Understand system architecture, pipeline components, dependencies, and execution processes visually through interactive DAGs.
+          </p>
+          <div class="destination-chips">
+            <span class="destination-chip">Visual Node DAG</span>
+            <span class="destination-chip">Simulated Tracing</span>
+            <span class="destination-chip">Pipeline Export</span>
+          </div>
+          <div class="destination-example">
+            <strong>Example outcome:</strong> Inspect multi-agent cyclic graph transitions and simulated hybrid RAG retrieval stages.
+          </div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <a href="studios/flow/" class="dest-btn-primary dest-btn-primary--flow" id="dest-action-flow">
+            Launch Flow Canvas →
+          </a>
+        </div>
+      </div>
+
+      <!-- Workspace 3: Real-Time -->
+      <div class="destination-card destination-card--realtime">
+        <div>
+          <div class="destination-card-top">
+            <span class="destination-card-badge destination-card-badge--realtime">
+              WORKSPACE 03 &bull; REAL-TIME
+            </span>
+            <span class="destination-icon" aria-hidden="true">📡</span>
+          </div>
+          <h3 class="destination-card-title">
+            Real-Time Telemetry
+          </h3>
+          <p class="destination-card-desc">
+            Inspect genuine platform telemetry, edge CDN latency, automated test suite health, and live service operational availability.
+          </p>
+          <div class="destination-chips">
+            <span class="destination-chip">28ms Edge Latency</span>
+            <span class="destination-chip">528 Verified Tests</span>
+            <span class="destination-chip">0 Vulnerabilities</span>
+          </div>
+          <div class="destination-example">
+            <strong>Example outcome:</strong> Verify live system uptime, test suite execution status, and TLS/CDN edge metrics.
+          </div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <a href="status/" class="dest-btn-primary dest-btn-primary--realtime" id="dest-action-realtime">
+            View Live Telemetry →
+          </a>
+        </div>
+      </div>
+
+      <!-- Workspace 4: Learn -->
       <div class="destination-card destination-card--learn">
         <div>
           <div class="destination-card-top">
             <span class="destination-card-badge destination-card-badge--learn">
-              DESTINATION 03 &bull; ACADEMY
+              WORKSPACE 04 &bull; LEARN
             </span>
             <span class="destination-icon" aria-hidden="true">🎓</span>
           </div>
           <h3 class="destination-card-title">
-            Interactive Learning Hub
+            Learn Workspace
           </h3>
           <p class="destination-card-desc">
-            Skills Network / Cognitive Class catalog format: 347 courses &amp; guided projects, 4 learning modes, 7-step mastery sequence, and real-time drills.
+            Build production skills through ordered progression tracks, hands-on labs, self-assessment quizzes, and saved local progress.
           </p>
           <div class="destination-chips">
-            <span class="destination-chip">Skills Network Format</span>
-            <span class="destination-chip">4 Learning Modes</span>
-            <span class="destination-chip">7-Step Mastery</span>
+            <span class="destination-chip">4 Progression Tracks</span>
+            <span class="destination-chip">Interactive Labs</span>
+            <span class="destination-chip">Local Persistence</span>
+          </div>
+          <div class="destination-example">
+            <strong>Example outcome:</strong> Master 4 progressive tracks from tokenization basics to autonomous agent swarms.
           </div>
         </div>
-        <a href="studios/learn/" class="dest-btn-primary dest-btn-primary--learn">
-          Open Learning Hub →
-        </a>
+        <div style="margin-top: 1.5rem;">
+          <a href="studios/learn/" class="dest-btn-primary dest-btn-primary--learn" id="dest-action-learn">
+            Start Learning Path →
+          </a>
+        </div>
       </div>
 
     </div>
+
+    <!-- Compact 'Not sure where to start?' Helper (Requirements 0047, 0048) -->
+    <div class="destination-helper" id="notSureWhereToStart">
+      <div class="destination-helper-header">
+        <div class="destination-helper-title">
+          <span>🧭</span> Not sure where to start? Choose your immediate goal:
+        </div>
+        <span class="destination-helper-subtitle">Quick jump to real, working tools</span>
+      </div>
+      <div class="destination-helper-pills">
+        <a href="studios/" class="destination-helper-pill">
+          <span>🛠️</span> Generate cloud &amp; CI/CD configs
+        </a>
+        <a href="studios/flow/" class="destination-helper-pill">
+          <span>🔀</span> Visualize architectures &amp; DAGs
+        </a>
+        <a href="status/" class="destination-helper-pill">
+          <span>📡</span> Check platform telemetry &amp; health
+        </a>
+        <a href="studios/learn/" class="destination-helper-pill">
+          <span>🎓</span> Guided engineering drills &amp; labs
+        </a>
+        <a href="projects/" class="destination-helper-pill">
+          <span>🏗️</span> 12 Flagship platform case studies
+        </a>
+        <a href="architecture/" class="destination-helper-pill">
+          <span>🏛️</span> Production Architecture Center
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
