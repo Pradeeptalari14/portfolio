@@ -168,6 +168,50 @@ describe('Studios Learning Hub DOM & Interactive Mechanics (studios/learn/index.
 
     expect(resultTitle.textContent).toContain('DeepSpeed ZeRO-3');
   });
+
+  it('should display specialization badges and active starter courses in My Learning & Badges tab without empty data void', async () => {
+    const { window } = createTestDom();
+    const document = window.document;
+
+    await new Promise(r => setTimeout(r, 60));
+
+    const myLearningTab = Array.from(document.querySelectorAll('.content-tab')).find(t => t.dataset.tab === 'mylearning');
+    expect(myLearningTab).toBeTruthy();
+    myLearningTab.click();
+
+    const grid = document.getElementById('studiosGrid');
+    const badgeCards = grid.querySelectorAll('.specialization-badge-card');
+    expect(badgeCards.length).toBe(5);
+
+    const claimBtn = grid.querySelector('#btnClaimCertHeroTab');
+    expect(claimBtn).toBeTruthy();
+
+    const studioCards = grid.querySelectorAll('.studio-learn-card');
+    expect(studioCards.length).toBeGreaterThanOrEqual(1);
+
+    const catalogCount = document.getElementById('catalogCount');
+    expect(catalogCount.textContent).toContain('personal studio');
+    expect(catalogCount.textContent).toContain('5 Specialization Tracks');
+  });
+
+  it('should update personal learning queue when user bookmarks a studio', async () => {
+    const { window } = createTestDom();
+    const document = window.document;
+
+    await new Promise(r => setTimeout(r, 60));
+
+    // Bookmark first studio in the all list
+    const firstStudio = studiosData[0];
+    window.toggleStudioBookmark(firstStudio.link || firstStudio.title);
+
+    // Switch to mylearning tab
+    const myLearningTab = Array.from(document.querySelectorAll('.content-tab')).find(t => t.dataset.tab === 'mylearning');
+    myLearningTab.click();
+
+    const grid = document.getElementById('studiosGrid');
+    const titles = Array.from(grid.querySelectorAll('.card-title')).map(el => el.textContent);
+    expect(titles).toContain(firstStudio.title);
+  });
 });
 
 describe('Individual Studio Learning Documents Across All 341 Studios', () => {

@@ -164,8 +164,11 @@
         </a>
       </div>
 
-      <div class="workspace-footer-note">
-        Below the main actions: recommended path &rarr; continue learning cards &rarr; studio catalogue &rarr; projects and labs &rarr; progress and revision.
+      <div class="workspace-footer-note" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <span>Curriculum Roadmap: <a href="#continue-learning-section" style="color: var(--accent-cyan); text-decoration: underline;">Continue Learning</a> &bull; <a href="#learning-paths-section" style="color: var(--accent-cyan); text-decoration: underline;">8 Career Paths</a> &bull; <a href="#catalog-section" style="color: var(--accent-cyan); text-decoration: underline;">347 Studio Catalog</a> &bull; <a href="#hands-on-labs-section" style="color: var(--accent-cyan); text-decoration: underline;">Labs &amp; Topologies</a> &bull; <a href="#my-learning-section" style="color: var(--accent-cyan); text-decoration: underline;">Badges &amp; Credentials</a></span>
+        <button onclick="window.switchToMyLearningTab()" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.76rem; cursor: pointer; font-weight: 600;">
+          🎓 Open My Learning &amp; Badges &rarr;
+        </button>
       </div>
     </section>
 
@@ -2214,16 +2217,45 @@ To address "${userQuery}":
         return { checkedCats, checkedLevels };
       }
 
+      const STARTER_STUDIO_KEYS = [
+        'vllm',
+        'ebpf',
+        'argocd',
+        'terraform',
+        'mcp'
+      ];
+
       function filterStudios() {
         const q = searchInputEl.value.toLowerCase().trim();
         const { checkedCats, checkedLevels } = getActiveCheckedFilters();
 
+        const hasSavedItems = bookmarkedStudios.size > 0 || completedStudios.size > 0 || Object.keys(progressMap).length > 0;
+
         return allStudios.filter(s => {
           // Tab Filtering
           if (activeTab === 'mylearning') {
-            const isFav = bookmarkedStudios.has(s.link || s.title);
-            const isComp = completedStudios.has(s.link || s.title);
-            if (!isFav && !isComp) return false;
+            const link = s.link || '';
+            const title = s.title || '';
+            const id = s.id || '';
+            const isFav = bookmarkedStudios.has(link) || bookmarkedStudios.has(title) || (id && bookmarkedStudios.has(id));
+            const isComp = completedStudios.has(link) || completedStudios.has(title) || (id && completedStudios.has(id));
+            const hasProg = Boolean(
+              progressMap[link] ||
+              progressMap[title] ||
+              (id && progressMap[id]) ||
+              Object.values(progressMap).some(p => p.title === title || (p.id && p.id === id))
+            );
+
+            if (hasSavedItems) {
+              if (!isFav && !isComp && !hasProg) return false;
+            } else {
+              // Starter flagship studios for new learners so "My Learning & Badges" always has data
+              const linkStr = link.toLowerCase();
+              const titleStr = title.toLowerCase();
+              const idStr = id.toLowerCase();
+              const isStarter = STARTER_STUDIO_KEYS.some(k => linkStr.includes(k) || titleStr.includes(k) || idStr.includes(k));
+              if (!isStarter) return false;
+            }
           } else if (activeTab === 'projects') {
             if (!s.title.toLowerCase().includes('studio') && s.category !== 'ai' && s.category !== 'cloud') return false;
           }
@@ -2284,144 +2316,161 @@ To address "${userQuery}":
       function renderCatalog() {
         const filtered = filterStudios();
         const sorted = sortStudios(filtered);
-        catalogCountEl.textContent = `Showing ${sorted.length} of ${allStudios.length} studios`;
 
-          // Specialization Badges Showcase in My Learning tab
-          if (activeTab === 'mylearning') {
-            const badgesSection = `
-              <div style="grid-column: 1/-1; margin-bottom: 2rem;">
-                <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
-                  <div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
-                      <span class="badge-live" style="background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">🎓 VERIFIED CREDENTIALS</span>
-                      <span style="font-family: var(--font-mono); font-size: 0.74rem; color: #94a3b8;">Cryptographic SHA-256 Proof</span>
-                    </div>
-                    <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: #fff; font-weight: 700;">Claim Verified Completion Certificate</h3>
-                    <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.25rem; max-width: 580px;">
-                      Validate your hands-on mastery across 347 production studios, incident triage drills, and architecture topologies.
-                    </p>
+        let badgesSection = '';
+        if (activeTab === 'mylearning') {
+          catalogCountEl.textContent = `Showing ${sorted.length} personal studio${sorted.length === 1 ? '' : 's'} • 5 Specialization Tracks`;
+
+          badgesSection = `
+            <div style="grid-column: 1/-1; margin-bottom: 2rem;">
+              <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                    <span class="badge-live" style="background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">🎓 VERIFIED CREDENTIALS</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.74rem; color: #94a3b8;">Cryptographic SHA-256 Proof</span>
                   </div>
-                  <button id="btnClaimCertHero" class="hub-nav-cta" onclick="window.openCertificateModal()" style="padding: 0.75rem 1.6rem; font-size: 0.9rem;">
-                    🎓 Claim Certificate &rarr;
-                  </button>
+                  <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: #fff; font-weight: 700;">Claim Verified Completion Certificate</h3>
+                  <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.25rem; max-width: 580px;">
+                    Validate your hands-on mastery across 347 production studios, incident triage drills, and architecture topologies.
+                  </p>
                 </div>
+                <button id="btnClaimCertHeroTab" class="hub-nav-cta" onclick="window.openCertificateModal()" style="padding: 0.75rem 1.6rem; font-size: 0.9rem; cursor: pointer; border: none;">
+                  🎓 Claim Certificate &rarr;
+                </button>
+              </div>
 
-                <div style="margin-top: 2rem;">
-                  <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #fff; font-weight: 700; margin-bottom: 0.35rem;">Specialization Track Badges</h3>
-                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">Track your competencies and unlock verifiable badges across engineering domains:</p>
-                  
-                  <div class="badges-container">
-                    <div class="specialization-badge-card">
-                      <div class="badge-top-row">
-                        <span class="badge-icon-box">🧠</span>
-                        <div>
-                          <div class="badge-track-title">AI &amp; LLMOps Architect</div>
-                          <div class="badge-track-sub">vLLM, SGLang, DeepSeek, RAG, Speculative</div>
-                        </div>
-                      </div>
-                      <div class="badge-progress-track">
-                        <div class="badge-progress-fill" style="width: 100%;"></div>
-                      </div>
-                      <div class="badge-footer-row">
-                        <span style="color: #34d399;">● 234 Studios Verified</span>
-                        <span>100% Complete</span>
+              <div style="margin-top: 2rem;">
+                <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #fff; font-weight: 700; margin-bottom: 0.35rem;">Specialization Track Badges</h3>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">Track your competencies and unlock verifiable badges across engineering domains:</p>
+                
+                <div class="badges-container">
+                  <div class="specialization-badge-card">
+                    <div class="badge-top-row">
+                      <span class="badge-icon-box">🧠</span>
+                      <div>
+                        <div class="badge-track-title">AI &amp; LLMOps Architect</div>
+                        <div class="badge-track-sub">vLLM, SGLang, DeepSeek, RAG, Speculative</div>
                       </div>
                     </div>
-
-                    <div class="specialization-badge-card">
-                      <div class="badge-top-row">
-                        <span class="badge-icon-box">🪵</span>
-                        <div>
-                          <div class="badge-track-title">Kernel &amp; eBPF Specialist</div>
-                          <div class="badge-track-sub">eBPF Profiler, Tetragon, DWARF, RingBuffer</div>
-                        </div>
-                      </div>
-                      <div class="badge-progress-track">
-                        <div class="badge-progress-fill" style="width: 100%;"></div>
-                      </div>
-                      <div class="badge-footer-row">
-                        <span style="color: #34d399;">● 29 Studios Verified</span>
-                        <span>100% Complete</span>
-                      </div>
+                    <div class="badge-progress-track">
+                      <div class="badge-progress-fill" style="width: 100%;"></div>
                     </div>
-
-                    <div class="specialization-badge-card">
-                      <div class="badge-top-row">
-                        <span class="badge-icon-box">🛡️</span>
-                        <div>
-                          <div class="badge-track-title">Zero-Trust &amp; TEE Commander</div>
-                          <div class="badge-track-sub">Confidential AI, Vault, MCP Gateway, SAST</div>
-                        </div>
-                      </div>
-                      <div class="badge-progress-track">
-                        <div class="badge-progress-fill" style="width: 100%;"></div>
-                      </div>
-                      <div class="badge-footer-row">
-                        <span style="color: #34d399;">● 18 Studios Verified</span>
-                        <span>100% Complete</span>
-                      </div>
-                    </div>
-
-                    <div class="specialization-badge-card">
-                      <div class="badge-top-row">
-                        <span class="badge-icon-box">☸️</span>
-                        <div>
-                          <div class="badge-track-title">Cloud &amp; K8s Infrastructure</div>
-                          <div class="badge-track-sub">EKS, VPC Subnetter, Terraform Drift, KEDA</div>
-                        </div>
-                      </div>
-                      <div class="badge-progress-track">
-                        <div class="badge-progress-fill" style="width: 100%;"></div>
-                      </div>
-                      <div class="badge-footer-row">
-                        <span style="color: #34d399;">● 26 Studios Verified</span>
-                        <span>100% Complete</span>
-                      </div>
-                    </div>
-
-                    <div class="specialization-badge-card">
-                      <div class="badge-top-row">
-                        <span class="badge-icon-box">⚡</span>
-                        <div>
-                          <div class="badge-track-title">SRE Incident Commander</div>
-                          <div class="badge-track-sub">10 Live Incident Drills, Golden Signals</div>
-                        </div>
-                      </div>
-                      <div class="badge-progress-track">
-                        <div class="badge-progress-fill" style="width: 100%;"></div>
-                      </div>
-                      <div class="badge-footer-row">
-                        <span style="color: #34d399;">● 10 Scenarios Verified</span>
-                        <span>100% Complete</span>
-                      </div>
+                    <div class="badge-footer-row">
+                      <span style="color: #34d399;">● 234 Studios Verified</span>
+                      <span>100% Complete</span>
                     </div>
                   </div>
-                </div>
 
-                <div style="margin-top: 1.5rem; margin-bottom: 1rem;">
-                  <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: #fff; font-weight: 700;">My Favorite &amp; Completed Studios</h3>
+                  <div class="specialization-badge-card">
+                    <div class="badge-top-row">
+                      <span class="badge-icon-box">🪵</span>
+                      <div>
+                        <div class="badge-track-title">Kernel &amp; eBPF Specialist</div>
+                        <div class="badge-track-sub">eBPF Profiler, Tetragon, DWARF, RingBuffer</div>
+                      </div>
+                    </div>
+                    <div class="badge-progress-track">
+                      <div class="badge-progress-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="badge-footer-row">
+                      <span style="color: #34d399;">● 29 Studios Verified</span>
+                      <span>100% Complete</span>
+                    </div>
+                  </div>
+
+                  <div class="specialization-badge-card">
+                    <div class="badge-top-row">
+                      <span class="badge-icon-box">🛡️</span>
+                      <div>
+                        <div class="badge-track-title">Zero-Trust &amp; TEE Commander</div>
+                        <div class="badge-track-sub">Confidential AI, Vault, MCP Gateway, SAST</div>
+                      </div>
+                    </div>
+                    <div class="badge-progress-track">
+                      <div class="badge-progress-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="badge-footer-row">
+                      <span style="color: #34d399;">● 18 Studios Verified</span>
+                      <span>100% Complete</span>
+                    </div>
+                  </div>
+
+                  <div class="specialization-badge-card">
+                    <div class="badge-top-row">
+                      <span class="badge-icon-box">☸️</span>
+                      <div>
+                        <div class="badge-track-title">Cloud &amp; K8s Infrastructure</div>
+                        <div class="badge-track-sub">EKS, VPC Subnetter, Terraform Drift, KEDA</div>
+                      </div>
+                    </div>
+                    <div class="badge-progress-track">
+                      <div class="badge-progress-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="badge-footer-row">
+                      <span style="color: #34d399;">● 26 Studios Verified</span>
+                      <span>100% Complete</span>
+                    </div>
+                  </div>
+
+                  <div class="specialization-badge-card">
+                    <div class="badge-top-row">
+                      <span class="badge-icon-box">⚡</span>
+                      <div>
+                        <div class="badge-track-title">SRE Incident Commander</div>
+                        <div class="badge-track-sub">10 Live Incident Drills, Golden Signals</div>
+                      </div>
+                    </div>
+                    <div class="badge-progress-track">
+                      <div class="badge-progress-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="badge-footer-row">
+                      <span style="color: #34d399;">● 10 Scenarios Verified</span>
+                      <span>100% Complete</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            `;
-            studiosGridEl.innerHTML = badgesSection;
-          }
 
+              <div style="margin-top: 2.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.75rem;">
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700;">YOUR ACTIVE REPOSITORY</div>
+                  <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: #fff; font-weight: 700; margin: 0.2rem 0;">
+                    Personal Learning Queue &amp; Studios
+                  </h3>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">
+                    In-progress tracks, completed certifications, and bookmarked architectural references.
+                  </p>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 0.4rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">
+                  ★ ${bookmarkedStudios.size} Bookmarked &bull; ✓ ${completedStudios.size} Completed &bull; ⏱ ${Object.keys(progressMap).length || 3} In-Progress
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          catalogCountEl.textContent = `Showing ${sorted.length} of ${allStudios.length} studios`;
+        }
 
         if (sorted.length === 0) {
           const emptyMsg = activeTab === 'mylearning'
-            ? 'No bookmarked or completed studios yet. Click the heart icon (♡) on any studio card to save it to your personal learning queue!'
+            ? 'No studios match your current search in your personal queue. Click the heart icon (♡) on any studio in the catalog to add it, or clear your keywords.'
             : 'Try adjusting your search keywords, clearing filters, or choosing another category.';
-          studiosGridEl.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
+          studiosGridEl.innerHTML = badgesSection + `
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-family: var(--font-mono); background: rgba(15, 23, 42, 0.4); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px;">
               <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🔍</div>
               <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 0.35rem;">No Matching Studios Found</h3>
-              <p style="font-size: 0.85rem; max-width: 480px; margin: 0 auto;">${emptyMsg}</p>
+              <p style="font-size: 0.85rem; max-width: 520px; margin: 0 auto 1.25rem;">${emptyMsg}</p>
+              ${activeTab === 'mylearning' ? `
+                <button onclick="window.exploreAllStudiosTab()" style="background: var(--accent-cyan); color: #020617; border: none; padding: 0.55rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: var(--font-mono); font-size: 0.82rem;">
+                  Browse All 347 Studios &rarr;
+                </button>
+              ` : ''}
             </div>
           `;
           return;
         }
 
-        studiosGridEl.innerHTML = sorted.map((s, idx) => {
+        studiosGridEl.innerHTML = badgesSection + sorted.map((s, idx) => {
           let link = s.link || '';
           if (!link.startsWith('http') && !link.startsWith('/') && !link.startsWith('../../tools/')) {
             link = '../../tools/' + link;
@@ -2436,6 +2485,34 @@ To address "${userQuery}":
           const duration = isProject ? '2 Hours' : '1.5 Hours';
           const rating = (4.8 + ((idx % 3) * 0.1)).toFixed(1);
           const prereq = s.category === 'ai' ? 'Python &amp; GPU Basics' : s.category === 'observability' ? 'Linux &amp; eBPF Basics' : 'Bash &amp; Cloud CLI';
+
+          // Check if this studio has in-progress tracking
+          let progItem = progressMap[s.link || ''] || progressMap[s.title || ''] || (s.id && progressMap[s.id]);
+          if (!progItem) {
+            progItem = Object.values(progressMap).find(p => p.title === s.title || (p.id && p.id === s.id));
+          }
+          if (!progItem && activeTab === 'mylearning') {
+            progItem = DEFAULT_CONTINUE_ITEMS.find(p => p.title === s.title || (p.id && s.link && s.link.includes(p.id)));
+          }
+
+          let progressHtml = '';
+          let resumeStep = 1;
+          if (progItem) {
+            resumeStep = progItem.step || 1;
+            progressHtml = `
+              <div style="margin: 0.65rem 0 0.35rem;">
+                <div style="background: rgba(255, 255, 255, 0.08); border-radius: 9999px; height: 5px; overflow: hidden;">
+                  <div style="background: linear-gradient(90deg, var(--accent-cyan), #34d399); height: 100%; width: ${progItem.pct}%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent-cyan); margin-top: 0.35rem;">
+                  <span>📍 Step ${progItem.step} of 7: ${(progItem.stepName || 'Hands-On Drill').slice(0, 26)}</span>
+                  <span>${progItem.pct}%</span>
+                </div>
+              </div>
+            `;
+          }
+
+          let actionBtnText = isDone ? 'Review Lesson' : (progItem ? 'Resume Studio ▶' : 'Start Learning');
 
           return `
             <div class="studio-learn-card">
@@ -2469,6 +2546,8 @@ To address "${userQuery}":
                   <span class="card-duration">⏱ ${duration}</span>
                 </div>
 
+                ${progressHtml}
+
                 <p class="card-usecase">${s.useCase || s.desc}</p>
 
                 <div class="card-drill-box">
@@ -2483,14 +2562,29 @@ To address "${userQuery}":
               </div>
 
               <div class="card-footer">
-                <button class="btn-card-learn" onclick="openStudioModal(${allStudios.indexOf(s)})">
-                  ${isDone ? 'Review Lesson' : 'Start Learning'}
+                <button class="btn-card-learn" onclick="openStudioModal(${allStudios.indexOf(s)}, ${resumeStep})">
+                  ${actionBtnText}
                 </button>
                 <a href="${link}" class="btn-card-launch">Launch Studio →</a>
               </div>
             </div>
           `;
-        }).join('');
+        }).join('') + (activeTab === 'mylearning' ? `
+          <div style="grid-column: 1/-1; margin-top: 1.5rem; background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 1.4rem;">💡</span>
+              <div>
+                <strong style="color: #fff; font-size: 0.88rem;">Personal Queue Management</strong>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.15rem 0 0;">
+                  Click the heart icon (♡) on any studio card across the 347-studio catalogue to bookmark it here for quick access.
+                </p>
+              </div>
+            </div>
+            <button onclick="window.exploreAllStudiosTab()" style="background: rgba(255,255,255,0.08); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.45rem 1rem; border-radius: 6px; font-size: 0.8rem; font-family: var(--font-mono); cursor: pointer;">
+              Explore All 347 Studios &rarr;
+            </button>
+          </div>
+        ` : '');
       }
 
       // =====================================================================
@@ -2799,6 +2893,34 @@ To address "${userQuery}":
         });
       });
 
+      window.exploreAllStudiosTab = function() {
+        activeTab = 'all';
+        document.querySelectorAll('.content-tab').forEach(t => {
+          if (t.getAttribute('data-tab') === 'all') t.classList.add('active');
+          else t.classList.remove('active');
+        });
+        renderCatalog();
+        const catSec = document.getElementById('catalog-section');
+        if (catSec) catSec.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      window.switchToMyLearningTab = function() {
+        activeTab = 'mylearning';
+        document.querySelectorAll('.content-tab').forEach(t => {
+          if (t.getAttribute('data-tab') === 'mylearning') t.classList.add('active');
+          else t.classList.remove('active');
+        });
+        renderCatalog();
+        const catSec = document.getElementById('catalog-section');
+        if (catSec) catSec.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      if (bookmarkedCounterEl) {
+        bookmarkedCounterEl.addEventListener('click', () => {
+          window.switchToMyLearningTab();
+        });
+      }
+
       sortSelectEl.addEventListener('change', () => {
         activeSort = sortSelectEl.value;
         renderCatalog();
@@ -3037,6 +3159,13 @@ To address "${userQuery}":
 
       // Initialize
       initStorage();
+      if (typeof window !== 'undefined' && window.location && (window.location.hash === '#mylearning' || window.location.hash === '#badges')) {
+        activeTab = 'mylearning';
+        document.querySelectorAll('.content-tab').forEach(t => {
+          if (t.getAttribute('data-tab') === 'mylearning') t.classList.add('active');
+          else t.classList.remove('active');
+        });
+      }
       renderLearningPaths();
       initScenarioChips();
       renderScenario(INCIDENT_SCENARIOS[0]);
