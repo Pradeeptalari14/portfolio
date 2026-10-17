@@ -938,6 +938,243 @@ class StudioPlatformSDK {
       latency_ms: Date.now() - startTime
     };
   }
+
+  // 17. Cross-Encoder Reranking Engine (Dual-Engine)
+  async rerankDocuments(query = '', documents = [], { topK = 5, model = 'bge-reranker-large' } = {}) {
+    await this.initPromise;
+    const startTime = Date.now();
+
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const payloadDocs = documents.map((d, i) => (typeof d === 'string' ? { id: `doc_${i}`, text: d } : d));
+        const res = await fetch(`${this.backendUrl}/api/rag/rerank`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query, documents: payloadDocs, top_k: topK, model })
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {
+        console.warn('[StudioSDK] Backend reranking failed, falling back to client cross-scoring:', e);
+      }
+    }
+
+    const STOPWORDS = new Set(['how', 'do', 'i', 'in', 'the', 'a', 'an', 'to', 'for', 'of', 'on', 'with', 'at', 'by', 'from', 'is', 'it', 'and', 'or', 'can', 'you']);
+    const rawQ = query.toLowerCase().match(/\w+/g) || [];
+    const qTokensList = rawQ.filter(w => !STOPWORDS.has(w));
+    const qTokens = new Set(qTokensList.length ? qTokensList : rawQ);
+
+    const scored = documents.map((doc, idx) => {
+      const text = typeof doc === 'string' ? doc : (doc.text || '');
+      const id = typeof doc === 'object' && doc.id ? doc.id : `doc_${idx}`;
+      const rawD = text.toLowerCase().match(/\w+/g) || [];
+      const dTokensList = rawD.filter(w => !STOPWORDS.has(w));
+      const dTokens = new Set(dTokensList.length ? dTokensList : rawD);
+
+      let score = 0.1;
+      if (qTokens.size > 0 && dTokens.size > 0) {
+        let intersection = 0;
+        for (const t of qTokens) {
+          if (dTokens.has(t)) intersection++;
+        }
+        const union = new Set([...qTokens, ...dTokens]).size;
+        const jaccard = intersection / Math.max(1, union);
+        const precision = intersection / Math.max(1, qTokens.size);
+        score = Math.min(0.99, Math.max(0.05, (precision * 0.7) + (jaccard * 0.3)));
+      }
+
+      return {
+        index: idx,
+        id,
+        text,
+        relevance_score: Math.round(score * 1000) / 1000,
+        metadata: typeof doc === 'object' && doc.metadata ? doc.metadata : {}
+      };
+    });
+
+    scored.sort((a, b) => b.relevance_score - a.relevance_score);
+    const topResults = scored.slice(0, topK);
+
+    return {
+      query,
+      results: topResults,
+      model,
+      rerank_ms: Date.now() - startTime
+    };
+  }
+
+  // 18. AI Gateway Semantic Cache (Dual-Engine)
+  async querySemanticCache(query = '', { similarityThreshold = 0.88, namespace = 'default' } = {}) {
+    await this.initPromise;
+    const startTime = Date.now();
+
+    if (this.isConnectedBackend && this.backendUrl) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/ai/cache/lookup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query, similarity_threshold: similarityThreshold, namespace })
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {
+        console.warn('[StudioSDK] Backend semantic cache failed, using browser cache:', e);
+      }
+    }
+
+    const builtInCache = [
+      {
+        query: 'how do i rolling restart checkout-api deployment',
+        tokens: new Set(['how', 'do', 'i', 'rolling', 'restart', 'checkout', 'api', 'deployment']),
+        response: 'Run kubectl rollout restart deployment/checkout-api -n production to perform zero-downtime rolling restart.',
+        tokensCount: 28,
+        key: 'cache_k8s_restart'
+      },
+      {
+        query: 'what is the prometheus cpu alert threshold',
+        tokens: new Set(['what', 'is', 'the', 'prometheus', 'cpu', 'alert', 'threshold']),
+        response: 'The Prometheus CPU threshold alarm fires when node utilization exceeds 85% for 5 continuous minutes.',
+        tokensCount: 24,
+        key: 'cache_prom_cpu'
+      },
+      {
+        query: 'how do i rotate database vault credentials',
+        tokens: new Set(['how', 'do', 'i', 'rotate', 'database', 'vault', 'credentials']),
+        response: 'Execute vault write -f transit/keys/prod-db/rotate to roll encryption keys and generate new lease credentials.',
+        tokensCount: 22,
+        key: 'cache_vault_rotate'
+      }
+    ];
+
+    const qTokens = new Set((query.toLowerCase().match(/\w+/g) || []));
+    let bestSim = 0.0;
+    let bestEntry = null;
+
+    for (const entry of builtInCache) {
+      if (!qTokens.size || !entry.tokens.size) continue;
+      let inter = 0;
+      for (const t of qTokens) {
+        if (entry.tokens.has(t)) inter++;
+      }
+      const union = new Set([...qTokens, ...entry.tokens]).size;
+      const jaccard = inter / Math.max(1, union);
+      const prec = inter / Math.max(1, qTokens.size);
+      const sim = (prec * 0.7) + (jaccard * 0.3);
+      if (sim > bestSim) {
+        bestSim = sim;
+        bestEntry = entry;
+      }
+    }
+
+    const hit = bestSim >= similarityThreshold;
+    return {
+      hit,
+      similarity_score: Math.round(bestSim * 1000) / 1000,
+      cached_response: hit && bestEntry ? bestEntry.response : null,
+      latency_saved_ms: hit ? Math.max(0, 450 - (Date.now() - startTime)) : 0,
+      tokens_saved: hit && bestEntry ? bestEntry.tokensCount : 0,
+      cache_key: hit && bestEntry ? bestEntry.key : `miss_${Math.random().toString(36).substring(2, 10)}`
+    };
+  }
+
+  // 19. PEFT / LoRA Fine-Tuning VRAM Estimator
+  estimateLoRAVRAM({
+    baseModelParamsB = 7.0,
+    loraRank = 16,
+    loraAlpha = 32,
+    targetModulesCount = 4,
+    batchSize = 4,
+    sequenceLength = 2048,
+    precision = 'FP16',
+    gradientCheckpointing = true
+  } = {}) {
+    const prec = precision.toUpperCase();
+    const bytesPerParam = prec.includes('FP16') ? 2.0 : (prec.includes('4BIT') || prec.includes('QLORA') ? 0.5 : 1.0);
+    const baseModelVram = baseModelParamsB * bytesPerParam;
+
+    const layers = baseModelParamsB >= 60 ? 80 : (baseModelParamsB >= 13 ? 32 : 24);
+    const hiddenDim = baseModelParamsB >= 60 ? 8192 : (baseModelParamsB >= 13 ? 4096 : 2048);
+
+    const trainableParams = 2 * loraRank * hiddenDim * targetModulesCount * layers;
+    const trainableM = trainableParams / 1e6;
+    const ratioPct = (trainableParams / (baseModelParamsB * 1e9)) * 100.0;
+
+    const adapterWeightsMb = (trainableParams * 2.0) / (1024 ** 2);
+    const optStatesGb = (trainableParams * 8.0) / (1024 ** 3);
+    const gradGb = (trainableParams * 2.0) / (1024 ** 3);
+
+    const actMultiplier = gradientCheckpointing ? 0.25 : 1.0;
+    const tokens = batchSize * sequenceLength;
+    const actGb = ((tokens * hiddenDim * layers * 2.0) / (1024 ** 3)) * actMultiplier;
+
+    const totalTrainingVram = baseModelVram + (adapterWeightsMb / 1024.0) + optStatesGb + gradGb + actGb + 2.0;
+    const recommendedGpu = Math.ceil(totalTrainingVram * 1.15);
+
+    return {
+      base_model_vram_gb: Math.round(baseModelVram * 100) / 100,
+      trainable_params_m: Math.round(trainableM * 100) / 100,
+      trainable_ratio_pct: Math.round(ratioPct * 10000) / 10000,
+      adapter_weights_vram_mb: Math.round(adapterWeightsMb * 100) / 100,
+      optimizer_states_vram_gb: Math.round(optStatesGb * 1000) / 1000,
+      gradients_vram_gb: Math.round(gradGb * 1000) / 1000,
+      activations_vram_gb: Math.round(actGb * 100) / 100,
+      total_training_vram_gb: Math.round(totalTrainingVram * 100) / 100,
+      recommended_min_gpu_vram_gb: recommendedGpu,
+      fits_in_single_gpu_24gb: totalTrainingVram <= 23.5
+    };
+  }
+
+  // 20. AI FinOps, Token Pricing & Carbon Footprint Engine
+  calculateTokenFinOps({
+    model = 'gpt-4o',
+    promptTokens = 1000,
+    completionTokens = 500,
+    monthlyRequests = 10000,
+    cloudRegion = 'us-east-1'
+  } = {}) {
+    const pricingMatrix = {
+      'gpt-4o': { prompt: 2.50, completion: 10.00, kwhPer1k: 0.0012 },
+      'gpt-4o-mini': { prompt: 0.15, completion: 0.60, kwhPer1k: 0.0002 },
+      'claude-3-5-sonnet': { prompt: 3.00, completion: 15.00, kwhPer1k: 0.0014 },
+      'llama-3.3-70b': { prompt: 0.35, completion: 0.40, kwhPer1k: 0.0009 },
+      'deepseek-r1': { prompt: 0.55, completion: 2.19, kwhPer1k: 0.0011 },
+      'qwen2.5-coder:7b': { prompt: 0.05, completion: 0.10, kwhPer1k: 0.0003 }
+    };
+
+    const rates = pricingMatrix[model.toLowerCase()] || { prompt: 1.00, completion: 3.00, kwhPer1k: 0.0008 };
+
+    const costPrompt = (promptTokens / 1_000_000.0) * rates.prompt;
+    const costComp = (completionTokens / 1_000_000.0) * rates.completion;
+    const costPerReq = costPrompt + costComp;
+    const monthlyCost = costPerReq * monthlyRequests;
+
+    const monthlyPromptTok = promptTokens * monthlyRequests;
+    const monthlyCompTok = completionTokens * monthlyRequests;
+    const monthlyTotalTok = monthlyPromptTok + monthlyCompTok;
+
+    const monthlyKwh = (monthlyTotalTok / 1000.0) * rates.kwhPer1k;
+
+    const regionCarbon = {
+      'us-east-1': 379.0,
+      'us-west-2': 82.0,
+      'eu-west-1': 295.0,
+      'eu-central-1': 338.0,
+      'ap-south-1': 632.0
+    };
+    const intensity = regionCarbon[cloudRegion.toLowerCase()] || 350.0;
+    const co2Grams = monthlyKwh * intensity;
+
+    return {
+      model,
+      cost_per_request_usd: Math.round(costPerReq * 1000000) / 1000000,
+      monthly_cost_usd: Math.round(monthlyCost * 100) / 100,
+      prompt_tokens_per_month: monthlyPromptTok,
+      completion_tokens_per_month: monthlyCompTok,
+      total_tokens_per_month: monthlyTotalTok,
+      estimated_kwh_monthly: Math.round(monthlyKwh * 10000) / 10000,
+      estimated_co2_grams_monthly: Math.round(co2Grams * 100) / 100,
+      cloud_region: cloudRegion,
+      carbon_intensity_gco2_kwh: intensity
+    };
+  }
 }
 
 // Attach to window if in browser

@@ -11,7 +11,10 @@ from ..schemas import (
     AgentMemoryStoreRequest, AgentMemoryQueryRequest, AgentMemoryFactResponse, AgentMemoryRecallResponse,
     AgentEvalRequest, AgentEvalResponse,
     InferenceProfileRequest, InferenceProfileResponse,
-    A2AMessageRequest, A2AMessageResponse
+    A2AMessageRequest, A2AMessageResponse,
+    SemanticCacheRequest, SemanticCacheResponse,
+    LoRAVRAMEstimateRequest, LoRAVRAMEstimateResponse,
+    FinOpsCarbonRequest, FinOpsCarbonResponse
 )
 
 router = APIRouter(prefix="/api/ai", tags=["Local AI & Ollama"])
@@ -386,4 +389,173 @@ async def route_a2a_agent_message(payload: A2AMessageRequest):
         response_payload=response_payload,
         latency_ms=round(latency_ms, 2)
     )
+
+# ==============================================================================
+# 6. AI Gateway Semantic Cache Endpoint
+# ==============================================================================
+_SEMANTIC_CACHE_STORE: List[Dict[str, Any]] = [
+    {
+        "query": "how do i rolling restart checkout-api deployment",
+        "tokens": {"how", "do", "i", "rolling", "restart", "checkout", "api", "deployment"},
+        "response": "Run kubectl rollout restart deployment/checkout-api -n production to perform zero-downtime rolling restart.",
+        "tokens_count": 28,
+        "key": "cache_k8s_restart"
+    },
+    {
+        "query": "what is the prometheus cpu alert threshold",
+        "tokens": {"what", "is", "the", "prometheus", "cpu", "alert", "threshold"},
+        "response": "The Prometheus CPU threshold alarm fires when node utilization exceeds 85% for 5 continuous minutes.",
+        "tokens_count": 24,
+        "key": "cache_prom_cpu"
+    },
+    {
+        "query": "how do i rotate database vault credentials",
+        "tokens": {"how", "do", "i", "rotate", "database", "vault", "credentials"},
+        "response": "Execute vault write -f transit/keys/prod-db/rotate to roll encryption keys and generate new lease credentials.",
+        "tokens_count": 22,
+        "key": "cache_vault_rotate"
+    }
+]
+
+@router.post("/cache/lookup", response_model=SemanticCacheResponse)
+async def query_semantic_cache(payload: SemanticCacheRequest):
+    start = time.time()
+    q_tokens = set(re.findall(r"\w+", payload.query.lower()))
+    best_similarity = 0.0
+    best_entry = None
+
+    for entry in _SEMANTIC_CACHE_STORE:
+        e_tokens = entry["tokens"]
+        if not e_tokens or not q_tokens:
+            continue
+        intersection = len(q_tokens & e_tokens)
+        jaccard = intersection / len(q_tokens | e_tokens)
+        precision = intersection / len(q_tokens)
+        similarity = (precision * 0.7) + (jaccard * 0.3)
+        if similarity > best_similarity:
+            best_similarity = similarity
+            best_entry = entry
+
+    latency_ms = (time.time() - start) * 1000
+    is_hit = best_similarity >= payload.similarity_threshold
+
+    if is_hit and best_entry:
+        return SemanticCacheResponse(
+            hit=True,
+            similarity_score=round(best_similarity, 3),
+            cached_response=best_entry["response"],
+            latency_saved_ms=round(450.0 - latency_ms, 1),
+            tokens_saved=best_entry["tokens_count"],
+            cache_key=best_entry["key"]
+        )
+
+    return SemanticCacheResponse(
+        hit=False,
+        similarity_score=round(best_similarity, 3),
+        cached_response=None,
+        latency_saved_ms=0.0,
+        tokens_saved=0,
+        cache_key=f"miss_{uuid.uuid4().hex[:8]}"
+    )
+
+# ==============================================================================
+# 7. Fine-Tuning & PEFT / LoRA VRAM Estimator Endpoint
+# ==============================================================================
+@router.post("/finetune/estimate-vram", response_model=LoRAVRAMEstimateResponse)
+async def estimate_lora_vram(payload: LoRAVRAMEstimateRequest):
+    prec = payload.precision.upper()
+    bytes_per_param = 2.0 if "FP16" in prec else (0.5 if "4BIT" in prec or "QLORA" in prec else 1.0)
+    base_model_vram = payload.base_model_params_b * bytes_per_param
+
+    # Approximate layers and hidden dim from parameter count
+    layers = 80 if payload.base_model_params_b >= 60 else (32 if payload.base_model_params_b >= 13 else 24)
+    hidden_dim = 8192 if payload.base_model_params_b >= 60 else (4096 if payload.base_model_params_b >= 13 else 2048)
+
+    # Trainable LoRA parameters = 2 * rank * hidden_dim * target_modules * layers
+    trainable_params = 2 * payload.lora_rank * hidden_dim * payload.target_modules_count * layers
+    trainable_m = trainable_params / 1e6
+    ratio_pct = (trainable_params / (payload.base_model_params_b * 1e9)) * 100.0
+
+    # Adapter weights in FP16
+    adapter_weights_mb = (trainable_params * 2.0) / (1024 ** 2)
+
+    # AdamW 8 bytes per trainable param (FP32 momentums + variances)
+    opt_states_gb = (trainable_params * 8.0) / (1024 ** 3)
+
+    # Gradients in FP16 (2 bytes per trainable param)
+    grad_gb = (trainable_params * 2.0) / (1024 ** 3)
+
+    # Activations memory with gradient checkpointing
+    act_multiplier = 0.25 if payload.gradient_checkpointing else 1.0
+    tokens = payload.batch_size * payload.sequence_length
+    act_gb = ((tokens * hidden_dim * layers * 2.0) / (1024 ** 3)) * act_multiplier
+
+    # CUDA context & PyTorch workspace reserve (~2.0 GB)
+    total_training_vram = base_model_vram + (adapter_weights_mb / 1024.0) + opt_states_gb + grad_gb + act_gb + 2.0
+    recommended_gpu_vram = math.ceil(total_training_vram * 1.15)
+    fits_24gb = total_training_vram <= 23.5
+
+    return LoRAVRAMEstimateResponse(
+        base_model_vram_gb=round(base_model_vram, 2),
+        trainable_params_m=round(trainable_m, 2),
+        trainable_ratio_pct=round(ratio_pct, 4),
+        adapter_weights_vram_mb=round(adapter_weights_mb, 2),
+        optimizer_states_vram_gb=round(opt_states_gb, 3),
+        gradients_vram_gb=round(grad_gb, 3),
+        activations_vram_gb=round(act_gb, 2),
+        total_training_vram_gb=round(total_training_vram, 2),
+        recommended_min_gpu_vram_gb=recommended_gpu_vram,
+        fits_in_single_gpu_24gb=fits_24gb
+    )
+
+# ==============================================================================
+# 8. AI FinOps & Carbon Footprint Calculation Endpoint
+# ==============================================================================
+@router.post("/finops/carbon", response_model=FinOpsCarbonResponse)
+async def calculate_finops_carbon(payload: FinOpsCarbonRequest):
+    pricing_matrix = {
+        "gpt-4o": {"prompt": 2.50, "completion": 10.00, "kwh_per_1k": 0.0012},
+        "gpt-4o-mini": {"prompt": 0.15, "completion": 0.60, "kwh_per_1k": 0.0002},
+        "claude-3-5-sonnet": {"prompt": 3.00, "completion": 15.00, "kwh_per_1k": 0.0014},
+        "llama-3.3-70b": {"prompt": 0.35, "completion": 0.40, "kwh_per_1k": 0.0009},
+        "deepseek-r1": {"prompt": 0.55, "completion": 2.19, "kwh_per_1k": 0.0011},
+        "qwen2.5-coder:7b": {"prompt": 0.05, "completion": 0.10, "kwh_per_1k": 0.0003}
+    }
+
+    rates = pricing_matrix.get(payload.model.lower(), {"prompt": 1.00, "completion": 3.00, "kwh_per_1k": 0.0008})
+
+    cost_prompt = (payload.prompt_tokens / 1_000_000.0) * rates["prompt"]
+    cost_comp = (payload.completion_tokens / 1_000_000.0) * rates["completion"]
+    cost_per_req = cost_prompt + cost_comp
+    monthly_cost = cost_per_req * payload.monthly_requests
+
+    monthly_prompt_tok = payload.prompt_tokens * payload.monthly_requests
+    monthly_comp_tok = payload.completion_tokens * payload.monthly_requests
+    monthly_total_tok = monthly_prompt_tok + monthly_comp_tok
+
+    monthly_kwh = (monthly_total_tok / 1000.0) * rates["kwh_per_1k"]
+
+    region_carbon = {
+        "us-east-1": 379.0,    # N. Virginia
+        "us-west-2": 82.0,     # Oregon (Hydroelectric)
+        "eu-west-1": 295.0,    # Ireland
+        "eu-central-1": 338.0, # Frankfurt
+        "ap-south-1": 632.0    # Mumbai
+    }
+    intensity = region_carbon.get(payload.cloud_region.lower(), 350.0)
+    co2_grams = monthly_kwh * intensity
+
+    return FinOpsCarbonResponse(
+        model=payload.model,
+        cost_per_request_usd=round(cost_per_req, 6),
+        monthly_cost_usd=round(monthly_cost, 2),
+        prompt_tokens_per_month=monthly_prompt_tok,
+        completion_tokens_per_month=monthly_comp_tok,
+        total_tokens_per_month=monthly_total_tok,
+        estimated_kwh_monthly=round(monthly_kwh, 4),
+        estimated_co2_grams_monthly=round(co2_grams, 2),
+        cloud_region=payload.cloud_region,
+        carbon_intensity_gco2_kwh=intensity
+    )
+
 

@@ -69,4 +69,36 @@ describe('Companion Backend (Phase 3 Architecture Verification)', () => {
     expect(sandboxContent).toContain('read_only=True');
     expect(sandboxContent).toContain('init=True');
   });
+
+  it('should define complete AI and RAG companion endpoints across all core pillars', () => {
+    const aiRouterPath = path.join(backendDir, 'app/routers/ai.py');
+    const ragRouterPath = path.join(backendDir, 'app/routers/rag.py');
+    expect(fs.existsSync(aiRouterPath)).toBe(true);
+    expect(fs.existsSync(ragRouterPath)).toBe(true);
+
+    const aiContent = fs.readFileSync(aiRouterPath, 'utf8');
+    const ragContent = fs.readFileSync(ragRouterPath, 'utf8');
+
+    // 1. Guardrails
+    expect(aiContent).toContain('/guardrails/scan');
+    // 2. Persistent Memory
+    expect(aiContent).toContain('/memory/save');
+    expect(aiContent).toContain('/memory/recall');
+    // 3. Eval suite
+    expect(aiContent).toContain('/eval');
+    // 4. Inference profiler
+    expect(aiContent).toContain('/inference/profile');
+    // 5. A2A interoperability
+    expect(aiContent).toContain('/a2a/route');
+    // 6. Semantic Cache
+    expect(aiContent).toContain('/cache/lookup');
+    // 7. LoRA VRAM estimator
+    expect(aiContent).toContain('/finetune/estimate-vram');
+    // 8. FinOps Carbon
+    expect(aiContent).toContain('/finops/carbon');
+
+    // 9. Hybrid RAG with RRF & Reranking
+    expect(ragContent).toContain('/hybrid');
+    expect(ragContent).toContain('/rerank');
+  });
 });

@@ -134,4 +134,86 @@ describe('Advanced AI Studios & Systems Capabilities Suite', () => {
       expect(dispatch.response_payload).toBeDefined();
     });
   });
+
+  describe('6. Cross-Encoder Reranking & Lost-in-the-Middle Mitigation', () => {
+    it('should rerank retrieved candidate documents by semantic relevance', async () => {
+      const docs = [
+        'Unrelated document about baking chocolate cake and kitchen utensils.',
+        'Kubernetes pod rollout restart commands for deployment zero-downtime updates.',
+        'PostgreSQL pgvector indexing and cosine distance tuning parameters.'
+      ];
+      const res = await StudioSDK.rerankDocuments('How do I rolling restart deployment in kubernetes?', docs, { topK: 2 });
+
+      expect(res).toBeDefined();
+      expect(res.results).toHaveLength(2);
+      expect(res.results[0].text).toContain('Kubernetes pod rollout restart');
+      expect(res.results[0].relevance_score).toBeGreaterThan(0.5);
+      expect(res.results[0].relevance_score).toBeGreaterThan(res.results[1].relevance_score);
+    });
+  });
+
+  describe('7. AI Gateway & Semantic Caching Layer', () => {
+    it('should return cache hit for semantically identical operational queries', async () => {
+      const res = await StudioSDK.querySemanticCache('how do I rolling restart checkout-api deployment in production?', {
+        similarityThreshold: 0.70
+      });
+
+      expect(res).toBeDefined();
+      expect(res.hit).toBe(true);
+      expect(res.cached_response).toContain('kubectl rollout restart');
+      expect(res.tokens_saved).toBeGreaterThan(0);
+      expect(res.cache_key).toBe('cache_k8s_restart');
+    });
+
+    it('should return cache miss for queries with no semantic overlap', async () => {
+      const res = await StudioSDK.querySemanticCache('What is the capital of Mars in the year 3000?', {
+        similarityThreshold: 0.85
+      });
+
+      expect(res).toBeDefined();
+      expect(res.hit).toBe(false);
+      expect(res.cached_response).toBeNull();
+      expect(res.tokens_saved).toBe(0);
+    });
+  });
+
+  describe('8. PEFT / LoRA Fine-Tuning VRAM Estimator', () => {
+    it('should accurately calculate trainable parameters and adapter VRAM requirements', () => {
+      const lora = StudioSDK.estimateLoRAVRAM({
+        baseModelParamsB: 7.0,
+        loraRank: 16,
+        targetModulesCount: 4,
+        batchSize: 4,
+        sequenceLength: 2048,
+        precision: 'QLoRA-4bit',
+        gradientCheckpointing: true
+      });
+
+      expect(lora).toBeDefined();
+      expect(lora.base_model_vram_gb).toBe(3.5); // 7.0 * 0.5 for 4-bit
+      expect(lora.trainable_params_m).toBeGreaterThan(0);
+      expect(lora.trainable_ratio_pct).toBeLessThan(1.0); // LoRA is usually < 1%
+      expect(lora.total_training_vram_gb).toBeLessThan(16.0); // QLoRA 7B easily fits in 16GB
+      expect(lora.fits_in_single_gpu_24gb).toBe(true);
+    });
+  });
+
+  describe('9. AI FinOps, Token Pricing & Carbon Footprint Calculation', () => {
+    it('should calculate monthly cost, tokens, and grid CO2 emissions by cloud region', () => {
+      const finops = StudioSDK.calculateTokenFinOps({
+        model: 'gpt-4o',
+        promptTokens: 2000,
+        completionTokens: 800,
+        monthlyRequests: 50000,
+        cloudRegion: 'us-west-2' // Low-carbon Oregon hydro grid
+      });
+
+      expect(finops).toBeDefined();
+      expect(finops.cost_per_request_usd).toBeGreaterThan(0);
+      expect(finops.monthly_cost_usd).toBeGreaterThan(0);
+      expect(finops.total_tokens_per_month).toBe(140000000);
+      expect(finops.carbon_intensity_gco2_kwh).toBe(82.0);
+      expect(finops.estimated_co2_grams_monthly).toBeGreaterThan(0);
+    });
+  });
 });

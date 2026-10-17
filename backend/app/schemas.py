@@ -224,3 +224,86 @@ class HybridRAGSearchResult(BaseModel):
     sparse_score: float
     rrf_score: float
 
+# 7. Cross-Encoder Reranking Schemas
+class RerankDocument(BaseModel):
+    id: Optional[str] = None
+    text: str = Field(..., min_length=1, max_length=10000)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+class RerankRequest(BaseModel):
+    query: str = Field(..., min_length=1, max_length=1000)
+    documents: List[RerankDocument] = Field(..., min_length=1, max_length=100)
+    top_k: int = Field(default=5, ge=1, le=50)
+    model: str = Field(default="bge-reranker-large", max_length=64)
+
+class RerankItemResult(BaseModel):
+    index: int
+    id: Optional[str] = None
+    text: str
+    relevance_score: float
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+class RerankResponse(BaseModel):
+    query: str
+    results: List[RerankItemResult]
+    model: str
+    rerank_ms: float
+
+# 8. Semantic Caching Schemas
+class SemanticCacheRequest(BaseModel):
+    query: str = Field(..., min_length=1, max_length=4000)
+    similarity_threshold: float = Field(default=0.88, ge=0.5, le=1.0)
+    namespace: Optional[str] = Field(default="default", max_length=64)
+
+class SemanticCacheResponse(BaseModel):
+    hit: bool
+    similarity_score: float
+    cached_response: Optional[str] = None
+    latency_saved_ms: float
+    tokens_saved: int
+    cache_key: str
+
+# 9. PEFT / LoRA Fine-Tuning VRAM Schemas
+class LoRAVRAMEstimateRequest(BaseModel):
+    base_model_params_b: float = Field(default=7.0, ge=0.5, le=1000.0)
+    lora_rank: int = Field(default=16, ge=1, le=256)
+    lora_alpha: int = Field(default=32, ge=1, le=512)
+    target_modules_count: int = Field(default=4, ge=1, le=32)
+    batch_size: int = Field(default=4, ge=1, le=128)
+    sequence_length: int = Field(default=2048, ge=128, le=131072)
+    precision: str = Field(default="FP16", max_length=16)
+    gradient_checkpointing: bool = True
+
+class LoRAVRAMEstimateResponse(BaseModel):
+    base_model_vram_gb: float
+    trainable_params_m: float
+    trainable_ratio_pct: float
+    adapter_weights_vram_mb: float
+    optimizer_states_vram_gb: float
+    gradients_vram_gb: float
+    activations_vram_gb: float
+    total_training_vram_gb: float
+    recommended_min_gpu_vram_gb: float
+    fits_in_single_gpu_24gb: bool
+
+# 10. AI FinOps & Carbon Footprint Schemas
+class FinOpsCarbonRequest(BaseModel):
+    model: str = Field(default="gpt-4o", max_length=64)
+    prompt_tokens: int = Field(default=1000, ge=0)
+    completion_tokens: int = Field(default=500, ge=0)
+    monthly_requests: int = Field(default=10000, ge=1)
+    cloud_region: str = Field(default="us-east-1", max_length=32)
+
+class FinOpsCarbonResponse(BaseModel):
+    model: str
+    cost_per_request_usd: float
+    monthly_cost_usd: float
+    prompt_tokens_per_month: int
+    completion_tokens_per_month: int
+    total_tokens_per_month: int
+    estimated_kwh_monthly: float
+    estimated_co2_grams_monthly: float
+    cloud_region: str
+    carbon_intensity_gco2_kwh: float
+
+
