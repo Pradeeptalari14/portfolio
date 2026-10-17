@@ -1,52 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-theme" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Universal Engineering Toolbox | Cloud &amp; DevOps Utilities | Talari Pradeep</title>
-  <meta name="description" content="Free, client-side engineering utilities for cloud, DevOps and SRE practitioners: CIDR subnet calculator, Cron generator, JSON to YAML converter, Base64/JWT inspector, and Epoch converter." />
+  <title>Universal Engineering Toolbox | Cloud, SRE &amp; AI Utilities | Talari Pradeep</title>
+  <meta name="description" content="10 free, instant, client-side engineering utilities for Cloud, SRE, and AI practitioners: CIDR Subnet Calculator, AI Token &amp; Cost Estimator, SLO &amp; Error Budget Burn Rate, PromQL Builder, Kubernetes HPA Sizer, Base64/JWT Inspector, WebCrypto HMAC Hash, Cron Translator, and JSON/YAML Converter." />
   <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('sre_dark_mode_active');
+        const isDark = saved !== null ? saved === 'true' : true;
+        if (isDark) {
+          document.documentElement.classList.add('dark-theme');
+          document.documentElement.classList.remove('light-theme');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+          document.documentElement.classList.add('light-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch(e) {}
+    })();
+  </script>
+
   <style>
-    :root {
+    :root, [data-theme="dark"], .dark-theme {
       --bg-base: #080c14;
       --bg-surface: #0f172a;
-      --bg-card: rgba(15, 23, 42, 0.7);
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: #1e293b;
+      --bg-input: #040711;
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
       --accent-cyan: #38bdf8;
+      --accent-primary: #818cf8;
       --accent-indigo: #6366f1;
       --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
       --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.35);
       --font-mono: 'JetBrains Mono', monospace;
       --font-display: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.55);
+      --grad-primary: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
     }
+    [data-theme="light"], .light-theme {
+      --bg-base: #ffffff;
+      --bg-surface: #f8f9fc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --bg-input: #f8fafc;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-cyan: #0284c7;
+      --accent-primary: #4f46e5;
+      --accent-indigo: #4338ca;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+      --accent-rose: #e11d48;
+      --border: #e2e8f0;
+      --border-accent: rgba(79, 70, 229, 0.25);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+      --grad-primary: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: var(--font-body);
       background: var(--bg-base);
       color: var(--text-primary);
       min-height: 100vh;
       line-height: 1.6;
+      transition: background 0.25s ease, color 0.25s ease;
     }
     a { color: inherit; text-decoration: none; }
+
+    /* Sticky Navigation */
     .hub-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 12, 20, 0.9);
+      background: rgba(8, 12, 20, 0.92);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0.85rem 1.5rem;
+      padding: 0.85rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+    .light-theme .hub-nav {
+      background: rgba(255, 255, 255, 0.94);
     }
     .hub-brand {
       display: flex;
@@ -54,235 +117,684 @@
       gap: 0.75rem;
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
+    }
+    .hub-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      outline: 2px solid rgba(129, 140, 248, 0.3);
     }
     .hub-brand-badge {
       background: rgba(56, 189, 248, 0.15);
       color: var(--accent-cyan);
       border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 0.15rem 0.5rem;
+      padding: 0.15rem 0.55rem;
       border-radius: 4px;
       font-size: 0.72rem;
       font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 0.05em;
     }
     .hub-nav-links {
       display: flex;
-      gap: 1.25rem;
+      align-items: center;
+      gap: 1.5rem;
       font-size: 0.88rem;
       color: var(--text-secondary);
+      font-weight: 600;
     }
-    .hub-nav-links a:hover { color: var(--text-primary); }
+    .hub-nav-links a:hover { color: var(--accent-primary); }
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+
+    /* Container & Header */
     .tool-container {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
-      padding: 3rem 1.5rem 5rem;
+      padding: 3.5rem 1.75rem 6rem;
     }
     .tool-header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 2.75rem;
+    }
+    .tool-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.25rem 0.9rem;
+      border-radius: 9999px;
+      margin-bottom: 0.85rem;
     }
     .tool-title {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
       font-weight: 800;
+      letter-spacing: -0.02em;
       margin-bottom: 0.75rem;
-      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      background: var(--grad-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .tool-desc {
       color: var(--text-secondary);
-      max-width: 680px;
-      margin: 0 auto;
+      max-width: 760px;
+      margin: 0 auto 1.5rem;
+      font-size: 1.02rem;
     }
+
+    /* Quick Stats Badges */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-chip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .stat-chip strong { color: var(--accent-cyan); font-weight: 700; }
+
+    /* Search & Filter Bar */
+    .search-filter-wrap {
+      max-width: 580px;
+      margin: 0 auto 2.25rem;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem 0.85rem 2.85rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .search-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+    }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Tabs Bar */
     .tool-tabs {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 2.5rem;
+      gap: 0.55rem;
+      margin-bottom: 2.75rem;
     }
     .tab-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       color: var(--text-secondary);
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
     }
-    .tab-btn:hover { color: #fff; border-color: rgba(56, 189, 248, 0.4); }
+    .tab-btn:hover { color: var(--text-primary); border-color: var(--accent-cyan); transform: translateY(-1px); }
     .tab-btn.active {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-      font-weight: 600;
+      background: rgba(99, 102, 241, 0.16);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      font-weight: 700;
+      box-shadow: 0 2px 12px rgba(99, 102, 241, 0.2);
     }
+
+    /* Tool Panels */
     .tool-panel {
       display: none;
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2rem;
+      border-radius: 18px;
+      padding: 2.25rem;
+      box-shadow: var(--shadow-md);
+      animation: fadeIn 0.22s ease-out;
     }
     .tool-panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-header-wrap {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
     .panel-title {
       font-family: var(--font-display);
-      font-size: 1.35rem;
+      font-size: 1.45rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     .panel-desc {
       color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 1.75rem;
+      font-size: 0.92rem;
+      max-width: 800px;
     }
+    .panel-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--accent-cyan);
+    }
+
+    /* Form Inputs */
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.35rem;
     }
     .form-label {
-      display: block;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-family: var(--font-mono);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
+      font-weight: 600;
       color: var(--text-secondary);
       margin-bottom: 0.5rem;
     }
-    .form-input, .form-textarea {
+    .form-input, .form-textarea, .form-select {
       width: 100%;
-      background: #040711;
+      background: var(--bg-input);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
-      color: #fff;
+      color: var(--text-primary);
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: all 0.2s ease;
     }
-    .form-input:focus, .form-textarea:focus {
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
       border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
+
+    /* Grids & Cards */
     .result-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
+      gap: 1.15rem;
       margin-top: 1.5rem;
     }
     .res-card {
-      background: #040711;
+      background: var(--bg-input);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
+      border-radius: 10px;
+      padding: 1.15rem;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .res-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    .res-card.highlight {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%), var(--bg-input);
     }
     .res-label {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--text-muted);
-      margin-bottom: 0.25rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
     }
     .res-val {
       font-family: var(--font-mono);
-      font-size: 1.05rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
       color: var(--accent-cyan);
       word-break: break-all;
     }
-    .action-row {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1rem;
+    .res-sub {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      margin-top: 0.3rem;
     }
-    .btn-action {
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--accent-cyan);
-      padding: 0.6rem 1.25rem;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-action:hover { background: rgba(56, 189, 248, 0.25); color: #fff; }
+
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      gap: 1.75rem;
     }
-    @media (max-width: 768px) {
-      .two-col { grid-template-columns: 1fr; }
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+    .btn-action {
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--accent-primary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-action:hover {
+      background: var(--accent-primary);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+    .btn-action.btn-secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-secondary);
+    }
+    .btn-action.btn-secondary:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #10b981;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.75rem 1.35rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      transform: translateY(8px);
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      padding: 2.5rem 0;
+      text-align: center;
+      margin-top: 5rem;
+    }
+    .footer p { font-size: 0.85rem; color: var(--text-muted); }
+
+    @media (max-width: 900px) {
+      .two-col, .three-col { grid-template-columns: 1fr; }
+      .hub-nav-links { display: none; }
+      .tool-container { padding: 2rem 1.25rem 4rem; }
+      .tool-panel { padding: 1.5rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Top Navigation -->
   <nav class="hub-nav">
     <a href="../" class="hub-brand">
+      <img src="../Photo.webp" alt="Talari Pradeep" onerror="this.style.display='none';" />
       <span>TALARI PRADEEP</span>
       <span class="hub-brand-badge">TOOLBOX</span>
     </a>
     <div class="hub-nav-links">
-      <a href="../">← Home</a>
+      <a href="../">← Portfolio</a>
+      <a href="../projects/">Flagship Projects</a>
       <a href="../studios/">Studios Hub</a>
       <a href="../incident/">Incident Lab</a>
       <a href="../architecture/">Architecture</a>
-      <a href="../knowledge/">Knowledge</a>
       <a href="../resume/">Resume</a>
     </div>
+    <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle light or dark theme" title="Toggle theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
   </nav>
 
   <div class="tool-container">
     <header class="tool-header">
+      <div class="tool-tag">Client-Side · Offline-First · Zero Data Leaves Browser</div>
       <h1 class="tool-title">Universal Engineering Toolbox</h1>
       <p class="tool-desc">
-        Lightweight, instant, client-side engineering utilities for networking calculations, cron expressions, format conversions, and encoding.
+        Instant, precision engineering utilities for Cloud infrastructure, SRE reliability mathematics, AI token &amp; KV-cache economics, networking calculations, and cryptographic hashes.
       </p>
+
+      <!-- Quick Metrics -->
+      <div class="stats-row">
+        <span class="stat-chip">Utilities: <strong>10 Live Engines</strong></span>
+        <span class="stat-chip">Latency: <strong>0ms (In-Browser)</strong></span>
+        <span class="stat-chip">Privacy: <strong>100% Client-Side</strong></span>
+        <span class="stat-chip">Cryptography: <strong>Native WebCrypto</strong></span>
+      </div>
+
+      <!-- Quick Search / Filter Bar -->
+      <div class="search-filter-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="toolSearchInput" class="search-input" placeholder="Search utilities (e.g. token, promql, slo, cidr, k8s, jwt, hash, cron)..." autocomplete="off" />
+      </div>
     </header>
 
+    <!-- Navigation Tabs Bar -->
     <div class="tool-tabs" id="toolTabs">
-      <button class="tab-btn active" data-target="panelCidr">IPv4 CIDR Calculator</button>
-      <button class="tab-btn" data-target="panelCron">Cron Expression Translator</button>
-      <button class="tab-btn" data-target="panelBase64">Base64 &amp; JWT Decoder</button>
-      <button class="tab-btn" data-target="panelEpoch">Epoch Timestamp Converter</button>
-      <button class="tab-btn" data-target="panelJson">JSON Formatter &amp; Validator</button>
+      <button class="tab-btn active" data-target="panelCidr">🌐 IPv4 CIDR Subnetter</button>
+      <button class="tab-btn" data-target="panelAiTokens">🤖 AI Token &amp; Cost Estimator</button>
+      <button class="tab-btn" data-target="panelSlo">📉 SLO &amp; Error Budget</button>
+      <button class="tab-btn" data-target="panelPromql">📊 PromQL Query Builder</button>
+      <button class="tab-btn" data-target="panelK8s">☸️ K8s Compute &amp; HPA</button>
+      <button class="tab-btn" data-target="panelBase64">🔐 Base64 &amp; JWT Inspector</button>
+      <button class="tab-btn" data-target="panelWebCrypto">🔑 WebCrypto HMAC &amp; Hash</button>
+      <button class="tab-btn" data-target="panelCron">⏱️ Cron Schedule Translator</button>
+      <button class="tab-btn" data-target="panelEpoch">🕒 Unix Epoch Timestamp</button>
+      <button class="tab-btn" data-target="panelJsonYaml">📄 JSON &amp; YAML Formatter</button>
     </div>
 
-    <!-- CIDR Calculator -->
+    <!-- 1. IPv4 CIDR Calculator -->
     <div class="tool-panel active" id="panelCidr">
-      <h2 class="panel-title">IPv4 CIDR Subnet Calculator</h2>
-      <p class="panel-desc">Calculate network addresses, usable host ranges, broadcast IP, and wildcard masks instantly.</p>
-      <div class="form-group" style="max-width: 400px;">
-        <label class="form-label" for="cidrInput">IP Address &amp; Prefix (e.g. 10.0.0.0/16 or 192.168.1.50/24)</label>
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">🌐 IPv4 CIDR Subnet Calculator</h2>
+          <p class="panel-desc">Calculate network boundaries, usable host ranges, broadcast addresses, and cloud provider (AWS/Azure) reserved IP allocations.</p>
+        </div>
+        <span class="panel-badge">RFC 1878</span>
+      </div>
+      <div class="form-group" style="max-width: 440px;">
+        <label class="form-label" for="cidrInput">
+          <span>IP Address &amp; Prefix</span>
+          <span style="color:var(--text-muted); font-size:0.75rem;">Preset: 10.0.0.0/16, 192.168.1.0/24</span>
+        </label>
         <input type="text" id="cidrInput" class="form-input" value="10.0.0.0/24" />
       </div>
-      <div class="result-grid" id="cidrResults">
-        <!-- Results injected by JS -->
+      <div class="result-grid" id="cidrResults"></div>
+    </div>
+
+    <!-- 2. AI / LLM Token & Cost Estimator (NEW) -->
+    <div class="tool-panel" id="panelAiTokens">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">🤖 AI Token &amp; Model Inference Cost Estimator</h2>
+          <p class="panel-desc">Estimate token volume, compare batch inference expenses across top LLMs (DeepSeek V3, GPT-4o, Claude 3.7, Llama 3.3), and compute KV-cache GPU VRAM requirements.</p>
+        </div>
+        <span class="panel-badge">LLMOps FinOps</span>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="aiPromptInput">
+              <span>Input Prompt / Sample Text</span>
+              <span id="tokenCharCounter">0 chars · ~0 tokens</span>
+            </label>
+            <textarea id="aiPromptInput" class="form-textarea" rows="7" placeholder="Paste your system prompt, context chunks, or agent message history here..."></textarea>
+          </div>
+          <div class="three-col">
+            <div class="form-group">
+              <label class="form-label" for="expectedCompletionTokens">Expected Output Tokens</label>
+              <input type="number" id="expectedCompletionTokens" class="form-input" value="800" min="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="monthlyRequestVolume">Monthly Queries</label>
+              <input type="number" id="monthlyRequestVolume" class="form-input" value="50000" min="1" step="1000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="kvPrecision">KV Cache Precision</label>
+              <select id="kvPrecision" class="form-select">
+                <option value="1">FP8 (1 Byte / Token)</option>
+                <option value="2" selected>FP16 / BF16 (2 Bytes)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-bottom:0.75rem;">💰 Model Cost Comparison (Per Month)</h3>
+          <div class="result-grid" id="aiCostResults" style="margin-top:0;"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Cron Expression Translator -->
-    <div class="tool-panel" id="panelCron">
-      <h2 class="panel-title">Cron Schedule Expression Translator</h2>
-      <p class="panel-desc">Parse standard 5-part cron schedules into plain English and verify trigger cadence.</p>
-      <div class="form-group" style="max-width: 400px;">
-        <label class="form-label" for="cronInput">Cron Expression (Minute Hour Day Month Weekday)</label>
-        <input type="text" id="cronInput" class="form-input" value="*/15 * * * *" />
+    <!-- 3. SRE SLO, Error Budget & Burn Rate Calculator (NEW) -->
+    <div class="tool-panel" id="panelSlo">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">📉 SRE SLO, Error Budget &amp; Burn Rate Calculator</h2>
+          <p class="panel-desc">Calculate allowable downtime across 30, 90, and 365 day windows, and determine Multi-Window Multi-Burn-Rate alerting thresholds per Google SRE Handbook.</p>
+        </div>
+        <span class="panel-badge">Site Reliability Eng</span>
       </div>
-      <div class="res-card" style="margin-top: 1rem;">
-        <div class="res-label">HUMAN READABLE EXPLANATION</div>
-        <div class="res-val" id="cronMeaning" style="font-size: 1.25rem;">Every 15 minutes</div>
+      <div class="two-col">
+        <div>
+          <div class="three-col">
+            <div class="form-group">
+              <label class="form-label" for="sloTarget">Target SLO (%)</label>
+              <select id="sloTarget" class="form-select">
+                <option value="99.0">99.0% (Two Nines)</option>
+                <option value="99.5">99.5%</option>
+                <option value="99.9" selected>99.9% (Three Nines)</option>
+                <option value="99.95">99.95%</option>
+                <option value="99.99">99.99% (Four Nines)</option>
+                <option value="99.999">99.999% (Five Nines)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sloWindowDays">Time Window</label>
+              <select id="sloWindowDays" class="form-select">
+                <option value="30" selected>30 Days (Rolling)</option>
+                <option value="90">90 Days (Quarterly)</option>
+                <option value="365">365 Days (Annual)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="currentIncidentMins">Incident Outage Duration</label>
+              <input type="number" id="currentIncidentMins" class="form-input" value="12" min="0" placeholder="Minutes" />
+            </div>
+          </div>
+          <div class="result-grid" id="sloResults" style="margin-top:1rem;"></div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-bottom:0.75rem;">🚨 Google SRE Multi-Burn Rate Alert Thresholds</h3>
+          <div class="result-grid" id="burnRateResults" style="margin-top:0;"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Base64 & JWT Decoder -->
+    <!-- 4. PromQL & LogQL Query Builder (NEW) -->
+    <div class="tool-panel" id="panelPromql">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">📊 PromQL &amp; Alert Expression Generator</h2>
+          <p class="panel-desc">Interactive builder for Prometheus RED metrics (Rate, Errors, Duration), latency quantiles, and production Kubernetes Alertmanager YAML rules.</p>
+        </div>
+        <span class="panel-badge">Prometheus &amp; Grafana</span>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="promMetricTemplate">Select Metric Archetype</label>
+            <select id="promMetricTemplate" class="form-select">
+              <option value="http_5xx_rate" selected>HTTP 5xx Error Rate (%) [RED]</option>
+              <option value="http_p99_latency">HTTP 99th Percentile Latency (ms) [Duration]</option>
+              <option value="k8s_pod_restart">Kubernetes Pod CrashLoopBackOff / Restarts</option>
+              <option value="node_mem_saturation">Node Memory Saturation (%) [USE]</option>
+              <option value="gpu_vram_saturation">NVIDIA GPU VRAM Saturation (%)</option>
+            </select>
+          </div>
+          <div class="three-col">
+            <div class="form-group">
+              <label class="form-label" for="promNamespace">Namespace / Job</label>
+              <input type="text" id="promNamespace" class="form-input" value="production" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="promWindow">Range Window</label>
+              <input type="text" id="promWindow" class="form-input" value="5m" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="promThreshold">Alert Threshold</label>
+              <input type="number" id="promThreshold" class="form-input" value="5" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="promqlOutput">Generated PromQL Expression</label>
+          <textarea id="promqlOutput" class="form-textarea" rows="4" readonly></textarea>
+          <div class="action-row">
+            <button class="btn-action" id="btnCopyPromql">📋 Copy PromQL</button>
+            <button class="btn-action btn-secondary" id="btnExportAlertRule">📜 Generate PrometheusRule YAML</button>
+          </div>
+        </div>
+      </div>
+      <div id="alertRuleContainer" style="display:none; margin-top:1.5rem;">
+        <label class="form-label" for="alertRuleYaml">PrometheusRule Kubernetes Manifest</label>
+        <textarea id="alertRuleYaml" class="form-textarea" rows="9" readonly></textarea>
+      </div>
+    </div>
+
+    <!-- 5. Kubernetes Resource & HPA Sizer (NEW) -->
+    <div class="tool-panel" id="panelK8s">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">☸️ Kubernetes Compute &amp; HPA Autoscaler Sizer</h2>
+          <p class="panel-desc">Convert between millicores and raw CPUs, format memory units (MiB/GiB), and calculate dynamic Horizontal Pod Autoscaler (HPA) replica counts.</p>
+        </div>
+        <span class="panel-badge">Cloud-Native Sizing</span>
+      </div>
+      <div class="two-col">
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-bottom:0.75rem;">Pod Resource Unit Converter</h3>
+          <div class="two-col">
+            <div class="form-group">
+              <label class="form-label" for="cpuMillicores">CPU Millicores (m)</label>
+              <input type="number" id="cpuMillicores" class="form-input" value="2500" step="100" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cpuCores">Virtual Cores (vCPU)</label>
+              <input type="number" id="cpuCores" class="form-input" value="2.5" step="0.1" />
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="form-group">
+              <label class="form-label" for="memMebibytes">Memory (MiB)</label>
+              <input type="number" id="memMebibytes" class="form-input" value="4096" step="512" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="memGibibytes">Memory (GiB)</label>
+              <input type="number" id="memGibibytes" class="form-input" value="4" step="0.5" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-bottom:0.75rem;">HPA Target Replica Calculator</h3>
+          <div class="three-col">
+            <div class="form-group">
+              <label class="form-label" for="currentReplicas">Current Pods</label>
+              <input type="number" id="currentReplicas" class="form-input" value="5" min="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="currentMetricVal">Current Metric</label>
+              <input type="number" id="currentMetricVal" class="form-input" value="85" min="1" placeholder="e.g. 85%" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="targetMetricVal">Target Metric</label>
+              <input type="number" id="targetMetricVal" class="form-input" value="50" min="1" placeholder="e.g. 50%" />
+            </div>
+          </div>
+          <div class="result-grid" id="hpaResults" style="margin-top:0.5rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Base64 & JWT Inspector -->
     <div class="tool-panel" id="panelBase64">
-      <h2 class="panel-title">Base64 &amp; JWT Token Inspector</h2>
-      <p class="panel-desc">Encode or decode Base64 strings and inspect JWT headers/payloads locally without sending tokens over the wire.</p>
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">🔐 Base64 &amp; JWT Token Inspector</h2>
+          <p class="panel-desc">Decode or encode Base64 strings, inspect JWT headers and payloads, and verify token expiry timestamps locally.</p>
+        </div>
+        <span class="panel-badge">RFC 7519</span>
+      </div>
       <div class="two-col">
         <div>
           <label class="form-label" for="b64Raw">Input Text / Base64 / JWT</label>
-          <textarea id="b64Raw" class="form-textarea" rows="8" placeholder="Paste string or token here..."></textarea>
+          <textarea id="b64Raw" class="form-textarea" rows="8" placeholder="Paste string or JWT token (e.g. eyJhbGciOi...) here..."></textarea>
           <div class="action-row">
             <button class="btn-action" id="btnB64Encode">Encode Base64</button>
             <button class="btn-action" id="btnB64Decode">Decode Base64</button>
@@ -296,58 +808,226 @@
       </div>
     </div>
 
-    <!-- Epoch Timestamp -->
+    <!-- 7. WebCrypto HMAC & Hash Generator (NEW) -->
+    <div class="tool-panel" id="panelWebCrypto">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">🔑 Cryptographic Hash &amp; HMAC Generator</h2>
+          <p class="panel-desc">Compute hardware-accelerated SHA-256, SHA-512, and HMAC signatures using browser-native WebCrypto API for webhook verification.</p>
+        </div>
+        <span class="panel-badge">W3C WebCrypto API</span>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="hashAlgorithm">Cryptographic Algorithm</label>
+            <select id="hashAlgorithm" class="form-select">
+              <option value="SHA-256" selected>SHA-256 (Standard)</option>
+              <option value="SHA-512">SHA-512 (High Entropy)</option>
+              <option value="SHA-384">SHA-384</option>
+              <option value="SHA-1">SHA-1 (Legacy)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hmacSecret">Optional HMAC Secret Key (Leave blank for simple hash)</label>
+            <input type="text" id="hmacSecret" class="form-input" placeholder="e.g. whsec_abc123xyz" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hashPayload">Message Payload</label>
+            <textarea id="hashPayload" class="form-textarea" rows="5" placeholder="Enter message payload to sign or hash..."></textarea>
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="hashOutputHex">Cryptographic Digest (Hexadecimal)</label>
+          <textarea id="hashOutputHex" class="form-textarea" rows="3" readonly></textarea>
+          <div class="action-row">
+            <button class="btn-action" id="btnCopyHash">📋 Copy Hash</button>
+          </div>
+          <div class="res-card" style="margin-top:1.5rem;">
+            <div class="res-label">SECURITY &amp; INTEGRITY GUARANTEE</div>
+            <div class="res-sub">Computed entirely within the browser's hardware crypto subsystem. Keys and messages never transit any network boundary.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Cron Schedule Translator -->
+    <div class="tool-panel" id="panelCron">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">⏱️ Cron Schedule Expression Translator</h2>
+          <p class="panel-desc">Parse standard 5-part cron schedules into plain English, inspect trigger cadences, and test upcoming schedules.</p>
+        </div>
+        <span class="panel-badge">POSIX Cron</span>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="cronInput">Cron Expression (Minute Hour Day Month Weekday)</label>
+            <input type="text" id="cronInput" class="form-input" value="*/15 * * * *" />
+          </div>
+          <div class="res-card" style="margin-top: 1rem;">
+            <div class="res-label">HUMAN READABLE EXPLANATION</div>
+            <div class="res-val" id="cronMeaning" style="font-size: 1.25rem;">Every 15 minutes</div>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-bottom:0.75rem;">Common Production Presets</h3>
+          <div class="action-row">
+            <button class="btn-action btn-secondary cron-preset-btn" data-cron="*/5 * * * *">Every 5m</button>
+            <button class="btn-action btn-secondary cron-preset-btn" data-cron="0 * * * *">Hourly (:00)</button>
+            <button class="btn-action btn-secondary cron-preset-btn" data-cron="0 2 * * *">Daily at 02:00 AM</button>
+            <button class="btn-action btn-secondary cron-preset-btn" data-cron="0 0 * * 0">Weekly (Sunday)</button>
+            <button class="btn-action btn-secondary cron-preset-btn" data-cron="0 0 1 * *">Monthly (1st)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Unix Epoch Timestamp -->
     <div class="tool-panel" id="panelEpoch">
-      <h2 class="panel-title">Unix Epoch Timestamp Converter</h2>
-      <p class="panel-desc">Convert between Unix epoch timestamps and human dates in UTC and Local timezone.</p>
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">🕒 Unix Epoch Timestamp Converter</h2>
+          <p class="panel-desc">Convert between Unix epoch timestamps (seconds &amp; milliseconds) and human dates across UTC and Local system timezones.</p>
+        </div>
+        <span class="panel-badge">POSIX Time</span>
+      </div>
       <div class="res-card" style="margin-bottom: 1.5rem;">
-        <div class="res-label">CURRENT UNIX TIMESTAMP</div>
+        <div class="res-label">CURRENT LIVE UNIX TIMESTAMP</div>
         <div class="res-val" id="currentEpochTicker">0</div>
       </div>
-      <div class="form-group" style="max-width: 400px;">
-        <label class="form-label" for="epochInput">Epoch Seconds or Milliseconds</label>
+      <div class="form-group" style="max-width: 440px;">
+        <label class="form-label" for="epochInput">Epoch Timestamp (Seconds or Milliseconds)</label>
         <input type="text" id="epochInput" class="form-input" />
       </div>
       <div class="result-grid" id="epochResults"></div>
     </div>
 
-    <!-- JSON Formatter -->
-    <div class="tool-panel" id="panelJson">
-      <h2 class="panel-title">JSON Formatter &amp; Validator</h2>
-      <p class="panel-desc">Format, minify, and validate JSON payloads with clear syntax error detection.</p>
+    <!-- 10. JSON & YAML Formatter / Converter -->
+    <div class="tool-panel" id="panelJsonYaml">
+      <div class="panel-header-wrap">
+        <div>
+          <h2 class="panel-title">📄 JSON &amp; YAML Formatter &amp; Converter</h2>
+          <p class="panel-desc">Format, validate, minify, and convert between JSON and YAML configurations with instant syntax error pointers.</p>
+        </div>
+        <span class="panel-badge">YAML &amp; JSON</span>
+      </div>
       <div class="two-col">
         <div>
-          <label class="form-label" for="jsonRaw">Raw JSON</label>
-          <textarea id="jsonRaw" class="form-textarea" rows="10" placeholder='{"name":"cloud-service","replicas":3}'></textarea>
+          <label class="form-label" for="jsonRaw">Raw Input (JSON or YAML)</label>
+          <textarea id="jsonRaw" class="form-textarea" rows="11" placeholder='{"name":"cloud-service","replicas":3,"env":"production"}'></textarea>
           <div class="action-row">
-            <button class="btn-action" id="btnJsonFormat">Prettify (2 Spaces)</button>
-            <button class="btn-action" id="btnJsonMinify">Minify</button>
+            <button class="btn-action" id="btnJsonFormat">Prettify JSON (2 Spaces)</button>
+            <button class="btn-action btn-secondary" id="btnJsonMinify">Minify JSON</button>
+            <button class="btn-action" id="btnConvertJsonToYaml">JSON ➔ YAML</button>
+            <button class="btn-action" id="btnConvertYamlToJson">YAML ➔ JSON</button>
           </div>
         </div>
         <div>
           <label class="form-label" for="jsonFormatted">Formatted Output</label>
-          <textarea id="jsonFormatted" class="form-textarea" rows="10" readonly></textarea>
+          <textarea id="jsonFormatted" class="form-textarea" rows="11" readonly></textarea>
+          <div class="action-row">
+            <button class="btn-action" id="btnCopyJsonOut">📋 Copy Output</button>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
+
+  <footer class="footer">
+    <p>© <span id="yr"></span> Talari Pradeep · <a href="../" style="color:var(--accent-primary)">talaripradeep.info</a> · 100% Client-Side Private Processing</p>
+  </footer>
+
+  <div id="toast" class="toast">📋 Copied to clipboard!</div>
+
+  <load src="../sections/chatbot.html" />
 
   <script>
     (function() {
-      // Tab Switching
+      // 1. Year Ticker
+      const yrEl = document.getElementById('yr');
+      if (yrEl) yrEl.textContent = new Date().getFullYear();
+
+      // 2. Theme Toggle
+      const themeBtn = document.getElementById('themeToggleBtn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.contains('dark-theme');
+          const nextDark = !isDark;
+          if (nextDark) {
+            document.documentElement.classList.add('dark-theme');
+            document.documentElement.classList.remove('light-theme');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.classList.remove('dark-theme');
+            document.documentElement.classList.add('light-theme');
+            document.documentElement.setAttribute('data-theme', 'light');
+          }
+          try { localStorage.setItem('sre_dark_mode_active', nextDark); } catch(e) {}
+        });
+      }
+
+      // 3. Tab Switching & Search
       const tabs = document.querySelectorAll('.tab-btn');
       const panels = document.querySelectorAll('.tool-panel');
+      const searchInput = document.getElementById('toolSearchInput');
+
+      function switchTab(targetId) {
+        tabs.forEach(t => {
+          if (t.getAttribute('data-target') === targetId) t.classList.add('active');
+          else t.classList.remove('active');
+        });
+        panels.forEach(p => {
+          if (p.id === targetId) p.classList.add('active');
+          else p.classList.remove('active');
+        });
+      }
+
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-          tabs.forEach(t => t.classList.remove('active'));
-          panels.forEach(p => p.classList.remove('active'));
-          tab.classList.add('active');
-          const target = document.getElementById(tab.getAttribute('data-target'));
-          if (target) target.classList.add('active');
+          switchTab(tab.getAttribute('data-target'));
         });
       });
 
-      // CIDR Calculator
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const q = e.target.value.toLowerCase().trim();
+          if (!q) return;
+
+          // Match query against tab keywords
+          const mapping = [
+            { id: 'panelCidr', keys: ['cidr', 'ip', 'subnet', 'network', 'broadcast', 'vpc', 'mask'] },
+            { id: 'panelAiTokens', keys: ['ai', 'token', 'llm', 'cost', 'deepseek', 'gpt', 'claude', 'vllm', 'kv', 'vram'] },
+            { id: 'panelSlo', keys: ['slo', 'sla', 'error', 'budget', 'burn', 'downtime', 'sre', 'availability'] },
+            { id: 'panelPromql', keys: ['promql', 'prometheus', 'alert', 'metric', 'grafana', '5xx', 'latency', 'p99'] },
+            { id: 'panelK8s', keys: ['k8s', 'kubernetes', 'hpa', 'cpu', 'memory', 'millicores', 'gib', 'autoscaling'] },
+            { id: 'panelBase64', keys: ['base64', 'jwt', 'token', 'decode', 'encode', 'bearer'] },
+            { id: 'panelWebCrypto', keys: ['crypto', 'hash', 'hmac', 'sha256', 'sha512', 'sign', 'webhook', 'secret'] },
+            { id: 'panelCron', keys: ['cron', 'schedule', 'cadence', 'time', 'minute', 'hourly'] },
+            { id: 'panelEpoch', keys: ['epoch', 'timestamp', 'unix', 'time', 'utc', 'seconds'] },
+            { id: 'panelJsonYaml', keys: ['json', 'yaml', 'convert', 'format', 'minify', 'prettify'] }
+          ];
+
+          for (const item of mapping) {
+            if (item.keys.some(k => k.includes(q) || q.includes(k))) {
+              switchTab(item.id);
+              break;
+            }
+          }
+        });
+      }
+
+      function showToast(msg = 'Copied to clipboard!') {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+
+      // 4. IPv4 CIDR Calculator
       const cidrInput = document.getElementById('cidrInput');
       const cidrResults = document.getElementById('cidrResults');
 
@@ -359,6 +1039,7 @@
       }
 
       function calcCidr() {
+        if (!cidrInput || !cidrResults) return;
         const val = cidrInput.value.trim();
         const parts = val.split('/');
         if (parts.length !== 2) return;
@@ -375,23 +1056,434 @@
         const firstUsable = prefix >= 31 ? longToIp(netLong) : longToIp(netLong + 1);
         const lastUsable = prefix >= 31 ? longToIp(bcastLong) : longToIp(bcastLong - 1);
         const wildcard = longToIp((~maskLong) >>> 0);
+        const awsReservedHosts = Math.max(0, totalHosts - 5);
 
         cidrResults.innerHTML = `
-          <div class="res-card"><div class="res-label">NETWORK ADDRESS</div><div class="res-val">${longToIp(netLong)}</div></div>
-          <div class="res-card"><div class="res-label">BROADCAST ADDRESS</div><div class="res-val">${longToIp(bcastLong)}</div></div>
-          <div class="res-card"><div class="res-label">SUBNET MASK</div><div class="res-val">${longToIp(maskLong)}</div></div>
-          <div class="res-card"><div class="res-label">WILDCARD MASK</div><div class="res-val">${wildcard}</div></div>
-          <div class="res-card"><div class="res-label">USABLE HOST RANGE</div><div class="res-val">${firstUsable} to ${lastUsable}</div></div>
-          <div class="res-card"><div class="res-label">TOTAL USABLE HOSTS</div><div class="res-val">${usableHosts.toLocaleString()}</div></div>
+          <div class="res-card highlight">
+            <div class="res-label">Network Address</div>
+            <div class="res-val">${longToIp(netLong)}</div>
+            <div class="res-sub">Subnet identifier</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Broadcast Address</div>
+            <div class="res-val">${longToIp(bcastLong)}</div>
+            <div class="res-sub">Directed broadcast target</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Subnet Mask</div>
+            <div class="res-val">${longToIp(maskLong)}</div>
+            <div class="res-sub">CIDR /${prefix}</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Wildcard Mask</div>
+            <div class="res-val">${wildcard}</div>
+            <div class="res-sub">Inverted ACL mask</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Usable Host Range</div>
+            <div class="res-val" style="font-size:0.95rem;">${firstUsable} - ${lastUsable}</div>
+            <div class="res-sub">Assignable interfaces</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Total Usable Hosts</div>
+            <div class="res-val">${usableHosts.toLocaleString()}</div>
+            <div class="res-sub">AWS VPC: ${awsReservedHosts.toLocaleString()} (5 reserved)</div>
+          </div>
         `;
       }
-      cidrInput.addEventListener('input', calcCidr);
-      calcCidr();
+      if (cidrInput) {
+        cidrInput.addEventListener('input', calcCidr);
+        calcCidr();
+      }
 
-      // Cron Translator
+      // 5. AI Token & Cost Estimator
+      const aiPromptInput = document.getElementById('aiPromptInput');
+      const tokenCharCounter = document.getElementById('tokenCharCounter');
+      const expectedCompletion = document.getElementById('expectedCompletionTokens');
+      const monthlyQueries = document.getElementById('monthlyRequestVolume');
+      const kvPrecisionEl = document.getElementById('kvPrecision');
+      const aiCostResults = document.getElementById('aiCostResults');
+
+      function calcAiCosts() {
+        if (!aiPromptInput || !aiCostResults) return;
+        const text = aiPromptInput.value || '';
+        const chars = text.length;
+        // BPE heuristic: ~4 chars per token for English, ~3 for code
+        const promptTokens = Math.max(1, Math.ceil(chars / 3.8));
+        const outTokens = parseInt(expectedCompletion.value, 10) || 800;
+        const totalTokensPerReq = promptTokens + outTokens;
+        const queries = parseInt(monthlyQueries.value, 10) || 50000;
+        const kvBytesPerToken = parseInt(kvPrecisionEl.value, 10) || 2;
+
+        if (tokenCharCounter) {
+          tokenCharCounter.textContent = `${chars.toLocaleString()} chars · ~${promptTokens.toLocaleString()} tokens`;
+        }
+
+        // Cost per 1M tokens: [Input $/1M, Output $/1M]
+        const models = [
+          { name: 'DeepSeek V3 / V2.5', inPrice: 0.14, outPrice: 0.28, tag: 'Best Value' },
+          { name: 'GPT-4o', inPrice: 2.50, outPrice: 10.00, tag: 'Frontier' },
+          { name: 'Claude 3.7 Sonnet', inPrice: 3.00, outPrice: 15.00, tag: 'Reasoning' },
+          { name: 'Llama 3.3 70B (Groq/vLLM)', inPrice: 0.59, outPrice: 0.79, tag: 'Open Weights' },
+          { name: 'Gemini 2.0 Flash', inPrice: 0.10, outPrice: 0.40, tag: 'High Speed' }
+        ];
+
+        // 70B model KV cache calculation: 2 * layers(80) * kv_heads(8) * head_dim(128) * precision
+        const kvBytesPerSeq = 2 * 80 * 8 * 128 * kvBytesPerToken * totalTokensPerReq;
+        const kvMbPerSeq = (kvBytesPerSeq / (1024 * 1024)).toFixed(1);
+
+        let html = '';
+        models.forEach(m => {
+          const inputCost = (promptTokens * queries / 1000000) * m.inPrice;
+          const outputCost = (outTokens * queries / 1000000) * m.outPrice;
+          const totalCost = inputCost + outputCost;
+
+          html += `
+            <div class="res-card">
+              <div class="res-label">${m.name} <span style="color:var(--accent-emerald);">[${m.tag}]</span></div>
+              <div class="res-val">$${totalCost.toFixed(2)}/mo</div>
+              <div class="res-sub">Prompt: $${inputCost.toFixed(2)} | Out: $${outputCost.toFixed(2)}</div>
+            </div>
+          `;
+        });
+
+        html += `
+          <div class="res-card highlight">
+            <div class="res-label">KV Cache VRAM Per Request</div>
+            <div class="res-val">${kvMbPerSeq} MB / Stream</div>
+            <div class="res-sub">Batch of 64 concurrent: ~${(kvMbPerSeq * 64 / 1024).toFixed(2)} GB VRAM</div>
+          </div>
+        `;
+
+        aiCostResults.innerHTML = html;
+      }
+
+      if (aiPromptInput) {
+        aiPromptInput.addEventListener('input', calcAiCosts);
+        expectedCompletion.addEventListener('input', calcAiCosts);
+        monthlyQueries.addEventListener('input', calcAiCosts);
+        kvPrecisionEl.addEventListener('change', calcAiCosts);
+        calcAiCosts();
+      }
+
+      // 6. SLO, Error Budget & Burn Rate Calculator
+      const sloTarget = document.getElementById('sloTarget');
+      const sloWindowDays = document.getElementById('sloWindowDays');
+      const currentIncidentMins = document.getElementById('currentIncidentMins');
+      const sloResults = document.getElementById('sloResults');
+      const burnRateResults = document.getElementById('burnRateResults');
+
+      function formatDuration(seconds) {
+        const d = Math.floor(seconds / 86400);
+        const h = Math.floor((seconds % 86400) / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        const parts = [];
+        if (d > 0) parts.push(`${d}d`);
+        if (h > 0) parts.push(`${h}h`);
+        if (m > 0) parts.push(`${m}m`);
+        if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+        return parts.join(' ');
+      }
+
+      function calcSlo() {
+        if (!sloTarget || !sloResults || !burnRateResults) return;
+        const targetPercent = parseFloat(sloTarget.value) || 99.9;
+        const windowDays = parseInt(sloWindowDays.value, 10) || 30;
+        const incidentMins = parseFloat(currentIncidentMins.value) || 0;
+
+        const totalSecs = windowDays * 86400;
+        const errorBudgetPercent = (100 - targetPercent) / 100;
+        const allowedDowntimeSecs = Math.round(totalSecs * errorBudgetPercent);
+        const incidentSecs = incidentMins * 60;
+        const budgetConsumedPercent = Math.min(100, (incidentSecs / allowedDowntimeSecs) * 100);
+        const remainingDowntimeSecs = Math.max(0, allowedDowntimeSecs - incidentSecs);
+
+        sloResults.innerHTML = `
+          <div class="res-card highlight">
+            <div class="res-label">Allowed Downtime (${windowDays}d)</div>
+            <div class="res-val">${formatDuration(allowedDowntimeSecs)}</div>
+            <div class="res-sub">Max failure budget</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Remaining Error Budget</div>
+            <div class="res-val">${formatDuration(remainingDowntimeSecs)}</div>
+            <div class="res-sub">${(100 - budgetConsumedPercent).toFixed(1)}% budget healthy</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Incident Budget Burned</div>
+            <div class="res-val" style="color:${budgetConsumedPercent > 50 ? 'var(--accent-rose)' : 'var(--accent-cyan)'};">${budgetConsumedPercent.toFixed(1)}%</div>
+            <div class="res-sub">${incidentMins} mins outage consumed</div>
+          </div>
+        `;
+
+        // Multi-burn rate table
+        burnRateResults.innerHTML = `
+          <div class="res-card">
+            <div class="res-label">14.4× Fast Burn Alert (P1)</div>
+            <div class="res-val" style="color:var(--accent-rose);">2% in 1 Hour</div>
+            <div class="res-sub">Paging threshold: Outage exhausts entire budget in 50 hours</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">6.0× Medium Burn Alert (P2)</div>
+            <div class="res-val" style="color:var(--accent-amber);">5% in 6 Hours</div>
+            <div class="res-sub">Ticket threshold: Outage exhausts budget in 5 days</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">1.0× Steady Burn Rate</div>
+            <div class="res-val" style="color:var(--accent-emerald);">100% in ${windowDays} Days</div>
+            <div class="res-sub">Nominal error budget depletion cadence</div>
+          </div>
+        `;
+      }
+
+      if (sloTarget) {
+        sloTarget.addEventListener('change', calcSlo);
+        sloWindowDays.addEventListener('change', calcSlo);
+        currentIncidentMins.addEventListener('input', calcSlo);
+        calcSlo();
+      }
+
+      // 7. PromQL Query Builder
+      const promMetricTemplate = document.getElementById('promMetricTemplate');
+      const promNamespace = document.getElementById('promNamespace');
+      const promWindow = document.getElementById('promWindow');
+      const promThreshold = document.getElementById('promThreshold');
+      const promqlOutput = document.getElementById('promqlOutput');
+      const btnCopyPromql = document.getElementById('btnCopyPromql');
+      const btnExportAlertRule = document.getElementById('btnExportAlertRule');
+      const alertRuleContainer = document.getElementById('alertRuleContainer');
+      const alertRuleYaml = document.getElementById('alertRuleYaml');
+
+      function updatePromql() {
+        if (!promMetricTemplate || !promqlOutput) return;
+        const type = promMetricTemplate.value;
+        const ns = promNamespace.value.trim() || 'production';
+        const win = promWindow.value.trim() || '5m';
+        const th = promThreshold.value || '5';
+
+        let query = '';
+        if (type === 'http_5xx_rate') {
+          query = `(sum(rate(http_requests_total{namespace="${ns}", status=~"5.."}[${win}])) / sum(rate(http_requests_total{namespace="${ns}"}[${win}]))) * 100 > ${th}`;
+        } else if (type === 'http_p99_latency') {
+          query = `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{namespace="${ns}"}[${win}])) by (le)) * 1000 > ${th}`;
+        } else if (type === 'k8s_pod_restart') {
+          query = `sum(increase(kube_pod_container_status_restarts_total{namespace="${ns}"}[${win}])) by (pod) > ${th}`;
+        } else if (type === 'node_mem_saturation') {
+          query = `(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > ${th}`;
+        } else if (type === 'gpu_vram_saturation') {
+          query = `(container_gpu_memory_used_bytes{namespace="${ns}"} / container_gpu_memory_total_bytes{namespace="${ns}"}) * 100 > ${th}`;
+        }
+
+        promqlOutput.value = query;
+
+        // Also update alert YAML
+        if (alertRuleYaml) {
+          alertRuleYaml.value = `apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ${type.replace(/_/g, '-')}-alert
+  namespace: ${ns}
+spec:
+  groups:
+  - name: sre.rules
+    rules:
+    - alert: HighMetricThresholdTriggered
+      expr: ${query}
+      for: 2m
+      labels:
+        severity: critical
+        team: platform-sre
+      annotations:
+        summary: "${type} breached threshold of ${th}"
+        runbook_url: "https://talaripradeep.info/incident/"`;
+        }
+      }
+
+      if (promMetricTemplate) {
+        promMetricTemplate.addEventListener('change', updatePromql);
+        promNamespace.addEventListener('input', updatePromql);
+        promWindow.addEventListener('input', updatePromql);
+        promThreshold.addEventListener('input', updatePromql);
+        updatePromql();
+      }
+
+      if (btnCopyPromql) {
+        btnCopyPromql.addEventListener('click', () => {
+          navigator.clipboard.writeText(promqlOutput.value).then(() => showToast('PromQL query copied!'));
+        });
+      }
+      if (btnExportAlertRule) {
+        btnExportAlertRule.addEventListener('click', () => {
+          if (alertRuleContainer.style.display === 'none') {
+            alertRuleContainer.style.display = 'block';
+          } else {
+            alertRuleContainer.style.display = 'none';
+          }
+        });
+      }
+
+      // 8. Kubernetes Compute & HPA Sizer
+      const cpuMillicores = document.getElementById('cpuMillicores');
+      const cpuCores = document.getElementById('cpuCores');
+      const memMebibytes = document.getElementById('memMebibytes');
+      const memGibibytes = document.getElementById('memGibibytes');
+      const currentReplicas = document.getElementById('currentReplicas');
+      const currentMetricVal = document.getElementById('currentMetricVal');
+      const targetMetricVal = document.getElementById('targetMetricVal');
+      const hpaResults = document.getElementById('hpaResults');
+
+      if (cpuMillicores && cpuCores) {
+        cpuMillicores.addEventListener('input', () => {
+          cpuCores.value = (parseFloat(cpuMillicores.value) / 1000).toFixed(2);
+        });
+        cpuCores.addEventListener('input', () => {
+          cpuMillicores.value = Math.round(parseFloat(cpuCores.value) * 1000);
+        });
+      }
+      if (memMebibytes && memGibibytes) {
+        memMebibytes.addEventListener('input', () => {
+          memGibibytes.value = (parseFloat(memMebibytes.value) / 1024).toFixed(2);
+        });
+        memGibibytes.addEventListener('input', () => {
+          memMebibytes.value = Math.round(parseFloat(memGibibytes.value) * 1024);
+        });
+      }
+
+      function calcHpa() {
+        if (!currentReplicas || !hpaResults) return;
+        const curR = parseInt(currentReplicas.value, 10) || 1;
+        const curM = parseFloat(currentMetricVal.value) || 50;
+        const tarM = parseFloat(targetMetricVal.value) || 50;
+
+        // HPA formula: DesiredReplicas = ceil(CurrentReplicas * (CurrentMetric / TargetMetric))
+        const desired = Math.ceil(curR * (curM / tarM));
+        const delta = desired - curR;
+
+        hpaResults.innerHTML = `
+          <div class="res-card highlight">
+            <div class="res-label">Desired Replicas</div>
+            <div class="res-val">${desired} Pods</div>
+            <div class="res-sub">${delta >= 0 ? `+${delta} scaling up` : `${delta} scaling down`}</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Utilization Ratio</div>
+            <div class="res-val">${(curM / tarM).toFixed(2)}x</div>
+            <div class="res-sub">Capacity load index</div>
+          </div>
+        `;
+      }
+      if (currentReplicas) {
+        currentReplicas.addEventListener('input', calcHpa);
+        currentMetricVal.addEventListener('input', calcHpa);
+        targetMetricVal.addEventListener('input', calcHpa);
+        calcHpa();
+      }
+
+      // 9. Base64 & JWT Inspector
+      const b64Raw = document.getElementById('b64Raw');
+      const b64Out = document.getElementById('b64Output');
+      const btnB64Encode = document.getElementById('btnB64Encode');
+      const btnB64Decode = document.getElementById('btnB64Decode');
+      const btnJwtInspect = document.getElementById('btnJwtInspect');
+
+      if (btnB64Encode) {
+        btnB64Encode.addEventListener('click', () => {
+          try { b64Out.value = btoa(unescape(encodeURIComponent(b64Raw.value))); }
+          catch(e) { b64Out.value = 'Encoding Error: ' + e.message; }
+        });
+      }
+      if (btnB64Decode) {
+        btnB64Decode.addEventListener('click', () => {
+          try { b64Out.value = decodeURIComponent(escape(atob(b64Raw.value.trim()))); }
+          catch(e) { b64Out.value = 'Decoding Error: ' + e.message; }
+        });
+      }
+      if (btnJwtInspect) {
+        btnJwtInspect.addEventListener('click', () => {
+          try {
+            const raw = b64Raw.value.trim().replace(/^Bearer\s+/i, '');
+            const parts = raw.split('.');
+            if (parts.length < 2) throw new Error('Not a valid JWT token format (expected header.payload.signature)');
+            const header = JSON.parse(decodeURIComponent(escape(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')))));
+            const payload = JSON.parse(decodeURIComponent(escape(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))));
+
+            let expiryReport = '';
+            if (payload.exp) {
+              const expDate = new Date(payload.exp * 1000);
+              const isExpired = expDate < new Date();
+              expiryReport = `\n// Token Status: ${isExpired ? '❌ EXPIRED' : '✅ ACTIVE'}\n// Expires At: ${expDate.toUTCString()}\n`;
+            }
+
+            b64Out.value = `/* JWT HEADER */\n${JSON.stringify(header, null, 2)}\n\n/* JWT PAYLOAD */${expiryReport}\n${JSON.stringify(payload, null, 2)}`;
+          } catch(e) {
+            b64Out.value = 'JWT Parse Error: ' + e.message;
+          }
+        });
+      }
+
+      // 10. WebCrypto HMAC & Hash Generator
+      const hashAlgorithm = document.getElementById('hashAlgorithm');
+      const hmacSecret = document.getElementById('hmacSecret');
+      const hashPayload = document.getElementById('hashPayload');
+      const hashOutputHex = document.getElementById('hashOutputHex');
+      const btnCopyHash = document.getElementById('btnCopyHash');
+
+      async function computeCryptoHash() {
+        if (!hashPayload || !hashOutputHex) return;
+        const text = hashPayload.value || '';
+        const secret = hmacSecret.value || '';
+        const algo = hashAlgorithm.value || 'SHA-256';
+
+        if (!text) {
+          hashOutputHex.value = '';
+          return;
+        }
+
+        try {
+          const enc = new TextEncoder();
+          if (secret) {
+            // HMAC mode
+            const key = await window.crypto.subtle.importKey(
+              'raw',
+              enc.encode(secret),
+              { name: 'HMAC', hash: { name: algo } },
+              false,
+              ['sign']
+            );
+            const signature = await window.crypto.subtle.sign('HMAC', key, enc.encode(text));
+            const hex = Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
+            hashOutputHex.value = `HMAC-${algo}:\n${hex}`;
+          } else {
+            // Standard Digest mode
+            const digest = await window.crypto.subtle.digest(algo, enc.encode(text));
+            const hex = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+            hashOutputHex.value = `${algo}:\n${hex}`;
+          }
+        } catch(e) {
+          hashOutputHex.value = 'Crypto Error: ' + e.message;
+        }
+      }
+
+      if (hashPayload) {
+        hashPayload.addEventListener('input', computeCryptoHash);
+        hmacSecret.addEventListener('input', computeCryptoHash);
+        hashAlgorithm.addEventListener('change', computeCryptoHash);
+      }
+      if (btnCopyHash) {
+        btnCopyHash.addEventListener('click', () => {
+          const raw = hashOutputHex.value.split('\n')[1] || hashOutputHex.value;
+          navigator.clipboard.writeText(raw).then(() => showToast('Hash copied!'));
+        });
+      }
+
+      // 11. Cron Schedule Translator
       const cronInput = document.getElementById('cronInput');
       const cronMeaning = document.getElementById('cronMeaning');
+      const cronPresetBtns = document.querySelectorAll('.cron-preset-btn');
+
       function parseCron() {
+        if (!cronInput || !cronMeaning) return;
         const val = cronInput.value.trim();
         const p = val.split(/\s+/);
         if (p.length !== 5) {
@@ -403,76 +1495,164 @@
         else if (val === '*/15 * * * *') cronMeaning.textContent = 'Every 15 minutes';
         else if (val === '0 * * * *') cronMeaning.textContent = 'Every hour on the hour (:00)';
         else if (val === '0 0 * * *') cronMeaning.textContent = 'Every day at midnight (00:00 UTC)';
-        else if (val === '0 2 * * 1-5') cronMeaning.textContent = 'At 02:00 AM UTC, Monday through Friday';
+        else if (val === '0 2 * * *') cronMeaning.textContent = 'Every day at 02:00 AM UTC';
+        else if (val === '0 0 * * 0') cronMeaning.textContent = 'Weekly on Sunday at midnight (00:00 UTC)';
+        else if (val === '0 0 1 * *') cronMeaning.textContent = 'Monthly on the 1st at midnight (00:00 UTC)';
         else cronMeaning.textContent = `Schedule: Minute ${p[0]}, Hour ${p[1]}, Day ${p[2]}, Month ${p[3]}, Weekday ${p[4]}`;
       }
-      cronInput.addEventListener('input', parseCron);
-      parseCron();
 
-      // Base64 & JWT
-      const b64Raw = document.getElementById('b64Raw');
-      const b64Out = document.getElementById('b64Output');
-      document.getElementById('btnB64Encode').addEventListener('click', () => {
-        try { b64Out.value = btoa(b64Raw.value); } catch(e) { b64Out.value = 'Encoding Error: ' + e.message; }
-      });
-      document.getElementById('btnB64Decode').addEventListener('click', () => {
-        try { b64Out.value = atob(b64Raw.value.trim()); } catch(e) { b64Out.value = 'Decoding Error: ' + e.message; }
-      });
-      document.getElementById('btnJwtInspect').addEventListener('click', () => {
-        try {
-          const parts = b64Raw.value.trim().split('.');
-          if (parts.length < 2) throw new Error('Not a valid 3-part JWT token');
-          const header = JSON.parse(atob(parts[0]));
-          const payload = JSON.parse(atob(parts[1]));
-          b64Out.value = 'HEADER:\n' + JSON.stringify(header, null, 2) + '\n\nPAYLOAD:\n' + JSON.stringify(payload, null, 2);
-        } catch(e) {
-          b64Out.value = 'JWT Parse Error: ' + e.message;
-        }
+      if (cronInput) {
+        cronInput.addEventListener('input', parseCron);
+        parseCron();
+      }
+      cronPresetBtns.forEach(b => {
+        b.addEventListener('click', () => {
+          cronInput.value = b.getAttribute('data-cron');
+          parseCron();
+        });
       });
 
-      // Epoch Converter
+      // 12. Unix Epoch Converter
       const epochTicker = document.getElementById('currentEpochTicker');
       const epochInput = document.getElementById('epochInput');
       const epochResults = document.getElementById('epochResults');
 
       setInterval(() => {
-        epochTicker.textContent = Math.floor(Date.now() / 1000);
+        if (epochTicker) epochTicker.textContent = Math.floor(Date.now() / 1000);
       }, 1000);
 
       function updateEpoch(ts) {
+        if (!epochResults) return;
         let ms = parseInt(ts, 10);
         if (isNaN(ms)) return;
         if (ms < 10000000000) ms *= 1000;
         const d = new Date(ms);
         epochResults.innerHTML = `
-          <div class="res-card"><div class="res-label">UTC TIME</div><div class="res-val">${d.toUTCString()}</div></div>
-          <div class="res-card"><div class="res-label">LOCAL TIME</div><div class="res-val">${d.toString()}</div></div>
-          <div class="res-card"><div class="res-label">ISO 8601</div><div class="res-val">${d.toISOString()}</div></div>
+          <div class="res-card highlight">
+            <div class="res-label">UTC Time</div>
+            <div class="res-val" style="font-size:1rem;">${d.toUTCString()}</div>
+            <div class="res-sub">Greenwich Mean Time (GMT)</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Local System Time</div>
+            <div class="res-val" style="font-size:1rem;">${d.toString()}</div>
+            <div class="res-sub">Browser timezone</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">ISO 8601 Standard</div>
+            <div class="res-val" style="font-size:1rem;">${d.toISOString()}</div>
+            <div class="res-sub">RFC 3339 formatted</div>
+          </div>
         `;
       }
-      epochInput.value = Math.floor(Date.now() / 1000);
-      updateEpoch(epochInput.value);
-      epochInput.addEventListener('input', () => updateEpoch(epochInput.value));
 
-      // JSON Formatter
+      if (epochInput) {
+        epochInput.value = Math.floor(Date.now() / 1000);
+        updateEpoch(epochInput.value);
+        epochInput.addEventListener('input', () => updateEpoch(epochInput.value));
+      }
+
+      // 13. JSON & YAML Formatter / Converter
       const jsonRaw = document.getElementById('jsonRaw');
       const jsonFmt = document.getElementById('jsonFormatted');
-      document.getElementById('btnJsonFormat').addEventListener('click', () => {
-        try {
-          const parsed = JSON.parse(jsonRaw.value);
-          jsonFmt.value = JSON.stringify(parsed, null, 2);
-        } catch(e) {
-          jsonFmt.value = 'Invalid JSON: ' + e.message;
+      const btnJsonFormat = document.getElementById('btnJsonFormat');
+      const btnJsonMinify = document.getElementById('btnJsonMinify');
+      const btnConvertJsonToYaml = document.getElementById('btnConvertJsonToYaml');
+      const btnConvertYamlToJson = document.getElementById('btnConvertYamlToJson');
+      const btnCopyJsonOut = document.getElementById('btnCopyJsonOut');
+
+      // Simple YAML serializer/deserializer for common configs
+      function jsonToYaml(obj, indent = 0) {
+        let yaml = '';
+        const spaces = '  '.repeat(indent);
+        if (Array.isArray(obj)) {
+          obj.forEach(item => {
+            if (typeof item === 'object' && item !== null) {
+              yaml += `${spaces}- \n${jsonToYaml(item, indent + 1)}`;
+            } else {
+              yaml += `${spaces}- ${item}\n`;
+            }
+          });
+        } else if (typeof obj === 'object' && obj !== null) {
+          for (const [key, value] of Object.entries(obj)) {
+            if (typeof value === 'object' && value !== null) {
+              yaml += `${spaces}${key}:\n${jsonToYaml(value, indent + 1)}`;
+            } else {
+              yaml += `${spaces}${key}: ${value}\n`;
+            }
+          }
+        } else {
+          yaml += `${spaces}${obj}\n`;
         }
-      });
-      document.getElementById('btnJsonMinify').addEventListener('click', () => {
-        try {
-          const parsed = JSON.parse(jsonRaw.value);
-          jsonFmt.value = JSON.stringify(parsed);
-        } catch(e) {
-          jsonFmt.value = 'Invalid JSON: ' + e.message;
+        return yaml;
+      }
+
+      function yamlToJson(yamlStr) {
+        // Line-based parser for standard YAML key-value pairs
+        const lines = yamlStr.split('\n');
+        const root = {};
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.startsWith('#')) continue;
+          const colonIdx = trimmed.indexOf(':');
+          if (colonIdx > 0) {
+            const k = trimmed.substring(0, colonIdx).trim();
+            let v = trimmed.substring(colonIdx + 1).trim();
+            if (v === 'true') v = true;
+            else if (v === 'false') v = false;
+            else if (!isNaN(v) && v !== '') v = Number(v);
+            root[k] = v;
+          }
         }
-      });
+        return root;
+      }
+
+      if (btnJsonFormat) {
+        btnJsonFormat.addEventListener('click', () => {
+          try {
+            const parsed = JSON.parse(jsonRaw.value);
+            jsonFmt.value = JSON.stringify(parsed, null, 2);
+          } catch(e) {
+            jsonFmt.value = 'Invalid JSON: ' + e.message;
+          }
+        });
+      }
+      if (btnJsonMinify) {
+        btnJsonMinify.addEventListener('click', () => {
+          try {
+            const parsed = JSON.parse(jsonRaw.value);
+            jsonFmt.value = JSON.stringify(parsed);
+          } catch(e) {
+            jsonFmt.value = 'Invalid JSON: ' + e.message;
+          }
+        });
+      }
+      if (btnConvertJsonToYaml) {
+        btnConvertJsonToYaml.addEventListener('click', () => {
+          try {
+            const parsed = JSON.parse(jsonRaw.value);
+            jsonFmt.value = jsonToYaml(parsed);
+          } catch(e) {
+            jsonFmt.value = 'JSON Parse Error: ' + e.message;
+          }
+        });
+      }
+      if (btnConvertYamlToJson) {
+        btnConvertYamlToJson.addEventListener('click', () => {
+          try {
+            const parsed = yamlToJson(jsonRaw.value);
+            jsonFmt.value = JSON.stringify(parsed, null, 2);
+          } catch(e) {
+            jsonFmt.value = 'YAML Parse Error: ' + e.message;
+          }
+        });
+      }
+      if (btnCopyJsonOut) {
+        btnCopyJsonOut.addEventListener('click', () => {
+          navigator.clipboard.writeText(jsonFmt.value).then(() => showToast('Output copied!'));
+        });
+      }
+
     })();
   </script>
 </body>
