@@ -24,6 +24,16 @@
       --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5.5rem;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 3px;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -1909,4 +1919,45 @@
       .hub-nav-links { display: none; }
       .workspace-actions-grid { grid-template-columns: 1fr; }
     }
+
+    @media (max-width: 768px) {
+      .workspace-hero-card {
+        padding: 1.25rem 1rem;
+        margin: 1.25rem 0 1.75rem;
+      }
+      .workspace-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .continue-learning-grid {
+        grid-template-columns: 1fr;
+      }
+      .learning-paths-grid {
+        grid-template-columns: 1fr;
+      }
+      .ai-assistant-card {
+        padding: 1.25rem 1rem;
+      }
+      .ai-input-bar {
+        flex-direction: column;
+      }
+      .ai-chips-row {
+        gap: 0.35rem;
+      }
+      .hub-nav {
+        padding: 0.75rem 1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
 
