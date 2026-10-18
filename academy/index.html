@@ -649,8 +649,16 @@ spec:
           <!-- Lab Top Bar -->
           <div class="lab-top-bar">
             <div class="lab-title-wrap">
+              <div class="lab-project-picker-row">
+                <span class="lab-project-badge">Enterprise Lab Project</span>
+                <select id="labProjectSelect" class="lab-project-picker-select" aria-label="Select Lab Project Scenario">
+                  <option value="k8s-web" selected>☸️ Project 1: High-Availability Web App &amp; Ingress (Kubernetes)</option>
+                  <option value="vllm-ai">🚀 Project 2: LLM Inference Gateway with PagedAttention (vLLM)</option>
+                  <option value="devsec-policy">🛡️ Project 3: Zero-Trust DevSecOps &amp; Kyverno Policy (Security)</option>
+                </select>
+              </div>
               <h3 id="labTitleHeading">Lab: Deploy a Web Application on Kubernetes</h3>
-              <p>Deploy a containerized web application using Kubernetes Deployments and Services</p>
+              <p id="labSubtitleDesc">Deploy a containerized web application using Kubernetes Deployments and Services</p>
             </div>
             <div class="lab-top-actions">
               <span class="lab-badge-time">⏱️ ~30 min &bull; Intermediate</span>
@@ -759,6 +767,16 @@ spec:
                   <div class="terminal-line">
                     <span class="term-prompt">user@kind-k8s:~$</span> kubectl cluster-info<br />
                     <span style="color: #94a3b8;">Kubernetes control plane is running at https://127.0.0.1:6443</span>
+                  </div>
+                </div>
+                <!-- Recommended Hits Chips Bar -->
+                <div class="terminal-hits-bar" id="terminalHitsBar">
+                  <span class="hits-label">💡 Recommended Hits:</span>
+                  <div class="hits-chips-wrap" id="hitsChipsWrap">
+                    <button class="btn-terminal-hit" data-cmd="kubectl get pods -w">kubectl get pods -w ⏱️</button>
+                    <button class="btn-terminal-hit" data-cmd="kubectl logs -f deployment/web-app">kubectl logs -f 📜</button>
+                    <button class="btn-terminal-hit" data-cmd="kubectl top pods">kubectl top pods 📊</button>
+                    <button class="btn-terminal-hit" data-cmd="curl -I http://web-service">curl endpoint 🌐</button>
                   </div>
                 </div>
                 <div class="terminal-input-row" style="margin-top: 0.4rem; padding: 0.25rem 0.5rem; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); border-radius: var(--radius-sm);">

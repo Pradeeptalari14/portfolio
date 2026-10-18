@@ -180,5 +180,11 @@ describe('Technical Academy & Interactive Engineering Lab (4-Quadrant Experience
     expect(document.getElementById('btnCopyLabCode')).not.toBeNull();
     expect(document.getElementById('btnRunLabValidation')).not.toBeNull();
     expect(document.getElementById('academyModal')).not.toBeNull();
+
+    // Multi-Scenario Project Picker & Real-Time Hits Bar
+    expect(document.getElementById('labProjectSelect')).not.toBeNull();
+    expect(document.getElementById('terminalHitsBar')).not.toBeNull();
+    const hitBtns = document.querySelectorAll('.btn-terminal-hit');
+    expect(hitBtns.length).toBeGreaterThanOrEqual(4);
   });
 });
