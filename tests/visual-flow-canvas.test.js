@@ -647,5 +647,94 @@ describe('Visual Flow Canvas Workspace', () => {
     const obsPills = container.querySelectorAll('.vf-node-mode-pill.observability');
     expect(obsPills.length).toBe(canvas.nodes.size);
   });
+
+  it('should memoize topologies and support new domain archetypes with 5-phase guided curriculums', () => {
+    // 1. Warehouse archetype
+    const whTopo = VisualFlowCanvas.generateStudioTopology('snowflake-analytics', {
+      title: 'Snowflake Data Warehouse',
+      category: 'database'
+    });
+    expect(whTopo.nodes.length).toBe(5);
+    expect(whTopo.nodes[0].title).toContain('Streaming CDC');
+    expect(whTopo.nodes[2].title).toContain('Columnar Warehouse');
+    expect(whTopo.copilotHtml).toContain('Cloud Data Warehouse & Analytics Lab');
+
+    // Test memoization cache
+    const cachedTopo = VisualFlowCanvas.generateStudioTopology('snowflake-analytics', {
+      title: 'Snowflake Data Warehouse',
+      category: 'database'
+    });
+    expect(cachedTopo.nodes.length).toBe(5);
+    expect(cachedTopo.nodes[0].title).toBe(whTopo.nodes[0].title);
+
+    // 2. Realtime Voice AI
+    const voiceTopo = VisualFlowCanvas.generateStudioTopology('openai-realtime-voice', {
+      title: 'OpenAI Realtime Voice API',
+      category: 'ai'
+    });
+    expect(voiceTopo.nodes.length).toBe(5);
+    expect(voiceTopo.nodes[0].title).toContain('WebRTC Audio Stream');
+    expect(voiceTopo.nodes[1].title).toContain('Silero Voice Activity');
+
+    // 3. Frontier Reasoning
+    const reasoningTopo = VisualFlowCanvas.generateStudioTopology('gpt-6-luna-decisions', {
+      title: 'GPT-6 Luna Decisions Router',
+      category: 'ai'
+    });
+    expect(reasoningTopo.nodes.length).toBe(5);
+    expect(reasoningTopo.nodes[1].title).toContain('Thinking & Chain-of-Thought');
+
+    // 4. Sovereign Vernacular AI
+    const vernacularTopo = VisualFlowCanvas.generateStudioTopology('swasthya-mitra', {
+      title: 'Swasthya Mitra Health Assistant',
+      category: 'ai'
+    });
+    expect(vernacularTopo.nodes.length).toBe(5);
+    expect(vernacularTopo.nodes[1].title).toContain('Indic Multilingual Engine');
+  });
+
+  it('should render SVG arrow markers in defs and provide selective wire updates', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const svgLayer = container.querySelector('#vfSvgLayer');
+    expect(svgLayer).toBeTruthy();
+    expect(svgLayer.innerHTML).toContain('id="vf-arrow-idle"');
+    expect(svgLayer.innerHTML).toContain('id="vf-arrow-active"');
+    expect(svgLayer.innerHTML).toContain('id="vf-arrow-success"');
+    expect(svgLayer.innerHTML).toContain('id="vf-arrow-failed"');
+
+    // Check wires have data-from and data-to attributes
+    const wire = svgLayer.querySelector('.vf-wire');
+    expect(wire).toBeTruthy();
+    expect(wire.getAttribute('data-from')).toBeTruthy();
+    expect(wire.getAttribute('data-to')).toBeTruthy();
+
+    // Move node and test selective wire update
+    const node1 = canvas.nodes.get('n1');
+    const oldD = wire.getAttribute('d');
+    node1.x = 120;
+    node1.y = 180;
+    canvas._updateWiresForNode('n1');
+    const newD = wire.getAttribute('d');
+    expect(newD).not.toBe(oldD);
+  });
+
+  it('should provide rich learning context for tool, compute, and network components in inspector', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'agent' });
+
+    // Select Tool Worker node
+    canvas.selectNode('a4');
+    expect(container.querySelector('#vfInspectTitle').value).toContain('Tool Worker');
+    const expBody = container.querySelector('#expBody');
+    expect(expBody.textContent).toContain('hands and tools');
+
+    // Switch to Technical Tab
+    const tabTech = container.querySelector('#tabExpTechnical');
+    tabTech.click();
+    expect(expBody.textContent).toContain('Sandboxed microVM / gVisor');
+  });
 });
+
 

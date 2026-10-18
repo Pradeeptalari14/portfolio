@@ -643,17 +643,36 @@
         this.canvasContainer.style.cursor = 'grabbing';
       });
 
+      let rafPending = false;
+      let lastClientX = 0;
+      let lastClientY = 0;
+
+      const requestFrame = (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function')
+        ? window.requestAnimationFrame.bind(window)
+        : (cb) => { cb(); };
+
       window.addEventListener('mousemove', (e) => {
-        if (this.isPanning) {
-          this.panOffset = { x: e.clientX - this.panStart.x, y: e.clientY - this.panStart.y };
-          this._applyTransform();
-        } else if (this.isDraggingNode && this.draggedNodeId) {
-          const node = this.nodes.get(this.draggedNodeId);
-          if (node) {
-            node.x = Math.round((e.clientX - this.panOffset.x - this.dragOffset.x) / this.scale);
-            node.y = Math.round((e.clientY - this.panOffset.y - this.dragOffset.y) / this.scale);
-            this._updateNodePosition(node);
-            this._renderConnections();
+        lastClientX = e.clientX;
+        lastClientY = e.clientY;
+
+        if (this.isPanning || (this.isDraggingNode && this.draggedNodeId)) {
+          if (!rafPending) {
+            rafPending = true;
+            requestFrame(() => {
+              rafPending = false;
+              if (this.isPanning) {
+                this.panOffset = { x: lastClientX - this.panStart.x, y: lastClientY - this.panStart.y };
+                this._applyTransform();
+              } else if (this.isDraggingNode && this.draggedNodeId) {
+                const node = this.nodes.get(this.draggedNodeId);
+                if (node) {
+                  node.x = Math.round((lastClientX - this.panOffset.x - this.dragOffset.x) / this.scale);
+                  node.y = Math.round((lastClientY - this.panOffset.y - this.dragOffset.y) / this.scale);
+                  this._updateNodePosition(node);
+                  this._updateWiresForNode(this.draggedNodeId);
+                }
+              }
+            });
           }
         }
       });
@@ -666,6 +685,7 @@
         if (this.isDraggingNode) {
           this.isDraggingNode = false;
           this.draggedNodeId = null;
+          this._renderConnections();
         }
       });
 
@@ -1093,6 +1113,14 @@
       const desc = (toolData.desc || '').toLowerCase();
       const tag = (toolData.tag || '').toLowerCase();
 
+      if (!VisualFlowCanvas._topoCache) {
+        VisualFlowCanvas._topoCache = new Map();
+      }
+      const cacheKey = `${slug}::${tag}::${title}`;
+      if (VisualFlowCanvas._topoCache.has(cacheKey)) {
+        return JSON.parse(JSON.stringify(VisualFlowCanvas._topoCache.get(cacheKey)));
+      }
+
       // 1. Multimodal & Vision VLM
       if (slug.includes('pixtral') || slug.includes('vlm') || slug.includes('vision') || slug.includes('multimodal') || slug.includes('whisper') || slug.includes('audio') || slug.includes('speech') || title.includes('pixtral') || title.includes('vision') || title.includes('multimodal')) {
         return {
@@ -1452,13 +1480,139 @@
         };
       }
 
-      // 11. Technology-Specific Synthesis (Fallback for any of the 341 studios)
+      // 11. Cloud Data Warehouses & Analytics
+      if (slug.includes('warehouse') || slug.includes('snowflake') || slug.includes('bigquery') || slug.includes('clickhouse') || slug.includes('duckdb') || title.includes('warehouse') || title.includes('snowflake') || title.includes('bigquery')) {
+        return {
+          id: slug || 'warehouse',
+          name: toolData.title || 'Cloud Data Warehouse & Analytical Lakehouse',
+          category: 'database',
+          nodes: [
+            { id: 'dw_1', type: 'input', title: 'Streaming CDC & Ingestion Bus', icon: '⚡', x: 60, y: 140, params: { ingestion: 'Kafka / Debezium CDC', latency: '< 50ms' }, desc: 'Captures transactional mutation logs and streams high-throughput event payloads.' },
+            { id: 'dw_2', type: 'transform', title: 'Schema Contracts & Data Gate', icon: '🛡️', x: 380, y: 140, params: { validator: 'Great Expectations', nullChecks: 'Enforced' }, desc: 'Enforces data quality contracts and quarantines malformed or drifting schemas.' },
+            { id: 'dw_3', type: 'storage', title: 'Columnar Warehouse Storage', icon: '❄️', x: 700, y: 140, params: { engine: 'Snowflake / ClickHouse', format: 'Parquet / Vectorized SIMD' }, desc: 'High-speed columnar storage partitioning data across micro-partitions with pruning.' },
+            { id: 'dw_4', type: 'compute', title: 'dbt Semantic Transformation', icon: '🔄', x: 1020, y: 140, params: { tool: 'dbt-core / DuckDB', materialization: 'Incremental DAG' }, desc: 'Builds modular dimensional marts and updates lineage graphs with zero duplication.' },
+            { id: 'dw_5', type: 'output', title: 'Real-Time Analytics & BI Delivery', icon: '📊', x: 1340, y: 140, params: { queryCache: 'Redis / Superset', p95Query: '< 250ms' }, desc: 'Serves low-latency executive dashboards, semantic metric queries, and ad-hoc SQL.' }
+          ],
+          connections: [
+            { from: 'dw_1', to: 'dw_2' },
+            { from: 'dw_2', to: 'dw_3' },
+            { from: 'dw_3', to: 'dw_4' },
+            { from: 'dw_4', to: 'dw_5' }
+          ],
+          copilotHtml: `
+            <div style="font-weight:600; color:#38bdf8; margin-bottom:0.4rem;">🔬 Cloud Data Warehouse & Analytics Lab</div>
+            <p>1. Ingest streaming change-data-capture records with Kafka.</p>
+            <p>2. Enforce schema contracts and verify partition pruning in query execution plan.</p>
+            <p>3. Run incremental dbt models and observe sub-second analytical query performance.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              dbt run --select marts.finance+ && clickhouse-client --query "SELECT count(*) FROM telemetry"
+            </div>
+          `
+        };
+      }
+
+      // 12. Realtime Voice AI & Audio Reasoning
+      if (slug.includes('voice') || slug.includes('realtime') || slug.includes('audio-stream') || title.includes('voice api') || title.includes('realtime voice')) {
+        return {
+          id: slug || 'voice',
+          name: toolData.title || 'Ultra-Low Latency Realtime Voice AI Pipeline',
+          category: 'ai',
+          nodes: [
+            { id: 'voc_1', type: 'input', title: 'WebRTC Audio Stream Ingestion', icon: '🎙️', x: 60, y: 140, params: { transport: 'WebRTC / WebSocket', codec: 'Opus 48kHz, 20ms chunk' }, desc: 'Bi-directional full-duplex audio transport receiving live microphone streams.' },
+            { id: 'voc_2', type: 'transform', title: 'Silero Voice Activity Detection (VAD)', icon: '⚡', x: 380, y: 140, params: { interruptionLatency: '< 40ms', threshold: '0.65' }, desc: 'Low-latency neural audio gating detecting speech starts, pauses, and barge-in interruptions.' },
+            { id: 'voc_3', type: 'model', title: 'Streaming Speech-to-Text (STT)', icon: '📝', x: 700, y: 140, params: { model: 'Whisper-Streaming / Nova-2', wordErrorRate: '< 2.4%' }, desc: 'Converts raw audio wave chunks into speculative streaming transcript tokens.' },
+            { id: 'voc_4', type: 'model', title: 'Realtime Autoregressive Reasoner', icon: '🧠', x: 1020, y: 140, params: { model: 'GPT-4o Realtime / Gemini Live', ttft: '< 180ms' }, desc: 'Generates streaming conversational responses with function-calling capabilities.' },
+            { id: 'voc_5', type: 'output', title: 'Neural Text-to-Speech (TTS) Synthesizer', icon: '🔊', x: 1340, y: 140, params: { glassToGlass: '< 320ms', prosody: 'Adaptive Natural' }, desc: 'Synthesizes streaming PCM audio chunks back over the WebRTC peer connection.' }
+          ],
+          connections: [
+            { from: 'voc_1', to: 'voc_2' },
+            { from: 'voc_2', to: 'voc_3' },
+            { from: 'voc_3', to: 'voc_4' },
+            { from: 'voc_4', to: 'voc_5' }
+          ],
+          copilotHtml: `
+            <div style="font-weight:600; color:#38bdf8; margin-bottom:0.4rem;">🔬 Realtime Voice & Audio Lab</div>
+            <p>1. Connect WebRTC media stream with Opus 48kHz encoding.</p>
+            <p>2. Verify Silero VAD detects user speech interruptions within 40ms.</p>
+            <p>3. Monitor glass-to-glass latency maintaining total response under 350ms.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              python -m voice_agent.webrtc_runner --model openai-realtime --latency-budget 300ms
+            </div>
+          `
+        };
+      }
+
+      // 13. Frontier Reasoning & Autonomous Thinking
+      if (slug.includes('reasoning') || slug.includes('luna') || slug.includes('sol') || slug.includes('thinking') || title.includes('reasoning') || title.includes('decisions')) {
+        return {
+          id: slug || 'reasoning',
+          name: toolData.title || 'Frontier Reasoning & Decision Router Studio',
+          category: 'ai',
+          nodes: [
+            { id: 'rsn_1', type: 'input', title: 'Complex Goal Specification', icon: '🎯', x: 60, y: 140, params: { schema: 'Multi-Constraint Goal', context: '128k Tokens' }, desc: 'Ingests complex engineering objectives with explicit safety boundaries.' },
+            { id: 'rsn_2', type: 'model', title: 'Thinking & Chain-of-Thought Core', icon: '🧠', x: 380, y: 140, params: { reasoningBudget: '8192 tokens', strategy: 'MCTS / Reflection' }, desc: 'Explores multiple hypothesis branches with step-by-step mathematical reasoning.' },
+            { id: 'rsn_3', type: 'security', title: 'Self-Correction & Invariant Verifier', icon: '🛡️', x: 700, y: 140, params: { formalChecks: 'SMT Solver / Proof Validator', passRate: '99.8%' }, desc: 'Verifies logical consistency, code correctness, and invariants before execution.' },
+            { id: 'rsn_4', type: 'tool', title: 'Sandboxed Execution Harness', icon: '⚡', x: 1020, y: 140, params: { sandbox: 'Isolated MicroVM', timeout: '15s' }, desc: 'Runs unit tests, lint checks, and simulation trials in an isolated container.' },
+            { id: 'rsn_5', type: 'output', title: 'Verifiable Decision Trace & Plan', icon: '🚀', x: 1340, y: 140, params: { format: 'Auditable DAG + Telemetry', signoff: 'Verified' }, desc: 'Emits cryptographically auditable execution plan with reasoning rationales.' }
+          ],
+          connections: [
+            { from: 'rsn_1', to: 'rsn_2' },
+            { from: 'rsn_2', to: 'rsn_3' },
+            { from: 'rsn_3', to: 'rsn_4' },
+            { from: 'rsn_4', to: 'rsn_5' }
+          ],
+          copilotHtml: `
+            <div style="font-weight:600; color:#a855f7; margin-bottom:0.4rem;">🔬 Frontier Reasoning & Thinking Lab</div>
+            <p>1. Deconstruct multi-constraint problem into hypothesis tree.</p>
+            <p>2. Budget reasoning tokens to verify invariant proofs.</p>
+            <p>3. Execute candidate code in sandboxed microVM before emitting decision trace.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              python -m reasoning.evaluator --budget-tokens 4096 --verify-smt
+            </div>
+          `
+        };
+      }
+
+      // 14. Sovereign & Localized Vernacular AI
+      if (slug.includes('swasthya') || slug.includes('farming') || slug.includes('tamil') || slug.includes('vakil') || slug.includes('whatsapp') || slug.includes('aadhaar') || slug.includes('vernacular') || title.includes('vernacular') || title.includes('aadhaar') || title.includes('whatsapp') || title.includes('health') || title.includes('law')) {
+        return {
+          id: slug || 'vernacular',
+          name: toolData.title || 'Sovereign & Localized AI Application Engine',
+          category: 'ai',
+          nodes: [
+            { id: 'ind_1', type: 'input', title: 'Citizen & Mobile Request Gateway', icon: '📱', x: 60, y: 140, params: { channel: 'WhatsApp / Web / IVR Voice', audioInput: 'Opus / WAV' }, desc: 'Ingests voice notes, vernacular text, and photos from citizen end-users.' },
+            { id: 'ind_2', type: 'transform', title: 'Indic Multilingual Engine (Bhashini)', icon: '🗣️', x: 380, y: 140, params: { languages: '22 Official Indic Languages', asrAccuracy: '94.2%' }, desc: 'Translates and normalizes regional dialects into canonical domain queries.' },
+            { id: 'ind_3', type: 'storage', title: 'Statutory & Domain Knowledge Store', icon: '📚', x: 700, y: 140, params: { corpus: 'IPC / Agronomy / Ayushman Bharat', search: 'Hybrid BM25 + Vector' }, desc: 'Verified statutory knowledge base ensuring grounded, legally compliant answers.' },
+            { id: 'ind_4', type: 'security', title: 'Aadhaar & Consent Verification Gate', icon: '🛡️', x: 1020, y: 140, params: { privacy: 'Digital Personal Data Protection Act', uidaiSandbox: 'OTP/eKYC' }, desc: 'Validates citizen consent, redacts PII, and asserts cryptographic identity proofs.' },
+            { id: 'ind_5', type: 'output', title: 'Actionable Grievance & Citizen Ticket', icon: '🎯', x: 1340, y: 140, params: { outputType: 'Synthesized Voice + SMS + Webhook', auditId: 'SHA-256' }, desc: 'Emits localized voice guidance and automatically files authenticated civic tickets.' }
+          ],
+          connections: [
+            { from: 'ind_1', to: 'ind_2' },
+            { from: 'ind_2', to: 'ind_3' },
+            { from: 'ind_3', to: 'ind_4' },
+            { from: 'ind_4', to: 'ind_5' }
+          ],
+          copilotHtml: `
+            <div style="font-weight:600; color:#10b981; margin-bottom:0.4rem;">🔬 Sovereign Vernacular AI Lab</div>
+            <p>1. Ingest citizen voice note via WhatsApp Webhook.</p>
+            <p>2. Translate regional dialect with Bhashini Indic model.</p>
+            <p>3. Verify DPDP Act privacy compliance and generate signed civic resolution ticket.</p>
+            <div style="margin-top:0.6rem; padding:0.4rem; background:rgba(0,0,0,0.3); border-radius:4px; font-family:monospace; font-size:0.75rem;">
+              python main.py --channel whatsapp --language ta --dpdp-compliant
+            </div>
+          `
+        };
+      }
+
+      // 15. Technology-Specific Synthesis (Dynamic Fallback for Any Studio)
       const rawTitle = toolData.title || (slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')) || 'Engineering Studio';
       const studioName = VisualFlowCanvas.escapeHtml(rawTitle);
-      const rawDesc = toolData.desc ? toolData.desc.substring(0, 110) + '...' : `Technology workspace for ${rawTitle}.`;
+      const rawDesc = toolData.desc ? toolData.desc.substring(0, 140) + '...' : `Technology workspace for ${rawTitle}.`;
       const cleanDesc = VisualFlowCanvas.escapeHtml(rawDesc);
       const safeCategory = VisualFlowCanvas.escapeHtml(toolData.category || 'engineering');
       const safeTag = VisualFlowCanvas.escapeHtml(toolData.tag || 'Runtime');
+      const repoName = VisualFlowCanvas.escapeHtml(toolData.repository || `Pradeeptalari14/tp-${slug}`);
+
       return {
         id: slug || 'custom',
         name: studioName,
@@ -1466,9 +1620,9 @@
         nodes: [
           { id: 'gen_1', type: 'input', title: `${studioName} Ingestion`, icon: '📥', x: 60, y: 140, params: { source: 'Client Config / API', schema: 'Strict' }, desc: `Ingests inputs and configurations for ${studioName}.` },
           { id: 'gen_2', type: 'transform', title: `${safeCategory.toUpperCase()} Controller`, icon: '⚙️', x: 380, y: 140, params: { engine: 'WASM / Companion Container', state: 'Active' }, desc: `Initializes execution logic and validates dependency graph.` },
-          { id: 'gen_3', type: 'model', title: `Core Engine: ${safeTag}`, icon: '🧠', x: 700, y: 140, params: { mode: 'Production Compliant', sandbox: 'Isolated' }, desc: cleanDesc },
-          { id: 'gen_4', type: 'security', title: 'Integrity & Security Guardrail', icon: '🛡️', x: 1020, y: 140, params: { check: 'Passed', cveScan: '0 Found' }, desc: 'Audits generated artifacts against security baseline policies.' },
-          { id: 'gen_5', type: 'output', title: 'Verified Telemetry & Artifact Export', icon: '🎯', x: 1340, y: 140, params: { exportFormat: 'YAML / JSON / Code', status: 'Ready' }, desc: 'Emits auditable configurations and real-time execution metrics.' }
+          { id: 'gen_3', type: 'model', title: `Core Engine: ${safeTag}`, icon: '🧠', x: 700, y: 140, params: { mode: 'Production Compliant', sandbox: 'Isolated MicroVM' }, desc: cleanDesc },
+          { id: 'gen_4', type: 'security', title: 'Integrity & Security Guardrail', icon: '🛡️', x: 1020, y: 140, params: { check: 'Passed', cveScan: '0 Found', slsaLevel: 'Level 3' }, desc: 'Audits generated artifacts against security baseline policies and CVE registries.' },
+          { id: 'gen_5', type: 'output', title: 'Verified Telemetry & Artifact Export', icon: '🎯', x: 1340, y: 140, params: { exportFormat: 'YAML / JSON / Code', status: 'Ready' }, desc: 'Emits auditable configurations and real-time execution golden signal metrics.' }
         ],
         connections: [
           { from: 'gen_1', to: 'gen_2' },
@@ -1478,9 +1632,47 @@
         ],
         copilotHtml: `
           <div style="font-weight:600; color:#38bdf8; margin-bottom:0.4rem;">🔬 Guided ${studioName} Lab</div>
-          <p>1. Configure inputs and run simulated DAG execution.</p>
-          <p>2. Verify intermediate transform parameters in the Inspector.</p>
-          <p>3. Export verified reproducible project files for Docker or production deployment.</p>
+          <div class="vf-guide-curriculum">
+            <div class="vf-curriculum-step">
+              <div class="vf-step-num">1</div>
+              <div class="vf-step-content">
+                <div class="vf-step-title">📋 Phase 1: Prerequisites</div>
+                <div class="vf-step-desc">Configure inputs and verify environment contracts.</div>
+              </div>
+            </div>
+            <div class="vf-curriculum-step">
+              <div class="vf-step-num">2</div>
+              <div class="vf-step-content">
+                <div class="vf-step-title">📚 Phase 2: Architecture Invariants</div>
+                <div class="vf-step-desc">${cleanDesc}</div>
+              </div>
+            </div>
+            <div class="vf-curriculum-step">
+              <div class="vf-step-num">3</div>
+              <div class="vf-step-content">
+                <div class="vf-step-title">🧪 Phase 3: Interactive Drill</div>
+                <div class="vf-step-desc">Inspect intermediate transform parameters and verify latency budgets.</div>
+              </div>
+            </div>
+            <div class="vf-curriculum-step">
+              <div class="vf-step-num">4</div>
+              <div class="vf-step-content">
+                <div class="vf-step-title">🎯 Phase 4: SRE Troubleshooting</div>
+                <div class="vf-step-desc">Simulate component failure and observe automated circuit breaking.</div>
+              </div>
+            </div>
+            <div class="vf-curriculum-step">
+              <div class="vf-step-num">5</div>
+              <div class="vf-step-content">
+                <div class="vf-step-title">🚀 Phase 5: Production Project Export</div>
+                <div class="vf-step-desc">Export verified reproducible project files for Docker or production deployment.</div>
+              </div>
+            </div>
+          </div>
+          <div class="vf-guide-cli-box">
+            <div class="vf-cli-title">💻 Production Execution Command:</div>
+            <code>git clone https://github.com/${repoName}.git && cd $(basename "${repoName}") && bash start.sh</code>
+          </div>
         `
       };
     }
@@ -1496,7 +1688,16 @@
       this.currentStudioId = safeStudioId;
 
       const slug = safeStudioId.toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
-      const tool = (this.studiosList || []).find(s => {
+      if (!this._studioLookup) {
+        this._studioLookup = new Map();
+        (this.studiosList || []).forEach(s => {
+          const itemSlug = (s.link || '').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
+          if (itemSlug) this._studioLookup.set(itemSlug, s);
+          if (s.title) this._studioLookup.set(s.title.toLowerCase(), s);
+        });
+      }
+
+      const tool = this._studioLookup.get(slug) || (this.studiosList || []).find(s => {
         const itemSlug = (s.link || '').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
         return itemSlug === slug || (s.title && s.title.toLowerCase().includes(slug));
       }) || { title: safeStudioId, category: 'ai' };
@@ -1736,7 +1937,24 @@
     }
 
     _renderConnections() {
-      let paths = '';
+      const defs = `
+        <defs>
+          <marker id="vf-arrow-idle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b" />
+          </marker>
+          <marker id="vf-arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8" />
+          </marker>
+          <marker id="vf-arrow-success" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+          </marker>
+          <marker id="vf-arrow-failed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f43f5e" />
+          </marker>
+        </defs>
+      `;
+
+      let paths = defs;
       this.connections.forEach((c, idx) => {
         const fromNode = this.nodes.get(c.from);
         const toNode = this.nodes.get(c.to);
@@ -1752,10 +1970,40 @@
         const dx = Math.abs(x2 - x1) * 0.55;
         const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
 
-        paths += `<path class="vf-wire" data-idx="${idx}" d="${d}" />`;
+        paths += `<path class="vf-wire" data-idx="${idx}" data-from="${VisualFlowCanvas.escapeHtml(c.from)}" data-to="${VisualFlowCanvas.escapeHtml(c.to)}" d="${d}" />`;
       });
 
       this.svgLayer.innerHTML = paths;
+    }
+
+    _updateWiresForNode(nodeId) {
+      if (!this.svgLayer) return;
+      let hasMissing = false;
+      this.connections.forEach((c, idx) => {
+        if (c.from === nodeId || c.to === nodeId) {
+          const fromNode = this.nodes.get(c.from);
+          const toNode = this.nodes.get(c.to);
+          if (!fromNode || !toNode) return;
+
+          const nodeWidth = 280;
+          const x1 = fromNode.x + nodeWidth;
+          const y1 = fromNode.y + 70;
+          const x2 = toNode.x;
+          const y2 = toNode.y + 70;
+
+          const dx = Math.abs(x2 - x1) * 0.55;
+          const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+          const pathEl = this.svgLayer.querySelector(`path[data-idx="${idx}"]`);
+          if (pathEl) {
+            pathEl.setAttribute('d', d);
+          } else {
+            hasMissing = true;
+          }
+        }
+      });
+      if (hasMissing) {
+        this._renderConnections();
+      }
     }
 
     autoLayout() {
@@ -2047,6 +2295,36 @@
         hint1 = `Indexing is the difference between sub-10ms queries and 5-second timeouts.`;
         hint2 = `Verify distance metric: Cosine (<=>) vs Inner Product (<#>) vs L2 Euclidean (<->).`;
         hint3 = `Create HNSW index: CREATE INDEX ON docs USING hnsw (embedding vector_cosine_ops) WITH (m=16, ef_construction=64);`;
+      } else if (type === 'tool' || title.includes('worker') || title.includes('tool') || title.includes('sandbox')) {
+        beginner = `The hands and tools of the agent. It safely executes specific commands (like querying a database or inspecting Kubernetes pods) in a protected sandbox.`;
+        technical = `Sandboxed microVM / gVisor process execution with strict POSIX syscall interception, CPU/memory quotas, and network egress controls.`;
+        inputs = `Structured JSON tool arguments, SQL query templates, or authenticated API payloads.`;
+        outputs = `Command exit codes, standard output/error streams, or structured database result sets.`;
+        mistakes = `Running tools with root/admin privileges; executing unsanitized user inputs; omitting execution timeouts.`;
+        verification = `Verify microVM sandbox isolation with 'dmesg | grep gVisor' and test that network egress blocks unauthorized endpoints.`;
+        hint1 = `Always sandbox external tool execution to prevent privilege escalation.`;
+        hint2 = `Enforce timeouts (max 5s) on external tool invocations to avoid deadlocks.`;
+        hint3 = `Use gVisor runsc runtime handler with dropped capabilities: CAP_NET_RAW and CAP_SYS_ADMIN.`;
+      } else if (type === 'compute' || title.includes('gpu') || title.includes('node') || title.includes('fleet')) {
+        beginner = `The engine room. It supplies the raw processing power (CPU/GPU nodes) that runs your AI models and microservices.`;
+        technical = `Hardware-accelerated compute instances (e.g. H100 GPUs or ARM64 instances) managed via Karpenter with NUMA node optimization and tensor parallelism.`;
+        inputs = `Pod scheduling requests, container resource requests (cpu/memory/gpu), and priority classes.`;
+        outputs = `Initialized bare-metal or virtualized node capacity ready for container binding in <40s.`;
+        mistakes = `Over-provisioning On-Demand instances instead of Spot; ignoring NUMA node placement; missing GPU memory limits.`;
+        verification = `Inspect node resource allocation: 'kubectl describe node' and verify VRAM utilization > 85%.`;
+        hint1 = `Use price-capacity-optimized spot strategies to reduce compute costs by up to 70%.`;
+        hint2 = `Verify GPU interconnect bandwidth using nvidia-smi nvlink -s.`;
+        hint3 = `Set up Karpenter consolidation with WhenUnderutilized policy to automatically bin-pack compute pools.`;
+      } else if (type === 'network' || title.includes('mesh') || title.includes('ingress') || title.includes('cni')) {
+        beginner = `The highway system. It connects different services together securely, routing requests and enforcing network boundaries.`;
+        technical = `Kernel-level eBPF CNI (Cilium) with WireGuard encryption, multi-ENI IPAM prefix delegation, and L3-L7 policy enforcement.`;
+        inputs = `Raw Ethernet frames, TCP/IP packets, and HTTP/2 or gRPC request streams.`;
+        outputs = `Encrypted network traffic, routed service endpoints, and packet-level telemetry traces.`;
+        mistakes = `Allowing unsegmented flat networks; relying on slow iptables rather than eBPF; omitting MTU optimization for overlay networks.`;
+        verification = `Run 'cilium connectivity test' and confirm 100% passed with zero dropped packets.`;
+        hint1 = `Kernel eBPF routing bypasses IP tables, improving packet throughput by 3x.`;
+        hint2 = `Ensure MTU is configured to 9000 (Jumbo frames) for high-bandwidth pod-to-pod communication.`;
+        hint3 = `Enforce default-deny CiliumNetworkPolicy requiring explicit labels for inter-namespace traffic.`;
       } else if (type === 'deploy' || type === 'output' || title.includes('deploy') || title.includes('export') || title.includes('canary')) {
         beginner = `The delivery truck. It safely promotes verified applications into production, using canary traffic shifts to ensure users experience zero downtime.`;
         technical = `GitOps controller (ArgoCD) applying declarative K8s manifests with automated SLO metric rollbacks and traffic weight shifting.`;
