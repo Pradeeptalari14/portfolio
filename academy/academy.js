@@ -1190,12 +1190,24 @@ spec:
     const termInput = document.getElementById('termInputField');
     const termLogs = document.getElementById('termLogContainer');
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     function appendTermLog(cmd, res) {
       if (!termLogs) return;
       const line = document.createElement('div');
       line.className = 'terminal-line';
       const promptName = state.lab.currentProject === 'vllm-ai' ? 'sre@dgx-h100:~$' : state.lab.currentProject === 'devsec-policy' ? 'secops@pci-cluster:~$' : 'user@kind-k8s:~$';
-      line.innerHTML = `<span class="term-prompt">${promptName}</span> ${cmd}<br><span style="color: #94a3b8; white-space: pre-wrap;">${res}</span>`;
+      const safeCmd = escapeHtml(cmd);
+      const safeRes = escapeHtml(res);
+      line.innerHTML = `<span class="term-prompt">${promptName}</span> ${safeCmd}<br><span style="color: #94a3b8; white-space: pre-wrap;">${safeRes}</span>`;
       termLogs.appendChild(line);
       termLogs.scrollTop = termLogs.scrollHeight;
     }
