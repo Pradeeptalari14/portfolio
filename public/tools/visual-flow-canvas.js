@@ -236,9 +236,11 @@
       this.draggedNodeId = null;
       this.dragOffset = { x: 0, y: 0 };
 
-      // Execution state
+      // Execution & Simulation state
       this.isRunning = false;
+      this.isPaused = false;
       this.executionStep = 0;
+      this.activeFlowDirection = 'happy'; // 12 flow directions
 
       this._buildDOM();
       this._bindEvents();
@@ -269,11 +271,30 @@
                 <button class="vf-mode-btn active" id="vfModeBtn">⚡ Visual Flow</button>
               </nav>
 
-              <!-- Studio Selector Dropdown (341 Studios) -->
+              <!-- Studio Selector Dropdown (341+ Studios) -->
               <div class="vf-studio-selector-wrapper">
                 <label for="vfStudioSelect" class="vf-studio-label">Studio:</label>
                 <select id="vfStudioSelect" class="vf-studio-select">
                   <option value="">Select Studio (341 available)...</option>
+                </select>
+              </div>
+
+              <!-- 12 Flow Direction Selector -->
+              <div class="vf-direction-wrapper">
+                <label for="vfFlowDirectionSelect" class="vf-direction-label">Direction:</label>
+                <select id="vfFlowDirectionSelect" class="vf-direction-select">
+                  <option value="happy">1. Happy Path (Normal)</option>
+                  <option value="reverse">2. Reverse Trace (Outputs ➔ Origin)</option>
+                  <option value="failure">3. Failure Path (Error Propagation)</option>
+                  <option value="retry">4. Retry Path (Backoff & Limits)</option>
+                  <option value="rollback">5. Rollback Path (Safe Recovery)</option>
+                  <option value="dependency">6. Dependency Path (Prerequisites)</option>
+                  <option value="data">7. Data Flow (Payload Inspection)</option>
+                  <option value="security">8. Security Flow (Zero-Trust Gates)</option>
+                  <option value="observability">9. Observability Flow (MELT Signals)</option>
+                  <option value="recovery">10. Recovery Flow (Auto-Remediation)</option>
+                  <option value="performance">11. Performance Flow (Bottlenecks)</option>
+                  <option value="learning">12. Learning Flow (Learn ➔ Lab ➔ Project)</option>
                 </select>
               </div>
             </div>
@@ -287,6 +308,7 @@
 
               <button class="vf-btn vf-btn-ghost" id="vfZenBtn" title="Toggle Fullscreen Zen Canvas Mode (Hide sidebars)">⛶ Zen Canvas</button>
               <button class="vf-btn" id="vfAutoLayoutBtn" title="Automatic Hierarchical Layout">📐 Auto Layout</button>
+              <button class="vf-btn" id="vfManimMcpBtn" title="Render 3Blue1Brown Mathematical/System Animation">🎬 Manim MCP</button>
               <button class="vf-btn" id="vfSaveBtn" title="Save Project to Local Storage">💾 Save</button>
               <button class="vf-btn" id="vfRestoreBtn" title="Restore Saved Project">📂 Restore</button>
               <input type="file" id="vfImportFileInput" accept=".json" style="display:none;" />
@@ -380,12 +402,20 @@
                 <div id="vfNodesLayer"></div>
               </div>
 
-              <!-- Floating Canvas Controls -->
+              <!-- Floating Canvas Controls & Step-by-Step Playback -->
               <div class="vf-floating-toolbar">
                 <button class="vf-tool-btn" id="vfZoomInBtn" title="Zoom In">➕</button>
                 <button class="vf-tool-btn" id="vfZoomResetBtn" title="Reset Zoom">100%</button>
                 <button class="vf-tool-btn" id="vfZoomOutBtn" title="Zoom Out">➖</button>
                 <button class="vf-tool-btn" id="vfFitViewBtn" title="Fit Entire Graph in View">🎯 Fit View</button>
+                <span style="color:var(--vf-border);">|</span>
+                <div class="vf-playback-bar">
+                  <button class="vf-playback-btn" id="vfPlayPauseBtn" title="Play / Pause Simulation">▶ Play</button>
+                  <button class="vf-playback-btn" id="vfStepBackBtn" title="Step Backward">⏮ Step Back</button>
+                  <button class="vf-playback-btn" id="vfStepForwardBtn" title="Step Forward">⏭ Step Next</button>
+                  <button class="vf-playback-btn" id="vfResetFlowBtn" title="Reset Simulation State">🔄 Reset</button>
+                  <button class="vf-playback-btn danger" id="vfInjectFailureBtn" title="Inject Safe Failure Scenario">⚠️ Inject Failure</button>
+                </div>
                 <span style="color:var(--vf-border);">|</span>
                 <button class="vf-tool-btn" id="vfClearBtn" title="Clear Canvas">🗑️</button>
               </div>
@@ -474,6 +504,15 @@
       this.importBtn = this.container.querySelector('#vfImportBtn');
       this.importFileInput = this.container.querySelector('#vfImportFileInput');
       this.exportCodeBtn = this.container.querySelector('#vfExportCodeBtn');
+
+      // Master Extensions Elements
+      this.flowDirectionSelect = this.container.querySelector('#vfFlowDirectionSelect');
+      this.manimMcpBtn = this.container.querySelector('#vfManimMcpBtn');
+      this.playPauseBtn = this.container.querySelector('#vfPlayPauseBtn');
+      this.stepBackBtn = this.container.querySelector('#vfStepBackBtn');
+      this.stepForwardBtn = this.container.querySelector('#vfStepForwardBtn');
+      this.resetFlowBtn = this.container.querySelector('#vfResetFlowBtn');
+      this.injectFailureBtn = this.container.querySelector('#vfInjectFailureBtn');
     }
 
     _bindEvents() {
@@ -542,8 +581,40 @@
       // 4. Auto Layout
       this.autoLayoutBtn.addEventListener('click', () => this.autoLayout());
 
-      // 5. Run Flow Execution
+      // 5. Run Flow Execution & Playback Controls
       this.runFlowBtn.addEventListener('click', () => this.runFlow());
+
+      if (this.flowDirectionSelect) {
+        this.flowDirectionSelect.addEventListener('change', (e) => {
+          this.activeFlowDirection = e.target.value;
+          const optText = e.target.options && e.target.selectedIndex >= 0 ? e.target.options[e.target.selectedIndex].text : e.target.value;
+          this.log(`Switched flow direction to: [${optText}]`);
+        });
+      }
+
+      if (this.manimMcpBtn) {
+        this.manimMcpBtn.addEventListener('click', () => this.openManimModal());
+      }
+
+      if (this.playPauseBtn) {
+        this.playPauseBtn.addEventListener('click', () => this.togglePlayPause());
+      }
+
+      if (this.stepBackBtn) {
+        this.stepBackBtn.addEventListener('click', () => this.stepBackward());
+      }
+
+      if (this.stepForwardBtn) {
+        this.stepForwardBtn.addEventListener('click', () => this.stepForward());
+      }
+
+      if (this.resetFlowBtn) {
+        this.resetFlowBtn.addEventListener('click', () => this.resetSimulation());
+      }
+
+      if (this.injectFailureBtn) {
+        this.injectFailureBtn.addEventListener('click', () => this.injectFailure());
+      }
 
       // 6. Export Code
       this.exportCodeBtn.addEventListener('click', () => this.exportCode());
@@ -1442,8 +1513,10 @@
           `;
         }).join('');
 
+        const nodeState = VisualFlowCanvas.escapeHtml(n.state || 'pending');
+
         return `
-          <div class="vf-node vf-type-${nodeType} ${isSel ? 'selected' : ''}" data-id="${nodeId}" style="left: ${Number(n.x) || 0}px; top: ${Number(n.y) || 0}px;">
+          <div class="vf-node vf-type-${nodeType} state-${nodeState} ${isSel ? 'selected' : ''}" data-id="${nodeId}" style="left: ${Number(n.x) || 0}px; top: ${Number(n.y) || 0}px;">
             <div class="vf-node-accent vf-accent-${nodeType}"></div>
             <div class="vf-port vf-port-input" data-port="in" title="Connect Input"></div>
             <div class="vf-port vf-port-output" data-port="out" title="Connect Output"></div>
@@ -1454,6 +1527,7 @@
                 <span class="vf-node-title" title="${nodeTitle}">${nodeTitle}</span>
               </div>
               <div style="display:flex; align-items:center; gap:0.35rem; flex-shrink:0;">
+                <span class="vf-node-status-pill vf-status-${nodeState}">${nodeState}</span>
                 <span class="vf-node-badge vf-badge-${nodeType}">${nodeType}</span>
                 <button class="vf-node-delete" data-del="${nodeId}" title="Remove Node">✕</button>
               </div>
@@ -1625,6 +1699,8 @@
       const escTitle = VisualFlowCanvas.escapeHtml(node.title || '');
       const escDesc = VisualFlowCanvas.escapeHtml(node.desc || '');
       const escIcon = VisualFlowCanvas.escapeHtml(node.icon || '📦');
+      const ctx = this._getNodeLearningContext(node);
+      const nodeState = VisualFlowCanvas.escapeHtml(node.state || 'pending');
 
       const paramsForm = Object.entries(node.params || {}).map(([k, v]) => {
         const escK = VisualFlowCanvas.escapeHtml(k);
@@ -1638,14 +1714,33 @@
       }).join('');
 
       this.inspectorContent.innerHTML = `
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
-          <span style="font-size:1.4rem;">${escIcon}</span>
-          <div>
-            <div style="font-weight:700; color:#fff; font-size:0.95rem;">${escTitle}</div>
-            <div style="font-size:0.75rem; color:var(--vf-accent-cyan); font-family:var(--vf-font-mono);">ID: ${escId} (${escType})</div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="font-size:1.4rem;">${escIcon}</span>
+            <div>
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">${escTitle}</div>
+              <div style="font-size:0.72rem; color:var(--vf-accent-cyan); font-family:var(--vf-font-mono);">ID: ${escId} (${escType})</div>
+            </div>
           </div>
+          <span class="vf-node-status-pill vf-status-${nodeState}">${nodeState}</span>
         </div>
 
+        <!-- Dual Explanation Tabs (Beginner vs Technical) -->
+        <div class="vf-dual-exp-tabs">
+          <button class="vf-dual-exp-tab active" id="tabExpBeginner">👶 Beginner Plain-English</button>
+          <button class="vf-dual-exp-tab" id="tabExpTechnical">⚙️ Advanced Technical</button>
+        </div>
+        <div class="vf-dual-exp-body" id="expBody">
+          ${ctx.beginner}
+        </div>
+
+        <!-- Inputs, Outputs & Dependencies -->
+        <div style="margin: 0.75rem 0; font-size: 0.72rem; line-height: 1.45;">
+          <div style="color: #94a3b8; margin-bottom: 0.25rem;"><strong>📥 Inputs:</strong> ${ctx.inputs}</div>
+          <div style="color: #94a3b8;"><strong>📤 Outputs:</strong> ${ctx.outputs}</div>
+        </div>
+
+        <!-- Editable Component Label & Desc -->
         <div class="vf-form-group">
           <label class="vf-form-label">Component Label</label>
           <input type="text" class="vf-form-control" id="vfInspectTitle" value="${escTitle}" />
@@ -1656,35 +1751,104 @@
           <textarea class="vf-form-control" id="vfInspectDesc" rows="2">${escDesc}</textarea>
         </div>
 
-        <div style="border-top: 1px solid var(--vf-border); margin: 1rem 0; padding-top: 0.75rem;">
-          <div class="vf-panel-title" style="margin-bottom:0.75rem;">Active Parameters</div>
+        <!-- Active Parameters -->
+        <div style="border-top: 1px solid var(--vf-border); margin: 0.75rem 0; padding-top: 0.6rem;">
+          <div class="vf-panel-title" style="margin-bottom:0.5rem;">Active Parameters</div>
           ${paramsForm}
         </div>
 
-        <div class="vf-ai-box">
-          <div class="vf-ai-box-title">
-            <span>🤖</span>
-            <span>SRE AI Copilot Insight</span>
+        <!-- 3 Progressive Hint Levels -->
+        <div class="vf-hints-container">
+          <div class="vf-hint-card level-1">
+            <div class="vf-hint-header">
+              <span>💡 Level 1: Conceptual Hint</span>
+              <button class="vf-hint-reveal-btn" data-hint="1">Reveal</button>
+            </div>
+            <div class="vf-hint-content" id="hint-body-1" style="display:none;">${ctx.hint1}</div>
           </div>
-          <div class="vf-ai-box-body">
-            This <strong>${escTitle}</strong> stage executes in client WASM simulation by default.
-            For verified Docker execution, ensure local companion container is active on <code>:8000</code>.
+
+          <div class="vf-hint-card level-2">
+            <div class="vf-hint-header">
+              <span>🔍 Level 2: Diagnostic Hint</span>
+              <button class="vf-hint-reveal-btn" data-hint="2">Reveal</button>
+            </div>
+            <div class="vf-hint-content" id="hint-body-2" style="display:none;">${ctx.hint2}</div>
           </div>
+
+          <div class="vf-hint-card level-3">
+            <div class="vf-hint-header">
+              <span>🛠️ Level 3: Suggested Solution</span>
+              <button class="vf-hint-reveal-btn" data-hint="3">Reveal</button>
+            </div>
+            <div class="vf-hint-content" id="hint-body-3" style="display:none;">${ctx.hint3}</div>
+          </div>
+        </div>
+
+        <!-- Common Mistakes & Verification Box -->
+        <div class="vf-check-box mistakes">
+          <strong>⚠️ Common Anti-Patterns:</strong><br/>
+          ${ctx.mistakes}
+        </div>
+        <div class="vf-check-box verification">
+          <strong>✅ Verification Test Steps:</strong><br/>
+          ${ctx.verification}
+        </div>
+
+        <!-- Direct Connected Action Hub -->
+        <div class="vf-action-hub-links">
+          <a href="/tools/${ctx.studioSlug}/learn.html" class="vf-action-hub-btn" target="_blank"><span>📚</span><span>Learn Docs</span></a>
+          <a href="/tools/${ctx.studioSlug}/index.html" class="vf-action-hub-btn" target="_blank"><span>🧪</span><span>Studio Lab</span></a>
+          <a href="/studios/flow/?studio=${ctx.studioSlug}" class="vf-action-hub-btn"><span>⚡</span><span>Flow DAG</span></a>
+          <a href="/studios/learn/devops_cicd_prompt_library.json" class="vf-action-hub-btn" target="_blank"><span>📝</span><span>Prompts</span></a>
         </div>
       `;
 
-      // Two-way binding
-      const titleInput = this.inspectorContent.querySelector('#vfInspectTitle');
-      titleInput.addEventListener('input', (e) => {
-        node.title = e.target.value;
-        this.render();
+      // Dual Explanation tab listeners
+      const btnBeg = this.inspectorContent.querySelector('#tabExpBeginner');
+      const btnTech = this.inspectorContent.querySelector('#tabExpTechnical');
+      const expBody = this.inspectorContent.querySelector('#expBody');
+      if (btnBeg && btnTech && expBody) {
+        btnBeg.addEventListener('click', () => {
+          btnBeg.classList.add('active');
+          btnTech.classList.remove('active');
+          expBody.textContent = ctx.beginner;
+        });
+        btnTech.addEventListener('click', () => {
+          btnTech.classList.add('active');
+          btnBeg.classList.remove('active');
+          expBody.textContent = ctx.technical;
+        });
+      }
+
+      // Progressive hints reveal toggle
+      this.inspectorContent.querySelectorAll('.vf-hint-reveal-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const num = btn.getAttribute('data-hint');
+          const body = this.inspectorContent.querySelector(`#hint-body-${num}`);
+          if (body) {
+            const isHidden = body.style.display === 'none';
+            body.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Hide' : 'Reveal';
+          }
+        });
       });
 
+      // Two-way parameter and title binding
+      const titleInput = this.inspectorContent.querySelector('#vfInspectTitle');
+      if (titleInput) {
+        titleInput.addEventListener('input', (e) => {
+          node.title = e.target.value;
+          this.render();
+        });
+      }
+
       const descInput = this.inspectorContent.querySelector('#vfInspectDesc');
-      descInput.addEventListener('input', (e) => {
-        node.desc = e.target.value;
-        this.render();
-      });
+      if (descInput) {
+        descInput.addEventListener('input', (e) => {
+          node.desc = e.target.value;
+          this.render();
+        });
+      }
 
       this.inspectorContent.querySelectorAll('.vf-param-input').forEach(inp => {
         inp.addEventListener('input', (e) => {
@@ -1695,47 +1859,333 @@
       });
     }
 
+    _getNodeLearningContext(node) {
+      const type = (node.type || 'model').toLowerCase();
+      const title = (node.title || '').toLowerCase();
+      const studioSlug = (this.currentStudioId || 'ai').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
+
+      let beginner = `This component acts as an essential stage in your pipeline. It ingests upstream events or data, applies domain logic, and routes validated artifacts to the next component.`;
+      let technical = `Executes deterministic state transitions with schema validation, latency budgets (<100ms), and error boundaries. Leverages zero-trust isolation and emits OpenTelemetry distributed traces.`;
+      let inputs = `Structured JSON payloads, raw file streams, or trigger events from upstream dependencies.`;
+      let outputs = `Validated artifacts, normalized token vectors, or signed deployment manifests.`;
+      let mistakes = `Bypassing schema validation; hardcoding production secrets; omitting timeout and retry bounds.`;
+      let verification = `Execute unit integration test, verify exit code 0, and confirm zero CVE/vulnerability findings.`;
+      let hint1 = `Examine what input format this stage expects and ensure the upstream node satisfies that contract.`;
+      let hint2 = `Check environment variables, token limits, and network egress rules in the active parameters.`;
+      let hint3 = `Apply the verified parameter baseline from the reference architecture: ensure timeout is set to 30s and retry limit is 3.`;
+
+      if (type === 'input' || title.includes('ingestion') || title.includes('webhook') || title.includes('git')) {
+        beginner = `The front door of your system. It listens for incoming user requests, Git commits, or raw files, ensuring only valid data enters the pipeline.`;
+        technical = `Performs mTLS termination, cryptographic webhook signature verification (HMAC-SHA256), and schema parsing before downstream ingestion.`;
+        inputs = `Signed Git push events, REST API payloads, or multipart S3 document uploads.`;
+        outputs = `Validated JSON event objects, source checkout references, or raw text streams.`;
+        mistakes = `Accepting unauthenticated webhooks; trusting client-supplied file extensions without MIME validation.`;
+        verification = `Send a mock webhook with an invalid HMAC signature and verify HTTP 401 Unauthorized rejection.`;
+        hint1 = `Ensure your trigger events are authenticated with least-privilege tokens.`;
+        hint2 = `Verify webhook URL secret headers match the receiver configuration.`;
+        hint3 = `Enable branch protection on 'main' and require signed GPG/SSH commits before triggering pipeline.`;
+      } else if (type === 'model' || title.includes('llm') || title.includes('embedding') || title.includes('inference')) {
+        beginner = `The intelligence brain. It transforms human text into mathematical vectors (embeddings) or reasons over data to synthesize natural language answers.`;
+        technical = `Executes high-throughput tensor operations via vLLM PagedAttention, KV-cache prefixing, or INT4/FP8 quantized matrix multiplications.`;
+        inputs = `Tokenized prompt contexts, similarity-ranked retrieved chunks, or multi-modal image patches.`;
+        outputs = `Normalized embedding tensors (float32/float16) or streaming completion tokens with logprobs.`;
+        mistakes = `Exceeding context window limits; ignoring TTFT/TPOT latency degradation; omitting temperature grounding.`;
+        verification = `Benchmark p99 latency under concurrency, verify token usage, and inspect Hallucination score.`;
+        hint1 = `Check if the model context window accommodates both system prompt and retrieved contexts.`;
+        hint2 = `Inspect KV cache fragmentation and monitor GPU VRAM utilization.`;
+        hint3 = `Set temperature to 0.1 for deterministic factuality and enable speculative decoding for 2.4x speedup.`;
+      } else if (type === 'security' || title.includes('sast') || title.includes('shield') || title.includes('guardrail') || title.includes('gate')) {
+        beginner = `The security guard. It inspects code, containers, and data for vulnerabilities, leaked secrets, or malicious prompt injection attacks before letting anything pass.`;
+        technical = `AST static analysis (Semgrep), CVE layer auditing (Trivy), Rekor transparency logging, and runtime eBPF syscall filtering (Tetragon).`;
+        inputs = `Compiled container layers, source code ASTs, or incoming user prompts with potential jailbreaks.`;
+        outputs = `Signed SLSA Level 3 attestations, CycloneDX SBOM manifests, or blocked execution signals.`;
+        mistakes = `Silently ignoring CRITICAL CVEs; checking secrets into version control; running containers as root UID 0.`;
+        verification = `Scan artifact with 'trivy image --severity CRITICAL --exit-code 1' and confirm zero failures.`;
+        hint1 = `Remember least privilege: no service should have more access than its exact job requires.`;
+        hint2 = `Look for hardcoded tokens, open 0.0.0.0/0 CIDR ranges, and missing Kubernetes securityContext.`;
+        hint3 = `Set runAsNonRoot: true, enforce read-only root filesystems, and verify keyless Cosign signatures.`;
+      } else if (type === 'storage' || title.includes('pgvector') || title.includes('database') || title.includes('cache')) {
+        beginner = `The long-term memory. It securely stores knowledge, database records, and vector representations so they can be retrieved in milliseconds.`;
+        technical = `PostgreSQL pgvector with HNSW/IVFFlat indexing, ACID transaction isolation, and Redis distributed caching.`;
+        inputs = `Vector embeddings (1536-dim), relational tables, or transient key-value cache sessions.`;
+        outputs = `Cosine similarity nearest neighbors (<10ms), ACID committed records, or sub-millisecond cache hits.`;
+        mistakes = `Using sequential scans instead of HNSW indexes; missing connection pool limits; storing unencrypted data at rest.`;
+        verification = `Run EXPLAIN ANALYZE on vector query and verify index scan with execution cost < 15.0.`;
+        hint1 = `Indexing is the difference between sub-10ms queries and 5-second timeouts.`;
+        hint2 = `Verify distance metric: Cosine (<=>) vs Inner Product (<#>) vs L2 Euclidean (<->).`;
+        hint3 = `Create HNSW index: CREATE INDEX ON docs USING hnsw (embedding vector_cosine_ops) WITH (m=16, ef_construction=64);`;
+      } else if (type === 'deploy' || type === 'output' || title.includes('deploy') || title.includes('export') || title.includes('canary')) {
+        beginner = `The delivery truck. It safely promotes verified applications into production, using canary traffic shifts to ensure users experience zero downtime.`;
+        technical = `GitOps controller (ArgoCD) applying declarative K8s manifests with automated SLO metric rollbacks and traffic weight shifting.`;
+        inputs = `Immutable container digests, signed Helm values, and Prometheus canary error signals.`;
+        outputs = `Live production endpoints serving traffic, telemetry audit logs, and release certificates.`;
+        mistakes = `Using mutable ':latest' image tags; promoting without staging smoke tests; missing automatic rollback triggers.`;
+        verification = `Verify rollout status: 'kubectl rollout status deployment/<app>' and check error rate < 0.01%.`;
+        hint1 = `Always deploy immutable digests (sha256:...) rather than moving tags.`;
+        hint2 = `Configure a 10% canary traffic shift and observe golden signals for 5 minutes before 100% promotion.`;
+        hint3 = `Set up Argo Rollouts with AnalysisTemplate triggering automated rollback if HTTP 5xx exceeds 0.5%.`;
+      }
+
+      return { studioSlug, beginner, technical, inputs, outputs, mistakes, verification, hint1, hint2, hint3 };
+    }
+
+    togglePlayPause() {
+      if (this.isRunning) {
+        this.isPaused = !this.isPaused;
+        if (this.playPauseBtn) {
+          this.playPauseBtn.textContent = this.isPaused ? '▶ Resume' : '⏸ Pause';
+        }
+        this.log(this.isPaused ? 'Simulation paused by user.' : 'Simulation resumed.');
+      } else {
+        this.runFlow();
+      }
+    }
+
+    stepForward() {
+      const nodes = Array.from(this.nodes.values());
+      if (this.executionStep >= nodes.length) {
+        this.log('Already at the final stage of flow.');
+        return;
+      }
+      const n = nodes[this.executionStep];
+      n.state = 'passed';
+      this.render();
+      this.selectNode(n.id);
+      this.log(`Stepped forward: [${n.title}] ➔ PASSED`);
+      this.executionStep++;
+    }
+
+    stepBackward() {
+      if (this.executionStep <= 0) {
+        this.log('Already at the initial stage.');
+        return;
+      }
+      this.executionStep--;
+      const nodes = Array.from(this.nodes.values());
+      const n = nodes[this.executionStep];
+      n.state = 'pending';
+      this.render();
+      this.selectNode(n.id);
+      this.log(`Stepped backward: [${n.title}] reset to PENDING`);
+    }
+
+    resetSimulation() {
+      this.isRunning = false;
+      this.isPaused = false;
+      this.executionStep = 0;
+      this.nodes.forEach(n => { n.state = 'pending'; });
+      this.render();
+      if (this.playPauseBtn) this.playPauseBtn.textContent = '▶ Play';
+      if (this.runFlowBtn) {
+        this.runFlowBtn.textContent = '▶ Run the Flow';
+        this.runFlowBtn.disabled = false;
+      }
+      const wires = this.svgLayer.querySelectorAll('.vf-wire');
+      wires.forEach(w => {
+        w.classList.remove('active', 'success', 'failed');
+      });
+      this.log('Reset simulation state across all nodes to PENDING.');
+    }
+
+    injectFailure() {
+      const nodes = Array.from(this.nodes.values());
+      if (nodes.length === 0) return;
+      const targetIdx = Math.min(2, nodes.length - 1);
+      const failedNode = nodes[targetIdx];
+      failedNode.state = 'failed';
+
+      // Mark downstream nodes as blocked
+      for (let i = targetIdx + 1; i < nodes.length; i++) {
+        nodes[i].state = 'blocked';
+      }
+
+      this.render();
+      this.selectNode(failedNode.id);
+      this.log(`[FAILURE INJECTION] Simulated Critical Failure at [${failedNode.title}]. Downstream stages BLOCKED.`);
+    }
+
+    openManimModal() {
+      let modal = document.getElementById('vfManimModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'vfManimModal';
+        modal.className = 'vf-modal-overlay';
+        document.body.appendChild(modal);
+      }
+
+      const studioSlug = (this.currentStudioId || 'pipeline').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
+      const studioTitle = (this.brandBadge ? this.brandBadge.textContent : 'ENGINEERING').replace(' FLOW', '');
+      const nodeList = Array.from(this.nodes.values());
+
+      const pythonCode = `#!/usr/bin/env python3
+"""
+3Blue1Brown / Manim Programmatic Video Animation
+${studioTitle} — Architecture & Flow Simulation
+Render with: manim -pqh manim_flow.py ${studioTitle.replace(/[^a-zA-Z0-9]/g, '')}Scene
+"""
+from manim import *
+
+class ${studioTitle.replace(/[^a-zA-Z0-9]/g, '')}Scene(Scene):
+    def construct(self):
+        self.camera.background_color = "#0B0F19"
+        CYAN = "#00F0FF"
+        EMERALD = "#10B981"
+        AMBER = "#F59E0B"
+        WHITE = "#F8FAFC"
+        
+        title = Text("${studioTitle} Flow", font_size=24, color=WHITE).to_edge(UP)
+        self.play(FadeIn(title), run_time=1.0)
+        
+        # Stages: ${nodeList.map(n => n.title).join(' -> ')}
+        # Auto-generated by VisualFlowCanvas Manim MCP Engine
+        self.wait(2.0)
+`;
+
+      modal.innerHTML = `
+        <div class="vf-modal-container">
+          <div class="vf-modal-header">
+            <div class="vf-modal-title">
+              <span>🎬</span>
+              <span>3Blue1Brown / Manim MCP Animation Studio</span>
+              <span class="vf-badge" style="font-size:0.65rem; background:rgba(16,185,129,0.2); color:#10b981;">STATUS: READY</span>
+            </div>
+            <button class="vf-modal-close" id="btnManimModalClose">✕</button>
+          </div>
+          <div class="vf-modal-body">
+            <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem; line-height:1.5;">
+              This animation script is synthesized live for <strong>${studioTitle}</strong>. Execute via local Manim CLI or render on-demand through the Manim MCP Server to inspect animated token streams and packet transitions.
+            </p>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="font-size:0.75rem; font-family:var(--vf-font-mono); color:#38bdf8;">manim_flow.py</span>
+              <button class="vf-btn vf-btn-sm" id="btnCopyManimCode">📋 Copy Script</button>
+            </div>
+            <pre class="vf-code-preview" style="max-height: 280px; overflow-y: auto;"><code>${VisualFlowCanvas.escapeHtml(pythonCode)}</code></pre>
+            <div style="margin-top:1rem; font-size:0.72rem; color:#64748b; font-family:var(--vf-font-mono);">
+              Render locally: <code>manim -pqh manim_flow.py ${studioTitle.replace(/[^a-zA-Z0-9]/g, '')}Scene</code>
+            </div>
+          </div>
+        </div>
+      `;
+
+      modal.style.display = 'flex';
+      modal.querySelector('#btnManimModalClose').addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      modal.querySelector('#btnCopyManimCode').addEventListener('click', (e) => {
+        if (typeof navigator !== 'undefined' && navigator.clipboard) {
+          navigator.clipboard.writeText(pythonCode).then(() => {
+            e.target.textContent = '✅ Copied!';
+            setTimeout(() => { e.target.textContent = '📋 Copy Script'; }, 2000);
+          });
+        }
+      });
+    }
+
     async runFlow() {
       if (this.isRunning) return;
       this.isRunning = true;
+      this.isPaused = false;
       this.runFlowBtn.textContent = '⏳ Executing...';
       this.runFlowBtn.disabled = true;
 
+      const direction = this.activeFlowDirection || 'happy';
       this.log(`----------------------------------------------------------------`);
-      this.log(`[FLOW INITIATION] Starting DAG execution pipeline across ${this.nodes.size} stages...`);
+      this.log(`[FLOW INITIATION] Starting DAG execution pipeline (${direction.toUpperCase()} DIRECTION) across ${this.nodes.size} stages...`);
 
       const wires = this.svgLayer.querySelectorAll('.vf-wire');
       const nodes = Array.from(this.nodes.values());
 
-      for (let i = 0; i < nodes.length; i++) {
-        const n = nodes[i];
-        const el = this.nodesLayer.querySelector(`[data-id="${n.id}"]`);
-        if (el) {
-          el.classList.add('state-running');
-          el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      if (direction === 'reverse') {
+        // Reverse trace: Output -> Input
+        for (let i = nodes.length - 1; i >= 0; i--) {
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          this.log(`[REVERSE TRACE] Tracing dependency backwards: [${n.title}]`);
+          await new Promise(r => setTimeout(r, 450));
+          n.state = 'passed';
+          this.render();
         }
-
-        // Animate corresponding wire
-        if (wires[i]) wires[i].classList.add('active');
-
-        const latency = Math.floor(Math.random() * 80) + 40;
-        this.log(`Executing [${n.title}] — latency: ${latency}ms | exit code: 0`);
-        await new Promise(r => setTimeout(r, 600));
-
-        if (el) {
-          el.classList.remove('state-running');
-          el.classList.add('state-success');
+      } else if (direction === 'failure') {
+        // Failure path: Fail at stage 3
+        const failIdx = Math.min(2, nodes.length - 1);
+        for (let i = 0; i <= failIdx; i++) {
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          await new Promise(r => setTimeout(r, 500));
+          if (i === failIdx) {
+            n.state = 'failed';
+            this.log(`[CRITICAL ERROR] Stage [${n.title}] failed validation criteria. Exit code: 1`);
+          } else {
+            n.state = 'passed';
+            this.log(`Stage [${n.title}] completed successfully.`);
+          }
+          this.render();
         }
-        if (wires[i]) {
-          wires[i].classList.remove('active');
-          wires[i].classList.add('success');
+        for (let i = failIdx + 1; i < nodes.length; i++) {
+          nodes[i].state = 'blocked';
+        }
+        this.render();
+      } else if (direction === 'retry') {
+        // Retry path: Exponential backoff
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          if (i === 1) {
+            this.log(`[TRANSIENT FAILURE] [${n.title}] connection timeout. Retrying in 1s (attempt 1/3)...`);
+            await new Promise(r => setTimeout(r, 600));
+            this.log(`[RETRY SUCCESS] [${n.title}] recovered after retry.`);
+          } else {
+            await new Promise(r => setTimeout(r, 400));
+          }
+          n.state = 'passed';
+          this.render();
+        }
+      } else if (direction === 'rollback') {
+        // Rollback path
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          await new Promise(r => setTimeout(r, 400));
+          if (i === nodes.length - 1) {
+            n.state = 'failed';
+            this.log(`[CANARY BREACH] Error budget exceeded at [${n.title}]. Initiating automated rollback...`);
+            await new Promise(r => setTimeout(r, 700));
+            n.state = 'passed';
+            this.log(`[ROLLBACK SUCCESS] Restored previous immutable release revision.`);
+          } else {
+            n.state = 'passed';
+          }
+          this.render();
+        }
+      } else {
+        // Happy path & other forward flows (data, security, observability, recovery, performance, learning)
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          if (wires[i]) wires[i].classList.add('active');
+
+          const latency = Math.floor(Math.random() * 50) + 20;
+          this.log(`Executing [${n.title}] — ${direction} signal | latency: ${latency}ms | exit code: 0`);
+          await new Promise(r => setTimeout(r, 500));
+
+          n.state = 'passed';
+          this.render();
+          if (wires[i]) {
+            wires[i].classList.remove('active');
+            wires[i].classList.add('success');
+          }
         }
       }
 
       this.isRunning = false;
       this.runFlowBtn.textContent = '▶ Run the Flow';
       this.runFlowBtn.disabled = false;
-      this.log(`[FLOW COMPLETE] All ${nodes.length} stages succeeded with 100% verification.`);
+      this.log(`[FLOW COMPLETE] Pipeline execution finished in mode [${direction.toUpperCase()}].`);
     }
 
     log(msg) {

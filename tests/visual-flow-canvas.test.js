@@ -408,4 +408,186 @@ describe('Visual Flow Canvas Workspace', () => {
     expect(canvas.connections.length).toBe(1);
     expect(canvas.nodes.get('imp_1').title).toBe('Gateway Ingress');
   });
+
+  it('should support all 12 flow directions in the direction selector and engine', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+    const select = container.querySelector('#vfFlowDirectionSelect');
+    expect(select).toBeTruthy();
+
+    const expectedDirections = [
+      'happy', 'reverse', 'failure', 'retry', 'rollback', 'dependency',
+      'data', 'security', 'observability', 'recovery', 'performance', 'learning'
+    ];
+
+    expectedDirections.forEach(dir => {
+      const option = select.querySelector(`option[value="${dir}"]`);
+      expect(option).toBeTruthy();
+    });
+
+    // Test changing flow direction
+    select.value = 'reverse';
+    select.dispatchEvent(new window.Event('change'));
+    expect(canvas.activeFlowDirection).toBe('reverse');
+
+    select.value = 'rollback';
+    select.dispatchEvent(new window.Event('change'));
+    expect(canvas.activeFlowDirection).toBe('rollback');
+  });
+
+  it('should support 8 node states and render color-coded status pills', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const validStates = ['pending', 'running', 'passed', 'failed', 'blocked', 'skipped', 'unknown', 'stale'];
+    const node = canvas.nodes.get('n1');
+
+    validStates.forEach(st => {
+      node.state = st;
+      canvas.render();
+      const nodeEl = container.querySelector(`[data-id="n1"]`);
+      expect(nodeEl.classList.contains(`state-${st}`)).toBe(true);
+      const pill = nodeEl.querySelector('.vf-node-status-pill');
+      expect(pill).toBeTruthy();
+      expect(pill.textContent).toBe(st);
+    });
+  });
+
+  it('should render dual explanations (Beginner vs Technical) and allow switching', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+    canvas.selectNode('n1');
+
+    const tabBeg = container.querySelector('#tabExpBeginner');
+    const tabTech = container.querySelector('#tabExpTechnical');
+    const expBody = container.querySelector('#expBody');
+
+    expect(tabBeg).toBeTruthy();
+    expect(tabTech).toBeTruthy();
+    expect(expBody).toBeTruthy();
+
+    // Default is beginner
+    expect(tabBeg.classList.contains('active')).toBe(true);
+
+    // Switch to technical
+    tabTech.click();
+    expect(tabTech.classList.contains('active')).toBe(true);
+    expect(tabBeg.classList.contains('active')).toBe(false);
+
+    // Switch back to beginner
+    tabBeg.click();
+    expect(tabBeg.classList.contains('active')).toBe(true);
+    expect(tabTech.classList.contains('active')).toBe(false);
+  });
+
+  it('should render 3 progressive hint levels with interactive reveal toggles', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+    canvas.selectNode('n1');
+
+    const hint1Body = container.querySelector('#hint-body-1');
+    const hint2Body = container.querySelector('#hint-body-2');
+    const hint3Body = container.querySelector('#hint-body-3');
+
+    expect(hint1Body).toBeTruthy();
+    expect(hint2Body).toBeTruthy();
+    expect(hint3Body).toBeTruthy();
+
+    // All hints start hidden for progressive disclosure
+    expect(hint1Body.style.display).toBe('none');
+    expect(hint2Body.style.display).toBe('none');
+    expect(hint3Body.style.display).toBe('none');
+
+    // Toggle reveal Level 1
+    const btn1 = container.querySelector('.vf-hint-reveal-btn[data-hint="1"]');
+    expect(btn1).toBeTruthy();
+    btn1.click();
+    expect(hint1Body.style.display).toBe('block');
+    expect(btn1.textContent).toBe('Hide');
+
+    btn1.click();
+    expect(hint1Body.style.display).toBe('none');
+    expect(btn1.textContent).toBe('Reveal');
+
+    // Toggle reveal Level 2
+    const btn2 = container.querySelector('.vf-hint-reveal-btn[data-hint="2"]');
+    expect(btn2).toBeTruthy();
+    btn2.click();
+    expect(hint2Body.style.display).toBe('block');
+    expect(btn2.textContent).toBe('Hide');
+  });
+
+  it('should provide interactive playback controls: step forward, step backward, reset, and failure injection', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const stepFwdBtn = container.querySelector('#vfStepForwardBtn');
+    const stepBackBtn = container.querySelector('#vfStepBackBtn');
+    const resetBtn = container.querySelector('#vfResetFlowBtn');
+    const injectFailBtn = container.querySelector('#vfInjectFailureBtn');
+
+    expect(stepFwdBtn).toBeTruthy();
+    expect(stepBackBtn).toBeTruthy();
+    expect(resetBtn).toBeTruthy();
+    expect(injectFailBtn).toBeTruthy();
+
+    // Step forward 1
+    canvas.stepForward();
+    expect(canvas.executionStep).toBe(1);
+    const n0 = Array.from(canvas.nodes.values())[0];
+    expect(n0.state).toBe('passed');
+
+    // Step forward 2
+    canvas.stepForward();
+    expect(canvas.executionStep).toBe(2);
+    const n1 = Array.from(canvas.nodes.values())[1];
+    expect(n1.state).toBe('passed');
+
+    // Step backward
+    canvas.stepBackward();
+    expect(canvas.executionStep).toBe(1);
+    expect(n1.state).toBe('pending');
+
+    // Failure injection
+    canvas.injectFailure();
+    const failedNode = Array.from(canvas.nodes.values()).find(n => n.state === 'failed');
+    expect(failedNode).toBeTruthy();
+    const blockedNode = Array.from(canvas.nodes.values()).find(n => n.state === 'blocked');
+    expect(blockedNode).toBeTruthy();
+
+    // Reset
+    canvas.resetSimulation();
+    expect(canvas.executionStep).toBe(0);
+    Array.from(canvas.nodes.values()).forEach(n => {
+      expect(n.state).toBe('pending');
+    });
+  });
+
+  it('should open Manim MCP Modal with synthesized Python animation script', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    const manimBtn = container.querySelector('#vfManimMcpBtn');
+    expect(manimBtn).toBeTruthy();
+
+    // Open Manim modal
+    canvas.openManimModal();
+    const modal = document.getElementById('vfManimModal');
+    expect(modal).toBeTruthy();
+    expect(modal.style.display).toBe('flex');
+
+    const codePreview = modal.querySelector('.vf-code-preview');
+    expect(codePreview).toBeTruthy();
+    expect(codePreview.textContent).toContain('from manim import *');
+    expect(codePreview.textContent).toContain('Scene(Scene):');
+
+    const copyBtn = modal.querySelector('#btnCopyManimCode');
+    expect(copyBtn).toBeTruthy();
+
+    const closeBtn = modal.querySelector('#btnManimModalClose');
+    expect(closeBtn).toBeTruthy();
+    closeBtn.click();
+    expect(modal.style.display).toBe('none');
+  });
 });
+
