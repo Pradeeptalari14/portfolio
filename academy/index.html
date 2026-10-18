@@ -46,6 +46,7 @@
 
     <!-- User KPI Badges & Avatar -->
     <div class="nav-user-cluster">
+      <button class="theme-toggle-btn" id="btnThemeToggle" title="Switch Theme">🌙</button>
       <div class="user-streak-badge" title="42-day consecutive learning streak">
         <span>🔥</span>
         <span>42 Streak</span>
@@ -184,7 +185,7 @@
           <div>
             <div class="section-mini-heading">Your Engineering Studios</div>
             <div class="studios-track-grid">
-              <a href="/tools/?cat=ai" class="track-box">
+              <div class="track-box" data-track="ai">
                 <div class="track-left">
                   <span class="track-icon">🤖</span>
                   <div>
@@ -193,8 +194,8 @@
                   </div>
                 </div>
                 <span class="track-pct">72%</span>
-              </a>
-              <a href="/tools/?cat=cicd" class="track-box">
+              </div>
+              <div class="track-box active-track" data-track="cicd">
                 <div class="track-left">
                   <span class="track-icon">♾️</span>
                   <div>
@@ -203,8 +204,8 @@
                   </div>
                 </div>
                 <span class="track-pct">60%</span>
-              </a>
-              <a href="/tools/kubernetes/" class="track-box">
+              </div>
+              <div class="track-box" data-track="k8s">
                 <div class="track-left">
                   <span class="track-icon">☸️</span>
                   <div>
@@ -213,8 +214,8 @@
                   </div>
                 </div>
                 <span class="track-pct">40%</span>
-              </a>
-              <a href="/tools/?cat=cloud" class="track-box">
+              </div>
+              <div class="track-box" data-track="cloud">
                 <div class="track-left">
                   <span class="track-icon">☁️</span>
                   <div>
@@ -223,7 +224,7 @@
                   </div>
                 </div>
                 <span class="track-pct">50%</span>
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -246,7 +247,7 @@
               Kubernetes &gt; Introduction &gt; <span id="lessonBreadcrumbCurrent">What is Kubernetes?</span>
             </div>
             <div class="lesson-actions">
-              <span class="lesson-timer-pill">⏱️ 12 min</span>
+              <span class="lesson-timer-pill" id="lessonDurationPill">⏱️ 12 min</span>
               <button class="btn-mark-complete" id="btnMarkComplete">
                 <span>✓</span> Mark Complete
               </button>
@@ -259,25 +260,25 @@
             <nav class="lesson-sidebar-tree" aria-label="Course syllabus">
               <div class="tree-module-group">
                 <div class="tree-module-header">1. Introduction</div>
-                <button class="tree-item-btn active">What is Kubernetes?</button>
-                <button class="tree-item-btn">Architecture Overview</button>
-                <button class="tree-item-btn">Production Use Cases</button>
+                <button class="tree-item-btn active" data-topic="intro-k8s">What is Kubernetes?</button>
+                <button class="tree-item-btn" data-topic="arch-overview">Architecture Overview</button>
+                <button class="tree-item-btn" data-topic="intro-k8s">Production Use Cases</button>
               </div>
               <div class="tree-module-group">
                 <div class="tree-module-header">2. Core Concepts</div>
-                <button class="tree-item-btn">Pods and Containers</button>
-                <button class="tree-item-btn">Deployments &amp; ReplicaSets</button>
-                <button class="tree-item-btn">Services &amp; Endpoints</button>
-                <button class="tree-item-btn">ConfigMaps &amp; Secrets</button>
+                <button class="tree-item-btn" data-topic="pods-containers">Pods and Containers</button>
+                <button class="tree-item-btn" data-topic="deployments-replicas">Deployments &amp; ReplicaSets</button>
+                <button class="tree-item-btn" data-topic="intro-k8s">Services &amp; Endpoints</button>
+                <button class="tree-item-btn" data-topic="intro-k8s">ConfigMaps &amp; Secrets</button>
               </div>
               <div class="tree-module-group">
                 <div class="tree-module-header">3. Networking</div>
-                <button class="tree-item-btn">Ingress Controllers</button>
-                <button class="tree-item-btn">Network Policies</button>
+                <button class="tree-item-btn" data-topic="intro-k8s">Ingress Controllers</button>
+                <button class="tree-item-btn" data-topic="intro-k8s">Network Policies</button>
               </div>
               <div class="tree-module-group">
                 <div class="tree-module-header">4. Storage</div>
-                <button class="tree-item-btn">Persistent Volumes &amp; CSI</button>
+                <button class="tree-item-btn" data-topic="intro-k8s">Persistent Volumes &amp; CSI</button>
               </div>
             </nav>
 
@@ -296,14 +297,14 @@
               <!-- Tab Panel 1: Overview -->
               <div class="lesson-tab-panel" id="panel-overview">
                 <h3 class="lesson-title-main" id="lessonTitleHeading">What is Kubernetes?</h3>
-                <p class="lesson-lead-p">
+                <p class="lesson-lead-p" id="lessonLeadText">
                   Kubernetes is an open-source container orchestration platform designed to automate deploying, scaling, and managing containerized applications across cloud clusters.
                 </p>
 
                 <!-- Objectives Box -->
                 <div class="objectives-box">
                   <div class="objectives-title">Learning Objectives</div>
-                  <ul class="objectives-list">
+                  <ul class="objectives-list" id="lessonObjectivesList">
                     <li><span class="obj-check">✓</span> Understand Kubernetes control plane and worker node responsibilities.</li>
                     <li><span class="obj-check">✓</span> Learn how Deployments maintain desired state through declarative manifests.</li>
                     <li><span class="obj-check">✓</span> Know when to use ClusterIP, NodePort, and LoadBalancer Services.</li>
@@ -324,34 +325,58 @@
 
               <!-- Tab Panel 2: Visual Architecture -->
               <div class="lesson-tab-panel" id="panel-visual" style="display: none;">
-                <div class="architecture-diagram-card">
-                  <div class="arch-header-label">Kubernetes Cluster Architecture</div>
-                  <div class="arch-boxes-grid">
-                    <div class="arch-block">
-                      <div class="arch-block-title">Control Plane</div>
-                      <div class="arch-sub-pills">
-                        <span class="arch-pill">API Server</span>
-                        <span class="arch-pill">Controller Manager</span>
-                        <span class="arch-pill">Scheduler</span>
-                        <span class="arch-pill">etcd (RAFT)</span>
-                      </div>
-                    </div>
-                    <div class="arch-block">
-                      <div class="arch-block-title">Worker Nodes</div>
-                      <div class="arch-sub-pills">
-                        <span class="arch-pill">kubelet</span>
-                        <span class="arch-pill">kube-proxy</span>
-                        <span class="arch-pill">containerd</span>
-                        <span class="arch-pill">Pods (veth0)</span>
-                      </div>
-                    </div>
-                  </div>
+                <div class="architecture-svg-wrap">
+                  <div class="arch-svg-label">Kubernetes Cluster Architecture (Control Plane ↔ Worker Nodes)</div>
+                  <!-- High Fidelity SVG Architecture Flow matching Image 5 -->
+                  <svg viewBox="0 0 540 220" width="100%" height="220" style="max-width: 520px;">
+                    <!-- Control Plane Outer -->
+                    <rect x="20" y="20" width="230" height="180" rx="8" fill="rgba(30, 41, 59, 0.6)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4" />
+                    <text x="135" y="42" fill="#38bdf8" font-size="12" font-family="'Space Grotesk', sans-serif" font-weight="700" text-anchor="middle">Control Plane</text>
+
+                    <!-- API Server Box -->
+                    <rect x="40" y="55" width="190" height="32" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" />
+                    <text x="135" y="75" fill="#f8fafc" font-size="11" font-family="'JetBrains Mono', monospace" font-weight="600" text-anchor="middle">kube-apiserver</text>
+
+                    <!-- Inner Plane Modules -->
+                    <rect x="40" y="100" width="55" height="40" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" />
+                    <text x="67" y="124" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">scheduler</text>
+
+                    <rect x="105" y="100" width="60" height="40" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" />
+                    <text x="135" y="124" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">controller</text>
+
+                    <rect x="175" y="100" width="55" height="40" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" />
+                    <text x="202" y="124" fill="#fbbf24" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">etcd</text>
+
+                    <!-- Bidirectional Link Arrow -->
+                    <line x1="250" y1="110" x2="290" y2="110" stroke="#34d399" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- Worker Node Outer -->
+                    <rect x="290" y="20" width="230" height="180" rx="8" fill="rgba(30, 41, 59, 0.6)" stroke="#10b981" stroke-width="1.5" />
+                    <text x="405" y="42" fill="#34d399" font-size="12" font-family="'Space Grotesk', sans-serif" font-weight="700" text-anchor="middle">Worker Node</text>
+
+                    <!-- Node Components -->
+                    <rect x="310" y="55" width="90" height="32" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" />
+                    <text x="355" y="75" fill="#a7f3d0" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="middle">kubelet</text>
+
+                    <rect x="410" y="55" width="90" height="32" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" />
+                    <text x="455" y="75" fill="#a7f3d0" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="middle">kube-proxy</text>
+
+                    <!-- Pod Sandbox Container -->
+                    <rect x="310" y="105" width="190" height="75" rx="6" fill="#030712" stroke="#6366f1" stroke-width="1" />
+                    <text x="405" y="125" fill="#818cf8" font-size="10" font-family="'Space Grotesk', sans-serif" font-weight="700" text-anchor="middle">Pod (cgroup / veth0)</text>
+
+                    <rect x="325" y="135" width="75" height="32" rx="4" fill="#1e1b4b" stroke="#818cf8" />
+                    <text x="362" y="155" fill="#c7d2fe" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">Container 1</text>
+
+                    <rect x="410" y="135" width="75" height="32" rx="4" fill="#1e1b4b" stroke="#818cf8" />
+                    <text x="447" y="155" fill="#c7d2fe" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">Sidecar 2</text>
+                  </svg>
                 </div>
               </div>
 
               <!-- Tab Panel 3: Examples -->
               <div class="lesson-tab-panel" id="panel-examples" style="display: none;">
-                <div style="background: #030611; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem; font-family: var(--font-mono); font-size: 0.72rem; color: #a5f3fc; overflow-x: auto;">
+                <div style="background: #030611; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem; font-family: var(--font-mono); font-size: 0.72rem; color: #a5f3fc; overflow-x: auto;" id="lessonExampleCode">
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -380,7 +405,7 @@ spec:
               <div class="lesson-tab-panel" id="panel-quiz" style="display: none;">
                 <div style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.85rem;">
                   <div>
-                    <strong>Q1: What is the smallest deployable computing unit in Kubernetes?</strong>
+                    <strong id="quizQ1Text">Q1: What is the smallest deployable computing unit in Kubernetes?</strong>
                     <div style="margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.25rem;">
                       <label><input type="radio" name="academy_q1" value="0" /> A Pod (one or more containers sharing network/storage)</label>
                       <label><input type="radio" name="academy_q1" value="1" /> A Docker image file</label>
@@ -388,7 +413,7 @@ spec:
                     </div>
                   </div>
                   <div>
-                    <strong>Q2: Which resource provides a stable virtual IP to load-balance traffic across dynamic Pods?</strong>
+                    <strong id="quizQ2Text">Q2: Which resource provides a stable virtual IP to load-balance traffic across dynamic Pods?</strong>
                     <div style="margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.25rem;">
                       <label><input type="radio" name="academy_q2" value="0" /> Service (ClusterIP / LoadBalancer)</label>
                       <label><input type="radio" name="academy_q2" value="1" /> ConfigMap</label>
@@ -406,9 +431,13 @@ spec:
 
               <!-- Tab Panel 5: Notes -->
               <div class="lesson-tab-panel" id="panel-notes" style="display: none;">
-                <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5;">
-                  <p><strong>💡 Production SRE Rule:</strong> Always configure explicit CPU/RAM requests and limits to ensure the Linux OOM killer does not evict critical control-plane processes.</p>
-                  <p style="margin-top: 0.5rem;"><strong>💡 Health Probes:</strong> Separate readiness probes from liveness probes to prevent cascading reboot loops during network slowdowns.</p>
+                <div class="notes-container">
+                  <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5;">
+                    <p><strong>💡 Production SRE Rule:</strong> Always configure explicit CPU/RAM requests and limits to ensure the Linux OOM killer does not evict critical control-plane processes.</p>
+                  </div>
+                  <label for="userLessonNotes" style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">Personal Engineering Notes (Saved to Local Storage)</label>
+                  <textarea class="notes-textarea" id="userLessonNotes" placeholder="Write key takeaways, runbook steps, or CKA exam tips here..."></textarea>
+                  <button class="btn-save-notes" id="btnSaveNotes">Save Notes 💾</button>
                 </div>
               </div>
 
@@ -451,6 +480,12 @@ spec:
               </select>
               <button class="btn-flow-toggle" id="btnFlowModeToggle" title="Toggle Live vs Simulation">
                 <span>●</span> Live Telemetry
+              </button>
+              <button class="btn-flow-reset" id="btnFlowReset" title="Reset Pipeline Nodes">
+                ↺ Reset
+              </button>
+              <button class="btn-flow-fail" id="btnInjectFailureDrill" title="Simulate pipeline security/test error">
+                ⚠️ Inject Failure
               </button>
               <button class="btn-flow-run" id="btnRunFlowDrill">
                 ▶ Run Pipeline Drill
@@ -529,6 +564,7 @@ spec:
                 <button class="dtab-btn" data-dtab="inputs">Inputs/Outputs</button>
                 <button class="dtab-btn" data-dtab="logs">Logs</button>
                 <button class="dtab-btn" data-dtab="trouble">Troubleshooting</button>
+                <button class="dtab-btn" data-dtab="hints">Hints</button>
               </div>
 
               <!-- DTab 1: Overview -->
@@ -558,6 +594,13 @@ spec:
               <div class="dtab-panel" id="dpanel-trouble" style="display: none;">
                 <p class="details-body-txt" id="nodeDrawerTroubleshooting" style="color: #fca5a5;">
                   Check database container port collision and ephemeral volume mount permissions.
+                </p>
+              </div>
+
+              <!-- DTab 5: Hints (Image 5 reference) -->
+              <div class="dtab-panel" id="dpanel-hints" style="display: none;">
+                <p class="details-body-txt" id="nodeDrawerHints" style="color: #93c5fd;">
+                  Run flaky-test retries only in isolation and log intermittent timing variances into your CI observability dashboard.
                 </p>
               </div>
             </div>
@@ -612,6 +655,7 @@ spec:
             <div class="lab-top-actions">
               <span class="lab-badge-time">⏱️ ~30 min &bull; Intermediate</span>
               <button class="btn-lab-reset" id="btnResetLab" title="Reset Sandbox">↺ Reset Lab</button>
+              <button class="btn-lab-end" id="btnEndLab" title="Finish and grade lab session">⏹ End Lab</button>
             </div>
           </div>
 
@@ -644,10 +688,12 @@ spec:
             <!-- Center Workspace (Tabs: Instructions, Code, Terminal, Test) -->
             <div class="lab-workspace-center">
               <div class="lab-center-tabs" role="tablist">
-                <button class="ltab-btn active" data-ltab="instructions">Instructions</button>
-                <button class="ltab-btn" data-ltab="code">Code</button>
-                <button class="ltab-btn" data-ltab="terminal">Terminal</button>
-                <button class="ltab-btn" data-ltab="test">Test &amp; Validate</button>
+                <div class="ltab-buttons-group">
+                  <button class="ltab-btn active" data-ltab="instructions">Instructions</button>
+                  <button class="ltab-btn" data-ltab="code">Code</button>
+                  <button class="ltab-btn" data-ltab="terminal">Terminal</button>
+                  <button class="ltab-btn" data-ltab="test">Test &amp; Validate</button>
+                </div>
               </div>
 
               <!-- LTab 1: Instructions -->
@@ -666,10 +712,28 @@ spec:
 NAME      READY   UP-TO-DATE   AVAILABLE   AGE
 web-app   3/3     3            3           18s</pre>
                 </div>
+
+                <!-- Hints & Solution Drawer (Image 4 reference) -->
+                <div class="hints-solution-box">
+                  <div class="hints-header-row">
+                    <span class="hints-title">💡 Need Help? Check Hints &amp; Solution</span>
+                    <div class="hints-btn-group">
+                      <button class="btn-hint-toggle" id="btnToggleHint">Hints</button>
+                      <button class="btn-hint-toggle" id="btnToggleSolution">&lt;&gt; Solution</button>
+                    </div>
+                  </div>
+                  <div class="hint-content-reveal" id="labHintDrawer" style="display: none;">
+                    <div id="labHintContentText" style="color: #fde68a;">Make sure your matchLabels match the template labels exactly (app: web-app).</div>
+                    <div id="labSolutionContentText" style="display: none; color: #a7f3d0;">Click Quick Command 'kubectl get pods' or execute 'kubectl apply -f deployment.yaml'.</div>
+                  </div>
+                </div>
               </div>
 
               <!-- LTab 2: Code -->
               <div class="ltab-panel" id="lpanel-code" style="display: none;">
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 0.35rem;">
+                  <button class="btn-hint-toggle" id="btnCopyLabCode">📋 Copy YAML</button>
+                </div>
                 <pre style="background: #020409; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.65rem; font-family: var(--font-mono); font-size: 0.72rem; color: #93c5fd; overflow-x: auto;" id="labStepCode">apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -705,7 +769,12 @@ spec:
 
               <!-- LTab 4: Test & Validate -->
               <div class="ltab-panel" id="lpanel-test" style="display: none;">
-                <div style="font-size: 0.76rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <div style="margin-bottom: 0.65rem;">
+                  <button class="btn-flow-run" id="btnRunLabValidation" style="width: 100%;">
+                    ▶ Run Automated Verification Checks
+                  </button>
+                </div>
+                <div id="labTestResultsList" style="font-size: 0.76rem; display: flex; flex-direction: column; gap: 0.4rem;">
                   <div style="color: var(--accent-emerald);">✓ Cluster Connectivity: PASS (API server responding)</div>
                   <div style="color: var(--accent-emerald);">✓ Manifest Schema Validation: PASS (apps/v1 valid)</div>
                   <div style="color: var(--accent-emerald);">✓ Replicas Count: PASS (Desired=3, Ready=3)</div>
@@ -766,6 +835,30 @@ spec:
 
     </div>
   </main>
+
+  <!-- ══ LAB COMPLETION / END LAB MODAL ══ -->
+  <div class="academy-modal-overlay" id="academyModal" role="dialog" aria-modal="true" aria-labelledby="modalLabTitle">
+    <div class="academy-modal-content">
+      <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🎉</div>
+      <h3 id="modalLabTitle" style="color: #fff; font-family: var(--font-display); font-size: 1.25rem; font-weight: 800;">
+        Lab Completed Successfully!
+      </h3>
+      <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.75rem 0 1.25rem;">
+        You have successfully deployed, exposed, and verified a containerized microservice on Kubernetes. Your session telemetry has been recorded (+50 XP).
+      </p>
+      <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.78rem; text-align: left;">
+        <div><strong>Session Score:</strong> 100% / 100%</div>
+        <div><strong>Tasks Verified:</strong> 5 of 5 Passed</div>
+        <div><strong>Target SLO:</strong> 99.9% Compliance Achieved</div>
+      </div>
+      <button class="btn-continue-lesson" id="btnCloseLabModal" style="width: 100%; justify-content: center;">
+        Return to Academy Dashboard →
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="academy-toast" id="academyToast"></div>
 
   <script src="./academy.js"></script>
 </body>

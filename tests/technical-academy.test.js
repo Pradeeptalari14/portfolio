@@ -127,15 +127,19 @@ describe('Technical Academy & Interactive Engineering Lab (4-Quadrant Experience
     const nodeKeys = Array.from(nodes).map(n => n.dataset.node);
     expect(nodeKeys).toEqual(['dev', 'git', 'build', 'test', 'security', 'deploy', 'monitor']);
 
-    // Node Details Drawer Tabs
+    // Node Details Drawer Tabs (Details, Live State, Verification & Logs, Remediation, Hints)
     const dtabs = document.querySelectorAll('.dtab-btn');
-    expect(dtabs.length).toBe(4);
+    expect(dtabs.length).toBe(5);
 
     // Live Status HUD
     const hud = document.querySelector('.live-status-hud');
     expect(hud).not.toBeNull();
     expect(hud.textContent).toContain('95.2%');
     expect(hud.textContent).toContain('2m 18s');
+
+    // Flow controls: failure injection and reset
+    expect(document.getElementById('btnInjectFailureDrill')).not.toBeNull();
+    expect(document.getElementById('btnFlowReset')).not.toBeNull();
   });
 
   it('should render Quadrant 4: Practical Lab with 5 steps, terminal sandbox, and quick commands', () => {
@@ -167,5 +171,14 @@ describe('Technical Academy & Interactive Engineering Lab (4-Quadrant Experience
     // Quick Command Buttons
     const quickCmds = document.querySelectorAll('.btn-quick-cmd');
     expect(quickCmds.length).toBe(4);
+
+    // Lab Actions: End Lab, Reset Lab, Hints Drawer, and Copy Button
+    expect(document.getElementById('btnEndLab')).not.toBeNull();
+    expect(document.getElementById('btnResetLab')).not.toBeNull();
+    expect(document.getElementById('btnToggleHint')).not.toBeNull();
+    expect(document.getElementById('btnToggleSolution')).not.toBeNull();
+    expect(document.getElementById('btnCopyLabCode')).not.toBeNull();
+    expect(document.getElementById('btnRunLabValidation')).not.toBeNull();
+    expect(document.getElementById('academyModal')).not.toBeNull();
   });
 });
