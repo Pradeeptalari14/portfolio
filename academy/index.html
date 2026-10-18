@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TalariPradeep Technical Academy &amp; Interactive Engineering Lab</title>
+  <meta name="description" content="A structured technical academy and interactive engineering laboratory for DevOps, SRE, Cloud, Kubernetes, AI, RAG, and Agentic Systems." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./academy.css" />
+</head>
+<body>
+
+  <!-- ══ TOP GLOBAL NAVIGATION ══ -->
+  <header class="academy-nav">
+    <div class="nav-brand-group">
+      <a href="/" class="nav-brand-logo">
+        <div class="brand-icon-box">⚡</div>
+        <span>TalariPradeep</span>
+      </a>
+      <span class="nav-badge-academy">ACADEMY &amp; LAB</span>
+    </div>
+
+    <!-- Global Search -->
+    <div class="nav-search-bar">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="academyGlobalSearch" placeholder="Search Studios, Topics, Labs, Prompts..." />
+      <span class="search-shortcut">Ctrl K</span>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links-cluster">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/tools/" class="nav-link">Studios</a>
+      <a href="/projects/" class="nav-link">Projects</a>
+      <a href="/interview/" class="nav-link">Interview</a>
+      <a href="/tools/" class="nav-link">Tools</a>
+      <a href="/AI/" class="nav-link">AI</a>
+      <a href="/academy/" class="nav-link active">Academy</a>
+    </nav>
+
+    <!-- User KPI Badges & Avatar -->
+    <div class="nav-user-cluster">
+      <div class="user-streak-badge" title="42-day consecutive learning streak">
+        <span>🔥</span>
+        <span>42 Streak</span>
+      </div>
+      <button class="user-avatar-btn" title="Learner Profile: Pradeep" aria-label="Profile">
+        P
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ VIEW MODE SWITCHER SUB-BAR ══ -->
+  <div class="academy-sub-bar">
+    <div class="view-mode-tabs" role="tablist" aria-label="Academy View Layouts">
+      <button class="view-mode-btn active" data-mode="quad" role="tab" aria-selected="true">
+        <span>⊞</span> All 4 Quadrants
+      </button>
+      <button class="view-mode-btn" data-mode="dash" role="tab" aria-selected="false">
+        <span>1.</span> Learning Dashboard
+      </button>
+      <button class="view-mode-btn" data-mode="lesson" role="tab" aria-selected="false">
+        <span>2.</span> Structured Lesson
+      </button>
+      <button class="view-mode-btn" data-mode="flow" role="tab" aria-selected="false">
+        <span>3.</span> Engineering Flow
+      </button>
+      <button class="view-mode-btn" data-mode="lab" role="tab" aria-selected="false">
+        <span>4.</span> Practical Lab
+      </button>
+    </div>
+
+    <div class="academy-breadcrumbs-area">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/academy/">Academy</a>
+      <span>/</span>
+      <span class="breadcrumbs-current">CI/CD &amp; Kubernetes Reference Track</span>
+    </div>
+  </div>
+
+  <!-- ══ MAIN ACADEMY WORKSPACE: 4-QUADRANT GRID ══ -->
+  <main class="academy-main-container">
+    <div class="quadrant-grid" id="quadrantGrid">
+
+      <!-- ══════════════════════════════════════════════════════════════════
+           QUADRANT 1: LEARNING DASHBOARD
+           ══════════════════════════════════════════════════════════════════ -->
+      <section class="quadrant-card" id="quad-dash" aria-labelledby="dashTitle">
+        <div class="quadrant-header-tag">
+          <span class="quadrant-tag-pill pill-quad-1">1 &bull; Learning Dashboard</span>
+          <span class="quadrant-subtitle-desc">Shows next lesson, saved progress, streak, and tracks</span>
+        </div>
+
+        <div class="quadrant-body">
+          <!-- Welcome Row & KPIs -->
+          <div class="dash-welcome-row">
+            <div>
+              <h2 class="dash-title" id="dashTitle">Welcome back, Pradeep!</h2>
+              <p class="dash-subtitle">Continue your learning journey and build real-world engineering skills.</p>
+            </div>
+            <div class="dash-kpis">
+              <div class="kpi-chip kpi-chip-fire">
+                <span>🔥</span>
+                <span>42 Day Streak</span>
+              </div>
+              <div class="kpi-chip kpi-chip-cert">
+                <span>🏆</span>
+                <span id="userCertCount">12 Certificates</span>
+              </div>
+              <div class="kpi-chip kpi-chip-pct">
+                <span>📈</span>
+                <span id="userOverallPct">78% Overall</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Continue Learning Card -->
+          <div class="continue-card">
+            <div class="continue-top">
+              <span class="continue-label">Continue Learning</span>
+              <span class="continue-badge">In Progress</span>
+            </div>
+            <div class="continue-title-group">
+              <div class="continue-tech-icon">☸️</div>
+              <div>
+                <h3 class="continue-course-title">Kubernetes Fundamentals</h3>
+                <p class="continue-course-desc">Understanding Pods, Deployments, Services, and Ingress</p>
+              </div>
+            </div>
+            <div class="progress-bar-wrap" aria-label="Course completion percentage">
+              <div class="progress-bar-fill" style="width: 60%;"></div>
+            </div>
+            <div class="continue-action-row">
+              <span class="continue-time-left">⏱️ 12 min left &bull; Step 3 of 5</span>
+              <button class="btn-continue-lesson" id="btnContinueLessonAction">
+                Continue Lesson <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Your Learning Path Step Ladder -->
+          <div class="path-ladder-section">
+            <div class="section-mini-heading">Your Learning Path</div>
+            <div class="path-ladder-grid">
+              <div class="path-step-card" data-target="lesson" style="cursor: pointer;">
+                <div class="step-circle">1</div>
+                <div>
+                  <div class="step-info-title">Learn</div>
+                  <div class="step-info-sub">Master concepts</div>
+                </div>
+              </div>
+              <div class="path-step-card" data-target="lab" style="cursor: pointer;">
+                <div class="step-circle" style="color: var(--accent-emerald); background: rgba(16, 185, 129, 0.15);">2</div>
+                <div>
+                  <div class="step-info-title">Lab</div>
+                  <div class="step-info-sub">Hands-on sandbox</div>
+                </div>
+              </div>
+              <div class="path-step-card" data-target="flow" style="cursor: pointer;">
+                <div class="step-circle" style="color: var(--accent-amber); background: rgba(245, 158, 11, 0.15);">3</div>
+                <div>
+                  <div class="step-info-title">Flow</div>
+                  <div class="step-info-sub">Visualize workflow</div>
+                </div>
+              </div>
+              <div class="path-step-card" style="cursor: pointer;">
+                <div class="step-circle" style="color: var(--accent-indigo); background: rgba(99, 102, 241, 0.15);">4</div>
+                <div>
+                  <div class="step-info-title">Project</div>
+                  <div class="step-info-sub">Build &amp; deploy</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Your Studios Track Grid -->
+          <div>
+            <div class="section-mini-heading">Your Engineering Studios</div>
+            <div class="studios-track-grid">
+              <a href="/tools/?cat=ai" class="track-box">
+                <div class="track-left">
+                  <span class="track-icon">🤖</span>
+                  <div>
+                    <div class="track-name">AI &amp; GenAI</div>
+                    <div class="track-topics">28 Topics &bull; RAG &amp; Agents</div>
+                  </div>
+                </div>
+                <span class="track-pct">72%</span>
+              </a>
+              <a href="/tools/?cat=cicd" class="track-box">
+                <div class="track-left">
+                  <span class="track-icon">♾️</span>
+                  <div>
+                    <div class="track-name">DevOps &amp; CI/CD</div>
+                    <div class="track-topics">35 Topics &bull; Pipelines</div>
+                  </div>
+                </div>
+                <span class="track-pct">60%</span>
+              </a>
+              <a href="/tools/kubernetes/" class="track-box">
+                <div class="track-left">
+                  <span class="track-icon">☸️</span>
+                  <div>
+                    <div class="track-name">Kubernetes</div>
+                    <div class="track-topics">24 Topics &bull; Microservices</div>
+                  </div>
+                </div>
+                <span class="track-pct">40%</span>
+              </a>
+              <a href="/tools/?cat=cloud" class="track-box">
+                <div class="track-left">
+                  <span class="track-icon">☁️</span>
+                  <div>
+                    <div class="track-name">Cloud (AWS/Azure)</div>
+                    <div class="track-topics">30 Topics &bull; Multi-Cloud</div>
+                  </div>
+                </div>
+                <span class="track-pct">50%</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════
+           QUADRANT 2: STRUCTURED LESSON
+           ══════════════════════════════════════════════════════════════════ -->
+      <section class="quadrant-card" id="quad-lesson" aria-labelledby="lessonTitleHeading">
+        <div class="quadrant-header-tag">
+          <span class="quadrant-tag-pill pill-quad-2">2 &bull; Structured Lesson</span>
+          <span class="quadrant-subtitle-desc">Clear learning objectives, visual diagrams, examples, and quizzes</span>
+        </div>
+
+        <div class="quadrant-body">
+          <!-- Lesson Header -->
+          <div class="lesson-top-bar">
+            <div class="lesson-breadcrumbs">
+              Kubernetes &gt; Introduction &gt; <span id="lessonBreadcrumbCurrent">What is Kubernetes?</span>
+            </div>
+            <div class="lesson-actions">
+              <span class="lesson-timer-pill">⏱️ 12 min</span>
+              <button class="btn-mark-complete" id="btnMarkComplete">
+                <span>✓</span> Mark Complete
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson Layout: Left Modules Tree + Right Content Pane -->
+          <div class="lesson-layout-split">
+            <!-- Left Modules Tree -->
+            <nav class="lesson-sidebar-tree" aria-label="Course syllabus">
+              <div class="tree-module-group">
+                <div class="tree-module-header">1. Introduction</div>
+                <button class="tree-item-btn active">What is Kubernetes?</button>
+                <button class="tree-item-btn">Architecture Overview</button>
+                <button class="tree-item-btn">Production Use Cases</button>
+              </div>
+              <div class="tree-module-group">
+                <div class="tree-module-header">2. Core Concepts</div>
+                <button class="tree-item-btn">Pods and Containers</button>
+                <button class="tree-item-btn">Deployments &amp; ReplicaSets</button>
+                <button class="tree-item-btn">Services &amp; Endpoints</button>
+                <button class="tree-item-btn">ConfigMaps &amp; Secrets</button>
+              </div>
+              <div class="tree-module-group">
+                <div class="tree-module-header">3. Networking</div>
+                <button class="tree-item-btn">Ingress Controllers</button>
+                <button class="tree-item-btn">Network Policies</button>
+              </div>
+              <div class="tree-module-group">
+                <div class="tree-module-header">4. Storage</div>
+                <button class="tree-item-btn">Persistent Volumes &amp; CSI</button>
+              </div>
+            </nav>
+
+            <!-- Right Content Pane -->
+            <div class="lesson-content-pane">
+              <!-- Tabs Header -->
+              <div class="lesson-tabs-header" id="lessonTabs" role="tablist">
+                <button class="tab-btn active" data-tab="overview" role="tab">Overview</button>
+                <button class="tab-btn" data-tab="visual" role="tab">Visual</button>
+                <button class="tab-btn" data-tab="examples" role="tab">Examples</button>
+                <button class="tab-btn" data-tab="quiz" role="tab">Quiz</button>
+                <button class="tab-btn" data-tab="notes" role="tab">Notes</button>
+                <button class="tab-btn" data-tab="resources" role="tab">Resources</button>
+              </div>
+
+              <!-- Tab Panel 1: Overview -->
+              <div class="lesson-tab-panel" id="panel-overview">
+                <h3 class="lesson-title-main" id="lessonTitleHeading">What is Kubernetes?</h3>
+                <p class="lesson-lead-p">
+                  Kubernetes is an open-source container orchestration platform designed to automate deploying, scaling, and managing containerized applications across cloud clusters.
+                </p>
+
+                <!-- Objectives Box -->
+                <div class="objectives-box">
+                  <div class="objectives-title">Learning Objectives</div>
+                  <ul class="objectives-list">
+                    <li><span class="obj-check">✓</span> Understand Kubernetes control plane and worker node responsibilities.</li>
+                    <li><span class="obj-check">✓</span> Learn how Deployments maintain desired state through declarative manifests.</li>
+                    <li><span class="obj-check">✓</span> Know when to use ClusterIP, NodePort, and LoadBalancer Services.</li>
+                  </ul>
+                </div>
+
+                <!-- Key Benefits -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; font-size: 0.76rem;">
+                  <div style="font-weight: 700; color: #fff; margin-bottom: 0.4rem;">Key Production Benefits</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; color: var(--text-secondary);">
+                    <div>✅ <strong>Automated Deployment:</strong> Seamless rolling updates with zero downtime.</div>
+                    <div>✅ <strong>Self-Healing:</strong> Restarts crashed containers and reschedules failed nodes.</div>
+                    <div>✅ <strong>Auto-Scaling:</strong> Dynamic horizontal pod autoscaling based on CPU/RAM/metrics.</div>
+                    <div>✅ <strong>Portability:</strong> Runs identically on AWS, Azure, GCP, or bare-metal on-premise.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Panel 2: Visual Architecture -->
+              <div class="lesson-tab-panel" id="panel-visual" style="display: none;">
+                <div class="architecture-diagram-card">
+                  <div class="arch-header-label">Kubernetes Cluster Architecture</div>
+                  <div class="arch-boxes-grid">
+                    <div class="arch-block">
+                      <div class="arch-block-title">Control Plane</div>
+                      <div class="arch-sub-pills">
+                        <span class="arch-pill">API Server</span>
+                        <span class="arch-pill">Controller Manager</span>
+                        <span class="arch-pill">Scheduler</span>
+                        <span class="arch-pill">etcd (RAFT)</span>
+                      </div>
+                    </div>
+                    <div class="arch-block">
+                      <div class="arch-block-title">Worker Nodes</div>
+                      <div class="arch-sub-pills">
+                        <span class="arch-pill">kubelet</span>
+                        <span class="arch-pill">kube-proxy</span>
+                        <span class="arch-pill">containerd</span>
+                        <span class="arch-pill">Pods (veth0)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Panel 3: Examples -->
+              <div class="lesson-tab-panel" id="panel-examples" style="display: none;">
+                <div style="background: #030611; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem; font-family: var(--font-mono); font-size: 0.72rem; color: #a5f3fc; overflow-x: auto;">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-api
+  namespace: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: payments-api
+  template:
+    metadata:
+      labels:
+        app: payments-api
+    spec:
+      containers:
+      - name: api
+        image: ghcr.io/pradeep/payments-api:v1.28.0
+        resources:
+          limits: { cpu: "500m", memory: "512Mi" }
+          requests: { cpu: "100m", memory: "128Mi" }
+                </div>
+              </div>
+
+              <!-- Tab Panel 4: Quiz -->
+              <div class="lesson-tab-panel" id="panel-quiz" style="display: none;">
+                <div style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.85rem;">
+                  <div>
+                    <strong>Q1: What is the smallest deployable computing unit in Kubernetes?</strong>
+                    <div style="margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                      <label><input type="radio" name="academy_q1" value="0" /> A Pod (one or more containers sharing network/storage)</label>
+                      <label><input type="radio" name="academy_q1" value="1" /> A Docker image file</label>
+                      <label><input type="radio" name="academy_q1" value="2" /> An etcd key-value entry</label>
+                    </div>
+                  </div>
+                  <div>
+                    <strong>Q2: Which resource provides a stable virtual IP to load-balance traffic across dynamic Pods?</strong>
+                    <div style="margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                      <label><input type="radio" name="academy_q2" value="0" /> Service (ClusterIP / LoadBalancer)</label>
+                      <label><input type="radio" name="academy_q2" value="1" /> ConfigMap</label>
+                      <label><input type="radio" name="academy_q2" value="2" /> PersistentVolumeClaim</label>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem;">
+                    <div id="quizResultMsg"></div>
+                    <button id="btnSubmitQuiz" class="btn-mark-complete" style="background: var(--accent-indigo);">
+                      Submit Answers
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Panel 5: Notes -->
+              <div class="lesson-tab-panel" id="panel-notes" style="display: none;">
+                <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5;">
+                  <p><strong>💡 Production SRE Rule:</strong> Always configure explicit CPU/RAM requests and limits to ensure the Linux OOM killer does not evict critical control-plane processes.</p>
+                  <p style="margin-top: 0.5rem;"><strong>💡 Health Probes:</strong> Separate readiness probes from liveness probes to prevent cascading reboot loops during network slowdowns.</p>
+                </div>
+              </div>
+
+              <!-- Tab Panel 6: Resources -->
+              <div class="lesson-tab-panel" id="panel-resources" style="display: none;">
+                <div style="font-size: 0.76rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                  <a href="/tools/kubernetes/" style="color: var(--accent-cyan); text-decoration: underline;">☸️ Kubernetes Interactive Studio (Launch Lab)</a>
+                  <a href="/tools/kubernetes/README.md" style="color: var(--accent-cyan); text-decoration: underline;">📖 Kubernetes Production Markdown Guide</a>
+                  <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: underline;">🐙 Source Code Repository on GitHub</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════
+           QUADRANT 3: INTERACTIVE ENGINEERING FLOW
+           ══════════════════════════════════════════════════════════════════ -->
+      <section class="quadrant-card" id="quad-flow" aria-labelledby="flowHeading">
+        <div class="quadrant-header-tag">
+          <span class="quadrant-tag-pill pill-quad-3">3 &bull; Interactive Engineering Flow</span>
+          <span class="quadrant-subtitle-desc">Connected DAG nodes, real/simulated telemetry, inputs, and hints</span>
+        </div>
+
+        <div class="quadrant-body">
+          <!-- Flow Top Bar -->
+          <div class="flow-top-controls">
+            <div class="flow-title-wrap">
+              <h3 id="flowHeading">CI/CD Pipeline Flow</h3>
+              <p>Visualize how code changes flow from developer commit to production</p>
+            </div>
+            <div class="flow-btn-group">
+              <select class="flow-select" id="flowProviderSelect" aria-label="CI Platform Provider">
+                <option value="github-actions">GitHub Actions</option>
+                <option value="gitlab-ci">GitLab CI</option>
+                <option value="tekton">Tekton Pipelines</option>
+                <option value="argocd">ArgoCD GitOps</option>
+              </select>
+              <button class="btn-flow-toggle" id="btnFlowModeToggle" title="Toggle Live vs Simulation">
+                <span>●</span> Live Telemetry
+              </button>
+              <button class="btn-flow-run" id="btnRunFlowDrill">
+                ▶ Run Pipeline Drill
+              </button>
+            </div>
+          </div>
+
+          <!-- Connected Node Graph DAG (Horizontal Flow) -->
+          <div class="pipeline-dag-container" role="region" aria-label="Pipeline DAG">
+            <!-- Node 1: Developer -->
+            <div class="pipeline-node node-success" data-node="dev" tabindex="0" role="button" aria-label="Developer Node">
+              <span class="node-icon-box">👨‍💻</span>
+              <span class="node-title-txt">Developer</span>
+              <span class="node-status-badge badge-success">Committed</span>
+            </div>
+            <span class="dag-arrow">→</span>
+
+            <!-- Node 2: Git -->
+            <div class="pipeline-node node-success" data-node="git" tabindex="0" role="button" aria-label="Git Repository Node">
+              <span class="node-icon-box">🐙</span>
+              <span class="node-title-txt">Git Repo</span>
+              <span class="node-status-badge badge-success">Pushed</span>
+            </div>
+            <span class="dag-arrow">→</span>
+
+            <!-- Node 3: Build -->
+            <div class="pipeline-node node-success" data-node="build" tabindex="0" role="button" aria-label="Build Stage Node">
+              <span class="node-icon-box">⚙️</span>
+              <span class="node-title-txt">Build</span>
+              <span class="node-status-badge badge-success">Compiled</span>
+            </div>
+            <span class="dag-arrow">→</span>
+
+            <!-- Node 4: Test (Active/Selected) -->
+            <div class="pipeline-node node-running active-selected" data-node="test" tabindex="0" role="button" aria-label="Test Stage Node">
+              <span class="node-icon-box">🧪</span>
+              <span class="node-title-txt">Test</span>
+              <span class="node-status-badge badge-running">Running</span>
+            </div>
+            <span class="dag-arrow">→</span>
+
+            <!-- Node 5: Security Scan -->
+            <div class="pipeline-node node-pending" data-node="security" tabindex="0" role="button" aria-label="Security Scan Node">
+              <span class="node-icon-box">🛡️</span>
+              <span class="node-title-txt">Security</span>
+              <span class="node-status-badge badge-pending">Pending</span>
+            </div>
+            <span class="dag-arrow">→</span>
+
+            <!-- Node 6: Deploy -->
+            <div class="pipeline-node node-pending" data-node="deploy" tabindex="0" role="button" aria-label="Deploy Stage Node">
+              <span class="node-icon-box">🚀</span>
+              <span class="node-title-txt">Deploy</span>
+              <span class="node-status-badge badge-pending">Pending</span>
+            </div>
+            <span class="dag-arrow">→</span>
+
+            <!-- Node 7: Monitor -->
+            <div class="pipeline-node node-pending" data-node="monitor" tabindex="0" role="button" aria-label="Monitor Stage Node">
+              <span class="node-icon-box">📊</span>
+              <span class="node-title-txt">Monitor</span>
+              <span class="node-status-badge badge-pending">Pending</span>
+            </div>
+          </div>
+
+          <!-- Split Bottom Drawer: Node Details + Live Status HUD -->
+          <div class="flow-bottom-split">
+            <!-- Left: Node Details Drawer -->
+            <div class="node-details-drawer">
+              <div class="node-details-header">
+                <span class="details-node-name" id="nodeDrawerTitle">Node Details: Test Stage (Unit &amp; Integration)</span>
+                <span class="lesson-timer-pill" id="nodeDrawerDuration">Duration: 2m 34s</span>
+              </div>
+              <div class="details-tab-nav" role="tablist">
+                <button class="dtab-btn active" data-dtab="overview">Overview</button>
+                <button class="dtab-btn" data-dtab="inputs">Inputs/Outputs</button>
+                <button class="dtab-btn" data-dtab="logs">Logs</button>
+                <button class="dtab-btn" data-dtab="trouble">Troubleshooting</button>
+              </div>
+
+              <!-- DTab 1: Overview -->
+              <div class="dtab-panel" id="dpanel-overview">
+                <p class="details-body-txt" id="nodeDrawerOverview">
+                  Runs parallel unit tests, integration test suite, and generates JUnit XML coverage reports.
+                </p>
+              </div>
+
+              <!-- DTab 2: Inputs/Outputs -->
+              <div class="dtab-panel" id="dpanel-inputs" style="display: none;">
+                <div style="font-size: 0.72rem; color: var(--text-secondary);">
+                  <div><strong>Inputs:</strong> <span id="nodeDrawerInputs">Compiled test binaries, postgres-test ephemeral container.</span></div>
+                  <div style="margin-top: 0.35rem;"><strong>Outputs:</strong> <span id="nodeDrawerOutputs">Test coverage: 94.8%, Junit report: 564 passed.</span></div>
+                </div>
+              </div>
+
+              <!-- DTab 3: Logs -->
+              <div class="dtab-panel" id="dpanel-logs" style="display: none;">
+                <pre style="font-family: var(--font-mono); font-size: 0.68rem; color: #a7f3d0; white-space: pre-wrap;" id="nodeDrawerLogs">[test] Running unit tests...
+[test] ✓ tests/auth.test.go (42ms)
+[test] ✓ tests/routing.test.go (88ms)
+[test] Coverage report: 94.8% statements</pre>
+              </div>
+
+              <!-- DTab 4: Troubleshooting -->
+              <div class="dtab-panel" id="dpanel-trouble" style="display: none;">
+                <p class="details-body-txt" id="nodeDrawerTroubleshooting" style="color: #fca5a5;">
+                  Check database container port collision and ephemeral volume mount permissions.
+                </p>
+              </div>
+            </div>
+
+            <!-- Right: Live Status HUD -->
+            <div class="live-status-hud">
+              <div class="hud-title">Live Pipeline Status</div>
+              <div class="hud-metrics-list">
+                <div class="hud-metric-row">
+                  <span class="metric-label">Success Rate</span>
+                  <span class="metric-val" style="color: var(--accent-emerald);">95.2%</span>
+                </div>
+                <div class="hud-metric-row">
+                  <span class="metric-label">Avg Duration</span>
+                  <span class="metric-val">2m 18s</span>
+                </div>
+                <div class="hud-metric-row">
+                  <span class="metric-label">Last Run</span>
+                  <span class="metric-val">2 mins ago</span>
+                </div>
+                <div class="hud-metric-row">
+                  <span class="metric-label">Current Status</span>
+                  <span class="metric-val" id="hudStatusVal" style="color: var(--accent-cyan);">Running</span>
+                </div>
+                <div class="hud-metric-row">
+                  <span class="metric-label">Next Step</span>
+                  <span class="metric-val" style="color: var(--accent-amber);">Security Scan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════
+           QUADRANT 4: PRACTICAL LAB
+           ══════════════════════════════════════════════════════════════════ -->
+      <section class="quadrant-card" id="quad-lab" aria-labelledby="labTitleHeading">
+        <div class="quadrant-header-tag">
+          <span class="quadrant-tag-pill pill-quad-4">4 &bull; Practical Hands-on Lab</span>
+          <span class="quadrant-subtitle-desc">Step-by-step instructions, code editor, live terminal, and validation</span>
+        </div>
+
+        <div class="quadrant-body">
+          <!-- Lab Top Bar -->
+          <div class="lab-top-bar">
+            <div class="lab-title-wrap">
+              <h3 id="labTitleHeading">Lab: Deploy a Web Application on Kubernetes</h3>
+              <p>Deploy a containerized web application using Kubernetes Deployments and Services</p>
+            </div>
+            <div class="lab-top-actions">
+              <span class="lab-badge-time">⏱️ ~30 min &bull; Intermediate</span>
+              <button class="btn-lab-reset" id="btnResetLab" title="Reset Sandbox">↺ Reset Lab</button>
+            </div>
+          </div>
+
+          <!-- 3-Column Layout: Left Steps Nav + Center Workspace + Right Inspector -->
+          <div class="lab-layout-3col">
+            <!-- Left Steps Nav -->
+            <nav class="lab-steps-nav" aria-label="Lab progression steps">
+              <button class="lab-step-btn completed" data-step="1">
+                <span class="step-num-bubble">✓</span>
+                <span>Environment Setup</span>
+              </button>
+              <button class="lab-step-btn active" data-step="2">
+                <span class="step-num-bubble">2</span>
+                <span>Deploy Application</span>
+              </button>
+              <button class="lab-step-btn" data-step="3">
+                <span class="step-num-bubble">3</span>
+                <span>Expose with Service</span>
+              </button>
+              <button class="lab-step-btn" data-step="4">
+                <span class="step-num-bubble">4</span>
+                <span>Verify &amp; Test</span>
+              </button>
+              <button class="lab-step-btn" data-step="5">
+                <span class="step-num-bubble">5</span>
+                <span>Cleanup</span>
+              </button>
+            </nav>
+
+            <!-- Center Workspace (Tabs: Instructions, Code, Terminal, Test) -->
+            <div class="lab-workspace-center">
+              <div class="lab-center-tabs" role="tablist">
+                <button class="ltab-btn active" data-ltab="instructions">Instructions</button>
+                <button class="ltab-btn" data-ltab="code">Code</button>
+                <button class="ltab-btn" data-ltab="terminal">Terminal</button>
+                <button class="ltab-btn" data-ltab="test">Test &amp; Validate</button>
+              </div>
+
+              <!-- LTab 1: Instructions -->
+              <div class="ltab-panel" id="lpanel-instructions">
+                <h4 style="font-size: 0.82rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;" id="labStepTitle">
+                  2. Deploy Application
+                </h4>
+                <p class="lab-step-instructions-content" id="labStepDesc">
+                  Deploy the containerized web application using a Kubernetes Deployment manifest with 3 replicas and rolling update strategy.
+                </p>
+
+                <!-- Formatted Expected Output -->
+                <div class="expected-output-box">
+                  <div class="expected-label">Expected Output</div>
+                  <pre class="expected-terminal-code" id="labStepExpected">$ kubectl get deployments
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+web-app   3/3     3            3           18s</pre>
+                </div>
+              </div>
+
+              <!-- LTab 2: Code -->
+              <div class="ltab-panel" id="lpanel-code" style="display: none;">
+                <pre style="background: #020409; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.65rem; font-family: var(--font-mono); font-size: 0.72rem; color: #93c5fd; overflow-x: auto;" id="labStepCode">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.25-alpine</pre>
+              </div>
+
+              <!-- LTab 3: Terminal Sandbox -->
+              <div class="ltab-panel" id="lpanel-terminal" style="display: none;">
+                <div class="interactive-terminal-box" id="termLogContainer">
+                  <div class="terminal-line">
+                    <span class="term-prompt">user@kind-k8s:~$</span> kubectl cluster-info<br />
+                    <span style="color: #94a3b8;">Kubernetes control plane is running at https://127.0.0.1:6443</span>
+                  </div>
+                </div>
+                <div class="terminal-input-row" style="margin-top: 0.4rem; padding: 0.25rem 0.5rem; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                  <span class="term-prompt">user@kind-k8s:~$</span>
+                  <input type="text" class="terminal-input-field" id="termInputField" placeholder="Type kubectl command and press Enter..." />
+                </div>
+              </div>
+
+              <!-- LTab 4: Test & Validate -->
+              <div class="ltab-panel" id="lpanel-test" style="display: none;">
+                <div style="font-size: 0.76rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                  <div style="color: var(--accent-emerald);">✓ Cluster Connectivity: PASS (API server responding)</div>
+                  <div style="color: var(--accent-emerald);">✓ Manifest Schema Validation: PASS (apps/v1 valid)</div>
+                  <div style="color: var(--accent-emerald);">✓ Replicas Count: PASS (Desired=3, Ready=3)</div>
+                  <div style="color: var(--accent-emerald);">✓ Health Check Probes: PASS (HTTP 200)</div>
+                </div>
+              </div>
+
+              <!-- Nav Actions -->
+              <div class="lab-nav-actions">
+                <button class="btn-lab-prev" id="btnLabPrev">← Previous Step</button>
+                <button class="btn-lab-next" id="btnLabNext">Next: Expose with Service →</button>
+              </div>
+            </div>
+
+            <!-- Right Lab Inspector -->
+            <div class="lab-inspector-right">
+              <!-- Lab Environment Status -->
+              <div class="env-hud-card">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; color: #fff;">
+                    <span class="env-status-dot"></span>Running
+                  </span>
+                  <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent-amber);" id="labCountdownTimer">29:15</span>
+                </div>
+                <div class="env-specs-list">
+                  <div><strong>Cluster:</strong> kind-k8s</div>
+                  <div><strong>Nodes:</strong> 2 nodes (v1.28)</div>
+                  <div><strong>Context:</strong> kind-kind</div>
+                </div>
+              </div>
+
+              <!-- Quick Commands -->
+              <div class="quick-commands-card">
+                <div style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">
+                  Quick Commands
+                </div>
+                <button class="btn-quick-cmd" data-cmd="kubectl get nodes">
+                  <span>kubectl get nodes</span>
+                  <span>⚡</span>
+                </button>
+                <button class="btn-quick-cmd" data-cmd="kubectl get pods -A">
+                  <span>kubectl get pods</span>
+                  <span>⚡</span>
+                </button>
+                <button class="btn-quick-cmd" data-cmd="kubectl get svc web-service">
+                  <span>kubectl get svc</span>
+                  <span>⚡</span>
+                </button>
+                <button class="btn-quick-cmd" data-cmd="kubectl describe pod web-app">
+                  <span>kubectl describe pod</span>
+                  <span>⚡</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="./academy.js"></script>
+</body>
+</html>
