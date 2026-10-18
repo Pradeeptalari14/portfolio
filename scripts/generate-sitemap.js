@@ -40,6 +40,7 @@ const corePages = [
   { url: 'status/', priority: '0.8', changefreq: 'daily' },
   { url: 'AI/', priority: '0.8', changefreq: 'weekly' },
   { url: 'tools/', priority: '0.9', changefreq: 'weekly' },
+  { url: 'academy/', priority: '0.9', changefreq: 'weekly' },
   { url: 'tools/github-provisioning-guide/', priority: '0.8', changefreq: 'monthly' },
   { url: 'tools/devsecops-portfolio-guide/', priority: '0.8', changefreq: 'monthly' }
 ];

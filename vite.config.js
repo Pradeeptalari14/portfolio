@@ -36,6 +36,7 @@ function getToolInputs() {
     status: resolve(__dirname, 'status/index.html'),
     aiCatalog: resolve(__dirname, 'AI/index.html'),
     interview: resolve(__dirname, 'interview/index.html'),
+    academy: resolve(__dirname, 'academy/index.html'),
   };
 
   const toolsDir = resolve(__dirname, 'tools');

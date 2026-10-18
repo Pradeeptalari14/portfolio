@@ -1,0 +1,7 @@
+Contact: mailto:maksoodtalari@gmail.com
+Contact: https://github.com/Pradeeptalari14/portfolio/security/advisories/new
+Expires: 2027-10-18T20:00:00.000Z
+Preferred-Languages: en
+Canonical: https://talaripradeep.info/.well-known/security.txt
+Policy: https://github.com/Pradeeptalari14/portfolio/blob/main/SECURITY.md
+Hiring: https://talaripradeep.info/resume/
