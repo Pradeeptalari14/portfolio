@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Talari Pradeep Platform Route Registry",
-    "generatedAt": "2026-10-18T16:05:32.698Z",
-    "totalRoutes": 365,
+    "generatedAt": "2026-10-18T16:30:59.186Z",
+    "totalRoutes": 367,
     "testPassRate": "100% (549/549)",
     "testSuites": 119
   },
@@ -310,6 +310,61 @@
       },
       "security": "Curated industry SRE knowledge baseline",
       "testFile": "tests/interview-page.test.js"
+    },
+    {
+      "path": "/projects/",
+      "filePath": "projects/index.html",
+      "type": "Architecture Case Studies & Repos Explorer",
+      "parent": "Home",
+      "title": "Flagship Platform Projects & Open Source Repositories | Talari Pradeep",
+      "controls": [
+        "Flagship Project Cards (12)",
+        "Repository Search (347)",
+        "Category Tabs (7)",
+        "Direct GitHub Links",
+        "Live Deep Dives"
+      ],
+      "dependencies": [
+        "projects/projects.css",
+        "tools/tools.json"
+      ],
+      "learningConnections": {
+        "learn": "/studios/learn/",
+        "lab": "/tools/",
+        "flow": "/studios/flow/",
+        "project": "/projects/"
+      },
+      "security": "Static pre-rendered architecture documents, zero external runtime leakage",
+      "testFile": "tests/projects-repositories.test.js"
+    },
+    {
+      "path": "/academy/",
+      "filePath": "academy/index.html",
+      "type": "Engineering Academy & Interactive Lab",
+      "parent": "Home",
+      "title": "Technical Academy & Interactive Engineering Lab | Talari Pradeep",
+      "controls": [
+        "Topic Switcher",
+        "Visual DAG Architecture",
+        "CVE Failure Drill",
+        "Interactive Terminal",
+        "Command Chips",
+        "Knowledge Quiz",
+        "Personal Notes"
+      ],
+      "dependencies": [
+        "academy/academy.js",
+        "academy/academy.css",
+        "tools/tools.json"
+      ],
+      "learningConnections": {
+        "learn": "/academy/",
+        "lab": "/academy/",
+        "flow": "/academy/",
+        "project": "/projects/"
+      },
+      "security": "Sandboxed virtual execution, DOM XSS sanitized terminal logger, strict CSP compliant",
+      "testFile": "tests/technical-academy.test.js"
     }
   ],
   "studios": [

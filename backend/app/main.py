@@ -6,7 +6,7 @@ from .routers import studios, projects, rag, sandbox, ai
 
 app = FastAPI(
     title="Talari Pradeep Studios Hub — Companion API",
-    description="Enterprise AI upgrade backend providing pgvector persistent search, Docker sandboxes, and Ollama integration for all 341 engineering studios.",
+    description="Enterprise AI upgrade backend providing pgvector persistent search, Docker sandboxes, and Ollama integration for all 347 engineering studios.",
     version="1.0.0"
 )
 
@@ -64,10 +64,12 @@ async def on_startup():
 @app.get("/health")
 @app.get("/api/health")
 async def health_check():
+    catalog = studios._get_tools_catalog()
+    studio_count = len(catalog) if catalog else 347
     return {
         "status": "ok",
         "platform": "Talari Pradeep Studios Hub",
-        "studios_supported": 341,
+        "studios_supported": studio_count,
         "database": "postgresql+pgvector",
         "cache": "valkey-8",
         "sandbox": "docker-isolated",

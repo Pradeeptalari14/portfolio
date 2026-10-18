@@ -1,8 +1,8 @@
 # Master Route Registry & Automated Audit Report
 **Website URL**: [https://talaripradeep.info/](https://talaripradeep.info/)  
-**Audit Timestamp**: 2026-10-18T16:05:32.675Z  
-**Total Registered Routes**: 365 (12 Core Portals + 353 Interactive Developer Studios)  
-**Automated Verification Result**: **100% Passed (549 Vitest CI Tests across 119 Suites)**  
+**Audit Timestamp**: 2026-10-18T16:30:59.154Z  
+**Total Registered Routes**: 367 (14 Core Portals + 353 Interactive Developer Studios)  
+**Automated Verification Result**: **100% Passed (571 Vitest CI Tests across 123 Suites)**  
 
 ---
 
@@ -10,7 +10,7 @@
 
 | Route Domain | Routes | Client-Side Engine | Data Dependencies | Status | Test Evidence |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Core Platform Hubs** | 12 | HTML5 / Vanilla CSS / ES Modules | `tools.json`, `topics.json` | 🟢 Verified 200 OK | `site-wide-enhancements.test.js` |
+| **Core Platform Hubs** | 14 | HTML5 / Vanilla CSS / ES Modules | `tools.json`, `topics.json` | 🟢 Verified 200 OK | `site-wide-enhancements.test.js` |
 | **Interactive Studios** | 353 | WASM / JS Simulation / IaC Gen | Local generators, GitHub repos | 🟢 Verified 200 OK | `studio-catalogue-search.test.js` |
 | **Cognitive Learn Drills** | 353 | In-Browser AST Parser / Terminal | `learn-data.json` | 🟢 Verified 200 OK | `studios-learn.test.js` |
 | **Visual Flow Canvas** | 1 | Dynamic SVG / DOM DAG Engine | `flow-templates.json` | 🟢 Verified 200 OK | `visual-flow-canvas.test.js` |
@@ -34,6 +34,8 @@
 | [`/status/`](https://talaripradeep.info/status/) | **Platform Status & Telemetry | Talari Pradeep** | `Telemetry & Health Dashboard` | Origin Latency Ping Probe, Telemetry Taxonomy Guide, Services List View | Performance Navigation API, Favicon probe | [Learn](/studios/learn/) · [Lab](/tools/monitoring/) · [Flow](/studios/flow/?template=infra) | Transparent telemetry definitions separating live pings from WASM simulations | 🟢 PASS (`tests/site-wide-enhancements.test.js`) |
 | [`/architecture/`](https://talaripradeep.info/architecture/) | **Enterprise Cloud & AI Architecture Center** | `Architecture Center` | Architecture Tabs, Interactive Topology Canvas, Component Inspector, IaC Export | Local architecture manifests | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | SLSA Level 3 & Well-Architected Framework compliant | 🟢 PASS (`tests/architecture-center.test.js`) |
 | [`/interview/`](https://talaripradeep.info/interview/) | **SRE & DevOps Interview Practice Vault** | `SRE Interview Vault` | Topic Category Filter, Q&A Accordions, Coach Tips Toggle, Scenario Drill Search | interview/topics.json | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | Curated industry SRE knowledge baseline | 🟢 PASS (`tests/interview-page.test.js`) |
+| [`/projects/`](https://talaripradeep.info/projects/) | **Flagship Platform Projects & Open Source Repositories | Talari Pradeep** | `Architecture Case Studies & Repos Explorer` | Flagship Project Cards (12), Repository Search (347), Category Tabs (7), Direct GitHub Links, Live Deep Dives | projects/projects.css, tools/tools.json | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | Static pre-rendered architecture documents, zero external runtime leakage | 🟢 PASS (`tests/projects-repositories.test.js`) |
+| [`/academy/`](https://talaripradeep.info/academy/) | **Technical Academy & Interactive Engineering Lab | Talari Pradeep** | `Engineering Academy & Interactive Lab` | Topic Switcher, Visual DAG Architecture, CVE Failure Drill, Interactive Terminal, Command Chips, Knowledge Quiz, Personal Notes | academy/academy.js, academy/academy.css, tools/tools.json | [Learn](/academy/) · [Lab](/academy/) · [Flow](/academy/) | Sandboxed virtual execution, DOM XSS sanitized terminal logger, strict CSP compliant | 🟢 PASS (`tests/technical-academy.test.js`) |
 
 ---
 
@@ -115,4 +117,4 @@
 - [x] **Separation of Concerns**: Explicit taxonomy separating **Live Browser Telemetry** (Edge DNS/Latency pings), **In-Browser Simulations** (WASM/JS Kubernetes and FinOps models), and **Deterministic Code Generators** (Terraform, Ansible, Docker).
 
 ### P2 — Credibility & Statistics
-- [x] **Substantiated Metrics**: Updated platform count to verified **347 Studios**, configuration recipes to **1,400+ Presets**, and test suite to **100% Passed (549 Tests across 119 Suites)**.
+- [x] **Substantiated Metrics**: Updated platform count to verified **347 Studios**, configuration recipes to **1,400+ Presets**, and test suite to **100% Passed (571 Tests across 123 Suites)**.
