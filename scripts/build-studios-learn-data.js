@@ -176,15 +176,121 @@ function generateLearningProfile(tool) {
     antiPattern = 'Assuming multi-zone architectures are resilient without ever simulating active network partition or database failovers.';
     realTimeDrill = 'kubectl apply -f network-latency-experiment.yaml && kubectl get chaos -n chaos-mesh';
     sreMetric = 'Validated RTO < 5m & Zero Cascading Network Deadlocks';
+  } else if (text.includes('rag') || text.includes('vector') || text.includes('qdrant') || text.includes('chroma') || text.includes('milvus') || text.includes('colpali') || text.includes('knowledge')) {
+    useCase = `Mitigating hallucination, context drift, and retrieval latency in enterprise ${title} workloads over large multi-modal and structured knowledge bases.`;
+    bestTreatment = `Implement hybrid dense-sparse retrieval (BM25 + pgvector/Qdrant cosine fusion) with Cross-Encoder reranking and semantic chunk windowing.`;
+    antiPattern = `Dumping raw unchunked documents directly into high-dimensional vector stores without deduplication, sparse keyword indexes, or relevance thresholds.`;
+    realTimeDrill = `python3 -m rag.retriever --query "Audit production cluster state" --hybrid-rrf --top-k 5 --rerank-threshold 0.75`;
+    sreMetric = `93.5% Context Recall & <32ms End-to-End Retrieval Latency`;
+  } else if (text.includes('agent') || text.includes('swarm') || text.includes('langgraph') || text.includes('crew') || text.includes('autogen') || text.includes('computer-use')) {
+    useCase = `Orchestrating autonomous multi-agent tool execution in ${title} while preventing infinite delegation loops, cascading errors, and unbounded API costs.`;
+    bestTreatment = `Deploy deterministic LangGraph state machine graphs with checkpointed PostgreSQL state persistence, human-in-the-loop gates, and bounded tool execution steps.`;
+    antiPattern = `Allowing unconstrained recursive agent dispatch without max-iteration budgets, structured schema constraints, or circuit-breakers.`;
+    realTimeDrill = `python3 -m agents.runner --graph-config ${tag} --max-steps 8 --verify-tool-schemas --trace-otel`;
+    sreMetric = `100% Deterministic State Recovery & Zero Unbounded Delegation Cascades`;
+  } else if (text.includes('deepseek') || text.includes('yi-lightning') || text.includes('qwen') || text.includes('kimi') || text.includes('mistral') || text.includes('gemini') || text.includes('claude') || text.includes('moe')) {
+    useCase = `Serving frontier open-weight models in ${title} across high-concurrency production endpoints with strict Time-To-First-Token (TTFT) budgets.`;
+    bestTreatment = `Configure fine-grained Mixture-of-Experts (MoE) parallelism with aux-loss-free routing, prefix caching, and tensor-parallel GPU memory distribution.`;
+    antiPattern = `Deploying monolithic multi-billion parameter checkpoints on single GPUs without dynamic tensor parallelism or chunked prefill co-scheduling.`;
+    realTimeDrill = `python3 -m inference.engine --config ${tag} --benchmark-tokens 2048 --batch-size 32 --measure-latency`;
+    sreMetric = `4.2x Higher Token Throughput & <16ms Inter-Token Generation Latency`;
+  } else if (text.includes('guardrail') || text.includes('shield') || text.includes('injection') || text.includes('redteam') || text.includes('safety') || text.includes('owasp')) {
+    useCase = `Defending LLM and agent workflows against adversarial prompt injections, persona jailbreaks, and sensitive data leakage in ${title}.`;
+    bestTreatment = `Apply layered zero-trust defense: sub-reflex regex heuristics, Llama-Guard classifier inspection, and isolated gVisor containerized execution sandboxes.`;
+    antiPattern = `Relying solely on system prompt instructions ("Do not reveal secrets") without programmatic input filtering or output sanitizers.`;
+    realTimeDrill = `pytest -v tests/security_scan.py --test-prompts ./adversarial_drills.json --enforce-fail-closed`;
+    sreMetric = `100% OWASP LLM01-LLM10 Threat Interception & <18ms Sub-Reflex Gating`;
+  } else if (text.includes('finops') || text.includes('greenops') || text.includes('cost') || text.includes('semantic-cache') || text.includes('promptops') || text.includes('carbon')) {
+    useCase = `Eliminating runaway cloud token expenditures and infrastructure carbon waste in high-volume ${title} deployments.`;
+    bestTreatment = `Deploy sub-5ms semantic vector caching to intercept repeated queries and route simple requests to efficient local SLMs before escalating to flagship LLMs.`;
+    antiPattern = `Directing every trivial query to expensive external frontier APIs without local semantic caching or cost-aware model routing.`;
+    realTimeDrill = `python3 -m finops.cache_profiler --eval-corpus ./queries.json --similarity-cutoff 0.92 --calc-savings`;
+    sreMetric = `65% Reduction in Monthly Token Spend & 84% Semantic Cache Hit Rate`;
+  } else if (text.includes('kubernetes') || text.includes('k8s') || text.includes('helm') || text.includes('crossplane') || text.includes('karpenter') || text.includes('cilium') || text.includes('ingress')) {
+    useCase = `Eliminating node provisioning lag, pod scheduling starvation, and network policy drift in enterprise ${title} Kubernetes environments.`;
+    bestTreatment = `Standardize on declarative GitOps manifests with Karpenter fast node consolidation, eBPF Cilium network policies, and rolling zero-downtime updates.`;
+    antiPattern = `Manually editing live cluster resources with kubectl edit or running static oversized node groups that waste idle cloud compute.`;
+    realTimeDrill = `kubectl apply -f ${tag} --dry-run=server && kubectl get pods -l app=${title.toLowerCase().replace(/[^a-z0-9]/g, '-')} -w`;
+    sreMetric = `Sub-45s Node Autoscaling & Zero Unplanned Service Disruption`;
+  } else if (text.includes('ebpf') || text.includes('telemetry') || text.includes('otel') || text.includes('prometheus') || text.includes('grafana') || text.includes('loki') || text.includes('jaeger') || text.includes('sre') || text.includes('monitoring')) {
+    useCase = `Detecting kernel-level socket bottlenecks, memory leak regressions, and microservice trace latency spikes in production ${title}.`;
+    bestTreatment = `Deploy OpenTelemetry auto-instrumentation alongside in-kernel eBPF probes with continuous sampling, streaming unified metrics to Prometheus and Loki.`;
+    antiPattern = `Scraping unaggregated debug logs or using invasive synchronous APM agents that introduce noticeable request latency overhead.`;
+    realTimeDrill = `curl -sSf http://localhost:9090/metrics | grep -E "p99_latency|error_rate|active_workers"`;
+    sreMetric = `100% Trace Coverage & <1.2% Observability Agent CPU Overhead`;
+  } else if (text.includes('pipeline') || text.includes('argocd') || text.includes('gitops') || text.includes('jenkins') || text.includes('gitlab') || text.includes('github') || text.includes('tekton') || text.includes('trivy') || text.includes('cosign') || text.includes('sonar') || text.includes('sbom')) {
+    useCase = `Securing the software supply chain against untrusted dependency vulnerabilities, image tampering, and deployment drift in ${title}.`;
+    bestTreatment = `Enforce cryptographic Sigstore cosign container signing, CycloneDX SBOM generation, and automated Trivy vulnerability gating before GitOps sync.`;
+    antiPattern = `Pushing unsigned container images directly to production registries without vulnerability scan gates or immutable SHA256 digest pinning.`;
+    realTimeDrill = `trivy image --severity HIGH,CRITICAL ghcr.io/${repo}:latest && cosign verify --key cosign.pub ghcr.io/${repo}:latest`;
+    sreMetric = `Zero Critical CVEs in Production & 100% Cryptographically Verified SLSA Provenance`;
+  } else if (text.includes('database') || text.includes('postgres') || text.includes('pgvector') || text.includes('sql') || text.includes('redis') || text.includes('neo4j') || text.includes('snowflake') || text.includes('migration')) {
+    useCase = `Preventing connection pool exhaustion, slow unindexed queries, and schema migration locking in mission-critical ${title} databases.`;
+    bestTreatment = `Implement asynchronous connection pooling (PgBouncer/SQLAlchemy), automated zero-downtime Alembic migrations, and pgvector HNSW indexing.`;
+    antiPattern = `Executing unindexed multi-table JOINs and synchronous blocking DDL alter commands during peak business traffic.`;
+    realTimeDrill = `alembic upgrade head && psql -U postgres -d studios_hub -c "EXPLAIN ANALYZE SELECT * FROM pgvector_store LIMIT 10;"`;
+    sreMetric = `P99 Query Latency < 12ms & Zero Schema Migration Downtime`;
+  } else if (text.includes('ansible') || text.includes('playbook')) {
+    useCase = `Automating zero-downtime configuration management, OS patching, and idempotent node provisioning in enterprise ${title}.`;
+    bestTreatment = `Structure roles with idempotent tasks, Vault-encrypted host variables, and pre-commit ansible-lint attestation before running in production.`;
+    antiPattern = `Running unversioned imperative shell tasks within playbooks that break idempotency and fail upon re-execution.`;
+    realTimeDrill = `ansible-playbook -i inventory/hosts ${tag} --check --diff`;
+    sreMetric = `100% Idempotent Execution & Zero Unplanned Configuration Drift`;
+  } else if (text.includes('terraform') || text.includes('opentofu') || text.includes('vpc') || text.includes('subnet')) {
+    useCase = `Managing multi-region cloud topology, subnet CIDR allocations, and VPC peering connections declaratively without state corruption in ${title}.`;
+    bestTreatment = `Store remote state in S3/GCS with DynamoDB state locking, enforce pre-merge terraform plan approval gates, and run daily drift scanners.`;
+    antiPattern = `Applying Terraform changes locally from developer laptops with shared static credentials or unencrypted local state files.`;
+    realTimeDrill = `terraform init && terraform plan -out=tfplan && terraform show -json tfplan | jq .resource_changes`;
+    sreMetric = `100% S3 Remote State Locking & Sub-3m VPC Deployment Time`;
+  } else if (text.includes('gateway') || text.includes('router') || text.includes('proxy') || text.includes('nginx') || text.includes('envoy') || text.includes('traefik')) {
+    useCase = `Terminating TLS, routing high-throughput ingress traffic, and rate-limiting abusive API consumers before reaching backend microservices in ${title}.`;
+    bestTreatment = `Deploy Envoy/Nginx sidecars with token-bucket rate limiters, active health checks, and circuit-breaking upstream connection pools.`;
+    antiPattern = `Exposing upstream backend services directly to public ingress without connection limits, TLS termination, or CORS request filters.`;
+    realTimeDrill = `nginx -t -c ${tag} && curl -Iv http://localhost:8080/healthz`;
+    sreMetric = `<4.5ms Gateway Routing Latency & 100% DoS Burst Mitigation`;
+  } else if (text.includes('mesh') || text.includes('istio') || text.includes('linkerd')) {
+    useCase = `Enforcing strict mutual TLS (mTLS), distributed tracing spans, and canary traffic splitting across heterogeneous microservices in ${title}.`;
+    bestTreatment = `Inject lightweight service mesh sidecars with automatic mTLS rotation, Istio VirtualServices for canary shifting, and OpenTelemetry baggage injection.`;
+    antiPattern = `Allowing unencrypted plaintext east-west service communication across Kubernetes pods without cryptographic pod identity.`;
+    realTimeDrill = `istioctl analyze && istioctl proxy-status`;
+    sreMetric = `100% Mutual TLS East-West Encryption & <1.8ms Sidecar Latency Penalty`;
+  } else if (text.includes('dns') || text.includes('ssl') || text.includes('pki') || text.includes('cert') || text.includes('tls')) {
+    useCase = `Automating wildcard SSL/TLS certificate issuance, renewal, and DNS record validation without human intervention or certificate expiry outages in ${title}.`;
+    bestTreatment = `Deploy Cert-Manager with automated ACME Let's Encrypt DNS01 challenge solvers and alert 30 days prior to certificate expiration.`;
+    antiPattern = `Manually purchasing and copying static SSL certificates onto servers, causing unexpected production outages when certificates expire.`;
+    realTimeDrill = `openssl s_client -connect localhost:443 -servername talaripradeep.info </dev/null 2>/dev/null | openssl x509 -noout -dates`;
+    sreMetric = `Zero Certificate Expiration Outages & 100% Automated 60-Day Renewal`;
+  } else if (text.includes('alert') || text.includes('incident') || text.includes('pagerduty') || text.includes('status') || text.includes('webhook')) {
+    useCase = `Eliminating alert fatigue, deduping flapping notifications, and dispatching webhook payloads during Sev-1 production outages in ${title}.`;
+    bestTreatment = `Configure Alertmanager inhibition rules, multi-receiver grouping windows (5m wait), and automated webhook escalations linked to SRE runbooks.`;
+    antiPattern = `Firing unthrottled individual Slack/SMS notifications on every single CPU spike, leading SREs to ignore critical incident alerts.`;
+    realTimeDrill = `amtool check-config ${tag} && amtool alert query alertname="HighErrorRate"`;
+    sreMetric = `85% Reduction in Alert Fatigue & MTTR < 8m on P1 Outages`;
+  } else if (text.includes('idp') || text.includes('platform') || text.includes('template') || text.includes('backstage')) {
+    useCase = `Empowering developers to self-service scaffold production-grade microservices and cloud resources with built-in compliance templates in ${title}.`;
+    bestTreatment = `Publish standardized Internal Developer Portal (IDP) templates with golden paths, pre-configured CI/CD pipelines, and security guardrails.`;
+    antiPattern = `Requiring engineering teams to manually file Jira tickets and wait weeks for DevOps engineers to provision standard infrastructure.`;
+    realTimeDrill = `cookiecutter gh:Pradeeptalari14/${repo} --no-input && cd * && tree .`;
+    sreMetric = `Sub-10m Developer Onboarding & 100% Golden Path Architectural Adherence`;
+  } else if (text.includes('jev') || text.includes('reflex') || text.includes('system 1') || text.includes('system 2')) {
+    useCase = `Eliminating costly, sluggish multi-second LLM calls for predictable classification, routing, and schema validation tasks in ${title}.`;
+    bestTreatment = `Deploy non-autoregressive System 1 sub-50ms reflex encoders with calibrated confidence thresholds, escalating to System 2 LLMs only on high ambiguity.`;
+    antiPattern = `Sending every single high-volume routing or entity extraction request to massive autoregressive models, causing severe queue latency.`;
+    realTimeDrill = `python3 -m jev.reflex_engine --input "Production restart required on pod 4" --confidence-threshold 0.85`;
+    sreMetric = `<42ms Decision Latency & 78% Reduction in System 2 Flagship Invocations`;
+  } else if (text.includes('linux') || text.includes('systemd') || text.includes('shell') || text.includes('bash') || text.includes('docker') || text.includes('container') || text.includes('edge')) {
+    useCase = `Hardening host OS runtime, optimizing daemon lifecycle management, and isolating microservice container processes in ${title}.`;
+    bestTreatment = `Standardize on lightweight distroless container images, non-root systemd service cgroup limits, and read-only root filesystems.`;
+    antiPattern = `Running container processes as root with unrestricted host PID/network namespaces and mutable disk volumes.`;
+    realTimeDrill = `systemctl status ${title.toLowerCase().replace(/[^a-z0-9]/g, '-')} --no-pager || docker inspect --format '{{.State.Status}}' container_app`;
+    sreMetric = `100% Non-Root Process Isolation & Sub-2s Daemon Bootstrap Latency`;
   } else {
-    // Intelligent contextual synthesis for all other studios
-    const actionVerb = cat === 'ai' ? 'Tune and orchestrate' : cat === 'observability' ? 'Monitor and diagnose' : cat === 'cloud' ? 'Provision and scale' : cat === 'cicd' ? 'Automate and verify' : 'Scaffold and harden';
-
-    useCase = `Production ${cat.toUpperCase()} engineering: ${actionVerb} enterprise ${title} workloads with zero-drift reproducibility and audited reliability.`;
+    // Contextual Synthesis for specialized domain studios (Health, Legal, Farming, Governance)
+    useCase = `Production engineering: Deploying resilient, schema-validated ${title} services with audited compliance and zero-drift operational reliability.`;
     bestTreatment = `Standardize on version-controlled declarations (${tag}), enforce automated validation before commit, and monitor runtime telemetry against target SLOs.`;
-    antiPattern = `Manually configuring instances or parameters in ad-hoc consoles without version-controlled state manifests and rollback testing.`;
-    realTimeDrill = `git clone https://github.com/${repo}.git && cd $(basename "${repo}") && bash scripts/validate.sh`;
-    sreMetric = `100% Infrastructure-as-Code Compliance & Audited Reproducibility`;
+    antiPattern = `Manual ad-hoc configuration adjustments in live environments without versioned state manifests or automated rollback testing.`;
+    realTimeDrill = `bash scripts/validate.sh --manifest ${tag} --verify-health --environment production`;
+    sreMetric = `99.95% Availability SLO & 100% Audited Reproducibility`;
   }
 
   return {

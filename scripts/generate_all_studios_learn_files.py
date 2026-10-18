@@ -169,6 +169,91 @@ test -f "{tag}" || touch "{tag}"
 echo "[3/3] Executing health telemetry audit..."
 echo "✅ Operational validation successful."
 '''
+    elif tag.endswith('.json'):
+        return f'''{{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "studio": "{title.lower().replace(' ', '-')}",
+  "domain": "{domain}",
+  "targetArtifact": "{tag}",
+  "sreMetric": "{metric}",
+  "repository": "{repo}",
+  "service": {{
+    "name": "{title.lower().replace(' ', '-')}",
+    "mode": "production",
+    "version": "1.0.0",
+    "resilience": {{
+      "circuitBreaker": true,
+      "maxRetries": 3,
+      "timeoutMs": 5000
+    }},
+    "telemetry": {{
+      "enabled": true,
+      "endpoint": "otel-collector:4317",
+      "sampleRate": 1.0
+    }}
+  }}
+}}'''
+    elif tag.endswith('.sql'):
+        table_name = title.lower().replace(' ', '_').replace('-', '_').replace(':', '')
+        return f'''-- Production SQL Schema & Tuning: {title}
+-- Domain: {domain}
+-- Target Artifact: {tag}
+-- Target SRE Standard: {metric}
+
+CREATE TABLE IF NOT EXISTS {table_name}_state (
+  id BIGSERIAL PRIMARY KEY,
+  entity_id UUID NOT NULL,
+  state_payload JSONB NOT NULL DEFAULT '{{}}',
+  slo_compliance VARCHAR(64) DEFAULT '{metric}',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_{table_name}_entity 
+  ON {table_name}_state (entity_id, updated_at DESC);
+
+-- Automated Health Verification Query
+SELECT entity_id, slo_compliance, count(*) AS total_events
+FROM {table_name}_state
+WHERE updated_at >= NOW() - INTERVAL '15 minutes'
+GROUP BY entity_id, slo_compliance
+HAVING count(*) > 0;
+'''
+    elif tag.endswith('.js') or tag.endswith('.ts'):
+        class_name = ''.join(w.capitalize() for w in title.replace('-', ' ').replace('_', ' ').replace(':', '').split())
+        return f'''/**
+ * Production Module: {title}
+ * Domain: {domain}
+ * Target Artifact: {tag}
+ * Target SRE Standard: {metric}
+ */
+
+export class {class_name}Engine {{
+  constructor(options = {{}}) {{
+    this.name = '{title.lower().replace(' ', '-')}';
+    this.domain = '{domain}';
+    this.sreMetric = '{metric}';
+    this.timeoutMs = options.timeoutMs || 5000;
+  }}
+
+  async executeTask(payload) {{
+    const start = performance.now();
+    try {{
+      // Zero-drift operational execution
+      const result = await this.process(payload);
+      const latency = performance.now() - start;
+      return {{ success: true, latencyMs: Math.round(latency), result }};
+    }} catch (err) {{
+      console.error(`[${{this.name}}] Execution failure:`, err);
+      throw err;
+    }}
+  }}
+
+  async process(payload) {{
+    return {{ status: 'HEALTHY', timestamp: new Date().toISOString(), payload }};
+  }}
+}}
+'''
     else:
         return f'''# Configuration Artifact: {tag}
 # Studio: {title}
@@ -211,6 +296,9 @@ def generate_html_content(studio):
     title_raw = studio.get('title', 'Developer Studio')
     yt_query = urllib.parse.quote_plus(title_raw + ' tutorial deep dive architecture production')
     yt_conf_query = urllib.parse.quote_plus(title_raw + ' KubeCon SREcon AI Engineer Summit conference talk')
+    slug = studio.get('link', '').strip('/\\')
+    title_js = studio.get('title', 'Developer Studio').replace("'", "\\'")
+    domain_js = studio.get('domain', 'Infrastructure Architecture').replace("'", "\\'")
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -701,6 +789,148 @@ def generate_html_content(studio):
       display: none;
       z-index: 1000;
     }}
+
+    /* Stepper Bar */
+    .stepper-bar {{
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.75rem 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      white-space: nowrap;
+    }}
+    .step-item {{
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }}
+    .step-item:hover {{
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }}
+    .step-item.step-completed {{
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }}
+    .step-num {{
+      opacity: 0.7;
+    }}
+    .step-badge {{
+      background: rgba(52, 211, 153, 0.2);
+      color: var(--accent-green);
+      font-size: 0.65rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }}
+
+    /* Quiz Widget */
+    .quiz-container {{
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }}
+    .quiz-question-card {{
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }}
+    .quiz-q-num {{
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }}
+    .quiz-q-title {{
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.85rem;
+    }}
+    .quiz-options {{
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }}
+    .quiz-option {{
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }}
+    .quiz-option:hover {{
+      background: rgba(56, 189, 248, 0.06);
+      border-color: rgba(56, 189, 248, 0.25);
+      color: #f1f5f9;
+    }}
+    .quiz-option input[type="radio"] {{
+      margin-top: 0.25rem;
+      accent-color: var(--accent-cyan);
+    }}
+    .quiz-option.opt-correct {{
+      background: rgba(52, 211, 153, 0.12) !important;
+      border-color: rgba(52, 211, 153, 0.5) !important;
+      color: #34d399 !important;
+    }}
+    .quiz-option.opt-incorrect {{
+      background: rgba(248, 113, 113, 0.12) !important;
+      border-color: rgba(248, 113, 113, 0.5) !important;
+      color: #f87171 !important;
+    }}
+    .quiz-actions {{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }}
+    .btn-quiz {{
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }}
+    .btn-quiz:hover {{
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }}
+    .quiz-result-msg {{
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }}
   </style>
 </head>
 <body>
@@ -724,6 +954,39 @@ def generate_html_content(studio):
   </nav>
 
   <main class="container">
+
+    <!-- 7-Step Sequence Tracker Breadcrumb -->
+    <div class="stepper-bar">
+      <div class="step-item step-completed">
+        <span class="step-num">01</span>
+        <span class="step-text">Learn &amp; Architecture</span>
+        <span class="step-badge">Active ✓</span>
+      </div>
+      <a href="index.html" class="step-item">
+        <span class="step-num">02</span>
+        <span class="step-text">Configure</span>
+      </a>
+      <a href="index.html" class="step-item">
+        <span class="step-num">03</span>
+        <span class="step-text">Simulate</span>
+      </a>
+      <a href="index.html" class="step-item">
+        <span class="step-num">04</span>
+        <span class="step-text">Troubleshoot</span>
+      </a>
+      <a href="index.html" class="step-item">
+        <span class="step-num">05</span>
+        <span class="step-text">Validate</span>
+      </a>
+      <a href="index.html" class="step-item">
+        <span class="step-num">06</span>
+        <span class="step-text">Explain</span>
+      </a>
+      <a href="index.html" class="step-item">
+        <span class="step-num">07</span>
+        <span class="step-text">Export</span>
+      </a>
+    </div>
 
     <!-- Hero Header -->
     <header class="hero-box">
@@ -961,6 +1224,65 @@ def generate_html_content(studio):
       </div>
     </section>
 
+    <!-- SECTION 7: Knowledge Verification Mini-Quiz -->
+    <section class="section-card" id="quizSection">
+      <h2 class="section-heading">
+        <span>🧪</span> 7. Knowledge Verification &amp; Competency Check
+      </h2>
+      <p class="section-desc">
+        Test your production understanding of <strong>{title}</strong> before launching the interactive studio simulator:
+      </p>
+
+      <div class="quiz-container">
+        <!-- Question 1 -->
+        <div class="quiz-question-card" id="quizCardQ1">
+          <div class="quiz-q-num">Question 1 of 2 &bull; Architectural Best Treatment</div>
+          <div class="quiz-q-title">What is the proven, recommended architectural approach for {title}?</div>
+          <div class="quiz-options">
+            <label class="quiz-option" id="q1_opt0">
+              <input type="radio" name="quiz_q1" value="0" />
+              <span class="quiz-opt-text">{best_treatment}</span>
+            </label>
+            <label class="quiz-option" id="q1_opt1">
+              <input type="radio" name="quiz_q1" value="1" />
+              <span class="quiz-opt-text">Manually bypass version control and push untracked changes directly in live production consoles.</span>
+            </label>
+            <label class="quiz-option" id="q1_opt2">
+              <input type="radio" name="quiz_q1" value="2" />
+              <span class="quiz-opt-text">Disable all telemetry, health probes, and SLO alarms to artificially reduce server load.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-question-card" id="quizCardQ2">
+          <div class="quiz-q-num">Question 2 of 2 &bull; Operational Failure Modes</div>
+          <div class="quiz-q-title">Which operational anti-pattern introduces severe reliability and outage risk?</div>
+          <div class="quiz-options">
+            <label class="quiz-option" id="q2_opt0">
+              <input type="radio" name="quiz_q2" value="0" />
+              <span class="quiz-opt-text">{anti_pattern}</span>
+            </label>
+            <label class="quiz-option" id="q2_opt1">
+              <input type="radio" name="quiz_q2" value="1" />
+              <span class="quiz-opt-text">Executing declarative health validations and canary deployments with automated rollback triggers.</span>
+            </label>
+            <label class="quiz-option" id="q2_opt2">
+              <input type="radio" name="quiz_q2" value="2" />
+              <span class="quiz-opt-text">Collecting non-blocking kernel telemetry and continuous flamegraphs using eBPF probes.</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="quiz-actions">
+          <button id="btnSubmitQuiz" class="btn-quiz" onclick="verifyQuiz()">
+            <span>✓</span> Submit &amp; Verify Answers
+          </button>
+          <div id="quizResultMsg" class="quiz-result-msg"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Bottom Action Bar -->
     <div class="bottom-bar">
       <div>
@@ -986,6 +1308,92 @@ def generate_html_content(studio):
         setTimeout(() => {{ toast.style.display = 'none'; }}, 2500);
       }});
     }}
+
+    function verifyQuiz() {{
+      const q1 = document.querySelector('input[name="quiz_q1"]:checked');
+      const q2 = document.querySelector('input[name="quiz_q2"]:checked');
+      const msg = document.getElementById('quizResultMsg');
+      const btn = document.getElementById('btnSubmitQuiz');
+
+      if (!q1 || !q2) {{
+        msg.innerHTML = '<span style="color: #f87171;">⚠️ Please select an answer for both questions before submitting.</span>';
+        return;
+      }}
+
+      const q1Val = parseInt(q1.value, 10);
+      const q2Val = parseInt(q2.value, 10);
+
+      const q1Correct = q1Val === 0;
+      const q2Correct = q2Val === 0;
+
+      document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('opt-correct', 'opt-incorrect'));
+
+      document.getElementById('q1_opt0').classList.add('opt-correct');
+      if (!q1Correct) q1.closest('.quiz-option').classList.add('opt-incorrect');
+
+      document.getElementById('q2_opt0').classList.add('opt-correct');
+      if (!q2Correct) q2.closest('.quiz-option').classList.add('opt-incorrect');
+
+      if (q1Correct && q2Correct) {{
+        msg.innerHTML = '<span style="color: #34d399; font-weight: 700;">🎉 100% Correct! Competency verified (+15 XP). Ready for interactive simulation!</span>';
+        btn.disabled = true;
+        btn.innerHTML = '<span>✓</span> Verified Passed';
+        btn.style.background = '#059669';
+
+        document.querySelectorAll('.btn-nav-primary').forEach(b => {{
+          b.style.boxShadow = '0 0 20px rgba(52, 211, 153, 0.6)';
+          b.style.borderColor = '#34d399';
+          b.innerHTML = '<span>⚡</span> Launch Verified Studio →';
+        }});
+
+        try {{
+          if (window.StudioSDK && typeof window.StudioSDK.saveStudioProgress === 'function') {{
+            window.StudioSDK.saveStudioProgress('{slug}', {{ quiz_completed: true, score: 100 }});
+          }}
+        }} catch(e) {{}}
+      }} else {{
+        msg.innerHTML = '<span style="color: #fca5a5;">Review the marked answers above and try again to achieve 100% certification.</span>';
+      }}
+    }}
+  </script>
+
+  <script type="module">
+    import StudioSDK from '../../src/js/studio-sdk.js';
+    window.StudioSDK = StudioSDK;
+
+    const studioSlug = '{slug}';
+    window.studioSlug = studioSlug;
+
+    async function recordTelemetry() {{
+      try {{
+        if (StudioSDK && typeof StudioSDK.completeStep === 'function') {{
+          await StudioSDK.completeStep(studioSlug, 'learn');
+        }}
+      }} catch (err) {{
+        console.warn('Telemetry error:', err);
+      }}
+
+      try {{
+        const stored = localStorage.getItem('pradeep_studio_progress');
+        const progressMap = stored ? JSON.parse(stored) : {{}};
+        const existing = progressMap[studioSlug] || progressMap['{link}'] || {{}};
+        const curStep = Math.max(existing.step || 1, 1);
+        progressMap[studioSlug] = {{
+          id: studioSlug,
+          title: '{title_js}',
+          domain: '{domain_js}',
+          step: curStep,
+          totalSteps: 7,
+          stepName: 'Overview & Architecture',
+          pct: Math.round((curStep / 7) * 100),
+          lastActive: 'Just now',
+          studioIndex: 0
+        }};
+        localStorage.setItem('pradeep_studio_progress', JSON.stringify(progressMap));
+      }} catch (e) {{}}
+    }}
+
+    recordTelemetry();
   </script>
 </body>
 </html>
@@ -1241,7 +1649,7 @@ def generate_word_doc(studio, docx_path):
     # Save document
     doc.save(docx_path)
 
-def process_all_studios():
+def process_all_studios(html_only=False):
     created_count = 0
     for i, studio in enumerate(studios):
         link = studio.get('link', '')
@@ -1260,17 +1668,18 @@ def process_all_studios():
         with open(html_path, 'w', encoding='utf-8') as f_html:
             f_html.write(html_code)
 
-        # 2. Generate DOCX
-        generate_word_doc(studio, docx_path)
-
-        # 3. Create .word copy
-        shutil.copyfile(docx_path, word_path)
+        # 2. Generate DOCX only if not html_only or docx missing
+        if not html_only or not os.path.exists(docx_path):
+            generate_word_doc(studio, docx_path)
+            shutil.copyfile(docx_path, word_path)
 
         created_count += 1
         if created_count % 50 == 0 or created_count == len(studios):
-            print(f"[{created_count}/{len(studios)}] Generated learn.html, learn.docx, and learn.word for: {studio.get('title')}")
+            print(f"[{created_count}/{len(studios)}] Generated learn.html for: {studio.get('title')}")
 
     print(f"\n[OK] Finished! Successfully created learning documents for all {created_count} developer studios.")
 
 if __name__ == '__main__':
-    process_all_studios()
+    import sys
+    html_only = '--html-only' in sys.argv
+    process_all_studios(html_only=html_only)

@@ -30,6 +30,16 @@ def verify_admin_key(
     return True
 
 def _get_tools_catalog():
+    learn_path = Path(__file__).resolve().parents[3] / "studios" / "learn" / "studios-learning.json"
+    if not learn_path.exists():
+        learn_path = Path("studios/learn/studios-learning.json")
+    if learn_path.exists():
+        try:
+            with open(learn_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+
     tools_path = Path(__file__).resolve().parents[3] / "tools" / "tools.json"
     if not tools_path.exists():
         tools_path = Path("tools/tools.json")
@@ -70,7 +80,7 @@ async def list_studios(
     if studios:
         return studios
 
-    # Fallback to tools.json for all 341 studios if database is unseeded
+    # Fallback to catalog if database is unseeded
     tools_data = _get_tools_catalog()
     now = datetime.utcnow()
     fallback_studios = []
@@ -87,15 +97,15 @@ async def list_studios(
             id=sid,
             title=item.get("title", sid),
             category=cat,
-            domain=item.get("domain", "Platform Engineering"),
-            skill_level=item.get("skill_level", "Level 2"),
+            domain=item.get("domain") or "Platform Engineering",
+            skill_level=item.get("skill_level") or item.get("skillLevel") or "Level 2",
             tag=item.get("tag", "config.yaml"),
             desc=item.get("desc", ""),
-            use_case=item.get("use_case", ""),
-            best_treatment=item.get("best_treatment", ""),
-            anti_pattern=item.get("anti_pattern", ""),
-            real_time_drill=item.get("real_time_drill", ""),
-            sre_metric=item.get("sre_metric", "Availability: 99.99%"),
+            use_case=item.get("use_case") or item.get("useCase", ""),
+            best_treatment=item.get("best_treatment") or item.get("bestTreatment", ""),
+            anti_pattern=item.get("anti_pattern") or item.get("antiPattern", ""),
+            real_time_drill=item.get("real_time_drill") or item.get("realTimeDrill", ""),
+            sre_metric=item.get("sre_metric") or item.get("sreMetric") or "Availability: 99.99%",
             repository=item.get("repository") or f"Pradeeptalari14/tp-{sid}",
             version=1,
             created_at=now,
@@ -110,7 +120,7 @@ async def get_studio(studio_id: str, db: AsyncSession = Depends(get_db)):
     if studio:
         return studio
 
-    # Fallback lookup in tools.json
+    # Fallback lookup in catalog
     tools_data = _get_tools_catalog()
     for item in tools_data:
         sid = item.get("id") or item.get("link", "").strip("/").split("/")[-1]
@@ -120,15 +130,15 @@ async def get_studio(studio_id: str, db: AsyncSession = Depends(get_db)):
                 id=sid,
                 title=item.get("title", sid),
                 category=item.get("category", "ai"),
-                domain=item.get("domain", "Platform Engineering"),
-                skill_level=item.get("skill_level", "Level 2"),
+                domain=item.get("domain") or "Platform Engineering",
+                skill_level=item.get("skill_level") or item.get("skillLevel") or "Level 2",
                 tag=item.get("tag", "config.yaml"),
                 desc=item.get("desc", ""),
-                use_case=item.get("use_case", ""),
-                best_treatment=item.get("best_treatment", ""),
-                anti_pattern=item.get("anti_pattern", ""),
-                real_time_drill=item.get("real_time_drill", ""),
-                sre_metric=item.get("sre_metric", "Availability: 99.99%"),
+                use_case=item.get("use_case") or item.get("useCase", ""),
+                best_treatment=item.get("best_treatment") or item.get("bestTreatment", ""),
+                anti_pattern=item.get("anti_pattern") or item.get("antiPattern", ""),
+                real_time_drill=item.get("real_time_drill") or item.get("realTimeDrill", ""),
+                sre_metric=item.get("sre_metric") or item.get("sreMetric") or "Availability: 99.99%",
                 repository=item.get("repository") or f"Pradeeptalari14/tp-{sid}",
                 version=1,
                 created_at=now,

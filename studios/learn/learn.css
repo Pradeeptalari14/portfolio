@@ -1054,6 +1054,30 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
     }
+    .btn-card-guide {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.32);
+      color: var(--accent-cyan);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.65rem;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      text-decoration: none;
+    }
+    .btn-card-guide:hover {
+      background: var(--accent-cyan);
+      color: #030712;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
+    }
+
 
     /* =====================================================================
        INTERACTIVE 7-STEP LEARNING SEQUENCE MODAL (BEGINNER TO ADVANCED)

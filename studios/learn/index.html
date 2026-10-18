@@ -13,6 +13,10 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" /></noscript>
 
   <link rel="stylesheet" href="./learn.css" />
+  <script type="module">
+    import StudioSDK from '../../src/js/studio-sdk.js';
+    window.StudioSDK = StudioSDK;
+  </script>
 </head>
 <body>
 
@@ -1045,6 +1049,7 @@ data:
             <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
               <button class="terminal-btn btn-copy" id="btnExportRunbook">📄 Copy Production Runbook</button>
               <button class="terminal-btn btn-copy" id="btnExportDocker">🐳 Copy Dockerfile Sandbox</button>
+              <a href="#" class="terminal-btn btn-copy" id="btnOpenLearnPage" target="_blank" rel="noopener">📖 Dedicated Guide (learn.html)</a>
               <a href="#" class="terminal-btn btn-copy" id="btnDownloadWordDoc">📥 Download Offline Doc (.docx)</a>
               <a href="#" class="terminal-btn btn-run" id="btnLaunchStudioFromModal">🚀 Launch Full Studio Sandbox →</a>
             </div>
@@ -1454,6 +1459,7 @@ data:
       
       const step6ArtifactEl = document.getElementById('step6Artifact');
       const btnLaunchStudioFromModalEl = document.getElementById('btnLaunchStudioFromModal');
+      const btnOpenLearnPageEl = document.getElementById('btnOpenLearnPage');
       const btnExportRunbookEl = document.getElementById('btnExportRunbook');
       const btnExportDockerEl = document.getElementById('btnExportDocker');
       const btnDownloadWordDocEl = document.getElementById('btnDownloadWordDoc');
@@ -1538,6 +1544,17 @@ data:
           if (storedComp) completedStudios = new Set(JSON.parse(storedComp));
           const storedProg = localStorage.getItem('pradeep_studio_progress');
           if (storedProg) progressMap = JSON.parse(storedProg);
+
+          // Bridge with StudioSDK bookmarks and telemetry if available
+          if (typeof window !== 'undefined' && window.StudioSDK && typeof window.StudioSDK.getAllBookmarks === 'function') {
+            window.StudioSDK.getAllBookmarks().then(sdkBms => {
+              if (Array.isArray(sdkBms) && sdkBms.length > 0) {
+                sdkBms.forEach(id => bookmarkedStudios.add(id));
+                updateBookmarkCounter();
+              }
+            }).catch(() => {});
+          }
+
           updateBookmarkCounter();
           renderContinueLearning();
         } catch {}
@@ -2565,6 +2582,7 @@ To address "${userQuery}":
                 <button class="btn-card-learn" onclick="openStudioModal(${allStudios.indexOf(s)}, ${resumeStep})">
                   ${actionBtnText}
                 </button>
+                <a href="${link.replace(/\/$/, '')}/learn.html" class="btn-card-guide" title="Deep Production Guide &amp; Drills">📖 Guide</a>
                 <a href="${link}" class="btn-card-launch">Launch Studio →</a>
               </div>
             </div>
@@ -2622,6 +2640,9 @@ To address "${userQuery}":
         }
         btnLaunchStudioFromModalEl.href = link;
         btnDownloadWordDocEl.href = link.replace(/\/$/, '') + '/learn.docx';
+        if (btnOpenLearnPageEl) {
+          btnOpenLearnPageEl.href = link.replace(/\/$/, '') + '/learn.html';
+        }
 
         // Unlock next studio preview
         const nextIdx = (studioIndex + 1) % allStudios.length;

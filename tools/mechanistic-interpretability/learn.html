@@ -121,5 +121,39 @@ def hook_fn(module, input, output):
   <footer class="border-t border-pink-950/60 bg-[#09080e] py-8 text-center text-xs text-slate-500">
     Talari Pradeep Studios Hub &bull; Frontier Alignment Lab &bull; Mechanistic Interpretability
   </footer>
+
+  <script type="module">
+    import StudioSDK from '../../src/js/studio-sdk.js';
+    window.StudioSDK = StudioSDK;
+
+    const studioSlug = 'mechanistic-interpretability';
+    async function recordTelemetry() {
+      try {
+        if (StudioSDK && typeof StudioSDK.completeStep === 'function') {
+          await StudioSDK.completeStep(studioSlug, 'learn');
+        }
+      } catch (err) {
+        console.warn('Telemetry error:', err);
+      }
+      try {
+        const stored = localStorage.getItem('pradeep_studio_progress');
+        const progressMap = stored ? JSON.parse(stored) : {};
+        const curStep = Math.max((progressMap[studioSlug] || {}).step || 1, 1);
+        progressMap[studioSlug] = {
+          id: studioSlug,
+          title: 'Mechanistic Interpretability Studio',
+          domain: 'Advanced Research & Guides',
+          step: curStep,
+          totalSteps: 7,
+          stepName: 'Overview & Architecture',
+          pct: Math.round((curStep / 7) * 100),
+          lastActive: 'Just now',
+          studioIndex: 0
+        };
+        localStorage.setItem('pradeep_studio_progress', JSON.stringify(progressMap));
+      } catch (e) {}
+    }
+    recordTelemetry();
+  </script>
 </body>
 </html>

@@ -254,5 +254,39 @@
       <a href="index.html" class="btn-nav btn-nav-primary" style="padding:0.75rem 1.5rem; font-size:0.95rem;">⚡ Launch Interactive Provisioning Hub →</a>
     </div>
   </main>
+
+  <script type="module">
+    import StudioSDK from '../../src/js/studio-sdk.js';
+    window.StudioSDK = StudioSDK;
+
+    const studioSlug = 'github-provisioning-guide';
+    async function recordTelemetry() {
+      try {
+        if (StudioSDK && typeof StudioSDK.completeStep === 'function') {
+          await StudioSDK.completeStep(studioSlug, 'learn');
+        }
+      } catch (err) {
+        console.warn('Telemetry error:', err);
+      }
+      try {
+        const stored = localStorage.getItem('pradeep_studio_progress');
+        const progressMap = stored ? JSON.parse(stored) : {};
+        const curStep = Math.max((progressMap[studioSlug] || {}).step || 1, 1);
+        progressMap[studioSlug] = {
+          id: studioSlug,
+          title: 'GitHub Provisioning & SRE Execution Hub',
+          domain: 'Advanced Research & Guides',
+          step: curStep,
+          totalSteps: 7,
+          stepName: 'Overview & Architecture',
+          pct: Math.round((curStep / 7) * 100),
+          lastActive: 'Just now',
+          studioIndex: 0
+        };
+        localStorage.setItem('pradeep_studio_progress', JSON.stringify(progressMap));
+      } catch (e) {}
+    }
+    recordTelemetry();
+  </script>
 </body>
 </html>
