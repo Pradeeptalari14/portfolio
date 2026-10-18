@@ -204,6 +204,118 @@
     }
   };
 
+  // 12 Flow Directions Metadata Specification
+  const FLOW_DIRECTIONS_METADATA = {
+    happy: {
+      id: 'happy',
+      name: '1. Happy Path (Normal)',
+      icon: '✅',
+      summary: 'Normal execution from trigger to production completion with zero errors.',
+      description: 'Validates sequential transit across all stages. Each component ingests upstream artifacts, applies validation, and emits verified outputs to the next stage.',
+      badge: 'NORMAL EXECUTION',
+      accentColor: '#10b981'
+    },
+    reverse: {
+      id: 'reverse',
+      name: '2. Reverse Trace (Outputs ➔ Origin)',
+      icon: '🔍',
+      summary: 'Trace an output artifact or production incident backwards to its exact origin.',
+      description: 'Navigates upstream dependencies from the terminal node back to input sources, identifying which commit, data chunk, or config change generated the result.',
+      badge: 'REVERSE DEPENDENCY TRACE',
+      accentColor: '#38bdf8'
+    },
+    failure: {
+      id: 'failure',
+      name: '3. Failure Path (Error Propagation)',
+      icon: '❌',
+      summary: 'Demonstrates error propagation and blocked downstream dependencies.',
+      description: 'Simulates a critical schema validation or assertion failure at a mid-pipeline stage, stopping execution and marking all dependent downstream stages as BLOCKED.',
+      badge: 'FAULT PROPAGATION',
+      accentColor: '#ef4444'
+    },
+    retry: {
+      id: 'retry',
+      name: '4. Retry Path (Backoff & Limits)',
+      icon: '🔁',
+      summary: 'Transient failure recovery with exponential backoff and retry limits.',
+      description: 'Simulates an upstream API rate limit (HTTP 429) or transient network hiccup. Applies exponential backoff (1s, 2s) and succeeds on attempt 2 without breaking the pipeline.',
+      badge: 'EXPONENTIAL BACKOFF',
+      accentColor: '#f59e0b'
+    },
+    rollback: {
+      id: 'rollback',
+      name: '5. Rollback Path (Safe Recovery)',
+      icon: '⏪',
+      summary: 'Automated rollback to a known-good state upon error budget breach.',
+      description: 'Deploys a canary release. Upon detecting anomalous p99 latency or 5xx error spikes exceeding SLO thresholds, automated rollback immediately restores the immutable previous release revision.',
+      badge: 'CANARY ROLLBACK',
+      accentColor: '#ec4899'
+    },
+    dependency: {
+      id: 'dependency',
+      name: '6. Dependency Path (Prerequisites)',
+      icon: '🔗',
+      summary: 'Trace upstream prerequisites and downstream consumers for any node.',
+      description: 'Inspects strict topological execution orders. Upstream producers must satisfy contracts before consumers can begin.',
+      badge: 'TOPOLOGICAL PREREQUISITES',
+      accentColor: '#8b5cf6'
+    },
+    data: {
+      id: 'data',
+      name: '7. Data Flow (Payload Inspection)',
+      icon: '📦',
+      summary: 'Inspect payloads, schemas, chunks, vectors, and output artifacts.',
+      description: 'Visualizes exact data payloads moving across wires: raw documents, chunk tokens, 1536-dim vector embeddings, and citation references.',
+      badge: 'PAYLOAD INSPECTION',
+      accentColor: '#00f0ff'
+    },
+    security: {
+      id: 'security',
+      name: '8. Security Flow (Zero-Trust Gates)',
+      icon: '🛡️',
+      summary: 'Identity verification, secret boundaries, guardrails, and compliance gates.',
+      description: 'Applies Zero-Trust least-privilege checks: authenticates tokens, redacts secrets from logs, scans with Semgrep/Trivy, and verifies cryptographic signatures (SLSA / Cosign).',
+      badge: 'ZERO-TRUST GATES',
+      accentColor: '#f97316'
+    },
+    observability: {
+      id: 'observability',
+      name: '9. Observability Flow (MELT Signals)',
+      icon: '📊',
+      summary: 'Structured telemetry: Metrics, Events, Logs, and OpenTelemetry Traces.',
+      description: 'Attaches OpenTelemetry trace contexts (traceparent) across all nodes. Displays Prometheus golden signals (latency, traffic, errors, saturation) and structured JSON logs.',
+      badge: 'MELT TELEMETRY',
+      accentColor: '#06b6d4'
+    },
+    recovery: {
+      id: 'recovery',
+      name: '10. Recovery Flow (Auto-Remediation)',
+      icon: '🩺',
+      summary: 'Incident detection, automated triage, self-healing, and verification.',
+      description: 'Detects unhealthy container probes, isolates failing pods, triggers automated healing via Kubernetes control plane or backup failover, and verifies recovery.',
+      badge: 'INCIDENT AUTO-HEALING',
+      accentColor: '#14b8a6'
+    },
+    performance: {
+      id: 'performance',
+      name: '11. Performance Flow (Bottlenecks)',
+      icon: '⚡',
+      summary: 'Queue times, memory constraints, and concurrency optimization.',
+      description: 'Profiles latency bottlenecks: detects high queuing delays, applies PagedAttention KV-cache sharing and thread-pool optimization to maximize throughput.',
+      badge: 'LATENCY & THROUGHPUT',
+      accentColor: '#eab308'
+    },
+    learning: {
+      id: 'learning',
+      name: '12. Learning Flow (Learn ➔ Lab ➔ Project)',
+      icon: '🎓',
+      summary: 'Prerequisites ➔ Concept Lesson ➔ Guided Lab ➔ Challenge ➔ Portfolio Project.',
+      description: 'Walks through the complete engineering curriculum: validates prerequisites, reviews plain-English architectural concepts, executes the hands-on lab, solves a challenge, and links to real portfolio repositories.',
+      badge: 'COMPLETE LEARNING LOOP',
+      accentColor: '#6366f1'
+    }
+  };
+
   class VisualFlowCanvas {
     constructor(container, options = {}) {
       this.container = typeof container === 'string' ? document.querySelector(container) : container;
@@ -214,7 +326,8 @@
         readOnly: false,
         activeTemplate: 'rag',
         studioId: null,
-        studiosList: []
+        studiosList: [],
+        flowDirection: 'happy'
       }, options);
 
       this.nodes = new Map();
@@ -240,7 +353,7 @@
       this.isRunning = false;
       this.isPaused = false;
       this.executionStep = 0;
-      this.activeFlowDirection = 'happy'; // 12 flow directions
+      this.activeFlowDirection = this.options.flowDirection || 'happy'; // 12 flow directions
 
       this._buildDOM();
       this._bindEvents();
@@ -251,6 +364,8 @@
       } else if (this.options.activeTemplate) {
         this.loadTemplate(this.options.activeTemplate);
       }
+
+      this.setFlowDirection(this.activeFlowDirection);
     }
 
     _buildDOM() {
@@ -395,6 +510,9 @@
               <button class="vf-floating-tab left" id="vfExpandLeftBtn" title="Expand Component Palette">▶ Palette</button>
               <button class="vf-floating-tab right" id="vfExpandRightBtn" title="Expand Inspector">◀ Inspector</button>
 
+              <!-- Dynamic Flow Direction HUD Banner -->
+              <div class="vf-direction-banner" id="vfDirectionBanner" style="display:none;"></div>
+
               <div class="vf-canvas-viewport" id="vfCanvasViewport">
                 <!-- SVG Wire Layer -->
                 <svg class="vf-svg-layer" id="vfSvgLayer"></svg>
@@ -507,6 +625,7 @@
 
       // Master Extensions Elements
       this.flowDirectionSelect = this.container.querySelector('#vfFlowDirectionSelect');
+      this.directionBanner = this.container.querySelector('#vfDirectionBanner');
       this.manimMcpBtn = this.container.querySelector('#vfManimMcpBtn');
       this.playPauseBtn = this.container.querySelector('#vfPlayPauseBtn');
       this.stepBackBtn = this.container.querySelector('#vfStepBackBtn');
@@ -586,9 +705,7 @@
 
       if (this.flowDirectionSelect) {
         this.flowDirectionSelect.addEventListener('change', (e) => {
-          this.activeFlowDirection = e.target.value;
-          const optText = e.target.options && e.target.selectedIndex >= 0 ? e.target.options[e.target.selectedIndex].text : e.target.value;
-          this.log(`Switched flow direction to: [${optText}]`);
+          this.setFlowDirection(e.target.value);
         });
       }
 
@@ -1398,8 +1515,10 @@
       if (this.brandBadge) {
         this.brandBadge.textContent = (topo.category || 'STUDIO').toUpperCase() + ' FLOW';
       }
+      this.studioCopilotHtml = topo.copilotHtml || '';
       if (this.copilotGuide) {
-        this.copilotGuide.innerHTML = topo.copilotHtml || '';
+        const meta = FLOW_DIRECTIONS_METADATA[this.activeFlowDirection] || FLOW_DIRECTIONS_METADATA.happy;
+        this._renderDirectionGuide(meta);
       }
 
       this.scale = 0.95;
@@ -1494,7 +1613,8 @@
 
     render() {
       // 1. Render Nodes
-      this.nodesLayer.innerHTML = Array.from(this.nodes.values()).map(n => {
+      const nodesList = Array.from(this.nodes.values());
+      this.nodesLayer.innerHTML = nodesList.map((n, idx) => {
         const isSel = this.selectedNodeId === n.id;
         const nodeType = VisualFlowCanvas.escapeHtml(n.type || 'model');
         const nodeId = VisualFlowCanvas.escapeHtml(n.id || '');
@@ -1515,6 +1635,18 @@
 
         const nodeState = VisualFlowCanvas.escapeHtml(n.state || 'pending');
 
+        let modePillHtml = '';
+        if (this.activeFlowDirection === 'learning') {
+          const learningPhases = ['Phase 1: Prerequisites 📋', 'Phase 2: Theory Lesson 📚', 'Phase 3: Interactive Lab 🧪', 'Phase 4: Troubleshoot Challenge 🎯', 'Phase 5: Portfolio Project 🚀'];
+          const pillText = learningPhases[idx % learningPhases.length];
+          modePillHtml = `<span class="vf-node-mode-pill learning">${pillText}</span>`;
+        } else if (this.activeFlowDirection && this.activeFlowDirection !== 'happy') {
+          const dirMeta = FLOW_DIRECTIONS_METADATA[this.activeFlowDirection];
+          if (dirMeta) {
+            modePillHtml = `<span class="vf-node-mode-pill ${dirMeta.id}">${dirMeta.icon} ${dirMeta.badge}</span>`;
+          }
+        }
+
         return `
           <div class="vf-node vf-type-${nodeType} state-${nodeState} ${isSel ? 'selected' : ''}" data-id="${nodeId}" style="left: ${Number(n.x) || 0}px; top: ${Number(n.y) || 0}px;">
             <div class="vf-node-accent vf-accent-${nodeType}"></div>
@@ -1534,6 +1666,7 @@
             </div>
 
             <div class="vf-node-body">
+              ${modePillHtml ? `<div style="margin-bottom:0.4rem;">${modePillHtml}</div>` : ''}
               <div class="vf-node-desc">${nodeDesc}</div>
               <div class="vf-node-params">${paramsHtml}</div>
             </div>
@@ -1929,6 +2062,220 @@
       return { studioSlug, beginner, technical, inputs, outputs, mistakes, verification, hint1, hint2, hint3 };
     }
 
+    setFlowDirection(dirKey) {
+      if (!FLOW_DIRECTIONS_METADATA[dirKey]) {
+        dirKey = 'happy';
+      }
+      this.activeFlowDirection = dirKey;
+      if (this.flowDirectionSelect && this.flowDirectionSelect.value !== dirKey) {
+        this.flowDirectionSelect.value = dirKey;
+      }
+
+      const meta = FLOW_DIRECTIONS_METADATA[dirKey];
+
+      // 1. Render HUD Banner on canvas
+      this._renderDirectionBanner(meta);
+
+      // 2. Render Contextual Copilot Guide Pane
+      this._renderDirectionGuide(meta);
+
+      // 3. Reset Simulation state cleanly
+      this.resetSimulation();
+
+      // 4. Re-render nodes with direction-specific annotations
+      this.render();
+
+      this.log(`----------------------------------------------------------------`);
+      this.log(`[FLOW DIRECTION ACTIVATED] ${meta.name} — Mode: [${meta.badge}]`);
+      this.log(`[FLOW STRATEGY] ${meta.summary}`);
+    }
+
+    _renderDirectionBanner(meta) {
+      if (!this.directionBanner) {
+        this.directionBanner = this.container.querySelector('#vfDirectionBanner');
+      }
+      if (!this.directionBanner) return;
+
+      this.directionBanner.style.display = 'flex';
+      this.directionBanner.style.borderColor = meta.accentColor;
+      this.directionBanner.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px ${meta.accentColor}33`;
+
+      this.directionBanner.innerHTML = `
+        <div class="vf-dir-banner-left">
+          <span class="vf-dir-banner-icon" style="background:${meta.accentColor}18; border-color:${meta.accentColor}44;">${meta.icon}</span>
+          <div>
+            <div class="vf-dir-banner-title">
+              <span>${meta.name}</span>
+              <span class="vf-dir-banner-badge" style="background:${meta.accentColor}22; color:${meta.accentColor}; border:1px solid ${meta.accentColor}66;">${meta.badge}</span>
+            </div>
+            <div class="vf-dir-banner-summary">${meta.summary}</div>
+          </div>
+        </div>
+        <div class="vf-dir-banner-actions">
+          <button class="vf-btn vf-btn-sm vf-btn-primary" id="btnRunActiveDirection" style="background:${meta.accentColor}; color:#000; font-weight:700;">▶ Run This Flow</button>
+          <button class="vf-btn vf-btn-sm vf-btn-ghost" id="btnGuideActiveDirection">📖 Learn How It Works</button>
+          <button class="vf-dir-banner-close" id="btnCloseDirectionBanner" title="Dismiss Banner">✕</button>
+        </div>
+      `;
+
+      const runBtn = this.directionBanner.querySelector('#btnRunActiveDirection');
+      if (runBtn) {
+        runBtn.addEventListener('click', () => {
+          this.runFlow();
+        });
+      }
+
+      const guideBtn = this.directionBanner.querySelector('#btnGuideActiveDirection');
+      if (guideBtn) {
+        guideBtn.addEventListener('click', () => {
+          if (this.sidebarRight && this.sidebarRight.classList.contains('collapsed')) {
+            this.sidebarRight.classList.remove('collapsed');
+            if (this.expandRightBtn) this.expandRightBtn.style.display = 'none';
+          }
+          this._renderDirectionGuide(meta);
+          if (this.copilotGuide) {
+            this.copilotGuide.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
+
+      const closeBtn = this.directionBanner.querySelector('#btnCloseDirectionBanner');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          this.directionBanner.style.display = 'none';
+        });
+      }
+    }
+
+    _renderDirectionGuide(meta) {
+      if (!this.copilotGuide) return;
+
+      const studioSlug = (this.currentStudioId || 'ai').toLowerCase().replace(/^\/?tools\//, '').replace(/\/$/, '');
+      const dirKey = meta.id;
+
+      let guideDetails = '';
+      if (dirKey === 'learning') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">🎓 The 5-Phase Learning Journey</div>
+            <ol class="vf-guide-step-list">
+              <li><strong>Phase 1: Prerequisites Check</strong> — Validates foundational knowledge, developer tools, and required CLI runtimes.</li>
+              <li><strong>Phase 2: Concept Lesson</strong> — Plain-English architecture walkthrough breaking down internal mechanisms without jargon.</li>
+              <li><strong>Phase 3: Interactive Hands-On Lab</strong> — Real-time parameter tweaking, editable code, and instant simulation verification.</li>
+              <li><strong>Phase 4: Knowledge Challenge</strong> — Injected anti-pattern or transient fault troubleshooting drill.</li>
+              <li><strong>Phase 5: Portfolio Project</strong> — Verified, deployable repository blueprint ready for your personal GitHub.</li>
+            </ol>
+            <div style="margin-top:0.75rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <a href="/tools/${studioSlug}/learn.html" class="vf-btn vf-btn-sm" target="_blank">📚 Read Lesson</a>
+              <a href="/tools/${studioSlug}/index.html" class="vf-btn vf-btn-sm vf-btn-primary" target="_blank">🧪 Open Interactive Lab</a>
+            </div>
+          </div>
+        `;
+      } else if (dirKey === 'failure') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">⚠️ Fault Injection & Error Propagation</div>
+            <p>In production pipelines, a failure in stage 3 (e.g. Validation or Ingestion) must immediately halt downstream stages to prevent corrupted state from leaking into production.</p>
+            <div class="vf-check-box mistakes" style="margin-top:0.4rem;">
+              <strong>Anti-Pattern:</strong> Allowing downstream stages to execute with missing upstream outputs.
+            </div>
+            <div class="vf-check-box verification" style="margin-top:0.4rem;">
+              <strong>Remediation:</strong> Fast-fail early, notify oncall via PagerDuty/Slack, and preserve execution logs for triage.
+            </div>
+          </div>
+        `;
+      } else if (dirKey === 'retry') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">🔁 Exponential Backoff & Circuit Breakers</div>
+            <p>When an API rate limits (HTTP 429) or a database connection times out, instant retries cause thundering herds. Exponential backoff pauses (1s, 2s, 4s) with jitter ensure graceful recovery.</p>
+          </div>
+        `;
+      } else if (dirKey === 'rollback') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">⏪ Automated Canary Rollback</div>
+            <p>Canary releases route 5-10% traffic to new versions. If synthetic monitoring detects error budget consumption or p99 latency spikes, automated rollback instantly restores the immutable previous release with zero downtime.</p>
+          </div>
+        `;
+      } else if (dirKey === 'security') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">🛡️ Zero-Trust Security Boundaries</div>
+            <p>Every node strictly validates identity via mTLS/SPIFFE, masks sensitive secrets from logs, runs automated SAST/DAST scans, and validates SLSA cryptographic attestations.</p>
+          </div>
+        `;
+      } else if (dirKey === 'observability') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">📊 OpenTelemetry MELT Observability</div>
+            <p>Distributed tracing injects W3C TraceContext (traceparent) across every microservice hop, capturing correlated logs, RED metrics (Rate, Errors, Duration), and p99 distributions.</p>
+          </div>
+        `;
+      } else if (dirKey === 'recovery') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">🩺 SRE Incident Auto-Remediation</div>
+            <p>Demonstrates automatic incident diagnosis: signal detection ➔ pod eviction / failover to hot standby ➔ synthetic health checks ➔ automatic incident resolution.</p>
+          </div>
+        `;
+      } else if (dirKey === 'performance') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">⚡ Performance Bottleneck Profiling</div>
+            <p>Identifies serialization bottlenecks, queue delays, and memory pressure. Illustrates how continuous batching, KV caching, and asynchronous workers reduce p99 latency.</p>
+          </div>
+        `;
+      } else if (dirKey === 'data') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">📦 Payload Inspection & Data Movement</div>
+            <p>Inspects the exact data passing between stages: JSON payloads, chunk tokens, normalized 1536-dim vector embeddings, and retrieved citations.</p>
+          </div>
+        `;
+      } else if (dirKey === 'reverse') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">🔍 Reverse Dependency Tracing</div>
+            <p>Traces an output or incident backwards to find the root cause, upstream configuration drift, or anomalous user input that generated the state.</p>
+          </div>
+        `;
+      } else if (dirKey === 'dependency') {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">🔗 Strict Topological Prerequisites</div>
+            <p>Validates that upstream producer nodes satisfy their schema contracts before downstream consumer stages can run.</p>
+          </div>
+        `;
+      } else {
+        guideDetails = `
+          <div class="vf-guide-section">
+            <div class="vf-guide-step-title">✅ Happy Path Normal Execution</div>
+            <p>Simulates smooth, end-to-end execution across all components from entry trigger to validated release with 100% test pass rate.</p>
+          </div>
+        `;
+      }
+
+      this.copilotGuide.innerHTML = `
+        <div style="margin-bottom:0.75rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+            <span style="font-size:1.3rem;">${meta.icon}</span>
+            <span style="font-weight:700; color:#fff; font-size:0.95rem;">${meta.name}</span>
+          </div>
+          <div style="font-size:0.72rem; color:${meta.accentColor}; font-family:var(--vf-font-mono); font-weight:700;">${meta.badge}</div>
+          <p style="font-size:0.75rem; color:#94a3b8; margin-top:0.4rem; line-height:1.45;">${meta.description}</p>
+        </div>
+        ${guideDetails}
+        ${this.studioCopilotHtml ? `<div style="margin-top:0.85rem; border-top:1px solid var(--vf-border); padding-top:0.75rem;">${this.studioCopilotHtml}</div>` : ''}
+      `;
+    }
+
+    async _waitWhilePaused() {
+      while (this.isPaused && this.isRunning) {
+        await new Promise(r => setTimeout(r, 100));
+      }
+    }
+
     togglePlayPause() {
       if (this.isRunning) {
         this.isPaused = !this.isPaused;
@@ -1951,7 +2298,13 @@
       n.state = 'passed';
       this.render();
       this.selectNode(n.id);
-      this.log(`Stepped forward: [${n.title}] ➔ PASSED`);
+      if (this.activeFlowDirection === 'learning') {
+        const phases = ['Phase 1: Prerequisites Check', 'Phase 2: Concept Lesson', 'Phase 3: Interactive Lab', 'Phase 4: Knowledge Challenge', 'Phase 5: Portfolio Project'];
+        const p = phases[this.executionStep % phases.length];
+        this.log(`🎓 [${p.toUpperCase()}] at [${n.title}]: Step passed.`);
+      } else {
+        this.log(`Stepped forward: [${n.title}] ➔ PASSED`);
+      }
       this.executionStep++;
     }
 
@@ -1980,7 +2333,7 @@
         this.runFlowBtn.textContent = '▶ Run the Flow';
         this.runFlowBtn.disabled = false;
       }
-      const wires = this.svgLayer.querySelectorAll('.vf-wire');
+      const wires = this.svgLayer ? this.svgLayer.querySelectorAll('.vf-wire') : [];
       wires.forEach(w => {
         w.classList.remove('active', 'success', 'failed');
       });
@@ -2089,34 +2442,42 @@ class ${studioTitle.replace(/[^a-zA-Z0-9]/g, '')}Scene(Scene):
       this.runFlowBtn.disabled = true;
 
       const direction = this.activeFlowDirection || 'happy';
+      const meta = FLOW_DIRECTIONS_METADATA[direction] || FLOW_DIRECTIONS_METADATA.happy;
       this.log(`----------------------------------------------------------------`);
-      this.log(`[FLOW INITIATION] Starting DAG execution pipeline (${direction.toUpperCase()} DIRECTION) across ${this.nodes.size} stages...`);
+      this.log(`[FLOW INITIATION] Starting DAG pipeline in mode: [${meta.name}]`);
+      this.log(`[FLOW STRATEGY] ${meta.description}`);
 
-      const wires = this.svgLayer.querySelectorAll('.vf-wire');
+      const wires = this.svgLayer ? this.svgLayer.querySelectorAll('.vf-wire') : [];
       const nodes = Array.from(this.nodes.values());
 
       if (direction === 'reverse') {
-        // Reverse trace: Output -> Input
+        // 2. Reverse trace: Output -> Input
         for (let i = nodes.length - 1; i >= 0; i--) {
+          if (this.isPaused) await this._waitWhilePaused();
           const n = nodes[i];
           n.state = 'running';
           this.render();
-          this.log(`[REVERSE TRACE] Tracing dependency backwards: [${n.title}]`);
+          this.selectNode(n.id);
+          this.log(`[REVERSE TRACE] Tracing dependency backwards: [${n.title}] ➔ inspecting parent origin...`);
           await new Promise(r => setTimeout(r, 450));
           n.state = 'passed';
           this.render();
         }
       } else if (direction === 'failure') {
-        // Failure path: Fail at stage 3
+        // 3. Failure path: Stage 3 critical failure & downstream blocked
         const failIdx = Math.min(2, nodes.length - 1);
         for (let i = 0; i <= failIdx; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
           const n = nodes[i];
           n.state = 'running';
           this.render();
-          await new Promise(r => setTimeout(r, 500));
+          await new Promise(r => setTimeout(r, 450));
           if (i === failIdx) {
             n.state = 'failed';
-            this.log(`[CRITICAL ERROR] Stage [${n.title}] failed validation criteria. Exit code: 1`);
+            this.render();
+            this.selectNode(n.id);
+            this.log(`[CRITICAL FAILURE] Stage [${n.title}] failed validation assertion. Exit code: 1`);
+            this.log(`[ERROR PROPAGATION] Halting pipeline execution. Downstream stages marked as BLOCKED.`);
           } else {
             n.state = 'passed';
             this.log(`Stage [${n.title}] completed successfully.`);
@@ -2128,51 +2489,204 @@ class ${studioTitle.replace(/[^a-zA-Z0-9]/g, '')}Scene(Scene):
         }
         this.render();
       } else if (direction === 'retry') {
-        // Retry path: Exponential backoff
+        // 4. Retry path: Transient network failure with exponential backoff
         for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
           const n = nodes[i];
           n.state = 'running';
           this.render();
           if (i === 1) {
-            this.log(`[TRANSIENT FAILURE] [${n.title}] connection timeout. Retrying in 1s (attempt 1/3)...`);
+            this.log(`[TRANSIENT FAULT] [${n.title}] received HTTP 429 Rate Limit. Initiating exponential backoff...`);
+            n.state = 'failed';
+            this.render();
+            await new Promise(r => setTimeout(r, 500));
+            this.log(`[RETRY 1/3] Backoff wait 1.0s... retrying connection to [${n.title}]`);
             await new Promise(r => setTimeout(r, 600));
-            this.log(`[RETRY SUCCESS] [${n.title}] recovered after retry.`);
+            n.state = 'running';
+            this.render();
+            this.log(`[RETRY SUCCESS] Connection established on attempt 2. Resuming execution.`);
           } else {
-            await new Promise(r => setTimeout(r, 400));
+            await new Promise(r => setTimeout(r, 350));
           }
           n.state = 'passed';
           this.render();
         }
       } else if (direction === 'rollback') {
-        // Rollback path
+        // 5. Rollback path: Canary breach and automated rollback
         for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
           const n = nodes[i];
           n.state = 'running';
           this.render();
-          await new Promise(r => setTimeout(r, 400));
+          await new Promise(r => setTimeout(r, 380));
           if (i === nodes.length - 1) {
             n.state = 'failed';
-            this.log(`[CANARY BREACH] Error budget exceeded at [${n.title}]. Initiating automated rollback...`);
+            this.render();
+            this.log(`[CANARY MONITORING] 5xx error rate spiked to 3.8% (SLO threshold: 0.1%). Error budget BREACHED.`);
+            this.log(`[CIRCUIT BREAKER] Automated rollback initiated. Draining canary traffic.`);
             await new Promise(r => setTimeout(r, 700));
             n.state = 'passed';
-            this.log(`[ROLLBACK SUCCESS] Restored previous immutable release revision.`);
+            this.render();
+            this.log(`[ROLLBACK COMPLETE] Restored immutable previous release revision with zero customer downtime.`);
           } else {
             n.state = 'passed';
           }
           this.render();
         }
-      } else {
-        // Happy path & other forward flows (data, security, observability, recovery, performance, learning)
+      } else if (direction === 'dependency') {
+        // 6. Dependency path: Topologically verify parent-child contracts
         for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          const upstream = this.connections.filter(c => c.to === n.id).map(c => c.from);
+          const downstream = this.connections.filter(c => c.from === n.id).map(c => c.to);
+          this.log(`[DEPENDENCY CHECK] Stage [${n.title}] | Upstream prerequisites: [${upstream.join(', ') || 'None (Root)'}] | Downstream consumers: [${downstream.join(', ') || 'Terminal'}]`);
+          await new Promise(r => setTimeout(r, 450));
+          n.state = 'passed';
+          this.render();
+        }
+      } else if (direction === 'data') {
+        // 7. Data flow: Payload inspection passing along wires
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
           const n = nodes[i];
           n.state = 'running';
           this.render();
           if (wires[i]) wires[i].classList.add('active');
 
-          const latency = Math.floor(Math.random() * 50) + 20;
-          this.log(`Executing [${n.title}] — ${direction} signal | latency: ${latency}ms | exit code: 0`);
+          const payloads = [
+            'Document schema payload: 42KB UTF-8 text',
+            'Normalized chunks: 18 blocks (chunkSize=1000, overlap=200)',
+            'Vector embeddings: 18x float32 arrays (dim=1536)',
+            'HNSW Index lookup: top-k=5 nearest neighbors (cosine sim=0.89)',
+            'Synthesized model generation with 5 grounded source citations',
+            'Final verified output artifact rendered with source citations'
+          ];
+          const payloadInfo = payloads[i % payloads.length];
+          this.log(`[DATA FLOW] [${n.title}] Ingested & Transformed: ${payloadInfo}`);
           await new Promise(r => setTimeout(r, 500));
 
+          n.state = 'passed';
+          this.render();
+          if (wires[i]) {
+            wires[i].classList.remove('active');
+            wires[i].classList.add('success');
+          }
+        }
+      } else if (direction === 'security') {
+        // 8. Security flow: Zero-Trust identity, secret boundaries, guardrails
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          const secChecks = [
+            'mTLS SPIFFE identity token verified. Role: least-privilege-operator',
+            'AST static code analysis: 0 CWE vulnerabilities detected (Semgrep)',
+            'Secret boundary scan: 0 plaintext credentials leaked in environment/logs',
+            'Supply chain validation: SLSA Level 3 provenance signature (Cosign verified)',
+            'Runtime policy gate: Admission controller approved deployment'
+          ];
+          this.log(`[ZERO-TRUST GATE] [${n.title}]: ${secChecks[i % secChecks.length]}`);
+          await new Promise(r => setTimeout(r, 450));
+          n.state = 'passed';
+          this.render();
+        }
+      } else if (direction === 'observability') {
+        // 9. Observability flow: OpenTelemetry MELT telemetry
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          const traceId = '4bf92f3577b34da6a3ce929d0e0e' + (1000 + i);
+          const spanId = '00f067aa0ba9' + (200 + i);
+          const lat = Math.floor(Math.random() * 25) + 8;
+          this.log(`[MELT TELEMETRY] [${n.title}] traceparent: 00-${traceId}-${spanId}-01 | latency: ${lat}ms | Memory: 114MB`);
+          await new Promise(r => setTimeout(r, 420));
+          n.state = 'passed';
+          this.render();
+        }
+      } else if (direction === 'recovery') {
+        // 10. Recovery flow: Incident triage, self-healing, and closure
+        this.log(`[SRE ALERT] Alert: High Pod CrashLoopBackOff triggered in production namespace.`);
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          if (i === 1) {
+            n.state = 'failed';
+            this.render();
+            this.log(`[INCIDENT TRIAGE] [${n.title}] flagged as root cause: out-of-memory crash.`);
+            await new Promise(r => setTimeout(r, 600));
+            this.log(`[AUTO-HEALING] Kubernetes autoscaler spun up healthy replica with 2x memory quota.`);
+            await new Promise(r => setTimeout(r, 500));
+            n.state = 'passed';
+            this.render();
+            this.log(`[HEALTH CHECK] Liveness and readiness probes passed (HTTP 200 OK).`);
+          } else {
+            await new Promise(r => setTimeout(r, 380));
+            n.state = 'passed';
+            this.render();
+          }
+        }
+        this.log(`[INCIDENT CLOSED] SRE incident auto-remediated and post-mortem entry drafted.`);
+      } else if (direction === 'performance') {
+        // 11. Performance flow: Queue time & bottleneck profiling
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          if (i === 2) {
+            this.log(`[PROFILER] [${n.title}] detected 120ms thread contention bottleneck.`);
+            await new Promise(r => setTimeout(r, 500));
+            this.log(`[OPTIMIZATION] Applied non-blocking async worker pool + PagedAttention KV-cache.`);
+            await new Promise(r => setTimeout(r, 400));
+            this.log(`[BENCHMARK] Throughput elevated from 45 RPS ➔ 210 RPS (p99 latency: 14ms).`);
+          } else {
+            await new Promise(r => setTimeout(r, 350));
+          }
+          n.state = 'passed';
+          this.render();
+        }
+      } else if (direction === 'learning') {
+        // 12. Learning flow: Prerequisites ➔ Lesson ➔ Lab ➔ Challenge ➔ Project
+        const learningPhases = [
+          { phase: 'Phase 1: Prerequisites Check', desc: 'Validating foundational requirements, environment variables, and SDK versions' },
+          { phase: 'Phase 2: Concept Lesson', desc: 'Plain-English architecture breakdown and internal mechanism walkthrough' },
+          { phase: 'Phase 3: Interactive Hands-On Lab', desc: 'Executing verified sandbox drill with live parameter inspection' },
+          { phase: 'Phase 4: Knowledge Challenge', desc: 'Simulated troubleshooting scenario solved with 3-level progressive hints' },
+          { phase: 'Phase 5: Portfolio Project', desc: 'Packaging verified code into a reproducible GitHub portfolio repository' }
+        ];
+
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          const p = learningPhases[i % learningPhases.length];
+          n.state = 'running';
+          this.render();
+          this.selectNode(n.id);
+          this.log(`🎓 [${p.phase.toUpperCase()}] at [${n.title}]: ${p.desc}...`);
+          await new Promise(r => setTimeout(r, 650));
+          n.state = 'passed';
+          this.render();
+        }
+        this.log(`🏆 [LEARNING JOURNEY COMPLETE] You mastered all 5 educational milestones for this architecture!`);
+      } else {
+        // Default happy path
+        for (let i = 0; i < nodes.length; i++) {
+          if (this.isPaused) await this._waitWhilePaused();
+          const n = nodes[i];
+          n.state = 'running';
+          this.render();
+          if (wires[i]) wires[i].classList.add('active');
+          const latency = Math.floor(Math.random() * 40) + 15;
+          this.log(`Executing [${n.title}] | latency: ${latency}ms | exit code: 0`);
+          await new Promise(r => setTimeout(r, 400));
           n.state = 'passed';
           this.render();
           if (wires[i]) {
@@ -2185,7 +2699,7 @@ class ${studioTitle.replace(/[^a-zA-Z0-9]/g, '')}Scene(Scene):
       this.isRunning = false;
       this.runFlowBtn.textContent = '▶ Run the Flow';
       this.runFlowBtn.disabled = false;
-      this.log(`[FLOW COMPLETE] Pipeline execution finished in mode [${direction.toUpperCase()}].`);
+      this.log(`[FLOW COMPLETE] Pipeline execution finished in mode [${meta.name}].`);
     }
 
     log(msg) {

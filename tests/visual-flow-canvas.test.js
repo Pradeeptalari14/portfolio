@@ -589,5 +589,63 @@ describe('Visual Flow Canvas Workspace', () => {
     closeBtn.click();
     expect(modal.style.display).toBe('none');
   });
+
+  it('should immediately display the Dynamic Flow HUD Banner and update node mode pills when Learning Flow is selected', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    // Select Learning Flow
+    canvas.setFlowDirection('learning');
+
+    expect(canvas.activeFlowDirection).toBe('learning');
+    const banner = container.querySelector('#vfDirectionBanner');
+    expect(banner).toBeTruthy();
+    expect(banner.style.display).toBe('flex');
+    expect(banner.innerHTML).toContain('12. Learning Flow');
+    expect(banner.innerHTML).toContain('COMPLETE LEARNING LOOP');
+    expect(banner.innerHTML).toContain('Prerequisites ➔ Concept Lesson');
+
+    // Verify nodes have learning phase pills
+    const pills = container.querySelectorAll('.vf-node-mode-pill.learning');
+    expect(pills.length).toBe(canvas.nodes.size);
+    expect(pills[0].textContent).toContain('Phase 1: Prerequisites');
+    expect(pills[1].textContent).toContain('Phase 2: Theory Lesson');
+    expect(pills[2].textContent).toContain('Phase 3: Interactive Lab');
+
+    // Verify Copilot Guide updated with 5 phases
+    const guide = container.querySelector('#vfCopilotGuide');
+    expect(guide.innerHTML).toContain('The 5-Phase Learning Journey');
+    expect(guide.innerHTML).toContain('Phase 1: Prerequisites Check');
+    expect(guide.innerHTML).toContain('Phase 5: Portfolio Project');
+
+    // Test banner dismissal
+    const closeBtn = banner.querySelector('#btnCloseDirectionBanner');
+    expect(closeBtn).toBeTruthy();
+    closeBtn.click();
+    expect(banner.style.display).toBe('none');
+  });
+
+  it('should adapt banner and node mode pills when selecting Security and Observability flows', () => {
+    const container = document.getElementById('flowWorkspaceContainer');
+    const canvas = new VisualFlowCanvas(container, { activeTemplate: 'rag' });
+
+    // Select Security Flow
+    canvas.setFlowDirection('security');
+    expect(canvas.activeFlowDirection).toBe('security');
+    const banner = container.querySelector('#vfDirectionBanner');
+    expect(banner.style.display).toBe('flex');
+    expect(banner.innerHTML).toContain('Zero-Trust');
+
+    const secPills = container.querySelectorAll('.vf-node-mode-pill.security');
+    expect(secPills.length).toBe(canvas.nodes.size);
+
+    // Select Observability Flow
+    canvas.setFlowDirection('observability');
+    expect(canvas.activeFlowDirection).toBe('observability');
+    expect(banner.innerHTML).toContain('MELT Signals');
+
+    const obsPills = container.querySelectorAll('.vf-node-mode-pill.observability');
+    expect(obsPills.length).toBe(canvas.nodes.size);
+  });
 });
 
