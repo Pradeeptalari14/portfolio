@@ -63,7 +63,7 @@ describe('Workspaces and Navigation Architecture', () => {
     const html = fs.readFileSync(statusPath, 'utf8');
 
     expect(html).toContain('347 Interactive Developer Studios');
-    expect(html).toContain('530/530');
+    expect(html).toContain('549/549');
     expect(html).toContain('100% Tests Passing');
   });
 });

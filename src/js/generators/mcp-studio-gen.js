@@ -1840,7 +1840,7 @@ function generateRecipes() {
       prefix: "Terraform IaC Automation",
       scenarios: [
         { title: "Identify drift inside VPC resource configurations state", cmd: "terraform plan -detailed-exitcode -out=plan.tfplan", tool: "terraform/terraform_plan", prompt: "Check for manual infrastructure drift inside the staging network configurations." },
-        { title: "Apply Terraform updates for ECS clusters configurations", cmd: "terraform apply -auto-approve plan.tfplan", tool: "terraform/terraform_apply", prompt: "Deploy the pending ECS cluster container limits updates." },
+        { title: "Apply Terraform updates for ECS clusters configurations", cmd: "terraform apply plan.tfplan", tool: "terraform/terraform_apply", prompt: "Deploy the pending ECS cluster container limits updates." },
         { title: "Initialize remote backend locks dynamically in S3 state", cmd: "terraform init -backend-config=\"bucket=tf-state-locks\"", tool: "terraform/terraform_init", prompt: "Initialize S3 lock files backend state patterns." }
       ]
     },

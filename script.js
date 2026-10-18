@@ -2279,7 +2279,7 @@ function initTfDriftReconciler() {
 
   btnPlan.addEventListener('click', () => {
     setTerminal([
-      '$ terraform plan',
+      '$ terraform plan -out=reconcile.tfplan',
       'Refreshing state in S3 backend...',
       'Terraform state matches configuration, but active resources differ:',
       '',
@@ -2291,7 +2291,7 @@ function initTfDriftReconciler() {
       '      }',
       '    }',
       '',
-      'Plan: 0 to add, 1 to change, 0 to destroy.'
+      'Plan: 0 to add, 1 to change, 0 to destroy. Saved to reconcile.tfplan.'
     ]);
 
     btnPlan.disabled = true;
@@ -2305,8 +2305,9 @@ function initTfDriftReconciler() {
     btnApply.classList.add('disabled');
 
     setTerminal([
-      '$ terraform apply -auto-approve',
+      '$ terraform apply reconcile.tfplan',
       'Acquiring state lock via DynamoDB table...',
+      'Applying verified plan artifact reconcile.tfplan...',
       'aws_security_group.web: Modifying... [id=sg-0a12b4e]',
       'Reconciling security group rules...'
     ]);

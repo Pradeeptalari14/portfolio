@@ -232,9 +232,9 @@
         </div>
 
         <div class="cost-display">
-          <span class="savings-pill" id="ec2Savings">SAVINGS: $0/mo</span>
-          <div class="cost-main" id="ec2Cost">$0.00 / mo</div>
-          <div class="cost-breakdown" id="ec2Annual">Annualized: $0.00 / yr</div>
+          <span class="savings-pill" id="ec2Savings">SAVINGS: $0.00/mo (0% off)</span>
+          <div class="cost-main" id="ec2Cost">$700.80 / mo</div>
+          <div class="cost-breakdown" id="ec2Annual">Annualized: $8,409.60 / yr</div>
         </div>
       </div>
 
@@ -261,9 +261,9 @@
         </div>
 
         <div class="cost-display">
-          <span class="savings-pill" id="s3Savings">TIER DISCOUNT: 0%</span>
-          <div class="cost-main" id="s3Cost">$0.00 / mo</div>
-          <div class="cost-breakdown" id="s3Annual">Annualized: $0.00 / yr</div>
+          <span class="savings-pill" id="s3Savings">TIER DISCOUNT: $0.00/mo (0% saved)</span>
+          <div class="cost-main" id="s3Cost">$1,177.60 / mo</div>
+          <div class="cost-breakdown" id="s3Annual">Annualized: $14,131.20 / yr</div>
         </div>
       </div>
     </div>
@@ -282,7 +282,21 @@
       function updateEc2() {
         const rate = parseFloat(ec2Type.value);
         const discountFactor = parseFloat(ec2Model.value);
-        const count = parseInt(ec2Count.value, 10) || 1;
+        const rawCount = parseInt(ec2Count.value, 10);
+
+        if (isNaN(rawCount) || rawCount < 1 || isNaN(rate) || isNaN(discountFactor)) {
+          ec2Cost.textContent = 'Unavailable';
+          ec2Annual.textContent = '⚠️ Enter a valid instance quantity (1 - 1000)';
+          ec2Savings.textContent = 'INVALID INPUT';
+          ec2Savings.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+          ec2Savings.style.color = '#ef4444';
+          return;
+        }
+
+        ec2Savings.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        ec2Savings.style.color = '#34d399';
+
+        const count = rawCount;
         const hoursPerMonth = 730;
 
         const onDemandMonth = rate * hoursPerMonth * count;
@@ -307,9 +321,23 @@
       const s3Savings = document.getElementById('s3Savings');
 
       function updateS3() {
-        const tb = parseFloat(s3Tb.value) || 1;
-        const gb = tb * 1024;
+        const rawTb = parseFloat(s3Tb.value);
         const rate = parseFloat(s3Tier.value);
+
+        if (isNaN(rawTb) || rawTb < 1 || isNaN(rate)) {
+          s3Cost.textContent = 'Unavailable';
+          s3Annual.textContent = '⚠️ Enter a valid storage volume (1 - 10000 TB)';
+          s3Savings.textContent = 'INVALID INPUT';
+          s3Savings.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+          s3Savings.style.color = '#ef4444';
+          return;
+        }
+
+        s3Savings.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        s3Savings.style.color = '#34d399';
+
+        const tb = rawTb;
+        const gb = tb * 1024;
 
         const standardCost = gb * 0.023;
         const tierCost = gb * rate;

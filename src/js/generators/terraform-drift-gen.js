@@ -77,8 +77,10 @@ terraform init -input=false -reconfigure
 echo "Running Plan to assess resource drift..."
 terraform plan -no-color
 
-${reconcileMode ? `echo "Auto-Reconciliation Enabled. Overwriting manual console changes..."
-terraform apply -auto-approve -input=false
+${reconcileMode ? `echo "Safe Controlled Reconciliation: Generating deterministic execution plan artifact..."
+terraform plan -out=drift_reconcile.tfplan -detailed-exitcode -input=false
+echo "Applying approved plan artifact drift_reconcile.tfplan..."
+terraform apply -input=false drift_reconcile.tfplan
 echo "Remediation Successful. Infrastructure aligned back to source-of-truth Git code."` : `echo "Auto-Reconciliation Disabled. Filing Slack alert and PagerDuty incident..."
 # Alert webhook execution
 curl -s -X POST -H 'Content-type: application/json' \\

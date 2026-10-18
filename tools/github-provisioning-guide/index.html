@@ -227,7 +227,7 @@ curl -sSL https://raw.githubusercontent.com/Pradeeptalari14/portfolio/main/scrat
     // Simulated YAML configurations and application commands
     const fileConfigs = {
       ai: { file: 'rag_engine.py', dest: '/app/rag', cmd: 'python rag_engine.py', verify: 'curl localhost:8501' },
-      cloud: { file: 'main.tf', dest: '/infra/terraform', cmd: 'terraform apply -auto-approve', verify: 'terraform show' },
+      cloud: { file: 'main.tf', dest: '/infra/terraform', cmd: 'terraform plan -out=tfplan && terraform apply tfplan', verify: 'terraform show' },
       cicd: { file: 'ci.yml', dest: '/.github/workflows', cmd: 'git push origin main', verify: 'gh run list' },
       automation: { file: 'docker-compose.yml', dest: '/deploy/compose', cmd: 'docker compose up -d', verify: 'docker ps' },
       observability: { file: 'otel-collector.yaml', dest: '/deploy/otel', cmd: 'kubectl apply -f otel-collector.yaml', verify: 'kubectl get pods -n monitoring' }

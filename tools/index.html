@@ -51,16 +51,16 @@
     <!-- Dashboard Stats Cards -->
     <div class="stats-container">
       <div class="stats-card">
-        <div class="stats-value">3,300+</div>
-        <div class="stats-label">Total Configuration Recipes</div>
+        <div class="stats-value">1,400+</div>
+        <div class="stats-label">IaC Recipes &amp; Presets</div>
       </div>
       <div class="stats-card">
-        <div class="stats-value">309</div>
-        <div class="stats-label">Supported Platforms</div>
+        <div class="stats-value" id="stats-total-studios">347</div>
+        <div class="stats-label">Supported Studios &amp; Platforms</div>
       </div>
       <div class="stats-card">
-        <div class="stats-value">98.7%</div>
-        <div class="stats-label">Verification Test Coverage</div>
+        <div class="stats-value">100%</div>
+        <div class="stats-label">Automated Test Pass Rate (549 Tests)</div>
       </div>
     </div>
 
@@ -174,7 +174,7 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="tools-search" class="search-input" placeholder="Search 309 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
+          <input type="text" id="tools-search" class="search-input" placeholder="Search 347 interactive studios (e.g. docker, agent, kubernetes)..." autocomplete="off" style="padding-right: 5rem;" />
           <div id="search-autocomplete-list" class="autocomplete-dropdown"></div>
           <span class="search-shortcut-badge">Ctrl + K</span>
         </div>
@@ -208,33 +208,33 @@
       <div class="filter-tabs">
         <button class="filter-btn active" data-filter="all">
           <span>All Studios</span>
-          <span class="filter-count">309</span>
+          <span class="filter-count">347</span>
         </button>
         <button class="filter-btn" data-filter="ai">
           <span>AI & MLOps</span>
-          <span class="filter-count">210</span>
+          <span class="filter-count">235</span>
         </button>
         <button class="filter-btn" data-filter="cloud">
           <span>Cloud & Infra</span>
-          <span class="filter-count">26</span>
+          <span class="filter-count">29</span>
         </button>
         <button class="filter-btn" data-filter="cicd">
           <span>CI/CD Pipelines</span>
-          <span class="filter-count">12</span>
+          <span class="filter-count">17</span>
         </button>
         <button class="filter-btn" data-filter="automation">
           <span>Config & Auto</span>
-          <span class="filter-count">33</span>
+          <span class="filter-count">36</span>
         </button>
         <button class="filter-btn" data-filter="observability">
           <span>Observability</span>
-          <span class="filter-count">28</span>
+          <span class="filter-count">30</span>
         </button>
       </div>
     </div>
 
     <!-- No Results Placeholder -->
-    <div id="no-results" class="no-results-state">
+    <div id="no-results" class="no-results-state" style="display: none;" hidden>
       <div class="no-results-icon">🔍</div>
       <h4 class="no-results-title">No Studios Found</h4>
       <p class="no-results-text">No automation studios matched your query. Try clearing the search or choosing another category.</p>
@@ -306,16 +306,24 @@
           
           <div class="finops-metric">
             <span>Standard AWS Budget:</span>
-            <span class="finops-metric-val standard">$<span id="cost-standard">0</span>/mo</span>
+            <span class="finops-metric-val standard">$<span id="cost-standard">2,363</span>/mo</span>
           </div>
 
           <div class="finops-metric">
             <span>Optimized SRE Budget:</span>
-            <span class="finops-metric-val optimized">$<span id="cost-opt">0</span>/mo</span>
+            <span class="finops-metric-val optimized">$<span id="cost-opt">1,198</span>/mo</span>
           </div>
 
-          <div class="finops-savings-badge">
-            🚀 Total SRE Savings: <span id="calc-savings-percent">0</span>%
+          <div class="finops-savings-badge" id="finops-savings-badge">
+            🚀 Total SRE Savings: <span id="calc-savings-percent">49</span>% ($1,165/mo)
+          </div>
+
+          <div id="finops-calc-error" class="finops-calc-error" style="display: none; color: #ef4444; font-size: 0.82rem; margin-top: 0.5rem; background: rgba(239, 68, 68, 0.1); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.2);">
+            ⚠️ Invalid Input: Quantities must be positive numbers between min and max limits.
+          </div>
+
+          <div style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; font-family: 'JetBrains Mono', monospace;">
+            ⚙️ Mode: In-Browser Client-side Simulation · Last updated: October 2026 SRE Baseline
           </div>
 
           <p class="finops-note">
@@ -450,10 +458,23 @@ Exit Code:      137</pre>
     ~ protocol  = "-1"
     # (Manual open SSH rule detected)
   }</pre>
-              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch:</strong></p>
-              <p style="margin-bottom: 0.75rem;">Run the Terraform apply pipeline to reconcile resources back to their configured state:</p>
-              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981;">$ terraform apply -auto-approve
-# Reverting manual port rules to repository configurations...
+              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch (Controlled Production Procedure):</strong></p>
+              <p style="margin-bottom: 0.75rem;">Generate an execution plan artifact, assess blast radius, obtain change sign-off, and apply only the verified plan file:</p>
+              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981;"># Step 1: Save deterministic execution plan
+$ terraform plan -out=reconcile.tfplan
+# aws_security_group.web has been changed outside Terraform config:
+~ ingress {
+    ~ from_port = 0 -> 443
+    ~ to_port   = 0 -> 443
+    ~ protocol  = "-1" -> "tcp"
+    # (Removes unauthorized 0.0.0.0/0 port 22 access)
+  }
+
+# Step 2: Automated security guardrail & policy inspection
+$ checkov -f reconcile.tfplan --framework terraform_plan
+
+# Step 3: Peer-approved controlled execution of the verified plan artifact
+$ terraform apply reconcile.tfplan
 Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
             </div>
           </div>
@@ -556,7 +577,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
       <!-- SRE Observability Heartbeat Bar -->
       <div class="sre-heartbeat-bar" style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #cbd5e1;">
         <span class="heartbeat-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulseDot 2s ease-in-out infinite; flex-shrink: 0;"></span>
-        <span class="heartbeat-text">SRE Metrics: Operational · Latency: <span id="site-latency">--</span>ms · SLA: 99.99%</span>
+        <span class="heartbeat-text">Live Client Telemetry: Operational · Origin Latency: <span id="site-latency">--</span>ms · SLA: 99.99%</span>
       </div>
     </div>
   </footer>
@@ -658,10 +679,21 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
       const savingsPercentVal = $('calc-savings-percent');
 
       function updateCalculator() {
-        const ec2Count = parseInt(ec2Input.value);
-        const eksCount = parseInt(eksInput.value);
-        const rdsCount = parseInt(rdsInput.value);
-        const s3TB = parseInt(s3Input.value);
+        const ec2Count = parseInt(ec2Input.value, 10);
+        const eksCount = parseInt(eksInput.value, 10);
+        const rdsCount = parseInt(rdsInput.value, 10);
+        const s3TB = parseInt(s3Input.value, 10);
+
+        const errorBox = $('finops-calc-error');
+        if (isNaN(ec2Count) || isNaN(eksCount) || isNaN(rdsCount) || isNaN(s3TB) ||
+            ec2Count < 0 || eksCount < 0 || rdsCount < 0 || s3TB < 0) {
+          if (errorBox) errorBox.style.display = 'block';
+          standardCostVal.textContent = 'Unavailable';
+          optCostVal.textContent = 'Unavailable';
+          savingsPercentVal.textContent = '0';
+          return;
+        }
+        if (errorBox) errorBox.style.display = 'none';
 
         // Update labels
         ec2Val.textContent = ec2Count;
@@ -677,7 +709,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
 
         // Baseline totals
         const standardEC2 = ec2Count * ec2UnitCost;
-        const standardEKS = eksCount * eksNodeUnitCost + 73; // $73 flat cluster control fee
+        const standardEKS = eksCount * eksNodeUnitCost + (eksCount > 0 ? 73 : 0); // $73 flat cluster control fee if nodes active
         const standardRDS = rdsCount * rdsUnitCost;
         const standardS3 = s3TB * s3UnitCost;
         const standardTotal = standardEC2 + standardEKS + standardRDS + standardS3;
@@ -689,29 +721,34 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
         let optS3 = standardS3;
 
         // 1. Spot Pricing (60% Off EC2/EKS)
-        if (spotOpt.checked) {
+        if (spotOpt && spotOpt.checked) {
           optEC2 = standardEC2 * 0.4;
-          optEKS = (eksCount * eksNodeUnitCost * 0.4) + 73;
+          optEKS = (eksCount * eksNodeUnitCost * 0.4) + (eksCount > 0 ? 73 : 0);
         }
 
         // 2. Graviton Processors (20% Off Database compute)
-        if (gravitonOpt.checked) {
+        if (gravitonOpt && gravitonOpt.checked) {
           optRDS = standardRDS * 0.8;
         }
 
         // 3. Auto-Sweeper CRON Bot (cleans up 30% idle volumetric leakages)
-        if (sweeperOpt.checked) {
+        if (sweeperOpt && sweeperOpt.checked) {
           optS3 = standardS3 * 0.7;
           optEC2 = optEC2 * 0.9; // sweeps orphaned EBS volumes
         }
 
         const optTotal = Math.round(optEC2 + optEKS + optRDS + optS3);
         const savingsPercent = standardTotal > 0 ? Math.round(((standardTotal - optTotal) / standardTotal) * 100) : 0;
+        const savingsAmount = Math.max(0, Math.round(standardTotal - optTotal));
 
         // Render metrics
         standardCostVal.textContent = Math.round(standardTotal).toLocaleString();
         optCostVal.textContent = optTotal.toLocaleString();
         savingsPercentVal.textContent = savingsPercent;
+        const badge = $('finops-savings-badge');
+        if (badge) {
+          badge.innerHTML = `🚀 Total SRE Savings: <span id="calc-savings-percent">${savingsPercent}</span>% ($${savingsAmount.toLocaleString()}/mo)`;
+        }
       }
 
       // Event listeners
@@ -832,8 +869,18 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
         const cat = card.getAttribute('data-category');
         if (counts[cat] !== undefined) {
           counts[cat]++;
+        } else if (cat === 'devops') {
+          counts['cicd']++;
         }
       });
+
+      const statsTotal = $('stats-total-studios');
+      if (statsTotal && cards.length > 0) {
+        statsTotal.textContent = cards.length;
+      }
+      if (searchInput && cards.length > 0) {
+        searchInput.placeholder = `Search ${cards.length} interactive studios (e.g. docker, agent, kubernetes)...`;
+      }
       
       filterBtns.forEach(btn => {
         const filter = btn.getAttribute('data-filter');
@@ -1124,7 +1171,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
       });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initAll() {
       renderToolsGrid();
       initDynamicYear();
       initLatencyTracker();
@@ -1156,7 +1203,13 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
           }
         });
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
+    }
 
     function initSearchAutocomplete() {
       const searchInput = document.getElementById('tools-search');

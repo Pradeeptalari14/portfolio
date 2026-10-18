@@ -157,7 +157,7 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 17 | Docker Manager | `Pradeeptalari14/tp-docker` | `Dockerfile` | `/` | `docker build -t app .` | `docker images app` |
 | 18 | Git Learning Studio | `Pradeeptalari14/tp-git` | `git_guide.md` | `/docs` | `cat git_guide.md` | `ls -la git_guide.md` |
 | 19 | Jenkins CI/CD Pipeline | `Pradeeptalari14/tp-jenkins` | `Jenkinsfile` | `/config` | `cat Jenkinsfile` | `ls -la Jenkinsfile` |
-| 20 | Terraform Architect | `Pradeeptalari14/tp-terraform` | `main.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 20 | Terraform Architect | `Pradeeptalari14/tp-terraform` | `main.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 21 | Advanced k8s Script Generator | `Pradeeptalari14/tp-kubernetes` | `deployment.yaml` | `/deploy/k8s` | `kubectl apply -f deployment.yaml` | `kubectl get -f deployment.yaml` |
 | 22 | Advanced Monitoring Script Generator | `Pradeeptalari14/tp-monitoring` | `install.sh` | `/scripts` | `bash install.sh` | `bash -n install.sh` |
 | 23 | GitHub Actions Workflow Studio | `Pradeeptalari14/tp-github-actions` | `ci.yml` | `/deploy/k8s` | `kubectl apply -f ci.yml` | `kubectl get -f ci.yml` |
@@ -201,7 +201,7 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 61 | DataOps Studio | `Pradeeptalari14/tp-dataops` | `airflow_dag.py` | `/src` | `python3 airflow_dag.py` | `python3 -m py_compile airflow_dag.py` |
 | 62 | AIOps Studio | `Pradeeptalari14/tp-aiops` | `prometheus_anomaly.yaml` | `/deploy/k8s` | `kubectl apply -f prometheus_anomaly.yaml` | `kubectl get -f prometheus_anomaly.yaml` |
 | 63 | Systemd Service Builder | `Pradeeptalari14/tp-systemd-builder` | `systemd.service` | `/config` | `cat systemd.service` | `ls -la systemd.service` |
-| 64 | VPC Subnetting Calculator | `Pradeeptalari14/tp-vpc-subnetter` | `vpc_config.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 64 | VPC Subnetting Calculator | `Pradeeptalari14/tp-vpc-subnetter` | `vpc_config.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 65 | Nginx Configurator | `Pradeeptalari14/tp-nginx-config` | `nginx.conf` | `/config` | `cat nginx.conf` | `ls -la nginx.conf` |
 | 66 | Kubernetes CRD Studio | `Pradeeptalari14/tp-k8s-crd` | `crd.yaml` | `/deploy/k8s` | `kubectl apply -f crd.yaml` | `kubectl get -f crd.yaml` |
 | 67 | Trivy Security Studio | `Pradeeptalari14/tp-trivy` | `trivy.yaml` | `/deploy/k8s` | `kubectl apply -f trivy.yaml` | `kubectl get -f trivy.yaml` |
@@ -242,23 +242,23 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 102 | AI Agentic Workflow Compiler Studio | `Pradeeptalari14/tp-agent-workflow` | `agent-workflow.py` | `/src` | `python3 agent-workflow.py` | `python3 -m py_compile agent-workflow.py` |
 | 103 | Azure Cognitive Search AI Studio | `Pradeeptalari14/tp-azure-search-ai` | `search_config.json` | `/config` | `cat search_config.json` | `jq . search_config.json` |
 | 104 | GCP Vertex AI Model Registry Studio | `Pradeeptalari14/tp-gcp-vertex-ai` | `vertex_deploy.py` | `/src` | `python3 vertex_deploy.py` | `python3 -m py_compile vertex_deploy.py` |
-| 105 | Azure AKS Cluster Studio | `Pradeeptalari14/tp-azure-aks` | `aks_cluster.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
-| 106 | Azure App Service Deployer | `Pradeeptalari14/tp-azure-app-service` | `webapp_config.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 105 | Azure AKS Cluster Studio | `Pradeeptalari14/tp-azure-aks` | `aks_cluster.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
+| 106 | Azure App Service Deployer | `Pradeeptalari14/tp-azure-app-service` | `webapp_config.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 107 | Azure Arc Hybrid Management Studio | `Pradeeptalari14/tp-azure-arc` | `arc_onboard.sh` | `/scripts` | `bash arc_onboard.sh` | `bash -n arc_onboard.sh` |
-| 108 | GCP GKE Autopilot Cluster Studio | `Pradeeptalari14/tp-gcp-gke-autopilot` | `gke_autopilot.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
-| 109 | GCP Cloud Run Serverless Studio | `Pradeeptalari14/tp-gcp-cloud-run` | `cloud_run.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 108 | GCP GKE Autopilot Cluster Studio | `Pradeeptalari14/tp-gcp-gke-autopilot` | `gke_autopilot.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
+| 109 | GCP Cloud Run Serverless Studio | `Pradeeptalari14/tp-gcp-cloud-run` | `cloud_run.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 110 | GCP Anthos Service Mesh Studio | `Pradeeptalari14/tp-gcp-anthos` | `asm_policy.yaml` | `/deploy/k8s` | `kubectl apply -f asm_policy.yaml` | `kubectl get -f asm_policy.yaml` |
 | 111 | Azure DevOps Pipelines Studio | `Pradeeptalari14/tp-azure-devops-pipelines` | `azure-pipelines.yml` | `/deploy/k8s` | `kubectl apply -f azure-pipelines.yml` | `kubectl get -f azure-pipelines.yml` |
 | 112 | GCP Cloud Build Studio | `Pradeeptalari14/tp-gcp-cloud-build` | `cloudbuild.yaml` | `/deploy/k8s` | `kubectl apply -f cloudbuild.yaml` | `kubectl get -f cloudbuild.yaml` |
 | 113 | Azure Bicep/ARM Studio | `Pradeeptalari14/tp-azure-bicep-arm` | `main.bicep` | `/config` | `cat main.bicep` | `ls -la main.bicep` |
-| 114 | Azure ACR Security Guardrails | `Pradeeptalari14/tp-azure-acr-secure` | `acr_policy.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
-| 115 | Azure Key Vault Secret Manager | `Pradeeptalari14/tp-azure-key-vault` | `keyvault.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 114 | Azure ACR Security Guardrails | `Pradeeptalari14/tp-azure-acr-secure` | `acr_policy.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
+| 115 | Azure Key Vault Secret Manager | `Pradeeptalari14/tp-azure-key-vault` | `keyvault.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 116 | Azure Functions Studio | `Pradeeptalari14/tp-azure-functions` | `function.json` | `/config` | `cat function.json` | `jq . function.json` |
 | 117 | GCP Deployment Manager Studio | `Pradeeptalari14/tp-gcp-deployment-manager` | `deployment.yaml` | `/deploy/k8s` | `kubectl apply -f deployment.yaml` | `kubectl get -f deployment.yaml` |
-| 118 | GCP Secret Manager Studio | `Pradeeptalari14/tp-gcp-secret-manager` | `secret_config.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 118 | GCP Secret Manager Studio | `Pradeeptalari14/tp-gcp-secret-manager` | `secret_config.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 119 | GCP Cloud Functions Studio | `Pradeeptalari14/tp-gcp-cloud-functions` | `main.py` | `/src` | `python3 main.py` | `python3 -m py_compile main.py` |
 | 120 | GCP Cloud Spanner Studio | `Pradeeptalari14/tp-gcp-cloud-spanner` | `spanner_ddl.sql` | `/db` | `psql -f spanner_ddl.sql` | `cat spanner_ddl.sql` |
-| 121 | Azure Monitor & Log Analytics Studio | `Pradeeptalari14/tp-azure-monitor` | `monitor_rules.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 121 | Azure Monitor & Log Analytics Studio | `Pradeeptalari14/tp-azure-monitor` | `monitor_rules.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 122 | GCP Cloud Operations Monitoring Studio | `Pradeeptalari14/tp-gcp-cloud-operations` | `metrics_dashboard.json` | `/config` | `cat metrics_dashboard.json` | `jq . metrics_dashboard.json` |
 | 123 | User Genie (Enhanced Agentic RAG) | `Pradeeptalari14/tp-user-genie` | `rag_engine.py` | `/src` | `python3 rag_engine.py` | `python3 -m py_compile rag_engine.py` |
 | 124 | KnowledgeOps AI | `Pradeeptalari14/tp-knowledgeops-ai` | `observability_config.yaml` | `/deploy/k8s` | `kubectl apply -f observability_config.yaml` | `kubectl get -f observability_config.yaml` |
@@ -428,7 +428,7 @@ This table lists every studio, its Git repository name, the primary configuratio
 | 288 | Pinecone Serverless Vector DB Studio | `Pradeeptalari14/tp-pinecone-serverless` | `index_setup.py` | `/src` | `python3 index_setup.py` | `python3 -m py_compile index_setup.py` |
 | 289 | Knowledge Graph & Entity Extraction Studio | `Pradeeptalari14/tp-knowledge-graph` | `entity_extractor.py` | `/src` | `python3 entity_extractor.py` | `python3 -m py_compile entity_extractor.py` |
 | 290 | Vectorless RAG & Sparse Search Studio | `Pradeeptalari14/tp-vectorless-rag` | `bm25_retriever.py` | `/src` | `python3 bm25_retriever.py` | `python3 -m py_compile bm25_retriever.py` |
-| 291 | Production Secrets & Rotation Studio | `Pradeeptalari14/tp-production-secrets` | `vault_rotation.tf` | `/infra/terraform` | `terraform init && terraform apply -auto-approve` | `terraform validate` |
+| 291 | Production Secrets & Rotation Studio | `Pradeeptalari14/tp-production-secrets` | `vault_rotation.tf` | `/infra/terraform` | `terraform init && terraform plan -out=tfplan && terraform apply tfplan` | `terraform validate` |
 | 292 | Prompt Caching & Cost Optimization Studio | `Pradeeptalari14/tp-prompt-caching` | `prompt_caching.py` | `/src` | `python3 prompt_caching.py` | `python3 -m py_compile prompt_caching.py` |
 | 293 | DeepSeek-R1 Speculative Decoding & Reasoning Studio | `Pradeeptalari14/tp-deepseek-speculative-decoding` | `speculative_engine.py` | `/src` | `python3 speculative_engine.py` | `python3 -m py_compile speculative_engine.py` |
 | 294 | SGLang RadixAttention & Prefix-Caching Studio | `Pradeeptalari14/tp-sglang-radix-attention` | `SGLang KV-Cache` | `/config` | `cat SGLang KV-Cache` | `ls -la SGLang KV-Cache` |

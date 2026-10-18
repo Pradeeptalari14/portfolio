@@ -235,7 +235,7 @@ aws ec2 create-subnet \\
     }
     const explainCmd = $('explain-command');
     if (explainCmd) {
-      explainCmd.textContent = `terraform init\nterraform plan\nterraform apply -auto-approve`;
+      explainCmd.textContent = `terraform init\nterraform plan -out=vpc.tfplan\nterraform apply vpc.tfplan`;
     }
     
     const practices = $('explain-practices');
