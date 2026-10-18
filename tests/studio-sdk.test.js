@@ -87,4 +87,22 @@ describe('StudioPlatformSDK (Universal Database & Offline Engine)', () => {
     const bms = await StudioSDK.getAllBookmarks();
     expect(bms).toContain('new-studio-1');
   });
+
+  it('should report correct engine mode and status for in-browser wasm tier', () => {
+    const mode = StudioSDK.getEngineMode();
+    expect(mode).toBe('wasm-browser');
+
+    const status = StudioSDK.getEngineStatus();
+    expect(status.mode).toBe('wasm-browser');
+    expect(status.label).toContain('WASM');
+    expect(status.isLive).toBe(false);
+  });
+
+  it('should support configuring and clearing custom cloud API endpoints', async () => {
+    await StudioSDK.setCloudEndpoint('https://api.talaripradeep.info');
+    expect(localStorage.getItem('studios_cloud_api')).toBe('https://api.talaripradeep.info');
+
+    await StudioSDK.setCloudEndpoint(null);
+    expect(localStorage.getItem('studios_cloud_api')).toBeNull();
+  });
 });

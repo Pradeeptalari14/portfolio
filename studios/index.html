@@ -39,6 +39,7 @@
       color: var(--text-primary);
       min-height: 100vh;
       line-height: 1.6;
+      overflow-x: hidden;
       background-image: 
         radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
@@ -47,117 +48,288 @@
     }
     a { color: inherit; text-decoration: none; }
     
-    /* Navigation Bar */
+    /* Navigation Bar — Streamlined Single Bar */
     .hub-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 12, 20, 0.9);
+      background: rgba(8, 12, 20, 0.95);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0.75rem 1.5rem;
+      padding: 0 1.25rem;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .hub-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+    .hub-back-arrow {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      padding: 0.2rem 0.35rem;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .hub-back-arrow:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
     }
     .hub-brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.55rem;
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      color: #fff;
+      text-decoration: none;
+      white-space: nowrap;
     }
     .hub-brand-badge {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.12);
       color: var(--accent-cyan);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 0.15rem 0.5rem;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.12rem 0.45rem;
       border-radius: 4px;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .hub-nav-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border);
+      margin: 0 0.1rem;
+      flex-shrink: 0;
     }
     .hub-nav-controls {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+      gap: 0.5rem;
+      flex-shrink: 0;
     }
     .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.25rem 0.65rem;
+      gap: 0.35rem;
+      padding: 0.22rem 0.55rem;
       border-radius: 9999px;
       font-family: var(--font-mono);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       background: rgba(16, 185, 129, 0.1);
       border: 1px solid rgba(16, 185, 129, 0.3);
       color: var(--accent-emerald);
       cursor: pointer;
+      white-space: nowrap;
       transition: all 0.2s ease;
+      flex-shrink: 0;
     }
     .status-pill.offline {
-      background: rgba(56, 189, 248, 0.1);
+      background: rgba(56, 189, 248, 0.08);
       border-color: rgba(56, 189, 248, 0.25);
       color: var(--accent-cyan);
     }
     .status-indicator {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: currentColor;
-      box-shadow: 0 0 8px currentColor;
+      box-shadow: 0 0 6px currentColor;
+      flex-shrink: 0;
     }
     .workspace-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.35rem 0.75rem;
-      border-radius: 8px;
+      gap: 0.3rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       color: var(--text-secondary);
-      font-size: 0.82rem;
+      font-size: 0.75rem;
       cursor: pointer;
       font-family: var(--font-mono);
+      white-space: nowrap;
+      flex-shrink: 0;
       transition: all 0.2s ease;
+      max-width: 160px;
+    }
+    .workspace-btn span#currentWorkspaceLabel {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 105px;
+      display: inline-block;
+      vertical-align: middle;
     }
     .workspace-btn:hover {
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
       border-color: rgba(255, 255, 255, 0.2);
     }
+
+    /* Center: Core Workspaces Segmented Switcher */
+    .hub-nav-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-width: 0;
+    }
+    .hub-workspace-switcher {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.18rem;
+      gap: 0.2rem;
+    }
+    .ws-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.22rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .ws-pill:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .ws-pill--active {
+      color: #fff !important;
+      background: rgba(56, 189, 248, 0.15) !important;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 600;
+    }
+
+    /* Right: Copilot + Portfolio Dropdown */
+    .hub-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
     .copilot-nav-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 8px;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-      border: 1px solid rgba(168, 85, 247, 0.4);
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid rgba(168, 85, 247, 0.35);
       color: #e0e7ff;
-      font-size: 0.82rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       font-family: var(--font-mono);
+      white-space: nowrap;
       transition: all 0.2s ease;
     }
     .copilot-nav-btn:hover {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35));
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(168, 85, 247, 0.28));
       border-color: var(--accent-purple);
-      box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
     }
-    .hub-nav-links {
+
+    /* Portfolio Dropdown Menu */
+    .hub-dropdown {
+      position: relative;
+    }
+    .hub-dropdown-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all 0.2s ease;
+    }
+    .hub-dropdown-btn:hover, .hub-dropdown.active .hub-dropdown-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+    .hub-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 0.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.2rem;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+    .hub-dropdown.active .hub-dropdown-menu,
+    .hub-dropdown:hover .hub-dropdown-menu {
+      display: flex;
+    }
+    .hub-dropdown-item {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
-      font-size: 0.88rem;
+      gap: 0.6rem;
+      padding: 0.5rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
       color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
     }
-    .hub-nav-links a:hover { color: var(--text-primary); }
+    .hub-dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+    .hub-dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.3rem 0;
+    }
+
+    @media (max-width: 960px) {
+      .hub-workspace-switcher {
+        display: none;
+      }
+    }
+    @media (max-width: 720px) {
+      .hub-nav-divider,
+      .status-pill {
+        display: none;
+      }
+    }
 
     /* Hero Section */
     .hub-hero {
@@ -853,41 +1025,82 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
+  <!-- Navigation Bar — Streamlined Single Bar -->
   <nav class="hub-nav">
-    <div class="hub-brand">
-      <a href="/" style="color: #94a3b8; margin-right: 0.25rem;">←</a>
-      <span>TALARI PRADEEP</span>
-      <span class="hub-brand-badge">347 TOOLS</span>
+    <!-- Left: Brand + Workspace Controls -->
+    <div class="hub-nav-left">
+      <a href="/" class="hub-back-arrow" title="Back to Portfolio">←</a>
+      <a href="/" class="hub-brand">
+        <span>TALARI PRADEEP</span>
+        <span class="hub-brand-badge">347 STUDIOS</span>
+      </a>
+
+      <div class="hub-nav-divider" aria-hidden="true"></div>
+
+      <div class="hub-nav-controls">
+        <!-- Backend Status Prober Pill -->
+        <div class="status-pill offline" id="backendStatusPill" title="Click to view connection telemetry">
+          <span class="status-indicator"></span>
+          <span id="backendStatusText">Checking Platform Status...</span>
+        </div>
+
+        <!-- Workspace Selector -->
+        <button class="workspace-btn" id="workspaceBtn" title="Switch or create project workspace">
+          📁 <span id="currentWorkspaceLabel">Workspace: Default</span> ▾
+        </button>
+      </div>
     </div>
 
-    <div class="hub-nav-controls">
-      <!-- Backend Status Prober Pill -->
-      <div class="status-pill offline" id="backendStatusPill" title="Click to view connection telemetry">
-        <span class="status-indicator"></span>
-        <span id="backendStatusText">Checking Platform Status...</span>
+    <!-- Center: Core Workspaces Segmented Switcher -->
+    <div class="hub-nav-center">
+      <div class="hub-workspace-switcher" role="tablist" aria-label="Core Engineering Workspaces">
+        <a href="/studios/" class="ws-pill ws-pill--active">
+          <span>🛠️</span> Studios
+        </a>
+        <a href="/studios/flow/" class="ws-pill">
+          <span>⚡</span> Visual Flow
+        </a>
+        <a href="/studios/learn/" class="ws-pill">
+          <span>🎓</span> Learn Lab
+        </a>
       </div>
+    </div>
 
-      <!-- Workspace Selector -->
-      <button class="workspace-btn" id="workspaceBtn" title="Switch or create project workspace">
-        📁 <span id="currentWorkspaceLabel">Workspace: Default</span> ▾
-      </button>
-
+    <!-- Right: Copilot + Portfolio Dropdown -->
+    <div class="hub-nav-right">
       <!-- SRE Copilot Header Trigger -->
-      <button class="copilot-nav-btn" id="copilotHeaderBtn">
+      <button class="copilot-nav-btn" id="copilotHeaderBtn" title="Open SRE AI Copilot">
         🤖 SRE Copilot
       </button>
-    </div>
 
-    <div class="hub-nav-links">
-      <a href="/">Home</a>
-      <a href="/projects/">Projects</a>
-      <a href="/studios/" style="color: var(--accent-cyan); font-weight: 600;">Explore (347)</a>
-      <a href="/studios/learn/" style="color: #fff; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.35); padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600;">🎓 Learn Workspace</a>
-      <a href="/studios/flow/" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); padding: 0.25rem 0.65rem; border-radius: 6px; color: #38bdf8; font-weight: 600;">⚡ Visual Flow</a>
-      <a href="/architecture/">Architecture</a>
-      <a href="/incident/">Incident Triage</a>
-      <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener">GitHub</a>
+      <!-- Portfolio Dropdown Menu -->
+      <div class="hub-dropdown" id="hubPortfolioDropdown">
+        <button class="hub-dropdown-btn" id="hubPortfolioBtn" aria-expanded="false" aria-haspopup="true">
+          <span>Portfolio</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="hub-dropdown-menu" id="hubPortfolioMenu">
+          <a href="/" class="hub-dropdown-item">
+            <span>🏠</span> Home
+          </a>
+          <a href="/projects/" class="hub-dropdown-item">
+            <span>🏗️</span> Projects (12 Platforms)
+          </a>
+          <a href="/architecture/" class="hub-dropdown-item">
+            <span>🏛️</span> Architecture Center
+          </a>
+          <a href="/incident/" class="hub-dropdown-item">
+            <span>🚨</span> Incident Triage Lab
+          </a>
+          <a href="/status/" class="hub-dropdown-item">
+            <span>📡</span> Real-Time Telemetry
+          </a>
+          <div class="hub-dropdown-divider"></div>
+          <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener" class="hub-dropdown-item">
+            <span>⭐</span> GitHub Source
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -1148,7 +1361,8 @@
 
           if (res.ok) {
             backendStatusPill.className = 'status-pill';
-            backendStatusText.textContent = '🟢 Companion API (pgvector + Docker)';
+            backendStatusText.textContent = '🟢 API Mode';
+            backendStatusPill.title = 'Companion Backend Active (PostgreSQL + Docker)';
             storageEngineLabel.textContent = 'PostgreSQL + IndexedDB Sync';
             return;
           }
@@ -1156,8 +1370,24 @@
           // Gracefully fallback to browser mode
         }
         backendStatusPill.className = 'status-pill offline';
-        backendStatusText.textContent = '⚡ In-Browser Client Mode (IDB Active)';
+        backendStatusText.textContent = '⚡ In-Browser';
+        backendStatusPill.title = 'In-Browser Client Mode (IDB Active) — Click for connection telemetry';
         storageEngineLabel.textContent = 'IndexedDB Offline-First';
+      }
+
+      // Portfolio Dropdown Toggle
+      const hubPortfolioBtn = document.getElementById('hubPortfolioBtn');
+      const hubPortfolioDropdown = document.getElementById('hubPortfolioDropdown');
+      if (hubPortfolioBtn && hubPortfolioDropdown) {
+        hubPortfolioBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          hubPortfolioDropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+          if (!hubPortfolioDropdown.contains(e.target)) {
+            hubPortfolioDropdown.classList.remove('active');
+          }
+        });
       }
 
       // 2. Bookmarks
@@ -1220,13 +1450,97 @@
       }
       window.retryLoadStudios = loadStudios;
 
+      function matchesCategory(s, filterCategory) {
+        if (filterCategory === 'all') return true;
+        const cat = (s.category || '').toLowerCase();
+        const title = (s.title || '').toLowerCase();
+        const desc = (s.desc || '').toLowerCase();
+        const tag = (s.tag || '').toLowerCase();
+        const link = (s.link || '').toLowerCase();
+        const text = (title + ' ' + desc + ' ' + tag + ' ' + link + ' ' + cat);
+
+        switch (filterCategory) {
+          case 'ai':
+            return cat === 'ai' || text.includes('llm') || text.includes('rag') || text.includes('gpt') || text.includes('vllm') || text.includes('embedding') || text.includes('model') || text.includes('neural') || text.includes('transformer');
+
+          case 'si':
+            return text.includes('synthetic') || text.includes('cognitive') || text.includes('neuro-symbolic') || text.includes('symbolic') || text.includes('active inference') || text.includes('agent') || text.includes('swarm') || text.includes('multi-agent') || text.includes('reasoning') || text.includes('cot') || text.includes('mcp') || text.includes('planner') || text.includes('workflow') || text.includes('memory') || text.includes('autonomy') || text.includes('jev');
+
+          case 'asi':
+            return text.includes('superintelligence') || text.includes('asi') || text.includes('alignment') || text.includes('corrigib') || text.includes('interpretability') || text.includes('air-gap') || text.includes('containment') || text.includes('guardrail') || text.includes('safety') || text.includes('eval') || text.includes('red team') || text.includes('adversar') || text.includes('jailbreak') || text.includes('mechanistic') || text.includes('constitutional') || text.includes('rlhf') || text.includes('dpo') || text.includes('watermark') || text.includes('probe') || text.includes('unlearning') || text.includes('backdoor');
+
+          case 'cloud':
+            return cat === 'cloud' || text.includes('aws') || text.includes('cloud') || text.includes('azure') || text.includes('gcp') || text.includes('s3') || text.includes('lambda') || text.includes('vpc') || text.includes('iam') || text.includes('terraform') || text.includes('cloudformation');
+
+          case 'kubernetes':
+            return text.includes('kubernetes') || text.includes('k8s') || text.includes('helm') || text.includes('kustomize') || text.includes('pod') || text.includes('cluster') || text.includes('ingress') || text.includes('istio') || text.includes('envoy') || text.includes('argocd') || text.includes('cni') || text.includes('csi') || text.includes('daemonset') || text.includes('operator');
+
+          case 'cicd':
+            return cat === 'cicd' || cat === 'devops' || text.includes('ci/cd') || text.includes('cicd') || text.includes('pipeline') || text.includes('jenkins') || text.includes('github actions') || text.includes('gitlab') || text.includes('build') || text.includes('deploy') || text.includes('gitops') || text.includes('artifact') || text.includes('release');
+
+          case 'sre':
+            return cat === 'observability' || text.includes('sre') || text.includes('prometheus') || text.includes('grafana') || text.includes('opentelemetry') || text.includes('otel') || text.includes('slo') || text.includes('sli') || text.includes('error budget') || text.includes('latency') || text.includes('metric') || text.includes('tracing') || text.includes('alert') || text.includes('incident') || text.includes('datadog') || text.includes('jaeger');
+
+          case 'security':
+            return text.includes('security') || text.includes('vault') || text.includes('secret') || text.includes('trivy') || text.includes('cve') || text.includes('sbom') || text.includes('vulnerability') || text.includes('cosign') || text.includes('policy') || text.includes('opa') || text.includes('gatekeeper') || text.includes('mtls') || text.includes('cert') || text.includes('firewall') || text.includes('waf') || text.includes('iam');
+
+          case 'systems':
+            return text.includes('linux') || text.includes('kernel') || text.includes('ebpf') || text.includes('systemd') || text.includes('shell') || text.includes('bash') || text.includes('bpf') || text.includes('cgroup') || text.includes('sysctl') || text.includes('syscall') || text.includes('socket') || text.includes('debian') || text.includes('redhat') || text.includes('centos') || text.includes('ubuntu') || text.includes('posix');
+
+          case 'enterprise':
+            return text.includes('enterprise') || text.includes('vmware') || text.includes('vsphere') || text.includes('vcenter') || text.includes('esxi') || text.includes('ansible') || text.includes('governance') || text.includes('compliance') || text.includes('finops') || text.includes('multi-tenant') || text.includes('disaster recovery') || text.includes('backup');
+
+          default:
+            return cat.includes(filterCategory);
+        }
+      }
+
       function getStudioLevel(studio) {
         const cat = (studio.category || '').toLowerCase();
         const title = (studio.title || '').toLowerCase();
-        if (title.includes('ebpf') || title.includes('vllm') || title.includes('speculative') || title.includes('moe')) return 4;
-        if (cat.includes('ai') || cat.includes('cloud') || cat.includes('kubernetes')) return 3;
-        if (cat.includes('cicd') || cat.includes('sre') || cat.includes('security')) return 2;
-        return 1;
+        const desc = (studio.desc || '').toLowerCase();
+        const tag = (studio.tag || '').toLowerCase();
+        const text = (title + ' ' + desc + ' ' + tag).toLowerCase();
+
+        // Level 4: Kernel & Deep AI (Frontier LLMs, MoE, Quantization, vLLM, eBPF, Alignment, ASI, Mechanistic Interpretability, Red Teaming, Kernel Internals)
+        if (
+          text.includes('ebpf') || text.includes('kernel') || text.includes('bpf') ||
+          text.includes('vllm') || text.includes('speculative') || text.includes('moe') ||
+          text.includes('quantiz') || text.includes('bitnet') || text.includes('flashattention') ||
+          text.includes('deepspeed') || text.includes('trt-llm') || text.includes('tensorrt') ||
+          text.includes('rocm') || text.includes('pagedattention') || text.includes('alignment') ||
+          text.includes('corrigib') || text.includes('superintelligence') || text.includes('asi') ||
+          text.includes('interpretability') || text.includes('mechanistic') || text.includes('red team') ||
+          text.includes('guardrail') || text.includes('safety') || text.includes('containment') ||
+          text.includes('unlearning') || text.includes('probe') || text.includes('jailbreak')
+        ) {
+          return 4;
+        }
+
+        // Level 1: Foundations (Sandbox / Calculators / Generators / Syntax / Primers / Configurator / Starters)
+        if (
+          text.includes('calculator') || text.includes('estimator') || text.includes('generator') ||
+          text.includes('sandbox') || text.includes('validator') || text.includes('cheatsheet') ||
+          text.includes('primer') || text.includes('starter') || text.includes('converter') ||
+          text.includes('formatter') || text.includes('playground') || text.includes('builder') ||
+          text.includes('configur') || text.includes('template') || text.includes('syntax')
+        ) {
+          return 1;
+        }
+
+        // Level 2: Scripting & Ops (Automation, CI/CD, Observability, Shell, Ansible, Runbooks)
+        if (
+          cat.includes('cicd') || cat.includes('observability') || cat.includes('automation') ||
+          text.includes('pipeline') || text.includes('script') || text.includes('dockerfile') ||
+          text.includes('playbook') || text.includes('runbook') || text.includes('grafana') ||
+          text.includes('prometheus') || text.includes('metric') || text.includes('log') ||
+          text.includes('policy') || text.includes('rules')
+        ) {
+          return 2;
+        }
+
+        // Level 3: Distributed & Cloud (Kubernetes, AWS, Cloud, Service Mesh, Microservices, RAG, Swarms)
+        return 3;
       }
 
       function filterStudios() {
@@ -1234,17 +1548,12 @@
         return allStudios.filter(s => {
           let matchesCat = activeCat === 'all';
           if (!matchesCat) {
-            const cat = (s.category || '').toLowerCase();
-            const tag = (s.tag || '').toLowerCase();
-            const title = (s.title || '').toLowerCase();
-            if (activeCat === 'ai') {
-              matchesCat = cat.includes('ai') || tag.includes('ai') || tag.includes('llm') || tag.includes('rag');
-            } else if (activeCat === 'si') {
-              matchesCat = title.includes('cognitive') || title.includes('synthetic') || title.includes('agent') || title.includes('swarm') || title.includes('reason') || tag.includes('agent');
+            if (activeCat === 'si') {
+              matchesCat = matchesCategory(s, 'si');
             } else if (activeCat === 'asi') {
-              matchesCat = title.includes('guardrail') || title.includes('alignment') || title.includes('interpret') || title.includes('safety') || title.includes('eval') || cat.includes('security');
+              matchesCat = matchesCategory(s, 'asi');
             } else {
-              matchesCat = cat.includes(activeCat);
+              matchesCat = matchesCategory(s, activeCat);
             }
           }
           if (!matchesCat) return false;
@@ -1260,12 +1569,36 @@
         });
       }
 
+      window.resetStudioFilters = function() {
+        activeCat = 'all';
+        activeLevel = 'all';
+        searchInput.value = '';
+        pills.querySelectorAll('.cat-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-cat') === 'all');
+        });
+        levelFilters.querySelectorAll('.level-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-lvl') === 'all');
+        });
+        render();
+      };
+
       function render() {
         const filtered = filterStudios();
         countEl.textContent = `Showing ${filtered.length} of ${allStudios.length} studios`;
 
         if (filtered.length === 0) {
-          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">No matching studios found. Try another keyword or maturity filter.</div>';
+          grid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--text-muted); background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: 12px; margin: 1rem 0;">
+              <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🔍</div>
+              <div style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">No matching studios found</div>
+              <p style="font-size: 0.88rem; color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem; line-height: 1.5;">
+                No studios matched your current filter criteria (Category: <strong style="color:var(--accent-cyan);">${activeCat.toUpperCase()}</strong>, Maturity: <strong style="color:var(--accent-cyan);">${activeLevel === 'all' ? 'All' : 'Lvl ' + activeLevel}</strong>).
+              </p>
+              <button onclick="window.resetStudioFilters()" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2)); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.65rem 1.45rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem; transition: all 0.2s ease;">
+                ✨ Reset Filters &amp; Show All Studios
+              </button>
+            </div>
+          `;
           return;
         }
 

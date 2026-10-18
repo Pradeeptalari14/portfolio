@@ -84,15 +84,22 @@ class StudioPlatformSDK {
     });
   }
 
-  // 2. Safe Dynamic Backend Probing (Mixed Content safe)
+  // 2. Safe Dynamic Backend & Cloud Probing (Mixed Content safe)
   async _probeBackend() {
     if (typeof window === 'undefined') return;
     const isHttps = window.location.protocol === 'https:';
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
+    let storedCloudUrl = null;
+    try {
+      storedCloudUrl = localStorage.getItem('studios_cloud_api');
+    } catch {}
+
     let probeCandidate = null;
 
-    if (isLocalhost) {
+    if (storedCloudUrl && (storedCloudUrl.startsWith('https://') || !isHttps)) {
+      probeCandidate = storedCloudUrl.replace(/\/+$/, '');
+    } else if (isLocalhost) {
       probeCandidate = 'http://localhost:8000';
     } else if (isHttps) {
       probeCandidate = window.STUDIOS_API_BASE || 'https://api.talaripradeep.info';
@@ -120,12 +127,65 @@ class StudioPlatformSDK {
         this.isConnectedBackend = true;
       } else {
         this.isConnectedBackend = false;
+        this.backendUrl = null;
       }
     } catch {
       this.isConnectedBackend = false;
       this.backendUrl = null;
     }
     this._emitChange();
+  }
+
+  getEngineMode() {
+    if (!this.isConnectedBackend || !this.backendUrl) {
+      return 'wasm-browser';
+    }
+    if (this.backendUrl.includes('localhost') || this.backendUrl.includes('127.0.0.1')) {
+      return 'local-docker';
+    }
+    return 'cloud-api';
+  }
+
+  getEngineStatus() {
+    const mode = this.getEngineMode();
+    if (mode === 'local-docker') {
+      return {
+        mode,
+        label: 'Local Docker Stack',
+        sublabel: 'Ollama + PostgreSQL pgvector (127.0.0.1:8000)',
+        icon: 'fa-server',
+        url: this.backendUrl,
+        isLive: true
+      };
+    }
+    if (mode === 'cloud-api') {
+      return {
+        mode,
+        label: 'Cloud Companion API',
+        sublabel: `Connected to ${new URL(this.backendUrl).hostname}`,
+        icon: 'fa-cloud',
+        url: this.backendUrl,
+        isLive: true
+      };
+    }
+    return {
+      mode: 'wasm-browser',
+      label: 'In-Browser WASM',
+      sublabel: 'Zero-Cost Client Heuristics & PGlite WASM',
+      icon: 'fa-microchip',
+      url: null,
+      isLive: false
+    };
+  }
+
+  async setCloudEndpoint(url) {
+    if (url) {
+      try { localStorage.setItem('studios_cloud_api', url.trim()); } catch {}
+    } else {
+      try { localStorage.removeItem('studios_cloud_api'); } catch {}
+    }
+    await this._probeBackend();
+    return this.getEngineStatus();
   }
 
   _emitChange() {
