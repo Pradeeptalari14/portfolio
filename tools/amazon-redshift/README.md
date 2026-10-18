@@ -1,0 +1,88 @@
+# Amazon Redshift ML Studio
+
+> **Production Learning Guide, Interactive Lab & Real-Time Incident Drills**
+
+| Property | Value |
+|---|---|
+| **Domain** | `Zero-Trust Security & AI Safety` |
+| **Category** | `AI` |
+| **Skill Level** | `Level 3 (Distributed & Compliance)` |
+| **Target SRE Metric** | `P99 Query Latency < 12ms & Zero Schema Migration Downtime` |
+| **Artifact Target** | `redshift_ml.sql` |
+| **Source Repository** | [Pradeeptalari14/tp-amazon-redshift](https://github.com/Pradeeptalari14/tp-amazon-redshift) |
+| **Interactive Studio** | [Launch In-Browser Lab](./index.html) |
+
+---
+
+## 1. Overview & Architectural Mission
+
+Configure AWS Redshift clusters, database schemas, and IAM security profiles with Amazon Redshift ML & SageMaker integrations. Generate SQL script models, IAM execution policies, and dbt database profiles.
+
+### Core Production Use Case
+Preventing connection pool exhaustion, slow unindexed queries, and schema migration locking in mission-critical Amazon Redshift ML Studio databases.
+
+```mermaid
+flowchart LR
+    A[Learn: Mental Model] --> B[Lab: Interactive Studio]
+    B --> C[Flow: Architectural Diagram]
+    C --> D[Troubleshoot: SRE Failure Drill]
+    D --> E[Real Project: GitHub Repo]
+```
+
+---
+
+## 2. Best Architectural Treatment vs. Anti-Pattern
+
+### Recommended Production Practice
+> [!TIP]
+> Implement asynchronous connection pooling (PgBouncer/SQLAlchemy), automated zero-downtime Alembic migrations, and pgvector HNSW indexing.
+
+### Dangerous Anti-Pattern to Avoid
+> [!WARNING]
+> Executing unindexed multi-table JOINs and synchronous blocking DDL alter commands during peak business traffic.
+
+---
+
+## 3. Real-Time SRE Incident Drill
+
+**Target Failure Mode:**
+alembic upgrade head && psql -U postgres -d studios_hub -c "EXPLAIN ANALYZE SELECT * FROM pgvector_store LIMIT 10;"
+
+### Drill Execution Checklist
+1. **Baseline Telemetry:** Verify health metrics against the target SLO threshold before initiating changes.
+2. **Failure Injection:** Introduce synthetic latency or simulated drift in a non-production staging boundary.
+3. **Automated Alerting:** Validate that alerts trigger within `< 30s` via OpenTelemetry collector.
+4. **Controlled Remediation:** Apply pre-reviewed, non-destructive configuration changes.
+5. **Post-Mortem & Runbook Update:** Update the team runbook with observed failure patterns.
+
+---
+
+## 4. Production Configuration & Code Artifact (`redshift_ml.sql`)
+
+```sql
+-- Production SQL Schema & Tuning: Amazon Redshift ML Studio
+-- Domain: Zero-Trust Security & AI Safety
+-- Target Artifact: redshift_ml.sql
+
+CREATE TABLE IF NOT EXISTS amazon_redshift_ml_studio (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id VARCHAR(64) NOT NULL,
+    payload JSONB NOT NULL,
+    status VARCHAR(32) DEFAULT 'PENDING',
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_amazon_redshift_ml_studio_session ON amazon_redshift_ml_studio(session_id);
+CREATE INDEX IF NOT EXISTS idx_amazon_redshift_ml_studio_status ON amazon_redshift_ml_studio(status);
+```
+
+---
+
+## 5. Navigation & Next Steps
+
+- **Interactive Simulator:** [Open Amazon Redshift ML Studio Studio](./index.html)
+- **Web Learning View:** [Interactive Guide](./learn.html)
+- **GitHub Project Repository:** [Pradeeptalari14/tp-amazon-redshift](https://github.com/Pradeeptalari14/tp-amazon-redshift)
+- **Master Studio Index:** [All 347 Studios](../../STUDIOS_CATALOGUE.md)
+
