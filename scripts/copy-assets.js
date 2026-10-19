@@ -18,16 +18,40 @@ function copyFile(srcRelative, destRelative) {
     return;
   }
   
-  const destDir = path.dirname(destPath);
-  if (!fs.existsSync(destDir)) {
-    fs.mkdirSync(destDir, { recursive: true });
+  try {
+    const destDir = path.dirname(destPath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    fs.copyFileSync(srcPath, destPath);
+    console.log(`Copied ${srcRelative} -> dist/${destRelative}`);
+  } catch (err) {
+    console.warn(`Warning: failed to copy ${srcRelative} -> ${destRelative}: ${err.message}`);
   }
-  
-  fs.copyFileSync(srcPath, destPath);
-  console.log(`Copied ${srcRelative} -> dist/${destRelative}`);
+}
+
+function syncFile(srcRel, destRel) {
+  const src = path.join(rootDir, srcRel);
+  const dest = path.join(rootDir, destRel);
+  if (fs.existsSync(src)) {
+    try {
+      const destDir = path.dirname(dest);
+      if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+      }
+      fs.copyFileSync(src, dest);
+      console.log(`Synced ${srcRel} -> ${destRel}`);
+    } catch (err) {
+      console.warn(`Warning: failed to sync ${srcRel} -> ${destRel}: ${err.message}`);
+    }
+  }
 }
 
 copyFile('src/js/core-tool.js', 'src/js/core-tool.js');
+copyFile('src/js/studio-sdk.js', 'src/js/studio-sdk.js');
+copyFile('academy/academy.js', 'academy/academy.js');
+copyFile('academy/academy.css', 'academy/academy.css');
+copyFile('js/nav.js', 'js/nav.js');
 copyFile('tools/shared-tools.js', 'tools/shared-tools.js');
 copyFile('tools/visual-flow-canvas.js', 'tools/visual-flow-canvas.js');
 copyFile('tools/visual-flow-canvas.css', 'tools/visual-flow-canvas.css');
@@ -40,20 +64,16 @@ copyFile('Talari_Pradeep.pdf', 'Talari_Pradeep.pdf');
 copyFile('Talari_Pradeep.docx', 'Talari_Pradeep.docx');
 copyFile('devsecops_architecture_flow.png', 'devsecops_architecture_flow.png');
 
-// Sync tools/ to public/tools/ to prevent drift
-const root = path.resolve(__dirname, '..');
-
-function syncFile(srcRel, destRel) {
-  const src = path.join(root, srcRel);
-  const dest = path.join(root, destRel);
-  if (fs.existsSync(src)) {
-    const destDir = path.dirname(dest);
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
+// Sync all JS generators
+const genSrcDir = path.join(rootDir, 'src', 'js', 'generators');
+if (fs.existsSync(genSrcDir)) {
+  const genFiles = fs.readdirSync(genSrcDir);
+  genFiles.forEach(file => {
+    if (file.endsWith('.js')) {
+      copyFile(`src/js/generators/${file}`, `src/js/generators/${file}`);
+      syncFile(`src/js/generators/${file}`, `public/src/js/generators/${file}`);
     }
-    fs.copyFileSync(src, dest);
-    console.log(`Synced ${srcRel} -> ${destRel}`);
-  }
+  });
 }
 
 syncFile('tools/shared-tools.js', 'public/tools/shared-tools.js');
@@ -81,6 +101,26 @@ if (fs.existsSync(toolsBaseDir)) {
         if (file === 'learn.html') {
           syncFile(`tools/${entry}/${file}`, `public/tools/${entry}/${file}`);
           copyFile(`tools/${entry}/${file}`, `tools/${entry}/${file}`);
+
+          // Ensure learn.docx exists for every studio
+          const specificDocx = path.join(rootDir, 'pradeep', 'all_studios', `${entry}.docx`);
+          const defaultDocx = path.join(rootDir, 'pradeep', '5_Days_To_Learn_Any_Tool_Course_Roadmap.docx');
+          const sourceDocx = fs.existsSync(specificDocx) ? specificDocx : defaultDocx;
+          if (fs.existsSync(sourceDocx)) {
+            const docxRel = `tools/${entry}/learn.docx`;
+            const destPathDist = path.join(distDir, docxRel);
+            const destPathPublic = path.join(rootDir, 'public', docxRel);
+            const destPathTools = path.join(rootDir, docxRel);
+            [destPathDist, destPathPublic, destPathTools].forEach(dp => {
+              try {
+                const d = path.dirname(dp);
+                if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
+                fs.copyFileSync(sourceDocx, dp);
+              } catch (e) {
+                // Ignore transient copy locks
+              }
+            });
+          }
         }
       });
     }

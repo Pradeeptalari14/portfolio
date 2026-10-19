@@ -7,7 +7,8 @@
     "build": "vite build && node scripts/copy-assets.js && node scripts/generate-sitemap.js && node scripts/optimize-seo.js && node scripts/generate-route-registry.js",
     "preview": "vite preview",
     "test": "vitest run",
-    "web-check": "node scripts/web-check-audit.js"
+    "web-check": "node scripts/web-check-audit.js",
+    "audit:links": "node scripts/deep-audit.js"
   },
   "devDependencies": {
     "jsdom": "^29.1.1",

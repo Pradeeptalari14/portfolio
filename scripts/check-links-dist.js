@@ -39,7 +39,7 @@ for (const file of htmlFiles) {
       continue;
     }
 
-    if (link.includes('${')) {
+    if (link.includes('${') || link.startsWith('$')) {
       continue;
     }
 
