@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synthetic Cognitive Architecture Guide | SI Deep Learning & Active Inference</title>
+  <meta name="description" content="Comprehensive engineering guide to Synthetic Cognitive Architectures, Global Workspace Theory, Active Inference, and Dual-Process Reasoning in non-biological intelligence." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .code-container {
+      background: #030612;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#070914] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#070914]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../studios/si/" class="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          Synthetic Intelligence Lab
+        </a>
+        <span class="text-slate-600">/</span>
+        <a href="./" class="text-sm text-slate-300 hover:text-indigo-400 transition">
+          Cognitive Architecture Studio
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-950/80 border border-indigo-800/60 text-indigo-300">
+          Guide
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="./" class="text-xs font-mono text-indigo-400 hover:text-white bg-indigo-950/40 border border-indigo-700/50 px-3 py-1.5 rounded-lg">← Back to Interactive Studio</a>
+        <a href="../../studios/si/" class="text-xs text-slate-400 hover:text-white transition">SI Catalogue ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    <!-- Disambiguation Banner -->
+    <div class="mb-8 p-5 rounded-xl bg-indigo-950/40 border border-indigo-700/50 flex items-start gap-4">
+      <span class="text-2xl mt-0.5">ℹ️</span>
+      <div>
+        <h2 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-1">Taxonomy &amp; Terminology Note</h2>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          <strong>Synthetic Intelligence (SI)</strong> refers to the deliberate synthetic recreation of cognitive processes, perception-action loops, active inference, and neuro-symbolic reasoning in non-biological computational substrates. <em>Synthetic Intelligence is not a universally standardized industry category</em>, and should not be confused with <strong>SI</strong> when used colloquially as an alternate abbreviation for <strong>Superintelligence (ASI)</strong>. For alignment theory and theoretical containment of superintelligent systems, please refer to our <a href="../../studios/asi/" class="text-amber-400 underline font-semibold hover:text-amber-300">Artificial Superintelligence (ASI) Studio Catalogue</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Title and Overview -->
+    <div class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+        Mastering Synthetic Cognitive Architectures
+      </h1>
+      <p class="text-slate-400 text-base leading-relaxed">
+        A deep dive into Global Workspace Theory (GWT), Karl Friston's Free Energy Principle, active inference loops, and hybrid neuro-symbolic arbitration engines.
+      </p>
+    </div>
+
+    <!-- Section 1: Core Theoretical Foundations -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-indigo-400 font-mono">01.</span> Global Workspace Theory (GWT) in Machine Cognition
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        Originally formulated by cognitive neuroscientist Bernard Baars and mathematically adapted for neural computation by Stanislas Dehaene, Global Workspace Theory models conscious access as a shared high-bandwidth blackboard. Specialized modules (perception, memory, motor controls, semantic parsers) compute in parallel sub-consciously.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-black/40 border border-slate-800 rounded-lg p-4">
+          <h3 class="text-xs font-bold text-indigo-300 uppercase font-mono mb-2">Subconscious Specialists</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Independent neural networks, transformer attention heads, or rule-based experts that continuously score inputs for novelty, threat, or informational salience without global broadcast.
+          </p>
+        </div>
+        <div class="bg-black/40 border border-slate-800 rounded-lg p-4">
+          <h3 class="text-xs font-bold text-indigo-300 uppercase font-mono mb-2">Global Broadcast Bottleneck</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            The winning specialist whose salience exceeds the dynamic attention threshold gains access to the global blackboard, synchronizing state vectors across all cognitive subsystems simultaneously.
+          </p>
+        </div>
+      </div>
+      <div class="code-container p-4 text-xs text-indigo-300 overflow-x-auto">
+<pre>// Mathematical Attention Gate in Synthetic Intelligence Workspace
+function arbitrateWorkspace(specialists, salienceThreshold) {
+  // Sort candidates by informational surprisal
+  const winners = specialists.filter(s => s.salienceScore >= salienceThreshold);
+  if (winners.length === 0) return { broadcast: null, state: 'quiescent' };
+  
+  // Winner-take-all with soft competitive lateral inhibition
+  const dominant = winners.reduce((max, s) => s.salienceScore > max.salienceScore ? s : max);
+  return {
+    broadcast: dominant.payload,
+    suppressionRatio: dominant.salienceScore / (specialists.reduce((acc, s) => acc + s.salienceScore, 0) || 1),
+    timestamp: Date.now()
+  };
+}</pre>
+      </div>
+    </section>
+
+    <!-- Section 2: Active Inference and Free Energy -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-purple-400 font-mono">02.</span> Active Inference &amp; The Free Energy Principle
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        Karl Friston's Free Energy Principle posits that any self-organizing system that resists entropy must minimize the divergence (variational free energy) between its internal generative model of the world and sensory observations.
+      </p>
+      <div class="bg-indigo-950/20 border border-indigo-900/40 p-4 rounded-lg mb-4 text-xs text-slate-300 space-y-2">
+        <p><strong>Perception:</strong> Updating internal generative states $\mu$ to accommodate unexpected sensory observations $y$ (learning / belief updating).</p>
+        <p><strong>Action:</strong> Executing motor controls $a$ to alter the physical environment so sensory outcomes conform to internal prior beliefs (active inference).</p>
+      </div>
+      <div class="code-container p-4 text-xs text-purple-300 overflow-x-auto">
+<pre># Python Active Inference Free Energy Computation (Friston Step)
+import numpy as np
+
+def compute_variational_free_energy(sensory_obs, generative_prior, precision):
+    """
+    F = Complexity - Accuracy
+    F = D_KL[q(s) || p(s)] - E_q[log p(o | s)]
+    """
+    prediction_error = sensory_obs - generative_prior
+    accuracy_loss = 0.5 * precision * np.sum(prediction_error ** 2)
+    complexity_penalty = 0.5 * np.log(1.0 / (precision + 1e-8))
+    
+    free_energy = accuracy_loss + complexity_penalty
+    return free_energy, prediction_error</pre>
+      </div>
+    </section>
+
+    <!-- Section 3: Dual-Process Cognitive Routing -->
+    <section class="mb-12 bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-cyan-400 font-mono">03.</span> System 1 (Intuitive) vs System 2 (Deliberative) Arbitration
+      </h2>
+      <p class="text-sm text-slate-300 leading-relaxed mb-4">
+        In synthetic systems, relying exclusively on LLMs or heavy search algorithms incurs massive latency and token expense. Implementing Kahneman-style dual routing creates an efficient energy envelope:
+      </p>
+      <table class="w-full text-left text-xs border border-slate-800 rounded-lg overflow-hidden mb-6">
+        <thead class="bg-slate-800/60 text-slate-300 uppercase font-mono">
+          <tr>
+            <th class="p-3">Attribute</th>
+            <th class="p-3">System 1 (Reflex / Embedding Match)</th>
+            <th class="p-3">System 2 (Deliberative / Graph Search)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800 text-slate-300">
+          <tr>
+            <td class="p-3 font-semibold text-white">Latency</td>
+            <td class="p-3 text-cyan-400">&lt; 15ms</td>
+            <td class="p-3 text-amber-400">800ms - 8,000ms</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-semibold text-white">Mechanism</td>
+            <td class="p-3">Vector similarity, associative key-value cache, small distilled SLMs</td>
+            <td class="p-3">Monte Carlo Tree Search (MCTS), Formal logic prover, multi-agent debate</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-semibold text-white">Surprisal Tolerance</td>
+            <td class="p-3">Low (&lt; 0.35 free energy)</td>
+            <td class="p-3">High (&gt;= 0.35 free energy trigger)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Navigation Footer -->
+    <div class="flex items-center justify-between border-t border-slate-800 pt-6">
+      <a href="./" class="text-sm text-indigo-400 hover:text-indigo-300 font-mono flex items-center gap-2">
+        ← Open Cognitive Simulator
+      </a>
+      <a href="../../studios/si/" class="text-sm text-slate-300 hover:text-white font-mono flex items-center gap-2">
+        SI Studio Catalogue →
+      </a>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-800 bg-[#070914] py-8 text-center text-xs text-slate-500">
+    Talari Pradeep Studios Hub &bull; Synthetic Intelligence Studio &bull; Non-biological Cognitive Architectures
+  </footer>
+
+  <script type="module">
+    import StudioSDK from '../../src/js/studio-sdk.js';
+    window.StudioSDK = StudioSDK;
+
+    const studioSlug = 'synthetic-cognitive-architecture';
+    async function recordTelemetry() {
+      try {
+        if (StudioSDK && typeof StudioSDK.completeStep === 'function') {
+          await StudioSDK.completeStep(studioSlug, 'learn');
+        }
+      } catch (err) {
+        console.warn('Telemetry error:', err);
+      }
+      try {
+        const stored = localStorage.getItem('pradeep_studio_progress');
+        const progressMap = stored ? JSON.parse(stored) : {};
+        const curStep = Math.max((progressMap[studioSlug] || {}).step || 1, 1);
+        progressMap[studioSlug] = {
+          id: studioSlug,
+          title: 'Synthetic Cognitive Architecture Studio',
+          domain: 'Advanced Research & Guides',
+          step: curStep,
+          totalSteps: 7,
+          stepName: 'Overview & Architecture',
+          pct: Math.round((curStep / 7) * 100),
+          lastActive: 'Just now',
+          studioIndex: 0
+        };
+        localStorage.setItem('pradeep_studio_progress', JSON.stringify(progressMap));
+      } catch (e) {}
+    }
+    recordTelemetry();
+  </script>
+</body>
+</html>

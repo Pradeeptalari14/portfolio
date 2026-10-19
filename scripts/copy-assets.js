@@ -62,7 +62,9 @@ syncFile('tools/visual-flow-canvas.js', 'public/tools/visual-flow-canvas.js');
 syncFile('tools/visual-flow-canvas.css', 'public/tools/visual-flow-canvas.css');
 syncFile('studios/learn/studios-learning.json', 'public/studios/learn/studios-learning.json');
 
-// Sync all architecture flow diagrams and media across all tools to public and dist
+copyFile('404.html', '404.html');
+
+// Sync all architecture flow diagrams, media, and learn.html across all tools to public and dist
 const toolsBaseDir = path.join(rootDir, 'tools');
 if (fs.existsSync(toolsBaseDir)) {
   const allToolEntries = fs.readdirSync(toolsBaseDir);
@@ -76,9 +78,14 @@ if (fs.existsSync(toolsBaseDir)) {
           copyFile(`tools/${entry}/${file}`, `tools/${entry}/${file}`);
           copyFile(`tools/${entry}/${file}`, file);
         }
+        if (file === 'learn.html') {
+          syncFile(`tools/${entry}/${file}`, `public/tools/${entry}/${file}`);
+          copyFile(`tools/${entry}/${file}`, `tools/${entry}/${file}`);
+        }
       });
     }
   });
 }
+
 
 

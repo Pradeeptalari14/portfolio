@@ -24,8 +24,12 @@ function getToolInputs() {
     experience: resolve(__dirname, 'experience/index.html'),
     tools: resolve(__dirname, 'tools/index.html'),
     studios: resolve(__dirname, 'studios/index.html'),
+    studiosAi: resolve(__dirname, 'studios/ai/index.html'),
+    studiosSi: resolve(__dirname, 'studios/si/index.html'),
+    studiosAsi: resolve(__dirname, 'studios/asi/index.html'),
     studiosLearn: resolve(__dirname, 'studios/learn/index.html'),
     studiosFlow: resolve(__dirname, 'studios/flow/index.html'),
+    rayCluster: resolve(__dirname, 'ray-cluster/index.html'),
     incident: resolve(__dirname, 'incident/index.html'),
     toolbox: resolve(__dirname, 'toolbox/index.html'),
     architecture: resolve(__dirname, 'architecture/index.html'),
@@ -37,6 +41,7 @@ function getToolInputs() {
     aiCatalog: resolve(__dirname, 'AI/index.html'),
     interview: resolve(__dirname, 'interview/index.html'),
     academy: resolve(__dirname, 'academy/index.html'),
+    notFound: resolve(__dirname, '404.html'),
   };
 
   const toolsDir = resolve(__dirname, 'tools');
@@ -49,6 +54,11 @@ function getToolInputs() {
         // Prefix with tool_ to prevent collision with top-level routes
         const key = 'tool_' + item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
         inputs[key] = htmlPath;
+      }
+      const learnPath = join(itemPath, 'learn.html');
+      if (fs.existsSync(learnPath)) {
+        const learnKey = 'toolLearn_' + item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+        inputs[learnKey] = learnPath;
       }
     }
   }
