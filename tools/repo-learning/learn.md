@@ -16,7 +16,7 @@
 
 ## 1. Overview & Architectural Mission
 
-Understand real codebases, trace architectural request execution, follow guided 10-point courses, launch one-click setups, test in-browser code diffs, and bridge directly into 341 engineering studios.
+Understand real codebases, trace architectural request execution, follow guided 10-point courses, launch one-click setups, test in-browser code diffs, and bridge directly into 347 engineering studios.
 
 ### Core Production Use Case
 Production engineering: Deploying resilient, schema-validated Unified Repository Learning Workspace & Real Project Studio services with audited compliance and zero-drift operational reliability.

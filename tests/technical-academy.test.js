@@ -187,4 +187,81 @@ describe('Technical Academy & Interactive Engineering Lab (4-Quadrant Experience
     const hitBtns = document.querySelectorAll('.btn-terminal-hit');
     expect(hitBtns.length).toBeGreaterThanOrEqual(4);
   });
+
+  it('should render Execution & Telemetry Engine Status Bar with live probe, virtual sandbox, simulated DAG, and localStorage indicators', () => {
+    const html = fs.readFileSync(academyHtmlPath, 'utf8');
+    const dom = new JSDOM(html);
+    const { document } = dom.window;
+
+    const statusBar = document.querySelector('.academy-engine-status-bar');
+    expect(statusBar).not.toBeNull();
+
+    const rttProbe = document.getElementById('edgeProbeRtt');
+    expect(rttProbe).not.toBeNull();
+
+    const pulse = document.querySelector('.pulse-indicator');
+    expect(pulse).not.toBeNull();
+
+    expect(statusBar.textContent).toContain('Virtual Container Sandbox');
+    expect(statusBar.textContent).toContain('Simulated State Machine');
+    expect(statusBar.textContent).toContain('localStorage Active');
+  });
+
+  it('should render Real versus Simulated status badges across KPIs, Flow, HUD, and Lab', () => {
+    const html = fs.readFileSync(academyHtmlPath, 'utf8');
+    const dom = new JSDOM(html);
+    const { document } = dom.window;
+
+    // KPI Badges
+    const kpis = document.querySelector('.dash-kpis');
+    expect(kpis.textContent).toContain('Demo Benchmark');
+    expect(kpis.textContent).toContain('Demo Target');
+    expect(kpis.textContent).toContain('Local Calculated');
+
+    // Flow & HUD Badges
+    const flowTitle = document.getElementById('flowHeading');
+    expect(flowTitle.textContent).toContain('Simulated DAG Drill');
+
+    const hudTitle = document.querySelector('.live-status-hud .hud-title');
+    expect(hudTitle.textContent).toContain('Simulated State Machine');
+
+    // Lab Badges
+    const labBadge = document.querySelector('.lab-project-badge');
+    expect(labBadge.textContent).toContain('Virtual Sandbox');
+
+    const envHud = document.querySelector('.env-hud-card');
+    expect(envHud.textContent).toContain('Simulated Kind Cluster');
+  });
+
+  it('should provide zero-search Next-Step Journey with Studio, Flow, Lab, and Project links across all 10 topics', () => {
+    const html = fs.readFileSync(academyHtmlPath, 'utf8');
+    const dom = new JSDOM(html);
+    const { document } = dom.window;
+
+    // Journey Card in DOM
+    const journeyCard = document.querySelector('.next-step-journey-card');
+    expect(journeyCard).not.toBeNull();
+    expect(document.getElementById('journeyStudioLink')).not.toBeNull();
+    expect(document.getElementById('journeyFlowLink')).not.toBeNull();
+    expect(document.getElementById('journeyLabLink')).not.toBeNull();
+    expect(document.getElementById('journeyProjectLink')).not.toBeNull();
+
+    // Verify 10 distinct topics in syllabus nav
+    const treeBtns = document.querySelectorAll('.tree-item-btn');
+    expect(treeBtns.length).toBe(10);
+    const topicKeys = Array.from(treeBtns).map(b => b.dataset.topic);
+    const expectedTopics = [
+      'intro-k8s', 'arch-overview', 'usecases-k8s',
+      'pods-containers', 'deployments-replicas', 'services-endpoints', 'config-secrets',
+      'ingress-controllers', 'network-policies', 'persistent-volumes'
+    ];
+    expect(topicKeys).toEqual(expectedTopics);
+
+    // Verify academy.js topicDb contains all 10 topics with complete journey links
+    const jsContent = fs.readFileSync(academyJsPath, 'utf8');
+    expectedTopics.forEach(topic => {
+      expect(jsContent).toContain(`'${topic}':`);
+    });
+  });
 });
+

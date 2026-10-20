@@ -3290,7 +3290,7 @@ function initCommandPalette() {
 
   const staticItems = [
     { type: 'Destinations', title: 'Home Showcase', subtitle: 'Destination 1: Architectural minimalist hero & telemetry', url: '#hero', icon: '⚡' },
-    { type: 'Destinations', title: 'Studios Workbench', subtitle: 'Destination 2: 341 production engineering studios & live tools', url: 'studios/', icon: '🛠️' },
+    { type: 'Destinations', title: 'Studios Workbench', subtitle: 'Destination 2: 347 production engineering studios & live tools', url: 'studios/', icon: '🛠️' },
     { type: 'Destinations', title: 'Studio Learning Lab', subtitle: 'Destination 3: Cognitive 7-step learning paths & badges', url: 'studios/learn/', icon: '🎓' },
     { type: 'Platform', title: 'AI Laboratory', subtitle: 'Model scaling, RAG & LLMOps studio', url: 'AI/', icon: '🤖' },
     { type: 'Platform', title: 'Architecture Center', subtitle: 'Enterprise Landing Zones & EKS topologies', url: 'architecture/', icon: '📐' },

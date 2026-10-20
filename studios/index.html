@@ -1230,8 +1230,96 @@
 
   <!-- Studio Cards Grid -->
   <main class="hub-grid" id="studioGrid">
-    <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-family: var(--font-mono);">
-      Loading interactive studio database...
+    <div class="studio-card" data-id="vllm-paged-attention">
+      <div>
+        <div class="card-top">
+          <span class="card-icon">🚀</span>
+          <div class="card-badges">
+            <span class="card-lvl-badge">Lvl 4</span>
+            <span class="card-badge">ai</span>
+            <button class="bookmark-star" data-bm="vllm-paged-attention" title="Bookmark Studio">☆</button>
+          </div>
+        </div>
+        <h3 class="card-title">vLLM Serving Studio (PagedAttention)</h3>
+        <p class="card-desc">Deploy high-performance vLLM inference gateways with PagedAttention, KV cache management, and continuous batching.</p>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag" title="vllm-serving.yaml">vllm-serving.yaml</span>
+        <div class="card-action-btns">
+          <a href="../tools/vllm-paged-attention/learn.html" class="card-learn-btn" title="Open Complete Learning Guide">Guide 📖</a>
+          <a href="/studios/flow/?template=rag&studio=vllm-paged-attention" class="card-flow-btn" title="Open Visual Flow Canvas" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 600;">Flow ⚡</a>
+          <a href="../tools/vllm-paged-attention/" class="card-launch-btn">Launch →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="studio-card" data-id="ebpf-continuous-profiler">
+      <div>
+        <div class="card-top">
+          <span class="card-icon">🐝</span>
+          <div class="card-badges">
+            <span class="card-lvl-badge">Lvl 4</span>
+            <span class="card-badge">observability</span>
+            <button class="bookmark-star" data-bm="ebpf-continuous-profiler" title="Bookmark Studio">☆</button>
+          </div>
+        </div>
+        <h3 class="card-title">Linux Kernel eBPF Continuous Profiler</h3>
+        <p class="card-desc">Profile CPU hotspots, latency spikes, and socket packet queues directly inside the Linux 6.8 kernel using eBPF bytecode.</p>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag" title="ebpf-profiler.c">ebpf-profiler.c</span>
+        <div class="card-action-btns">
+          <a href="../tools/ebpf-continuous-profiler/learn.html" class="card-learn-btn" title="Open Complete Learning Guide">Guide 📖</a>
+          <a href="/studios/flow/?template=infra&studio=ebpf-continuous-profiler" class="card-flow-btn" title="Open Visual Flow Canvas" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 600;">Flow ⚡</a>
+          <a href="../tools/ebpf-continuous-profiler/" class="card-launch-btn">Launch →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="studio-card" data-id="argocd">
+      <div>
+        <div class="card-top">
+          <span class="card-icon">📊</span>
+          <div class="card-badges">
+            <span class="card-lvl-badge">Lvl 2</span>
+            <span class="card-badge">cloud</span>
+            <button class="bookmark-star" data-bm="argocd" title="Bookmark Studio">☆</button>
+          </div>
+        </div>
+        <h3 class="card-title">ArgoCD Declarative GitOps App</h3>
+        <p class="card-desc">Continuous deployment engine synchronizing Kubernetes clusters directly against Git repositories with automated drift reconciliation.</p>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag" title="application.yaml">application.yaml</span>
+        <div class="card-action-btns">
+          <a href="../tools/argocd/learn.html" class="card-learn-btn" title="Open Complete Learning Guide">Guide 📖</a>
+          <a href="/studios/flow/?template=pipeline&studio=argocd" class="card-flow-btn" title="Open Visual Flow Canvas" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 600;">Flow ⚡</a>
+          <a href="../tools/argocd/" class="card-launch-btn">Launch →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="studio-card" data-id="terraform">
+      <div>
+        <div class="card-top">
+          <span class="card-icon">🏗️</span>
+          <div class="card-badges">
+            <span class="card-lvl-badge">Lvl 2</span>
+            <span class="card-badge">cloud</span>
+            <button class="bookmark-star" data-bm="terraform" title="Bookmark Studio">☆</button>
+          </div>
+        </div>
+        <h3 class="card-title">Terraform Multi-Cloud Architect Studio</h3>
+        <p class="card-desc">Modular Terraform architectures with remote state locks, deterministic execution plans, and zero-drift policy automation.</p>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag" title="main.tf">main.tf</span>
+        <div class="card-action-btns">
+          <a href="../tools/terraform/learn.html" class="card-learn-btn" title="Open Complete Learning Guide">Guide 📖</a>
+          <a href="/studios/flow/?template=infra&studio=terraform" class="card-flow-btn" title="Open Visual Flow Canvas" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 600;">Flow ⚡</a>
+          <a href="../tools/terraform/" class="card-launch-btn">Launch →</a>
+        </div>
+      </div>
     </div>
   </main>
 

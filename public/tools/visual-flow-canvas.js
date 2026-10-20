@@ -386,11 +386,11 @@
                 <button class="vf-mode-btn active" id="vfModeBtn">⚡ Visual Flow</button>
               </nav>
 
-              <!-- Studio Selector Dropdown (341+ Studios) -->
+              <!-- Studio Selector Dropdown (347 Studios) -->
               <div class="vf-studio-selector-wrapper">
                 <label for="vfStudioSelect" class="vf-studio-label">Studio:</label>
                 <select id="vfStudioSelect" class="vf-studio-select">
-                  <option value="">Select Studio (341 available)...</option>
+                  <option value="">Select Studio (347 available)...</option>
                 </select>
               </div>
 
@@ -1070,7 +1070,7 @@
         });
       });
 
-      let html = `<option value="">Select Studio (341 available)...</option>`;
+      let html = `<option value="">Select Studio (347 available)...</option>`;
       Object.entries(groups).forEach(([catKey, items]) => {
         if (items.length === 0) return;
         const label = cats[catKey] || 'Other Engineering Studios';

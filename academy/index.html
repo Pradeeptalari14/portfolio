@@ -92,6 +92,35 @@
     </div>
   </div>
 
+  <!-- ══ EXECUTION & TELEMETRY ENGINE STATUS BAR ══ -->
+  <aside class="academy-engine-status-bar" aria-label="Runtime Telemetry Engine Status">
+    <div class="engine-bar-inner">
+      <div class="engine-bar-item engine-live-pulse" title="Real-time edge network round-trip time">
+        <span class="pulse-indicator"></span>
+        <span class="engine-label">Live Edge RTT:</span>
+        <span class="engine-val" id="edgeProbeRtt">Measuring...</span>
+      </div>
+      <div class="engine-bar-separator">|</div>
+      <div class="engine-bar-item" title="Browser-side isolated container sandbox">
+        <span class="engine-icon">⚙️</span>
+        <span class="engine-label">Execution Engine:</span>
+        <span class="engine-badge badge-virtual">Virtual Container Sandbox (In-Browser)</span>
+      </div>
+      <div class="engine-bar-separator">|</div>
+      <div class="engine-bar-item" title="Interactive state-machine pipeline drill">
+        <span class="engine-icon">🔄</span>
+        <span class="engine-label">Pipeline DAG:</span>
+        <span class="engine-badge badge-simulated">Simulated State Machine (Drills)</span>
+      </div>
+      <div class="engine-bar-separator">|</div>
+      <div class="engine-bar-item" title="Browser localStorage persistence for lesson progress, notes, and XP">
+        <span class="engine-icon">💾</span>
+        <span class="engine-label">State Persistence:</span>
+        <span class="engine-badge badge-local">localStorage Active (Real Browser Storage)</span>
+      </div>
+    </div>
+  </aside>
+
   <!-- ══ MAIN ACADEMY WORKSPACE: 4-QUADRANT GRID ══ -->
   <main class="academy-main-container">
     <div class="quadrant-grid" id="quadrantGrid">
@@ -115,15 +144,15 @@
             <div class="dash-kpis">
               <div class="kpi-chip kpi-chip-fire">
                 <span>🔥</span>
-                <span>42 Day Streak</span>
+                <span>42 Day Streak <span class="badge-tag tag-demo">Demo Benchmark</span></span>
               </div>
               <div class="kpi-chip kpi-chip-cert">
                 <span>🏆</span>
-                <span id="userCertCount">12 Certificates</span>
+                <span id="userCertCount">12 Certificates <span class="badge-tag tag-demo">Demo Target</span></span>
               </div>
               <div class="kpi-chip kpi-chip-pct">
                 <span>📈</span>
-                <span id="userOverallPct">78% Overall</span>
+                <span id="userOverallPct">78% Overall <span class="badge-tag tag-local">Local Calculated</span></span>
               </div>
             </div>
           </div>
@@ -268,23 +297,23 @@
                 <div class="tree-module-header">1. Introduction</div>
                 <button class="tree-item-btn active" data-topic="intro-k8s">What is Kubernetes?</button>
                 <button class="tree-item-btn" data-topic="arch-overview">Architecture Overview</button>
-                <button class="tree-item-btn" data-topic="intro-k8s">Production Use Cases</button>
+                <button class="tree-item-btn" data-topic="usecases-k8s">Production Use Cases</button>
               </div>
               <div class="tree-module-group">
                 <div class="tree-module-header">2. Core Concepts</div>
                 <button class="tree-item-btn" data-topic="pods-containers">Pods and Containers</button>
                 <button class="tree-item-btn" data-topic="deployments-replicas">Deployments &amp; ReplicaSets</button>
-                <button class="tree-item-btn" data-topic="intro-k8s">Services &amp; Endpoints</button>
-                <button class="tree-item-btn" data-topic="intro-k8s">ConfigMaps &amp; Secrets</button>
+                <button class="tree-item-btn" data-topic="services-endpoints">Services &amp; Endpoints</button>
+                <button class="tree-item-btn" data-topic="config-secrets">ConfigMaps &amp; Secrets</button>
               </div>
               <div class="tree-module-group">
                 <div class="tree-module-header">3. Networking</div>
-                <button class="tree-item-btn" data-topic="intro-k8s">Ingress Controllers</button>
-                <button class="tree-item-btn" data-topic="intro-k8s">Network Policies</button>
+                <button class="tree-item-btn" data-topic="ingress-controllers">Ingress Controllers</button>
+                <button class="tree-item-btn" data-topic="network-policies">Network Policies</button>
               </div>
               <div class="tree-module-group">
                 <div class="tree-module-header">4. Storage</div>
-                <button class="tree-item-btn" data-topic="intro-k8s">Persistent Volumes &amp; CSI</button>
+                <button class="tree-item-btn" data-topic="persistent-volumes">Persistent Volumes &amp; CSI</button>
               </div>
             </nav>
 
@@ -325,6 +354,40 @@
                     <div>✅ <strong>Self-Healing:</strong> Restarts crashed containers and reschedules failed nodes.</div>
                     <div>✅ <strong>Auto-Scaling:</strong> Dynamic horizontal pod autoscaling based on CPU/RAM/metrics.</div>
                     <div>✅ <strong>Portability:</strong> Runs identically on AWS, Azure, GCP, or bare-metal on-premise.</div>
+                  </div>
+                </div>
+
+                <!-- ══ ZERO-SEARCH NEXT-STEP JOURNEY ══ -->
+                <div class="next-step-journey-card" aria-label="Next-step engineering journey">
+                  <div class="journey-header">
+                    <span class="journey-header-title">🚀 Complete Next-Step Engineering Journey (Zero-Search)</span>
+                    <span class="journey-header-sub">Topic-matched studio, interactive flow, hands-on lab, and project repository</span>
+                  </div>
+                  <div class="journey-grid">
+                    <a id="journeyStudioLink" href="/tools/kubernetes/" class="journey-item-card journey-studio" title="Launch Interactive Studio">
+                      <div class="journey-item-badge">1. Studio</div>
+                      <div class="journey-item-title" id="journeyStudioName">Advanced k8s Script Generator</div>
+                      <div class="journey-item-desc" id="journeyStudioDesc">Generate manifests &amp; test configs</div>
+                      <div class="journey-item-cta">Open Studio ↗</div>
+                    </a>
+                    <a id="journeyFlowLink" href="/studios/flow/?studio=kubernetes" class="journey-item-card journey-flow" title="Open Visual Engineering Flow">
+                      <div class="journey-item-badge">2. Diagram Flow</div>
+                      <div class="journey-item-title" id="journeyFlowName">Visual Topology &amp; Flow</div>
+                      <div class="journey-item-desc" id="journeyFlowDesc">Interactive DAG node visualization</div>
+                      <div class="journey-item-cta">View Flow ↗</div>
+                    </a>
+                    <a id="journeyLabLink" href="/tools/kubernetes/learn.html" class="journey-item-card journey-lab" title="Launch Practical Lab Guide">
+                      <div class="journey-item-badge">3. Practical Lab</div>
+                      <div class="journey-item-title" id="journeyLabName">Production Lab Guide</div>
+                      <div class="journey-item-desc" id="journeyLabDesc">Hands-on step-by-step instructions</div>
+                      <div class="journey-item-cta">Launch Lab ↗</div>
+                    </a>
+                    <a id="journeyProjectLink" href="https://github.com/Pradeeptalari14/tp-kubernetes" target="_blank" rel="noopener" class="journey-item-card journey-project" title="View Source Code Repository">
+                      <div class="journey-item-badge">4. Real Project</div>
+                      <div class="journey-item-title" id="journeyProjectName">GitHub Repository</div>
+                      <div class="journey-item-desc" id="journeyProjectDesc">Production codebase &amp; CI configs</div>
+                      <div class="journey-item-cta">View GitHub ↗</div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -449,10 +512,35 @@ spec:
 
               <!-- Tab Panel 6: Resources -->
               <div class="lesson-tab-panel" id="panel-resources" style="display: none;">
-                <div style="font-size: 0.76rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                  <a href="/tools/kubernetes/" style="color: var(--accent-cyan); text-decoration: underline;">☸️ Kubernetes Interactive Studio (Launch Lab)</a>
-                  <a href="/tools/kubernetes/learn.html" style="color: var(--accent-cyan); text-decoration: underline;">📖 Kubernetes Production Learning Guide</a>
-                  <a href="https://github.com/Pradeeptalari14/portfolio" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: underline;">🐙 Source Code Repository on GitHub</a>
+                <div class="topic-resources-container" id="topicResourcesList">
+                  <div class="resource-item-row">
+                    <div>
+                      <div class="resource-link-title"><a id="resStudioLink" href="/tools/kubernetes/">☸️ Advanced k8s Script Generator</a></div>
+                      <div class="resource-link-meta" id="resStudioMeta">Interactive Studio &bull; Ready to Launch</div>
+                    </div>
+                    <a id="resStudioBtn" href="/tools/kubernetes/" class="btn-flow-run" style="font-size:0.65rem; padding:4px 8px;">Launch Studio ↗</a>
+                  </div>
+                  <div class="resource-item-row">
+                    <div>
+                      <div class="resource-link-title"><a id="resFlowLink" href="/studios/flow/?studio=kubernetes">🔀 Visual Engineering Flow &amp; Topology</a></div>
+                      <div class="resource-link-meta" id="resFlowMeta">Interactive DAG &bull; Node Execution Tracing</div>
+                    </div>
+                    <a id="resFlowBtn" href="/studios/flow/?studio=kubernetes" class="btn-flow-toggle" style="font-size:0.65rem; padding:4px 8px;">Open Flow ↗</a>
+                  </div>
+                  <div class="resource-item-row">
+                    <div>
+                      <div class="resource-link-title"><a id="resLabLink" href="/tools/kubernetes/learn.html">🧪 Production Engineering Lab Guide</a></div>
+                      <div class="resource-link-meta" id="resLabMeta">Hands-on Sandbox &bull; Step-by-Step Runbook</div>
+                    </div>
+                    <a id="resLabBtn" href="/tools/kubernetes/learn.html" class="btn-hint-toggle" style="font-size:0.65rem; padding:4px 8px;">Start Lab ↗</a>
+                  </div>
+                  <div class="resource-item-row">
+                    <div>
+                      <div class="resource-link-title"><a id="resProjectLink" href="https://github.com/Pradeeptalari14/tp-kubernetes" target="_blank" rel="noopener">🐙 Source Code Repository on GitHub</a></div>
+                      <div class="resource-link-meta" id="resProjectMeta">GitHub Open Source &bull; Production Codebase</div>
+                    </div>
+                    <a id="resProjectBtn" href="https://github.com/Pradeeptalari14/tp-kubernetes" target="_blank" rel="noopener" class="btn-flow-toggle" style="font-size:0.65rem; padding:4px 8px;">View Repo ↗</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -474,7 +562,7 @@ spec:
           <!-- Flow Top Bar -->
           <div class="flow-top-controls">
             <div class="flow-title-wrap">
-              <h3 id="flowHeading">CI/CD Pipeline Flow</h3>
+              <h3 id="flowHeading">CI/CD Pipeline Flow <span class="badge-tag tag-sim">Simulated DAG Drill</span></h3>
               <p>Visualize how code changes flow from developer commit to production</p>
             </div>
             <div class="flow-btn-group">
@@ -613,7 +701,7 @@ spec:
 
             <!-- Right: Live Status HUD -->
             <div class="live-status-hud">
-              <div class="hud-title">Live Pipeline Status</div>
+              <div class="hud-title">Live Pipeline Status <span class="badge-tag tag-sim">Simulated State Machine</span></div>
               <div class="hud-metrics-list">
                 <div class="hud-metric-row">
                   <span class="metric-label">Success Rate</span>
@@ -656,7 +744,7 @@ spec:
           <div class="lab-top-bar">
             <div class="lab-title-wrap">
               <div class="lab-project-picker-row">
-                <span class="lab-project-badge">Enterprise Lab Project</span>
+                <span class="lab-project-badge">Enterprise Lab Project <span class="badge-tag tag-sim">Virtual Sandbox</span></span>
                 <select id="labProjectSelect" class="lab-project-picker-select" aria-label="Select Lab Project Scenario">
                   <option value="k8s-web" selected>☸️ Project 1: High-Availability Web App &amp; Ingress (Kubernetes)</option>
                   <option value="vllm-ai">🚀 Project 2: LLM Inference Gateway with PagedAttention (vLLM)</option>
@@ -769,6 +857,11 @@ spec:
 
               <!-- LTab 3: Terminal Sandbox -->
               <div class="ltab-panel" id="lpanel-terminal" style="display: none;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
+                  <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">
+                    Interactive Terminal <span class="badge-tag tag-virtual">Virtual Shell (In-Browser)</span>
+                  </span>
+                </div>
                 <div class="interactive-terminal-box" id="termLogContainer">
                   <div class="terminal-line">
                     <span class="term-prompt">user@kind-k8s:~$</span> kubectl cluster-info<br />
@@ -793,6 +886,11 @@ spec:
 
               <!-- LTab 4: Test & Validate -->
               <div class="ltab-panel" id="lpanel-test" style="display: none;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">
+                    Verification Engine <span class="badge-tag tag-virtual">Virtual SLO Checks</span>
+                  </span>
+                </div>
                 <div style="margin-bottom: 0.65rem;">
                   <button class="btn-flow-run" id="btnRunLabValidation" style="width: 100%;">
                     ▶ Run Automated Verification Checks
@@ -819,7 +917,7 @@ spec:
               <div class="env-hud-card">
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                   <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; color: #fff;">
-                    <span class="env-status-dot"></span>Running
+                    <span class="env-status-dot"></span>Running <span class="badge-tag tag-sim">Simulated Kind Cluster</span>
                   </span>
                   <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent-amber);" id="labCountdownTimer">29:15</span>
                 </div>

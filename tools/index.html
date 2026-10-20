@@ -240,7 +240,7 @@
     </div>
 
     <!-- No Results Placeholder -->
-    <div id="no-results" class="no-results-state" style="display: none;" hidden>
+    <div id="no-results" class="no-results-state" style="display: none !important;" hidden>
       <div class="no-results-icon">🔍</div>
       <h4 class="no-results-title">No Studios Found</h4>
       <p class="no-results-text">No automation studios matched your query. Try clearing the search or choosing another category.</p>
@@ -455,6 +455,15 @@ Exit Code:      137</pre>
               <div style="margin-bottom: 0.75rem; border-left: 3px solid #f59e0b; padding-left: 0.75rem; background: rgba(245, 158, 11, 0.03); padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.82rem;">
                 <strong>Incident Alert:</strong> <code>Auditing alert: Manual changes detected on AWS security group web-sec-group (SSH Port 22 opened).</code>
               </div>
+
+              <!-- Production Safety Warning Callout -->
+              <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 0.85rem; font-size: 0.8rem; color: #fca5a5; line-height: 1.5;">
+                <strong style="color: #ef4444; display: flex; align-items: center; gap: 6px; margin-bottom: 0.25rem;">
+                  <span>⚠️</span> PRODUCTION SAFETY DIRECTIVE: Blind Auto-Approve Strictly Prohibited
+                </strong>
+                Never execute unreviewed auto-approve flags (such as <code>--auto-approve=true</code> or uninspected apply scripts) against production cloud resources. Blind auto-approval bypasses blast-radius evaluation, can tear down live VPC routes or databases, and risks overwriting emergency incident firewall patches. Always enforce a three-stage reviewed plan gate with human sign-off:
+              </div>
+
               <p style="margin-bottom: 0.5rem;"><strong>Diagnosis Steps:</strong></p>
               <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; margin-bottom: 0.75rem;">$ terraform plan
 # aws_security_group.web has been changed outside Terraform config:
@@ -462,11 +471,12 @@ Exit Code:      137</pre>
     ~ from_port = 0
     ~ to_port   = 0
     ~ protocol  = "-1"
-    # (Manual open SSH rule detected)
+    # (Manual open SSH rule detected on port 22)
   }</pre>
-              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch (Controlled Production Procedure):</strong></p>
-              <p style="margin-bottom: 0.75rem;">Generate an execution plan artifact, assess blast radius, obtain change sign-off, and apply only the verified plan file:</p>
-              <pre style="background: #020617; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981;"># Step 1: Save deterministic execution plan
+
+              <p style="margin-bottom: 0.5rem;"><strong>Remediation Patch (Reviewed Plan &amp; Explicit Approval Procedure):</strong></p>
+              <p style="margin-bottom: 0.75rem; font-size: 0.82rem; color: #94a3b8;">Generate a deterministic plan artifact, audit policy compliance via Checkov/OPA, obtain senior SRE sign-off, and apply solely the reviewed plan artifact:</p>
+              <pre style="background: #020617; padding: 0.75rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10b981;"># Stage 1: Generate and store deterministic execution plan artifact (No changes applied)
 $ terraform plan -out=reconcile.tfplan
 # aws_security_group.web has been changed outside Terraform config:
 ~ ingress {
@@ -476,10 +486,11 @@ $ terraform plan -out=reconcile.tfplan
     # (Removes unauthorized 0.0.0.0/0 port 22 access)
   }
 
-# Step 2: Automated security guardrail & policy inspection
+# Stage 2: Automated security policy gate & blast-radius audit
 $ checkov -f reconcile.tfplan --framework terraform_plan
+$ infracost diff --path=reconcile.tfplan
 
-# Step 3: Peer-approved controlled execution of the verified plan artifact
+# Stage 3: Explicit operator sign-off and target execution (Never auto-approve in prod)
 $ terraform apply reconcile.tfplan
 Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
             </div>
@@ -842,10 +853,16 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.</pre>
       });
       
       const noResults = $('no-results');
-      if (matchCount === 0) {
-        noResults.classList.add('visible');
-      } else {
-        noResults.classList.remove('visible');
+      if (noResults) {
+        if (matchCount === 0) {
+          noResults.style.setProperty('display', 'flex', 'important');
+          noResults.removeAttribute('hidden');
+          noResults.classList.add('visible');
+        } else {
+          noResults.style.setProperty('display', 'none', 'important');
+          noResults.setAttribute('hidden', '');
+          noResults.classList.remove('visible');
+        }
       }
     }
 
