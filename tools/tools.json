@@ -4162,5 +4162,17 @@
     "tag": "config.toml",
     "link": "containerd/",
     "repository": "Pradeeptalari14/tp-containerd"
+  },
+  {
+    "title": "Forward Deployed Engineer (FDE) AI Systems Studio",
+    "desc": "Master Forward Deployed Engineering: Bridge raw AI models and enterprise production. Discover client business problems, architect agentic MCP swarms, deploy into air-gapped private VPCs, and enforce automated Ragas evals and safety guardrails.",
+    "category": "ai",
+    "icon": "🚀",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "fde_agent_pipeline.py",
+    "link": "forward-deployed-engineer/",
+    "repository": "Pradeeptalari14/tp-fde-enterprise-deployer"
   }
 ]

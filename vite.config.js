@@ -21,6 +21,7 @@ function getToolInputs() {
     gpuFinopsK8sScheduler: resolve(__dirname, 'projects/gpu-finops-k8s-scheduler.html'),
     devsecopsSlsaSupplyChain: resolve(__dirname, 'projects/devsecops-slsa-supply-chain.html'),
     agenticTemporalMemoryGraph: resolve(__dirname, 'projects/agentic-temporal-memory-graph.html'),
+    forwardDeployedEngineerSystems: resolve(__dirname, 'projects/forward-deployed-engineer-systems.html'),
     experience: resolve(__dirname, 'experience/index.html'),
     tools: resolve(__dirname, 'tools/index.html'),
     studios: resolve(__dirname, 'studios/index.html'),

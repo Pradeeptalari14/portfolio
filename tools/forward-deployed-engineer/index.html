@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forward Deployed Engineer (FDE) AI Systems Studio | Enterprise Deployment & Labs</title>
+  <meta name="description" content="Master Forward Deployed Engineering (FDE): Discover client business problems, architect agentic AI systems, deploy into air-gapped private VPCs, and enforce observability, safety, and evals." />
+  <link rel="icon" type="image/png" href="/Favicon.png" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/tools/shared-tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              slate: {
+                850: '#131b2e',
+                950: '#070b14',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <style>
+    .tabs-scrollable {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+    .tabs-scrollable::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-scrollable::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .tabs-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    .tab-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;
+      padding: 0.625rem 1rem !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease-in-out !important;
+      line-height: 1.25 !important;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9 !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: #475569 !important;
+    }
+    .tab-btn.active {
+      color: #38bdf8 !important;
+      border-bottom-color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.08) !important;
+      font-weight: 600 !important;
+    }
+    .lab-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+    .lab-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-[#0B0F19] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-[#0B0F19]/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../../" class="text-xl font-bold bg-gradient-to-r from-cyan-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent hover:opacity-80 transition">
+          Talari Pradeep
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-800/60 text-cyan-300">
+          🚀 Forward Deployed Engineer (FDE) Studio
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/Pradeeptalari14/tp-fde-enterprise-deployer" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-cyan-400 transition flex items-center gap-1.5 border border-slate-800 hover:border-slate-700 bg-slate-900 px-3 py-1.5 rounded-lg">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          tp-fde-enterprise-deployer
+        </a>
+        <a href="../../learning/" class="text-xs text-slate-400 hover:text-white transition">Learning Paths →</a>
+        <a href="../../tools/" class="text-xs text-slate-400 hover:text-white transition">All Studios →</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <!-- Title Banner -->
+    <div class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-900/40 text-cyan-300 border border-cyan-700/50">Forward Deployed Engineering</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-900/40 text-indigo-300 border border-indigo-700/50">AI Systems Engineering</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-900/40 text-emerald-300 border border-emerald-700/50">Customer Deployment</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-900/40 text-purple-300 border border-purple-700/50">Agentic MCP Workflows</span>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-900/40 text-rose-300 border border-rose-700/50">Air-Gapped Private VPC</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">
+        Forward Deployed Engineer (FDE) AI Systems Studio
+      </h1>
+      <p class="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
+        Bridge the gap between raw AI capability and mission-critical enterprise production. Discover real business problems, architect agentic workflows, deploy into air-gapped private VPCs, and enforce continuous evaluation, observability, and safety.
+      </p>
+    </div>
+
+    <!-- Live Telemetry HUD Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-lg backdrop-blur">
+        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Discovery to PoC Cycle</div>
+        <div id="metric-cycle" class="text-2xl font-extrabold text-white mt-1">14 Days</div>
+        <div class="text-[11px] text-cyan-400 font-mono mt-0.5">-72% delivery acceleration</div>
+      </div>
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-lg backdrop-blur">
+        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Air-Gap Security Gate</div>
+        <div id="metric-security" class="text-2xl font-extrabold text-white mt-1">100% Attested</div>
+        <div class="text-[11px] text-emerald-400 font-mono mt-0.5">zero external egress</div>
+      </div>
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-lg backdrop-blur">
+        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Agentic Task Success</div>
+        <div id="metric-success" class="text-2xl font-extrabold text-white mt-1">94.8%</div>
+        <div class="text-[11px] text-cyan-400 font-mono mt-0.5">verified on golden dataset</div>
+      </div>
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-lg backdrop-blur">
+        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Enterprise Client ROI</div>
+        <div id="metric-roi" class="text-2xl font-extrabold text-white mt-1">$420,000</div>
+        <div class="text-[11px] text-emerald-400 font-mono mt-0.5">annualized efficiency savings</div>
+      </div>
+    </div>
+
+    <!-- 2-Column Studio Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
+      <!-- Left Config Controls Column -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-xl backdrop-blur">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center justify-between">
+            <span>⚙️ FDE Deployment Parameters</span>
+            <span class="text-[10px] text-cyan-400 font-mono">Live Generator</span>
+          </h2>
+          <form id="studioForm" class="space-y-4">
+            <div>
+              <label for="industryType" class="block text-xs font-semibold text-slate-300 mb-1.5">Client Industry Archetype</label>
+              <select id="industryType" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                <option value="healthcare">Healthcare &amp; Life Sciences (EHR &amp; Clinical)</option>
+                <option value="fintech">Financial Services &amp; Banking (Ledger &amp; Fraud)</option>
+                <option value="saas">Enterprise B2B SaaS (Ticket &amp; CRM Routing)</option>
+                <option value="govcloud">Defense &amp; Public Sector (Air-Gapped GovCloud)</option>
+                <option value="retail">Supply Chain &amp; Logistics (Fleet &amp; Inventory)</option>
+              </select>
+            </div>
+            <div>
+              <label for="architectureType" class="block text-xs font-semibold text-slate-300 mb-1.5">AI Architecture Paradigm</label>
+              <select id="architectureType" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                <option value="agentic-mcp">Multi-Agent Swarm with MCP &amp; LangGraph</option>
+                <option value="hybrid-rag">Enterprise Hybrid RAG (Dense + BM25 + Graph)</option>
+                <option value="tool-calling">Autonomous Tool-Calling Agent with Memory</option>
+                <option value="local-slm">Air-Gapped Local SLM (Ollama/vLLM) with Egress Lock</option>
+              </select>
+            </div>
+            <div>
+              <label for="deploymentEnv" class="block text-xs font-semibold text-slate-300 mb-1.5">Target Deployment Environment</label>
+              <select id="deploymentEnv" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                <option value="airgap">Air-Gapped Private VPC (Zero Internet Egress)</option>
+                <option value="eks-vpc">Dedicated AWS EKS in Customer VPC</option>
+                <option value="openshift">On-Premises Red Hat OpenShift Cluster</option>
+                <option value="hybrid">Hybrid Cloud with Private Transit Gateway</option>
+              </select>
+            </div>
+            <div>
+              <label for="complianceStandard" class="block text-xs font-semibold text-slate-300 mb-1.5">Security &amp; Compliance Gate</label>
+              <select id="complianceStandard" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                <option value="hipaa">HIPAA + SOC2 Type II + Presidio PII Scrubbing</option>
+                <option value="pci-dss">PCI-DSS + Tokenization + Secret Isolation</option>
+                <option value="fedramp">FedRAMP High + FIPS 140-3 Cryptography</option>
+                <option value="iso27001">ISO 27001 + OWASP Top 10 for LLMs</option>
+              </select>
+            </div>
+            <div>
+              <label for="evalFramework" class="block text-xs font-semibold text-slate-300 mb-1.5">Production Evaluation Harness</label>
+              <select id="evalFramework" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                <option value="ragas">Ragas Automated Evals (Faithfulness &amp; Relevancy)</option>
+                <option value="deepeval">DeepEval + Pytest CI/CD Regression Suite</option>
+                <option value="arize">Arize Phoenix + OpenInference Tracing</option>
+              </select>
+            </div>
+            <div class="pt-2">
+              <button type="button" id="btn-recalculate" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-900/30">
+                <span>🔄 Recalculate FDE Delivery Metrics</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- SRE & Client FinOps Impact Card -->
+        <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-emerald-900/40 rounded-xl p-5 shadow-xl">
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="text-lg">💼</span>
+            <h3 class="text-sm font-bold text-white tracking-tight">FDE Client Value Engineering</h3>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-3">
+            Forward Deployed Engineers reduce enterprise AI abandonment from 85% to under 4% by embedding directly with client teams, deploying into existing security perimeters, and proving verifiable ROI before day 30.
+          </p>
+          <div class="space-y-1.5 text-[11px] font-mono text-emerald-400">
+            <div class="flex justify-between"><span>Speed-to-Production:</span><span>14 Days (vs 6 Mos)</span></div>
+            <div class="flex justify-between"><span>CISO Sign-Off Rate:</span><span>100% First-Pass</span></div>
+            <div class="flex justify-between"><span>Client SLA Guarantee:</span><span>99.5% Uptime</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Code & Simulator Column -->
+      <div class="lg:col-span-8 space-y-6">
+        <!-- Tabbed Viewport -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl flex flex-col">
+          <div class="bg-slate-950 border-b border-slate-800 px-4 pt-2 flex items-center justify-between">
+            <div class="tabs-scrollable">
+              <button class="tab-btn active" data-tab="python"><span>🐍</span> <span>Python Agent</span></button>
+              <button class="tab-btn" data-tab="typescript"><span>⚡</span> <span>Client SDK</span></button>
+              <button class="tab-btn" data-tab="manifest"><span>☸️</span> <span>Kubernetes Helm</span></button>
+              <button class="tab-btn" data-tab="compose"><span>🐳</span> <span>Docker Compose</span></button>
+              <button class="tab-btn" data-tab="guardrails"><span>🛡️</span> <span>OWASP Shield</span></button>
+              <button class="tab-btn" data-tab="evals"><span>📊</span> <span>Evals Harness</span></button>
+              <button class="tab-btn" data-tab="sow"><span>📜</span> <span>Client SOW</span></button>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="btn-copy-code" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition">Copy</button>
+              <button id="btn-download-code" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition">Download</button>
+            </div>
+          </div>
+          <div class="p-4 bg-slate-950 overflow-x-auto min-h-[380px]">
+            <pre class="font-mono text-xs text-slate-300 leading-relaxed"><code id="codeOutput">// Compiling Forward Deployed Engineer specifications...</code></pre>
+          </div>
+        </div>
+
+        <!-- Interactive Terminal Simulator -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 font-mono text-xs shadow-xl">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+              <span class="text-slate-400 text-[11px] ml-2 font-sans font-medium">Forward Deployed Engineering Terminal Emulator</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-500">
+              <span>Quick Actions:</span>
+              <button class="terminal-quick-btn hover:text-cyan-400 transition" data-cmd="fde client-discover">fde discover</button>
+              <span>•</span>
+              <button class="terminal-quick-btn hover:text-cyan-400 transition" data-cmd="fde design-architecture">fde design</button>
+              <span>•</span>
+              <button class="terminal-quick-btn hover:text-cyan-400 transition" data-cmd="fde deploy-airgap">fde deploy</button>
+              <span>•</span>
+              <button class="terminal-quick-btn hover:text-cyan-400 transition text-amber-300" data-cmd="fde eval-run">fde eval</button>
+              <span>•</span>
+              <button class="terminal-quick-btn hover:text-cyan-400 transition" data-cmd="fde generate-sow">fde sow</button>
+            </div>
+          </div>
+          <div id="terminal-viewport" class="text-slate-300 space-y-1 max-h-[160px] overflow-y-auto mb-2 text-[11px]">
+            <div class="text-slate-500">$ # FDE terminal session ready. Enter command or click above.</div>
+          </div>
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-800/80">
+            <span class="text-emerald-400 font-bold">$</span>
+            <input type="text" id="terminal-input" class="bg-transparent border-none text-slate-200 outline-none w-full text-xs" placeholder="Type a command (e.g. fde deploy-airgap) and press Enter..." />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Hands-On Interactive Embedded Labs -->
+    <section class="mb-14">
+      <div class="border-t border-slate-800 pt-8 mb-6 flex items-center justify-between">
+        <div>
+          <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Laboratory Modules</span>
+          <h2 class="text-2xl font-bold text-white mt-1">Industry-Ready FDE Practical Labs</h2>
+          <p class="text-slate-400 text-xs mt-1">Five hands-on simulations replicating real-world enterprise customer deployments.</p>
+        </div>
+        <span class="text-xs font-mono px-3 py-1 bg-cyan-950 border border-cyan-800 rounded-full text-cyan-300">5 Guided Drills</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Lab 1 -->
+        <div class="lab-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-cyan-400">LAB 01</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Discovery</span>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Customer Problem Framing</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Convert messy executive requests into an air-tight technical specification with measurable business ROI and technical constraints.
+          </p>
+          <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-[11px] font-mono text-slate-300 mb-4">
+            <div class="text-slate-500"># Input: "Our analysts take 3 hours per claim"</div>
+            <div class="text-emerald-400">✔ Output: SLA &lt; 90s, PII-scrubbed RAG with Postgres audit</div>
+          </div>
+          <button onclick="document.getElementById('terminal-input').value='fde client-discover'; document.querySelector('.terminal-quick-btn[data-cmd=\'fde client-discover\']').click();" class="w-full text-center text-xs py-1.5 px-3 rounded bg-slate-800 hover:bg-cyan-600 hover:text-white transition font-medium">
+            Run Discovery Drill →
+          </button>
+        </div>
+
+        <!-- Lab 2 -->
+        <div class="lab-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-indigo-400">LAB 02</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Agent Architecture</span>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Enterprise Agentic MCP Swarm</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Design multi-agent tool swarms using Anthropic Model Context Protocol (MCP) to safely query client databases and ERP backends.
+          </p>
+          <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-[11px] font-mono text-slate-300 mb-4">
+            <div class="text-slate-500"># MCP Bridge: JSON-RPC 2.0 over SSE</div>
+            <div class="text-indigo-400">✔ Zero static credentials stored in agent prompts</div>
+          </div>
+          <button onclick="document.getElementById('terminal-input').value='fde design-architecture'; document.querySelector('.terminal-quick-btn[data-cmd=\'fde design-architecture\']').click();" class="w-full text-center text-xs py-1.5 px-3 rounded bg-slate-800 hover:bg-indigo-600 hover:text-white transition font-medium">
+            Run Agentic Design Drill →
+          </button>
+        </div>
+
+        <!-- Lab 3 -->
+        <div class="lab-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-emerald-400">LAB 03</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Deployment</span>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Air-Gapped Private VPC Sandbox</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Package and deploy containerized AI systems into zero-egress Kubernetes clusters using Helm, vLLM local weights, and private registries.
+          </p>
+          <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-[11px] font-mono text-slate-300 mb-4">
+            <div class="text-slate-500"># Air-Gap Check: Deny 0.0.0.0/0 egress</div>
+            <div class="text-emerald-400">✔ 100% internal cluster communication verified</div>
+          </div>
+          <button onclick="document.getElementById('terminal-input').value='fde deploy-airgap'; document.querySelector('.terminal-quick-btn[data-cmd=\'fde deploy-airgap\']').click();" class="w-full text-center text-xs py-1.5 px-3 rounded bg-slate-800 hover:bg-emerald-600 hover:text-white transition font-medium">
+            Run Air-Gap Deploy Drill →
+          </button>
+        </div>
+
+        <!-- Lab 4 -->
+        <div class="lab-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-rose-400">LAB 04</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Security &amp; Safety</span>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">OWASP Guardrails &amp; PII Scrub</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Intercept prompt injections, redact patient/customer PII with local Presidio models, and enforce strict execution sandboxing.
+          </p>
+          <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-[11px] font-mono text-slate-300 mb-4">
+            <div class="text-slate-500"># Threat Vector: LLM01 Prompt Injection</div>
+            <div class="text-rose-400">✔ Sub-reflex blocker terminates request in &lt;4ms</div>
+          </div>
+          <button onclick="document.querySelectorAll('.tab-btn[data-tab=\'guardrails\']')[0].click();" class="w-full text-center text-xs py-1.5 px-3 rounded bg-slate-800 hover:bg-rose-600 hover:text-white transition font-medium">
+            Inspect Guardrails Code →
+          </button>
+        </div>
+
+        <!-- Lab 5 -->
+        <div class="lab-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-purple-400">LAB 05</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Evals &amp; SLA</span>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Customer Acceptance Testing (CAT)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Build and execute synthetic evaluation test suites with Ragas and DeepEval, proving faithfulness &gt; 95% and P99 latency &lt; 2s.
+          </p>
+          <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-[11px] font-mono text-slate-300 mb-4">
+            <div class="text-slate-500"># Acceptance Gate: 100 Golden Scenarios</div>
+            <div class="text-purple-400">✔ Faithfulness: 96.4% | Hallucination: 0.8%</div>
+          </div>
+          <button onclick="document.getElementById('terminal-input').value='fde eval-run'; document.querySelector('.terminal-quick-btn[data-cmd=\'fde eval-run\']').click();" class="w-full text-center text-xs py-1.5 px-3 rounded bg-slate-800 hover:bg-purple-600 hover:text-white transition font-medium">
+            Run Acceptance Evals →
+          </button>
+        </div>
+
+        <!-- Lab 6: Full SOW & Handover -->
+        <div class="lab-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-amber-400">LAB 06</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Production Handover</span>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">SOW &amp; Day-2 Client Handover</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Craft enterprise Statements of Work (SOW), Architecture Decision Records (ADRs), and train client engineering teams for seamless Day-2 ops.
+          </p>
+          <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-[11px] font-mono text-slate-300 mb-4">
+            <div class="text-slate-500"># Delivery: 5-Phase Deployment Lifecycle</div>
+            <div class="text-amber-400">✔ Full runbook and Prometheus alerts delivered</div>
+          </div>
+          <button onclick="document.querySelectorAll('.tab-btn[data-tab=\'sow\']')[0].click();" class="w-full text-center text-xs py-1.5 px-3 rounded bg-slate-800 hover:bg-amber-600 hover:text-white transition font-medium">
+            Inspect SOW &amp; Runbook →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Embedded Architecture Flow Diagram -->
+    <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl mb-12">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Architectural Blueprint</span>
+          <h3 class="text-lg font-bold text-white mt-1">End-to-End Forward Deployed Engineer Lifecycle</h3>
+        </div>
+        <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 border border-cyan-800/60 px-2.5 py-1 rounded">
+          Enterprise Engagement Loop
+        </span>
+      </div>
+      
+      <!-- Visual Flow SVG -->
+      <div class="rounded-lg overflow-hidden border border-slate-800 bg-slate-950 p-6 flex flex-col items-center justify-center">
+        <svg viewBox="0 0 1000 260" class="w-full max-w-4xl h-auto" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fdeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#38bdf8"/>
+              <stop offset="50%" stop-color="#818cf8"/>
+              <stop offset="100%" stop-color="#34d399"/>
+            </linearGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- Stage 1: Discovery -->
+          <g transform="translate(30, 40)">
+            <rect width="160" height="180" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="80" y="32" font-family="'Outfit', sans-serif" font-size="12" font-weight="700" fill="#38bdf8" text-anchor="middle">PHASE 01</text>
+            <text x="80" y="55" font-family="'Outfit', sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Discovery &amp; Value</text>
+            <path d="M 20 70 L 140 70" stroke="#334155" stroke-width="1"/>
+            <text x="25" y="95" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Business Problem</text>
+            <text x="25" y="115" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Value Mapping</text>
+            <text x="25" y="135" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Golden Data Set</text>
+            <text x="25" y="155" font-family="'JetBrains Mono', monospace" font-size="10" fill="#38bdf8">⏱ Week 1</text>
+          </g>
+
+          <!-- Connector 1 -->
+          <path d="M 195 130 L 225 130" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+
+          <!-- Stage 2: Architecture -->
+          <g transform="translate(230, 40)">
+            <rect width="160" height="180" rx="12" fill="#0f172a" stroke="#818cf8" stroke-width="1.5"/>
+            <text x="80" y="32" font-family="'Outfit', sans-serif" font-size="12" font-weight="700" fill="#818cf8" text-anchor="middle">PHASE 02</text>
+            <text x="80" y="55" font-family="'Outfit', sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Agent Architecture</text>
+            <path d="M 20 70 L 140 70" stroke="#334155" stroke-width="1"/>
+            <text x="25" y="95" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• LangGraph Swarm</text>
+            <text x="25" y="115" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• MCP Protocol</text>
+            <text x="25" y="135" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Enterprise Tools</text>
+            <text x="25" y="155" font-family="'JetBrains Mono', monospace" font-size="10" fill="#818cf8">⏱ Week 2</text>
+          </g>
+
+          <!-- Connector 2 -->
+          <path d="M 395 130 L 425 130" stroke="#818cf8" stroke-width="2" stroke-dasharray="4,4"/>
+
+          <!-- Stage 3: Air-Gapped Deployment -->
+          <g transform="translate(430, 40)">
+            <rect width="160" height="180" rx="12" fill="#0f172a" stroke="#ec4899" stroke-width="1.5"/>
+            <text x="80" y="32" font-family="'Outfit', sans-serif" font-size="12" font-weight="700" fill="#ec4899" text-anchor="middle">PHASE 03</text>
+            <text x="80" y="55" font-family="'Outfit', sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Air-Gapped VPC</text>
+            <path d="M 20 70 L 140 70" stroke="#334155" stroke-width="1"/>
+            <text x="25" y="95" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Private K8s / Helm</text>
+            <text x="25" y="115" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• vLLM Local Serving</text>
+            <text x="25" y="135" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Zero-Egress NetPol</text>
+            <text x="25" y="155" font-family="'JetBrains Mono', monospace" font-size="10" fill="#ec4899">⏱ Week 3</text>
+          </g>
+
+          <!-- Connector 3 -->
+          <path d="M 595 130 L 625 130" stroke="#ec4899" stroke-width="2" stroke-dasharray="4,4"/>
+
+          <!-- Stage 4: Evals & Safety -->
+          <g transform="translate(630, 40)">
+            <rect width="160" height="180" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+            <text x="80" y="32" font-family="'Outfit', sans-serif" font-size="12" font-weight="700" fill="#f59e0b" text-anchor="middle">PHASE 04</text>
+            <text x="80" y="55" font-family="'Outfit', sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Evals &amp; Safety</text>
+            <path d="M 20 70 L 140 70" stroke="#334155" stroke-width="1"/>
+            <text x="25" y="95" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Ragas Benchmark</text>
+            <text x="25" y="115" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• OWASP LLM01-10</text>
+            <text x="25" y="135" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Presidio PII Scrub</text>
+            <text x="25" y="155" font-family="'JetBrains Mono', monospace" font-size="10" fill="#f59e0b">⏱ Week 4</text>
+          </g>
+
+          <!-- Connector 4 -->
+          <path d="M 795 130 L 825 130" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4"/>
+
+          <!-- Stage 5: Handover -->
+          <g transform="translate(830, 40)">
+            <rect width="140" height="180" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+            <text x="70" y="32" font-family="'Outfit', sans-serif" font-size="12" font-weight="700" fill="#10b981" text-anchor="middle">PHASE 05</text>
+            <text x="70" y="55" font-family="'Outfit', sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Day-2 Handover</text>
+            <path d="M 20 70 L 120 70" stroke="#334155" stroke-width="1"/>
+            <text x="25" y="95" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Runbooks &amp; SOW</text>
+            <text x="25" y="115" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Team Enablement</text>
+            <text x="25" y="135" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94a3b8">• Production SLA</text>
+            <text x="25" y="155" font-family="'JetBrains Mono', monospace" font-size="10" fill="#10b981">✔ Live in Prod</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-800 bg-[#0B0F19] py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>&copy; 2026 Talari Pradeep. Forward Deployed Engineering Architecture Platform.</div>
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="../../learning/" class="hover:text-cyan-400 transition">Learning Journey</a>
+        <a href="../../studios/learn/" class="hover:text-cyan-400 transition">Studios Learn Hub</a>
+        <a href="../../interview/" class="hover:text-cyan-400 transition">Interview Vault</a>
+        <a href="../../plugins/" class="hover:text-cyan-400 transition">Claude Plugins</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/src/js/core-tool.js"></script>
+  <script type="module" src="/src/js/generators/forward-deployed-engineer-gen.js"></script>
+  <script src="../shared-tools.js"></script>
+</body>
+</html>

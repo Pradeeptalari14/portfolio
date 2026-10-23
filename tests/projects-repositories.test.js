@@ -61,11 +61,11 @@ describe('Projects Showcase & 341 Open Source Repositories Explorer', () => {
     expect(gridContainer).toBeTruthy();
   });
 
-  it('should verify tools.json contains exactly 347 tools with valid repository mappings', () => {
+  it('should verify tools.json contains exactly 348 tools with valid repository mappings', () => {
     const toolsPath = path.resolve(__dirname, '../tools/tools.json');
     const tools = JSON.parse(fs.readFileSync(toolsPath, 'utf8'));
 
-    expect(tools.length).toBe(347);
+    expect(tools.length).toBe(348);
     tools.forEach(t => {
       expect(t.title).toBeTruthy();
       expect(t.repository).toBeTruthy();

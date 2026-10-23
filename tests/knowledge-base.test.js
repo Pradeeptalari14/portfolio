@@ -25,13 +25,13 @@ describe('Engineering Knowledge Base (knowledge/index.html)', () => {
     expect(metaDesc.getAttribute('content')).toContain('runbooks');
   });
 
-  it('should render all 14 production field guides and runbooks in the grid', () => {
+  it('should render all 15 production field guides and runbooks in the grid', () => {
     const { document } = createTestDom();
     const cards = document.querySelectorAll('.article-card');
-    expect(cards.length).toBe(14);
+    expect(cards.length).toBe(15);
 
     const stats = document.getElementById('kbResultCount');
-    expect(stats.textContent).toContain('14');
+    expect(stats.textContent).toContain('15');
   });
 
   it('should verify every article card has structured metadata, runbook points, and action links', () => {
@@ -77,7 +77,7 @@ describe('Engineering Knowledge Base (knowledge/index.html)', () => {
     expect(visibleCards[0].textContent).toContain('PostgreSQL');
 
     const stats = document.getElementById('kbResultCount');
-    expect(stats.textContent).toContain('1 of 14');
+    expect(stats.textContent).toContain('1 of 15');
   });
 
   it('should filter cards via topic category filter chips', () => {
@@ -92,14 +92,14 @@ describe('Engineering Knowledge Base (knowledge/index.html)', () => {
 
     const cards = Array.from(document.querySelectorAll('.article-card'));
     const visibleCards = cards.filter(c => c.style.display !== 'none');
-    expect(visibleCards.length).toBe(3);
+    expect(visibleCards.length).toBe(4);
 
     // Switch back to All
     const allChip = chipsRow.querySelector('[data-cat="all"]');
     allChip.click();
 
     const allVisible = cards.filter(c => c.style.display !== 'none');
-    expect(allVisible.length).toBe(14);
+    expect(allVisible.length).toBe(15);
   });
 
   it('should display an empty state when search finds no matching field guides', () => {
@@ -121,6 +121,6 @@ describe('Engineering Knowledge Base (knowledge/index.html)', () => {
     expect(searchInput.value).toBe('');
     const cards = Array.from(document.querySelectorAll('.article-card'));
     const visibleCards = cards.filter(c => c.style.display !== 'none');
-    expect(visibleCards.length).toBe(14);
+    expect(visibleCards.length).toBe(15);
   });
 });

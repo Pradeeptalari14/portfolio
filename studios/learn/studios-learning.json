@@ -9714,5 +9714,33 @@
     "coreConcept": "Idempotent infrastructure automation with pre-commit policy enforcement and automated verification.",
     "prerequisite": "Bash scripting, Linux systemd & YAML declarations",
     "realWorldImpact": "Eliminates manual toil and prevents configuration drift across enterprise production environments."
+  },
+  {
+    "id": "forward-deployed-engineer",
+    "title": "Forward Deployed Engineer (FDE) AI Systems Studio",
+    "desc": "Master Forward Deployed Engineering: Bridge raw AI models and enterprise production. Discover client business problems, architect agentic MCP swarms, deploy into air-gapped private VPCs, and enforce automated Ragas evals and safety guardrails.",
+    "category": "ai",
+    "icon": "🚀",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "fde_agent_pipeline.py",
+    "link": "forward-deployed-engineer/",
+    "repository": "Pradeeptalari14/tp-fde-enterprise-deployer",
+    "repo": "Pradeeptalari14/tp-fde-enterprise-deployer",
+    "domain": "Customer AI & Air-Gapped K8s",
+    "skillLevel": "Level 3 (Distributed & Compliance)",
+    "useCase": "Bridging raw AI capabilities and enterprise client requirements: discovering real operational pain points, designing agentic MCP swarms, deploying into air-gapped private VPCs, and establishing continuous evaluation feedback loops.",
+    "bestTreatment": "Deploy containerized agentic pipelines with local SLMs (vLLM/Ollama), zero-egress NetworkPolicies, Presidio PII redaction, automated Ragas acceptance benchmarks, and Day-2 SRE runbooks.",
+    "antiPattern": "Deploying uncontained Jupyter notebook prototypes directly into customer perimeters without security review, air-gap isolation, golden dataset benchmarks, or client team enablement.",
+    "realTimeDrill": "pytest -v evals/test_acceptance_evals.py --threshold-faithfulness 0.95 --verify-airgap",
+    "sreMetric": "14-Day Discovery-to-Production Cycle & 96.4% Evals Compliance",
+    "connectedPlugin": "forward-deployed-engineer",
+    "pluginName": "Forward Deployed AI Engineer",
+    "pluginInstall": "/plugin install pradeeptalari14/portfolio:plugins/forward-deployed-engineer",
+    "architectureFlow": "/tools/forward-deployed-engineer/",
+    "coreConcept": "Customer-centric AI systems engineering combining rapid problem discovery with air-gapped Kubernetes deployment, Presidio PII redaction, and automated Ragas evaluation gates.",
+    "prerequisite": "Python systems engineering, Kubernetes & Docker containerization, enterprise VPC networking, and LLM evaluation frameworks (Ragas).",
+    "realWorldImpact": "Accelerates customer production delivery from 6 months to 14 days while eliminating 100% of data exfiltration risks in air-gapped VPCs."
   }
 ]

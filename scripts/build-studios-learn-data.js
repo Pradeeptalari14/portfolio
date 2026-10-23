@@ -21,7 +21,10 @@ function deriveDomainAndLevel(tool) {
   let level = 'Level 2 (Scripting & Ops)';
 
   if (cat === 'ai') {
-    if (text.includes('kernel') || text.includes('quantum') || text.includes('tee') || text.includes('deepspeed') || text.includes('vllm') || text.includes('sglang') || text.includes('tensorrt') || text.includes('bitnet') || text.includes('speculative')) {
+    if (text.includes('forward deployed') || text.includes('fde')) {
+      domain = 'Customer AI & Air-Gapped K8s';
+      level = 'Level 3 (Distributed & Compliance)';
+    } else if (text.includes('kernel') || text.includes('quantum') || text.includes('tee') || text.includes('deepspeed') || text.includes('vllm') || text.includes('sglang') || text.includes('tensorrt') || text.includes('bitnet') || text.includes('speculative')) {
       domain = 'LLMOps & AI Runtime';
       level = 'Level 4 (Kernel & Deep AI)';
     } else if (text.includes('guardrail') || text.includes('security') || text.includes('redteaming') || text.includes('governance') || text.includes('aadhaar')) {
@@ -176,6 +179,12 @@ function generateLearningProfile(tool) {
     antiPattern = 'Assuming multi-zone architectures are resilient without ever simulating active network partition or database failovers.';
     realTimeDrill = 'kubectl apply -f network-latency-experiment.yaml && kubectl get chaos -n chaos-mesh';
     sreMetric = 'Validated RTO < 5m & Zero Cascading Network Deadlocks';
+  } else if (text.includes('forward deployed') || text.includes('fde')) {
+    useCase = `Bridging raw AI capabilities and enterprise client requirements: discovering real operational pain points, designing agentic MCP swarms, deploying into air-gapped private VPCs, and establishing continuous evaluation feedback loops.`;
+    bestTreatment = `Deploy containerized agentic pipelines with local SLMs (vLLM/Ollama), zero-egress NetworkPolicies, Presidio PII redaction, automated Ragas acceptance benchmarks, and Day-2 SRE runbooks.`;
+    antiPattern = `Deploying uncontained Jupyter notebook prototypes directly into customer perimeters without security review, air-gap isolation, golden dataset benchmarks, or client team enablement.`;
+    realTimeDrill = `pytest -v evals/test_acceptance_evals.py --threshold-faithfulness 0.95 --verify-airgap`;
+    sreMetric = `14-Day Discovery-to-Production Cycle & 96.4% Evals Compliance`;
   } else if (text.includes('rag') || text.includes('vector') || text.includes('qdrant') || text.includes('chroma') || text.includes('milvus') || text.includes('colpali') || text.includes('knowledge')) {
     useCase = `Mitigating hallucination, context drift, and retrieval latency in enterprise ${title} workloads over large multi-modal and structured knowledge bases.`;
     bestTreatment = `Implement hybrid dense-sparse retrieval (BM25 + pgvector/Qdrant cosine fusion) with Cross-Encoder reranking and semantic chunk windowing.`;
@@ -328,7 +337,10 @@ function derivePluginInfo(tool) {
   let pluginName = 'Platform Engineer';
 
   if (cat === 'ai') {
-    if (text.includes('agent') || text.includes('swarm') || text.includes('langgraph') || text.includes('autogen') || text.includes('crew') || text.includes('computer-use')) {
+    if (text.includes('forward deployed') || text.includes('fde')) {
+      pluginId = 'forward-deployed-engineer';
+      pluginName = 'Forward Deployed AI Engineer';
+    } else if (text.includes('agent') || text.includes('swarm') || text.includes('langgraph') || text.includes('autogen') || text.includes('crew') || text.includes('computer-use')) {
       pluginId = 'agent-engineer';
       pluginName = 'Autonomous Agent Engineer';
     } else if (text.includes('rag') || text.includes('vector') || text.includes('retriev') || text.includes('chunk') || text.includes('embed') || text.includes('search')) {
@@ -411,7 +423,9 @@ function deriveArchitectureFlow(tool) {
   const text = (tool.title + ' ' + tool.desc + ' ' + (tool.tag || '')).toLowerCase();
 
   if (cat === 'ai') {
-    if (text.includes('rag') || text.includes('vector') || text.includes('retriev') || text.includes('chunk')) {
+    if (text.includes('forward deployed') || text.includes('fde')) {
+      return '/tools/forward-deployed-engineer/';
+    } else if (text.includes('rag') || text.includes('vector') || text.includes('retriev') || text.includes('chunk')) {
       return '/studios/flow/?template=rag';
     } else if (text.includes('agent') || text.includes('swarm') || text.includes('langgraph')) {
       return '/studios/flow/?template=agents';
@@ -436,6 +450,7 @@ function deriveCoreConcept(tool) {
   const text = (tool.title + ' ' + tool.desc).toLowerCase();
 
   if (cat === 'ai') {
+    if (text.includes('forward deployed') || text.includes('fde')) return 'Customer-centric AI systems engineering combining rapid problem discovery with air-gapped Kubernetes deployment, Presidio PII redaction, and automated Ragas evaluation gates.';
     if (text.includes('vllm') || text.includes('pagedattention')) return 'Paged memory allocation eliminating KV cache fragmentation across continuous batching steps.';
     if (text.includes('rag') || text.includes('vector')) return 'Hybrid sparse-dense vector retrieval with reciprocal rank fusion (RRF) and neural cross-encoder re-ranking.';
     if (text.includes('agent') || text.includes('swarm')) return 'Deterministic StateGraph finite state machines with PostgreSQL checkpoints and bounded tool execution gates.';
@@ -464,6 +479,8 @@ function deriveCoreConcept(tool) {
 
 function derivePrerequisites(tool) {
   const cat = tool.category || '';
+  const text = (tool.title + ' ' + tool.desc).toLowerCase();
+  if (text.includes('forward deployed') || text.includes('fde')) return 'Python systems engineering, Kubernetes & Docker containerization, enterprise VPC networking, and LLM evaluation frameworks (Ragas).';
   if (cat === 'ai') return 'Python 3.10+, PyTorch basics & GPU tensor concepts';
   if (cat === 'observability') return 'Linux terminal, eBPF & Prometheus PromQL basics';
   if (cat === 'cloud') return 'AWS/Cloud CLI, Kubernetes manifests & Terraform basics';
@@ -476,6 +493,7 @@ function deriveRealWorldImpact(tool) {
   const cat = tool.category || '';
   const text = (tool.title + ' ' + tool.desc).toLowerCase();
   if (cat === 'ai') {
+    if (text.includes('forward deployed') || text.includes('fde')) return 'Accelerates customer production delivery from 6 months to 14 days while eliminating 100% of data exfiltration risks in air-gapped VPCs.';
     if (text.includes('vllm') || text.includes('inference')) return 'Enables 2.8x higher concurrent request throughput while reducing GPU VRAM allocation costs by 40%.';
     if (text.includes('rag')) return 'Boosts contextual retrieval accuracy to 94%+ while preventing LLM hallucinations on enterprise data.';
     if (text.includes('agent')) return 'Guarantees 100% deterministic state recovery and stops rogue tool execution cascades.';

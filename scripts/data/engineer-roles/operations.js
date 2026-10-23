@@ -656,5 +656,102 @@ module.exports = [
         output: 'A gate table with a recommended decision and the open conditions.'
       }
     ]
+  },
+  {
+    id: 'forward-deployed-engineer',
+    plugin: 'forward-deployed-engineer',
+    title: 'Forward Deployed AI Engineer',
+    group: 'Operations & Delivery',
+    icon: '🚀',
+    summary: 'Bridging client discovery, agentic AI architecture, air-gapped private VPC deployments, and continuous acceptance evals.',
+    tools: ['LangGraph', 'Model Context Protocol (MCP)', 'Kubernetes Helm', 'vLLM', 'Presidio', 'Ragas', 'DeepEval'],
+    studioLink: '/tools/forward-deployed-engineer/',
+    studioName: 'Forward Deployed AI Systems Studio',
+    learnLink: '/studios/learn/?studio=forward-deployed-engineer',
+    learnTopic: 'Customer Problem Framing & Air-Gapped K8s Deploy',
+    flowLink: '/tools/forward-deployed-engineer/',
+    flowName: 'FDE Enterprise Engagement Flow',
+    projectRepo: 'Pradeeptalari14/tp-fde-enterprise-deployer',
+    realWorldScenario: 'Enterprise Clinical Decision System: Embedding with hospital IT and CISO to frame clinical document search, deploying containerized MCP agent swarms into zero-egress private VPC, and attesting 96.4% faithfulness via Ragas golden sets.',
+    businessGain: 'Shrinks client deployment cycle from 6 months to 14 days and guarantees zero data leakage outside customer perimeter.',
+    skills: [
+      {
+        name: 'client-engagement',
+        description: "Frame vague customer complaints into deterministic architectural requirements & golden datasets. Trigger with 'client discovery', 'FDE', 'customer deployment', 'enterprise AI scoping'.",
+        when: ['Customer requirements are ambiguous', 'Scoping a new AI deployment for an enterprise client'],
+        steps: [
+          'Interview front-line operators and map the current value stream and latency bottlenecks.',
+          'Curate a Golden Dataset of 50–100 realistic customer queries with verified expected outputs.',
+          'Define contractually clear acceptance criteria: Faithfulness >= 95%, Hallucination <= 1%, P99 <= 2000ms.',
+          'Produce an Architecture Decision Record (ADR) and formal Statement of Work (SOW).'
+        ],
+        checks: [
+          'Golden dataset has human-verified ground truth',
+          'Client security constraints (air-gap, PII) are documented',
+          'SLA targets are measurable via automated tests'
+        ],
+        output: [
+          '## Client Problem Framing: [Client Name]',
+          '| Metric | Baseline | Target SLA | Validation Engine |',
+          '|---|---|---|---|',
+          '| Latency P99 | 12,000ms | < 2,000ms | Prometheus probe |',
+          '| Faithfulness | 72% | >= 95.0% | Ragas Golden Set |'
+        ],
+        pitfalls: [
+          'Relying on executive opinions without observing real frontline operator workflows.',
+          'Deploying without a baseline evaluation benchmark.'
+        ]
+      },
+      {
+        name: 'airgapped-deployment',
+        description: "Architect and package zero-egress containerized AI systems into private enterprise VPCs. Trigger with 'air-gapped', 'private VPC', 'on-prem AI', 'no internet egress'.",
+        when: ['Client forbids public LLM APIs', 'Deploying AI workloads into private enterprise VPCs or GovCloud'],
+        steps: [
+          'Pre-package all model weights (vLLM/Ollama) and base container images into internal registries.',
+          'Apply Kubernetes NetworkPolicies denying all 0.0.0.0/0 external internet egress.',
+          'Run container pods with non-root security contexts (runAsUser: 10001, readOnlyRootFilesystem: true).',
+          'Enforce Presidio PII redaction on all inbound requests before dispatching to local model workers.'
+        ],
+        checks: [
+          'Zero outbound network sockets permitted by NetworkPolicy',
+          'All container images pinned to internal SHA256 digests',
+          'Non-root user execution attested'
+        ],
+        output: [
+          '## Air-Gapped Deployment Plan: [Client VPC]',
+          '| Component | Namespace | Image Digest | Egress Rules |',
+          '|---|---|---|---|',
+          '| Agent Worker | fde-ai-system | internal-registry/fde:v1 | Internal DB & vLLM only |'
+        ],
+        pitfalls: [
+          'Assuming public HuggingFace hub access is available at runtime.',
+          'Missing pod anti-affinity across availability zones.'
+        ]
+      }
+    ],
+    commands: [
+      {
+        name: 'client-discovery',
+        description: 'Produce a structured client problem statement, value stream map and acceptance SLA',
+        hint: '<client name, industry sector and current manual workflow>',
+        steps: [
+          'Diagnose operational bottlenecks and calculate human labor cost.',
+          'Structure a 100-scenario golden evaluation benchmark.',
+          'Draft the 5-phase delivery timeline and acceptance gates.'
+        ],
+        output: 'A comprehensive FDE client discovery brief and SOW milestone matrix.'
+      },
+      {
+        name: 'deploy-agent',
+        description: 'Scaffold air-gapped Kubernetes Helm values, NetworkPolicies, and Docker Compose sandbox',
+        hint: '<target namespace, industry compliance mode and model runtime>',
+        steps: [
+          'Generate non-root Kubernetes deployment manifests.',
+          'Configure zero-egress NetworkPolicies and resource limits.',
+          'Build client staging Docker Compose sandbox with local vLLM serving.'
+        ],
+        output: 'Hardened Kubernetes Helm values and Docker Compose manifest.'
+      }
+    ]
   }
 ];

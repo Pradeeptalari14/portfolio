@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Talari Pradeep Platform Route Registry",
-    "generatedAt": "2026-10-23T06:19:13.615Z",
-    "totalRoutes": 369,
+    "generatedAt": "2026-10-23T07:02:44.469Z",
+    "totalRoutes": 370,
     "testPassRate": "100% (549/549)",
     "testSuites": 119
   },
@@ -1893,6 +1893,17 @@
       "repository": "Pradeeptalari14/tp-forest-sensing-agent",
       "hasLearn": true,
       "flowLink": "/studios/flow/?studio=forest-sensing-agent"
+    },
+    {
+      "id": "forward-deployed-engineer",
+      "path": "/tools/forward-deployed-engineer/",
+      "filePath": "tools/forward-deployed-engineer/index.html",
+      "learnPath": null,
+      "title": "Forward Deployed Engineer (FDE) AI Systems Studio",
+      "category": "ai",
+      "repository": "Pradeeptalari14/tp-fde-enterprise-deployer",
+      "hasLearn": false,
+      "flowLink": "/studios/flow/?studio=forward-deployed-engineer"
     },
     {
       "id": "gcp-anthos",

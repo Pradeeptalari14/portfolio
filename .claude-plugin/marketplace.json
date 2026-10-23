@@ -208,6 +208,17 @@
       "homepage": "https://talaripradeep.info/plugins/#plugin-release-engineer"
     },
     {
+      "name": "forward-deployed-engineer",
+      "source": "./plugins/engineers/forward-deployed-engineer",
+      "description": "Forward Deployed AI Engineer: Bridging client discovery, agentic AI architecture, air-gapped private VPC deployments, and continuous acceptance evals.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-forward-deployed-engineer"
+    },
+    {
       "name": "devsecops-engineer",
       "source": "./plugins/engineers/devsecops-engineer",
       "description": "DevSecOps Engineer: Shift-left scanning, SBOMs, signed artifacts, SLSA provenance and runtime enforcement.",

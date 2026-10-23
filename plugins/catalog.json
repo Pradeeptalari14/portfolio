@@ -2,9 +2,9 @@
   "marketplace": "talari-engineering-plugins",
   "repository": "Pradeeptalari14/portfolio",
   "totals": {
-    "plugins": 41,
-    "skills": 229,
-    "commands": 53
+    "plugins": 42,
+    "skills": 231,
+    "commands": 55
   },
   "plugins": [
     {
@@ -942,6 +942,60 @@
       "projectRepo": "Pradeeptalari14/tp-gitlab",
       "realWorldScenario": "Zero-Downtime Canary Rollout: Routes 5% of production traffic to new microservice version; automatically rolls back when HTTP 5xx error rate exceeds 0.2%.",
       "businessGain": "Zero customer-impacted regressions; automated rollbacks complete in under 20 seconds."
+    },
+    {
+      "id": "forward-deployed-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/forward-deployed-engineer",
+      "version": "1.0.0",
+      "description": "Forward Deployed AI Engineer: Bridging client discovery, agentic AI architecture, air-gapped private VPC deployments, and continuous acceptance evals.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "airgapped-deployment",
+          "description": "Architect and package zero-egress containerized AI systems into private enterprise VPCs. Trigger with 'air-gapped', 'private VPC', 'on-prem AI', 'no internet egress'.",
+          "hint": ""
+        },
+        {
+          "name": "client-engagement",
+          "description": "Frame vague customer complaints into deterministic architectural requirements & golden datasets. Trigger with 'client discovery', 'FDE', 'customer deployment', 'enterprise AI scoping'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "client-discovery",
+          "description": "Produce a structured client problem statement, value stream map and acceptance SLA",
+          "hint": "<client name, industry sector and current manual workflow>"
+        },
+        {
+          "name": "deploy-agent",
+          "description": "Scaffold air-gapped Kubernetes Helm values, NetworkPolicies, and Docker Compose sandbox",
+          "hint": "<target namespace, industry compliance mode and model runtime>"
+        }
+      ],
+      "title": "Forward Deployed AI Engineer",
+      "icon": "🚀",
+      "group": "Operations & Delivery",
+      "tools": [
+        "LangGraph",
+        "Model Context Protocol (MCP)",
+        "Kubernetes Helm",
+        "vLLM",
+        "Presidio",
+        "Ragas",
+        "DeepEval"
+      ],
+      "summary": "Bridging client discovery, agentic AI architecture, air-gapped private VPC deployments, and continuous acceptance evals.",
+      "studioLink": "/tools/forward-deployed-engineer/",
+      "studioName": "Forward Deployed AI Systems Studio",
+      "learnLink": "/studios/learn/?studio=forward-deployed-engineer",
+      "learnTopic": "Customer Problem Framing & Air-Gapped K8s Deploy",
+      "flowLink": "/tools/forward-deployed-engineer/",
+      "flowName": "FDE Enterprise Engagement Flow",
+      "projectRepo": "Pradeeptalari14/tp-fde-enterprise-deployer",
+      "realWorldScenario": "Enterprise Clinical Decision System: Embedding with hospital IT and CISO to frame clinical document search, deploying containerized MCP agent swarms into zero-egress private VPC, and attesting 96.4% faithfulness via Ragas golden sets.",
+      "businessGain": "Shrinks client deployment cycle from 6 months to 14 days and guarantees zero data leakage outside customer perimeter."
     },
     {
       "id": "devsecops-engineer",

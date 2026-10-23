@@ -8275,6 +8275,146 @@
             "explanation": "The CONCURRENTLY option tells PostgreSQL to build the index in multiple passes without acquiring an AccessExclusiveLock, allowing reads and writes to continue unimpeded."
           }
         ]
+      },
+      "forward_deployed_engineer": {
+        "title": "Forward Deployed AI Engineering & Enterprise Systems",
+        "prereqs": "Python systems engineering, LangGraph & MCP protocols, air-gapped Kubernetes networking, and automated Ragas evaluation benchmarks",
+        "related": "Agentic Swarms & MCP Protocols, vLLM Distributed Serving, Enterprise RAG Retrieval",
+        "advanced": "Zero-Egress Private VPC Air-Gapping, Presidio PII Streaming Redaction, Golden Dataset SLA Validation",
+        "yield": "9.9 / 10",
+        "purpose": {
+          "solve": "Bridges the gap between cutting-edge AI models and strict enterprise client perimeters, transforming messy stakeholder business complaints into deterministic, air-gapped, production-grade agentic systems.",
+          "why": "Over 85% of enterprise AI projects stall in prototype phase because notebooks cannot pass CISO security audits, lack air-gapped egress controls, and have no quantitative faithfulness benchmarks.",
+          "before": "Sales engineers building brittle Jupyter demo notebooks, throwing raw uncontained code over the fence to client IT, resulting in security vetoes and failed deployments.",
+          "limits": "Requires deep full-stack mastery across product discovery, client stakeholder alignment, container networking, and model evaluation; high context-switching between executive briefing and kernel-level debugging.",
+          "alternatives": "Traditional management consulting (slides only, no code), pure software engineering (code only, no client alignment), or standard sales engineering (demos only, no production ownership).",
+          "examples": "Talari Pradeep's Enterprise FDE Deployer, Palantir Forward Deployed Engineering, OpenAI Enterprise Solutions Architecture."
+        },
+        "tips": "<strong>Staff FDE Tip:</strong> Never deploy without a Golden Evaluation Dataset. Before writing the first line of agent code, curate 50–100 genuine historical inputs and partner with client domain experts to establish expected outputs.",
+        "flow": {
+          "learning": "Discovery & Value Stream Mapping ➜ Golden Dataset Curation ➜ LangGraph & MCP Agentic Design ➜ Air-Gapped Private VPC Helm Deploy ➜ Automated Ragas Evals Gate ➜ Day-2 Handover",
+          "execution": "Client Operator Query ➜ Presidio PII Redaction ➜ MCP Tool Gateway ➜ Air-Gapped Local SLM (vLLM) ➜ Ragas Hallucination Verification ➜ Audited Response",
+          "repo": "Pradeeptalari14/tp-fde-enterprise-deployer ➜ core/pipeline.py ➜ deploy/helm/values.yaml ➜ evals/test_acceptance_evals.py"
+        },
+        "labs": {
+          "command": "pytest -v evals/test_acceptance_evals.py --threshold-faithfulness 0.95 --verify-airgap",
+          "syntax": "pytest -v [eval_suite] [flags]",
+          "args": "--threshold-faithfulness 0.95: Enforces contractually required Ragas faithfulness; --verify-airgap: Confirms zero external internet sockets were opened during test execution.",
+          "output": "100 passed, 0 failed. Faithfulness: 96.4%, Hallucination: 0.8%, P99: 1420ms. Status: PRODUCTION_APPROVED.",
+          "fail": "AssertionError: Faithfulness fell below 0.95 (0.912). Resolve by refining prompt context windowing and tuning vector retrieval top_k.",
+          "prod": "Hook the evaluation harness into the customer's CI/CD pull request pipeline so prompt and code regressions fail before deployment."
+        },
+        "archGaps": {
+          "mermaid": "graph TD\\n  Client[Enterprise User] --> Gateway[FDE API Gateway]\\n  Gateway --> Presidio[PII Redaction Shield]\\n  Presidio --> MCP[MCP Agent Swarm Router]\\n  MCP --> DB[(Private Database / ERP)]\\n  MCP --> LLM[Local Air-Gapped vLLM]\\n  LLM --> Evals[Automated Ragas Gate]\\n  Evals --> Audit[Ed25519 Signed Audit Log]\\n  Audit --> Client",
+          "spof": "Local vLLM worker GPU memory exhaustion (OOM) stalling customer requests; mitigate via PagedAttention and secondary fallback SLMs.",
+          "security": "Sensitive patient or customer PII leaked to logs or model weights; mitigate via local Presidio redaction and zero external egress.",
+          "scaling": "High concurrency during shift changes; mitigate with KEDA GPU queue-based autoscaling and prompt semantic caching.",
+          "monitoring": "Missing token latency and hallucination drift telemetry; mitigate with OpenTelemetry span baggage and automated Ragas daily probes.",
+          "backup": "Loss of client-specific vector database checkpoints; mitigate with automated volume snapshots and S3-compatible internal replication.",
+          "dr": "Complete private datacenter outage; mitigate with multi-region active-passive VPC peering and automated DNS failover."
+        },
+        "interview": [
+          {
+            "q": "How do you frame a messy, subjective client complaint into an engineering architecture spec?",
+            "intent": "Evaluates customer discovery, value stream mapping, business translation, and problem scoping capabilities.",
+            "red": "Jumping directly into prompt engineering or building a demo without establishing quantitative baseline metrics or golden datasets.",
+            "strong": "Map the current manual process end-to-end, identify exact bottleneck latency, and curate a 100-scenario Golden Dataset with domain experts.",
+            "expert": "Translate operational bottlenecks into contractually measurable SLAs (e.g. reducing cycle time from 3 hours to 90s, Faithfulness >= 95%). Establish an immutable golden benchmark dataset with client domain experts to establish a verifiable baseline before writing agent code.",
+            "leadership": "Align executive sponsors, compliance officers, and frontline operators on a shared definition of success. Balance immediate quick-win automation with a modular, air-gapped architecture that client SRE teams can easily maintain on Day 2.",
+            "coachTips": "FDEs are product thinkers first. Never jump to prompt engineering before establishing a verifiable Golden Dataset and quantifiable business ROI."
+          },
+          {
+            "q": "How do you architect an LLM agentic system for an enterprise client with strict air-gap compliance forbidding external internet access?",
+            "intent": "Tests air-gapped infrastructure design, private Kubernetes orchestration, and local SLM inference.",
+            "red": "Assuming standard cloud APIs (OpenAI/Anthropic) can be used or proposing naive uncontained Ollama setups.",
+            "strong": "Deploy vLLM on private Kubernetes GPU nodes, bundle pre-downloaded weights, and use local Qdrant vectors with strict zero-egress NetworkPolicies.",
+            "expert": "Architect a self-contained Kubernetes namespace with non-root security contexts (`runAsUser: 10001`, `readOnlyRootFilesystem: true`). Enforce Cilium eBPF NetworkPolicies blocking `0.0.0.0/0` egress, serving quantized open-weight models (Llama-3.1-8B/70B) via vLLM with PagedAttention, and streaming telemetry to internal Jaeger/Prometheus collectors.",
+            "leadership": "Present an exhaustive CISO attestation packet: image provenance with Cosign SLSA-3 signatures, CycloneDX SBOMs, zero external DNS socket verification, and Presidio in-line PII redaction.",
+            "coachTips": "Regulated clients judge FDEs by their understanding of the security perimeter. Show mastery over Kubernetes NetworkPolicies and offline model weights."
+          },
+          {
+            "q": "How do you handle a situation where a client CISO threatens to veto a production rollout over data exfiltration concerns?",
+            "intent": "Evaluates executive stakeholder negotiation, technical security diplomacy, and verifiable compliance attestation.",
+            "red": "Dismissing security concerns as bureaucracy or making unsubstantiated verbal promises without proof.",
+            "strong": "Demonstrate network isolation using firewall rules and show that all data stays in the private cloud VPC.",
+            "expert": "Provide verifiable cryptographic and network proof: demonstrate zero-egress Cilium NetworkPolicies with live eBPF socket monitoring, prove all inference executes on local GPU nodes with no external API keys, show automated Presidio PII scrubbing before memory persistence, and offer Ed25519-signed audit logs.",
+            "leadership": "Conduct a joint architectural review with the CISO team. Offer a sandboxed pilot with synthetic data, co-author the security compliance sign-off document, and establish automated security regression gates in their GitOps pipeline.",
+            "coachTips": "Never argue with a CISO using marketing claims. Provide deterministic network proofs, SBOMs, and eBPF socket logs."
+          },
+          {
+            "q": "How do you design and execute an automated evaluation harness to establish quantitative acceptance gates before client sign-off?",
+            "intent": "Assesses model evaluation methodologies, Ragas/DeepEval metrics, golden test set curation, and acceptance criteria.",
+            "red": "Relying on subjective 'vibe checks' or manual reviews rather than automated statistical benchmarks.",
+            "strong": "Use automated tools like Ragas to evaluate faithfulness and answer relevancy against a curated test dataset.",
+            "expert": "Build an automated evaluation pipeline running Ragas and DeepEval against a versioned 100-scenario Golden Set. Quantify Faithfulness (>= 95%), Answer Relevance (>= 90%), Context Recall (>= 88%), and Hallucination Rate (<= 1.0%). Integrate this suite into the client's GitOps CI/CD pipeline as an automated deployment gate.",
+            "leadership": "Codify evaluation thresholds into the formal Statement of Work (SOW). When stakeholders debate output quality, steer the discussion to versioned evaluation diffs and automated golden test results.",
+            "coachTips": "A strong FDE treats model evaluation as unit testing for intelligence. Always establish pass/fail thresholds in the client contract."
+          },
+          {
+            "q": "When deploying multi-agent swarms with Model Context Protocol (MCP) in client environments, how do you prevent cascading tool-call failures and unbounded loops?",
+            "intent": "Evaluates agentic reliability engineering, loop prevention, state machine checkpointing, and tool sandboxing.",
+            "red": "Allowing agents unrestricted recursive tool calls without recursion limits or timeouts.",
+            "strong": "Set a max recursion limit on tool calls and implement retry logic with exponential backoff.",
+            "expert": "Model the agent workflow as a deterministic LangGraph finite state machine with Postgres checkpoints. Enforce max tool recursion depth (e.g., 5 steps), circuit breakers on downstream MCP tool endpoints, timeout budgets per node, and a human-in-the-loop fallback state when confidence falls below 0.80.",
+            "leadership": "Design the architecture with graceful degradation: if an ERP or database MCP tool becomes unresponsive, the system answers with cached contextual guidance rather than dropping user sessions.",
+            "coachTips": "Highlight state machines over naive while-loops. Production enterprise agent systems require deterministic state transitions."
+          },
+          {
+            "q": "How do you structure Day-2 handover and operational ownership so client engineering teams can maintain the system without ongoing FDE dependency?",
+            "intent": "Tests enablement, documentation, training, knowledge transfer, and sustainable customer success.",
+            "red": "Treating the deployment as a black-box consultancy handoff that leaves the customer dependent on professional services.",
+            "strong": "Write documentation, conduct training sessions with client developers, and set up Prometheus monitoring alerts.",
+            "expert": "Execute a phased Day-2 handover: pair-program with client engineers during sprint 3, deliver an architectural decision record (ADR) and disaster recovery runbook, configure Grafana dashboards tracking token latency and tool error rates, and establish automated golden eval regression gates in their Git pipeline.",
+            "leadership": "Define clear RACI matrices for tier-1 SRE response vs tier-3 model retraining. High-performing FDEs measure success by how quickly client engineers can independently extend agent tools and deploy updates.",
+            "coachTips": "The ultimate test of a Forward Deployed Engineer is whether the customer's team can comfortably operate, debug, and expand the system after you roll off."
+          }
+        ],
+        "incident": {
+          "title": "Air-Gapped Client Model Egress Violation Alert",
+          "flow": "Cilium eBPF probe triggers critical alert: an agent pod attempted outbound DNS resolution to an external frontier LLM endpoint.",
+          "symptoms": "Security operations team escalates immediate Sev-1; client automated deployment pipeline freezes.",
+          "causes": "A third-party Python library contained a hardcoded fallback call to an external telemetry URL.",
+          "verify": "Inspect Cilium monitor logs for dropped egress packets: `cilium monitor --type drop`.",
+          "commands": "kubectl logs -n fde-ai-system -l app=fde-agent-worker --tail=100 | grep -i 'external'",
+          "fix": "Patch container environment variable to enforce `AIRGAP_STRICT_EGRESS=true` and pin library configuration to internal mock endpoint.",
+          "validation": "Confirm Cilium monitor shows 0 dropped egress packets and local vLLM handles 100% of inferences.",
+          "prevention": "Enforce strict CI/CD container image scanning with Trivy and static code AST checks before building client deployment bundles."
+        },
+        "quiz": [
+          {
+            "q": "What is the primary responsibility that distinguishes a Forward Deployed Engineer (FDE) from a traditional Software Engineer?",
+            "options": [
+              "Writing CSS frontend styles for public marketing websites",
+              "Directly embedding with client organizations to frame real business problems, architect tailored AI systems, and deploy into customer production environments",
+              "Managing cloud data center hardware cabling and power supplies",
+              "Conducting academic research on foundational neural network mathematical proofs"
+            ],
+            "a": "Directly embedding with client organizations to frame real business problems, architect tailored AI systems, and deploy into customer production environments",
+            "explanation": "A Forward Deployed Engineer bridges the gap between software engineering, AI systems architecture, enterprise consulting, and customer deployment by working directly inside client environments."
+          },
+          {
+            "q": "Why is a Golden Evaluation Dataset critical before deploying an enterprise AI agent?",
+            "options": [
+              "It provides a deterministic benchmark of human-verified customer scenarios to objectively measure faithfulness and catch regressions before production deployment",
+              "It speeds up GPU tensor memory compilation",
+              "It replaces the need for a vector database",
+              "It automatically purchases cloud compute credits"
+            ],
+            "a": "It provides a deterministic benchmark of human-verified customer scenarios to objectively measure faithfulness and catch regressions before production deployment",
+            "explanation": "A Golden Evaluation Dataset provides 50-100 real customer scenarios with expert ground truth, allowing automated evaluation frameworks (Ragas/DeepEval) to enforce contractually agreed SLAs."
+          },
+          {
+            "q": "In an air-gapped enterprise deployment, how does an FDE guarantee zero internet data exfiltration?",
+            "options": [
+              "By asking the client developers to disconnect their Wi-Fi routers",
+              "By enforcing zero-egress Kubernetes NetworkPolicies with Cilium eBPF, hosting local model weights on vLLM, and scrubbed in-line PII redaction",
+              "By switching the cloud provider region to us-east-1",
+              "By running models in unencrypted browser JavaScript tabs"
+            ],
+            "a": "By enforcing zero-egress Kubernetes NetworkPolicies with Cilium eBPF, hosting local model weights on vLLM, and scrubbed in-line PII redaction",
+            "explanation": "Strict enterprise air-gapping requires container-level egress isolation via Kubernetes NetworkPolicies/Cilium eBPF, offline local model inference, and PII masking."
+          }
+        ]
       }
     }
   },
