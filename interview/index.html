@@ -256,6 +256,7 @@
         case 'gitops_argocd':
         case 'terraform_state':
         case 'cicd_design':
+        case 'claude_plugins_marketplace':
           return 'Intermediate';
           
         // Advanced
@@ -263,6 +264,7 @@
         case 'k8s_ha':
         case 'service_mesh_istio':
         case 'multi_region':
+        case 'database_reliability_patroni':
           return 'Advanced';
           
         // Interview Prep
@@ -271,6 +273,7 @@
         case 'canary_deployment':
         case 'rolling_updates':
         case 'studio_sync':
+        case 'developer_studios_engine':
           return 'Interview Prep';
           
         // Troubleshooting
@@ -278,6 +281,7 @@
         case 'observability':
         case 'incident_management':
         case 'webhook_sec':
+        case 'ebpf_continuous_profiling':
           return 'Troubleshooting';
           
         // Architecture
@@ -286,10 +290,14 @@
         case 'disaster_recovery':
         case 'k8s_security':
         case 'cost_optimization':
+        case 'cloud_finops_reclamation':
           return 'Architecture';
           
         // AI & LLMOps
         case 'ai_infrastructure':
+        case 'vllm_inference_serving':
+        case 'enterprise_rag_retrieval':
+        case 'agentic_swarms_mcp':
           return 'AI & LLMOps';
           
         default:
@@ -317,7 +325,7 @@
           break;
         case 'Interview Prep':
           activePillar = 'all';
-          selectedTopicKey = 'platform_eng';
+          selectedTopicKey = 'developer_studios_engine';
           activeTab = 'interview';
           break;
         case 'Troubleshooting':
@@ -327,18 +335,18 @@
           break;
         case 'Architecture':
           activePillar = 'all';
-          selectedTopicKey = 'k8s_ha';
+          selectedTopicKey = 'cloud_finops_reclamation';
           activeTab = 'architecture';
           break;
         case 'AI & LLMOps':
         case 'AI &amp; LLMOps':
           activePillar = 'tools';
-          selectedTopicKey = 'ai_infrastructure';
+          selectedTopicKey = 'vllm_inference_serving';
           activeTab = 'coach';
           break;
         case 'MLOps Platforms':
           activePillar = 'tools';
-          selectedTopicKey = 'ai_infrastructure';
+          selectedTopicKey = 'vllm_inference_serving';
           activeTab = 'coach';
           break;
         default:
@@ -1312,7 +1320,7 @@
           console_el.innerHTML += `<span style="color:#10b981">${logMsg}</span>\n`;
           console_el.scrollTop = console_el.scrollHeight;
           
-          if (selectedTopicKey === 'ai_infrastructure' && typeof window.updateVRAMTelemetry === 'function') {
+          if ((selectedTopicKey === 'ai_infrastructure' || selectedTopicKey === 'vllm_inference_serving') && typeof window.updateVRAMTelemetry === 'function') {
             window.updateVRAMTelemetry(step);
           }
           
@@ -1321,7 +1329,7 @@
           clearInterval(simInterval);
           console_el.innerHTML += `<span style="color:#38bdf8">> ✓ STATUS: System recovered. All metrics healthy. Incident closed.</span>\n`;
           
-          if (selectedTopicKey === 'ai_infrastructure' && typeof window.updateVRAMTelemetry === 'function') {
+          if ((selectedTopicKey === 'ai_infrastructure' || selectedTopicKey === 'vllm_inference_serving') && typeof window.updateVRAMTelemetry === 'function') {
             window.updateVRAMTelemetry(step);
           }
         }
@@ -1837,7 +1845,7 @@
         });
 
         let consoleLayoutHtml = '';
-        if (selectedTopicKey === 'ai_infrastructure') {
+        if (selectedTopicKey === 'ai_infrastructure' || selectedTopicKey === 'vllm_inference_serving') {
           consoleLayoutHtml = `
             <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; margin-top:1rem;">
               <div class="simulator-console" style="margin-top:0;">

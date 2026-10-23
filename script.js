@@ -3296,6 +3296,7 @@ function initCommandPalette() {
     { type: 'Platform', title: 'Architecture Center', subtitle: 'Enterprise Landing Zones & EKS topologies', url: 'architecture/', icon: '📐' },
     { type: 'Platform', title: 'SRE Incident Simulator', subtitle: 'Production incident triage & chaos engineering drills', url: 'incident/', icon: '🚨' },
     { type: 'Platform', title: 'Universal Engineering Toolbox', subtitle: 'DevOps utilities (CIDR, YAML/JSON, Cron, Base64)', url: 'toolbox/', icon: '🧰' },
+    { type: 'Platform', title: 'Engineering Plugins Marketplace', subtitle: '24 engineer-role Claude plugins + Anthropic knowledge-work plugins', url: 'plugins/', icon: '🧩' },
     { type: 'Platform', title: 'Skills Matrix', subtitle: 'Cloud, DevOps, SRE, Linux, K8s, AI infra competencies', url: '#skills', icon: '⚡' },
     { type: 'Platform', title: 'Projects & Case Studies', subtitle: 'Production architecture implementations', url: '#projects', icon: '📁' },
     { type: 'Platform', title: 'Professional Experience', subtitle: 'Accenture & Trigent systems engineering history', url: '#experience', icon: '💼' },

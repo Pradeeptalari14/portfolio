@@ -1,0 +1,16 @@
+{
+  "name": "devops-engineer",
+  "version": "1.0.0",
+  "description": "DevOps Engineer: CI/CD pipelines, deployment strategies, rollback safety and delivery metrics.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "devops",
+    "github-actions",
+    "jenkins",
+    "argocd",
+    "docker",
+    "helm"
+  ]
+}

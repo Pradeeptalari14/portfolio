@@ -1,0 +1,16 @@
+{
+  "name": "devsecops-engineer",
+  "version": "1.0.0",
+  "description": "DevSecOps Engineer: Shift-left scanning, SBOMs, signed artifacts, SLSA provenance and runtime enforcement.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "devsecops",
+    "trivy",
+    "cosign",
+    "semgrep",
+    "gitleaks",
+    "kyverno"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "database-engineer",
+  "version": "1.0.0",
+  "description": "Database Reliability Engineer: Schema migrations, query tuning, replication, backups and restore verification.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "database",
+    "postgresql",
+    "mysql",
+    "redis",
+    "pgbouncer",
+    "pgbackrest"
+  ]
+}

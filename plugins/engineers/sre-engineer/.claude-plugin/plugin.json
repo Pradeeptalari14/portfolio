@@ -1,0 +1,16 @@
+{
+  "name": "sre-engineer",
+  "version": "1.0.0",
+  "description": "Site Reliability Engineer: SLOs, error budgets, burn-rate alerting and toil elimination for production services.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "sre",
+    "prometheus",
+    "grafana",
+    "alertmanager",
+    "pagerduty",
+    "opentelemetry"
+  ]
+}

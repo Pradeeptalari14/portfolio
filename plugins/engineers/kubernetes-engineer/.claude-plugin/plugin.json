@@ -1,0 +1,16 @@
+{
+  "name": "kubernetes-engineer",
+  "version": "1.0.0",
+  "description": "Kubernetes Engineer: Workload hardening, resource tuning and systematic cluster troubleshooting.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "kubernetes",
+    "kubectl",
+    "helm",
+    "kyverno",
+    "karpenter",
+    "cilium"
+  ]
+}

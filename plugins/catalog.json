@@ -1,0 +1,2616 @@
+{
+  "marketplace": "talari-engineering-plugins",
+  "repository": "Pradeeptalari14/portfolio",
+  "totals": {
+    "plugins": 41,
+    "skills": 229,
+    "commands": 53
+  },
+  "plugins": [
+    {
+      "id": "mlops-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/mlops-engineer",
+      "version": "1.0.0",
+      "description": "MLOps Engineer: Reproducible training pipelines, model registry, deployment gates and drift monitoring.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "ml-pipeline-design",
+          "description": "Design reproducible training and deployment pipelines for machine learning. Trigger with 'ML pipeline', 'model registry', 'reproducible training', 'promote a model' or 'retraining'.",
+          "hint": ""
+        },
+        {
+          "name": "model-monitoring",
+          "description": "Monitor deployed models for data drift, concept drift and performance decay. Trigger with 'model drift', 'monitor the model', 'accuracy dropped in production' or 'when to retrain'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "drift-report",
+          "description": "Analyse reference and current data summaries for drift and recommend actions",
+          "hint": "<feature statistics or sample descriptions for both windows>"
+        },
+        {
+          "name": "pipeline-blueprint",
+          "description": "Generate an end-to-end ML pipeline blueprint for a use case",
+          "hint": "<model type, data source and serving target>"
+        }
+      ],
+      "title": "MLOps Engineer",
+      "icon": "🧪",
+      "group": "AI & Data",
+      "tools": [
+        "MLflow",
+        "Kubeflow",
+        "DVC",
+        "KServe",
+        "Evidently"
+      ],
+      "summary": "Reproducible training pipelines, model registry, deployment gates and drift monitoring.",
+      "studioLink": "/tools/mlflow/",
+      "studioName": "MLflow Tracking & Model Registry Studio",
+      "learnLink": "/studios/learn/?studio=mlflow",
+      "learnTopic": "Kubeflow Pipelines & Drift Detection",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "ML Pipeline & Model Registry",
+      "projectRepo": "Pradeeptalari14/tp-mlflow",
+      "realWorldScenario": "Automated Model Retraining: Detects statistical covariate shift in fraud detection model; triggers Kubeflow pipeline for retraining and canary deployment.",
+      "businessGain": "Reduces model degradation detection time from 2 weeks to 15 minutes; protects against fraudulent transactions."
+    },
+    {
+      "id": "llmops-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/llmops-engineer",
+      "version": "1.0.0",
+      "description": "LLMOps Engineer: Prompt versioning, evaluation harnesses, guardrails, gateways and LLM cost control.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "llm-evaluation-harness",
+          "description": "Build an offline and online evaluation system for LLM features. Trigger with 'evaluate the prompt', 'LLM evals', 'regression tests for prompts', 'LLM as judge' or 'is the new model better'.",
+          "hint": ""
+        },
+        {
+          "name": "llm-guardrails-gateway",
+          "description": "Design an LLM gateway with routing, caching, guardrails and spend controls. Trigger with 'LLM gateway', 'prompt injection defence', 'PII in prompts', 'LLM cost control' or 'rate limit the model'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "eval-plan",
+          "description": "Create an evaluation plan with datasets, metrics and release gates for an LLM feature",
+          "hint": "<feature description and failure modes seen>"
+        },
+        {
+          "name": "prompt-review",
+          "description": "Review a prompt for clarity, injection risk and testability",
+          "hint": "<prompt text and intended behaviour>"
+        }
+      ],
+      "title": "LLMOps Engineer",
+      "icon": "🧠",
+      "group": "AI & Data",
+      "tools": [
+        "LangSmith",
+        "Langfuse",
+        "LiteLLM",
+        "Promptfoo",
+        "Guardrails"
+      ],
+      "summary": "Prompt versioning, evaluation harnesses, guardrails, gateways and LLM cost control.",
+      "studioLink": "/tools/llm-tracing/",
+      "studioName": "LLM Tracing & Langfuse Studio",
+      "learnLink": "/studios/learn/?studio=llm-tracing",
+      "learnTopic": "Anthropic Prompt Caching & TTFT Optimization",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "LLM Gateway & Prompt Caching",
+      "projectRepo": "Pradeeptalari14/tp-llm-tracing",
+      "realWorldScenario": "Prompt Caching & Cost Reduction: Implements Anthropic prompt caching headers across customer support agents with 80k token system prompts.",
+      "businessGain": "82% reduction in recurring LLM API costs; decreases Time-to-First-Token (TTFT) from 1.8s to 320ms."
+    },
+    {
+      "id": "ai-infra-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/ai-infra-engineer",
+      "version": "1.0.0",
+      "description": "AI Infrastructure Engineer: GPU scheduling, inference serving, batching, quantisation and capacity planning.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "gpu-capacity-planning",
+          "description": "Plan and schedule GPU capacity across training and inference. Trigger with 'GPU shortage', 'GPU utilisation', 'MIG', 'gang scheduling' or 'GPU cost'.",
+          "hint": ""
+        },
+        {
+          "name": "inference-serving-design",
+          "description": "Design a production LLM or model inference service. Trigger with 'serve a model', 'vLLM', 'GPU inference', 'reduce latency of the model' or 'time to first token'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "gpu-utilization-review",
+          "description": "Review GPU utilisation data and find waste and scheduling fixes",
+          "hint": "<utilisation metrics or workload list>"
+        },
+        {
+          "name": "serving-sizing",
+          "description": "Estimate replicas and GPU count for a model from traffic and latency targets",
+          "hint": "<model, GPU type, request rate, token lengths, latency target>"
+        }
+      ],
+      "title": "AI Infrastructure Engineer",
+      "icon": "⚡",
+      "group": "AI & Data",
+      "tools": [
+        "vLLM",
+        "KServe",
+        "NVIDIA GPU Operator",
+        "Ray",
+        "Triton"
+      ],
+      "summary": "GPU scheduling, inference serving, batching, quantisation and capacity planning.",
+      "studioLink": "/tools/ray-cluster/",
+      "studioName": "Distributed Ray & vLLM Cluster Studio",
+      "learnLink": "/studios/learn/?studio=ray-cluster",
+      "learnTopic": "GPU Clustering, PagedAttention & NCCL Tuning",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "vLLM High-Throughput Serving Engine",
+      "projectRepo": "Pradeeptalari14/tp-ray-cluster",
+      "realWorldScenario": "Distributed Inference Serving: Deploys DeepSeek-V3 across 8x H100 GPUs with vLLM PagedAttention and TensorRT-LLM tensor parallelism.",
+      "businessGain": "Maximizes GPU memory utilization from 42% to 94%; handles 4.5x higher concurrent inference requests."
+    },
+    {
+      "id": "rag-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/rag-engineer",
+      "version": "1.0.0",
+      "description": "RAG Engineer: Chunking, hybrid retrieval, reranking, grounding and retrieval quality measurement.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "retrieval-evaluation",
+          "description": "Measure and improve retrieval quality with labelled queries. Trigger with 'RAG evaluation', 'recall at k', 'retrieval is poor', 'compare embedding models'.",
+          "hint": ""
+        },
+        {
+          "name": "retrieval-pipeline-design",
+          "description": "Design a retrieval-augmented generation pipeline. Trigger with 'build RAG', 'chunking strategy', 'hybrid search', 'reranker' or 'the bot gives wrong answers from our docs'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "chunking-strategy",
+          "description": "Recommend a chunking and metadata strategy for a document set",
+          "hint": "<document types and sample structure>"
+        },
+        {
+          "name": "rag-debug",
+          "description": "Diagnose why a RAG answer was wrong from the question, chunks and answer",
+          "hint": "<question, retrieved chunks and generated answer>"
+        }
+      ],
+      "title": "RAG Engineer",
+      "icon": "🔎",
+      "group": "AI & Data",
+      "tools": [
+        "Weaviate",
+        "Qdrant",
+        "pgvector",
+        "OpenSearch",
+        "Cohere Rerank"
+      ],
+      "summary": "Chunking, hybrid retrieval, reranking, grounding and retrieval quality measurement.",
+      "studioLink": "/tools/ai/",
+      "studioName": "DevOps AI RAG Studio",
+      "learnLink": "/studios/learn/?studio=ai",
+      "learnTopic": "Hybrid RRF Retrieval & Semantic Chunking",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "Enterprise Hybrid RAG Pipeline",
+      "projectRepo": "Pradeeptalari14/tp-ai",
+      "realWorldScenario": "Enterprise Internal Docs QA: Implements reciprocal rank fusion (BM25 + Qdrant dense vector) with cross-encoder reranking over 100,000 engineering wiki pages.",
+      "businessGain": "96.4% context recall; eliminates hallucinated runbook commands for on-call engineers."
+    },
+    {
+      "id": "agent-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/agent-engineer",
+      "version": "1.0.0",
+      "description": "Agent Engineer: Tool-using agents, MCP servers, orchestration graphs, memory and safe autonomy.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "agent-architecture",
+          "description": "Design a reliable tool-using agent or multi-agent workflow. Trigger with 'build an agent', 'multi-agent', 'LangGraph', 'agent keeps looping' or 'which tools should the agent have'.",
+          "hint": ""
+        },
+        {
+          "name": "mcp-server-design",
+          "description": "Design and secure a Model Context Protocol server. Trigger with 'build an MCP server', 'expose this API to the agent', 'MCP tool design' or 'MCP security'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "agent-spec",
+          "description": "Produce an agent specification with graph, tools, budgets and approvals",
+          "hint": "<task the agent must accomplish>"
+        },
+        {
+          "name": "mcp-tool-review",
+          "description": "Review MCP tool definitions for clarity, safety and token efficiency",
+          "hint": "<tool definitions JSON>"
+        }
+      ],
+      "title": "Agent Engineer",
+      "icon": "🤖",
+      "group": "AI & Data",
+      "tools": [
+        "LangGraph",
+        "MCP",
+        "OpenAI Agents SDK",
+        "Temporal",
+        "OpenTelemetry"
+      ],
+      "summary": "Tool-using agents, MCP servers, orchestration graphs, memory and safe autonomy.",
+      "studioLink": "/tools/strands/",
+      "studioName": "Strands Autonomous SRE Agent Studio",
+      "learnLink": "/studios/learn/?studio=strands",
+      "learnTopic": "LangGraph Multi-Agent Consensus & Safety",
+      "flowLink": "/studios/flow/?template=agent",
+      "flowName": "Autonomous Agent Swarm Consensus",
+      "projectRepo": "Pradeeptalari14/tp-strands",
+      "realWorldScenario": "Autonomous Pod Crash Remediation: LangGraph multi-agent swarm inspects container OOMKilled logs, patches deployment memory limits, and creates pull request.",
+      "businessGain": "Autonomously resolves 48% of tier-1 production alerts without waking human engineers."
+    },
+    {
+      "id": "data-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/data-engineer",
+      "version": "1.0.0",
+      "description": "Data Engineer: Pipelines, data contracts, quality checks, lakehouse modelling and streaming reliability.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "data-pipeline-design",
+          "description": "Design reliable batch or streaming data pipelines. Trigger with 'ETL', 'ELT', 'data pipeline', 'idempotent', 'backfill' or 'late arriving data'.",
+          "hint": ""
+        },
+        {
+          "name": "data-quality-contracts",
+          "description": "Introduce data contracts and automated quality checks. Trigger with 'data quality', 'data contract', 'bad data in the dashboard', 'schema change broke us' or 'data observability'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "data-contract",
+          "description": "Draft a data contract for a dataset from sample schema and usage",
+          "hint": "<sample schema, producer and consumers>"
+        },
+        {
+          "name": "pipeline-review",
+          "description": "Review a pipeline or DAG for idempotency, backfill safety and failure handling",
+          "hint": "<DAG code, SQL or description>"
+        }
+      ],
+      "title": "Data Engineer",
+      "icon": "🗃️",
+      "group": "AI & Data",
+      "tools": [
+        "Airflow",
+        "dbt",
+        "Spark",
+        "Kafka",
+        "Great Expectations"
+      ],
+      "summary": "Pipelines, data contracts, quality checks, lakehouse modelling and streaming reliability.",
+      "studioLink": "/tools/snowflake-warehouse/",
+      "studioName": "Snowflake Lakehouse & dbt Studio",
+      "learnLink": "/studios/learn/?studio=snowflake-warehouse",
+      "learnTopic": "Apache Iceberg Lakehouse & Data Quality Contracts",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "Lakehouse Pipeline & Quality Contracts",
+      "projectRepo": "Pradeeptalari14/tp-snowflake-warehouse",
+      "realWorldScenario": "Zero-Downtime Data Pipeline Migration: Migrates 15TB daily streaming clickstream data to Apache Iceberg and dbt with automated Great Expectations schema validation.",
+      "businessGain": "Reduces ETL compute costs by 54%; guarantees zero corrupted data rows reach executive dashboards."
+    },
+    {
+      "id": "sre-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/sre-engineer",
+      "version": "1.0.0",
+      "description": "Site Reliability Engineer: SLOs, error budgets, burn-rate alerting and toil elimination for production services.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "slo-error-budget",
+          "description": "Define SLIs, SLOs and an error-budget policy for a service. Trigger with 'set SLOs', 'define SLIs', 'error budget', 'burn rate alerts' or when a team has uptime goals but no measurable targets.",
+          "hint": ""
+        },
+        {
+          "name": "toil-reduction",
+          "description": "Find, measure and eliminate operational toil. Trigger with 'toil audit', 'reduce manual work', 'on-call is too noisy' or 'automate this runbook'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "slo-draft",
+          "description": "Draft SLIs, SLOs and burn-rate alert rules for a service",
+          "hint": "<service name and its main user journey>"
+        },
+        {
+          "name": "toil-audit",
+          "description": "Analyse pages, tickets and runbooks to rank toil by cost and propose fixes",
+          "hint": "<paste of on-call pages or ticket export>"
+        }
+      ],
+      "title": "Site Reliability Engineer",
+      "icon": "🛡️",
+      "group": "Infrastructure & Reliability",
+      "tools": [
+        "Prometheus",
+        "Grafana",
+        "Alertmanager",
+        "PagerDuty",
+        "OpenTelemetry"
+      ],
+      "summary": "SLOs, error budgets, burn-rate alerting and toil elimination for production services.",
+      "studioLink": "/incident/",
+      "studioName": "SRE Incident Simulator",
+      "learnLink": "/studios/learn/?studio=sre-simulator",
+      "learnTopic": "SLO Burn-Rate & Incident Triage Drill",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "Cloud Multi-Region SRE Topology",
+      "projectRepo": "Pradeeptalari14/tp-sre-simulator",
+      "realWorldScenario": "E-commerce Flash Sale: Burn-rate alerting detects payment gateway degradation in 3 minutes; automated runbook throttles non-critical ingress before SLO violation.",
+      "businessGain": "78% faster alert triage, 42% MTTR reduction, guaranteed 99.95% availability budget compliance."
+    },
+    {
+      "id": "devops-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/devops-engineer",
+      "version": "1.0.0",
+      "description": "DevOps Engineer: CI/CD pipelines, deployment strategies, rollback safety and delivery metrics.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "cicd-pipeline-design",
+          "description": "Design or review a CI/CD pipeline for speed, safety and reproducibility. Trigger with 'design a pipeline', 'speed up CI', 'review this workflow' or 'add a deploy stage'.",
+          "hint": ""
+        },
+        {
+          "name": "deployment-strategy",
+          "description": "Choose and specify a deployment strategy (rolling, blue/green, canary) with explicit rollback criteria. Trigger with 'canary release', 'zero downtime deploy', 'blue green' or 'how do we roll this out safely'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "pipeline-review",
+          "description": "Review a CI/CD workflow file for speed, caching, security and reliability issues",
+          "hint": "<workflow file contents or path>"
+        },
+        {
+          "name": "rollback-plan",
+          "description": "Produce a tested rollback plan with triggers and verification steps for a release",
+          "hint": "<release description>"
+        }
+      ],
+      "title": "DevOps Engineer",
+      "icon": "⚙️",
+      "group": "Infrastructure & Reliability",
+      "tools": [
+        "GitHub Actions",
+        "Jenkins",
+        "ArgoCD",
+        "Docker",
+        "Helm"
+      ],
+      "summary": "CI/CD pipelines, deployment strategies, rollback safety and delivery metrics.",
+      "studioLink": "/tools/gitlab/",
+      "studioName": "GitLab & GitHub CI/CD Studio",
+      "learnLink": "/studios/learn/?studio=gitlab",
+      "learnTopic": "Deterministic CI/CD Pipeline Design",
+      "flowLink": "/studios/flow/?template=pipeline",
+      "flowName": "CI/CD Delivery Pipeline",
+      "projectRepo": "Pradeeptalari14/tp-gitlab",
+      "realWorldScenario": "Microservices Monorepo: Declarative GitHub Actions and ArgoCD GitOps synchronizer eliminates configuration drift across 45 microservices.",
+      "businessGain": "Zero unreviewed production changes, 12-minute commit-to-production lead time, 99.9% build pass rate."
+    },
+    {
+      "id": "platform-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/platform-engineer",
+      "version": "1.0.0",
+      "description": "Platform Engineer: Internal developer platforms, golden paths, service catalogs and developer-experience metrics.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "golden-path-design",
+          "description": "Design a paved-road template that gets a team from idea to production safely. Trigger with 'golden path', 'service template', 'paved road' or 'standardise how teams ship'.",
+          "hint": ""
+        },
+        {
+          "name": "platform-metrics",
+          "description": "Measure platform and delivery health using DORA and developer-experience signals. Trigger with 'DORA metrics', 'platform adoption', 'developer productivity' or 'is the platform working'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "golden-path",
+          "description": "Generate a golden-path template specification for a type of service",
+          "hint": "<service type, language and runtime>"
+        },
+        {
+          "name": "platform-scorecard",
+          "description": "Build a platform scorecard from DORA and adoption data",
+          "hint": "<metrics export or description of current data sources>"
+        }
+      ],
+      "title": "Platform Engineer",
+      "icon": "🏗️",
+      "group": "Infrastructure & Reliability",
+      "tools": [
+        "Backstage",
+        "Crossplane",
+        "Terraform",
+        "ArgoCD",
+        "Kubernetes"
+      ],
+      "summary": "Internal developer platforms, golden paths, service catalogs and developer-experience metrics.",
+      "studioLink": "/studios/?q=platform",
+      "studioName": "Internal Developer Platform Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Standardized Golden Path Scaffolding",
+      "flowLink": "/studios/flow/?template=pipeline",
+      "flowName": "Developer Golden Path Topology",
+      "projectRepo": "Pradeeptalari14/tp-kubernetes",
+      "realWorldScenario": "Enterprise Developer Onboarding: Golden path scaffolding generates compliant Kubernetes manifests, CI/CD, and OpenTelemetry in 90 seconds.",
+      "businessGain": "Reduces developer onboarding from 2 weeks to 1 day; ensures 100% adherence to organizational baseline security."
+    },
+    {
+      "id": "cloud-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/cloud-engineer",
+      "version": "1.0.0",
+      "description": "Cloud Engineer: Landing zones, Well-Architected reviews, migration planning and multi-account governance.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "landing-zone-review",
+          "description": "Review a cloud landing zone for account structure, guardrails, networking and logging. Trigger with 'landing zone', 'multi-account setup', 'cloud foundation' or 'review our AWS organisation'.",
+          "hint": ""
+        },
+        {
+          "name": "well-architected-review",
+          "description": "Run a Well-Architected style review across operational excellence, security, reliability, performance, cost and sustainability. Trigger with 'architecture review', 'well-architected', 'is this design production ready'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "migration-plan",
+          "description": "Plan a cloud migration using the 6R strategy per workload",
+          "hint": "<list of applications and constraints>"
+        },
+        {
+          "name": "waf-review",
+          "description": "Run a six-pillar architecture review on a described workload",
+          "hint": "<architecture description or diagram notes>"
+        }
+      ],
+      "title": "Cloud Engineer",
+      "icon": "☁️",
+      "group": "Infrastructure & Reliability",
+      "tools": [
+        "AWS",
+        "Azure",
+        "GCP",
+        "Terraform",
+        "Organizations"
+      ],
+      "summary": "Landing zones, Well-Architected reviews, migration planning and multi-account governance.",
+      "studioLink": "/architecture/",
+      "studioName": "Enterprise Cloud Architecture Center",
+      "learnLink": "/studios/learn/?studio=azure-aks",
+      "learnTopic": "Multi-Account Well-Architected Review",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "Multi-Region Cloud Topology",
+      "projectRepo": "Pradeeptalari14/tp-azure-aks",
+      "realWorldScenario": "Active-Active Multi-Region Failover: Resilient AWS/Azure topology dynamically redirects ingress via Route53 latency routing during regional cloud outage.",
+      "businessGain": "RPO < 1s, RTO < 30s, achieves AWS Well-Architected Reliability Pillar compliance."
+    },
+    {
+      "id": "kubernetes-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/kubernetes-engineer",
+      "version": "1.0.0",
+      "description": "Kubernetes Engineer: Workload hardening, resource tuning and systematic cluster troubleshooting.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "cluster-troubleshooting",
+          "description": "Diagnose failing pods, nodes and networking in a systematic order. Trigger with 'pod is pending', 'CrashLoopBackOff', 'OOMKilled', 'ImagePullBackOff' or 'service not reachable'.",
+          "hint": ""
+        },
+        {
+          "name": "workload-hardening",
+          "description": "Harden Kubernetes workloads for security and resilience. Trigger with 'harden this manifest', 'pod security', 'production readiness for k8s' or 'review this deployment'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "k8s-debug",
+          "description": "Walk through a structured diagnosis for a failing pod or service",
+          "hint": "<symptom, kubectl output or logs>"
+        },
+        {
+          "name": "manifest-audit",
+          "description": "Audit Kubernetes manifests against a production-readiness checklist",
+          "hint": "<manifest YAML or Helm values>"
+        }
+      ],
+      "title": "Kubernetes Engineer",
+      "icon": "⎈",
+      "group": "Infrastructure & Reliability",
+      "tools": [
+        "kubectl",
+        "Helm",
+        "Kyverno",
+        "Karpenter",
+        "Cilium"
+      ],
+      "summary": "Workload hardening, resource tuning and systematic cluster troubleshooting.",
+      "studioLink": "/tools/kubernetes/",
+      "studioName": "Kubernetes Cluster Studio",
+      "learnLink": "/studios/learn/?studio=kubernetes",
+      "learnTopic": "Workload Hardening & CrashLoop Triage",
+      "flowLink": "/studios/flow/?template=k8sEcosystem",
+      "flowName": "Kubernetes Cluster Ecosystem",
+      "projectRepo": "Pradeeptalari14/tp-kubernetes",
+      "realWorldScenario": "Cluster-Wide Node Pressure: Custom CRD controller dynamically drains tainted spot nodes and re-schedules workloads with topology spread constraints.",
+      "businessGain": "Zero customer-facing downtime during spot instance preemption; 35% compute cost savings."
+    },
+    {
+      "id": "iac-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/iac-engineer",
+      "version": "1.0.0",
+      "description": "Infrastructure as Code Engineer: Terraform and OpenTofu module design, safe plan review, state hygiene and drift control.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "iac-change-review",
+          "description": "Review an infrastructure plan for blast radius, destructive changes and state risks. Trigger with 'review terraform plan', 'is this plan safe', 'destroy detected' or 'state migration'.",
+          "hint": ""
+        },
+        {
+          "name": "terraform-module-design",
+          "description": "Design reusable, versioned Terraform modules with clear interfaces. Trigger with 'write a terraform module', 'refactor terraform', 'module structure' or 'DRY terraform'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "drift-check",
+          "description": "Plan a drift detection and remediation process for an environment",
+          "hint": "<environment and tooling description>"
+        },
+        {
+          "name": "tf-plan-review",
+          "description": "Review pasted Terraform plan output for destructive or risky changes",
+          "hint": "<terraform plan output>"
+        }
+      ],
+      "title": "Infrastructure as Code Engineer",
+      "icon": "🧱",
+      "group": "Infrastructure & Reliability",
+      "tools": [
+        "Terraform",
+        "OpenTofu",
+        "Terragrunt",
+        "Pulumi",
+        "Atlantis"
+      ],
+      "summary": "Terraform and OpenTofu module design, safe plan review, state hygiene and drift control.",
+      "studioLink": "/tools/terraform/",
+      "studioName": "Terraform Architect Studio",
+      "learnLink": "/studios/learn/?studio=terraform-drift",
+      "learnTopic": "Module Design & Blast Radius Analysis",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "Declarative Infrastructure State",
+      "projectRepo": "Pradeeptalari14/tp-terraform",
+      "realWorldScenario": "Multi-Account State Drift: Automated drift detection flags unauthorized manual security group changes within 5 minutes and applies declarative rollback.",
+      "businessGain": "100% reproducible cloud environments; zero configuration drift across staging and production."
+    },
+    {
+      "id": "observability-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/observability-engineer",
+      "version": "1.0.0",
+      "description": "Observability Engineer: Metrics, logs and traces with OpenTelemetry, cardinality control and actionable alerting.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "alert-quality",
+          "description": "Improve alert signal-to-noise. Trigger with 'too many alerts', 'alert fatigue', 'review alert rules' or 'actionable alerts'.",
+          "hint": ""
+        },
+        {
+          "name": "telemetry-instrumentation",
+          "description": "Plan and review instrumentation for metrics, logs and traces. Trigger with 'add observability', 'instrument this service', 'OpenTelemetry', 'we cannot debug production'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "alert-audit",
+          "description": "Audit alert rules for noise, missing runbooks and cause-based alerting",
+          "hint": "<alert rules file or alert history export>"
+        },
+        {
+          "name": "instrument-service",
+          "description": "Generate an OpenTelemetry instrumentation plan for a service",
+          "hint": "<language, framework and dependencies>"
+        }
+      ],
+      "title": "Observability Engineer",
+      "icon": "📈",
+      "group": "Operations & Delivery",
+      "tools": [
+        "OpenTelemetry",
+        "Prometheus",
+        "Loki",
+        "Tempo",
+        "Grafana"
+      ],
+      "summary": "Metrics, logs and traces with OpenTelemetry, cardinality control and actionable alerting.",
+      "studioLink": "/tools/monitoring/",
+      "studioName": "Enterprise Observability Studio",
+      "learnLink": "/studios/learn/?studio=ebpf-tracing",
+      "learnTopic": "OpenTelemetry Distributed Tracing",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "Distributed Tracing Topology",
+      "projectRepo": "Pradeeptalari14/tp-ebpf-tracing",
+      "realWorldScenario": "Microservices Latency Spike: Distributed OpenTelemetry tracing identifies an unindexed Redis call nested 4 layers deep inside the checkout service.",
+      "businessGain": "Pins down root-cause span in under 2 minutes; eliminates 65% of false-positive telemetry alerts."
+    },
+    {
+      "id": "network-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/network-engineer",
+      "version": "1.0.0",
+      "description": "Network Engineer: Cloud and hybrid network design, DNS, segmentation and connectivity troubleshooting.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "connectivity-troubleshooting",
+          "description": "Troubleshoot reachability and latency problems layer by layer. Trigger with 'cannot connect', 'timeout', 'DNS not resolving', 'packet loss' or 'intermittent connection resets'.",
+          "hint": ""
+        },
+        {
+          "name": "network-topology-design",
+          "description": "Design VPC and hybrid network topology with CIDR planning, segmentation and egress control. Trigger with 'design the network', 'CIDR plan', 'hub and spoke', 'VPN or direct connect'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "cidr-plan",
+          "description": "Create a non-overlapping CIDR allocation plan for multiple networks",
+          "hint": "<environments, regions and expected host counts>"
+        },
+        {
+          "name": "trace-connection",
+          "description": "Generate a layer-by-layer diagnostic checklist for a failing connection",
+          "hint": "<source, destination, port and error message>"
+        }
+      ],
+      "title": "Network Engineer",
+      "icon": "🌐",
+      "group": "Operations & Delivery",
+      "tools": [
+        "VPC",
+        "Transit Gateway",
+        "Route 53",
+        "Cilium",
+        "WireGuard"
+      ],
+      "summary": "Cloud and hybrid network design, DNS, segmentation and connectivity troubleshooting.",
+      "studioLink": "/toolbox/",
+      "studioName": "Universal Engineering Toolbox & Subnetter",
+      "learnLink": "/studios/learn/?studio=localstack-dev",
+      "learnTopic": "VPC Peering & Transit Gateway Routing",
+      "flowLink": "/studios/flow/?template=k8sEcosystem",
+      "flowName": "VPC & Ingress Mesh Topology",
+      "projectRepo": "Pradeeptalari14/tp-localstack-dev",
+      "realWorldScenario": "Hybrid Transit Gateway Routing: Diagnoses asymmetric MTU blackholes and overlapping CIDRs during cross-cloud DirectConnect expansion.",
+      "businessGain": "Prevents packet loss on high-throughput database replication; eliminates cross-VPC data transfer bottlenecks."
+    },
+    {
+      "id": "database-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/database-engineer",
+      "version": "1.0.0",
+      "description": "Database Reliability Engineer: Schema migrations, query tuning, replication, backups and restore verification.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "query-performance-tuning",
+          "description": "Diagnose and fix slow queries using plans and statistics. Trigger with 'slow query', 'explain analyze', 'index recommendation' or 'database CPU is high'.",
+          "hint": ""
+        },
+        {
+          "name": "safe-schema-migration",
+          "description": "Plan online schema migrations without downtime. Trigger with 'alter table', 'add column', 'migrate schema', 'zero downtime migration' or 'backfill'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "migration-review",
+          "description": "Review a SQL migration for locking, compatibility and rollback safety",
+          "hint": "<migration SQL and database engine/version>"
+        },
+        {
+          "name": "restore-drill",
+          "description": "Design a backup restore drill with RTO and RPO measurement",
+          "hint": "<database, backup tool and targets>"
+        }
+      ],
+      "title": "Database Reliability Engineer",
+      "icon": "🗄️",
+      "group": "Operations & Delivery",
+      "tools": [
+        "PostgreSQL",
+        "MySQL",
+        "Redis",
+        "pgBouncer",
+        "pgBackRest"
+      ],
+      "summary": "Schema migrations, query tuning, replication, backups and restore verification.",
+      "studioLink": "/tools/db-clustering/",
+      "studioName": "Database Clustering & HA Studio",
+      "learnLink": "/studios/learn/?studio=db-clustering",
+      "learnTopic": "Postgres Lock Contention & Indexing",
+      "flowLink": "/studios/flow/?template=database",
+      "flowName": "High Availability Database Topology",
+      "projectRepo": "Pradeeptalari14/tp-db-clustering",
+      "realWorldScenario": "High-Volume Postgres Lock Contention: Identifies unvacuumed bloated tables and creates partial indexes on 40-million row payment tables.",
+      "businessGain": "Reduces p99 query latency from 4.2s to 18ms; guarantees zero data loss (RPO=0) with Patroni failover."
+    },
+    {
+      "id": "finops-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/finops-engineer",
+      "version": "1.0.0",
+      "description": "FinOps Engineer: Cloud cost allocation, rightsizing, commitment strategy and unit economics.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "cost-allocation-showback",
+          "description": "Make cloud spend attributable to teams and products. Trigger with 'cost allocation', 'tagging strategy', 'showback', 'who is spending this' or 'unit cost'.",
+          "hint": ""
+        },
+        {
+          "name": "rightsizing-commitments",
+          "description": "Rightsize resources and plan commitment purchases. Trigger with 'reduce cloud cost', 'rightsizing', 'savings plan', 'reserved instances' or 'spot instances'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "cost-review",
+          "description": "Analyse a cost export and rank savings opportunities",
+          "hint": "<cost report or billing export summary>"
+        },
+        {
+          "name": "unit-economics",
+          "description": "Define unit cost metrics for a product or service",
+          "hint": "<product description and available cost and usage data>"
+        }
+      ],
+      "title": "FinOps Engineer",
+      "icon": "💰",
+      "group": "Operations & Delivery",
+      "tools": [
+        "Cost Explorer",
+        "Kubecost",
+        "OpenCost",
+        "Savings Plans",
+        "Infracost"
+      ],
+      "summary": "Cloud cost allocation, rightsizing, commitment strategy and unit economics.",
+      "studioLink": "/finops/",
+      "studioName": "Cloud FinOps Center & AWS Calculator",
+      "learnLink": "/studios/learn/?studio=finops",
+      "learnTopic": "Cloud Cost Allocation & Rightsizing",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "FinOps Unit Cost Allocation",
+      "projectRepo": "Pradeeptalari14/tp-finops",
+      "realWorldScenario": "Cloud Waste Reclamation: Discovers unattached GP3 EBS volumes, idle NAT gateways, and unallocated Graviton compute instances.",
+      "businessGain": "$28,000/month recurring cloud cost savings; increases Compute Savings Plan coverage from 45% to 88%."
+    },
+    {
+      "id": "incident-commander",
+      "source": "engineers",
+      "dir": "plugins/engineers/incident-commander",
+      "version": "1.0.0",
+      "description": "Incident Commander: Severity classification, command structure, status communication and blameless postmortems.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "blameless-postmortem",
+          "description": "Write a blameless postmortem with a timeline, causal analysis and tracked actions. Trigger with 'write a postmortem', 'RCA', 'incident review' or 'five whys'.",
+          "hint": ""
+        },
+        {
+          "name": "incident-command",
+          "description": "Run a live incident with clear roles, cadence and decisions. Trigger with 'we have an incident', 'production is down', 'declare an incident' or 'who is incident commander'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "declare-incident",
+          "description": "Create the incident kickoff message, roles and communication cadence",
+          "hint": "<symptom and observed impact>"
+        },
+        {
+          "name": "postmortem",
+          "description": "Generate a blameless postmortem draft from incident notes",
+          "hint": "<timeline notes, chat excerpts or alert data>"
+        }
+      ],
+      "title": "Incident Commander",
+      "icon": "🚨",
+      "group": "Operations & Delivery",
+      "tools": [
+        "PagerDuty",
+        "Opsgenie",
+        "Statuspage",
+        "Slack",
+        "Jira"
+      ],
+      "summary": "Severity classification, command structure, status communication and blameless postmortems.",
+      "studioLink": "/incident/",
+      "studioName": "SRE Incident Simulator & Outage Lab",
+      "learnLink": "/studios/learn/?studio=sre-simulator",
+      "learnTopic": "SEV-1 Incident Command & Blameless Post-Mortem",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "Incident Response Protocol",
+      "projectRepo": "Pradeeptalari14/tp-sre-simulator",
+      "realWorldScenario": "Major SEV-1 DNS Outage: Coordinates cross-functional triage, manages executive communications, and enforces blameless timeline reconstruction.",
+      "businessGain": "Reduces incident resolution time by 52%; eliminates recurring outages through enforceable action items."
+    },
+    {
+      "id": "release-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/release-engineer",
+      "version": "1.0.0",
+      "description": "Release Engineer: Versioning, changelogs, release trains, hotfix flow and supply-chain-safe publishing.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "release-process-design",
+          "description": "Design a predictable release process with versioning, branching and changelog automation. Trigger with 'release process', 'semantic versioning', 'changelog', 'hotfix flow' or 'release train'.",
+          "hint": ""
+        },
+        {
+          "name": "release-readiness",
+          "description": "Run a go or no-go readiness review before shipping. Trigger with 'ready to release', 'go no go', 'release checklist' or 'launch review'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "go-no-go",
+          "description": "Build a release readiness checklist and decision record",
+          "hint": "<release scope and date>"
+        },
+        {
+          "name": "release-notes",
+          "description": "Turn commit or pull-request history into structured release notes",
+          "hint": "<commit list, PR titles or changelog fragments>"
+        }
+      ],
+      "title": "Release Engineer",
+      "icon": "🚀",
+      "group": "Operations & Delivery",
+      "tools": [
+        "Semantic Release",
+        "Conventional Commits",
+        "Cosign",
+        "GitHub Releases",
+        "Feature Flags"
+      ],
+      "summary": "Versioning, changelogs, release trains, hotfix flow and supply-chain-safe publishing.",
+      "studioLink": "/tools/argocd/",
+      "studioName": "ArgoCD & Progressive Delivery Studio",
+      "learnLink": "/studios/learn/?studio=jenkins",
+      "learnTopic": "Canary Deployment & Rollback Safety",
+      "flowLink": "/studios/flow/?template=pipeline",
+      "flowName": "Canary & Progressive Rollout",
+      "projectRepo": "Pradeeptalari14/tp-gitlab",
+      "realWorldScenario": "Zero-Downtime Canary Rollout: Routes 5% of production traffic to new microservice version; automatically rolls back when HTTP 5xx error rate exceeds 0.2%.",
+      "businessGain": "Zero customer-impacted regressions; automated rollbacks complete in under 20 seconds."
+    },
+    {
+      "id": "devsecops-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/devsecops-engineer",
+      "version": "1.0.0",
+      "description": "DevSecOps Engineer: Shift-left scanning, SBOMs, signed artifacts, SLSA provenance and runtime enforcement.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "secrets-management",
+          "description": "Eliminate hard-coded secrets and design rotation. Trigger with 'secret leaked', 'rotate credentials', 'vault', 'secrets in git' or 'workload identity'.",
+          "hint": ""
+        },
+        {
+          "name": "supply-chain-security",
+          "description": "Secure the build and delivery supply chain. Trigger with 'SBOM', 'sign images', 'SLSA', 'dependency risk', 'supply chain attack' or 'harden the pipeline'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "leaked-secret-response",
+          "description": "Generate an incident checklist for a leaked credential",
+          "hint": "<secret type, where it was exposed and for how long>"
+        },
+        {
+          "name": "pipeline-security-review",
+          "description": "Review a CI workflow for supply chain and permission weaknesses",
+          "hint": "<workflow file contents>"
+        }
+      ],
+      "title": "DevSecOps Engineer",
+      "icon": "🔐",
+      "group": "Security, Quality & Application",
+      "tools": [
+        "Trivy",
+        "Cosign",
+        "Semgrep",
+        "Gitleaks",
+        "Kyverno"
+      ],
+      "summary": "Shift-left scanning, SBOMs, signed artifacts, SLSA provenance and runtime enforcement.",
+      "studioLink": "/tools/sast/",
+      "studioName": "SAST & Pipeline Security Gate Studio",
+      "learnLink": "/studios/learn/?studio=sast",
+      "learnTopic": "Supply Chain Security & Trivy Scanning",
+      "flowLink": "/studios/flow/?template=devsecops",
+      "flowName": "DevSecOps Pipeline Security",
+      "projectRepo": "Pradeeptalari14/tp-sast",
+      "realWorldScenario": "Pre-Merge Supply Chain Defense: Blocks malicious npm dependency containing cryptomining payloads before it reaches staging container registry.",
+      "businessGain": "100% automated vulnerability scanning; reduces critical vulnerabilities in production containers to zero."
+    },
+    {
+      "id": "appsec-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/appsec-engineer",
+      "version": "1.0.0",
+      "description": "Application Security Engineer: Threat modelling, secure code review, OWASP controls and LLM application security.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "secure-code-review",
+          "description": "Review code for the OWASP Top 10 class of vulnerabilities. Trigger with 'security review this code', 'is this SQL injection', 'check auth', 'XSS' or 'SSRF'.",
+          "hint": ""
+        },
+        {
+          "name": "threat-modeling",
+          "description": "Run a structured threat model for a feature or system. Trigger with 'threat model', 'STRIDE', 'security design review' or 'what could go wrong with this design'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "code-security-review",
+          "description": "Security review a code snippet or diff and return findings with fixes",
+          "hint": "<code or diff>"
+        },
+        {
+          "name": "threat-model",
+          "description": "Generate a STRIDE threat model from a design description",
+          "hint": "<system or feature description>"
+        }
+      ],
+      "title": "Application Security Engineer",
+      "icon": "🛑",
+      "group": "Security, Quality & Application",
+      "tools": [
+        "OWASP ASVS",
+        "Semgrep",
+        "CodeQL",
+        "Burp Suite",
+        "ZAP"
+      ],
+      "summary": "Threat modelling, secure code review, OWASP controls and LLM application security.",
+      "studioLink": "/tools/llm-guardrails/",
+      "studioName": "LLM & AppSec Guardrails Studio",
+      "learnLink": "/studios/learn/?studio=llm-guardrails",
+      "learnTopic": "STRIDE Threat Modeling & OWASP Hardening",
+      "flowLink": "/studios/flow/?template=devsecops",
+      "flowName": "STRIDE Threat Model & Defense",
+      "projectRepo": "Pradeeptalari14/tp-llm-guardrails",
+      "realWorldScenario": "OWASP Top 10 API Hardening: Conducts STRIDE threat model on user authentication flow; remediates BOLA (Broken Object Level Authorization) vulnerability.",
+      "businessGain": "Guarantees zero unauthorized cross-tenant data leaks; remediates high-severity vulnerabilities before pen-test."
+    },
+    {
+      "id": "compliance-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/compliance-engineer",
+      "version": "1.0.0",
+      "description": "Compliance Engineer: Control mapping, continuous evidence collection, audit readiness and policy as code.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "control-mapping",
+          "description": "Map technical controls to compliance frameworks. Trigger with 'SOC 2', 'ISO 27001', 'GDPR', 'control mapping', 'audit prep' or 'what evidence do auditors need'.",
+          "hint": ""
+        },
+        {
+          "name": "policy-as-code",
+          "description": "Encode compliance and guardrail policies as automated checks. Trigger with 'policy as code', 'OPA', 'Rego', 'Conftest', 'Kyverno' or 'enforce this in CI'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "audit-readiness",
+          "description": "Assess audit readiness and list evidence gaps for a framework",
+          "hint": "<framework, scope and current controls>"
+        },
+        {
+          "name": "write-policy-rule",
+          "description": "Translate a written policy into a policy-as-code rule with tests",
+          "hint": "<policy statement and target (Terraform, Kubernetes, etc.)>"
+        }
+      ],
+      "title": "Compliance Engineer",
+      "icon": "📋",
+      "group": "Security, Quality & Application",
+      "tools": [
+        "SOC 2",
+        "ISO 27001",
+        "OPA",
+        "Drata",
+        "AWS Config"
+      ],
+      "summary": "Control mapping, continuous evidence collection, audit readiness and policy as code.",
+      "studioLink": "/tools/compliance/",
+      "studioName": "Policy-as-Code & Compliance Studio",
+      "learnLink": "/studios/learn/?studio=compliance",
+      "learnTopic": "Automated SOC 2 & ISO 27001 Evidence Engine",
+      "flowLink": "/studios/flow/?template=devsecops",
+      "flowName": "SOC2 & ISO 27001 Evidence Engine",
+      "projectRepo": "Pradeeptalari14/tp-compliance",
+      "realWorldScenario": "Automated SOC 2 Type II Audit: Evaluates 150 AWS accounts against CIS Benchmarks using OPA Rego policies; generates audit evidence package.",
+      "businessGain": "Reduces annual audit preparation time from 6 weeks to 3 hours; maintains continuous 100% compliance score."
+    },
+    {
+      "id": "qa-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/qa-engineer",
+      "version": "1.0.0",
+      "description": "QA and Test Automation Engineer: Test strategy, automation pyramid, flaky test control and contract testing.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "flaky-test-triage",
+          "description": "Find and fix flaky tests systematically. Trigger with 'flaky test', 'intermittent failure', 'passes locally fails in CI' or 'rerun fixes it'.",
+          "hint": ""
+        },
+        {
+          "name": "test-strategy",
+          "description": "Create a risk-based test strategy and automation pyramid. Trigger with 'test strategy', 'what should we test', 'increase coverage', 'test plan' or 'reduce regression bugs'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "flaky-triage",
+          "description": "Analyse CI failure history and classify likely flaky tests and causes",
+          "hint": "<test results history or failure logs>"
+        },
+        {
+          "name": "test-plan",
+          "description": "Generate a risk-based test plan for a feature",
+          "hint": "<feature description and acceptance criteria>"
+        }
+      ],
+      "title": "QA and Test Automation Engineer",
+      "icon": "✅",
+      "group": "Security, Quality & Application",
+      "tools": [
+        "Playwright",
+        "Vitest",
+        "Pytest",
+        "Pact",
+        "k6"
+      ],
+      "summary": "Test strategy, automation pyramid, flaky test control and contract testing.",
+      "studioLink": "/tools/ai-eval/",
+      "studioName": "Quality Assurance & Test Strategy Studio",
+      "learnLink": "/studios/learn/?studio=ai-eval",
+      "learnTopic": "Testing Pyramid & Flaky Test Elimination",
+      "flowLink": "/studios/flow/?template=pipeline",
+      "flowName": "Continuous Testing Pyramid",
+      "projectRepo": "Pradeeptalari14/tp-ai-eval",
+      "realWorldScenario": "Flaky Test Elimination: Profiles 2,000 integration tests in CI matrix; replaces arbitrary sleep calls with deterministic WebSocket event listeners.",
+      "businessGain": "Reduces CI test failure rate from 14% to 0.1%; cuts pipeline runtime from 28 minutes to 9 minutes."
+    },
+    {
+      "id": "performance-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/performance-engineer",
+      "version": "1.0.0",
+      "description": "Performance Engineer: Load testing, profiling, capacity modelling and tail-latency analysis.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "load-test-design",
+          "description": "Design realistic load and stress tests with clear pass criteria. Trigger with 'load test', 'performance test', 'how many users can we handle', 'stress test' or 'soak test'.",
+          "hint": ""
+        },
+        {
+          "name": "profiling-bottlenecks",
+          "description": "Find CPU, memory and latency bottlenecks with profiling and tracing. Trigger with 'why is it slow', 'flame graph', 'memory leak', 'high p99' or 'profile this service'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "bottleneck-hunt",
+          "description": "Interpret metrics, traces or profiles to locate the bottleneck",
+          "hint": "<latency breakdown, profile output or metrics>"
+        },
+        {
+          "name": "load-test-plan",
+          "description": "Create a load test plan with scenarios, load shape and pass criteria",
+          "hint": "<system description, expected traffic and SLOs>"
+        }
+      ],
+      "title": "Performance Engineer",
+      "icon": "🏎️",
+      "group": "Security, Quality & Application",
+      "tools": [
+        "k6",
+        "Locust",
+        "async-profiler",
+        "pprof",
+        "Flame graphs"
+      ],
+      "summary": "Load testing, profiling, capacity modelling and tail-latency analysis.",
+      "studioLink": "/tools/performance/",
+      "studioName": "High-Throughput Load Testing Studio",
+      "learnLink": "/studios/learn/?studio=performance",
+      "learnTopic": "k6 Distributed Load Testing & Profiling",
+      "flowLink": "/studios/flow/?template=backend",
+      "flowName": "Distributed Load Profile",
+      "projectRepo": "Pradeeptalari14/tp-performance",
+      "realWorldScenario": "Cyber Monday Traffic Stress Simulation: Executes 50,000 RPS distributed k6 load test; uncovers thread-pool starvation in checkout microservice.",
+      "businessGain": "Scales throughput capacity by 3.8x while reducing p99 latency under peak load from 1,200ms to 85ms."
+    },
+    {
+      "id": "backend-engineer",
+      "source": "engineers",
+      "dir": "plugins/engineers/backend-engineer",
+      "version": "1.0.0",
+      "description": "Backend Engineer: API design, resilience patterns, idempotency, caching and service boundaries.",
+      "author": "Talari Pradeep",
+      "skills": [
+        {
+          "name": "api-design",
+          "description": "Design consistent, evolvable HTTP APIs. Trigger with 'design an API', 'REST endpoints', 'pagination', 'versioning', 'error format' or 'idempotency'.",
+          "hint": ""
+        },
+        {
+          "name": "resilience-patterns",
+          "description": "Make service-to-service calls resilient. Trigger with 'timeouts', 'retries', 'circuit breaker', 'cascading failure', 'backpressure' or 'service is slow when a dependency is slow'.",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "api-review",
+          "description": "Review an API spec for consistency, safety and evolvability",
+          "hint": "<OpenAPI spec or endpoint list>"
+        },
+        {
+          "name": "resilience-audit",
+          "description": "Audit a service dependency map for timeouts, retries and failure isolation",
+          "hint": "<dependency list with current timeout and retry settings>"
+        }
+      ],
+      "title": "Backend Engineer",
+      "icon": "🧩",
+      "group": "Security, Quality & Application",
+      "tools": [
+        "FastAPI",
+        "Node.js",
+        "Go",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "summary": "API design, resilience patterns, idempotency, caching and service boundaries.",
+      "studioLink": "/tools/local-cloud-dev/",
+      "studioName": "Local Cloud Microservices Studio",
+      "learnLink": "/studios/learn/?studio=local-cloud-dev",
+      "learnTopic": "Circuit Breaking & API Contract Design",
+      "flowLink": "/studios/flow/?template=backend",
+      "flowName": "High-Throughput Microservice Architecture",
+      "projectRepo": "Pradeeptalari14/tp-local-cloud-dev",
+      "realWorldScenario": "Distributed Circuit Breaking: Implements adaptive rate-limiting and fallback caching to isolate cascading third-party payment gateway failures.",
+      "businessGain": "Ensures 100% uptime for core browsing and cart features even during complete downstream API outages."
+    },
+    {
+      "id": "bio-research",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/bio-research",
+      "version": "1.2.0",
+      "description": "Connect to preclinical research tools and databases (literature search, genomics analysis, target prioritization) to accelerate early-stage life sciences R&D",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "instrument-data-to-allotrope",
+          "description": "Convert laboratory instrument output files (PDF, CSV, Excel, TXT) to Allotrope Simple Model (ASM) JSON format or flattened 2D CSV. Use this skill when scientists need to standardize instrument data for LIMS systems, data lakes, or downstream analysis. Supports auto-detection of instrument types. Outputs include full ASM JSON, flattened CSV for easy import, and exportable Python code for data engineers. Common triggers include converting instrument files, standardizing lab data, preparing data for upload to LIMS/ELN systems, or generating parser code for production pipelines.",
+          "hint": ""
+        },
+        {
+          "name": "nextflow-development",
+          "description": "Run nf-core bioinformatics pipelines (rnaseq, sarek, atacseq) on sequencing data. Use when analyzing RNA-seq, WGS/WES, or ATAC-seq data—either local FASTQs or public datasets from GEO/SRA. Triggers on nf-core, Nextflow, FASTQ analysis, variant calling, gene expression, differential expression, GEO reanalysis, GSE/GSM/SRR accessions, or samplesheet creation.",
+          "hint": ""
+        },
+        {
+          "name": "scientific-problem-selection",
+          "description": "This skill should be used when scientists need help with research problem selection, project ideation, troubleshooting stuck projects, or strategic scientific decisions. Use this skill when users ask to pitch a new research idea, work through a project problem, evaluate project risks, plan research strategy, navigate decision trees, or get help choosing what scientific problem to work on. Typical requests include \"I have an idea for a project\", \"I'm stuck on my research\", \"help me evaluate this project\", \"what should I work on\", or \"I need strategic advice about my research\".",
+          "hint": ""
+        },
+        {
+          "name": "scvi-tools",
+          "description": "Deep learning for single-cell analysis using scvi-tools. This skill should be used when users need (1) data integration and batch correction with scVI/scANVI, (2) ATAC-seq analysis with PeakVI, (3) CITE-seq multi-modal analysis with totalVI, (4) multiome RNA+ATAC analysis with MultiVI, (5) spatial transcriptomics deconvolution with DestVI, (6) label transfer and reference mapping with scANVI/scArches, (7) RNA velocity with veloVI, or (8) any deep learning-based single-cell method. Triggers include mentions of scVI, scANVI, totalVI, PeakVI, MultiVI, DestVI, veloVI, sysVI, scArches, variational autoencoder, VAE, batch correction, data integration, multi-modal, CITE-seq, multiome, reference mapping, latent space.",
+          "hint": ""
+        },
+        {
+          "name": "single-cell-rna-qc",
+          "description": "Performs quality control on single-cell RNA-seq data (.h5ad or .h5 files) using scverse best practices with MAD-based filtering and comprehensive visualizations. Use when users request QC analysis, filtering low-quality cells, assessing data quality, or following scverse/scanpy best practices for single-cell analysis.",
+          "hint": ""
+        },
+        {
+          "name": "start",
+          "description": "Set up your bio-research environment and explore available tools. Use when first getting oriented with the plugin, checking which literature, drug-discovery, or visualization MCP servers are connected, or surveying available analysis skills before starting a new project.",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Bio Research",
+      "icon": "🧬",
+      "group": "Product, Data & Research",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Bio Research Lab",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Bioinformatics AST Pipeline",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Research Pipeline Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Genomic Target Discovery: Synthesizes protein binding assays and CRISPR screening papers in minutes.",
+      "businessGain": "85% faster literature review and automated target validation."
+    },
+    {
+      "id": "cowork-plugin-management",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/cowork-plugin-management",
+      "version": "0.2.2",
+      "description": "Create, customize, and manage plugins tailored to your organization's tools and workflows. Configure MCP servers, adjust plugin behavior, and adapt templates to match how your team works.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "cowork-plugin-customizer",
+          "description": "Customize a Claude Code plugin for a specific organization's tools and workflows. Use when: customize plugin, set up plugin, configure plugin, tailor plugin, adjust plugin settings, customize plugin connectors, customize plugin skill, tweak plugin, modify plugin configuration.",
+          "hint": ""
+        },
+        {
+          "name": "create-cowork-plugin",
+          "description": "Guide users through creating a new plugin from scratch in a cowork session. Use when users want to create a plugin, build a plugin, make a new plugin, develop a plugin, scaffold a plugin, start a plugin from scratch, or design a plugin. This skill requires Cowork mode with access to the outputs directory for delivering the final .plugin file.",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Cowork Plugin Management",
+      "icon": "🧩",
+      "group": "Productivity & Tooling",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/plugins/",
+      "studioName": "Plugins Marketplace",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Plugin Scaffolding & Validation",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Plugin Ecosystem Architecture",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Enterprise Claude Code Governance: Audits, verifies, and installs validated plugins across developer workstations.",
+      "businessGain": "100% compliance with corporate AI extension policies."
+    },
+    {
+      "id": "customer-support",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/customer-support",
+      "version": "1.3.0",
+      "description": "Triage tickets, draft responses, escalate issues, and build your knowledge base. Research customer context and turn resolved issues into self-service content.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "customer-escalation",
+          "description": "Package an escalation for engineering, product, or leadership with full context. Use when a bug needs engineering attention beyond normal support, multiple customers report the same issue, a customer is threatening to churn, or an issue has sat unresolved past its SLA.",
+          "hint": "<issue summary> [customer name]"
+        },
+        {
+          "name": "customer-research",
+          "description": "Multi-source research on a customer question or topic with source attribution. Use when a customer asks something you need to look up, investigating whether a bug has been reported before, checking what was previously told to a specific account, or gathering background before drafting a response.",
+          "hint": "<question or topic>"
+        },
+        {
+          "name": "draft-response",
+          "description": "Draft a professional customer-facing response tailored to the situation and relationship. Use when answering a product question, responding to an escalation or outage, delivering bad news like a delay or won't-fix, declining a feature request, or replying to a billing issue.",
+          "hint": "<situation description>"
+        },
+        {
+          "name": "kb-article",
+          "description": "Draft a knowledge base article from a resolved issue or common question. Use when a ticket resolution is worth documenting for self-service, the same question keeps coming up, a workaround needs to be published, or a known issue should be communicated to customers.",
+          "hint": "<resolved issue or ticket>"
+        },
+        {
+          "name": "ticket-triage",
+          "description": "Triage and prioritize a support ticket or customer issue. Use when a new ticket comes in and needs categorization, assigning P1-P4 priority, deciding which team should handle it, or checking whether it's a duplicate or known issue before routing.",
+          "hint": "<ticket or issue description>"
+        }
+      ],
+      "commands": [],
+      "title": "Customer Support",
+      "icon": "🎧",
+      "group": "Go-to-Market",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Support Automation Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Ticket Classification & Triage",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Support Routing Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Customer Escalation Triage: Automatically drafts empathetic, SLA-compliant responses and surfaces relevant Zendesk tickets.",
+      "businessGain": "60% faster ticket resolution; 94% CSAT retention."
+    },
+    {
+      "id": "data",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/data",
+      "version": "1.1.0",
+      "description": "Write SQL, explore datasets, and generate insights faster. Build visualizations and dashboards, and turn raw data into clear stories for stakeholders.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "analyze",
+          "description": "Answer data questions -- from quick lookups to full analyses. Use when looking up a single metric, investigating what's driving a trend or drop, comparing segments over time, or preparing a formal data report for stakeholders.",
+          "hint": "<question>"
+        },
+        {
+          "name": "build-dashboard",
+          "description": "Build an interactive HTML dashboard with charts, filters, and tables. Use when creating an executive overview with KPI cards, turning query results into a shareable self-contained report, building a team monitoring snapshot, or needing multiple charts with filters in one browser-openable file.",
+          "hint": "<description> [data source]"
+        },
+        {
+          "name": "create-viz",
+          "description": "Create publication-quality visualizations with Python. Use when turning query results or a DataFrame into a chart, selecting the right chart type for a trend or comparison, generating a plot for a report or presentation, or needing an interactive chart with hover and zoom.",
+          "hint": "<data source> [chart type]"
+        },
+        {
+          "name": "data-context-extractor",
+          "description": "Generate or improve a company-specific data analysis skill by extracting tribal knowledge from analysts. BOOTSTRAP MODE - Triggers: \"Create a data context skill\", \"Set up data analysis for our warehouse\", \"Help me create a skill for our database\", \"Generate a data skill for [company]\" → Discovers schemas, asks key questions, generates initial skill with reference files ITERATION MODE - Triggers: \"Add context about [domain]\", \"The skill needs more info about [topic]\", \"Update the data skill with [metrics/tables/terminology]\", \"Improve the [domain] reference\" → Loads existing skill, asks targeted questions, appends/updates reference files Use when data analysts want Claude to understand their company's specific data warehouse, terminology, metrics definitions, and common query patterns.",
+          "hint": ""
+        },
+        {
+          "name": "data-visualization",
+          "description": "Create effective data visualizations with Python (matplotlib, seaborn, plotly). Use when building charts, choosing the right chart type for a dataset, creating publication-quality figures, or applying design principles like accessibility and color theory.",
+          "hint": ""
+        },
+        {
+          "name": "explore-data",
+          "description": "Profile and explore a dataset to understand its shape, quality, and patterns. Use when encountering a new table or file, checking null rates and column distributions, spotting data quality issues like duplicates or suspicious values, or deciding which dimensions and metrics to analyze.",
+          "hint": "<table or file>"
+        },
+        {
+          "name": "sql-queries",
+          "description": "Write correct, performant SQL across all major data warehouse dialects (Snowflake, BigQuery, Databricks, PostgreSQL, etc.). Use when writing queries, optimizing slow SQL, translating between dialects, or building complex analytical queries with CTEs, window functions, or aggregations.",
+          "hint": ""
+        },
+        {
+          "name": "statistical-analysis",
+          "description": "Apply statistical methods including descriptive stats, trend analysis, outlier detection, and hypothesis testing. Use when analyzing distributions, testing for significance, detecting anomalies, computing correlations, or interpreting statistical results.",
+          "hint": ""
+        },
+        {
+          "name": "validate-data",
+          "description": "QA an analysis before sharing -- methodology, accuracy, and bias checks. Use when reviewing an analysis before a stakeholder presentation, spot-checking calculations and aggregation logic, verifying a SQL query's results look right, or assessing whether conclusions are actually supported by the data.",
+          "hint": "<analysis to review>"
+        },
+        {
+          "name": "write-query",
+          "description": "Write optimized SQL for your dialect with best practices. Use when translating a natural-language data need into SQL, building a multi-CTE query with joins and aggregations, optimizing a query against a large partitioned table, or getting dialect-specific syntax for Snowflake, BigQuery, Postgres, etc.",
+          "hint": "<description of what data you need>"
+        }
+      ],
+      "commands": [],
+      "title": "Data",
+      "icon": "📊",
+      "group": "Product, Data & Research",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Data Analytics Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Automated Exploratory Data Analysis",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "Data Processing Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Executive KPI Reporting: Synthesizes multi-source SQL outputs into cohort retention tables and anomaly alerts.",
+      "businessGain": "Eliminates 12 hours of weekly manual spreadsheet manipulation."
+    },
+    {
+      "id": "design",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/design",
+      "version": "1.2.0",
+      "description": "Accelerate design workflows — critique, design system management, UX writing, accessibility audits, research synthesis, and dev handoff. From exploration to pixel-perfect specs.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "accessibility-review",
+          "description": "Run a WCAG 2.1 AA accessibility audit on a design or page. Trigger with \"audit accessibility\", \"check a11y\", \"is this accessible?\", or when reviewing a design for color contrast, keyboard navigation, touch target size, or screen reader behavior before handoff.",
+          "hint": "<Figma URL, URL, or description>"
+        },
+        {
+          "name": "design-critique",
+          "description": "Get structured design feedback on usability, hierarchy, and consistency. Trigger with \"review this design\", \"critique this mockup\", \"what do you think of this screen?\", or when sharing a Figma link or screenshot for feedback at any stage from exploration to final polish.",
+          "hint": "<Figma URL, screenshot, or description>"
+        },
+        {
+          "name": "design-handoff",
+          "description": "Generate developer handoff specs from a design. Use when a design is ready for engineering and needs a spec sheet covering layout, design tokens, component props, interaction states, responsive breakpoints, edge cases, and animation details.",
+          "hint": "<Figma URL or design description>"
+        },
+        {
+          "name": "design-system",
+          "description": "Audit, document, or extend your design system. Use when checking for naming inconsistencies or hardcoded values across components, writing documentation for a component's variants, states, and accessibility notes, or designing a new pattern that fits the existing system.",
+          "hint": "[audit | document | extend] <component or system>"
+        },
+        {
+          "name": "research-synthesis",
+          "description": "Synthesize user research into themes, insights, and recommendations. Use when you have interview transcripts, survey results, usability test notes, support tickets, or NPS responses that need to be distilled into patterns, user segments, and prioritized next steps.",
+          "hint": "<research data, transcripts, or survey results>"
+        },
+        {
+          "name": "user-research",
+          "description": "Plan, conduct, and synthesize user research. Trigger with \"user research plan\", \"interview guide\", \"usability test\", \"survey design\", \"research questions\", or when the user needs help with any aspect of understanding their users through research.",
+          "hint": ""
+        },
+        {
+          "name": "ux-copy",
+          "description": "Write or review UX copy — microcopy, error messages, empty states, CTAs. Trigger with \"write copy for\", \"what should this button say?\", \"review this error message\", or when naming a CTA, wording a confirmation dialog, filling an empty state, or writing onboarding text.",
+          "hint": "<context or copy to review>"
+        }
+      ],
+      "commands": [],
+      "title": "Design",
+      "icon": "🎨",
+      "group": "Product, Data & Research",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Design System Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Design Token Transformation",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "UI Component Architecture",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Design System Governance: Translates Figma tokens into CSS custom properties and WCAG-compliant color palettes.",
+      "businessGain": "Ensures 100% accessibility compliance and design-token consistency."
+    },
+    {
+      "id": "engineering",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/engineering",
+      "version": "1.2.0",
+      "description": "Streamline engineering workflows — standups, code review, architecture decisions, incident response, and technical documentation. Works with your existing tools or standalone.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "architecture",
+          "description": "Create or evaluate an architecture decision record (ADR). Use when choosing between technologies (e.g., Kafka vs SQS), documenting a design decision with trade-offs and consequences, reviewing a system design proposal, or designing a new component from requirements and constraints.",
+          "hint": "<decision or system to design>"
+        },
+        {
+          "name": "code-review",
+          "description": "Review code changes for security, performance, and correctness. Trigger with a PR URL or diff, \"review this before I merge\", \"is this code safe?\", or when checking a change for N+1 queries, injection risks, missing edge cases, or error handling gaps.",
+          "hint": "<PR URL, diff, or file path>"
+        },
+        {
+          "name": "debug",
+          "description": "Structured debugging session — reproduce, isolate, diagnose, and fix. Trigger with an error message or stack trace, \"this works in staging but not prod\", \"something broke after the deploy\", or when behavior diverges from expected and the cause isn't obvious.",
+          "hint": "<error message or problem description>"
+        },
+        {
+          "name": "deploy-checklist",
+          "description": "Pre-deployment verification checklist. Use when about to ship a release, deploying a change with database migrations or feature flags, verifying CI status and approvals before going to production, or documenting rollback triggers ahead of time.",
+          "hint": "[service or release name]"
+        },
+        {
+          "name": "documentation",
+          "description": "Write and maintain technical documentation. Trigger with \"write docs for\", \"document this\", \"create a README\", \"write a runbook\", \"onboarding guide\", or when the user needs help with any form of technical writing — API docs, architecture docs, or operational runbooks.",
+          "hint": ""
+        },
+        {
+          "name": "incident-response",
+          "description": "Run an incident response workflow — triage, communicate, and write postmortem. Trigger with \"we have an incident\", \"production is down\", an alert that needs severity assessment, a status update mid-incident, or when writing a blameless postmortem after resolution.",
+          "hint": "<incident description or alert>"
+        },
+        {
+          "name": "standup",
+          "description": "Generate a standup update from recent activity. Use when preparing for daily standup, summarizing yesterday's commits and PRs and ticket moves, formatting work into yesterday/today/blockers, or structuring a few rough notes into a shareable update.",
+          "hint": "[yesterday | today | blockers]"
+        },
+        {
+          "name": "system-design",
+          "description": "Design systems, services, and architectures. Trigger with \"design a system for\", \"how should we architect\", \"system design for\", \"what's the right architecture for\", or when the user needs help with API design, data modeling, or service boundaries.",
+          "hint": ""
+        },
+        {
+          "name": "tech-debt",
+          "description": "Identify, categorize, and prioritize technical debt. Trigger with \"tech debt\", \"technical debt audit\", \"what should we refactor\", \"code health\", or when the user asks about code quality, refactoring priorities, or maintenance backlog.",
+          "hint": ""
+        },
+        {
+          "name": "testing-strategy",
+          "description": "Design test strategies and test plans. Trigger with \"how should we test\", \"test strategy for\", \"write tests for\", \"test plan\", \"what tests do we need\", or when the user needs help with testing approaches, coverage, or test architecture.",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Engineering",
+      "icon": "🛠️",
+      "group": "Product, Data & Research",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Software Engineering Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Refactoring & Architecture Review",
+      "flowLink": "/studios/flow/?template=backend",
+      "flowName": "Engineering Architecture Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Legacy Code Modernization: Analyzes technical debt, decomposes monolith classes, and generates unit tests.",
+      "businessGain": "40% reduction in cyclomatic complexity across core services."
+    },
+    {
+      "id": "enterprise-search",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/enterprise-search",
+      "version": "1.3.0",
+      "description": "Search across all of your company's tools in one place. Find anything across email, chat, documents, and wikis without switching between apps.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "digest",
+          "description": "Generate a daily or weekly digest of activity across all connected sources. Use when catching up after time away, starting the day and wanting a summary of mentions and action items, or reviewing a week's decisions and document updates grouped by project.",
+          "hint": "[--daily | --weekly | --since <date>]"
+        },
+        {
+          "name": "knowledge-synthesis",
+          "description": "Combines search results from multiple sources into coherent, deduplicated answers with source attribution. Handles confidence scoring based on freshness and authority, and summarizes large result sets effectively.",
+          "hint": ""
+        },
+        {
+          "name": "search",
+          "description": "Search across all connected sources in one query. Trigger with \"find that doc about...\", \"what did we decide on...\", \"where was the conversation about...\", or when looking for a decision, document, or discussion that could live in chat, email, cloud storage, or a project tracker.",
+          "hint": "<query>"
+        },
+        {
+          "name": "search-strategy",
+          "description": "Query decomposition and multi-source search orchestration. Breaks natural language questions into targeted searches per source, translates queries into source-specific syntax, ranks results by relevance, and handles ambiguity and fallback strategies.",
+          "hint": ""
+        },
+        {
+          "name": "source-management",
+          "description": "Manages connected MCP sources for enterprise search. Detects available sources, guides users to connect new ones, handles source priority ordering, and manages rate limiting awareness.",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Enterprise Search",
+      "icon": "🔍",
+      "group": "Productivity & Tooling",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Enterprise Search Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Cross-Source Semantic Indexing",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "Search Indexing Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Internal Knowledge Discovery: Unifies search across Confluence, Jira, Google Drive, and GitHub repositories.",
+      "businessGain": "Cuts employee time spent searching for internal docs by 75%."
+    },
+    {
+      "id": "finance",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/finance",
+      "version": "1.3.0",
+      "description": "Streamline finance and accounting workflows, from journal entries and reconciliation to financial statements and variance analysis. Speed up audit prep, month-end close, and keeping your books clean.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "audit-support",
+          "description": "Support SOX 404 compliance with control testing methodology, sample selection, and documentation standards. Use when generating testing workpapers, selecting audit samples, classifying control deficiencies, or preparing for internal or external audits.",
+          "hint": ""
+        },
+        {
+          "name": "close-management",
+          "description": "Manage the month-end close process with task sequencing, dependencies, and status tracking. Use when planning the close calendar, tracking close progress, identifying blockers, or sequencing close activities by day.",
+          "hint": ""
+        },
+        {
+          "name": "financial-statements",
+          "description": "Generate financial statements (income statement, balance sheet, cash flow) with period-over-period comparison and variance analysis. Use when preparing a monthly or quarterly P&L, closing the books and need to flag material variances, comparing actuals to budget, building a financial summary for leadership review, or looking up GAAP presentation requirements and period-end adjustments.",
+          "hint": "<frequency> <period>"
+        },
+        {
+          "name": "journal-entry",
+          "description": "Prepare journal entries with proper debits, credits, and supporting detail. Use when booking month-end accruals (AP, payroll, prepaid), recording depreciation or amortization, posting revenue recognition or deferred revenue adjustments, or documenting an entry for audit review.",
+          "hint": "<entry type> [period]"
+        },
+        {
+          "name": "journal-entry-prep",
+          "description": "Prepare journal entries with proper debits, credits, and supporting documentation for month-end close. Use when booking accruals, prepaid amortization, fixed asset depreciation, payroll entries, revenue recognition, or any manual journal entry.",
+          "hint": ""
+        },
+        {
+          "name": "reconciliation",
+          "description": "Reconcile accounts by comparing GL balances to subledgers, bank statements, or third-party data. Use when performing bank reconciliations, GL-to-subledger recs, intercompany reconciliations, or identifying and categorizing reconciling items.",
+          "hint": "<account> [period]"
+        },
+        {
+          "name": "sox-testing",
+          "description": "Generate SOX sample selections, testing workpapers, and control assessments. Use when planning quarterly or annual SOX 404 testing, pulling a sample for a control (revenue, P2P, ITGC, close), building a testing workpaper template, or evaluating and classifying a control deficiency.",
+          "hint": "<control area> [period]"
+        },
+        {
+          "name": "variance-analysis",
+          "description": "Decompose financial variances into drivers with narrative explanations and waterfall analysis. Use when analyzing budget vs. actual, period-over-period changes, revenue or expense variances, or preparing variance commentary for leadership.",
+          "hint": "<line item> <period> vs <comparison>"
+        }
+      ],
+      "commands": [],
+      "title": "Finance",
+      "icon": "🏦",
+      "group": "Business Operations",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/finops/",
+      "studioName": "Financial Analysis Studio",
+      "learnLink": "/studios/learn/?studio=finops",
+      "learnTopic": "Runway & Burn Modeling",
+      "flowLink": "/studios/flow/?template=infra",
+      "flowName": "Financial Topology Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Quarterly Financial Forecasting: Compiles revenue models, variance analysis, and departmental OPEX reviews.",
+      "businessGain": "Zero spreadsheet formula errors; 3x faster monthly close."
+    },
+    {
+      "id": "human-resources",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/human-resources",
+      "version": "1.3.0",
+      "description": "Streamline people operations — recruiting, onboarding, performance reviews, compensation analysis, and policy guidance. Maintain compliance and keep your team running smoothly.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "comp-analysis",
+          "description": "Analyze compensation — benchmarking, band placement, and equity modeling. Trigger with \"what should we pay a [role]\", \"is this offer competitive\", \"model this equity grant\", or when uploading comp data to find outliers and retention risks.",
+          "hint": "<role, level, or dataset>"
+        },
+        {
+          "name": "draft-offer",
+          "description": "Draft an offer letter with comp details and terms. Use when a candidate is ready for an offer, assembling a total comp package (base, equity, signing bonus), writing the offer letter text itself, or prepping negotiation guidance for the hiring manager.",
+          "hint": "<role and level>"
+        },
+        {
+          "name": "interview-prep",
+          "description": "Create structured interview plans with competency-based questions and scorecards. Trigger with \"interview plan for\", \"interview questions for\", \"how should we interview\", \"scorecard for\", or when the user is preparing to interview candidates.",
+          "hint": ""
+        },
+        {
+          "name": "onboarding",
+          "description": "Generate an onboarding checklist and first-week plan for a new hire. Use when someone has a start date coming up, building the pre-start task list (accounts, equipment, buddy), scheduling Day 1 and Week 1, or setting 30/60/90-day goals for a new team member.",
+          "hint": "<new hire name and role>"
+        },
+        {
+          "name": "org-planning",
+          "description": "Headcount planning, org design, and team structure optimization. Trigger with \"org planning\", \"headcount plan\", \"team structure\", \"reorg\", \"who should we hire next\", or when the user is thinking about team size, reporting structure, or organizational design.",
+          "hint": ""
+        },
+        {
+          "name": "people-report",
+          "description": "Generate headcount, attrition, diversity, or org health reports. Use when pulling a headcount snapshot for leadership, analyzing turnover trends by team, preparing diversity representation metrics, or assessing span of control and flight risk across the org.",
+          "hint": "<report type — headcount, attrition, diversity, org health>"
+        },
+        {
+          "name": "performance-review",
+          "description": "Structure a performance review with self-assessment, manager template, and calibration prep. Use when review season kicks off and you need a self-assessment template, writing a manager review for a direct report, prepping rating distributions and promotion cases for calibration, or turning vague feedback into specific behavioral examples.",
+          "hint": "<employee name or review cycle>"
+        },
+        {
+          "name": "policy-lookup",
+          "description": "Find and explain company policies in plain language. Trigger with \"what's our PTO policy\", \"can I work remotely from another country\", \"how do expenses work\", or any plain-language question about benefits, travel, leave, or handbook rules.",
+          "hint": "<policy topic — PTO, benefits, travel, expenses, etc.>"
+        },
+        {
+          "name": "recruiting-pipeline",
+          "description": "Track and manage recruiting pipeline stages. Trigger with \"recruiting update\", \"candidate pipeline\", \"how many candidates\", \"hiring status\", or when the user discusses sourcing, screening, interviewing, or extending offers.",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Human Resources",
+      "icon": "🤝",
+      "group": "Business Operations",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "People Operations Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Job Architecture & Compensation",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "People Operations Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Global Employee Onboarding: Generates compliant offer letters, role rubrics, and structured onboarding roadmaps.",
+      "businessGain": "Reduces HR administrative burden by 50%."
+    },
+    {
+      "id": "legal",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/legal",
+      "version": "1.3.0",
+      "description": "Speed up contract review, NDA triage, and compliance workflows for in-house legal teams. Draft legal briefs, organize precedent research, and manage institutional knowledge.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "brief",
+          "description": "Generate contextual briefings for legal work — daily summary, topic research, or incident response. Use when starting your day and need a scan of legal-relevant items across email, calendar, and contracts, when researching a specific legal question across internal sources, or when a developing situation (data breach, litigation threat, regulatory inquiry) needs rapid context.",
+          "hint": "[daily | topic <query> | incident]"
+        },
+        {
+          "name": "compliance-check",
+          "description": "Run a compliance check on a proposed action, product feature, or business initiative, surfacing applicable regulations, required approvals, and risk areas. Use when launching a feature that touches personal data, when marketing or product proposes something with regulatory implications, or when you need to know which approvals and jurisdictional requirements apply before proceeding.",
+          "hint": "<action or initiative to check>"
+        },
+        {
+          "name": "legal-response",
+          "description": "Generate a response to a common legal inquiry using configured templates, with built-in escalation checks for situations that shouldn't use a templated reply. Use when responding to data subject requests, litigation hold notices, vendor legal questions, NDA requests from business teams, or subpoenas.",
+          "hint": "[inquiry-type]"
+        },
+        {
+          "name": "legal-risk-assessment",
+          "description": "Assess and classify legal risks using a severity-by-likelihood framework with escalation criteria. Use when evaluating contract risk, assessing deal exposure, classifying issues by severity, or determining whether a matter needs senior counsel or outside legal review.",
+          "hint": ""
+        },
+        {
+          "name": "meeting-briefing",
+          "description": "Prepare structured briefings for meetings with legal relevance and track resulting action items. Use when preparing for contract negotiations, board meetings, compliance reviews, or any meeting where legal context, background research, or action tracking is needed.",
+          "hint": ""
+        },
+        {
+          "name": "review-contract",
+          "description": "Review a contract against your organization's negotiation playbook — flag deviations, generate redlines, provide business impact analysis. Use when reviewing vendor or customer agreements, when you need clause-by-clause analysis against standard positions, or when preparing a negotiation strategy with prioritized redlines and fallback positions.",
+          "hint": "<contract file or text>"
+        },
+        {
+          "name": "signature-request",
+          "description": "Prepare and route a document for e-signature — run a pre-signature checklist, configure signing order, and send for execution. Use when a contract is finalized and ready to sign, when verifying entity names, exhibits, and signature blocks before sending, or when setting up an envelope with sequential or parallel signers.",
+          "hint": "<document or contract to send>"
+        },
+        {
+          "name": "triage-nda",
+          "description": "Rapidly triage an incoming NDA and classify it as GREEN (standard approval), YELLOW (counsel review), or RED (full legal review). Use when a new NDA arrives from sales or business development, when screening for embedded non-solicits, non-competes, or missing carveouts, or when deciding whether an NDA can be signed under standard delegation.",
+          "hint": "<NDA file or text>"
+        },
+        {
+          "name": "vendor-check",
+          "description": "Check the status of existing agreements with a vendor across all connected systems — CLM, CRM, email, and document storage — with gap analysis and upcoming deadlines. Use when onboarding or renewing a vendor, when you need a consolidated view of what's signed and what's missing (MSA, DPA, SOW), or when checking for approaching expirations and surviving obligations.",
+          "hint": "[vendor name]"
+        }
+      ],
+      "commands": [],
+      "title": "Legal",
+      "icon": "⚖️",
+      "group": "Business Operations",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Legal Document Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Contract Clause Comparison",
+      "flowLink": "/studios/flow/?template=devsecops",
+      "flowName": "Legal Compliance Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Enterprise Vendor Contract Redlining: Flags indemnification, liability caps, and GDPR non-compliant data clauses.",
+      "businessGain": "Prevents legal liabilities and accelerates vendor onboarding by 4x."
+    },
+    {
+      "id": "marketing",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/marketing",
+      "version": "1.2.0",
+      "description": "Create content, plan campaigns, and analyze performance across marketing channels. Maintain brand voice consistency, track competitors, and report on what's working.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "brand-review",
+          "description": "Review content against your brand voice, style guide, and messaging pillars, flagging deviations by severity with specific before/after fixes. Use when checking a draft before it ships, when auditing copy for voice consistency and terminology, or when screening for unsubstantiated claims, missing disclaimers, and other legal flags.",
+          "hint": "<content to review>"
+        },
+        {
+          "name": "campaign-plan",
+          "description": "Generate a full campaign brief with objectives, audience, messaging, channel strategy, content calendar, and success metrics. Use when planning a product launch, lead-gen push, or awareness campaign, when you need a week-by-week content calendar with dependencies, or when translating a marketing goal into a structured, executable plan.",
+          "hint": "<campaign objective or product>"
+        },
+        {
+          "name": "competitive-brief",
+          "description": "Research competitors and generate a positioning and messaging comparison with content gaps, opportunities, and threats. Use when building sales battlecards, when finding positioning gaps and messaging angles competitors haven't claimed, or when a competitor makes a move and you need to assess the impact.",
+          "hint": "<competitor or market segment>"
+        },
+        {
+          "name": "content-creation",
+          "description": "Draft marketing content across channels — blog posts, social media, email newsletters, landing pages, press releases, and case studies. Use when writing any marketing content, when you need channel-specific formatting, SEO-optimized copy, headline options, or calls to action.",
+          "hint": ""
+        },
+        {
+          "name": "draft-content",
+          "description": "Draft blog posts, social media, email newsletters, landing pages, press releases, and case studies with channel-specific formatting and SEO recommendations. Use when writing any marketing content, when you need headline or subject line options, or when adapting a message for a specific platform, audience, and brand voice.",
+          "hint": "<content type and topic>"
+        },
+        {
+          "name": "email-sequence",
+          "description": "Design and draft multi-email sequences with full copy, timing, branching logic, exit conditions, and performance benchmarks. Use when building onboarding, lead nurture, re-engagement, win-back, or product launch flows, when you need a complete drip campaign with A/B test suggestions, or when mapping a sequence end-to-end with a flow diagram.",
+          "hint": "[sequence type]"
+        },
+        {
+          "name": "performance-report",
+          "description": "Build a marketing performance report with key metrics, trend analysis, wins and misses, and prioritized optimization recommendations. Use when wrapping a campaign, when preparing weekly, monthly, or quarterly channel summaries for stakeholders, or when you need data translated into an executive summary with next-period priorities.",
+          "hint": "<time period or campaign>"
+        },
+        {
+          "name": "seo-audit",
+          "description": "Run a comprehensive SEO audit — keyword research, on-page analysis, content gaps, technical checks, and competitor comparison. Use when assessing a site's SEO health, when finding keyword opportunities and content gaps competitors own, or when you need a prioritized action plan split into quick wins and strategic investments.",
+          "hint": "<url or topic> [audit type]"
+        }
+      ],
+      "commands": [],
+      "title": "Marketing",
+      "icon": "📣",
+      "group": "Go-to-Market",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Marketing Engine Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Content Strategy & SEO Modeling",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Go-to-Market Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Product Launch Campaign: Drafts cross-channel copy, blog briefs, and press release materials from feature specs.",
+      "businessGain": "Accelerates campaign delivery time from 3 weeks to 3 days."
+    },
+    {
+      "id": "operations",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/operations",
+      "version": "1.3.0",
+      "description": "Optimize business operations — vendor management, process documentation, change management, capacity planning, and compliance tracking. Keep your organization running efficiently.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "capacity-plan",
+          "description": "Plan resource capacity — workload analysis and utilization forecasting. Use when heading into quarterly planning, the team feels overallocated and you need the numbers, deciding whether to hire or deprioritize, or stress-testing whether upcoming projects fit the people you have.",
+          "hint": "<team or project scope>"
+        },
+        {
+          "name": "change-request",
+          "description": "Create a change management request with impact analysis and rollback plan. Use when proposing a system or process change that needs approval, preparing a change record for CAB review, documenting risk and rollback steps before a deployment, or planning stakeholder communications for a rollout.",
+          "hint": "<change description>"
+        },
+        {
+          "name": "compliance-tracking",
+          "description": "Track compliance requirements and audit readiness. Trigger with \"compliance\", \"audit prep\", \"SOC 2\", \"ISO 27001\", \"GDPR\", \"regulatory requirement\", or when the user needs help tracking, preparing for, or documenting compliance activities.",
+          "hint": ""
+        },
+        {
+          "name": "process-doc",
+          "description": "Document a business process — flowcharts, RACI, and SOPs. Use when formalizing a process that lives in someone's head, building a RACI to clarify who owns what, writing an SOP for a handoff or audit, or capturing the exceptions and edge cases of how work actually gets done.",
+          "hint": "<process name or description>"
+        },
+        {
+          "name": "process-optimization",
+          "description": "Analyze and improve business processes. Trigger with \"this process is slow\", \"how can we improve\", \"streamline this workflow\", \"too many steps\", \"bottleneck\", or when the user describes an inefficient process they want to fix.",
+          "hint": ""
+        },
+        {
+          "name": "risk-assessment",
+          "description": "Identify, assess, and mitigate operational risks. Trigger with \"what are the risks\", \"risk assessment\", \"risk register\", \"what could go wrong\", or when the user is evaluating risks associated with a project, vendor, process, or decision.",
+          "hint": ""
+        },
+        {
+          "name": "runbook",
+          "description": "Create or update an operational runbook for a recurring task or procedure. Use when documenting a task that on-call or ops needs to run repeatably, turning tribal knowledge into exact step-by-step commands, adding troubleshooting and rollback steps to an existing procedure, or writing escalation paths for when things go wrong.",
+          "hint": "<process or task name>"
+        },
+        {
+          "name": "status-report",
+          "description": "Generate a status report with KPIs, risks, and action items. Use when writing a weekly or monthly update for leadership, summarizing project health with green/yellow/red status, surfacing risks and decisions that need stakeholder attention, or turning a pile of project tracker activity into a readable narrative.",
+          "hint": "[weekly | monthly | quarterly] [project or team]"
+        },
+        {
+          "name": "vendor-review",
+          "description": "Evaluate a vendor — cost analysis, risk assessment, and recommendation. Use when reviewing a new vendor proposal, deciding whether to renew or replace a contract, comparing two vendors side-by-side, or building a TCO breakdown and negotiation points before procurement sign-off.",
+          "hint": "<vendor name or proposal>"
+        }
+      ],
+      "commands": [],
+      "title": "Operations",
+      "icon": "📦",
+      "group": "Business Operations",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Business Operations Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "SOP Scaffolding & Process Mining",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Operational Process Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Cross-Departmental Workflow Optimization: Maps handoffs between sales and fulfillment to eliminate bottleneck queues.",
+      "businessGain": "35% improvement in order processing turnaround time."
+    },
+    {
+      "id": "pdf-viewer",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/pdf-viewer",
+      "version": "0.2.0",
+      "description": "View, annotate, and sign PDFs in a live interactive viewer. Mark up contracts, fill forms with visual feedback, stamp approvals, and place signatures — then download the annotated copy.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "view-pdf",
+          "description": "Interactive PDF viewer. Use when the user wants to open, show, or view a PDF and collaborate on it visually — annotate, highlight, stamp, fill form fields, place signature/initials, or review markup together. Not for summarization or text extraction (use native Read instead).",
+          "hint": ""
+        }
+      ],
+      "commands": [
+        {
+          "name": "annotate",
+          "description": "Collaboratively annotate a PDF — propose markup, review together, iterate",
+          "hint": "[path-or-url]"
+        },
+        {
+          "name": "fill-form",
+          "description": "Fill PDF form fields interactively with live visual feedback",
+          "hint": "[path-or-url]"
+        },
+        {
+          "name": "open",
+          "description": "Open a PDF in the interactive viewer",
+          "hint": "[path-or-url]"
+        },
+        {
+          "name": "sign",
+          "description": "Place a signature or initials image on a PDF",
+          "hint": "[path-or-url] [signature-image-path]"
+        }
+      ],
+      "title": "Pdf Viewer",
+      "icon": "📄",
+      "group": "Productivity & Tooling",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Document Intelligence Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Structured Document Extraction",
+      "flowLink": "/studios/flow/?template=rag",
+      "flowName": "Document Pipeline Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Complex PDF Data Extraction: Parses multi-column invoices, whitepapers, and technical specifications into JSON.",
+      "businessGain": "100% extraction accuracy with zero manual data entry."
+    },
+    {
+      "id": "product-management",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/product-management",
+      "version": "1.2.0",
+      "description": "Write feature specs, plan roadmaps, and synthesize user research faster. Keep stakeholders updated and stay ahead of the competitive landscape.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "competitive-brief",
+          "description": "Create a competitive analysis brief for one or more competitors or a feature area. Use when informing product strategy or feature prioritization, building sales battle cards, prepping board or investor materials, or deciding where to differentiate vs. achieve parity.",
+          "hint": "<competitor or feature area>"
+        },
+        {
+          "name": "metrics-review",
+          "description": "Review and analyze product metrics with trend analysis and actionable insights. Use when running a weekly, monthly, or quarterly metrics review, investigating a sudden spike or drop, comparing performance against targets, or turning raw numbers into a scorecard with recommended actions.",
+          "hint": "<time period or metric focus>"
+        },
+        {
+          "name": "product-brainstorming",
+          "description": "Brainstorm product ideas, explore problem spaces, and challenge assumptions as a thinking partner. Use when exploring a new opportunity, generating solutions to a product problem, stress-testing an idea, or when a PM needs to think out loud with a sharp sparring partner before converging on a direction.",
+          "hint": ""
+        },
+        {
+          "name": "roadmap-update",
+          "description": "Update, create, or reprioritize your product roadmap. Use when adding a new initiative and deciding what moves to make room, shifting priorities after new information comes in, moving timelines due to a dependency slip, or building a Now/Next/Later view from scratch.",
+          "hint": "<update description>"
+        },
+        {
+          "name": "sprint-planning",
+          "description": "Plan a sprint — scope work, estimate capacity, set goals, and draft a sprint plan. Use when kicking off a new sprint, sizing a backlog against team availability (accounting for PTO and meetings), deciding what's P0 vs. stretch, or handling carryover from the last sprint.",
+          "hint": "[sprint name or date range]"
+        },
+        {
+          "name": "stakeholder-update",
+          "description": "Generate a stakeholder update tailored to audience and cadence. Use when writing a weekly or monthly status for leadership, announcing a launch, escalating a risk or blocker, or translating the same progress into exec-brief, engineering-detail, or customer-facing versions.",
+          "hint": "<update type and audience>"
+        },
+        {
+          "name": "synthesize-research",
+          "description": "Synthesize user research from interviews, surveys, and feedback into structured insights. Use when you have a pile of interview notes, survey responses, or support tickets to make sense of, need to extract themes and rank findings by frequency and impact, or want to turn raw feedback into roadmap recommendations.",
+          "hint": "<research topic or question>"
+        },
+        {
+          "name": "write-spec",
+          "description": "Write a feature spec or PRD from a problem statement or feature idea. Use when turning a vague idea or user request into a structured document, scoping a feature with goals and non-goals, defining success metrics and acceptance criteria, or breaking a big ask into a phased spec.",
+          "hint": "<feature or problem statement>"
+        }
+      ],
+      "commands": [
+        {
+          "name": "brainstorm",
+          "description": "Brainstorm a product idea, problem space, or strategic question with a sharp thinking partner",
+          "hint": "<topic, problem, or idea to explore>"
+        }
+      ],
+      "title": "Product Management",
+      "icon": "🗺️",
+      "group": "Product, Data & Research",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Product Management Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "PRD Drafting & Opportunity Trees",
+      "flowLink": "/studios/flow/?template=pipeline",
+      "flowName": "Product Delivery Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "PRD Scaffolding: Transforms executive customer interview notes into prioritized user stories and acceptance criteria.",
+      "businessGain": "Aligns engineering and design 50% faster."
+    },
+    {
+      "id": "productivity",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/productivity",
+      "version": "1.3.1",
+      "description": "Manage tasks, plan your day, and build up memory of important context about your work. Syncs with your calendar, email, and chat to keep everything organized and on track.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "memory-management",
+          "description": "Two-tier memory system that makes Claude a true workplace collaborator. Decodes shorthand, acronyms, nicknames, and internal language so Claude understands requests like a colleague would. CLAUDE.md for working memory, memory/ directory for the full knowledge base.",
+          "hint": ""
+        },
+        {
+          "name": "start",
+          "description": "Initialize the productivity system and open the dashboard. Use when setting up the plugin for the first time, bootstrapping working memory from your existing task list, or decoding the shorthand (nicknames, acronyms, project codenames) you use in your todos.",
+          "hint": ""
+        },
+        {
+          "name": "task-management",
+          "description": "Simple task management using a shared TASKS.md file. Reference this when the user asks about their tasks, wants to add/complete tasks, or needs help tracking commitments.",
+          "hint": ""
+        },
+        {
+          "name": "update",
+          "description": "Sync tasks and refresh memory from your current activity. Use when pulling new assignments from your project tracker into TASKS.md, triaging stale or overdue tasks, filling memory gaps for unknown people or projects, or running a comprehensive scan to catch todos buried in chat and email.",
+          "hint": "[--comprehensive]"
+        }
+      ],
+      "commands": [],
+      "title": "Productivity",
+      "icon": "✅",
+      "group": "Productivity & Tooling",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Personal Productivity Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Daily Standup & Action Tracking",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Productivity Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Daily Work Orchestration: Summarizes calendar obligations, triages unread messages, and structures daily focus blocks.",
+      "businessGain": "Reclaims 1.5 hours of deep work time per day."
+    },
+    {
+      "id": "sales",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/sales",
+      "version": "2.1.0",
+      "description": "Sales skills that work with the tools your team already uses - your CRM, email, calendar, chat and call recorder - or with uploaded files. Prep calls, summarize and follow up, research accounts, review deals and pipeline, and write the forecast. When you ask, it can update CRM records, create email drafts or send email, post to chat and book meetings through your connected tools.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "account-context",
+          "description": "360-degree view of an account - CRM data, recent email threads, docs, transcripts, and internal chat chatter, synthesized into one brief. Use when the user asks \"tell me about [account]\" (an existing customer; for a prospect, account-research), \"account context for [name]\", \"what's going on with [account]\", or \"catch me up on [account]\".",
+          "hint": ""
+        },
+        {
+          "name": "account-plan",
+          "description": "Build or refresh a strategic account plan - current state, goals, stakeholder coverage, opportunity map, risks, and the action plan - written to a doc and key fields synced to the CRM. Use when the user says \"build an account plan for [account]\", \"update the [account] plan\", \"account planning for [account]\", or before a planning cycle / QBR.",
+          "hint": ""
+        },
+        {
+          "name": "account-research",
+          "description": "Research a target company and optionally a specific contact - company overview, recent news, likely priorities, and fit against your ICP. Cross-references existing CRM records. Use when the user asks to \"research [company]\", \"look into [company]\", \"prospect research on [company]\", \"look up [person]\", \"intel on [prospect]\", \"who is [person] at [company]\", or \"tell me about [company]\" when the company is a prospect rather than an existing account.",
+          "hint": ""
+        },
+        {
+          "name": "account-tiering",
+          "description": "Score and tier a list of accounts (or your full book) against ICP fit and engagement signals to prioritize where to spend time. Use when the user asks to \"tier my accounts\", \"prioritize my book\", \"which accounts should I focus on\", or \"score these accounts\".",
+          "hint": ""
+        },
+        {
+          "name": "call-prep",
+          "description": "Pre-call brief for an upcoming meeting - attendees, account history, prior call context from transcripts, open opportunity status, and suggested discovery questions. Use when the user asks \"prep me for [meeting/company]\", \"call prep [company]\", \"I'm meeting with [company], prep me\", \"get me ready for [meeting]\", or \"what do I need to know before my [time] call\".",
+          "hint": ""
+        },
+        {
+          "name": "call-summary",
+          "description": "Turn a call transcript or call notes into a customer follow-up email draft, an internal chat summary, and proposed CRM updates. Use when the user says \"call summary\", \"follow up on my [company] call\", \"summarize my call with [account]\", \"write the recap\", \"process this transcript\", \"process my call notes\", \"capture the objections and next steps\", or pastes rough notes or a transcript after a discovery, demo, or negotiation call.",
+          "hint": "<call notes or transcript>"
+        },
+        {
+          "name": "close-plan",
+          "description": "Build the business case and mutual action plan for a deal - the why-buy/why-now story, the ROI framing, and the dated step-by-step path to signature shared with the customer. Use when the user says \"build a close plan for [deal]\", \"mutual action plan for [account]\", \"business case for [opp]\", or \"what's the path to signature\".",
+          "hint": ""
+        },
+        {
+          "name": "competitive-intelligence",
+          "description": "Competitive analysis two ways - the in-deal play against a named competitor, and win/loss patterns, competitor mentions, and battlecards across the book. Use when the user asks \"competitive intel\", \"research competitors\", \"how do we compare to [competitor]\", \"what's new with [competitor]\", \"battlecard for [competitor]\", \"how do we beat [competitor]\", \"what's the play against [competitor] in [deal]\", \"where are we losing to [competitor]\", \"win/loss patterns\", \"competitive analysis\", \"refresh the battlecards\", or on a weekly schedule.",
+          "hint": ""
+        },
+        {
+          "name": "create-an-asset",
+          "description": "Build a customer deck, one-pager or leave-behind from your account data, call notes and approved materials, with no made-up numbers. Use when the user asks for a sales asset, one-pager, deck, leave-behind, \"create an asset for [prospect]\", or \"make something for [account]\".",
+          "hint": ""
+        },
+        {
+          "name": "crm-hygiene-check",
+          "description": "Read-only audit of your CRM opportunities for missing fields, stale dates, and stage mismatches - outputs a fix checklist to apply by hand or through update-opportunity. Use when the user asks \"check my CRM hygiene\", \"check my Salesforce or HubSpot data\", \"clean up my CRM\", \"audit my opps\", \"what's missing in the CRM\", or \"clean up my pipeline\".",
+          "hint": ""
+        },
+        {
+          "name": "customer-health",
+          "description": "Health check on a customer account and QBR-ready prep - relationship strength, engagement trend, risk signals, value delivered, and the agenda that makes the review worth their time. Use when the user asks \"how healthy is [account]\", \"customer health check\", \"prep the [account] QBR\", \"business review prep\", or \"are we at risk with [customer]\".",
+          "hint": ""
+        },
+        {
+          "name": "customer-voice",
+          "description": "Surface what customers are actually saying - direct attributed quotes on a topic across call transcripts and email, across your accounts. Use when the user asks \"what are customers saying about [topic]\", \"pull quotes on [objection/feature/competitor]\", \"voice of customer on [X]\", or \"what's coming up in calls\".",
+          "hint": ""
+        },
+        {
+          "name": "daily-briefing",
+          "description": "Morning rundown - today's meetings with account context, opps closing soon with stale flags, waiting customer emails, and the day's top actions. Use when the user says \"daily briefing\", \"daily brief\", \"morning briefing\", \"what's my day\", \"what's on my plate today\", \"prep my day\", \"start my day\", \"morning rundown\", or on a schedule.",
+          "hint": ""
+        },
+        {
+          "name": "deal-advance-gap",
+          "description": "Forward-looking gap check on one opportunity - exactly what is missing to advance it to the next stage and to close, with who does what by when. Use when the user asks \"what's missing to advance [deal]\", \"what do I need to move [opp] forward\", \"why is [deal] stuck\", or \"what's between [account] and a close\".",
+          "hint": ""
+        },
+        {
+          "name": "deal-review",
+          "description": "Deep-dive on a single opportunity - signal-adjusted health score, risks, gaps in qualification, and recommended next actions. Use when the user asks \"review the [account] deal\", \"deal review on [opp]\", \"is [opp] going to close\", or \"what's the risk on [deal]\".",
+          "hint": ""
+        },
+        {
+          "name": "deal-signals",
+          "description": "Proactive watch over your book - deals gone quiet, close dates slipping into view, champion changes, renewal windows opening, competitor mentions - surfaced as a short alert digest you can act on. Use when the user asks \"what changed in my book\", \"any deals gone quiet\", \"what should I be worried about today\", \"run my deal signals\", or sets it up as a recurring scheduled task.",
+          "hint": ""
+        },
+        {
+          "name": "deal-slip-scenario",
+          "description": "Model what happens to your number if a deal slips, shrinks, or dies - quota impact, coverage ratio change, and the substitute pipeline needed to stay on plan. Use when the user asks \"what if [deal] slips\", \"what happens if [account] pushes to next quarter\", \"can I still hit my number without [deal]\", or \"model losing [deal]\".",
+          "hint": ""
+        },
+        {
+          "name": "draft-outreach",
+          "description": "Draft a personalized outreach email or multi-touch sequence to a prospect, create it as an email draft for review, and add the contact to a sequence in your sales engagement tool when asked. Use when the user asks to \"draft outreach to [person/company]\", \"write a cold email to [prospect]\", \"re-engage [prospect]\", \"draft a 3-touch sequence\", or \"reach out to [person]\".",
+          "hint": ""
+        },
+        {
+          "name": "end-of-day",
+          "description": "The closing beat of the day - every call processed or explicitly skipped, the CRM brought current, commitments captured, and tomorrow's top three teed up. Use when the user says \"end of day\", \"close out my day\", \"process today's calls\", \"EOD\", or on an evening schedule. Companion bookend to daily-briefing.",
+          "hint": ""
+        },
+        {
+          "name": "expansion-whitespace",
+          "description": "Find the expansion whitespace in an account or a book - what they own vs. what they could own, the evidence for each play, and the open opps to create. Use when the user asks \"what's the whitespace at [account]\", \"where can I expand [account]\", \"upsell opportunities in my book\", or \"which customers should I be growing\".",
+          "hint": ""
+        },
+        {
+          "name": "forecast",
+          "description": "Generate the commit / best-case / pipeline narrative for a forecast call or a 1:1 with your manager - what's closing, what's at risk, what changed since last time. Use when the user asks \"write my forecast\", \"forecast narrative\", \"prep for forecast call\", \"prep for my quarterly forecast call\", \"which deals should I commit vs. call upside\", \"forecast from this pipeline export\", or \"prep for my 1:1 with my manager\".",
+          "hint": "<period>"
+        },
+        {
+          "name": "handle-objection",
+          "description": "Work through a live objection or competitive threat - what's really being said, the response that has worked before, and the proof points to use, grounded in your own win/loss history and customer quotes. Use when the user says \"they said we're too expensive\", \"how do I respond to [objection]\", \"[competitor] is in the deal\", \"help me handle this pushback\", or pastes an objection from an email or call.",
+          "hint": ""
+        },
+        {
+          "name": "inbox-sweep",
+          "description": "Batch-process unread customer emails - classify, prioritize, and draft replies. Use when the user asks \"sweep my inbox\", \"what customer emails need a reply\", \"draft replies to my customer emails\", or \"what needs a response\".",
+          "hint": ""
+        },
+        {
+          "name": "lead-triage",
+          "description": "Score and route an inbound lead, or rank a backlog of leads, against your ICP and qualification framework, then recommend a priority and next action. Use when the user asks \"triage this lead\", \"triage my leads\", \"rank my lead backlog\", \"is [company] a good lead\", \"qualify [lead]\", or pastes or uploads lead info.",
+          "hint": ""
+        },
+        {
+          "name": "log-activity",
+          "description": "Log a call, meeting, or email exchange to the CRM after the fact as a completed activity on the right account, opportunity, and contact - drafted from your description or a transcript, shown with its sources and saved when you ask. Use when the user says \"log this call\", \"log my meeting with [account]\", \"log that I emailed [contact]\", \"track this conversation in the CRM\", or \"what activities are logged on [account]\".",
+          "hint": ""
+        },
+        {
+          "name": "pipeline-review",
+          "description": "Stage-by-stage pipeline health check - coverage, aging, conversion, and at-risk deals - from CRM opportunity data. Use when the user asks \"review my pipeline\", \"pipeline health\", \"where's my pipeline stuck\", \"weekly pipeline review\", \"which deals should I focus on this week\", \"any stale or stuck deals\", \"which deals have past close dates\", \"which deals are single-threaded\", or \"check my pipeline coverage against my number\".",
+          "hint": "<segment or rep>"
+        },
+        {
+          "name": "renewal-radar",
+          "description": "Upcoming renewals with timing, risk, and uplift potential - and the renewal opportunity records to keep them honest. Use when the user asks \"what renewals are coming up\", \"renewal radar\", \"is [account] going to renew\", \"prep the [account] renewal\", or \"which renewals are at risk\".",
+          "hint": ""
+        },
+        {
+          "name": "rep-context",
+          "description": "Leader's prep on a single rep before a 1:1 - their pipeline, recent activity, what they've been working on per chat and calendar, and where they might need help. Use when the user asks \"prep for my 1:1 with [rep]\" (a rep you manage), \"how is [rep] doing\", or \"what's [rep] working on\".",
+          "hint": ""
+        },
+        {
+          "name": "route-lead",
+          "description": "Decide who owns an unrouted lead or opportunity and manage the handoff - deterministic routing by the org's own rules, a routing card the human router accepts or overrides, and drafted handoff notes. Use when the user says \"route this lead\", \"who should own [lead/opp]\", \"work the routing queue\", \"assign [company] to a rep\", or on a scheduled intake sweep.",
+          "hint": ""
+        },
+        {
+          "name": "schedule-meeting",
+          "description": "Find a time, draft the invite, and book the meeting on Google Calendar or Outlook - then log it to the CRM as an event on the right account and opportunity. Use when the user says \"schedule a follow-up with [contact]\", \"book the demo with [account]\", \"find time with [name] next week\", \"send my Calendly link\", or \"get the QBR on the calendar\".",
+          "hint": ""
+        },
+        {
+          "name": "setup",
+          "description": "First-run setup - checks which tools are connected, shows what's connected and what each one unlocks, learns how you write from your sent email, and renders a starter dashboard right away with no upfront interview. When tools are missing it walks through connecting the CRM, then email, then calendar, showing something useful after each. Use on first open, or when the user says \"set me up\", \"get started\", \"what's connected\", \"learn my voice\", \"match my writing style\", or \"onboard me\".",
+          "hint": ""
+        },
+        {
+          "name": "stakeholder-map",
+          "description": "Map the people in a deal or account - roles, influence, sentiment, who's missing, and your best access path to the people you haven't reached. Use when the user asks \"who are the players at [account]\", \"who's my way in\", \"am I single-threaded on [deal]\", \"map the stakeholders\", or \"who else should I be talking to\".",
+          "hint": ""
+        },
+        {
+          "name": "team-pipeline",
+          "description": "Leader view - roll up a team's pipeline by rep and stage, flag at-risk deals, and surface coaching moments. Use when the user asks \"show my team's pipeline\", \"team forecast\", \"prep for my team's pipeline review\", or \"where does my team need help\".",
+          "hint": ""
+        },
+        {
+          "name": "update-opportunity",
+          "description": "Guided updates to an opportunity - push the stage, move the close date, set next steps, fix amount or forecast category. Shows the before/after, writes what you ask for or accept, and verifies with a record link. Use when the user says \"push [deal] to [stage]\", \"move the close date on [opp]\", \"update next steps on [account]\", \"mark [deal] commit\", or accepts a suggested update from another skill.",
+          "hint": ""
+        },
+        {
+          "name": "weekly-wrap",
+          "description": "End-of-week summary for a rep or leader - what closed, what moved, what slipped, and what's on deck Monday. Optionally drafts a chat post to the team channel. Use when the user says \"weekly wrap\", \"week in review\", \"what happened this week\", or \"Friday summary\".",
+          "hint": ""
+        },
+        {
+          "name": "win-loss-review",
+          "description": "Analyze recently closed opportunities to find patterns in what wins and what loses - stage of loss, common objections from transcripts, deal characteristics. Leader-focused. Use when the user asks \"win loss review\", \"why are we losing deals\", \"what's working\", or \"analyze closed opps\".",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Sales",
+      "icon": "💼",
+      "group": "Go-to-Market",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Sales Enablement Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "MEDDPICC Qualification Modeling",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Sales Pipeline Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Enterprise Deal Strategy: Analyzes prospect 10-K filings to craft tailored MEDDPICC discovery questions.",
+      "businessGain": "Increases discovery meeting-to-opportunity conversion by 28%."
+    },
+    {
+      "id": "small-business",
+      "source": "anthropic",
+      "dir": "plugins/anthropic/small-business",
+      "version": "1.35.1",
+      "description": "Pre-built small business workflows to help you run and grow your business. Supports a majority of the tools you already use. You approve every step that touches money or customers. Install and then ask Claude to help you get onboarded.",
+      "author": "Anthropic",
+      "skills": [
+        {
+          "name": "ad-manager",
+          "description": "The ads consultant that becomes an ads agent. Reads paid-ad performance natively through the TikTok Ads connector, or via a build-connector Zapier connection for other ad platforms, explains in plain English what is working and what is burning money, recommends budget, targeting, and creative changes with the dollar impact of each, drafts new ad copy in the owner's voice plus Canva creative briefs, and — only after an explicit yes — executes the approved changes in the ad account. Works from exported CSV reports when nothing is connected, the normal starting point. Use this whenever the owner talks about ads or ad spend at all, including \"are my ads working,\" \"what's my ROI on ads,\" \"I'm spending money on Facebook and I don't know what I'm getting,\" \"should I turn this campaign off,\" \"my cost per lead is going up,\" \"write me a new ad,\" \"who should I be targeting,\" or \"the ad guy quit.\"",
+          "hint": ""
+        },
+        {
+          "name": "ap-processor",
+          "description": "Works the bill pile end to end: reads bills and vendor statements out of the AP inbox or from uploaded PDFs and phone photos, pulls out vendor, amount, due date, and line detail, codes each one to the right account and job, matches it against the purchase order and the receiving ticket, then stages the entries and a proposed payment run in QuickBooks, Xero, or NetSuite for the owner to approve in one pass. Nothing is entered and nothing is paid without an explicit yes. Reach for this whenever bills, vendor invoices, or paying people comes up — including \"what do I owe,\" \"the bills are piling up,\" \"pull the invoices out of my email and into QuickBooks,\" \"code these for me,\" \"who needs to get paid this week,\" \"did we get billed twice,\" or when the owner forwards a supplier invoice with no message at all. Use it before cash-flow-snapshot or month-end-prep so those run on real payables instead of a guess.",
+          "hint": ""
+        },
+        {
+          "name": "brand-style",
+          "description": "Sets and updates the owner's brand look and output preferences, which every page and document the plugin produces then follows automatically. Captures the brand from a pasted website link or a plain-words description — never a hex code, color picker, or upload — previews it on a sample page, asks how they want their outputs delivered (visual artifacts, Word docs, markdown, Notion pages, Canva Docs, or best-for-the-skill), and saves both to the business profile. Runs inside smb-onboard on first setup and stands alone forever after. Use when the owner says \"update my brand,\" \"we rebranded,\" \"change my colors,\" \"make the reports match our new look,\" \"change how you give me reports,\" \"I want Word docs instead,\" or anything about the look or format of what the plugin hands them.",
+          "hint": ""
+        },
+        {
+          "name": "build-agent",
+          "description": "Turns a task the owner keeps doing by hand into a named, reusable skill they can trigger by name or put on a schedule. Watches them do it once or listens to them describe it, works out what varies and what stays fixed, writes the skill with approval checkpoints in the right places, registers it with the router, and shares it with the team. This is how a business gets a workflow nobody shipped for them. Use this whenever the owner describes something repetitive they wish were automatic — including phrasings like \"I do this every week,\" \"can you remember how to do this,\" \"make this a thing I can just ask for,\" \"build me an agent,\" \"automate this for me,\" \"turn this into a workflow,\" or \"I want this to happen every Monday.\" Reach for it when they describe a routine, even without asking for automation.",
+          "hint": ""
+        },
+        {
+          "name": "build-connector",
+          "description": "Gets Claude talking to a tool nobody built an official connector for. Works out what the system is, checks the Claude connector directory for an existing connector first, and when there isn't one connects the tool through Zapier — never by hand-building against a raw API — with credentials handled safely and approval gates on anything that writes. This is what turns \"my ERP isn't supported\" into an afternoon. Use this whenever the owner names a tool that isn't connected — including phrasings like \"can you connect to my,\" \"make my tools talk to each other,\" \"there's no API for this,\" \"pull data out of my field service software,\" \"I use ServiceTrade and it's not on the list,\" or \"is there any way to get at this data.\" Reach for it whenever an unsupported system is blocking something else.",
+          "hint": ""
+        },
+        {
+          "name": "business-pulse",
+          "description": "Produces a one-page cross-functional business snapshot for SMB owners — cash position (the ledger: MYOB, NetSuite, QuickBooks, Xero, or Zoho Books), sales trend (PayPal/Square/Stripe), pipeline movement (HubSpot), this week's commitments (Calendar), urgent watch-list items (Gmail or M365, Slack), and the single most important thing needing attention today. Proactively tries every available connector and gracefully scopes to whatever is connected — one connector gives a partial pulse; the full stack gives the full picture. Trigger when the user asks how the business is doing, wants a snapshot, a daily brief, a Friday recap, or says anything like \"what am I missing\" or \"catch me up on the business.\" A start-of-week briefing routes to /monday-brief, which runs this skill as its first link.",
+          "hint": ""
+        },
+        {
+          "name": "call-list",
+          "description": "Builds today's call list. Runs lead-triage to rank the top-5 leads most worth calling, supplies talking points from email history, blocks time on the calendar, and drafts follow-up messages. Trigger on \"call list,\" \"who am I calling today,\" \"top five to call today,\" or \"block time for calls.\" An owner who wants leads scored or ranked with no calendar blocks routes to lead-triage directly. Accepts optional count and date arguments.",
+          "hint": ""
+        },
+        {
+          "name": "canva-creator",
+          "description": "Takes an approved content brief and executes a campaign end-to-end: builds the posting calendar, generates Canva designs for social posts, drafts caption and email copy, and stages social sends in HubSpot. Canva is used for social posts only (Instagram, Facebook, X, LinkedIn) — email content is drafted as plain text and surfaced inline for the owner to send from their own tool. Every step requires explicit owner approval. This is the one-shot campaign executor: a finished brief goes in, a complete campaign comes out. Use when the owner hands off an approved brief or points at one — \"run this brief,\" \"execute the campaign,\" \"turn this brief into posts,\" \"build the campaign from the plan we approved.\" For day-to-day posting with no brief — \"I need to post more,\" \"what should we post\" — use social-content-engine instead; it owns the standing calendar.",
+          "hint": ""
+        },
+        {
+          "name": "cash-flow-snapshot",
+          "description": "Reads AR/AP, historical cash timing, and known fixed costs from the ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books) or from PayPal, Square, or Stripe — or a CSV upload — and produces a 30/60/90-day cash flow forecast with percentage-variance confidence bands and named risk flags. Delivers a chat summary and a downloadable XLSX. Use when the user asks \"forecast my cash flow,\" \"will I make payroll,\" mentions \"runway,\" or says \"cash crunch.\" Falls back to CSV upload when no connector is live.",
+          "hint": ""
+        },
+        {
+          "name": "close-month",
+          "description": "Closes the books and turns them into a decision as a three-link chain — month-end-prep reconciles the ledger against every connected payment processor and writes the P&L narrative, cash-flow-snapshot then refreshes the 30/60/90-day forecast off the newly closed numbers rather than raw ones, and report-builder publishes and distributes the close packet. Requires a ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books) and uses Gusto, PayPal, Ramp, Shopify, Square, and Stripe when connected, falling back to statement or CSV uploads. Trigger on \"close the month,\" \"month-end,\" \"close the books,\" \"reconcile,\" \"send the close packet to my accountant,\" or when the owner asks why revenue or margin moved last month. An owner who wants only the reconciliation and its flags, with no forecast refresh and no packet distribution, routes to month-end-prep directly.",
+          "hint": ""
+        },
+        {
+          "name": "content-strategy",
+          "description": "Analyzes sales data from PayPal and QuickBooks to find top performers and slow movers, layers in seasonality, and produces a prioritized 30-day content brief: what to push, what offers to run, what to hold. Strategic output only — no calendars or assets. Use when the user asks what to post, wants a content plan, asks what's selling, or what to promote this month.",
+          "hint": ""
+        },
+        {
+          "name": "contract-review",
+          "description": "Lightweight NDA, MSA, and vendor contract review for SMBs without legal on staff. Reads contracts from local files, mail attachments (Gmail or M365), a connected file store (Google Drive or M365), or DocuSign envelopes; flags non-standard terms; explains risks in plain English; and outputs a marked-up redline as a separate DOCX. Use when the user says \"review this contract,\" \"what am I signing,\" \"red flags,\" \"flag any concerns,\" \"check the payment terms,\" or uploads/forwards a contract or legal agreement.",
+          "hint": ""
+        },
+        {
+          "name": "crm-autopilot",
+          "description": "Keeps the CRM current without the owner ever opening it. Creates and updates contacts and deals from email, calendar, and call transcripts; logs activity automatically; drafts follow-ups on deals that have gone quiet; and maintains a next-step queue so nothing sits unowned. Runs on demand or on a schedule, includes a hygiene sweep for duplicates and stale records, and builds a lightweight CRM in a spreadsheet for owners who don't have one. Use this whenever CRM data or pipeline hygiene comes up — including phrasings like \"update my CRM,\" \"log this call,\" \"clean up HubSpot,\" \"clean up Salesforce,\" \"add this to the deal,\" \"turn my meeting into a deal note,\" \"which deals have gone quiet,\" \"I hate data entry,\" or \"my pipeline is out of date.\" Reach for it when the owner describes a call or meeting worth recording, even without naming the CRM.",
+          "hint": ""
+        },
+        {
+          "name": "grant-rfp-writer",
+          "description": "Finds grant and solicitation opportunities the organization actually qualifies for, runs a hard go/no-go before anyone starts writing, drafts the application or response from past submissions and real program data, and tracks every deadline and reporting obligation that follows an award. Built for nonprofits, government contractors, and education, and it filters daily feeds like SAM.gov or DIBBS down to the handful worth bidding. Runs on Google Drive or M365 with DocuSign and Calendar deepening it, and works from uploaded past submissions plus web research when nothing is connected. Use this whenever a funding or bidding opportunity is in play — including \"find grants we qualify for,\" \"should we bid this,\" \"draft the response to this RFP,\" \"we've got 50 solicitations to filter,\" \"what's due on the federal grant,\" or \"help me write the proposal narrative.\"",
+          "hint": ""
+        },
+        {
+          "name": "grow-pipeline",
+          "description": "Fills the funnel end to end without the owner babysitting it — reads the market and the competition for context, builds a ranked list of named prospects with a reason attached to each, writes personalized outreach in the owner's own voice, and logs every touch to the CRM. Chains lead-finder, outreach-composer, and crm-autopilot behind a web-native market read, with an owner approval at every handoff. Use this whenever the owner wants more pipeline rather than one specific piece of it, including phrasings like \"I need more leads,\" \"fill my funnel,\" \"who should I be calling and what do I say,\" \"find me customers like my best ones and reach out,\" \"build me a prospect list and write the emails,\" or \"sales has gone quiet, get something moving.\" Reach for it when the owner describes wanting new business generally rather than asking for a list or a single email.",
+          "hint": ""
+        },
+        {
+          "name": "growth-pulse",
+          "description": "Answers one question for an SMB owner — is the growth engine actually working? Pulls sales trend by channel, funnel conversion, campaign return, best and worst performing products, and customer sentiment from whatever is connected, then ends with the three growth actions worth taking this week. The growth-side twin of business-pulse, which covers the finance side. Use this whenever the owner asks how marketing or sales is performing, whether a campaign paid off, where leads are coming from, why the pipeline is stalling, which products are moving, or says anything like \"is my marketing working,\" \"growth check,\" \"how's the funnel,\" or \"where should I put my money next month.\" Reach for it even when the owner names a single channel rather than growth overall.",
+          "hint": ""
+        },
+        {
+          "name": "hiring-screener",
+          "description": "Takes a pile of applications and turns it into a ranked shortlist, scored only against the job's stated rubric, with drafted replies to every candidate, scheduled interviews, and an onboarding checklist for whoever gets hired. Picks up where job-post-builder leaves off and carries the funnel through to first day, including the payroll setup handoff. Runs on Gmail and Google Calendar, deepens with Gusto, DocuSign, and Drive or M365, and works entirely from uploaded resumes with drafted replies the owner sends by hand. Use this whenever the owner has applicants to deal with — including phrasings like \"I've got 40 resumes and no time,\" \"who should I interview,\" \"screen these applications,\" \"help me narrow this down,\" \"set up interviews for the top three,\" or \"I need to tell the rest no.\" Reach for it when the owner mentions applicants, resumes, candidates, or being buried in a hiring inbox.",
+          "hint": ""
+        },
+        {
+          "name": "inbox-manager",
+          "description": "Turns a full inbox into a short, ranked list of what actually needs the owner. Reads the mail, sorts it into needs-you, drafted-and-waiting, and handled, writes replies in the owner's own voice, pulls out the action items and deadlines buried in long threads, files what is finished, and hands bills, leads, and scheduling requests to the skills that own them. Works from pasted or forwarded email text when no mailbox is connected. Use this whenever the owner mentions email at all — including \"drowning in email,\" \"I have 300 unread,\" \"what emails need me,\" \"go through my inbox,\" \"clean up my email,\" \"did I miss anything,\" \"who am I supposed to get back to,\" \"draft a reply to this,\" or \"catch me up on my mail.\" Reach for it for one forwarded message as readily as for a whole morning's backlog.",
+          "hint": ""
+        },
+        {
+          "name": "inventory-planner",
+          "description": "Works out what to reorder and when, from what is actually selling: pulls sales history and stock on hand from Shopify, Square, NetSuite, or an uploaded CSV, computes 7-day and 28-day sales velocity per item, projects a conservative stockout date for each, sizes a 60-day reorder quantity, and drafts the purchase orders and vendor emails to cover it. Flags the money sitting still too — overstock, dead stock, and zero-velocity items, reported as slow movers to clear rather than things to buy more of. Seasonality is applied where the history supports it and named where it does not. Nothing is ordered and no vendor is emailed without approval. Reach for this whenever stock comes up — \"what do I need to reorder,\" \"am I going to run out,\" \"what should I order this month,\" \"we keep running out of filters,\" \"how much cash is sitting in the warehouse,\" \"what is not moving,\" or \"draft a PO for my supplier.\"",
+          "hint": ""
+        },
+        {
+          "name": "invoice-chase",
+          "description": "Drafts overdue-invoice reminder emails from the ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books) plus PayPal, Stripe, and Airwallex data, matched to each customer's payment history and tone (gentle for good customers, firm for repeat late payers). Sends via PayPal with owner approval; everything else queues as a mail draft, with the Airwallex hosted pay link included where one exists. Use when the user asks \"who owes me money,\" mentions overdue invoices, or wants to follow up on unpaid invoices.",
+          "hint": ""
+        },
+        {
+          "name": "job-post-builder",
+          "description": "Builds end-to-end hiring packets — job post, structured interview guide with scoring rubric, and offer letter template — from a hiring brief. Triggers on: \"help me hire\", \"we're hiring for\", \"write a job post\", \"job description\", \"JD\", \"open role\", \"create a job ad\", \"interview questions\", \"scoring rubric\", \"draft an offer letter\", \"send an offer\", \"make a hiring packet\", or any request to recruit for a position. When in doubt, trigger — covers the full hiring workflow from job post through DocuSign envelope creation via browser. Does NOT screen or rank applicants.",
+          "hint": ""
+        },
+        {
+          "name": "lead-finder",
+          "description": "Builds a ranked list of prospects worth contacting. Works out the owner's ideal customer profile from the customers they already have, finds look-alike companies and the right contact at each, enriches them with firmographics and buying signals, scores them, and delivers the list as an XLSX, with an offer to also create the records in the CRM. Runs on Apollo when connected and falls back to web research plus an uploaded customer list when it isn't. Use this whenever the owner wants new prospects, a target list, or help finding customers — including phrasings like \"who should I be calling,\" \"find me more customers like my best ones,\" \"build me a prospect list,\" \"I need leads,\" \"who else looks like Acme,\" or \"help me find companies in this area that need what we do.\" Reach for it even when the owner describes the customer they want rather than asking for a list.",
+          "hint": ""
+        },
+        {
+          "name": "lead-triage",
+          "description": "Scores inbound HubSpot leads by engagement signals, company fit, and urgency markers, ranks the ones worth a call today with talking points, drafts the follow-ups, and proposes calendar times for the owner to book. Use when the owner asks to prioritize, score, or rank leads, asks \"who should I call first,\" or asks about their pipeline. An ask that wants the ranked leads turned into a call list with time blocked on the calendar routes to /call-list, which runs this skill first and then books the time.",
+          "hint": ""
+        },
+        {
+          "name": "marketing-monday",
+          "description": "Delivers the weekly growth briefing as one merged read — whether the growth engine is working, what customers are saying in public and private, what competitors actually changed, and the three growth actions worth taking this week. The growth twin of the Monday brief, chaining growth-pulse and review-reputation and adding a web-native competitor scan, merged into a single page rather than three reports. Offers to run on a weekly cadence once, and sets it up on a yes. Use this whenever the owner wants a recurring or one-off growth check, including phrasings like \"how's marketing doing,\" \"growth check for the week,\" \"give me my Monday growth brief,\" \"what should I be doing about growth this week,\" \"are we winning or losing out there,\" or \"set up a weekly marketing update.\" Reach for it when the owner asks how the business is growing rather than how it is paying its bills.",
+          "hint": ""
+        },
+        {
+          "name": "monday-brief",
+          "description": "Runs the owner's Monday morning briefing as a two-link chain — business-pulse for the cross-connector snapshot of cash, sales, and pipeline, and report-builder for any saved KPI reports the owner has already defined — then reads the week ahead straight from Calendar and mail and merges all three parts into a single one-page Monday document, delivered per the owner's stored output preference. Requires no connectors and degrades gracefully, building from whatever of the ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books), Calendar, DocuSign, Expensify, Gmail or M365, HubSpot, PayPal, Ramp, RingEx Chat, Shopify, Slack, Stripe, and TikTok Ads is connected, or from pasted and uploaded data when none are. Trigger on \"Monday brief,\" \"start my week,\" \"what do I need to know this week,\" \"weekly briefing,\" \"catch me up before Monday,\" or when the owner schedules a recurring start-of-week update.",
+          "hint": ""
+        },
+        {
+          "name": "month-end-prep",
+          "description": "Reconciles the accounting ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books) against PayPal, Shopify, Square, and Stripe settlements, flags transactions that need attention, suspicious duplicates, and missing receipts, then writes a plain-English P&L narrative and exports a close packet (xlsx + one-page PDF). This is the first link of the /close-month command; a request to close the month or the books routes there, and the command runs this skill before refreshing the forecast and distributing the packet. Use this skill directly only when the owner wants the reconciliation alone, with no forecast refresh and no distribution: \"just reconcile, no packet,\" \"what's missing from the books,\" \"flag the duplicates and missing receipts,\" or \"write the P&L narrative for this month.\"",
+          "hint": ""
+        },
+        {
+          "name": "outreach-composer",
+          "description": "Writes prospect outreach and follow-up sequences that sound like the owner wrote them, not like an AI did. Learns a voice profile from the owner's own sent mail, grounds every message in something specific about that prospect, builds the follow-up sequence behind it, queues every send for approval, and logs each touch to the CRM. Runs draft-only when no mail connector is available, so the copy can be pasted anywhere. Use this whenever the owner needs to reach out to prospects or customers — including phrasings like \"write this cold email,\" \"draft a follow-up,\" \"reach out to these leads,\" \"what do I say to them,\" \"I need a sequence for this list,\" \"nudge the people who didn't reply,\" or \"write it but don't make it sound like a robot.\" Reach for it whenever outreach copy is the deliverable, even for a single message.",
+          "hint": ""
+        },
+        {
+          "name": "pay-the-bills",
+          "description": "Works the bill pile from the AP inbox all the way to a staged payment run — reads and codes every bill, then checks the cash position before a dollar is committed, then stages the run for one-click approval and keeps the books tidy for close. Coding and paying are two separate decisions with two separate approvals, and the cash check sits between them on purpose. Runs on the ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books) and a mail connector (Gmail or M365), deepens with Expensify and Ramp, and works from uploaded PDFs or phone photos with the run sheet exported for manual entry. Use it when the owner says \"pay the bills,\" \"the bills are piling up,\" \"what do I owe,\" \"who needs to get paid this week,\" \"can I afford to pay these,\" or forwards a stack of vendor invoices.",
+          "hint": ""
+        },
+        {
+          "name": "payroll-prep",
+          "description": "Gets payroll ready to run without anyone getting shorted: pulls timesheets from Gusto, QuickBooks Payroll, or an uploaded spreadsheet, totals regular, overtime, and PTO hours by person, flags every anomaly it finds — missed punches, overtime spikes, rate changes, mid-period hires and terminations, hours off the schedule — and stages the run for the owner to approve line by line before a dollar moves. Anomalies are always raised, never quietly corrected. Once the owner runs it, the journal posts to the ledger or goes to the bookkeeper. Reach for this whenever payroll comes up at all — \"run payroll,\" \"payroll is due,\" \"check the timecards,\" \"did everyone clock out,\" \"how many hours did the crew put in,\" \"why is payroll so high this week,\" \"I need to pay the guys Friday\" — and use it after cash-flow-snapshot when the owner is worried about whether payroll clears.",
+          "hint": ""
+        },
+        {
+          "name": "plan-payroll",
+          "description": "Runs the payroll-confidence chain end to end — forecasts cash across the payroll window with cash-flow-snapshot, ranks and drafts overdue-invoice reminders with invoice-chase to close any gap, then assembles timesheets, flags every anomaly, and stages the run with payroll-prep. On Gusto the run is staged for the owner to submit; on QuickBooks Payroll, or with no payroll system, the last step is a validated run sheet the owner keys in. This chain never presses the payroll button. Builds on the ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books), with Gmail or M365, PayPal, Square, Stripe, and either Gusto or QuickBooks Payroll adding detail, and falls back to CSV and timesheet uploads. Use it whenever payroll is the worry, including \"can I make payroll,\" \"payroll is due Friday,\" \"plan payroll,\" \"will I have enough to pay the crew,\" or \"I need to run payroll but money is tight.\" Accepts optional horizon and payroll-date arguments.",
+          "hint": ""
+        },
+        {
+          "name": "proposal-builder",
+          "description": "Turns whatever came out of a discovery conversation — a call transcript, a voice memo, jobsite photos, an RFP document, a set of drawings, or scrappy notes — into a branded, costed proposal, estimate, or statement of work built on the owner's own templates and historical pricing. Routes it for signature and triggers the deposit invoice once it's accepted. Works entirely from uploaded files when no connector is available, producing DOCX and PDF the owner can send themselves. Use this whenever a quote, bid, estimate, proposal, or SOW is the deliverable — including phrasings like \"write this up for them,\" \"put together a quote,\" \"I need to bid this job,\" \"turn my notes into a proposal,\" \"respond to this RFP,\" or \"price this out.\" Reach for it when the owner describes a job they just looked at, even without saying the word quote.",
+          "hint": ""
+        },
+        {
+          "name": "reactivate",
+          "description": "Wins back customers who have quietly stopped buying — finds the ones whose gap has stretched past their own normal rhythm or who are showing churn signals, ranks them by what the relationship was worth, drafts a win-back message per customer in the owner's voice, and sends and logs only what the owner approves. Chains review-reputation, outreach-composer, and crm-autopilot, and keeps the rule that the first touch acknowledges the gap without pitching. Use this whenever the owner is worried about customers drifting away, including phrasings like \"who hasn't ordered in a while,\" \"win back my old customers,\" \"which customers have gone quiet,\" \"we lost some regulars,\" \"reach out to the people who stopped calling,\" or \"how do I get them back.\" Reach for it when the owner names a customer they have not heard from, as readily as for a full win-back campaign.",
+          "hint": ""
+        },
+        {
+          "name": "report-builder",
+          "description": "Turns a plain-English description of a recurring report into a real, repeatable report — defines the metrics, pulls them from whatever data sources are connected, delivers a chat summary plus an XLSX workbook, and saves the definition so the same report reruns on demand or on a schedule. Handles anything from \"sales by location versus last year\" to AR aging to labor as a percentage of revenue. Works fully from an uploaded CSV or XLSX when no connector is available. Use this whenever the owner asks for a report, dashboard, KPI pack, metrics summary, or recurring numbers — including phrasings like \"can you track this every week,\" \"I need to see these numbers monthly,\" \"build me a report on,\" \"same report as last time,\" or \"put together a KPI dashboard.\" Reach for it even when the owner names the metrics without using the word report.",
+          "hint": ""
+        },
+        {
+          "name": "report-pack",
+          "description": "Delivers the owner's custom recurring report pack on a set cadence — runs the saved report definition from report-builder, wraps it in a business-pulse snapshot so the numbers have context, and hands over one chat summary plus the workbook. Defined once, then delivered on schedule without being asked again. Runs on any single connected data source, or entirely from an uploaded CSV or XLSX. Use it when the owner asks for their report pack, their weekly or monthly numbers, \"send me the usual report,\" \"run my report pack,\" \"set this up to come every Monday,\" or \"I want these numbers on a schedule.\"",
+          "hint": ""
+        },
+        {
+          "name": "restock",
+          "description": "Turns what is actually selling into a reorder decision and gets it all the way into the books — computes sales velocity and conservative stockout dates per item, sizes the reorder, drafts the purchase order and the vendor email, and then stages the matching entry so the bill matches against the PO when it arrives. Flags the money sitting still too, so dead stock gets cleared instead of reordered. Runs on Shopify, Square, or an uploaded sales and stock CSV, and deepens with QuickBooks, Gmail or M365, Calendar, and NetSuite. No PO is sent and no vendor is emailed without approval. Use it when the owner says \"what do I need to reorder,\" \"am I going to run out,\" \"restock,\" \"we keep running out of filters,\" \"draft a PO for my supplier,\" or \"how much cash is sitting in the warehouse.\"",
+          "hint": ""
+        },
+        {
+          "name": "review-reputation",
+          "description": "Watches what customers are saying in public and in private, then does something about it. Aggregates Google, Yelp, and Facebook reviews alongside disputes, tickets, and email into themes backed by verbatim quotes; drafts a reply to every review in the owner's own voice for approval; spots customers who have gone quiet or look likely to leave; and drafts win-back offers for the ones worth keeping. With Shopify connected, order and fulfillment patterns become a sentiment signal too. Works from pasted or exported reviews when nothing is connected. Use this whenever the owner asks about reviews, ratings, reputation, complaints, or repeat business — including \"what are people saying about us,\" \"did we get any bad reviews,\" \"how do I respond to this one-star,\" \"our rating dropped,\" \"which customers have gone quiet,\" \"who hasn't ordered in a while,\" \"how do I win them back,\" or \"are customers happy.\"",
+          "hint": ""
+        },
+        {
+          "name": "seo-ai-visibility",
+          "description": "Audits and fixes both halves of being found — classic search and AI answers. Search side: rankings, site structure, page speed, titles and descriptions, and content that answers what customers search for. AI side: whether assistant crawlers can reach the site, pages render without JavaScript, an llms.txt file, schema.org data, and presence in the directories assistants read. For online stores it also runs a bulk catalog cleanup, rewriting product titles, descriptions, alt text, and SEO fields in approved batches. Works on any public website with no connector. Use this whenever the owner talks about being found online, including \"nobody finds us on Google,\" \"how do I show up in ChatGPT,\" \"make my website AI friendly,\" \"SEO audit,\" \"GEO,\" \"AEO,\" \"AI search visibility,\" \"my competitor ranks above me,\" \"fix my product listings,\" or \"I asked an AI about my industry and we weren't in the answer.\"",
+          "hint": ""
+        },
+        {
+          "name": "smb-onboard",
+          "description": "Claude as the trainer. Walks an SMB owner through connecting their first two tools, runs one recipe to prove immediate value, interviews them about their business (industry, size, top three headaches), stores that context persistently so every other skill benefits, and sets a weekly check-in cadence. Use when the owner is getting started or says any of: \"set me up,\" \"setup,\" \"help me get set up,\" \"get started,\" \"help me get started,\" \"get me started,\" \"what can you do,\" \"I'm new to this,\" or is in their first session.",
+          "hint": ""
+        },
+        {
+          "name": "smb-router",
+          "description": "The front door to the Small Business plugin. Listens to what the owner needs right now — vague or specific — and routes them to the best skill or slash command for the moment. Also serves as a guide: explains what's available, suggests what to try next, and adapts recommendations based on stored business context. Trigger whenever the owner asks \"what can you do,\" \"help me with my business,\" \"what should I focus on,\" \"I don't know where to start,\" or any open-ended business request that doesn't clearly match a single skill.",
+          "hint": ""
+        },
+        {
+          "name": "social-content-engine",
+          "description": "Runs the owner's content operation as a standing thing rather than a one-off: keeps a rolling posting calendar, learns the owner's voice, generates on-brand Canva graphics, writes captions that sound like them, repurposes one asset into every channel format, and stages posts for approval instead of publishing on its own. Pulls product photos and prices from Shopify when connected; with no connectors, drafts the calendar and asset briefs for manual posting. Use this whenever the owner talks about posting, content, or social — including \"I need to post more,\" \"we've gone quiet on Instagram,\" \"what should we post this month,\" \"make the content,\" \"give me a month of posts,\" \"write this in my voice,\" \"repurpose this,\" or \"set up our content calendar.\" Reach for it for a single post as readily as for a full quarter. One handoff: a finished, approved campaign brief goes to canva-creator; this skill owns the standing operation.",
+          "hint": ""
+        },
+        {
+          "name": "speed-to-lead",
+          "description": "Makes sure no inbound lead goes unanswered. Watches web forms, the shared inbox, and the CRM for new inquiries, qualifies each one against the owner's criteria, drafts a reply in the owner's voice with real meeting times for the owner to approve and send, routes anything hot to a human right away, and logs the whole thing to the CRM. Never sends on its own. Built to run on a schedule so overnight inquiries are drafted and sorted by morning, and works from forwarded or pasted inquiries when no connector is available. Use this whenever the owner is worried about inbound leads or response time — including phrasings like \"leads are going cold,\" \"did anyone answer that inquiry,\" \"I keep missing form submissions,\" \"nothing falls through the cracks,\" \"handle my inbound,\" \"respond to this lead,\" or \"we lose people because nobody gets back fast enough.\" Reach for it for a single unanswered inquiry as readily as for a standing setup.",
+          "hint": ""
+        },
+        {
+          "name": "tax-prep",
+          "description": "Prepares tax materials as a two-link chain — month-end-prep confirms the books are closed and reconciled first, then tax-season-organizer calculates the quarterly estimated payment or builds the year-end 1099-NEC list and accountant packet from those closed numbers. Requires a ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books); uses Gusto, PayPal, and Stripe when connected, else CSV upload. US federal tax math; a non-US business gets the closed-books packet. Prep material for a CPA, never tax advice, nothing filed. Trigger on \"quarterly taxes,\" \"estimated tax payment,\" \"how much should I set aside,\" \"1099s,\" \"1099-NEC,\" \"W-9s,\" \"year-end tax prep,\" \"get my books ready for my accountant,\" any phrasing that suggests a tax deadline is coming, or a question about net profit or YTD income that sounds like worry about a tax bill. An owner who says the period's books are already closed routes to tax-season-organizer directly.",
+          "hint": ""
+        },
+        {
+          "name": "tax-season-organizer",
+          "description": "Prepares tax-season materials for the owner's accountant, not tax advice. US federal tax; a non-US business gets its closed-books packet instead. Two modes: (1) quarterly estimated tax from YTD net income in the ledger (MYOB, NetSuite, QuickBooks, Xero, or Zoho Books); (2) year-end 1099 prep, scanning the ledger, PayPal, and Stripe for contractors paid over USD 600 into a 1099-NEC list with missing W-9 flags. Any tax request routes first to /tax-prep, which confirms the books are closed and reconciled before running this skill. Use this skill directly only when the owner says the period's books are already closed: \"books are closed, now do the 1099s,\" \"run the quarterly estimate off the closed numbers,\" or \"just the contractor W-9 list.\"",
+          "hint": ""
+        },
+        {
+          "name": "ticket-deflector",
+          "description": "Reads a forwarded customer email or ticket, pulls order and refund status from a payments connector (PayPal, Square, or Stripe) or Shopify, account history from the CRM, and open tickets from a support desk (Zoho Desk), drafts a tone-matched reply in the owner's writing voice, and can issue a refund through the payments connector with explicit owner approval. With Shopify connected it also runs a proactive order-triage mode that surfaces orders needing attention — unfulfilled past the promised window, payment problems, pending refunds, stuck shipments — and drafts the next action for each before the customer has to ask. Use when the user says \"draft a response,\" \"answer this customer,\" \"where's my order,\" \"I want a refund,\" \"check my orders,\" or \"anything about to blow up.\"",
+          "hint": ""
+        }
+      ],
+      "commands": [],
+      "title": "Small Business",
+      "icon": "🏪",
+      "group": "Go-to-Market",
+      "tools": [],
+      "summary": "",
+      "studioLink": "/studios/",
+      "studioName": "Small Business Studio",
+      "learnLink": "/studios/learn/",
+      "learnTopic": "Cash Flow & Inventory Control",
+      "flowLink": "/studios/flow/?template=repolearn",
+      "flowName": "Small Business Flow",
+      "projectRepo": "anthropics/knowledge-work-plugins",
+      "realWorldScenario": "Cash Flow & Inventory Forecasting: Projects seasonal re-order points and manages supplier payment terms.",
+      "businessGain": "Prevents stockouts and optimizes working capital by $15k."
+    }
+  ]
+}

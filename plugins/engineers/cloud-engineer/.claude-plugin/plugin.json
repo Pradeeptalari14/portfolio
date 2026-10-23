@@ -1,0 +1,16 @@
+{
+  "name": "cloud-engineer",
+  "version": "1.0.0",
+  "description": "Cloud Engineer: Landing zones, Well-Architected reviews, migration planning and multi-account governance.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "cloud",
+    "aws",
+    "azure",
+    "gcp",
+    "terraform",
+    "organizations"
+  ]
+}

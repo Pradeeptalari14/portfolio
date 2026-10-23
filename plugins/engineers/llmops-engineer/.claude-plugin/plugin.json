@@ -1,0 +1,16 @@
+{
+  "name": "llmops-engineer",
+  "version": "1.0.0",
+  "description": "LLMOps Engineer: Prompt versioning, evaluation harnesses, guardrails, gateways and LLM cost control.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "llmops",
+    "langsmith",
+    "langfuse",
+    "litellm",
+    "promptfoo",
+    "guardrails"
+  ]
+}

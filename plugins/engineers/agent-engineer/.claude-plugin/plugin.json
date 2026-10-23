@@ -1,0 +1,16 @@
+{
+  "name": "agent-engineer",
+  "version": "1.0.0",
+  "description": "Agent Engineer: Tool-using agents, MCP servers, orchestration graphs, memory and safe autonomy.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "agent",
+    "langgraph",
+    "mcp",
+    "openai-agents-sdk",
+    "temporal",
+    "opentelemetry"
+  ]
+}

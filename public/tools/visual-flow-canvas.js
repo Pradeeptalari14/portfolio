@@ -379,11 +379,12 @@
                 <span class="vf-badge" id="vfActiveStudioBadge">VISUAL FLOW STUDIO</span>
               </div>
               
-              <!-- 3-Mode Switcher -->
+              <!-- Mode Switcher -->
               <nav class="vf-mode-switcher">
                 <a href="/studios/" class="vf-mode-btn">🔍 Explore</a>
                 <a href="/studios/learn/" class="vf-mode-btn">📚 Learn</a>
                 <button class="vf-mode-btn active" id="vfModeBtn">⚡ Visual Flow</button>
+                <a href="/plugins/" class="vf-mode-btn" title="24 Engineer Claude Plugins">🧩 Plugins</a>
               </nav>
 
               <!-- Studio Selector Dropdown (347 Studios) -->

@@ -1,0 +1,16 @@
+{
+  "name": "compliance-engineer",
+  "version": "1.0.0",
+  "description": "Compliance Engineer: Control mapping, continuous evidence collection, audit readiness and policy as code.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "compliance",
+    "soc-2",
+    "iso-27001",
+    "opa",
+    "drata",
+    "aws-config"
+  ]
+}

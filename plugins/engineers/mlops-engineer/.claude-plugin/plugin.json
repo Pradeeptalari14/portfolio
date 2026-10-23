@@ -1,0 +1,16 @@
+{
+  "name": "mlops-engineer",
+  "version": "1.0.0",
+  "description": "MLOps Engineer: Reproducible training pipelines, model registry, deployment gates and drift monitoring.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "mlops",
+    "mlflow",
+    "kubeflow",
+    "dvc",
+    "kserve",
+    "evidently"
+  ]
+}

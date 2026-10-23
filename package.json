@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/copy-assets.js && node scripts/generate-sitemap.js && node scripts/optimize-seo.js && node scripts/generate-route-registry.js",
+    "plugins:build": "node scripts/generate-engineer-plugins.js && node scripts/generate-plugins.js",
+    "build": "npm run plugins:build && vite build && node scripts/copy-assets.js && node scripts/generate-sitemap.js && node scripts/optimize-seo.js && node scripts/generate-route-registry.js",
     "preview": "vite preview",
     "test": "vitest run",
     "web-check": "node scripts/web-check-audit.js",

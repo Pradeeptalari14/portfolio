@@ -1,0 +1,16 @@
+{
+  "name": "backend-engineer",
+  "version": "1.0.0",
+  "description": "Backend Engineer: API design, resilience patterns, idempotency, caching and service boundaries.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "backend",
+    "fastapi",
+    "node.js",
+    "go",
+    "postgresql",
+    "redis"
+  ]
+}

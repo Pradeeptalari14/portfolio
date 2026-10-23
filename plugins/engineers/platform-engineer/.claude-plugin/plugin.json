@@ -1,0 +1,16 @@
+{
+  "name": "platform-engineer",
+  "version": "1.0.0",
+  "description": "Platform Engineer: Internal developer platforms, golden paths, service catalogs and developer-experience metrics.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "platform",
+    "backstage",
+    "crossplane",
+    "terraform",
+    "argocd",
+    "kubernetes"
+  ]
+}

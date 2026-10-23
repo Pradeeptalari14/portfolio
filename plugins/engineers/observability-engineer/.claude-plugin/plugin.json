@@ -1,0 +1,16 @@
+{
+  "name": "observability-engineer",
+  "version": "1.0.0",
+  "description": "Observability Engineer: Metrics, logs and traces with OpenTelemetry, cardinality control and actionable alerting.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "observability",
+    "opentelemetry",
+    "prometheus",
+    "loki",
+    "tempo",
+    "grafana"
+  ]
+}

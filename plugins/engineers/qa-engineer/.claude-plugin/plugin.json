@@ -1,0 +1,16 @@
+{
+  "name": "qa-engineer",
+  "version": "1.0.0",
+  "description": "QA and Test Automation Engineer: Test strategy, automation pyramid, flaky test control and contract testing.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "qa",
+    "playwright",
+    "vitest",
+    "pytest",
+    "pact",
+    "k6"
+  ]
+}

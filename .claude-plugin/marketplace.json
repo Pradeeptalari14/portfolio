@@ -1,0 +1,464 @@
+{
+  "name": "talari-engineering-plugins",
+  "owner": {
+    "name": "Talari Pradeep",
+    "url": "https://talaripradeep.info"
+  },
+  "metadata": {
+    "description": "24 engineer-role plugins for SRE, DevOps, platform, AI infrastructure, security and more, plus the vendored Anthropic knowledge-work plugins.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "mlops-engineer",
+      "source": "./plugins/engineers/mlops-engineer",
+      "description": "MLOps Engineer: Reproducible training pipelines, model registry, deployment gates and drift monitoring.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "AI & Data",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-mlops-engineer"
+    },
+    {
+      "name": "llmops-engineer",
+      "source": "./plugins/engineers/llmops-engineer",
+      "description": "LLMOps Engineer: Prompt versioning, evaluation harnesses, guardrails, gateways and LLM cost control.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "AI & Data",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-llmops-engineer"
+    },
+    {
+      "name": "ai-infra-engineer",
+      "source": "./plugins/engineers/ai-infra-engineer",
+      "description": "AI Infrastructure Engineer: GPU scheduling, inference serving, batching, quantisation and capacity planning.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "AI & Data",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-ai-infra-engineer"
+    },
+    {
+      "name": "rag-engineer",
+      "source": "./plugins/engineers/rag-engineer",
+      "description": "RAG Engineer: Chunking, hybrid retrieval, reranking, grounding and retrieval quality measurement.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "AI & Data",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-rag-engineer"
+    },
+    {
+      "name": "agent-engineer",
+      "source": "./plugins/engineers/agent-engineer",
+      "description": "Agent Engineer: Tool-using agents, MCP servers, orchestration graphs, memory and safe autonomy.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "AI & Data",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-agent-engineer"
+    },
+    {
+      "name": "data-engineer",
+      "source": "./plugins/engineers/data-engineer",
+      "description": "Data Engineer: Pipelines, data contracts, quality checks, lakehouse modelling and streaming reliability.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "AI & Data",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-data-engineer"
+    },
+    {
+      "name": "sre-engineer",
+      "source": "./plugins/engineers/sre-engineer",
+      "description": "Site Reliability Engineer: SLOs, error budgets, burn-rate alerting and toil elimination for production services.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Infrastructure & Reliability",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-sre-engineer"
+    },
+    {
+      "name": "devops-engineer",
+      "source": "./plugins/engineers/devops-engineer",
+      "description": "DevOps Engineer: CI/CD pipelines, deployment strategies, rollback safety and delivery metrics.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Infrastructure & Reliability",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-devops-engineer"
+    },
+    {
+      "name": "platform-engineer",
+      "source": "./plugins/engineers/platform-engineer",
+      "description": "Platform Engineer: Internal developer platforms, golden paths, service catalogs and developer-experience metrics.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Infrastructure & Reliability",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-platform-engineer"
+    },
+    {
+      "name": "cloud-engineer",
+      "source": "./plugins/engineers/cloud-engineer",
+      "description": "Cloud Engineer: Landing zones, Well-Architected reviews, migration planning and multi-account governance.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Infrastructure & Reliability",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-cloud-engineer"
+    },
+    {
+      "name": "kubernetes-engineer",
+      "source": "./plugins/engineers/kubernetes-engineer",
+      "description": "Kubernetes Engineer: Workload hardening, resource tuning and systematic cluster troubleshooting.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Infrastructure & Reliability",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-kubernetes-engineer"
+    },
+    {
+      "name": "iac-engineer",
+      "source": "./plugins/engineers/iac-engineer",
+      "description": "Infrastructure as Code Engineer: Terraform and OpenTofu module design, safe plan review, state hygiene and drift control.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Infrastructure & Reliability",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-iac-engineer"
+    },
+    {
+      "name": "observability-engineer",
+      "source": "./plugins/engineers/observability-engineer",
+      "description": "Observability Engineer: Metrics, logs and traces with OpenTelemetry, cardinality control and actionable alerting.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-observability-engineer"
+    },
+    {
+      "name": "network-engineer",
+      "source": "./plugins/engineers/network-engineer",
+      "description": "Network Engineer: Cloud and hybrid network design, DNS, segmentation and connectivity troubleshooting.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-network-engineer"
+    },
+    {
+      "name": "database-engineer",
+      "source": "./plugins/engineers/database-engineer",
+      "description": "Database Reliability Engineer: Schema migrations, query tuning, replication, backups and restore verification.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-database-engineer"
+    },
+    {
+      "name": "finops-engineer",
+      "source": "./plugins/engineers/finops-engineer",
+      "description": "FinOps Engineer: Cloud cost allocation, rightsizing, commitment strategy and unit economics.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-finops-engineer"
+    },
+    {
+      "name": "incident-commander",
+      "source": "./plugins/engineers/incident-commander",
+      "description": "Incident Commander: Severity classification, command structure, status communication and blameless postmortems.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-incident-commander"
+    },
+    {
+      "name": "release-engineer",
+      "source": "./plugins/engineers/release-engineer",
+      "description": "Release Engineer: Versioning, changelogs, release trains, hotfix flow and supply-chain-safe publishing.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Operations & Delivery",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-release-engineer"
+    },
+    {
+      "name": "devsecops-engineer",
+      "source": "./plugins/engineers/devsecops-engineer",
+      "description": "DevSecOps Engineer: Shift-left scanning, SBOMs, signed artifacts, SLSA provenance and runtime enforcement.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Security, Quality & Application",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-devsecops-engineer"
+    },
+    {
+      "name": "appsec-engineer",
+      "source": "./plugins/engineers/appsec-engineer",
+      "description": "Application Security Engineer: Threat modelling, secure code review, OWASP controls and LLM application security.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Security, Quality & Application",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-appsec-engineer"
+    },
+    {
+      "name": "compliance-engineer",
+      "source": "./plugins/engineers/compliance-engineer",
+      "description": "Compliance Engineer: Control mapping, continuous evidence collection, audit readiness and policy as code.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Security, Quality & Application",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-compliance-engineer"
+    },
+    {
+      "name": "qa-engineer",
+      "source": "./plugins/engineers/qa-engineer",
+      "description": "QA and Test Automation Engineer: Test strategy, automation pyramid, flaky test control and contract testing.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Security, Quality & Application",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-qa-engineer"
+    },
+    {
+      "name": "performance-engineer",
+      "source": "./plugins/engineers/performance-engineer",
+      "description": "Performance Engineer: Load testing, profiling, capacity modelling and tail-latency analysis.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Security, Quality & Application",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-performance-engineer"
+    },
+    {
+      "name": "backend-engineer",
+      "source": "./plugins/engineers/backend-engineer",
+      "description": "Backend Engineer: API design, resilience patterns, idempotency, caching and service boundaries.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Talari Pradeep"
+      },
+      "category": "Security, Quality & Application",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-backend-engineer"
+    },
+    {
+      "name": "bio-research",
+      "source": "./plugins/anthropic/bio-research",
+      "description": "Connect to preclinical research tools and databases (literature search, genomics analysis, target prioritization) to accelerate early-stage life sciences R&D",
+      "version": "1.2.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Product, Data & Research",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-bio-research"
+    },
+    {
+      "name": "cowork-plugin-management",
+      "source": "./plugins/anthropic/cowork-plugin-management",
+      "description": "Create, customize, and manage plugins tailored to your organization's tools and workflows. Configure MCP servers, adjust plugin behavior, and adapt templates to match how your team works.",
+      "version": "0.2.2",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Productivity & Tooling",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-cowork-plugin-management"
+    },
+    {
+      "name": "customer-support",
+      "source": "./plugins/anthropic/customer-support",
+      "description": "Triage tickets, draft responses, escalate issues, and build your knowledge base. Research customer context and turn resolved issues into self-service content.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Go-to-Market",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-customer-support"
+    },
+    {
+      "name": "data",
+      "source": "./plugins/anthropic/data",
+      "description": "Write SQL, explore datasets, and generate insights faster. Build visualizations and dashboards, and turn raw data into clear stories for stakeholders.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Product, Data & Research",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-data"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/anthropic/design",
+      "description": "Accelerate design workflows — critique, design system management, UX writing, accessibility audits, research synthesis, and dev handoff. From exploration to pixel-perfect specs.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Product, Data & Research",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-design"
+    },
+    {
+      "name": "engineering",
+      "source": "./plugins/anthropic/engineering",
+      "description": "Streamline engineering workflows — standups, code review, architecture decisions, incident response, and technical documentation. Works with your existing tools or standalone.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Product, Data & Research",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-engineering"
+    },
+    {
+      "name": "enterprise-search",
+      "source": "./plugins/anthropic/enterprise-search",
+      "description": "Search across all of your company's tools in one place. Find anything across email, chat, documents, and wikis without switching between apps.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Productivity & Tooling",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-enterprise-search"
+    },
+    {
+      "name": "finance",
+      "source": "./plugins/anthropic/finance",
+      "description": "Streamline finance and accounting workflows, from journal entries and reconciliation to financial statements and variance analysis. Speed up audit prep, month-end close, and keeping your books clean.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Business Operations",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-finance"
+    },
+    {
+      "name": "human-resources",
+      "source": "./plugins/anthropic/human-resources",
+      "description": "Streamline people operations — recruiting, onboarding, performance reviews, compensation analysis, and policy guidance. Maintain compliance and keep your team running smoothly.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Business Operations",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-human-resources"
+    },
+    {
+      "name": "legal",
+      "source": "./plugins/anthropic/legal",
+      "description": "Speed up contract review, NDA triage, and compliance workflows for in-house legal teams. Draft legal briefs, organize precedent research, and manage institutional knowledge.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Business Operations",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-legal"
+    },
+    {
+      "name": "marketing",
+      "source": "./plugins/anthropic/marketing",
+      "description": "Create content, plan campaigns, and analyze performance across marketing channels. Maintain brand voice consistency, track competitors, and report on what's working.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Go-to-Market",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-marketing"
+    },
+    {
+      "name": "operations",
+      "source": "./plugins/anthropic/operations",
+      "description": "Optimize business operations — vendor management, process documentation, change management, capacity planning, and compliance tracking. Keep your organization running efficiently.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Business Operations",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-operations"
+    },
+    {
+      "name": "pdf-viewer",
+      "source": "./plugins/anthropic/pdf-viewer",
+      "description": "View, annotate, and sign PDFs in a live interactive viewer. Mark up contracts, fill forms with visual feedback, stamp approvals, and place signatures — then download the annotated copy.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Productivity & Tooling",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-pdf-viewer"
+    },
+    {
+      "name": "product-management",
+      "source": "./plugins/anthropic/product-management",
+      "description": "Write feature specs, plan roadmaps, and synthesize user research faster. Keep stakeholders updated and stay ahead of the competitive landscape.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Product, Data & Research",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-product-management"
+    },
+    {
+      "name": "productivity",
+      "source": "./plugins/anthropic/productivity",
+      "description": "Manage tasks, plan your day, and build up memory of important context about your work. Syncs with your calendar, email, and chat to keep everything organized and on track.",
+      "version": "1.3.1",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Productivity & Tooling",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-productivity"
+    },
+    {
+      "name": "sales",
+      "source": "./plugins/anthropic/sales",
+      "description": "Sales skills that work with the tools your team already uses - your CRM, email, calendar, chat and call recorder - or with uploaded files. Prep calls, summarize and follow up, research accounts, review deals and pipeline, and write the forecast. When you ask, it can update CRM records, create…",
+      "version": "2.1.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Go-to-Market",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-sales"
+    },
+    {
+      "name": "small-business",
+      "source": "./plugins/anthropic/small-business",
+      "description": "Pre-built small business workflows to help you run and grow your business. Supports a majority of the tools you already use. You approve every step that touches money or customers. Install and then ask Claude to help you get onboarded.",
+      "version": "1.35.1",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "Go-to-Market",
+      "homepage": "https://talaripradeep.info/plugins/#plugin-small-business"
+    }
+  ]
+}

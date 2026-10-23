@@ -1,0 +1,16 @@
+{
+  "name": "iac-engineer",
+  "version": "1.0.0",
+  "description": "Infrastructure as Code Engineer: Terraform and OpenTofu module design, safe plan review, state hygiene and drift control.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "iac",
+    "terraform",
+    "opentofu",
+    "terragrunt",
+    "pulumi",
+    "atlantis"
+  ]
+}

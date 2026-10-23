@@ -1,0 +1,16 @@
+{
+  "name": "finops-engineer",
+  "version": "1.0.0",
+  "description": "FinOps Engineer: Cloud cost allocation, rightsizing, commitment strategy and unit economics.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "finops",
+    "cost-explorer",
+    "kubecost",
+    "opencost",
+    "savings-plans",
+    "infracost"
+  ]
+}

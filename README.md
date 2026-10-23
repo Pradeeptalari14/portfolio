@@ -37,11 +37,32 @@ Domain/
 ├── tools/                   # Interactive console studio layouts
 │   ├── tools.json           # Unified card database schema
 │   └── index.html           # Main tools grid dashboard launcher
+├── plugins/                 # Claude Code & Cowork Engineering Plugins Marketplace
+│   ├── engineers/           # 24 engineer-role plugins (48 skills, 48 slash commands)
+│   ├── anthropic/           # 17 knowledge-work plugins (vendored Apache-2.0)
+│   └── catalog.json         # Unified machine-readable plugin manifest
 ├── Dockerfile               # Multi-stage production container setup
 ├── nginx.conf               # Production Nginx reverse proxy settings
 ├── vite.config.js           # Rollup and HTML bundler settings
 ├── README.md                # Project guideline entrypoint
 └── CNAME                    # DNS routing identifier
+```
+
+---
+
+## 🧩 Claude Plugins Marketplace
+### 🌐 [talaripradeep.info/plugins/](https://talaripradeep.info/plugins/)
+
+Turn Claude Code & Cowork into dedicated engineering specialists across **41 production plugins**:
+* **24 Engineer Roles:** SRE, DevOps, Platform, Cloud, Kubernetes, IaC, Observability, Network, Database, FinOps, Incident Commander, Release, DevSecOps, AppSec, Compliance, QA, Performance, Backend, MLOps, LLMOps, AI Infra, RAG, Agent, and Data Engineers (48 skills, 48 slash commands).
+* **17 Knowledge-Work Plugins:** First-party tools vendored from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) under Apache-2.0.
+
+```bash
+# Add the marketplace
+claude plugin marketplace add Pradeeptalari14/portfolio
+
+# Install any plugin
+claude plugin install sre-engineer@talari-engineering-plugins
 ```
 
 ---

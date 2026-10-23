@@ -1,0 +1,16 @@
+{
+  "name": "release-engineer",
+  "version": "1.0.0",
+  "description": "Release Engineer: Versioning, changelogs, release trains, hotfix flow and supply-chain-safe publishing.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "release",
+    "semantic-release",
+    "conventional-commits",
+    "cosign",
+    "github-releases",
+    "feature-flags"
+  ]
+}

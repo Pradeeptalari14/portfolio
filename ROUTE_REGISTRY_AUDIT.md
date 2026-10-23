@@ -1,7 +1,7 @@
 # Master Route Registry & Automated Audit Report
 **Website URL**: [https://talaripradeep.info/](https://talaripradeep.info/)  
-**Audit Timestamp**: 2026-10-20T12:46:50.879Z  
-**Total Registered Routes**: 367 (14 Core Portals + 353 Interactive Developer Studios)  
+**Audit Timestamp**: 2026-10-23T06:19:13.612Z  
+**Total Registered Routes**: 369 (16 Core Portals + 353 Interactive Developer Studios)  
 **Automated Verification Result**: **100% Passed (571 Vitest CI Tests across 123 Suites)**  
 
 ---
@@ -10,7 +10,7 @@
 
 | Route Domain | Routes | Client-Side Engine | Data Dependencies | Status | Test Evidence |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Core Platform Hubs** | 14 | HTML5 / Vanilla CSS / ES Modules | `tools.json`, `topics.json` | 🟢 Verified 200 OK | `site-wide-enhancements.test.js` |
+| **Core Platform Hubs** | 16 | HTML5 / Vanilla CSS / ES Modules | `tools.json`, `topics.json` | 🟢 Verified 200 OK | `site-wide-enhancements.test.js` |
 | **Interactive Studios** | 353 | WASM / JS Simulation / IaC Gen | Local generators, GitHub repos | 🟢 Verified 200 OK | `studio-catalogue-search.test.js` |
 | **Cognitive Learn Drills** | 353 | In-Browser AST Parser / Terminal | `learn-data.json` | 🟢 Verified 200 OK | `studios-learn.test.js` |
 | **Visual Flow Canvas** | 1 | Dynamic SVG / DOM DAG Engine | `flow-templates.json` | 🟢 Verified 200 OK | `visual-flow-canvas.test.js` |
@@ -31,11 +31,13 @@
 | [`/finops/`](https://talaripradeep.info/finops/) | **Cloud FinOps Center | AWS Cost Estimator & Rightsizing** | `Financial Engineering Tool` | EC2 Instance Dropdown, Pricing Model Dropdown, Instance Quantity Input, S3 TB Volume Input, Storage Tier Dropdown | Client-side AWS pricing models | [Learn](/studios/learn/) · [Lab](/tools/cloud-finops-optimizer/) · [Flow](/studios/flow/?template=infra) | Client-side mathematical model, validated non-negative inputs | 🟢 PASS (`tests/finops-calculator.test.js`) |
 | [`/incident/`](https://talaripradeep.info/incident/) | **SRE Incident Simulator | Production Outage Triage Lab** | `Interactive SRE Drill` | Scenario Selector (K8s OOM, DNS Outage, Database Deadlock), Diagnostic Terminal, Verify Fix Button, Post-Mortem Generator | Local incident scenarios | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | Sandboxed virtual triage engine | 🟢 PASS (`tests/sre-simulator.test.js`) |
 | [`/toolbox/`](https://talaripradeep.info/toolbox/) | **Universal Engineering Toolbox | Dev & SRE Tools** | `Engineering Utilities` | Tool Tab Switcher, CIDR Subnet Calculator, Cron Expression Parser, JWT Inspector, JSON/YAML Formatter | Client-side WASM/JS parsers | [Learn](/studios/learn/) · [Lab](/tools/vpc-subnetter/) · [Flow](/studios/flow/) | Zero server-side transmission of sensitive tokens or payload data | 🟢 PASS (`tests/universal-engineering-toolbox.test.js`) |
+| [`/plugins/`](https://talaripradeep.info/plugins/) | **Engineering Plugins Marketplace | Talari Pradeep** | `Plugin Marketplace` | Plugin Search (press /), Group Filter Chips, Skills & Commands Disclosure, Copy Install Command | plugins/catalog.json, .claude-plugin/marketplace.json | [Learn](/academy/) · [Lab](/knowledge/) · [Flow](/studios/flow/) | Pre-rendered static HTML, HTML-escaped catalogue text, strict script-src self CSP | 🟢 PASS (`tests/plugins-marketplace.test.js`) |
 | [`/status/`](https://talaripradeep.info/status/) | **Platform Status & Telemetry | Talari Pradeep** | `Telemetry & Health Dashboard` | Origin Latency Ping Probe, Telemetry Taxonomy Guide, Services List View | Performance Navigation API, Favicon probe | [Learn](/studios/learn/) · [Lab](/tools/monitoring/) · [Flow](/studios/flow/?template=infra) | Transparent telemetry definitions separating live pings from WASM simulations | 🟢 PASS (`tests/site-wide-enhancements.test.js`) |
 | [`/architecture/`](https://talaripradeep.info/architecture/) | **Enterprise Cloud & AI Architecture Center** | `Architecture Center` | Architecture Tabs, Interactive Topology Canvas, Component Inspector, IaC Export | Local architecture manifests | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | SLSA Level 3 & Well-Architected Framework compliant | 🟢 PASS (`tests/architecture-center.test.js`) |
 | [`/interview/`](https://talaripradeep.info/interview/) | **SRE & DevOps Interview Practice Vault** | `SRE Interview Vault` | Topic Category Filter, Q&A Accordions, Coach Tips Toggle, Scenario Drill Search | interview/topics.json | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | Curated industry SRE knowledge baseline | 🟢 PASS (`tests/interview-page.test.js`) |
 | [`/projects/`](https://talaripradeep.info/projects/) | **Flagship Platform Projects & Open Source Repositories | Talari Pradeep** | `Architecture Case Studies & Repos Explorer` | Flagship Project Cards (12), Repository Search (347), Category Tabs (7), Direct GitHub Links, Live Deep Dives | projects/projects.css, tools/tools.json | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | Static pre-rendered architecture documents, zero external runtime leakage | 🟢 PASS (`tests/projects-repositories.test.js`) |
 | [`/academy/`](https://talaripradeep.info/academy/) | **Technical Academy & Interactive Engineering Lab | Talari Pradeep** | `Engineering Academy & Interactive Lab` | Topic Switcher, Visual DAG Architecture, CVE Failure Drill, Interactive Terminal, Command Chips, Knowledge Quiz, Personal Notes | academy/academy.js, academy/academy.css, tools/tools.json | [Learn](/academy/) · [Lab](/academy/) · [Flow](/academy/) | Sandboxed virtual execution, DOM XSS sanitized terminal logger, strict CSP compliant | 🟢 PASS (`tests/technical-academy.test.js`) |
+| [`/knowledge/`](https://talaripradeep.info/knowledge/) | **Engineering Knowledge Base | Production Field Guides & SRE Runbooks | Talari Pradeep** | `Engineering Knowledge Base & Field Guides` | Topic Category Filter Chips (10), Instant Keyword Search, Article Deep Dives (14), Key Runbook Points, Launch Studio, Install Plugin | knowledge/index.html | [Learn](/studios/learn/) · [Lab](/tools/) · [Flow](/studios/flow/) | Pre-rendered static HTML, zero external trackers, strict script-src CSP compliant | 🟢 PASS (`tests/site-wide-enhancements.test.js`) |
 
 ---
 

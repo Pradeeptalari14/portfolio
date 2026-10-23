@@ -1,0 +1,16 @@
+{
+  "name": "appsec-engineer",
+  "version": "1.0.0",
+  "description": "Application Security Engineer: Threat modelling, secure code review, OWASP controls and LLM application security.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "appsec",
+    "owasp-asvs",
+    "semgrep",
+    "codeql",
+    "burp-suite",
+    "zap"
+  ]
+}

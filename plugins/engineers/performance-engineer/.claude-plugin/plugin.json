@@ -1,0 +1,16 @@
+{
+  "name": "performance-engineer",
+  "version": "1.0.0",
+  "description": "Performance Engineer: Load testing, profiling, capacity modelling and tail-latency analysis.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "performance",
+    "k6",
+    "locust",
+    "async-profiler",
+    "pprof",
+    "flame-graphs"
+  ]
+}

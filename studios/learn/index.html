@@ -169,7 +169,7 @@
       </div>
 
       <div class="workspace-footer-note" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-        <span>Curriculum Roadmap: <a href="#continue-learning-section" style="color: var(--accent-cyan); text-decoration: underline;">Continue Learning</a> &bull; <a href="#learning-paths-section" style="color: var(--accent-cyan); text-decoration: underline;">8 Career Paths</a> &bull; <a href="#catalog-section" style="color: var(--accent-cyan); text-decoration: underline;">347 Studio Catalog</a> &bull; <a href="#hands-on-labs-section" style="color: var(--accent-cyan); text-decoration: underline;">Labs &amp; Topologies</a> &bull; <a href="#my-learning-section" style="color: var(--accent-cyan); text-decoration: underline;">Badges &amp; Credentials</a></span>
+        <span>Curriculum Roadmap: <a href="#continue-learning-section" style="color: var(--accent-cyan); text-decoration: underline;">Continue Learning</a> &bull; <a href="#learning-paths-section" style="color: var(--accent-cyan); text-decoration: underline;">8 Career Paths</a> &bull; <a href="#catalog-section" style="color: var(--accent-cyan); text-decoration: underline;">347 Studio Catalog</a> &bull; <a href="#hands-on-labs-section" style="color: var(--accent-cyan); text-decoration: underline;">Labs &amp; Topologies</a> &bull; <a href="/plugins/" style="color: #a5b4fc; text-decoration: underline;">24 Engineer Claude Plugins</a> &bull; <a href="#my-learning-section" style="color: var(--accent-cyan); text-decoration: underline;">Badges &amp; Credentials</a></span>
         <button onclick="window.switchToMyLearningTab()" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.76rem; cursor: pointer; font-weight: 600;">
           🎓 Open My Learning &amp; Badges &rarr;
         </button>
@@ -993,63 +993,90 @@
       <!-- Modal Step Contents -->
       <div class="modal-body" id="modalBody">
         
-        <!-- Step 1: Understand -->
-        <div class="step-panel active" id="panelStep1">
-          <h4 class="step-heading">01. Understand: What It Is, Why It Matters &amp; Prerequisites</h4>
-          <p class="step-desc" id="step1Desc">Production background, architectural role, and learning prerequisites.</p>
-          
-          <div class="step-box">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">MISSION-CRITICAL PRODUCTION USE CASE</div>
-            <p style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.55;" id="step1UseCase">Loading use case...</p>
-          </div>
+          <!-- Step 1: Understand -->
+          <div class="step-panel active" id="panelStep1">
+            <h4 class="step-heading">01. Understand: What It Is, Why It Matters &amp; Prerequisites</h4>
+            <p class="step-desc" id="step1Desc">Production background, architectural role, and learning prerequisites.</p>
+            
+            <!-- Paired Claude Code Plugin Banner -->
+            <div class="step-box" id="step1PluginBox" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.5rem;">
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #a5b4fc; font-weight: 700;">PAIRED CLAUDE CODE PLUGIN &bull; TERMINAL TOOL</span>
+                <a href="../../plugins/" id="step1PluginMarketplaceLink" style="font-size: 0.72rem; color: var(--accent-cyan); text-decoration: underline;">Open Plugins Marketplace &rarr;</a>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+                <div style="font-size: 0.88rem; color: #fff; font-weight: 600;" id="step1PluginName">AI Infrastructure Engineer</div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <code style="background: rgba(0,0,0,0.5); padding: 0.25rem 0.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; border: 1px solid rgba(56,189,248,0.25);" id="step1PluginInstallCmd">/plugin install pradeeptalari14/portfolio:plugins/ai-infra-engineer</code>
+                  <button class="card-drill-copy" id="btnCopyPluginCmd" style="cursor: pointer;">Copy</button>
+                </div>
+              </div>
+            </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-            <div class="step-box" style="margin-bottom: 0;">
-              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #a5b4fc; margin-bottom: 0.25rem;">PREREQUISITES TO SUCCEED</div>
-              <ul style="font-size: 0.82rem; color: #cbd5e1; padding-left: 1.15rem; line-height: 1.5;" id="step1PrereqList">
-                <li>Linux system basics &amp; bash terminal fundamentals</li>
-                <li>Familiarity with container runtimes (Docker/Ollama)</li>
-                <li>Basic understanding of networking &amp; latency SLOs</li>
-              </ul>
+            <div class="step-box">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">MISSION-CRITICAL PRODUCTION USE CASE</div>
+              <p style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.55;" id="step1UseCase">Loading use case...</p>
             </div>
-            <div class="step-box" style="margin-bottom: 0;">
-              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #34d399; margin-bottom: 0.25rem;">TARGET SRE STANDARD</div>
-              <p style="font-size: 0.82rem; color: #d1fae5; font-family: var(--font-mono);" id="step1SreTarget">2.8x Concurrency boost &bull; 0 Outages</p>
-            </div>
-          </div>
-        </div>
 
-        <!-- Step 2: See It Visually -->
-        <div class="step-panel" id="panelStep2">
-          <h4 class="step-heading">02. See It Visually: Interactive Architecture Workflow</h4>
-          <p class="step-desc">Inspect the end-to-end data pipeline, memory boundaries, and verification gates.</p>
-          
-          <!-- Interactive Visual Flow Diagram -->
-          <div class="arch-flow-diagram" id="archFlowDiagram">
-            <div class="arch-node">
-              <div class="arch-node-title">1. Intake Layer</div>
-              <div class="arch-node-desc">Client Request &amp; Token Ingestion</div>
-              <div class="arch-node-arrow">→</div>
+            <div class="step-box" style="background: rgba(56, 189, 248, 0.04); border: 1px solid rgba(56, 189, 248, 0.2);">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">CORE ARCHITECTURAL PRINCIPLE (WHY IT WORKS)</div>
+              <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.55;" id="step1CoreConcept">Loading core architectural concept...</p>
             </div>
-            <div class="arch-node">
-              <div class="arch-node-title">2. Scheduling Proxy</div>
-              <div class="arch-node-desc">Co-scheduled Prefill &amp; Schema Gate</div>
-              <div class="arch-node-arrow">→</div>
-            </div>
-            <div class="arch-node">
-              <div class="arch-node-title">3. Studio Runtime</div>
-              <div class="arch-node-desc" id="archNodeCore">Virtual Memory Page Tables</div>
-              <div class="arch-node-arrow">→</div>
-            </div>
-            <div class="arch-node">
-              <div class="arch-node-title">4. SRE Telemetry</div>
-              <div class="arch-node-desc">Golden Signals &amp; Prometheus Exporter</div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div class="step-box" style="margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #a5b4fc; margin-bottom: 0.25rem;">PREREQUISITES TO SUCCEED</div>
+                <ul style="font-size: 0.82rem; color: #cbd5e1; padding-left: 1.15rem; line-height: 1.5;" id="step1PrereqList">
+                  <li>Linux system basics &amp; bash terminal fundamentals</li>
+                  <li>Familiarity with container runtimes (Docker/Ollama)</li>
+                  <li>Basic understanding of networking &amp; latency SLOs</li>
+                </ul>
+              </div>
+              <div class="step-box" style="margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #34d399; margin-bottom: 0.25rem;">TARGET SRE STANDARD</div>
+                <p style="font-size: 0.82rem; color: #d1fae5; font-family: var(--font-mono);" id="step1SreTarget">2.8x Concurrency boost &bull; 0 Outages</p>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #94a3b8; line-height: 1.4;" id="step1RealWorldImpact"></div>
+              </div>
             </div>
           </div>
 
-          <div class="step-box">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; margin-bottom: 0.35rem;">PRODUCTION CONFIGURATION MATRIX</div>
-            <pre style="font-family: var(--font-mono); font-size: 0.75rem; color: #34d399; overflow-x: auto; padding: 0.5rem;" id="step2Config"># Production Configuration
+          <!-- Step 2: See It Visually -->
+          <div class="step-panel" id="panelStep2">
+            <h4 class="step-heading">02. See It Visually: Interactive Architecture Workflow</h4>
+            <p class="step-desc">Inspect the end-to-end data pipeline, memory boundaries, and verification gates.</p>
+            
+            <!-- Interactive Visual Flow Diagram -->
+            <div class="arch-flow-diagram" id="archFlowDiagram">
+              <div class="arch-node">
+                <div class="arch-node-title">1. Intake Layer</div>
+                <div class="arch-node-desc">Client Request &amp; Token Ingestion</div>
+                <div class="arch-node-arrow">→</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-node-title">2. Scheduling Proxy</div>
+                <div class="arch-node-desc">Co-scheduled Prefill &amp; Schema Gate</div>
+                <div class="arch-node-arrow">→</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-node-title">3. Studio Runtime</div>
+                <div class="arch-node-desc" id="archNodeCore">Virtual Memory Page Tables</div>
+                <div class="arch-node-arrow">→</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-node-title">4. SRE Telemetry</div>
+                <div class="arch-node-desc">Golden Signals &amp; Prometheus Exporter</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 0.85rem;">
+              <a href="../../studios/flow/" id="step2FlowLink" class="hub-nav-cta" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; text-decoration: none;">
+                <span>⚡ Open Interactive Visual Flow Canvas &rarr;</span>
+              </a>
+            </div>
+
+            <div class="step-box">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; margin-bottom: 0.35rem;">PRODUCTION CONFIGURATION MATRIX</div>
+              <pre style="font-family: var(--font-mono); font-size: 0.75rem; color: #34d399; overflow-x: auto; padding: 0.5rem;" id="step2Config"># Production Configuration
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1057,8 +1084,8 @@ metadata:
 data:
   SLO_TARGET: "99.99%"
   AUTOSCALE_MIN: "3"</pre>
+            </div>
           </div>
-        </div>
 
         <!-- Step 3: Try It Safely -->
         <div class="step-panel" id="panelStep3">
@@ -1124,6 +1151,40 @@ data:
           <div style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between;">
             <button class="terminal-btn btn-run" id="btnSubmitQuiz">✓ Submit Quiz &amp; Grade Answers</button>
             <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);" id="quizScoreText">Score: 0 / 2</span>
+          </div>
+
+          <!-- Technical Interview Defense Drill & Solution -->
+          <div class="step-box" style="margin-top: 1.5rem; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.25);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #a5b4fc; font-weight: 700;">🎙️ STAFF/PRINCIPAL INTERVIEW DEFENSE DRILL</span>
+              <a href="../../interview/" id="step5VaultLink" style="font-size: 0.72rem; color: var(--accent-cyan); text-decoration: underline;" target="_blank">Open Full SRE Interview Vault &rarr;</a>
+            </div>
+            <div style="font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;" id="step5InterviewQuestion">
+              How do you defend the architecture, failure modes, and SLOs of this studio in a technical interview?
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.75rem;">
+              <strong style="color: #38bdf8;">🎯 Evaluator Hidden Intent:</strong> <span id="step5InterviewIntent">Evaluating whether the candidate understands real-world failure domains, latency vs memory tradeoffs, and deterministic rollback strategies.</span>
+            </div>
+            
+            <details style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.75rem; margin-top: 0.5rem;">
+              <summary style="font-family: var(--font-mono); font-size: 0.78rem; color: #34d399; font-weight: 700; cursor: pointer;">
+                💡 Reveal Expert SRE &amp; Leadership Solution
+              </summary>
+              <div style="margin-top: 0.75rem; font-size: 0.82rem; color: #e2e8f0; line-height: 1.6; display: flex; flex-direction: column; gap: 0.5rem;">
+                <div>
+                  <strong style="color: #34d399;">🟢 Strong Answer:</strong>
+                  <p style="margin: 0.2rem 0 0; color: #cbd5e1;" id="step5InterviewStrong">Strong technical response...</p>
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem;">
+                  <strong style="color: #38bdf8;">🔵 Expert Architectural Defense:</strong>
+                  <p style="margin: 0.2rem 0 0; color: #cbd5e1;" id="step5InterviewExpert">Expert SRE response...</p>
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem;">
+                  <strong style="color: #f43f5e;">🚩 Red Flag to Avoid:</strong>
+                  <p style="margin: 0.2rem 0 0; color: #fda4af;" id="step5InterviewRedFlag">Red flag warning...</p>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
 
@@ -1531,6 +1592,24 @@ data:
       
       const step1UseCaseEl = document.getElementById('step1UseCase');
       const step1SreTargetEl = document.getElementById('step1SreTarget');
+      const step1PluginNameEl = document.getElementById('step1PluginName');
+      const step1PluginInstallCmdEl = document.getElementById('step1PluginInstallCmd');
+      const step1PluginMarketplaceLinkEl = document.getElementById('step1PluginMarketplaceLink');
+      const btnCopyPluginCmdEl = document.getElementById('btnCopyPluginCmd');
+      const step1CoreConceptEl = document.getElementById('step1CoreConcept');
+      const step1RealWorldImpactEl = document.getElementById('step1RealWorldImpact');
+      const step1PrereqListEl = document.getElementById('step1PrereqList');
+      const step2FlowLinkEl = document.getElementById('step2FlowLink');
+
+      if (btnCopyPluginCmdEl) {
+        btnCopyPluginCmdEl.addEventListener('click', () => {
+          if (activeStudioModal && activeStudioModal.pluginInstall) {
+            copyDrillCmd(activeStudioModal.pluginInstall);
+          } else {
+            copyDrillCmd('/plugin install pradeeptalari14/portfolio:plugins/platform-engineer');
+          }
+        });
+      }
       const step2ConfigEl = document.getElementById('step2Config');
       const archNodeCoreEl = document.getElementById('archNodeCore');
       const labCommandLabelEl = document.getElementById('labCommandLabel');
@@ -1548,6 +1627,12 @@ data:
       const quizContainerEl = document.getElementById('quizContainer');
       const btnSubmitQuizEl = document.getElementById('btnSubmitQuiz');
       const quizScoreTextEl = document.getElementById('quizScoreText');
+      const step5InterviewQuestionEl = document.getElementById('step5InterviewQuestion');
+      const step5InterviewIntentEl = document.getElementById('step5InterviewIntent');
+      const step5InterviewStrongEl = document.getElementById('step5InterviewStrong');
+      const step5InterviewExpertEl = document.getElementById('step5InterviewExpert');
+      const step5InterviewRedFlagEl = document.getElementById('step5InterviewRedFlag');
+      const step5VaultLinkEl = document.getElementById('step5VaultLink');
       
       const step6ArtifactEl = document.getElementById('step6Artifact');
       const btnLaunchStudioFromModalEl = document.getElementById('btnLaunchStudioFromModal');
@@ -2406,7 +2491,12 @@ To address "${userQuery}":
             (s.useCase || '') + ' ' +
             (s.bestTreatment || '') + ' ' +
             (s.tag || '') + ' ' +
-            (s.category || '')
+            (s.category || '') + ' ' +
+            (s.connectedPlugin || '') + ' ' +
+            (s.pluginName || '') + ' ' +
+            (s.coreConcept || '') + ' ' +
+            (s.prerequisite || '') + ' ' +
+            (s.realWorldImpact || '')
           ).toLowerCase();
           return text.includes(q);
         });
@@ -2593,7 +2683,11 @@ To address "${userQuery}":
           const courseType = isProject ? 'GUIDED PROJECT' : 'COURSE';
           const duration = isProject ? '2 Hours' : '1.5 Hours';
           const rating = (4.8 + ((idx % 3) * 0.1)).toFixed(1);
-          const prereq = s.category === 'ai' ? 'Python &amp; GPU Basics' : s.category === 'observability' ? 'Linux &amp; eBPF Basics' : 'Bash &amp; Cloud CLI';
+          const prereq = s.prerequisite || (s.category === 'ai' ? 'Python &amp; GPU Basics' : s.category === 'observability' ? 'Linux &amp; eBPF Basics' : 'Bash &amp; Cloud CLI');
+          const pluginName = s.pluginName || 'Platform Engineer';
+          const pluginId = s.connectedPlugin || 'platform-engineer';
+          const pluginInstall = s.pluginInstall || `/plugin install pradeeptalari14/portfolio:plugins/${pluginId}`;
+          const flowLink = s.architectureFlow || '../../studios/flow/';
 
           // Check if this studio has in-progress tracking
           let progItem = progressMap[s.link || ''] || progressMap[s.title || ''] || (s.id && progressMap[s.id]);
@@ -2646,6 +2740,16 @@ To address "${userQuery}":
                   ${isDone ? '<span style="color:#34d399; margin-left:auto; font-weight:700;">✓ PASSED</span>' : ''}
                 </div>
 
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: 0.45rem; font-family: var(--font-mono); font-size: 0.72rem;">
+                  <a href="../../plugins/?plugin=${pluginId}" style="color: #a5b4fc; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.28); padding: 0.18rem 0.5rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;" title="Claude Code Plugin: ${pluginInstall}">
+                    <span>🧩</span>
+                    <span>${pluginName}</span>
+                  </a>
+                  <a href="${flowLink}" style="color: var(--accent-cyan); background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.18rem 0.5rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;" title="Interactive Architecture Flow Canvas">
+                    <span>⚡ Flow Canvas</span>
+                  </a>
+                </div>
+
                 <h3 class="card-title">${s.title}</h3>
                 <div class="card-author">Instructor: Talari Pradeep</div>
 
@@ -2658,6 +2762,12 @@ To address "${userQuery}":
                 ${progressHtml}
 
                 <p class="card-usecase">${s.useCase || s.desc}</p>
+
+                ${s.coreConcept ? `
+                  <div style="background: rgba(255, 255, 255, 0.03); border-left: 2px solid var(--accent-cyan); padding: 0.35rem 0.65rem; margin-bottom: 0.75rem; font-size: 0.76rem; color: #cbd5e1; line-height: 1.45;">
+                    <strong style="color: var(--accent-cyan);">Concept:</strong> ${s.coreConcept}
+                  </div>
+                ` : ''}
 
                 <div class="card-drill-box">
                   <span class="card-drill-code"><code>${drill}</code></span>
@@ -2710,7 +2820,23 @@ To address "${userQuery}":
         modalStudioIconEl.textContent = s.icon || '⚡';
         modalStudioTitleEl.textContent = s.title;
         modalStudioDomainEl.textContent = `${s.domain || s.category} • ${s.skillLevel || 'Level 2'}`;
-        modalPrereqBadgeEl.textContent = `Prereq: ${s.category === 'ai' ? 'Python 3.10+ & GPU Concepts' : 'Linux Terminal & Containers'}`;
+        modalPrereqBadgeEl.textContent = `Prereq: ${s.prerequisite || (s.category === 'ai' ? 'Python 3.10+ & GPU Concepts' : 'Linux Terminal & Containers')}`;
+
+        if (step1PluginNameEl) step1PluginNameEl.textContent = s.pluginName || 'Platform Engineer';
+        if (step1PluginInstallCmdEl) step1PluginInstallCmdEl.textContent = s.pluginInstall || `/plugin install pradeeptalari14/portfolio:plugins/${s.connectedPlugin || 'platform-engineer'}`;
+        if (step1PluginMarketplaceLinkEl) step1PluginMarketplaceLinkEl.href = `../../plugins/?plugin=${s.connectedPlugin || 'platform-engineer'}`;
+        if (step1CoreConceptEl) step1CoreConceptEl.textContent = s.coreConcept || 'Declarative configuration manifests, automated CI gates, and audited runtime SLO verification.';
+        if (step1RealWorldImpactEl) step1RealWorldImpactEl.textContent = s.realWorldImpact || '';
+        if (step2FlowLinkEl) step2FlowLinkEl.href = s.architectureFlow || '../../studios/flow/';
+
+        if (step1PrereqListEl) {
+          const pText = s.prerequisite || (s.category === 'ai' ? 'Python 3.10+, PyTorch & GPU Tensor Concepts' : 'Linux terminal fundamentals & basic cloud networking');
+          step1PrereqListEl.innerHTML = `
+            <li>${pText}</li>
+            <li>Declarative manifest version control (Git)</li>
+            <li>Golden Signals telemetry inspection (Latency, Saturation, Errors)</li>
+          `;
+        }
 
         step1UseCaseEl.textContent = s.useCase || s.desc;
         step1SreTargetEl.textContent = s.sreMetric || '100% Tested Verification & Infrastructure Compliance';
@@ -2837,6 +2963,25 @@ To address "${userQuery}":
             currentQuizState.userAnswers[qIdx] = oIdx;
           });
         });
+
+        if (step5InterviewQuestionEl) {
+          step5InterviewQuestionEl.textContent = `How would you defend the production architecture, failure domains, and SLOs of ${s.title} in a Staff SRE / Principal System Design interview?`;
+        }
+        if (step5InterviewIntentEl) {
+          step5InterviewIntentEl.textContent = `Interviewer evaluates candidate ability to explain core trade-offs: why ${s.coreConcept || s.title} was chosen over legacy approaches, how the system behaves under saturation, and how runtime SLOs (${s.sreMetric || '99.99% availability'}) are enforced.`;
+        }
+        if (step5InterviewStrongEl) {
+          step5InterviewStrongEl.textContent = `Focuses on the core business problem: ${s.useCase || s.desc}. Details the architectural best treatment (${s.bestTreatment || 'Standardize on declarative manifests and enforce automated validation gates'}), explaining why it eliminates manual toil and configuration drift.`;
+        }
+        if (step5InterviewExpertEl) {
+          step5InterviewExpertEl.textContent = `Walks through quantitative verification: 1) Reproducible terminal validation (${s.realTimeDrill || 'Standardized test harness'}), 2) Target SLO monitoring (${s.sreMetric || '100% compliance'}), 3) Graceful degradation and zero-downtime rollback procedures if dependencies fail, paired with Claude plugin tool automation (${s.pluginName || 'Platform Engineer'}).`;
+        }
+        if (step5InterviewRedFlagEl) {
+          step5InterviewRedFlagEl.textContent = `Avoid answering with: "${s.antiPattern || 'Making manual edits in production consoles without declarative state and rollback testing.'}" Never claim a system has zero failure modes without describing how it recovers from pod/node crashes.`;
+        }
+        if (step5VaultLinkEl) {
+          step5VaultLinkEl.href = `../../interview/?pillar=${s.category === 'ai' ? 'tools' : 'skills'}`;
+        }
       }
 
       btnSubmitQuizEl.addEventListener('click', () => {

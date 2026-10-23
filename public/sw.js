@@ -28,6 +28,7 @@ const PRECACHE_ASSETS = [
   '/tools/vectorless-rag/',
   '/tools/production-secrets/',
   '/tools/prompt-caching/',
+  '/plugins/',
   '/manifest.json'
 ];
 

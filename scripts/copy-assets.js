@@ -127,5 +127,32 @@ if (fs.existsSync(toolsBaseDir)) {
   });
 }
 
+// Plugin marketplace: ship the plugin sources (markdown + JSON manifests + licence) and the
+// marketplace manifest. HTML and scripts from vendored third-party plugins are deliberately
+// not published; plugins/index.html and its assets are emitted by Vite.
+function copyTree(srcRel, destRel, accept) {
+  const srcDir = path.join(rootDir, srcRel);
+  if (!fs.existsSync(srcDir)) return 0;
+  let count = 0;
+  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
+    const rel = `${srcRel}/${entry.name}`;
+    const destRelPath = `${destRel}/${entry.name}`;
+    if (entry.isDirectory()) {
+      count += copyTree(rel, destRelPath, accept);
+    } else if (accept(entry.name, rel)) {
+      const destPath = path.join(distDir, destRelPath);
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      fs.copyFileSync(path.join(rootDir, rel), destPath);
+      count += 1;
+    }
+  }
+  return count;
+}
 
+const pluginFilesCopied = copyTree('plugins', 'plugins', (name, rel) =>
+  rel !== 'plugins/index.html' && rel !== 'plugins/plugins.js' && rel !== 'plugins/plugins.css' &&
+  (/\.(md|json)$/i.test(name) || name === 'LICENSE')
+);
+console.log(`Copied ${pluginFilesCopied} plugin files -> dist/plugins/`);
+copyFile('.claude-plugin/marketplace.json', '.claude-plugin/marketplace.json');
 

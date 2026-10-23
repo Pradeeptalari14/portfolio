@@ -1,0 +1,16 @@
+{
+  "name": "rag-engineer",
+  "version": "1.0.0",
+  "description": "RAG Engineer: Chunking, hybrid retrieval, reranking, grounding and retrieval quality measurement.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "rag",
+    "weaviate",
+    "qdrant",
+    "pgvector",
+    "opensearch",
+    "cohere-rerank"
+  ]
+}

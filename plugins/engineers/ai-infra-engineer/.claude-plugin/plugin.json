@@ -1,0 +1,16 @@
+{
+  "name": "ai-infra-engineer",
+  "version": "1.0.0",
+  "description": "AI Infrastructure Engineer: GPU scheduling, inference serving, batching, quantisation and capacity planning.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "ai-infra",
+    "vllm",
+    "kserve",
+    "nvidia-gpu-operator",
+    "ray",
+    "triton"
+  ]
+}

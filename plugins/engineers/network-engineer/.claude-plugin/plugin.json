@@ -1,0 +1,16 @@
+{
+  "name": "network-engineer",
+  "version": "1.0.0",
+  "description": "Network Engineer: Cloud and hybrid network design, DNS, segmentation and connectivity troubleshooting.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "network",
+    "vpc",
+    "transit-gateway",
+    "route-53",
+    "cilium",
+    "wireguard"
+  ]
+}

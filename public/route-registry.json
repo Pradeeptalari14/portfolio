@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Talari Pradeep Platform Route Registry",
-    "generatedAt": "2026-10-20T12:46:50.893Z",
-    "totalRoutes": 367,
+    "generatedAt": "2026-10-23T06:19:13.615Z",
+    "totalRoutes": 369,
     "testPassRate": "100% (549/549)",
     "testSuites": 119
   },
@@ -240,6 +240,31 @@
       "testFile": "tests/universal-engineering-toolbox.test.js"
     },
     {
+      "path": "/plugins/",
+      "filePath": "plugins/index.html",
+      "type": "Plugin Marketplace",
+      "parent": "Home",
+      "title": "Engineering Plugins Marketplace | Talari Pradeep",
+      "controls": [
+        "Plugin Search (press /)",
+        "Group Filter Chips",
+        "Skills & Commands Disclosure",
+        "Copy Install Command"
+      ],
+      "dependencies": [
+        "plugins/catalog.json",
+        ".claude-plugin/marketplace.json"
+      ],
+      "learningConnections": {
+        "learn": "/academy/",
+        "lab": "/knowledge/",
+        "flow": "/studios/flow/",
+        "project": "/projects/"
+      },
+      "security": "Pre-rendered static HTML, HTML-escaped catalogue text, strict script-src self CSP",
+      "testFile": "tests/plugins-marketplace.test.js"
+    },
+    {
       "path": "/status/",
       "filePath": "status/index.html",
       "type": "Telemetry & Health Dashboard",
@@ -365,6 +390,33 @@
       },
       "security": "Sandboxed virtual execution, DOM XSS sanitized terminal logger, strict CSP compliant",
       "testFile": "tests/technical-academy.test.js"
+    },
+    {
+      "path": "/knowledge/",
+      "filePath": "knowledge/index.html",
+      "type": "Engineering Knowledge Base & Field Guides",
+      "parent": "Home",
+      "title": "Engineering Knowledge Base | Production Field Guides & SRE Runbooks | Talari Pradeep",
+      "controls": [
+        "Topic Category Filter Chips (10)",
+        "Instant Keyword Search",
+        "Article Deep Dives (14)",
+        "Key Runbook Points",
+        "Launch Studio",
+        "Install Plugin"
+      ],
+      "dependencies": [
+        "knowledge/index.html"
+      ],
+      "learningConnections": {
+        "learn": "/studios/learn/",
+        "lab": "/tools/",
+        "flow": "/studios/flow/",
+        "project": "/projects/",
+        "plugins": "/plugins/"
+      },
+      "security": "Pre-rendered static HTML, zero external trackers, strict script-src CSP compliant",
+      "testFile": "tests/site-wide-enhancements.test.js"
     }
   ],
   "studios": [

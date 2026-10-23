@@ -41,6 +41,7 @@ function getToolInputs() {
     aiCatalog: resolve(__dirname, 'AI/index.html'),
     interview: resolve(__dirname, 'interview/index.html'),
     academy: resolve(__dirname, 'academy/index.html'),
+    plugins: resolve(__dirname, 'plugins/index.html'),
     notFound: resolve(__dirname, '404.html'),
   };
 

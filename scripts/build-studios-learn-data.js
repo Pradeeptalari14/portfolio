@@ -293,6 +293,12 @@ function generateLearningProfile(tool) {
     sreMetric = `99.95% Availability SLO & 100% Audited Reproducibility`;
   }
 
+  const { pluginId, pluginName, pluginInstall } = derivePluginInfo(tool);
+  const architectureFlow = deriveArchitectureFlow(tool);
+  const coreConcept = deriveCoreConcept(tool);
+  const prerequisite = derivePrerequisites(tool);
+  const realWorldImpact = deriveRealWorldImpact(tool);
+
   return {
     id: tool.link.replace(/\/$/, ''),
     ...tool,
@@ -303,11 +309,192 @@ function generateLearningProfile(tool) {
     bestTreatment,
     antiPattern,
     realTimeDrill,
-    sreMetric
+    sreMetric,
+    connectedPlugin: pluginId,
+    pluginName,
+    pluginInstall,
+    architectureFlow,
+    coreConcept,
+    prerequisite,
+    realWorldImpact
   };
+}
+
+function derivePluginInfo(tool) {
+  const cat = tool.category || '';
+  const text = (tool.title + ' ' + tool.desc + ' ' + (tool.tag || '')).toLowerCase();
+
+  let pluginId = 'platform-engineer';
+  let pluginName = 'Platform Engineer';
+
+  if (cat === 'ai') {
+    if (text.includes('agent') || text.includes('swarm') || text.includes('langgraph') || text.includes('autogen') || text.includes('crew') || text.includes('computer-use')) {
+      pluginId = 'agent-engineer';
+      pluginName = 'Autonomous Agent Engineer';
+    } else if (text.includes('rag') || text.includes('vector') || text.includes('retriev') || text.includes('chunk') || text.includes('embed') || text.includes('search')) {
+      pluginId = 'rag-engineer';
+      pluginName = 'Enterprise RAG Engineer';
+    } else if (text.includes('guardrail') || text.includes('safety') || text.includes('redteam') || text.includes('eval') || text.includes('alignment') || text.includes('shield')) {
+      pluginId = 'eval-specialist';
+      pluginName = 'AI Eval & Alignment Specialist';
+    } else if (text.includes('cost') || text.includes('finops') || text.includes('greenops') || text.includes('cache') || text.includes('budget')) {
+      pluginId = 'finops-engineer';
+      pluginName = 'FinOps Engineer';
+    } else {
+      pluginId = 'ai-infra-engineer';
+      pluginName = 'AI Infrastructure Engineer';
+    }
+  } else if (cat === 'observability') {
+    if (text.includes('ebpf') || text.includes('profiler') || text.includes('flamegraph') || text.includes('kernel')) {
+      pluginId = 'ebpf-specialist';
+      pluginName = 'Kernel & eBPF Specialist';
+    } else if (text.includes('incident') || text.includes('alert') || text.includes('triage') || text.includes('pagerduty')) {
+      pluginId = 'incident-commander';
+      pluginName = 'Incident Commander';
+    } else {
+      pluginId = 'sre-observability';
+      pluginName = 'SRE & Observability Engineer';
+    }
+  } else if (cat === 'cloud') {
+    if (text.includes('k8s') || text.includes('kubernetes') || text.includes('helm') || text.includes('keda') || text.includes('cilium')) {
+      pluginId = 'kubernetes-specialist';
+      pluginName = 'Kubernetes Specialist';
+    } else if (text.includes('terraform') || text.includes('opentofu') || text.includes('terragrunt') || text.includes('iac')) {
+      pluginId = 'terraform-specialist';
+      pluginName = 'Terraform Specialist';
+    } else if (text.includes('network') || text.includes('vpc') || text.includes('subnet') || text.includes('dns')) {
+      pluginId = 'network-engineer';
+      pluginName = 'Network Engineer';
+    } else {
+      pluginId = 'cloud-architect';
+      pluginName = 'Cloud Architect';
+    }
+  } else if (cat === 'cicd') {
+    if (text.includes('argocd') || text.includes('flux') || text.includes('gitops')) {
+      pluginId = 'gitops-specialist';
+      pluginName = 'GitOps Specialist';
+    } else if (text.includes('security') || text.includes('trivy') || text.includes('cosign') || text.includes('sbom')) {
+      pluginId = 'devsecops-engineer';
+      pluginName = 'DevSecOps Engineer';
+    } else {
+      pluginId = 'release-engineer';
+      pluginName = 'Release Engineer';
+    }
+  } else if (cat === 'automation') {
+    if (text.includes('vault') || text.includes('secret') || text.includes('sast') || text.includes('trivy') || text.includes('compliance')) {
+      pluginId = 'devsecops-engineer';
+      pluginName = 'DevSecOps Engineer';
+    } else if (text.includes('database') || text.includes('sql') || text.includes('postgres') || text.includes('db') || text.includes('migration')) {
+      pluginId = 'database-engineer';
+      pluginName = 'Database Engineer';
+    } else if (text.includes('ansible') || text.includes('systemd') || text.includes('shell') || text.includes('linux') || text.includes('bash')) {
+      pluginId = 'systems-administrator';
+      pluginName = 'Systems Administrator';
+    } else {
+      pluginId = 'platform-engineer';
+      pluginName = 'Platform Engineer';
+    }
+  } else {
+    pluginId = 'devops-engineer';
+    pluginName = 'DevOps Platform Engineer';
+  }
+
+  return {
+    pluginId,
+    pluginName,
+    pluginInstall: `/plugin install pradeeptalari14/portfolio:plugins/${pluginId}`
+  };
+}
+
+function deriveArchitectureFlow(tool) {
+  const cat = tool.category || '';
+  const text = (tool.title + ' ' + tool.desc + ' ' + (tool.tag || '')).toLowerCase();
+
+  if (cat === 'ai') {
+    if (text.includes('rag') || text.includes('vector') || text.includes('retriev') || text.includes('chunk')) {
+      return '/studios/flow/?template=rag';
+    } else if (text.includes('agent') || text.includes('swarm') || text.includes('langgraph')) {
+      return '/studios/flow/?template=agents';
+    }
+    return '/studios/flow/?template=ai';
+  }
+  if (cat === 'observability') {
+    if (text.includes('ebpf') || text.includes('profiler')) return '/studios/flow/?template=ebpf';
+    return '/studios/flow/?template=observability';
+  }
+  if (cat === 'cloud') return '/studios/flow/?template=infra';
+  if (cat === 'cicd') return '/studios/flow/?template=gitops';
+  if (cat === 'automation') {
+    if (text.includes('incident') || text.includes('alert')) return '/studios/flow/?template=incident';
+    return '/studios/flow/?template=infra';
+  }
+  return '/studios/flow/';
+}
+
+function deriveCoreConcept(tool) {
+  const cat = tool.category || '';
+  const text = (tool.title + ' ' + tool.desc).toLowerCase();
+
+  if (cat === 'ai') {
+    if (text.includes('vllm') || text.includes('pagedattention')) return 'Paged memory allocation eliminating KV cache fragmentation across continuous batching steps.';
+    if (text.includes('rag') || text.includes('vector')) return 'Hybrid sparse-dense vector retrieval with reciprocal rank fusion (RRF) and neural cross-encoder re-ranking.';
+    if (text.includes('agent') || text.includes('swarm')) return 'Deterministic StateGraph finite state machines with PostgreSQL checkpoints and bounded tool execution gates.';
+    if (text.includes('guardrail') || text.includes('safety')) return 'Layered sub-reflex regex heuristics and LLM classifier gating enforcing zero-trust prompt isolation.';
+    return 'Scalable distributed model inference serving with GPU kernel acceleration and dynamic tensor parallelism.';
+  }
+  if (cat === 'observability') {
+    if (text.includes('ebpf')) return 'In-kernel eBPF bytecode sampling at 99Hz with DWARF unwinding and zero user-space thread pause latency.';
+    return 'Multi-window multi-burn-rate SLO alerting with distributed W3C traceparent context propagation.';
+  }
+  if (cat === 'cloud') {
+    if (text.includes('k8s') || text.includes('kubernetes')) return 'Declarative reconciliation loops with zone-aware TopologySpreadConstraints and PodDisruptionBudgets.';
+    if (text.includes('terraform') || text.includes('iac')) return 'DRY remote state inheritance with DynamoDB distributed state locking and automated drift detection.';
+    return 'Multi-AZ cloud topology design with resilient cross-region networking and automated autoscaling.';
+  }
+  if (cat === 'cicd') {
+    return 'Cryptographic SLSA container signing (Cosign) and CycloneDX SBOM generation before declarative GitOps reconciliation.';
+  }
+  if (cat === 'automation') {
+    if (text.includes('database') || text.includes('postgres')) return 'Synchronous commit replication with Patroni etcd consensus and PgBouncer connection pooling.';
+    if (text.includes('vault') || text.includes('secret')) return 'Ephemeral secret injection via CSI drivers with automated dynamic lease rotation.';
+    return 'Idempotent infrastructure automation with pre-commit policy enforcement and automated verification.';
+  }
+  return 'Production platform engineering with verified telemetry, compliance enforcement, and automated rollbacks.';
+}
+
+function derivePrerequisites(tool) {
+  const cat = tool.category || '';
+  if (cat === 'ai') return 'Python 3.10+, PyTorch basics & GPU tensor concepts';
+  if (cat === 'observability') return 'Linux terminal, eBPF & Prometheus PromQL basics';
+  if (cat === 'cloud') return 'AWS/Cloud CLI, Kubernetes manifests & Terraform basics';
+  if (cat === 'cicd') return 'Git, GitHub Actions & Docker container fundamentals';
+  if (cat === 'automation') return 'Bash scripting, Linux systemd & YAML declarations';
+  return 'Linux command line, HTTP protocols & software engineering foundations';
+}
+
+function deriveRealWorldImpact(tool) {
+  const cat = tool.category || '';
+  const text = (tool.title + ' ' + tool.desc).toLowerCase();
+  if (cat === 'ai') {
+    if (text.includes('vllm') || text.includes('inference')) return 'Enables 2.8x higher concurrent request throughput while reducing GPU VRAM allocation costs by 40%.';
+    if (text.includes('rag')) return 'Boosts contextual retrieval accuracy to 94%+ while preventing LLM hallucinations on enterprise data.';
+    if (text.includes('agent')) return 'Guarantees 100% deterministic state recovery and stops rogue tool execution cascades.';
+    return 'Drives sub-20ms Time-To-First-Token (TTFT) response latency under heavy concurrent enterprise workloads.';
+  }
+  if (cat === 'observability') {
+    return 'Pinpoints root-cause latency bottlenecks in seconds without adding invasive user-space agent overhead (<0.8% CPU).';
+  }
+  if (cat === 'cloud') {
+    return 'Eliminates cluster upgrade outages and guarantees 99.95%+ uptime across multi-AZ production workloads.';
+  }
+  if (cat === 'cicd') {
+    return 'Enforces zero-critical CVE gates and guarantees 100% cryptographically verified software supply chain provenance.';
+  }
+  return 'Eliminates manual toil and prevents configuration drift across enterprise production environments.';
 }
 
 const enrichedStudios = tools.map(generateLearningProfile);
 
 fs.writeFileSync(outFile, JSON.stringify(enrichedStudios, null, 2), 'utf8');
 console.log(`✅ Successfully generated learning profiles for all ${enrichedStudios.length} studios at ${outFile}`);
+

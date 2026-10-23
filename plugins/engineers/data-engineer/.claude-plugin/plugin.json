@@ -1,0 +1,16 @@
+{
+  "name": "data-engineer",
+  "version": "1.0.0",
+  "description": "Data Engineer: Pipelines, data contracts, quality checks, lakehouse modelling and streaming reliability.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "data",
+    "airflow",
+    "dbt",
+    "spark",
+    "kafka",
+    "great-expectations"
+  ]
+}

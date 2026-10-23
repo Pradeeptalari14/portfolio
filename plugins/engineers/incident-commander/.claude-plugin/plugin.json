@@ -1,0 +1,16 @@
+{
+  "name": "incident-commander",
+  "version": "1.0.0",
+  "description": "Incident Commander: Severity classification, command structure, status communication and blameless postmortems.",
+  "author": {
+    "name": "Talari Pradeep"
+  },
+  "keywords": [
+    "incident",
+    "pagerduty",
+    "opsgenie",
+    "statuspage",
+    "slack",
+    "jira"
+  ]
+}
