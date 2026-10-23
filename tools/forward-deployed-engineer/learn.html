@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forward Deployed Engineer (FDE) AI Systems Studio — Production Learning Guide &amp; Real-Time Drills</title>
+  <meta name="description" content="Master the Forward Deployed Engineer (FDE) hybrid role: AI systems engineering, air-gapped customer deployment, Presidio PII redaction, automated Ragas benchmarks, and real-time failure mode triage." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.35);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-red: #f87171;
+      --accent-amber: #fbbf24;
+      --accent-indigo: #818cf8;
+      --accent-purple: #c084fc;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+      padding-bottom: 5rem;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Top Sticky Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 9, 17, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .nav-breadcrumbs a:hover { color: var(--accent-cyan); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-nav-primary {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: var(--accent-cyan);
+    }
+    .btn-nav-primary:hover {
+      background: var(--accent-cyan);
+      color: #030712;
+    }
+    .btn-nav-repo {
+      background: rgba(129, 140, 248, 0.15);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      color: var(--accent-indigo);
+    }
+    .btn-nav-repo:hover {
+      background: var(--accent-indigo);
+      color: #fff;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1040px;
+      margin: 2.5rem auto 0;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero Header */
+    .hero-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .badge-cyan { background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3); }
+    .badge-indigo { background: rgba(129, 140, 248, 0.12); color: var(--accent-indigo); border-color: rgba(129, 140, 248, 0.3); }
+    .badge-green { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); border-color: rgba(52, 211, 153, 0.3); }
+    .badge-purple { background: rgba(192, 132, 252, 0.12); color: var(--accent-purple); border-color: rgba(192, 132, 252, 0.3); }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 860px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Key Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    .spec-item {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .spec-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+    .spec-value {
+      color: #f1f5f9;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Stepper Bar */
+    .stepper-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.75rem 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      white-space: nowrap;
+    }
+    .step-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .step-item:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .step-item.step-active {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    /* Section Structure */
+    .section-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* 5 Pillars Hybrid Matrix */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .pillar-icon { font-size: 1.75rem; margin-bottom: 0.35rem; }
+    .pillar-title { font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 0.25rem; }
+    .pillar-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
+
+    /* Use Cases Grid */
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .usecase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+    .usecase-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    .usecase-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .usecase-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+    .usecase-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Treatment Boxes */
+    .treatment-callout {
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid;
+    }
+    .treatment-best {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-left-color: var(--accent-green);
+    }
+    .treatment-anti {
+      background: rgba(239, 68, 68, 0.07);
+      border: 1px solid rgba(239, 68, 68, 0.22);
+      border-left-color: var(--accent-red);
+    }
+    .treatment-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .heading-green { color: var(--accent-green); }
+    .heading-red { color: var(--accent-red); }
+    .treatment-body {
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.55;
+    }
+
+    /* Real-Time Drills Box */
+    .drill-terminal {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #93c5fd;
+      position: relative;
+      margin-top: 1rem;
+    }
+    .drill-cmd {
+      color: #38bdf8;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    .drill-step {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+    .drill-step:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .step-label {
+      color: #64748b;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      float: right;
+    }
+    .btn-copy:hover {
+      background: var(--accent-cyan);
+      color: #030712;
+    }
+
+    /* SRE Matrix Table */
+    .sre-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+    }
+    .sre-table th, .sre-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .sre-table th {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .sre-table td {
+      color: #e2e8f0;
+    }
+
+    /* Interview Q&A Accordion */
+    .qa-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .qa-q {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .qa-intent {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 0.75rem;
+    }
+    .qa-answers {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+    }
+    .qa-ans-item {
+      padding: 0.6rem 0.85rem;
+      border-radius: 6px;
+      line-height: 1.5;
+    }
+    .qa-strong { background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--accent-cyan); }
+    .qa-expert { background: rgba(52, 211, 153, 0.08); border-left: 3px solid var(--accent-green); }
+    .qa-leadership { background: rgba(192, 132, 252, 0.08); border-left: 3px solid var(--accent-purple); }
+    .qa-red { background: rgba(239, 68, 68, 0.08); border-left: 3px solid var(--accent-red); color: #fca5a5; }
+
+    /* Quiz Widget */
+    .quiz-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .quiz-question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .quiz-q-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .quiz-q-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.85rem;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+    .quiz-option:hover {
+      background: rgba(56, 189, 248, 0.06);
+      border-color: rgba(56, 189, 248, 0.25);
+      color: #f1f5f9;
+    }
+    .quiz-option input[type="radio"] {
+      margin-top: 0.25rem;
+      accent-color: var(--accent-cyan);
+    }
+    .quiz-option.opt-correct {
+      background: rgba(52, 211, 153, 0.12) !important;
+      border-color: rgba(52, 211, 153, 0.5) !important;
+      color: #34d399 !important;
+    }
+    .quiz-option.opt-incorrect {
+      background: rgba(248, 113, 113, 0.12) !important;
+      border-color: rgba(248, 113, 113, 0.5) !important;
+      color: #f87171 !important;
+    }
+    .btn-quiz {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+    }
+    .btn-quiz:hover { opacity: 0.95; transform: translateY(-1px); }
+
+    /* Bottom Action Bar */
+    .bottom-bar {
+      margin-top: 3rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation -->
+  <nav class="top-nav">
+    <div class="nav-breadcrumbs">
+      <a href="../../">Home</a> &gt;
+      <a href="../../studios/">Studios</a> &gt;
+      <a href="../../studios/learn/">Learn Hub</a> &gt;
+      <a href="./">FDE Studio</a> &gt;
+      <span style="color: #fff;">Forward Deployed Engineer Learning Guide</span>
+    </div>
+    <div class="nav-actions">
+      <a href="./" class="btn-nav btn-nav-primary">
+        <span>⚡</span> Launch Interactive Studio
+      </a>
+      <a href="https://github.com/Pradeeptalari14/tp-fde-enterprise-deployer" target="_blank" rel="noopener noreferrer" class="btn-nav btn-nav-repo">
+        <span>📦</span> GitHub Blueprint
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-box">
+      <div class="hero-badge-row">
+        <span class="badge badge-cyan">Forward Deployed Engineering</span>
+        <span class="badge badge-indigo">AI Systems Engineering</span>
+        <span class="badge badge-green">Air-Gapped Deployment</span>
+        <span class="badge badge-purple">Staff / Principal Level</span>
+      </div>
+      <h1 class="hero-title">Forward Deployed Engineer (FDE) AI Systems Studio</h1>
+      <p class="hero-desc">
+        The complete, end-to-end operational guide for the hybrid role bridging raw artificial intelligence capability with high-stakes customer infrastructure. Discover how to frame vague enterprise pain points into deterministic agentic workflows, deploy air-gapped systems inside private VPCs, and enforce continuous statistical evaluation.
+      </p>
+
+      <!-- Key Specs Grid -->
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Primary Domain</div>
+          <div class="spec-value">Enterprise AI &amp; Customer Deployment</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Skill Target</div>
+          <div class="spec-value">Staff / Principal FDE</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Production Yield</div>
+          <div class="spec-value">9.9 / 10 (Mission Critical)</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Blueprint Repo</div>
+          <div class="spec-value">Pradeeptalari14/tp-fde-enterprise-deployer</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 5-Step Learning Roadmap Navigation -->
+    <nav class="stepper-bar" aria-label="Learning Roadmap">
+      <a href="#overview" class="step-item step-active"><span>Step 1:</span> Architectural Pillars</a>
+      <a href="#treatments" class="step-item"><span>Step 2:</span> Treatments vs Anti-Patterns</a>
+      <a href="#drills" class="step-item"><span>Step 3:</span> Real-Time Production Drills</a>
+      <a href="#matrix" class="step-item"><span>Step 4:</span> SRE Incident &amp; SLA Matrix</a>
+      <a href="#interview" class="step-item"><span>Step 5:</span> Staff / Principal Interview Defense</a>
+      <a href="#quiz" class="step-item"><span>Step 6:</span> Knowledge Check Quiz</a>
+    </nav>
+
+    <!-- Step 1: Architectural Deep Dive -->
+    <section id="overview" class="section-card">
+      <h2 class="section-heading"><span>🏛️</span> Step 1: The 5 Pillars of Forward Deployed Engineering</h2>
+      <p class="section-desc">
+        A Forward Deployed Engineer (FDE) is not a sales engineer who shows canned slide decks, nor an isolated software engineer writing code in a bubble. FDEs work on the front lines inside client enterprises:
+      </p>
+
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">💻</div>
+          <div class="pillar-title">Software Engineering</div>
+          <div class="pillar-desc">Production Python pipelines, strongly-typed TypeScript SDKs, async concurrency, and clean API design.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🧠</div>
+          <div class="pillar-title">AI Systems Engineering</div>
+          <div class="pillar-desc">Agentic swarms, LangGraph state machines, Model Context Protocol (MCP), and local SLMs on vLLM.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">💡</div>
+          <div class="pillar-title">Product Thinking</div>
+          <div class="pillar-desc">Value stream mapping, problem scoping, golden dataset curation, and business ROI quantification.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🤝</div>
+          <div class="pillar-title">Technical Consulting</div>
+          <div class="pillar-desc">CISO diplomacy, stakeholder alignment, compliance audits (HIPAA/SOC2/FedRAMP), and ADR sign-offs.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🚀</div>
+          <div class="pillar-title">Customer Deployment</div>
+          <div class="pillar-desc">Air-gapped private VPCs, Kubernetes Helm charts, zero-egress Cilium NetworkPolicies, and Day-2 handover.</div>
+        </div>
+      </div>
+
+      <!-- Real-World Production Use Cases -->
+      <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 1rem; font-weight: 700;">Key Production Use Cases</h3>
+      <div class="usecase-grid">
+        <div class="usecase-card">
+          <div class="usecase-num">Case 01</div>
+          <div class="usecase-title">Air-Gapped Private VPC Deployment</div>
+          <div class="usecase-text">
+            Deploying containerized AI agent swarms inside highly regulated bank or hospital VPCs with zero external internet egress, pre-downloaded model weights, and Cilium eBPF packet filters.
+          </div>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-num">Case 02</div>
+          <div class="usecase-title">Presidio In-Line PII Redaction</div>
+          <div class="usecase-text">
+            Streaming real-time sanitization of patient healthcare records, SSNs, credit card numbers, and secret tokens before prompts reach local inference engines or audit databases.
+          </div>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-num">Case 03</div>
+          <div class="usecase-title">Automated Golden Evals &amp; SLA Gate</div>
+          <div class="usecase-text">
+            Curating 100+ human-verified domain test cases. Running Ragas benchmarks to enforce contractual acceptance gates (Faithfulness &gt;= 95%, Hallucination &lt;= 1.0%, P99 &lt; 2000ms).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2: Treatments vs Anti-Patterns -->
+    <section id="treatments" class="section-card">
+      <h2 class="section-heading"><span>⚖️</span> Step 2: Best Architectural Treatments vs Anti-Patterns</h2>
+      <p class="section-desc">
+        Field experience shows that over 85% of enterprise AI pilots fail because engineers apply consumer notebook habits to hardened enterprise security perimeters.
+      </p>
+
+      <div class="treatment-callout treatment-best">
+        <div class="treatment-heading heading-green">
+          <span>✔</span> Best Treatment: Curate Golden Datasets &amp; Enforce Egress Isolation
+        </div>
+        <div class="treatment-body">
+          Before writing agent logic, partner with client domain experts to assemble a 50–100 scenario Golden Dataset representing genuine historical inputs and verified ground truth. In infrastructure, package the runtime as non-root Kubernetes containers (<code>runAsUser: 10001</code>, <code>readOnlyRootFilesystem: true</code>) governed by Cilium NetworkPolicies blocking all outbound traffic.
+        </div>
+      </div>
+
+      <div class="treatment-callout treatment-anti">
+        <div class="treatment-heading heading-red">
+          <span>✖</span> Anti-Pattern: Unverified Notebook Demos &amp; Uncontained Tool Recursion
+        </div>
+        <div class="treatment-body">
+          Relying on subjective "vibe checks", building brittle Jupyter notebook demos, throwing uncontainerized code over the fence to client IT, or allowing agents unrestricted recursive tool calls without recursion limits or timeouts. This triggers CISO vetoes, budget overruns, and cascading production loops.
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3: Runnable Real-Time Production Drills -->
+    <section id="drills" class="section-card">
+      <h2 class="section-heading"><span>⚡</span> Step 3: Runnable Real-Time Production Drills</h2>
+      <p class="section-desc">
+        Execute these drills to validate customer problem framing, evaluate model faithfulness, verify zero-egress network policies, and compile enterprise statements of work.
+      </p>
+
+      <div class="drill-terminal">
+        <div class="drill-step">
+          <div class="step-label">Drill 1: Customer Discovery &amp; Value Stream Mapping</div>
+          <button class="btn-copy" onclick="copyText('fde client-discover --industry healthcare --workflow audit')">Copy</button>
+          <div class="drill-cmd">$ fde client-discover --industry healthcare --workflow "patient-record-auditing"</div>
+          <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.35rem;">
+            Analyzes 14 stakeholder workflows, calculates human labor cost, and isolates 64% manual document bottleneck.
+          </div>
+        </div>
+
+        <div class="drill-step">
+          <div class="step-label">Drill 2: Automated Acceptance Evaluation Harness</div>
+          <button class="btn-copy" onclick="copyText('pytest -v evals/test_acceptance_evals.py --threshold-faithfulness 0.95 --verify-airgap')">Copy</button>
+          <div class="drill-cmd">$ pytest -v evals/test_acceptance_evals.py --threshold-faithfulness 0.95 --verify-airgap</div>
+          <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.35rem;">
+            Runs Ragas benchmark across 100 golden scenarios. Enforces Faithfulness &gt;= 95% and verifies 0 outbound network calls.
+          </div>
+        </div>
+
+        <div class="drill-step">
+          <div class="step-label">Drill 3: Deploy Air-Gapped Helm Release &amp; Monitor eBPF Drops</div>
+          <button class="btn-copy" onclick="copyText('helm upgrade --install fde-agent deploy/helm -n fde-ai-system && cilium monitor --type drop')">Copy</button>
+          <div class="drill-cmd">$ helm upgrade --install fde-agent deploy/helm -n fde-ai-system &amp;&amp; cilium monitor --type drop</div>
+          <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.35rem;">
+            Bootstraps non-root agent pods into private namespace and validates that Cilium drops any unauthorized external socket.
+          </div>
+        </div>
+
+        <div class="drill-step">
+          <div class="step-label">Drill 4: Enterprise Statement of Work (SOW) &amp; Handover Compilation</div>
+          <button class="btn-copy" onclick="copyText('fde generate-sow --tenant acme-fintech --sla-target standard')">Copy</button>
+          <div class="drill-cmd">$ fde generate-sow --tenant acme-fintech --sla-target standard</div>
+          <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.35rem;">
+            Compiles contractual 5-phase delivery timeline, RACI matrix, and Day-2 handover runbook for client engineering teams.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 4: SRE Incident & SLA Matrix -->
+    <section id="matrix" class="section-card">
+      <h2 class="section-heading"><span>📊</span> Step 4: SRE Incident Triage &amp; Telemetry Matrix</h2>
+      <p class="section-desc">
+        Key operational metrics and failure-mode mitigations required to satisfy enterprise CISO and SRE teams:
+      </p>
+
+      <table class="sre-table">
+        <thead>
+          <tr>
+            <th>Metric / SLA</th>
+            <th>Target Threshold</th>
+            <th>Monitoring Mechanism</th>
+            <th>Primary Failure Mode &amp; Treatment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>P99 Request Latency</strong></td>
+            <td>&lt; 2,000 ms</td>
+            <td>Prometheus / OpenTelemetry span</td>
+            <td>Model GPU memory exhaustion (OOM); mitigate via vLLM PagedAttention chunked prefill.</td>
+          </tr>
+          <tr>
+            <td><strong>Ragas Faithfulness</strong></td>
+            <td>&gt;= 95.0%</td>
+            <td>Automated CI/CD Golden Set</td>
+            <td>Context dilution or stale embeddings; refine vector top_k and hybrid BM25 re-ranking.</td>
+          </tr>
+          <tr>
+            <td><strong>Hallucination Rate</strong></td>
+            <td>&lt;= 1.0%</td>
+            <td>Synthetic Adversarial Red-Teaming</td>
+            <td>Unconstrained generation; enforce strict Pydantic JSON schema output parsing.</td>
+          </tr>
+          <tr>
+            <td><strong>PII Data Exfiltration</strong></td>
+            <td>0.00% (Strict Zero)</td>
+            <td>Presidio Audit Logs</td>
+            <td>Accidental prompt persistence; sanitize via in-line streaming Presidio filter before cache.</td>
+          </tr>
+          <tr>
+            <td><strong>External Network Egress</strong></td>
+            <td>0 Outbound Calls</td>
+            <td>Cilium eBPF Socket Drop Probes</td>
+            <td>Library telemetry beacon; block 0.0.0.0/0 at the kernel layer with Kubernetes NetworkPolicy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Step 5: Staff / Principal Technical Interview Defense -->
+    <section id="interview" class="section-card">
+      <h2 class="section-heading"><span>🎯</span> Step 5: Staff / Principal Technical Interview Defense</h2>
+      <p class="section-desc">
+        Real-world interview scenarios tested at tier-1 enterprise AI companies (Palantir, OpenAI, Scale AI):
+      </p>
+
+      <div class="qa-card">
+        <div class="qa-q">Q1: How do you frame a messy, subjective client complaint into an engineering architecture spec?</div>
+        <div class="qa-intent">Evaluates customer discovery, value stream mapping, business translation, and problem scoping capabilities.</div>
+        <div class="qa-answers">
+          <div class="qa-ans-item qa-strong"><strong>Strong Answer:</strong> Map the current manual process end-to-end, identify exact bottleneck latency, and curate a 100-scenario Golden Dataset with domain experts.</div>
+          <div class="qa-ans-item qa-expert"><strong>Expert Answer:</strong> Translate operational bottlenecks into contractually measurable SLAs (e.g. reducing cycle time from 3 hours to 90s, Faithfulness &gt;= 95%). Establish an immutable golden benchmark dataset with client domain experts to establish a verifiable baseline before writing agent code.</div>
+          <div class="qa-ans-item qa-leadership"><strong>Leadership Answer:</strong> Align executive sponsors, compliance officers, and frontline operators on a shared definition of success. Balance immediate quick-win automation with a modular, air-gapped architecture that client SRE teams can easily maintain on Day 2.</div>
+          <div class="qa-ans-item qa-red"><strong>Red Flag:</strong> Jumping directly into prompt engineering or building a demo without establishing quantitative baseline metrics or golden datasets.</div>
+        </div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-q">Q2: How do you handle a situation where a client CISO threatens to veto a production rollout over data exfiltration concerns?</div>
+        <div class="qa-intent">Evaluates executive stakeholder negotiation, technical security diplomacy, and verifiable compliance attestation.</div>
+        <div class="qa-answers">
+          <div class="qa-ans-item qa-strong"><strong>Strong Answer:</strong> Demonstrate network isolation using firewall rules and show that all data stays in the private cloud VPC.</div>
+          <div class="qa-ans-item qa-expert"><strong>Expert Answer:</strong> Provide verifiable cryptographic and network proof: demonstrate zero-egress Cilium NetworkPolicies with live eBPF socket monitoring, prove all inference executes on local GPU nodes with no external API keys, show automated Presidio PII scrubbing before memory persistence, and offer Ed25519-signed audit logs.</div>
+          <div class="qa-ans-item qa-leadership"><strong>Leadership Answer:</strong> Conduct a joint architectural review with the CISO team. Offer a sandboxed pilot with synthetic data, co-author the security compliance sign-off document, and establish automated security regression gates in their GitOps pipeline.</div>
+          <div class="qa-ans-item qa-red"><strong>Red Flag:</strong> Dismissing security concerns as bureaucracy or making unsubstantiated verbal promises without proof.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 6: Interactive Knowledge Check Quiz -->
+    <section id="quiz" class="section-card">
+      <h2 class="section-heading"><span>📝</span> Step 6: Interactive Knowledge Check Quiz</h2>
+      <p class="section-desc">Test your understanding of the Forward Deployed Engineering lifecycle:</p>
+
+      <div class="quiz-container">
+        <!-- Quiz Q1 -->
+        <div class="quiz-question-card" id="quiz-q1">
+          <div class="quiz-q-num">Question 1 of 3</div>
+          <div class="quiz-q-title">What is the primary responsibility that distinguishes a Forward Deployed Engineer (FDE) from a traditional Software Engineer?</div>
+          <div class="quiz-options">
+            <label class="quiz-option">
+              <input type="radio" name="q1" value="a" />
+              <span>Writing CSS frontend styles for public marketing websites</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="q1" value="b" />
+              <span>Directly embedding with client organizations to frame real business problems, architect tailored AI systems, and deploy into customer production environments</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="q1" value="c" />
+              <span>Managing cloud data center hardware cabling and power supplies</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Quiz Q2 -->
+        <div class="quiz-question-card" id="quiz-q2">
+          <div class="quiz-q-num">Question 2 of 3</div>
+          <div class="quiz-q-title">Why is a Golden Evaluation Dataset critical before writing production agent code?</div>
+          <div class="quiz-options">
+            <label class="quiz-option">
+              <input type="radio" name="q2" value="a" />
+              <span>It provides a deterministic benchmark of human-verified customer scenarios to objectively measure faithfulness and catch regressions before production deployment</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="q2" value="b" />
+              <span>It speeds up GPU tensor memory compilation</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="q2" value="c" />
+              <span>It replaces the need for a vector database</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Quiz Q3 -->
+        <div class="quiz-question-card" id="quiz-q3">
+          <div class="quiz-q-num">Question 3 of 3</div>
+          <div class="quiz-q-title">In an air-gapped enterprise deployment, how does an FDE guarantee zero internet data exfiltration?</div>
+          <div class="quiz-options">
+            <label class="quiz-option">
+              <input type="radio" name="q3" value="a" />
+              <span>By asking client developers to disconnect Wi-Fi routers</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="q3" value="b" />
+              <span>By enforcing zero-egress Kubernetes NetworkPolicies with Cilium eBPF, hosting local model weights on vLLM, and scrubbed in-line PII redaction</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="q3" value="c" />
+              <span>By running models in unencrypted browser JavaScript tabs</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="button" class="btn-quiz" id="btn-submit-quiz" onclick="gradeQuiz()">
+          <span>Grade Quiz Answers</span>
+        </button>
+        <div id="quiz-result" style="font-family: var(--font-mono); font-size: 0.85rem; margin-top: 0.5rem; display: none;"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Action Bar -->
+    <div class="bottom-bar">
+      <div>
+        <h4 style="color: #fff; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Ready to experience the interactive studio?</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem;">Generate production Helm manifests, TypeScript client SDKs, Presidio guardrails, and customer SOWs live in your browser.</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="./" class="btn-nav btn-nav-primary" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;">
+          <span>⚡</span> Launch Interactive Studio
+        </a>
+        <a href="../../learning/" class="btn-nav btn-nav-repo" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;">
+          <span>📚</span> All Learning Paths
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function copyText(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('Copied command to clipboard:\n' + text);
+        });
+      }
+    }
+
+    function gradeQuiz() {
+      const answers = { q1: 'b', q2: 'a', q3: 'b' };
+      let score = 0;
+      let total = 3;
+
+      for (let key in answers) {
+        const selected = document.querySelector(`input[name="${key}"]:checked`);
+        const card = document.getElementById(`quiz-${key}`);
+        if (!card) continue;
+
+        card.querySelectorAll('.quiz-option').forEach(opt => {
+          opt.classList.remove('opt-correct', 'opt-incorrect');
+        });
+
+        if (selected) {
+          if (selected.value === answers[key]) {
+            score++;
+            selected.closest('.quiz-option').classList.add('opt-correct');
+          } else {
+            selected.closest('.quiz-option').classList.add('opt-incorrect');
+          }
+        }
+      }
+
+      const resBox = document.getElementById('quiz-result');
+      resBox.style.display = 'block';
+      if (score === total) {
+        resBox.innerHTML = `<span style="color: var(--accent-green);">✔ Perfect Score: ${score}/${total}! You understand the core operational foundations of an enterprise Forward Deployed Engineer.</span>`;
+      } else {
+        resBox.innerHTML = `<span style="color: var(--accent-amber);">Score: ${score}/${total}. Review the answers highlighted in red above and re-check the architectural sections.</span>`;
+      }
+    }
+  </script>
+</body>
+</html>

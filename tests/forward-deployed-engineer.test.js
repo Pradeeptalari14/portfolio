@@ -151,4 +151,37 @@ describe('Forward Deployed Engineer (FDE) AI Systems Studio', () => {
     const downloadBtn = doc.getElementById('btn-download-code');
     expect(() => downloadBtn.click()).not.toThrow();
   });
+
+  it('should render learn.html with complete curriculum, SRE matrix, and interactive quiz', () => {
+    const learnPath = path.resolve(__dirname, '../tools/forward-deployed-engineer/learn.html');
+    expect(fs.existsSync(learnPath)).toBe(true);
+
+    const htmlText = fs.readFileSync(learnPath, 'utf8');
+    const dom = new JSDOM(htmlText, { runScripts: "dangerously" });
+    const window = dom.window;
+    const document = window.document;
+
+    expect(document.title).toContain('Forward Deployed Engineer');
+    expect(document.querySelector('.hero-title').textContent).toContain('Forward Deployed Engineer');
+    expect(document.querySelector('.specs-grid')).not.toBeNull();
+    expect(document.querySelector('.sre-table')).not.toBeNull();
+    expect(document.querySelectorAll('.qa-card').length).toBeGreaterThanOrEqual(2);
+
+    // Test quiz grading in learn.html
+    const q1Radio = document.querySelector('input[name="q1"][value="b"]');
+    const q2Radio = document.querySelector('input[name="q2"][value="a"]');
+    const q3Radio = document.querySelector('input[name="q3"][value="b"]');
+    expect(q1Radio).not.toBeNull();
+    expect(q2Radio).not.toBeNull();
+    expect(q3Radio).not.toBeNull();
+
+    q1Radio.checked = true;
+    q2Radio.checked = true;
+    q3Radio.checked = true;
+
+    window.gradeQuiz();
+    const resultBox = document.getElementById('quiz-result');
+    expect(resultBox.style.display).toBe('block');
+    expect(resultBox.textContent).toContain('Perfect Score');
+  });
 });
