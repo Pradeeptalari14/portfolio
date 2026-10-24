@@ -156,3 +156,16 @@ const pluginFilesCopied = copyTree('plugins', 'plugins', (name, rel) =>
 console.log(`Copied ${pluginFilesCopied} plugin files -> dist/plugins/`);
 copyFile('.claude-plugin/marketplace.json', '.claude-plugin/marketplace.json');
 
+// Copy standalone studio suites to dist/studios/
+const studiosBaseDir = path.join(rootDir, 'studios');
+if (fs.existsSync(studiosBaseDir)) {
+  const allStudioEntries = fs.readdirSync(studiosBaseDir);
+  allStudioEntries.forEach(entry => {
+    const dirPath = path.join(studiosBaseDir, entry);
+    if (fs.statSync(dirPath).isDirectory() && !['ai', 'asi', 'si', 'learn', 'flow'].includes(entry)) {
+      const count = copyTree(`studios/${entry}`, `studios/${entry}`, () => true);
+      console.log(`Copied ${count} studio files for ${entry} -> dist/studios/${entry}/`);
+    }
+  });
+}
+

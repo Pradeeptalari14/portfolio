@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Talari Pradeep Platform Route Registry",
-    "generatedAt": "2026-10-24T16:39:36.103Z",
-    "totalRoutes": 371,
+    "generatedAt": "2026-10-24T19:07:45.582Z",
+    "totalRoutes": 372,
     "testPassRate": "100% (549/549)",
     "testSuites": 119
   },
@@ -3169,6 +3169,17 @@
       "repository": "Pradeeptalari14/tp-permify-filter",
       "hasLearn": true,
       "flowLink": "/studios/flow/?studio=permify-filter"
+    },
+    {
+      "id": "pigouvian-automation-tax",
+      "path": "/tools/pigouvian-automation-tax/",
+      "filePath": "tools/pigouvian-automation-tax/index.html",
+      "learnPath": "/tools/pigouvian-automation-tax/learn.html",
+      "title": "Pigouvian Automation Tax & AI Layoff Trap Studio",
+      "category": "ai",
+      "repository": "Pradeeptalari14/tp-pigouvian-automation-tax",
+      "hasLearn": true,
+      "flowLink": "/studios/flow/?studio=pigouvian-automation-tax"
     },
     {
       "id": "pinecone-serverless",

@@ -9770,5 +9770,33 @@
     "coreConcept": "Autonomous closed-loop cycle executing automated ad creative generation, instant webhook ingestion, sub-30s AI voice qualification, and programmatic FinOps capital reallocation.",
     "prerequisite": "Meta Marketing API v21.0, WebRTC/SIP telephony, Python FastAPI, Redis Streams, and Kubernetes zero-trust networking.",
     "realWorldImpact": "Slashes lead qualification response latency from 12 hours to under 30 seconds while guaranteeing zero ad-budget burnout via real-time ROAS circuit breakers."
+  },
+  {
+    "id": "pigouvian-automation-tax",
+    "title": "Pigouvian Automation Tax & AI Layoff Trap Studio",
+    "desc": "Simulate the Corporate Prisoner's Dilemma, aggregate demand destruction, and optimal Pigouvian automation tax speed governor under autonomous AI displacement based on research by Brett Hemenway Falk and Gerry Tsoukalas (2026).",
+    "category": "ai",
+    "icon": "⚖️",
+    "color": "rgb(244, 63, 94)",
+    "borderClass": "border-rose-300",
+    "bgClass": "bg-rose-50/10",
+    "tag": "pigouvian_tax.py",
+    "link": "pigouvian-automation-tax/",
+    "repository": "Pradeeptalari14/tp-pigouvian-automation-tax",
+    "repo": "Pradeeptalari14/tp-pigouvian-automation-tax",
+    "domain": "Macroeconomic AI Policy & Systemic Risk",
+    "skillLevel": "Level 3 (Distributed & Compliance)",
+    "useCase": "Quantifying systemic purchasing power destruction from knowledge worker displacement and computing optimal Pigouvian tax rates for future-ready economies.",
+    "bestTreatment": "Enforce deterministic speed governor taxation proportional to MPC and labor cost arbitrage, recycle 100% of proceeds into human-in-the-loop transition endowments, and track task-level disruption ledgers.",
+    "antiPattern": "Assuming unassisted upskilling will absorb exponential AI displacement, relying on UBI without altering capital-labor microeconomic relative prices, or ignoring the macro demand feedback loop.",
+    "realTimeDrill": "python -m src.cli --mpc 0.78 --human-wage 145000 --ai-cost 6500 --firms 50 --ledger",
+    "sreMetric": "Zero Macroeconomic Feedback Distortion & Deterministic Equilibrium Convergence",
+    "connectedPlugin": "pigouvian-automation-tax",
+    "pluginName": "Pigouvian Automation Tax Engine",
+    "pluginInstall": "/plugin install pradeeptalari14/portfolio:plugins/pigouvian-automation-tax",
+    "architectureFlow": "/tools/pigouvian-automation-tax/",
+    "coreConcept": "Macroeconomic speed governor internalizing aggregate demand externalities caused by autonomous AI agent labor displacement across enterprise knowledge work.",
+    "prerequisite": "Microeconomic labor economics, game theory (Nash equilibrium), Pydantic simulation kernels, and 9+ DevSecOps governance.",
+    "realWorldImpact": "Prevents catastrophic macroeconomic aggregate demand collapse by pacing enterprise AI deployment to human labor reabsorption rates through speed-governed Pigouvian recycling."
   }
 ]

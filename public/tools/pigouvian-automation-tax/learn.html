@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pigouvian Automation Tax &amp; The AI Layoff Trap — Academic Guide &amp; Policy Manual</title>
+  <meta name="description" content="Academic and engineering policy guide for Studio #349: Pigouvian Automation Tax and The AI Layoff Trap based on research by Brett Hemenway Falk and Gerry Tsoukalas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-purple: #a855f7;
+      --accent-amber: #fbbf24;
+      --accent-rose: #f43f5e;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      padding-bottom: 5rem;
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 9, 17, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      color: #fff;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    p { margin-bottom: 1rem; color: #cbd5e1; font-size: 0.95rem; }
+    .code-block {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      line-height: 1.55;
+    }
+    .callout-box {
+      border-left: 4px solid var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    .callout-box strong { color: var(--accent-cyan); }
+    .flow-step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .step-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <div style="font-family: var(--font-display); font-weight: 700;">
+      <a href="./">← Return to Studio #349 Simulator</a>
+    </div>
+    <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">
+      RESEARCH SPECIFICATION &bull; FALK &amp; TSOUKALAS (2026)
+    </div>
+  </header>
+
+  <article class="guide-container">
+    <span class="step-tag">ACADEMIC &amp; SRE POLICY RUNBOOK</span>
+    <h1>The AI Layoff Trap &amp; Pigouvian Automation Tax</h1>
+    <p style="font-size: 1.1rem; color: var(--text-secondary);">
+      Formalizing the Macroeconomic Prisoner's Dilemma of Enterprise AI Adoption, Aggregate Demand Destruction, and Optimal Pigouvian Speed Governors.
+    </p>
+
+    <div class="callout-box">
+      <strong>Research Grounding:</strong> Based on the 2026 paper <em>"The AI Layoff Trap"</em> by <strong>Brett Hemenway Falk</strong> (University of Pennsylvania, Department of Computer and Information Science) and <strong>Gerry Tsoukalas</strong> (Boston University Questrom School of Business / Wharton).
+    </div>
+
+    <h2>1. The Economic Paradox: "Firing Your Own Customers"</h2>
+    <p>
+      When an individual enterprise automates a white-collar or operational workflow using Large Language Models or autonomous agents, it captures 100% of the cost savings (substituting human wages $w$ with compute cost $c_{AI} \ll w$). However, the worker who is displaced experiences a collapse in income. Because workers have a high Marginal Propensity to Consume (MPC &approx; 0.85), their loss of wages diminishes aggregate purchasing power across the economy.
+    </p>
+    <p>
+      An individual firm only sees a tiny fraction ($1/N$) of that demand loss directly, treating the broader destruction of purchasing power as an externalized cost. Yet, when every competing firm pursues the same cost-cutting strategy, the entire consumer base suffers a severe reduction in purchasing power, causing corporate sales to plunge.
+    </p>
+
+    <h2>2. The Game-Theoretic Prisoner's Dilemma</h2>
+    <p>
+      Why can't market competition solve this on its own? Because of the <strong>dominant strategy trap</strong>:
+    </p>
+    <ul>
+      <li style="margin-bottom: 0.5rem;"><strong>If Competitors Automate:</strong> A firm that retains human labor has higher operating expenses ($w > c_{AI}$), gets priced out of the market, and goes bankrupt.</li>
+      <li style="margin-bottom: 0.5rem;"><strong>If Competitors Retain Humans:</strong> An individual firm that automates captures supernormal short-term profit margins.</li>
+    </ul>
+    <p>
+      Therefore, <em>regardless of what competitors do</em>, full automation is the strictly dominant individual strategy. All firms defect, resulting in the Nash equilibrium where aggregate demand collapses—even though every firm would have been more profitable under the cooperative, human-complementary optimum.
+    </p>
+
+    <h2>3. Why Conventional Interventions Fail</h2>
+    <div class="flow-step-card">
+      <div class="step-tag">FAILURE ANALYSIS</div>
+      <h3 style="margin-top:0;">1. Workforce Retraining &amp; Upskilling</h3>
+      <p>
+        The capability frontier of AI expands continuously. Workers retrained for 6–18 months emerge to find that the new tasks they learned have already been automated by next-generation foundation models.
+      </p>
+    </div>
+
+    <div class="flow-step-card">
+      <div class="step-tag">FAILURE ANALYSIS</div>
+      <h3 style="margin-top:0;">2. Universal Basic Income (UBI) &amp; Capital Taxes</h3>
+      <p>
+        UBI redistributes purchasing power after the fact, but does <em>not alter the firm's marginal cost comparison</em> ($c_{AI} < w$). Thus, firms continue to accelerate human displacement, exacerbating the structural deficit.
+      </p>
+    </div>
+
+    <h2>4. The Solution: Pigouvian Automation Tax (&tau;*)</h2>
+    <p>
+      Falk &amp; Tsoukalas prove that the only micro-theoretically sound remedy is a <strong>Pigouvian tax</strong> levied directly at the margin of automated labor substitution:
+    </p>
+
+    <div class="code-block">
+τ* = MPC × (w - c_AI) × (1 - 1/N)
+
+Where:
+  w    = Human wage rate ($/hr)
+  c_AI = Marginal compute execution cost ($/hr equivalent)
+  MPC  = Displaced worker marginal propensity to consume
+  N    = Effective competing firms in market segment
+    </div>
+
+    <p>
+      The Pigouvian tax acts as a <strong>macroeconomic speed governor</strong>: it forces firms to internalize the demand-destruction cost, ensuring that automation occurs only when AI's productivity gains genuinely exceed the social displacement cost.
+    </p>
+
+    <h2>5. SRE &amp; DevSecOps Implementation Architecture</h2>
+    <p>
+      To implement this governance model programmatically inside modern enterprises, Studio #349 packages automated telemetry and policy hooks:
+    </p>
+    <div class="code-block">
+# Policy verification runbook
+$ python -m src.pigouvian_tax_engine --audit-workforce-ledger
+[AUDIT] Scanning compute execution vs. automated FTE substitution...
+[TELEMETRY] 1,420 automated hours detected across customer voice & ad copy synthesis.
+[CALCULATION] Optimal speed governor tax = $14.20/hr.
+[REVENUE_RECYCLING] Allocated $20,164 to Employee Complementary Upskilling Credit.
+[STATUS] 9+ DevSecOps Compliance Verified.
+    </div>
+
+    <h2>6. Universal 9+ DevSecOps Governance</h2>
+    <p>
+      Studio #349 enforces:
+    </p>
+    <ul>
+      <li><strong>GitOps:</strong> Declarative tax and policy rules versioned in Git.</li>
+      <li><strong>Zero Secrets:</strong> Vault-backed API tokens for telemetry scrapers.</li>
+      <li><strong>SLSA-3:</strong> Cryptographically signed container images via Sigstore Cosign.</li>
+      <li><strong>SBOM:</strong> CycloneDX bills of materials verified with Grype.</li>
+      <li><strong>Semgrep SAST:</strong> AST rules blocking unauthenticated financial mutations.</li>
+    </ul>
+  </article>
+
+</body>
+</html>

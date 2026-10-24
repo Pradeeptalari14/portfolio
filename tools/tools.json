@@ -4186,5 +4186,17 @@
     "tag": "closed_loop_revenue.py",
     "link": "ai-autonomous-ads-voice-revenue/",
     "repository": "Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue"
+  },
+  {
+    "title": "Pigouvian Automation Tax & AI Layoff Trap Studio",
+    "desc": "Simulate the Corporate Prisoner's Dilemma, aggregate demand destruction, and optimal Pigouvian automation tax speed governor under autonomous AI displacement based on research by Brett Hemenway Falk and Gerry Tsoukalas (2026).",
+    "category": "ai",
+    "icon": "⚖️",
+    "color": "rgb(244, 63, 94)",
+    "borderClass": "border-rose-300",
+    "bgClass": "bg-rose-50/10",
+    "tag": "pigouvian_tax.py",
+    "link": "pigouvian-automation-tax/",
+    "repository": "Pradeeptalari14/tp-pigouvian-automation-tax"
   }
 ]

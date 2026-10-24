@@ -65,6 +65,27 @@ function getToolInputs() {
       }
     }
   }
+
+  const studiosDir = resolve(__dirname, 'studios');
+  if (fs.existsSync(studiosDir)) {
+    const sItems = fs.readdirSync(studiosDir);
+    for (const item of sItems) {
+      const itemPath = join(studiosDir, item);
+      if (fs.statSync(itemPath).isDirectory() && !['ai', 'asi', 'si', 'learn', 'flow'].includes(item)) {
+        const htmlPath = join(itemPath, 'index.html');
+        if (fs.existsSync(htmlPath)) {
+          const key = 'studio_' + item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+          inputs[key] = htmlPath;
+        }
+        const learnPath = join(itemPath, 'learn.html');
+        if (fs.existsSync(learnPath)) {
+          const learnKey = 'studioLearn_' + item.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+          inputs[learnKey] = learnPath;
+        }
+      }
+    }
+  }
+
   return inputs;
 }
 
