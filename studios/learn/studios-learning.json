@@ -9742,5 +9742,33 @@
     "coreConcept": "Customer-centric AI systems engineering combining rapid problem discovery with air-gapped Kubernetes deployment, Presidio PII redaction, and automated Ragas evaluation gates.",
     "prerequisite": "Python systems engineering, Kubernetes & Docker containerization, enterprise VPC networking, and LLM evaluation frameworks (Ragas).",
     "realWorldImpact": "Accelerates customer production delivery from 6 months to 14 days while eliminating 100% of data exfiltration risks in air-gapped VPCs."
+  },
+  {
+    "id": "ai-autonomous-ads-voice-revenue",
+    "title": "Autonomous AI Ads -> Voice -> Revenue Studio",
+    "desc": "Autonomous closed-loop growth and revenue orchestrator. Connect Meta Ads Manager API v21.0, Anthropic Claude 3.7 Sonnet copy synthesis, sub-30s OmniDimension/WebRTC voice agents, and unit-economics stop-loss FinOps automation.",
+    "category": "ai",
+    "icon": "📞",
+    "color": "rgb(56, 189, 248)",
+    "borderClass": "border-cyan-300",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "closed_loop_revenue.py",
+    "link": "ai-autonomous-ads-voice-revenue/",
+    "repository": "Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue",
+    "repo": "Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue",
+    "domain": "Autonomous Growth & FinOps AI",
+    "skillLevel": "Level 3 (Distributed & Compliance)",
+    "useCase": "Deploying self-directing marketing and outbound conversion engines with strict FinOps stop-loss guardrails and sub-30s live voice outreach.",
+    "bestTreatment": "Enforce HMAC webhook verification on Meta leadgen, E.164 phone sanitization, encrypted Redis streams, non-root container isolation, and automated campaign pause when CAC breaches target bounds.",
+    "antiPattern": "Unbounded ad spend execution, hardcoded API secrets, unredacted PII in voice logs, and manual CSV lead exports causing lead decay.",
+    "realTimeDrill": "pytest -v tests/test_closed_loop_revenue.py --stop-loss-threshold 1.8 && curl -s http://localhost:8000/health",
+    "sreMetric": "Sub-30s Outbound Callback SLA & 100% Stop-Loss Circuit Breaker Enforcement",
+    "connectedPlugin": "ai-autonomous-ads-voice-revenue",
+    "pluginName": "Autonomous AI Ads to Voice Revenue",
+    "pluginInstall": "/plugin install pradeeptalari14/portfolio:plugins/ai-autonomous-ads-voice-revenue",
+    "architectureFlow": "/tools/ai-autonomous-ads-voice-revenue/",
+    "coreConcept": "Autonomous closed-loop cycle executing automated ad creative generation, instant webhook ingestion, sub-30s AI voice qualification, and programmatic FinOps capital reallocation.",
+    "prerequisite": "Meta Marketing API v21.0, WebRTC/SIP telephony, Python FastAPI, Redis Streams, and Kubernetes zero-trust networking.",
+    "realWorldImpact": "Slashes lead qualification response latency from 12 hours to under 30 seconds while guaranteeing zero ad-budget burnout via real-time ROAS circuit breakers."
   }
 ]

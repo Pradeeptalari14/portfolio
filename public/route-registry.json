@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Talari Pradeep Platform Route Registry",
-    "generatedAt": "2026-10-23T10:37:29.523Z",
-    "totalRoutes": 370,
+    "generatedAt": "2026-10-24T15:48:56.108Z",
+    "totalRoutes": 371,
     "testPassRate": "100% (549/549)",
     "testSuites": 119
   },
@@ -518,6 +518,17 @@
       "repository": "Pradeeptalari14/tp-ai",
       "hasLearn": true,
       "flowLink": "/studios/flow/?studio=ai"
+    },
+    {
+      "id": "ai-autonomous-ads-voice-revenue",
+      "path": "/tools/ai-autonomous-ads-voice-revenue/",
+      "filePath": "tools/ai-autonomous-ads-voice-revenue/index.html",
+      "learnPath": "/tools/ai-autonomous-ads-voice-revenue/learn.html",
+      "title": "Autonomous AI Ads -> Voice -> Revenue Studio",
+      "category": "ai",
+      "repository": "Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue",
+      "hasLearn": true,
+      "flowLink": "/studios/flow/?studio=ai-autonomous-ads-voice-revenue"
     },
     {
       "id": "ai-eval",

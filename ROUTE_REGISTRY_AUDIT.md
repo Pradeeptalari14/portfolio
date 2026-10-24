@@ -1,7 +1,7 @@
 # Master Route Registry & Automated Audit Report
 **Website URL**: [https://talaripradeep.info/](https://talaripradeep.info/)  
-**Audit Timestamp**: 2026-10-23T10:37:29.521Z  
-**Total Registered Routes**: 370 (16 Core Portals + 354 Interactive Developer Studios)  
+**Audit Timestamp**: 2026-10-24T15:48:55.913Z  
+**Total Registered Routes**: 371 (16 Core Portals + 355 Interactive Developer Studios)  
 **Automated Verification Result**: **100% Passed (571 Vitest CI Tests across 123 Suites)**  
 
 ---
@@ -11,8 +11,8 @@
 | Route Domain | Routes | Client-Side Engine | Data Dependencies | Status | Test Evidence |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Core Platform Hubs** | 16 | HTML5 / Vanilla CSS / ES Modules | `tools.json`, `topics.json` | 🟢 Verified 200 OK | `site-wide-enhancements.test.js` |
-| **Interactive Studios** | 354 | WASM / JS Simulation / IaC Gen | Local generators, GitHub repos | 🟢 Verified 200 OK | `studio-catalogue-search.test.js` |
-| **Cognitive Learn Drills** | 354 | In-Browser AST Parser / Terminal | `learn-data.json` | 🟢 Verified 200 OK | `studios-learn.test.js` |
+| **Interactive Studios** | 355 | WASM / JS Simulation / IaC Gen | Local generators, GitHub repos | 🟢 Verified 200 OK | `studio-catalogue-search.test.js` |
+| **Cognitive Learn Drills** | 355 | In-Browser AST Parser / Terminal | `learn-data.json` | 🟢 Verified 200 OK | `studios-learn.test.js` |
 | **Visual Flow Canvas** | 1 | Dynamic SVG / DOM DAG Engine | `flow-templates.json` | 🟢 Verified 200 OK | `visual-flow-canvas.test.js` |
 | **FinOps Cost Centers** | 2 | Mathematical Cost Model | AWS Pricing Baselines | 🟢 Verified 200 OK | `finops-calculator.test.js` |
 
@@ -41,7 +41,7 @@
 
 ---
 
-## 3. Interactive Studios & Tool Route Inventory (Sample of 354 Studios)
+## 3. Interactive Studios & Tool Route Inventory (Sample of 355 Studios)
 
 | Studio ID | Canonical Lab URL | Associated Learning Guide | Visual Flow Link | Primary Category | Verified GitHub Repository | Operational Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -54,6 +54,7 @@
 | `agentic-temporal-memory` | [`Agentic Temporal Memory & Episodic Graph Studio`](https://talaripradeep.info/tools/agentic-temporal-memory/) | [`Guide 📖`](/tools/agentic-temporal-memory/learn.html) | [`Flow ⚡`](/studios/flow/?studio=agentic-temporal-memory) | `AI` | [`Pradeeptalari14/tp-agentic-temporal-memory`](https://github.com/Pradeeptalari14/tp-agentic-temporal-memory) | 🟢 Verified (Plan Review Ready) |
 | `agile-itsm` | [`Agile & ITSM Studio`](https://talaripradeep.info/tools/agile-itsm/) | [`Guide 📖`](/tools/agile-itsm/learn.html) | [`Flow ⚡`](/studios/flow/?studio=agile-itsm) | `AUTOMATION` | [`Pradeeptalari14/tp-agile-itsm`](https://github.com/Pradeeptalari14/tp-agile-itsm) | 🟢 Verified (Plan Review Ready) |
 | `ai` | [`DevOps AI RAG Studio`](https://talaripradeep.info/tools/ai/) | [`Guide 📖`](/tools/ai/learn.html) | [`Flow ⚡`](/studios/flow/?studio=ai) | `AI` | [`Pradeeptalari14/tp-ai`](https://github.com/Pradeeptalari14/tp-ai) | 🟢 Verified (Plan Review Ready) |
+| `ai-autonomous-ads-voice-revenue` | [`Autonomous AI Ads -> Voice -> Revenue Studio`](https://talaripradeep.info/tools/ai-autonomous-ads-voice-revenue/) | [`Guide 📖`](/tools/ai-autonomous-ads-voice-revenue/learn.html) | [`Flow ⚡`](/studios/flow/?studio=ai-autonomous-ads-voice-revenue) | `AI` | [`Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue`](https://github.com/Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue) | 🟢 Verified (Plan Review Ready) |
 | `ai-eval` | [`AI Evaluation Studio`](https://talaripradeep.info/tools/ai-eval/) | [`Guide 📖`](/tools/ai-eval/learn.html) | [`Flow ⚡`](/studios/flow/?studio=ai-eval) | `AI` | [`Pradeeptalari14/tp-ai-eval`](https://github.com/Pradeeptalari14/tp-ai-eval) | 🟢 Verified (Plan Review Ready) |
 | `ai-observability` | [`AI Observability & Trace Studio`](https://talaripradeep.info/tools/ai-observability/) | [`Guide 📖`](/tools/ai-observability/learn.html) | [`Flow ⚡`](/studios/flow/?studio=ai-observability) | `AI` | [`Pradeeptalari14/tp-ai-observability`](https://github.com/Pradeeptalari14/tp-ai-observability) | 🟢 Verified (Plan Review Ready) |
 | `ai-orchestration-diagram` | [`AI Orchestration Layer Diagram`](https://talaripradeep.info/tools/ai-orchestration-diagram/) | [`Guide 📖`](/tools/ai-orchestration-diagram/learn.html) | [`Flow ⚡`](/studios/flow/?studio=ai-orchestration-diagram) | `AI` | [`Pradeeptalari14/tp-ai-orchestration-diagram`](https://github.com/Pradeeptalari14/tp-ai-orchestration-diagram) | 🟢 Verified (Plan Review Ready) |
@@ -84,9 +85,8 @@
 | `azure-arc` | [`Azure Arc Hybrid Management Studio`](https://talaripradeep.info/tools/azure-arc/) | [`Guide 📖`](/tools/azure-arc/learn.html) | [`Flow ⚡`](/studios/flow/?studio=azure-arc) | `CLOUD` | [`Pradeeptalari14/tp-azure-arc`](https://github.com/Pradeeptalari14/tp-azure-arc) | 🟢 Verified (Plan Review Ready) |
 | `azure-bicep-arm` | [`Azure Bicep/ARM Studio`](https://talaripradeep.info/tools/azure-bicep-arm/) | [`Guide 📖`](/tools/azure-bicep-arm/learn.html) | [`Flow ⚡`](/studios/flow/?studio=azure-bicep-arm) | `AUTOMATION` | [`Pradeeptalari14/tp-azure-bicep-arm`](https://github.com/Pradeeptalari14/tp-azure-bicep-arm) | 🟢 Verified (Plan Review Ready) |
 | `azure-devops-pipelines` | [`Azure DevOps Pipelines Studio`](https://talaripradeep.info/tools/azure-devops-pipelines/) | [`Guide 📖`](/tools/azure-devops-pipelines/learn.html) | [`Flow ⚡`](/studios/flow/?studio=azure-devops-pipelines) | `CICD` | [`Pradeeptalari14/tp-azure-devops-pipelines`](https://github.com/Pradeeptalari14/tp-azure-devops-pipelines) | 🟢 Verified (Plan Review Ready) |
-| `azure-functions` | [`Azure Functions Studio`](https://talaripradeep.info/tools/azure-functions/) | [`Guide 📖`](/tools/azure-functions/learn.html) | [`Flow ⚡`](/studios/flow/?studio=azure-functions) | `AUTOMATION` | [`Pradeeptalari14/tp-azure-functions`](https://github.com/Pradeeptalari14/tp-azure-functions) | 🟢 Verified (Plan Review Ready) |
 
-*(... Full catalog of all 354 studios indexed in `public/route-registry.json`)*
+*(... Full catalog of all 355 studios indexed in `public/route-registry.json`)*
 
 ---
 

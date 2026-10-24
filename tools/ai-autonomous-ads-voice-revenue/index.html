@@ -304,9 +304,44 @@
           </div>
         </div>
 
+        <!-- DevSecOps Policy Toggles -->
+        <div style="border-top: 1px solid var(--border-panel); padding-top: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+            9+ DevSecOps Governance Policies
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; font-size: 0.75rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1; cursor: pointer;">
+              <input type="checkbox" id="toggle_hmac_webhook" checked style="accent-color: #38bdf8;" />
+              <span>Meta Graph API Webhook HMAC-SHA256 Signature Gate</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1; cursor: pointer;">
+              <input type="checkbox" id="toggle_pii_encryption" checked style="accent-color: #38bdf8;" />
+              <span>E.164 Phone Normalization &amp; AES-256 PII Redaction Gate</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1; cursor: pointer;">
+              <input type="checkbox" id="toggle_srtp_audio" checked style="accent-color: #38bdf8;" />
+              <span>WebRTC / SRTP Audio Eavesdropping Protection</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1; cursor: pointer;">
+              <input type="checkbox" id="toggle_finops_stoploss" checked style="accent-color: #38bdf8;" />
+              <span>OTel Golden Signals &amp; FinOps Stop-Loss Circuit Breaker</span>
+            </label>
+          </div>
+        </div>
+
         <button id="btnRunClosedLoop" class="btn btn-primary" style="width: 100%; padding: 0.8rem; background: linear-gradient(135deg, #6366f1, #38bdf8); border: none; border-radius: 8px; font-weight: 700; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
           <i class="fa-solid fa-play"></i> Simulate 48-Hour Closed-Loop Cycle
         </button>
+
+        <!-- 9+ Principles Verification Badge -->
+        <div style="margin-top: 1.25rem; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%); border: 1px solid rgba(56, 189, 248, 0.3); font-size: 0.75rem;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #38bdf8; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🛡️ 9+ DevSecOps Principles Baked Into This Studio</span>
+          </div>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;">
+            1. Keyless Sigstore Cosign image verification • 2. Semgrep SAST route checks • 3. CycloneDX SBOM &amp; zero-CVE distroless base image • 4. Non-root user (UID 65532) • 5. Kyverno validation &amp; admission webhooks • 6. Cilium eBPF L7 enforcement • 7. Declarative GitOps synchronization • 8. OpenTelemetry Golden Signals • 9. Automated Stop-loss circuit breaker &amp; auto-rollback on CAC breach.
+          </p>
+        </div>
 
         <!-- Dynamic Reel Ad Visual Preview -->
         <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-panel); padding-top: 1rem;">
@@ -430,6 +465,9 @@
         </button>
         <button class="tab-btn" data-tab="tabDocker" style="padding: 0.4rem 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-panel); border-radius: 6px; color: #cbd5e1; cursor: pointer; font-size: 0.8rem;">
           Docker Compose & FinOps
+        </button>
+        <button class="tab-btn" data-tab="tabDevSecOps" style="padding: 0.4rem 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-panel); border-radius: 6px; color: #38bdf8; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+          🛡️ 9+ DevSecOps Manifest
         </button>
       </div>
 
@@ -595,6 +633,8 @@ services:
     ports:
       - "9090:9090"
 `;
+        } else if (currentTab === 'tabDevSecOps') {
+          codePreview.textContent = generator.generateDevSecOpsManifest(config);
         }
       }
 
@@ -604,6 +644,12 @@ services:
       inpTargetCpl.addEventListener('input', updateDashboard);
       inpStopLoss.addEventListener('input', updateDashboard);
       btnRunClosedLoop.addEventListener('click', updateDashboard);
+
+      // DevSecOps Policy Toggles
+      ['toggle_hmac_webhook', 'toggle_pii_encryption', 'toggle_srtp_audio', 'toggle_finops_stoploss'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', updateDashboard);
+      });
 
       // Tabs
       document.querySelectorAll('.tab-btn').forEach(btn => {

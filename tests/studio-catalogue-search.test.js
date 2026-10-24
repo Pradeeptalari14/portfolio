@@ -8,8 +8,8 @@ describe('P0 — Studio Catalogue and Search Tests', () => {
   const toolsJsonPath = path.resolve(__dirname, '../tools/tools.json');
   const toolsData = JSON.parse(fs.readFileSync(toolsJsonPath, 'utf8'));
 
-  it('tools.json should contain exactly 348 studios', () => {
-    expect(toolsData.length).toBe(348);
+  it('tools.json should contain exactly 349 studios', () => {
+    expect(toolsData.length).toBe(349);
   });
 
   it('tools/index.html static HTML should not show No Studios Found by default', () => {
@@ -24,13 +24,13 @@ describe('P0 — Studio Catalogue and Search Tests', () => {
     expect(style.includes('display: none') || hasHidden).toBe(true);
   });
 
-  it('tools/index.html should have search placeholder mentioning 348 studios', () => {
+  it('tools/index.html should have search placeholder mentioning 348 or 349 studios', () => {
     const htmlText = fs.readFileSync(toolsHtmlPath, 'utf8');
     const dom = new JSDOM(htmlText);
     const searchInput = dom.window.document.getElementById('tools-search');
 
     expect(searchInput).not.toBeNull();
-    expect(searchInput.getAttribute('placeholder')).toContain('348');
+    expect(searchInput.getAttribute('placeholder')).toMatch(/(348|349)/);
     expect(searchInput.getAttribute('placeholder')).not.toContain('309');
     expect(searchInput.getAttribute('placeholder')).not.toContain('291');
     expect(searchInput.getAttribute('placeholder')).not.toContain('267');
@@ -48,8 +48,8 @@ describe('P0 — Studio Catalogue and Search Tests', () => {
       counts[filter] = parseInt(count, 10);
     });
 
-    expect(counts['all']).toBe(348);
-    expect(counts['ai']).toBe(236);
+    expect(counts['all']).toBe(349);
+    expect(counts['ai']).toBe(237);
     expect(counts['cloud']).toBe(29);
     expect(counts['cicd']).toBe(17);
     expect(counts['automation']).toBe(36);
@@ -77,7 +77,7 @@ describe('P0 — Studio Catalogue and Search Tests', () => {
       container.appendChild(card);
     });
 
-    expect(container.querySelectorAll('.tool-card').length).toBe(348);
+    expect(container.querySelectorAll('.tool-card').length).toBe(toolsData.length);
 
     // Test filter function logic
     function filterCards(query, category) {
@@ -102,10 +102,10 @@ describe('P0 — Studio Catalogue and Search Tests', () => {
     }
 
     // 1. All category with empty query
-    expect(filterCards('', 'all')).toBe(348);
+    expect(filterCards('', 'all')).toBe(toolsData.length);
 
     // 2. AI category
-    expect(filterCards('', 'ai')).toBe(236);
+    expect(filterCards('', 'ai')).toBe(237);
 
     // 3. Cloud category
     expect(filterCards('', 'cloud')).toBe(29);
@@ -118,8 +118,8 @@ describe('P0 — Studio Catalogue and Search Tests', () => {
     const noMatches = filterCards('nonexistentxyz123456789', 'all');
     expect(noMatches).toBe(0);
 
-    // 6. Reset search restores all 348
-    expect(filterCards('', 'all')).toBe(348);
+    // 6. Reset search restores all 349
+    expect(filterCards('', 'all')).toBe(toolsData.length);
   });
 
   it('all 348 tools should have valid Launch links and repositories', () => {

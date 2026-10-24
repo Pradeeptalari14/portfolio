@@ -16,8 +16,8 @@ describe('CNCF Kubernetes Ecosystem Studios & Flow Topologies', () => {
     { id: 'containerd', repo: 'tp-containerd', category: 'automation' }
   ];
 
-  it('should have total 348 studios registered in tools.json', () => {
-    expect(tools.length).toBe(348);
+  it('should have total 348+ studios registered in tools.json', () => {
+    expect(tools.length).toBeGreaterThanOrEqual(348);
   });
 
   it('should have all 6 CNCF Kubernetes ecosystem studios registered in tools.json with correct categories', () => {

@@ -4509,5 +4509,31 @@
     "link": "containerd/",
     "repository": "Pradeeptalari14/tp-containerd",
     "id": "containerd"
+  },
+  {
+    "title": "Forward Deployed Engineer (FDE) AI Systems Studio",
+    "desc": "Master Forward Deployed Engineering: Bridge raw AI models and enterprise production. Discover client business problems, architect agentic MCP swarms, deploy into air-gapped private VPCs, and enforce automated Ragas evals and safety guardrails.",
+    "category": "ai",
+    "icon": "🚀",
+    "color": "rgb(6, 182, 212)",
+    "borderClass": "border-cyan-200",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "fde_agent_pipeline.py",
+    "link": "forward-deployed-engineer/",
+    "repository": "Pradeeptalari14/tp-fde-enterprise-deployer",
+    "id": "forward-deployed-engineer"
+  },
+  {
+    "title": "Autonomous AI Ads -> Voice -> Revenue Studio",
+    "desc": "Autonomous closed-loop growth and revenue orchestrator. Connect Meta Ads Manager API v21.0, Anthropic Claude 3.7 Sonnet copy synthesis, sub-30s OmniDimension/WebRTC voice agents, and unit-economics stop-loss FinOps automation.",
+    "category": "ai",
+    "icon": "📞",
+    "color": "rgb(56, 189, 248)",
+    "borderClass": "border-cyan-300",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "closed_loop_revenue.py",
+    "link": "ai-autonomous-ads-voice-revenue/",
+    "repository": "Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue",
+    "id": "ai-autonomous-ads-voice-revenue"
   }
 ]

@@ -50,3 +50,18 @@ The core distinction between traditional ad automation and **Studio #348** is th
 * **TCPA & DPDP:** Enforce explicit opt-in checkboxes on Meta Instant Forms.
 * **Cryptography:** PII phone numbers encrypted at rest with AES-256-GCM.
 * **Idempotency:** Webhook requests contain unique UUID idempotency keys to prevent duplicate dialing.
+
+---
+
+## 4. 9+ DevSecOps Governance & Architectural Compliance Matrix
+Studio #348 is hardened according to the platform's universal 9+ DevSecOps principles:
+1. **Keyless Sigstore Cosign Attestation:** Ephemeral OIDC keyless signing logged to public Rekor transparency log.
+2. **Semgrep SAST Route Checks:** AST scanning blocking hardcoded Meta tokens and prompt injections.
+3. **CycloneDX SBOM & Distroless Image:** Syft automated SBOM generation and zero-CVE base container packaging.
+4. **Non-Root Execution:** Restricted to UID `65532` (`appuser`), `readOnlyRootFilesystem: true`, capabilities dropped.
+5. **Kyverno Admission Webhook:** In-cluster admission gate rejecting unsigned container images.
+6. **Cilium eBPF L7 NetworkPolicy:** In-kernel egress restrictions to Meta API, Anthropic, OmniDimension, and Redis.
+7. **Declarative GitOps & Helm:** Version-controlled Helm chart with automated rolling updates and health probes.
+8. **OpenTelemetry Golden Signals:** Real-time metrics and distributed tracing via OTLP gRPC.
+9. **FinOps Automated Stop-Loss:** Real-time circuit breaker halting adsets when ROAS < 1.8x or spend > 3x target CPL.
+
