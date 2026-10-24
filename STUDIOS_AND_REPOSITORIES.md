@@ -1,6 +1,6 @@
-# 🏛️ Master Catalog: 347 Developer Studios & Repositories
+# 🏛️ Master Catalog: 348 Developer Studios & Repositories
 
-> Comprehensive master inventory of all 347 live interactive developer studios, production GitHub repositories, and next-generation AI, SRE, and Cloud architectures for **Talari Pradeep**.
+> Comprehensive master inventory of all 348 live interactive developer studios, production GitHub repositories, and next-generation AI, SRE, and Cloud architectures for **Talari Pradeep**.
 
 ---
 
@@ -8,9 +8,9 @@
 
 | Metric | Count | Details |
 | :--- | :---: | :--- |
-| **Total GitHub Repositories** | `347` | Public repositories under `@Pradeeptalari14` |
-| **Total Interactive Studios** | `347` | Fully functional simulators hosted on [talaripradeep.info](https://talaripradeep.info) |
-| **AI & LLMOps Studios** | `235` | Multi-agent swarms, RAG, speculative decoding, guardrails, VLM |
+| **Total GitHub Repositories** | `348` | Public repositories under `@Pradeeptalari14` |
+| **Total Interactive Studios** | `348` | Fully functional simulators hosted on [talaripradeep.info](https://talaripradeep.info) |
+| **AI & LLMOps Studios** | `236` | Multi-agent swarms, RAG, speculative decoding, guardrails, VLM, closed-loop revenue |
 | **Automation & SRE Studios** | `36` | Incident triage, self-healing runbooks, chaos testing, event-driven ops, cert-manager PKI, containerd |
 | **Observability & Tracing Studios** | `30` | OpenTelemetry, eBPF, Prometheus, distributed tracing, Fluent Bit, profiling |
 | **Cloud & Kubernetes Studios** | `29` | Multi-cloud IaC, EKS/AKS platforms, Karpenter, Crossplane, Envoy Gateway, Longhorn |
@@ -283,6 +283,7 @@ In addition to the 348 specialized developer studios, the engineering portfolio 
 | 333 | **01.AI Yi-Lightning MoE Studio** | Fine-grained Mixture-of-Experts serving blueprint inspired by Yi-Lightning: aux-loss-free expert routing, bilingual token budgeting and SGLang expert parallelism. | [Launch](https://talaripradeep.info/tools/yi-lightning-moe/) | [`tp-yi-lightning-moe`](https://github.com/Pradeeptalari14/tp-yi-lightning-moe) |
 | 334 | **OpenAI Compute & Quota Broker Studio** | Quota-aware routing across OpenAI and Azure OpenAI deployments using TPM/RPM headroom, priority tiers, data residency and Retry-After backoff. | [Launch](https://talaripradeep.info/tools/openai-marketplace-broker/) | [`tp-openai-marketplace-broker`](https://github.com/Pradeeptalari14/tp-openai-marketplace-broker) |
 | 338 | **OWASP Top 10 for LLMs & AI Agent Shield Studio** | Protect agent swarms and RAG workflows against OWASP Top 10 for LLMs: prompt injections, insecure tool hijacking, sensitive data leakage, and denial of service. | [Launch](https://talaripradeep.info/tools/owasp-llm-agent-shield/) | [`tp-owasp-llm-agent-shield`](https://github.com/Pradeeptalari14/tp-owasp-llm-agent-shield) |
+| 348 | **Autonomous AI Ads -> Voice -> Revenue Studio** | Autonomous closed-loop growth and revenue orchestrator: Meta Ads Manager API v21.0, Claude 3.7 Sonnet copy synthesis, sub-30s OmniDimension Voice AI, and FinOps unit economics stop-loss circuit breakers. | [Launch](https://talaripradeep.info/studios/ai-autonomous-ads-voice-revenue/) | [`tp-ai-autonomous-ads-voice-revenue`](https://github.com/Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue) |
 
 ### ⚙️ Automation & Autonomous SRE Studios (34 Studios)
 

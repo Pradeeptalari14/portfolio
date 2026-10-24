@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous AI Ads -> Voice -> Revenue Studio (#348) | Talari Pradeep</title>
+  <meta name="description" content="Studio #348: Autonomous closed-loop AI growth orchestrator connecting Meta Ads Manager API v21.0, Anthropic Claude 3.7 copy synthesis, real-time OmniDimension Voice AI, and webhook-driven FinOps unit economics.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/tool-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent-purple: #a855f7;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --bg-panel: rgba(15, 23, 42, 0.75);
+      --border-panel: rgba(255, 255, 255, 0.09);
+    }
+    .flow-pipeline-container {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-panel);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(12px);
+    }
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      position: relative;
+    }
+    .pipeline-node {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 1rem;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .pipeline-node.active-node {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+    .node-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .node-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 0.35rem;
+    }
+    .node-desc {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+    .node-badge {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .interactive-simulator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 1024px) {
+      .interactive-simulator-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .sim-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-panel);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .ad-preview-box {
+      background: #000;
+      border: 2px solid rgba(56, 189, 248, 0.3);
+      border-radius: 16px;
+      padding: 1.25rem;
+      aspect-ratio: 9/16;
+      max-width: 300px;
+      margin: 1rem auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .safe-zone-guide {
+      position: absolute;
+      top: 15%;
+      bottom: 20%;
+      left: 10%;
+      right: 10%;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .voice-call-console {
+      background: #0a0f1d;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+    }
+    .transcript-window {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      padding: 1rem;
+      height: 180px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1rem;
+    }
+    .speaker-agent { color: var(--accent-cyan); font-weight: 600; }
+    .speaker-lead { color: var(--accent-emerald); font-weight: 600; }
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald);
+      animation: pulse 1.5s infinite;
+      margin-right: 6px;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+    .verdict-banner {
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+    .verdict-scale { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); color: #34d399; }
+    .verdict-iterate { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: #fbbf24; }
+    .verdict-kill { background: rgba(244, 63, 94, 0.15); border: 1px solid var(--accent-rose); color: #fb7185; }
+  </style>
+</head>
+<body class="tool-page-body">
+  <header class="tool-header">
+    <div class="tool-header-container">
+      <div class="tool-header-left">
+        <a href="../../studios/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Studios Hub</a>
+        <span class="tool-badge"><i class="fa-solid fa-robot"></i> Studio #348 · Closed-Loop Autonomous AI</span>
+        <h1 class="tool-title">Autonomous AI Ads -> Voice -> Revenue Studio</h1>
+      </div>
+      <div class="tool-header-right">
+        <a href="https://github.com/Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="githubRepoLink">
+          <i class="fa-brands fa-github"></i> View GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-main-content" style="max-width: 1400px; margin: 1.5rem auto; padding: 0 1.5rem;">
+
+    <!-- ══ STAGE 1-5 CLOSED-LOOP VISUAL PIPELINE ══ -->
+    <section class="flow-pipeline-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <div>
+          <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; color: #fff;">
+            <i class="fa-solid fa-arrows-spin" style="color: var(--accent-cyan); margin-right: 0.5rem;"></i>
+            Autonomous Closed-Loop Growth Architecture
+          </h2>
+          <p style="font-size: 0.85rem; color: #94a3b8;">
+            End-to-end orchestration: Niche Selection &rarr; Meta AdSets &rarr; Sub-30s Voice AI Callback &rarr; Conversion Signal &rarr; FinOps Reinvestment.
+          </p>
+        </div>
+        <span style="font-size: 0.8rem; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.3rem 0.75rem; border-radius: 999px; font-weight: 600;">
+          <span class="pulse-dot"></span> Live Closed-Loop Active
+        </span>
+      </div>
+
+      <div class="pipeline-grid">
+        <!-- Node 1 -->
+        <div class="pipeline-node active-node" id="node1">
+          <div class="node-header"><i class="fa-solid fa-brain" style="color: #a855f7;"></i> Stage 1</div>
+          <div class="node-title">AI Orchestrator</div>
+          <div class="node-desc">Claude 3.7 synthesizes ICP pain points, high-ticket offers, and 3x2 creative hooks.</div>
+          <span class="node-badge">Anthropic Claude 3.7</span>
+        </div>
+
+        <!-- Node 2 -->
+        <div class="pipeline-node" id="node2">
+          <div class="node-header"><i class="fa-brands fa-meta" style="color: #38bdf8;"></i> Stage 2</div>
+          <div class="node-title">Meta Ads Manager</div>
+          <div class="node-desc">Graph API v21.0 deploys 9:16 safe-zone Reels adsets with strict daily spend caps.</div>
+          <span class="node-badge">Graph API v21.0</span>
+        </div>
+
+        <!-- Node 3 -->
+        <div class="pipeline-node" id="node3">
+          <div class="node-header"><i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> Stage 3</div>
+          <div class="node-title">Lead Ingestion</div>
+          <div class="node-desc">Async FastAPI receiver validates consent, normalizes phone, and queues in Redis Stream.</div>
+          <span class="node-badge">FastAPI + Redis</span>
+        </div>
+
+        <!-- Node 4 -->
+        <div class="pipeline-node" id="node4">
+          <div class="node-header"><i class="fa-solid fa-phone-volume" style="color: #10b981;"></i> Stage 4</div>
+          <div class="node-title">Outbound Voice AI</div>
+          <div class="node-desc">OmniDimension agent dials lead within 30s, qualifies intent, and books live calendar slot.</div>
+          <span class="node-badge">OmniDimension / WebRTC</span>
+        </div>
+
+        <!-- Node 5 -->
+        <div class="pipeline-node" id="node5">
+          <div class="node-header"><i class="fa-solid fa-chart-line" style="color: #f43f5e;"></i> Stage 5</div>
+          <div class="node-title">Revenue & FinOps</div>
+          <div class="node-desc">Post-call webhooks calculate true CAC/ROAS. Triggers auto-kill stop-loss or +20% scale.</div>
+          <span class="node-badge">Closed-Loop ROAS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ INTERACTIVE SIMULATION SANDBOX ══ -->
+    <div class="interactive-simulator-grid">
+      
+      <!-- Left Column: Controls & Creative Generator -->
+      <section class="sim-card">
+        <h2 class="card-title" style="margin-bottom: 0.5rem; font-size: 1.15rem; color: #fff;">
+          <i class="fa-solid fa-sliders" style="color: var(--accent-cyan);"></i> Campaign Parameters & Niche Selector
+        </h2>
+        <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.25rem;">
+          Configure test market boundaries and algorithmic circuit-breaker thresholds.
+        </p>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="selNiche" style="display:block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.4rem; font-weight: 600;">Target Sellable Niche & ICP</label>
+          <select id="selNiche" class="form-control" style="width: 100%; padding: 0.6rem; background: #0f172a; color: #fff; border: 1px solid var(--border-panel); border-radius: 6px;">
+            <option value="b2b_ai_consulting" selected>Enterprise AI & Cloud Infrastructure Consulting ($5k-$25k)</option>
+            <option value="dental_implants">High-Ticket Dental & Full-Mouth Implants ($3k-$15k)</option>
+            <option value="commercial_solar">Commercial Solar & Battery Microgrids ($10k-$80k)</option>
+            <option value="legal_tech">Mass Tort & Class Action Medical Legal Advisory ($5k-$50k)</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label for="inpDailyBudget" style="display:block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.4rem;">Daily Test Cap ($)</label>
+            <input type="number" id="inpDailyBudget" class="form-control" value="150" min="20" max="2000" style="width: 100%; padding: 0.55rem; background: #0f172a; color: #fff; border: 1px solid var(--border-panel); border-radius: 6px;">
+          </div>
+          <div class="form-group">
+            <label for="inpTargetCpl" style="display:block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.4rem;">Target CPL Threshold ($)</label>
+            <input type="number" id="inpTargetCpl" class="form-control" value="18.5" min="5" max="150" step="0.5" style="width: 100%; padding: 0.55rem; background: #0f172a; color: #fff; border: 1px solid var(--border-panel); border-radius: 6px;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label for="selVoiceProvider" style="display:block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.4rem;">Voice AI Engine</label>
+            <select id="selVoiceProvider" class="form-control" style="width: 100%; padding: 0.55rem; background: #0f172a; color: #fff; border: 1px solid var(--border-panel); border-radius: 6px;">
+              <option value="omnidimension" selected>OmniDimension Telephony</option>
+              <option value="webrtc_livekit">LiveKit WebRTC Agent</option>
+              <option value="twilio_eleven">Twilio SIP + ElevenLabs Turbo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inpStopLoss" style="display:block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.4rem;">Stop-Loss Min ROAS (x)</label>
+            <input type="number" id="inpStopLoss" class="form-control" value="1.8" min="1.0" max="5.0" step="0.1" style="width: 100%; padding: 0.55rem; background: #0f172a; color: #fff; border: 1px solid var(--border-panel); border-radius: 6px;">
+          </div>
+        </div>
+
+        <button id="btnRunClosedLoop" class="btn btn-primary" style="width: 100%; padding: 0.8rem; background: linear-gradient(135deg, #6366f1, #38bdf8); border: none; border-radius: 8px; font-weight: 700; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <i class="fa-solid fa-play"></i> Simulate 48-Hour Closed-Loop Cycle
+        </button>
+
+        <!-- Dynamic Reel Ad Visual Preview -->
+        <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-panel); padding-top: 1rem;">
+          <h3 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.5rem;"><i class="fa-solid fa-mobile-screen"></i> 9:16 Vertical Reel Creative Output</h3>
+          <div class="ad-preview-box">
+            <div class="safe-zone-guide"><span style="font-size: 0.65rem; color: rgba(255,255,255,0.4); text-transform: uppercase;">Safe Zone Target</span></div>
+            <div style="display:flex; justify-content: space-between; align-items:center; z-index:2;">
+              <span style="font-size: 0.7rem; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius:4px; color:#fff;">Sponsored</span>
+              <i class="fa-solid fa-volume-high" style="color: #fff; font-size: 0.8rem;"></i>
+            </div>
+            <div style="z-index: 2; margin-top: auto; margin-bottom: 1.5rem;">
+              <span id="previewAngleBadge" style="display: inline-block; font-size: 0.65rem; background: #a855f7; color: #fff; padding: 2px 6px; border-radius: 4px; margin-bottom: 0.4rem; font-weight: 700;">Pain Angle</span>
+              <h4 id="previewHookText" style="font-size: 0.85rem; color: #fff; line-height: 1.35; margin-bottom: 0.4rem;">Are your cloud bills doubling because unmonitored LLM agents are caught in recursive loops?</h4>
+              <button id="previewCtaBtn" style="width: 100%; padding: 0.4rem; background: var(--accent-cyan); border: none; border-radius: 6px; color: #000; font-weight: 700; font-size: 0.75rem;">
+                Book 15-Min Audit
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Interactive Voice Call & FinOps Unit Economics -->
+      <section class="sim-card">
+        <h2 class="card-title" style="margin-bottom: 0.5rem; font-size: 1.15rem; color: #fff;">
+          <i class="fa-solid fa-headset" style="color: var(--accent-emerald);"></i> Interactive Voice AI & FinOps Terminal
+        </h2>
+        <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.25rem;">
+          Test live voice qualification dispatch and observe real-time ROAS recalculation.
+        </p>
+
+        <!-- Voice Call Simulator -->
+        <div class="voice-call-console">
+          <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div style="display:flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-microphone-lines" style="color: var(--accent-emerald);"></i>
+              <span style="font-weight: 700; font-size: 0.9rem; color: #fff;">OmniDimension Telephony Simulator</span>
+            </div>
+            <button id="btnVoiceDemo" style="padding: 0.35rem 0.75rem; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--accent-emerald); border-radius: 6px; color: #34d399; font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+              <i class="fa-solid fa-phone"></i> Play Interactive Voice Call
+            </button>
+          </div>
+
+          <div class="transcript-window" id="transcriptWindow">
+            <p><span class="speaker-agent">[System]:</span> Simulated lead arriving via Meta Instant Form at 20:30:15 IST...</p>
+            <p><span class="speaker-agent">[OmniDimension]:</span> "Hello Alex, this is the AI assistant for Talari Pradeep's Platform Studio. I saw you just requested our 15-minute AI Infrastructure & SRE Audit. Did I catch you at a good time?"</p>
+            <p><span class="speaker-lead">[Alex Rivera]:</span> "Yes, I have a few minutes. We run Kubernetes with vLLM and our token latency has been spiking under heavy load."</p>
+            <p><span class="speaker-agent">[OmniDimension]:</span> "That's exactly what Pradeep specializes in—optimizing PagedAttention KV-caches and SLSA supply chains from 6+ years at Accenture. What is your team's timeline to resolve this?"</p>
+            <p><span class="speaker-lead">[Alex Rivera]:</span> "We want to resolve it this quarter. We have budget approved for an external architectural review."</p>
+            <p><span class="speaker-agent">[OmniDimension]:</span> "Excellent. I have reserved Tuesday at 3:00 PM IST with Talari Pradeep. I've sent the calendar invite to your email."</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; font-size: 0.75rem; text-align: center;">
+            <div style="background: rgba(255,255,255,0.04); padding: 0.5rem; border-radius: 6px;">
+              <span style="color: #94a3b8; display: block;">Qualification</span>
+              <strong style="color: #34d399;" id="valQualified">100% (High Intent)</strong>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); padding: 0.5rem; border-radius: 6px;">
+              <span style="color: #94a3b8; display: block;">Call Latency</span>
+              <strong style="color: #38bdf8;" id="valLatency">315 ms</strong>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); padding: 0.5rem; border-radius: 6px;">
+              <span style="color: #94a3b8; display: block;">Disposition</span>
+              <strong style="color: #f59e0b;" id="valDisposition">Booked Calendar</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- FinOps Unit Economics Card -->
+        <div style="margin-top: 1.25rem;">
+          <h3 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.75rem;"><i class="fa-solid fa-calculator"></i> Real-Time Unit Economics & ROAS</h3>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+            <div style="background: rgba(30, 41, 59, 0.6); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-panel); text-align: center;">
+              <span style="font-size: 0.7rem; color: #94a3b8;">Total Spend</span>
+              <div id="statSpend" style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #f8fafc; font-weight: 700;">$300.00</div>
+            </div>
+            <div style="background: rgba(30, 41, 59, 0.6); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-panel); text-align: center;">
+              <span style="font-size: 0.7rem; color: #94a3b8;">Leads (CPL)</span>
+              <div id="statCpl" style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #38bdf8; font-weight: 700;">18 ($16.6)</div>
+            </div>
+            <div style="background: rgba(30, 41, 59, 0.6); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-panel); text-align: center;">
+              <span style="font-size: 0.7rem; color: #94a3b8;">Deals Closed</span>
+              <div id="statDeals" style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #34d399; font-weight: 700;">2 Deals</div>
+            </div>
+            <div style="background: rgba(30, 41, 59, 0.6); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-panel); text-align: center;">
+              <span style="font-size: 0.7rem; color: #94a3b8;">Net ROAS</span>
+              <div id="statRoas" style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #10b981; font-weight: 700;">4.80x</div>
+            </div>
+          </div>
+
+          <!-- Automated Verdict Banner -->
+          <div id="verdictBanner" class="verdict-banner verdict-scale">
+            <div>
+              <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; display:block;">Autonomous FinOps Engine Verdict</span>
+              <span id="verdictText">SCALE: ROAS 4.80x Exceeds Target (Increase Budget +20%)</span>
+            </div>
+            <i class="fa-solid fa-arrow-trend-up" style="font-size: 1.5rem;"></i>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- ══ PRODUCTION CODE TABS & ARTIFACTS ══ -->
+    <section class="tool-card" style="margin-bottom: 2rem;">
+      <h2 class="card-title" style="margin-bottom: 0.5rem; font-size: 1.15rem; color: #fff;">
+        <i class="fa-solid fa-code" style="color: var(--accent-cyan);"></i> Production Artifacts & Automated Scaffolding
+      </h2>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1rem;">
+        Complete production-ready scripts for the autonomous closed-loop revenue engine.
+      </p>
+
+      <div class="output-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-panel); padding-bottom: 0.5rem;">
+        <button class="tab-btn active" data-tab="tabOrchestrator" style="padding: 0.4rem 0.8rem; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); border-radius: 6px; color: #fff; cursor: pointer; font-size: 0.8rem;">
+          Python Orchestrator
+        </button>
+        <button class="tab-btn" data-tab="tabWebhook" style="padding: 0.4rem 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-panel); border-radius: 6px; color: #cbd5e1; cursor: pointer; font-size: 0.8rem;">
+          FastAPI Webhook Server
+        </button>
+        <button class="tab-btn" data-tab="tabMcp" style="padding: 0.4rem 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-panel); border-radius: 6px; color: #cbd5e1; cursor: pointer; font-size: 0.8rem;">
+          MCP Meta & Voice Server
+        </button>
+        <button class="tab-btn" data-tab="tabDocker" style="padding: 0.4rem 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-panel); border-radius: 6px; color: #cbd5e1; cursor: pointer; font-size: 0.8rem;">
+          Docker Compose & FinOps
+        </button>
+      </div>
+
+      <pre id="codePreview" style="background: #020617; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #e2e8f0; overflow-x: auto; max-height: 400px; line-height: 1.5;"></pre>
+    </section>
+
+    <!-- ══ TECHNICAL ARCHITECTURE & SRE FIELD GUIDE ══ -->
+    <section class="tool-card">
+      <h2 class="card-title" style="margin-bottom: 0.75rem; font-size: 1.15rem; color: #fff;">
+        <i class="fa-solid fa-shield-halved" style="color: var(--accent-emerald);"></i> Platform Guardrails & Operating Standards
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 1rem;">
+          <h4 style="color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-lock"></i> Meta API & Consent Compliance</h4>
+          <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+            Automate strictly through authorized Meta Graph API v21.0 interfaces with Page Access Tokens. Never perform UI scraping. Adhere to Telephone Consumer Protection Act (TCPA) and Digital Personal Data Protection (DPDP) by capturing explicit opt-in checkboxes on Meta Instant Forms.
+          </p>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 1rem;">
+          <h4 style="color: var(--accent-amber); font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-traffic-light"></i> Circuit Breakers & Stop-Loss</h4>
+          <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+            Implement hard daily spend caps and automated stop-loss thresholds: if an adset expends 3x the target CPL without delivering a connected qualification call, the orchestrator immediately triggers a Graph API pause mutation.
+          </p>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 1rem;">
+          <h4 style="color: var(--accent-purple); font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-wave-square"></i> Sub-350ms Audio Streaming</h4>
+          <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+            Leverage WebRTC data channels with Silke/Opus codecs. Combined with Anthropic Claude 3.7 streaming tokens and ElevenLabs Turbo v2.5, achieve sub-350ms end-to-end conversational turn-taking with natural interruption handling.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../../js/nav.js"></script>
+  <script type="module">
+    import { AIAutonomousAdsVoiceRevenueGenerator } from '../../src/js/generators/ai-autonomous-ads-voice-revenue-gen.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const generator = new AIAutonomousAdsVoiceRevenueGenerator();
+
+      // UI Elements
+      const selNiche = document.getElementById('selNiche');
+      const inpDailyBudget = document.getElementById('inpDailyBudget');
+      const inpTargetCpl = document.getElementById('inpTargetCpl');
+      const selVoiceProvider = document.getElementById('selVoiceProvider');
+      const inpStopLoss = document.getElementById('inpStopLoss');
+      const btnRunClosedLoop = document.getElementById('btnRunClosedLoop');
+      const btnVoiceDemo = document.getElementById('btnVoiceDemo');
+      const codePreview = document.getElementById('codePreview');
+
+      // Previews
+      const previewAngleBadge = document.getElementById('previewAngleBadge');
+      const previewHookText = document.getElementById('previewHookText');
+      const previewCtaBtn = document.getElementById('previewCtaBtn');
+
+      // Stats
+      const statSpend = document.getElementById('statSpend');
+      const statCpl = document.getElementById('statCpl');
+      const statDeals = document.getElementById('statDeals');
+      const statRoas = document.getElementById('statRoas');
+      const verdictBanner = document.getElementById('verdictBanner');
+      const verdictText = document.getElementById('verdictText');
+
+      let currentTab = 'tabOrchestrator';
+
+      function updateDashboard() {
+        const config = {
+          niche: selNiche.value,
+          dailyBudget: parseFloat(inpDailyBudget.value) || 150,
+          targetCpl: parseFloat(inpTargetCpl.value) || 18.5,
+          voicePlatform: selVoiceProvider.value,
+          stopLossRoas: parseFloat(inpStopLoss.value) || 1.8
+        };
+
+        const result = generator.generate(config);
+
+        // Update Reel preview
+        const firstAngle = result.metaAdsSpec.creativeAngles[0];
+        previewHookText.textContent = firstAngle.hookA;
+        previewCtaBtn.textContent = firstAngle.cta;
+
+        // Simulated Economics (48h cycle)
+        const totalSpend = config.dailyBudget * 2;
+        const leads = Math.round(totalSpend / (config.targetCpl * 0.92));
+        const cpl = (totalSpend / Math.max(leads, 1)).toFixed(1);
+        const deals = Math.max(1, Math.round(leads * 0.12));
+        const dealValue = config.niche === 'b2b_ai_consulting' ? 2400 : (config.niche === 'commercial_solar' ? 4500 : 1500);
+        const revenue = deals * dealValue;
+        const roas = (revenue / totalSpend).toFixed(2);
+
+        statSpend.textContent = `$${totalSpend.toFixed(2)}`;
+        statCpl.textContent = `${leads} ($${cpl})`;
+        statDeals.textContent = `${deals} Deals`;
+        statRoas.textContent = `${roas}x`;
+
+        if (roas >= config.stopLossRoas * 1.5) {
+          verdictBanner.className = 'verdict-banner verdict-scale';
+          verdictText.textContent = `SCALE: ROAS ${roas}x Exceeds Target (Increase Budget +20%)`;
+        } else if (roas >= config.stopLossRoas) {
+          verdictBanner.className = 'verdict-banner verdict-iterate';
+          verdictText.textContent = `ITERATE: ROAS ${roas}x Healthy (Test 3 New Creative Hooks)`;
+        } else {
+          verdictBanner.className = 'verdict-banner verdict-kill';
+          verdictText.textContent = `STOP-LOSS TRIGGERED: ROAS Below ${config.stopLossRoas}x (Pause AdSet)`;
+        }
+
+        renderCodeTab(config);
+      }
+
+      function renderCodeTab(config) {
+        if (currentTab === 'tabOrchestrator') {
+          codePreview.textContent = generator.generatePythonOrchestrator(config);
+        } else if (currentTab === 'tabWebhook') {
+          codePreview.textContent = generator.generateFastAPIWebhook();
+        } else if (currentTab === 'tabMcp') {
+          codePreview.textContent = JSON.stringify({
+            "mcpServers": {
+              "meta-ads-manager": {
+                "command": "npx",
+                "args": ["-y", "@modelcontextprotocol/server-meta-ads"],
+                "env": {
+                  "META_ACCESS_TOKEN": "EAAG...",
+                  "AD_ACCOUNT_ID": "act_000000000"
+                }
+              },
+              "omnidimension-voice": {
+                "command": "python",
+                "args": ["-m", "omnidimension_mcp_bridge"],
+                "env": {
+                  "OMNIDIMENSION_API_KEY": "omni_live_secret_..."
+                }
+              }
+            }
+          }, null, 2);
+        } else if (currentTab === 'tabDocker') {
+          codePreview.textContent = `version: '3.8'
+
+services:
+  closed-loop-orchestrator:
+    build: .
+    environment:
+      - ANTHROPIC_API_KEY=\${ANTHROPIC_API_KEY}
+      - META_ACCESS_TOKEN=\${META_ACCESS_TOKEN}
+      - OMNIDIMENSION_API_KEY=\${OMNIDIMENSION_API_KEY}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  finops-telemetry:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+`;
+        }
+      }
+
+      // Event Listeners
+      selNiche.addEventListener('change', updateDashboard);
+      inpDailyBudget.addEventListener('input', updateDashboard);
+      inpTargetCpl.addEventListener('input', updateDashboard);
+      inpStopLoss.addEventListener('input', updateDashboard);
+      btnRunClosedLoop.addEventListener('click', updateDashboard);
+
+      // Tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.style.background = 'rgba(255, 255, 255, 0.05)';
+            b.style.borderColor = 'var(--border-panel)';
+            b.style.color = '#cbd5e1';
+          });
+          btn.classList.add('active');
+          btn.style.background = 'rgba(56, 189, 248, 0.15)';
+          btn.style.borderColor = 'var(--accent-cyan)';
+          btn.style.color = '#fff';
+
+          currentTab = btn.getAttribute('data-tab');
+          renderCodeTab({
+            niche: selNiche.value,
+            dailyBudget: parseFloat(inpDailyBudget.value) || 150,
+            targetCpl: parseFloat(inpTargetCpl.value) || 18.5,
+            stopLossRoas: parseFloat(inpStopLoss.value) || 1.8
+          });
+        });
+      });
+
+      // Browser Voice Demo via SpeechSynthesis
+      btnVoiceDemo.addEventListener('click', () => {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance("Hello, this is the AI assistant for Talari Pradeep's Platform Studio. I saw you requested our AI infrastructure audit. Did I catch you at a good time?");
+          utterance.rate = 1.05;
+          utterance.pitch = 1.0;
+          window.speechSynthesis.speak(utterance);
+        }
+      });
+
+      // Initial run
+      updateDashboard();
+    });
+  </script>
+  <script src="../shared-tools.js"></script>
+</body>
+</html>

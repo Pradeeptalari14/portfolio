@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous AI Ads -> Voice -> Revenue Studio — Architectural Guide &amp; SRE Field Manual</title>
+  <meta name="description" content="Comprehensive engineering field guide for Studio #348: Autonomous Closed-Loop AI Ads to Voice Revenue. Meta Graph API v21.0, OmniDimension Voice AI, and unit economics automation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-purple: #a855f7;
+      --accent-amber: #fbbf24;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      padding-bottom: 5rem;
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 9, 17, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      color: #fff;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    p { margin-bottom: 1rem; color: #cbd5e1; font-size: 0.95rem; }
+    .code-block {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      line-height: 1.55;
+    }
+    .callout-box {
+      border-left: 4px solid var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    .callout-box strong { color: var(--accent-cyan); }
+    .flow-step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .step-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a href="index.html" style="color: var(--text-secondary);"><i class="fa-solid fa-arrow-left"></i> Return to Studio #348</a>
+      <span style="color: var(--border);">|</span>
+      <span style="font-weight: 700; color: #fff;">Architectural Blueprint &amp; Field Guide</span>
+    </div>
+    <a href="https://github.com/Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue" target="_blank" class="btn" style="background: rgba(255,255,255,0.06); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem;">
+      <i class="fa-brands fa-github"></i> Repository
+    </a>
+  </nav>
+
+  <main class="guide-container">
+    <div style="margin-bottom: 2rem;">
+      <span class="step-tag">STUDIO #348 MASTER SPECIFICATION</span>
+      <h1 style="font-size: 2.2rem; line-height: 1.2; margin-top: 0.5rem;">Autonomous AI Ads &rarr; Voice &rarr; Revenue Closed-Loop Architecture</h1>
+      <p style="font-size: 1.1rem; color: var(--text-secondary);">
+        A practical production blueprint for building an autonomous AI growth operator connecting Meta Ads Graph API v21.0, Anthropic Claude 3.7 Sonnet, low-latency telephony voice agents, and closed-loop FinOps stop-loss automation.
+      </p>
+    </div>
+
+    <div class="callout-box">
+      <strong>Core Architectural Law:</strong> "Getting the money back" is not an aspirational claim—it is a mathematically calculated stop-loss loop. The agent optimizes toward positive unit economics ($\text{ROAS} > \text{Threshold}$); if CAC spikes above permissible limits, circuit breakers automatically halt ad spend without human panic.
+    </div>
+
+    <h2>1. The 5-Pillar Closed-Loop Topology</h2>
+    <p>
+      Traditional marketing automations suffer from broken feedback loops: Meta optimizes for cheap clickthroughs (CTR), while sales teams suffer through cold unqualified phone calls. Studio #348 bridges this gap into an unbroken stateful loop:
+    </p>
+
+    <div class="flow-step-card">
+      <span class="step-tag">PILLAR 1 &middot; ORCHESTRATION</span>
+      <h3>1. Niche Selection &amp; ICP Offer Synthesis</h3>
+      <p>
+        The AI evaluates urgency, average ticket size ($3k-$25k), phone conversion suitability, and fulfillment capacity. It outputs one clear ICP and an irresistible offer following the formula:
+      </p>
+      <div class="code-block">Problem: Runaway unmonitored LLM cloud costs and fragile RAG pipelines
+&rarr; Promised Outcome: 99.95% pipeline uptime and 40% reduction in token latency
+&rarr; Mechanism: vLLM PagedAttention KV-Cache Tuning &amp; Zero-Trust Guardrails
+&rarr; Proof: 6+ years enterprise SRE at Accenture &amp; Trigent
+&rarr; CTA: Claim a 15-Minute Senior AI Architecture Review Callback</div>
+    </div>
+
+    <div class="flow-step-card">
+      <span class="step-tag">PILLAR 2 &middot; PROGRAMMATIC ACQUISITION</span>
+      <h3>2. Meta Ads Graph API v21.0 Programmatic Test</h3>
+      <p>
+        The agent produces 3 creative angles &times; 2 hooks in 9:16 vertical Reel formats with strict safe-zone awareness. It registers the campaign with an initial hard daily spend cap ($50-$150/day).
+      </p>
+    </div>
+
+    <div class="flow-step-card">
+      <span class="step-tag">PILLAR 3 &middot; SUB-30s INGESTION</span>
+      <h3>3. Lead Pipeline &amp; Phone Normalization</h3>
+      <p>
+        Meta Instant Form webhooks land at a high-concurrency FastAPI receiver. Numbers are formatted to E.164 standard, consent timestamps are verified against DPDP/TCPA databases, and metadata (campaign ID, ad ID) is locked in Redis.
+      </p>
+    </div>
+
+    <div class="flow-step-card">
+      <span class="step-tag">PILLAR 4 &middot; VOICE CONVERSATION</span>
+      <h3>4. Real-Time Telephony Voice Agent</h3>
+      <p>
+        Within 30 seconds of submission, the voice AI dials the prospect. Sub-350ms turn-taking allows natural conversation. The agent qualifies intent, identifies budget capacity, and pushes calendar booking invitations directly into the CRM.
+      </p>
+    </div>
+
+    <div class="flow-step-card">
+      <span class="step-tag">PILLAR 5 &middot; REINVESTMENT LOOP</span>
+      <h3>5. FinOps ROAS Engine &amp; Reinvestment Circuit Breaker</h3>
+      <p>
+        Post-call webhooks report back conversion status:
+      </p>
+      <ul>
+        <li><strong style="color: var(--accent-green);">SCALE:</strong> If $\text{ROAS} \ge 1.5 \times \text{Threshold}$, increase daily adset budget by +20%.</li>
+        <li><strong style="color: var(--accent-amber);">ITERATE:</strong> If $\text{ROAS} \ge \text{Threshold}$, keep budget stable and test 3 new creative hooks.</li>
+        <li><strong style="color: #f43f5e;">KILL:</strong> If spend $> 3 \times \text{Target CPL}$ with 0 qualified calls, pause adset immediately via Graph API.</li>
+      </ul>
+    </div>
+
+    <h2>2. Enterprise SRE Guardrails &amp; Security Compliance</h2>
+    <ul>
+      <li><strong>Official Meta Interfaces:</strong> Never scrape or mimic web browser sessions for ad publishing. Always use OAuth 2.0 Page Access Tokens with <code>ads_management</code> scopes.</li>
+      <li><strong>Consent &amp; PII Cryptography:</strong> Store phone numbers encrypted at rest using AES-256-GCM. Retain audit trails proving user opt-in consent for automated calling.</li>
+      <li><strong>Idempotency Keys:</strong> Ensure every lead webhook carries a unique <code>idempotency_key</code> to prevent duplicate outbound phone calls during network retries.</li>
+    </ul>
+
+    <h2>3. 48-Hour MVP Deployment Checklist</h2>
+    <div class="code-block">Phase A: Set hard stop-loss limits in environment variables (MAX_DAILY_BUDGET=150)
+Phase B: Deploy FastAPI webhook receiver behind Nginx reverse proxy with TLS 1.3
+Phase C: Authorize Meta System User and register webhook subscription for leadgen
+Phase D: Configure OmniDimension / Twilio SIP Trunk with sub-350ms audio latency
+Phase E: Test complete flow with sandbox phone numbers before public traffic launch</div>
+  </main>
+</body>
+</html>

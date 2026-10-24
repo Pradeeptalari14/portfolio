@@ -4174,5 +4174,17 @@
     "tag": "fde_agent_pipeline.py",
     "link": "forward-deployed-engineer/",
     "repository": "Pradeeptalari14/tp-fde-enterprise-deployer"
+  },
+  {
+    "title": "Autonomous AI Ads -> Voice -> Revenue Studio",
+    "desc": "Autonomous closed-loop growth and revenue orchestrator. Connect Meta Ads Manager API v21.0, Anthropic Claude 3.7 Sonnet copy synthesis, sub-30s OmniDimension/WebRTC voice agents, and unit-economics stop-loss FinOps automation.",
+    "category": "ai",
+    "icon": "📞",
+    "color": "rgb(56, 189, 248)",
+    "borderClass": "border-cyan-300",
+    "bgClass": "bg-cyan-50/10",
+    "tag": "closed_loop_revenue.py",
+    "link": "ai-autonomous-ads-voice-revenue/",
+    "repository": "Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue"
   }
 ]
