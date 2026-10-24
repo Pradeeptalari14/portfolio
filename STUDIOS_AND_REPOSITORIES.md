@@ -19,9 +19,9 @@
 
 ---
 
-## 🌟 Flagship Production Systems & Architecture Repositories (13 Flagships + Architecture Center)
+## 🌟 Flagship Production Systems & Architecture Repositories (14 Flagships + Architecture Center)
 
-In addition to the 348 specialized developer studios, the engineering portfolio features **13 verified flagship production systems** and the **Cloud Architecture Center**, each built with full 9+ DevSecOps governance, core architectural principles, high-availability topologies, and production runbooks:
+In addition to the 348 specialized developer studios, the engineering portfolio features **14 verified flagship production systems** and the **Cloud Architecture Center**, each built with full 9+ DevSecOps governance, core architectural principles, high-availability topologies, and production runbooks:
 
 | # | System / Architecture | Domain & Category | Description | Live Architecture Case Study | GitHub Repository |
 | :-: | :--- | :--- | :--- | :---: | :---: |
@@ -38,6 +38,7 @@ In addition to the 348 specialized developer studios, the engineering portfolio 
 | F11 | **SLSA-3 Cryptographic Supply Chain** | DevSecOps & Supply Chain | Cryptographic software supply chain platform producing CycloneDX SBOMs, Sigstore Cosign keyless signatures with Rekor ledger entries, and Kyverno cluster admission gating. | [Case Study](https://talaripradeep.info/projects/devsecops-slsa-supply-chain.html) | [`tp-sbom-cyclonedx-governance`](https://github.com/Pradeeptalari14/tp-sbom-cyclonedx-governance) |
 | F12 | **Agentic Temporal Memory & Episodic Graph** | Cognitive Architecture | Dual-tier cognitive memory architecture simulating human episodic and semantic recall using mathematical Ebbinghaus exponential forgetting curves, Neo4j graphs, and Qdrant vectors. | [Case Study](https://talaripradeep.info/projects/agentic-temporal-memory-graph.html) | [`tp-agentic-temporal-memory`](https://github.com/Pradeeptalari14/tp-agentic-temporal-memory) |
 | F13 | **Forward Deployed AI Engineering & Enterprise Systems** | Customer AI & Air-Gapped K8s | Enterprise deployment framework bridging client problem discovery, agentic MCP swarms, zero-egress air-gapped Kubernetes clusters, and automated Ragas evaluation gates. | [Case Study](https://talaripradeep.info/projects/forward-deployed-engineer-systems.html) | [`tp-fde-enterprise-deployer`](https://github.com/Pradeeptalari14/tp-fde-enterprise-deployer) |
+| F14 | **Autonomous AI Ads -> Voice -> Revenue Engine** | Autonomous Growth & Closed-Loop Voice AI | Closed-loop enterprise revenue pipeline orchestrating multi-variant creative synthesis with Claude 3.7 Sonnet, direct API campaign deployment via Meta Graph API v21.0, sub-30s OmniDimension Voice AI calling, and real-time FinOps stop-loss circuit breakers. | [Case Study](https://talaripradeep.info/projects/ai-autonomous-ads-voice-revenue.html) | [`tp-ai-autonomous-ads-voice-revenue`](https://github.com/Pradeeptalari14/tp-ai-autonomous-ads-voice-revenue) |
 | AC | **Cloud Architecture Center** | Production Topologies | Interactive architecture workbench with production topologies for AWS Multi-Account Landing Zones, Multi-Tenant EKS, and Hybrid VMware clouds. | [Architecture Center](https://talaripradeep.info/architecture/) | [`architecture/`](https://talaripradeep.info/architecture/) |
 
 ---

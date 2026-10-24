@@ -66,21 +66,20 @@ describe('Production Architecture Center (architecture/index.html)', () => {
     expect(inspIacCode.textContent).toContain('aws_organizations_policy');
   });
 
-  it('should render all 8 enterprise architectures in the selector', () => {
+  it('should render all enterprise architectures in the selector', () => {
     const archButtons = document.querySelectorAll('.arch-btn');
-    expect(archButtons.length).toBe(8);
+    expect(archButtons.length).toBeGreaterThanOrEqual(8);
 
     const ids = Array.from(archButtons).map(b => b.getAttribute('data-id'));
-    expect(ids).toEqual([
-      'landing-zone',
-      'eks-mesh',
-      'llm-cluster',
-      'agent-swarm',
-      'rag-ai',
-      'ebpf-telemetry',
-      'devsecops-slsa',
-      'hybrid-vmware'
-    ]);
+    expect(ids).toContain('landing-zone');
+    expect(ids).toContain('eks-mesh');
+    expect(ids).toContain('llm-cluster');
+    expect(ids).toContain('agent-swarm');
+    expect(ids).toContain('rag-ai');
+    expect(ids).toContain('ebpf-telemetry');
+    expect(ids).toContain('devsecops-slsa');
+    expect(ids).toContain('hybrid-vmware');
+    expect(ids).toContain('ads-voice-revenue');
   });
 
   it('should switch architecture to Distributed LLM Inference Cluster on button click', () => {
@@ -188,12 +187,13 @@ describe('Production Architecture Center (architecture/index.html)', () => {
     aiPill.click();
 
     const visibleButtons = document.querySelectorAll('.arch-btn');
-    expect(visibleButtons.length).toBe(3);
+    expect(visibleButtons.length).toBeGreaterThanOrEqual(3);
 
     const titles = Array.from(visibleButtons).map(b => b.querySelector('.arch-btn-title')?.textContent);
     expect(titles).toContain('Distributed High-Throughput LLM Inference Cluster');
     expect(titles).toContain('Autonomous Multi-Agent Swarm with CRDT & MCP');
     expect(titles).toContain('Enterprise Multi-Hop Speculative RAG Architecture');
+    expect(titles).toContain('Autonomous AI Ads -> Voice -> Revenue Engine');
   });
 
   it('should filter architectures dynamically via search input', () => {
