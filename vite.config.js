@@ -22,6 +22,7 @@ function getToolInputs() {
     devsecopsSlsaSupplyChain: resolve(__dirname, 'projects/devsecops-slsa-supply-chain.html'),
     agenticTemporalMemoryGraph: resolve(__dirname, 'projects/agentic-temporal-memory-graph.html'),
     forwardDeployedEngineerSystems: resolve(__dirname, 'projects/forward-deployed-engineer-systems.html'),
+    aiAutonomousAdsVoiceRevenue: resolve(__dirname, 'projects/ai-autonomous-ads-voice-revenue.html'),
     experience: resolve(__dirname, 'experience/index.html'),
     tools: resolve(__dirname, 'tools/index.html'),
     studios: resolve(__dirname, 'studios/index.html'),
